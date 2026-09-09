@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "เครื่องมือทดสอบรูปลักษณ์",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "พรีเซ็ตแสดงเป็นแถวแนวนอนภายในแพ็กที่พับเก็บได้ ลุคในตัวเริ่มต้นอยู่ในแพ็กสี ฟิล์ม Film Simulation Drama และขาวดำ คลิกหัวข้อแพ็กเพื่อขยายหรือยุบ",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "เปิด Presets ในแถบเครื่องมือการแก้ไข Built-in มีลักษณะที่รวมมา 23 แบบและทำงานแบบออฟไลน์ Yours มีลักษณะที่บันทึกไว้ การนำเข้า และพรีเซ็ตชุมชนที่ติดตั้งแล้ว Community ใช้เรียกดูคอลเลกชันออนไลน์ที่ผ่านการตรวจทาน",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "ทุกลุคใน Film Simulation Drama จะเปิดการจำลองฟิล์มและเพิ่มเอฟเฟกต์โทน สี เกรน แสงฟุ้ง หรือขอบมืด แพ็กนี้มีแปดลุค รวมถึง Silver Noir แบบขาวดำ"
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "ทุกลุคใน Film Simulation Drama จะเปิดการจำลองฟิล์มและเพิ่มเอฟเฟกต์โทน สี เกรน แสงฟุ้ง หรือขอบมืด แพ็กนี้มีแปดลุค รวมถึง Silver Noir แบบขาวดำ",
+    "That photo is no longer in the library, so the edit was not saved": "รูปภาพนั้นไม่อยู่ในไลบรารีแล้ว การแก้ไขจึงไม่ถูกบันทึก",
+    "That selection could not be completed. Try again.": "ไม่สามารถทำการเลือกนั้นให้เสร็จได้ ลองอีกครั้ง",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "เมื่อการทำเครื่องหมายทำให้รูปภาพหลุดออกจากมุมมองที่คุณกำลังทำงานอยู่ เช่น การเลือกขณะที่แถบด้านข้างแสดงไม่ได้ตั้งธง การเลื่อนไปยังภาพถัดไปอัตโนมัติจะดำเนินต่อด้วยรูปภาพที่เข้ามาแทนที่ ไม่ย้อนกลับไปที่ต้นรายการ",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "การลากจุดทั้งสองมาทับกันทำให้ไล่ระดับไม่มีทิศทาง จึงไม่เลือกสิ่งใดจนกว่าคุณจะแยกจุดออกจากกันอีกครั้ง ไล่ระดับที่สั้นมากถือเป็นขอบคมที่ใช้ได้ และให้ผลเหมือนกันทั้งในตัวอย่างและในไฟล์ที่ส่งออก",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "การเลือกถูกตัดจากรูปภาพที่เริ่มไว้ การย้ายไปรูปภาพอื่นก่อนเสร็จจะยกเลิกการเลือก จึงควรอยู่ที่รูปภาพนั้นจนกว่ามาสก์จะปรากฏ หากทำการเลือกไม่สำเร็จ แผงมาสก์จะแจ้งให้ทราบและจะไม่มีการเพิ่มสิ่งใด"
   },
   "plurals": {
     " · {count} paired file linked": {

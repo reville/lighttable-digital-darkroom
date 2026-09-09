@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "Tester dell’aspetto",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "I predefiniti appaiono come righe orizzontali in pacchetti comprimibili. I look integrati sono inizialmente organizzati nei pacchetti Colore, Pellicola, Film Simulation Drama e Bianco e nero. Fai clic sul titolo di un pacchetto per espanderlo o comprimerlo.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Apri Predefiniti nella barra degli strumenti di modifica. Integrato contiene 23 aspetti inclusi e funziona offline. Tuo contiene aspetti salvati, importazioni e preimpostazioni della community installate. Community sfoglia la raccolta online revisionata.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Ogni look di Film Simulation Drama attiva la simulazione pellicola e aggiunge effetti di tono, colore, grana, bagliore o vignettatura. Il pacchetto contiene otto look, tra cui Silver Noir in bianco e nero."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Ogni look di Film Simulation Drama attiva la simulazione pellicola e aggiunge effetti di tono, colore, grana, bagliore o vignettatura. Il pacchetto contiene otto look, tra cui Silver Noir in bianco e nero.",
+    "That photo is no longer in the library, so the edit was not saved": "Quella foto non è più nella libreria, quindi la modifica non è stata salvata",
+    "That selection could not be completed. Try again.": "Non è stato possibile completare quella selezione. Riprova.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Quando il contrassegno toglie la foto dalla vista in cui stai lavorando, ad esempio selezionandola mentre la barra laterale mostra Senza contrassegno, l’avanzamento automatico prosegue con la foto che ne prende il posto. Non torna all’inizio dell’elenco.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Trascinando i due punti l’uno sull’altro il gradiente resta senza direzione e non seleziona nulla finché non li separi di nuovo. Un gradiente molto corto è un bordo netto valido e si applica allo stesso modo nell’anteprima e nel file esportato.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Una selezione viene ritagliata dalla foto su cui è stata avviata. Passare a un’altra foto prima che finisca la annulla, quindi resta sulla foto finché non compare la maschera. Se la selezione non può essere completata, il pannello della maschera lo segnala e non viene aggiunto nulla."
   },
   "plurals": {
     " · {count} paired file linked": {

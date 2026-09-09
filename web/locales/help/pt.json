@@ -827,6 +827,7 @@
           "title": "Controlar o que acontece a seguir",
           "paragraphs": [
             "Ative Avanço automático para ir para a próxima foto depois de selecionar, rejeitar ou avaliar uma única foto. Remover bandeira não avança.",
+            "Quando a marcação retira a foto da vista em que está a trabalhar, como selecionar enquanto a barra lateral mostra Sem bandeira, o avanço automático continua com a foto que ocupa o seu lugar. Não regressa ao início da lista.",
             "Quando várias fotos são selecionadas em uma grade, as marcas se aplicam a esse conjunto sem avançar. Se Vincular metadados do par estiver ativado, marcar também atualiza companheiros RAW e JPEG reconhecidos."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Ajustar a forma de um gradiente linear",
           "paragraphs": [
-            "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo."
+            "Em Editar forma, arraste qualquer um dos pontos para ajustar essa extremidade do gradiente. Arraste a linha que os conecta para mover todo o gradiente mantendo o ângulo e a largura da transição. Arraste em outro lugar da foto para redesenhá-lo.",
+            "Arrastar os dois pontos um sobre o outro deixa o gradiente sem direção, pelo que não seleciona nada até os separar novamente. Um gradiente muito curto é uma margem dura válida e aplica-se da mesma forma na pré-visualização e no ficheiro exportado."
           ],
           "tips": [
             "Selecione uma máscara Linear existente para ajustá-la novamente. Se você estava pintando com Adicionar, Subtrair ou Interseção, escolha primeiro Editar forma. Pressione H se os pontos estiverem ocultos."
@@ -1901,7 +1903,8 @@
           "title": "Criar uma seleção inteligente",
           "paragraphs": [
             "Máscara oferece seleções de Assunto, Céu, Objeto, Profundidade e Pessoas. Elas são executadas localmente; os métodos disponíveis dependem do tipo de seleção e da plataforma.",
-            "As seleções de Assunto, Céu e Objeto retêm até 1.024 pixels ao longo da borda mais longa. As bordas são refinadas com base nas cores da imagem, e as seleções de Assunto por Vision preservam transições suaves. Limites finos ainda precisam de inspeção e refinamento pintado."
+            "As seleções de Assunto, Céu e Objeto retêm até 1.024 pixels ao longo da borda mais longa. As bordas são refinadas com base nas cores da imagem, e as seleções de Assunto por Vision preservam transições suaves. Limites finos ainda precisam de inspeção e refinamento pintado.",
+            "Uma seleção é recortada da foto onde foi iniciada. Passar para outra foto antes de terminar cancela-a, por isso permaneça na foto até a máscara aparecer. Se a seleção não puder ser concluída, o painel da máscara comunica-o e nada é adicionado."
           ],
           "steps": [
             "Abra Máscara e expanda Criar Nova Máscara.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

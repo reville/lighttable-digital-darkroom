@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "外観テスター",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "プリセットは、折りたたみ可能なパック内に横一列の項目として表示されます。内蔵ルックは最初に「カラー」「フィルム」「Film Simulation Drama」「白黒」のパックに分類されます。パックの見出しをクリックすると展開または折りたたみできます。",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "編集ツールバーでPresetsを開きます。Built-inには23個の同梱ルックが含まれ、オフラインで動作します。Yoursには保存したルック、インポートしたもの、インストール済みのコミュニティプリセットが含まれます。Communityでは、確認済みのオンラインコレクションを参照できます。",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama の各ルックはフィルムシミュレーションを有効にし、トーン、色、粒子、光のにじみ、または周辺減光の効果を加えます。パックには、白黒の Silver Noir を含む8種類のルックが収録されています。"
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Film Simulation Drama の各ルックはフィルムシミュレーションを有効にし、トーン、色、粒子、光のにじみ、または周辺減光の効果を加えます。パックには、白黒の Silver Noir を含む8種類のルックが収録されています。",
+    "That photo is no longer in the library, so the edit was not saved": "その写真はライブラリにないため、編集は保存されませんでした",
+    "That selection could not be completed. Try again.": "その選択を完了できませんでした。もう一度お試しください。",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "サイドバーがフラグなしを表示している状態でピックするなど、マークによって写真が作業中のビューから外れる場合、自動進むはその位置に来た写真で続行します。リストの先頭には戻りません。",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "2つの点を重ねるとグラデーションの方向がなくなり、離すまで何も選択されません。ごく短いグラデーションは有効なハードエッジで、プレビューと書き出したファイルで同じように適用されます。",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選択は開始した写真から切り出されます。完了前に別の写真へ移動すると取り消されるので、マスクが現れるまでその写真にとどまってください。選択を完了できない場合は、マスクパネルがそれを知らせ、何も追加されません。"
   },
   "plurals": {
     " · {count} paired file linked": {

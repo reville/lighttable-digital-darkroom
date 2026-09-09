@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "Trình thử giao diện",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Các thiết lập sẵn xuất hiện dưới dạng hàng ngang trong các gói có thể thu gọn. Các phong cách tích hợp ban đầu được chia thành các gói Màu, Phim, Film Simulation Drama và Đen trắng. Nhấp vào tiêu đề gói để mở rộng hoặc thu gọn.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Mở Thiết lập sẵn trong thanh công cụ chỉnh sửa. Tích hợp sẵn chứa 23 giao diện đi kèm và hoạt động ngoại tuyến. Mục của bạn chứa các giao diện đã lưu, các bản nhập và thiết lập sẵn cộng đồng đã cài đặt. Cộng đồng duyệt bộ sưu tập trực tuyến đã được xem xét.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Mỗi phong cách trong Film Simulation Drama đều bật mô phỏng phim và thêm hiệu ứng tông, màu, hạt, quầng sáng hoặc tối góc. Gói gồm tám phong cách, trong đó có Silver Noir đen trắng."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Mỗi phong cách trong Film Simulation Drama đều bật mô phỏng phim và thêm hiệu ứng tông, màu, hạt, quầng sáng hoặc tối góc. Gói gồm tám phong cách, trong đó có Silver Noir đen trắng.",
+    "That photo is no longer in the library, so the edit was not saved": "Ảnh đó không còn trong thư viện nên chỉnh sửa chưa được lưu",
+    "That selection could not be completed. Try again.": "Không thể hoàn tất vùng chọn đó. Hãy thử lại.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Khi việc đánh dấu đưa ảnh ra khỏi chế độ xem bạn đang làm việc, chẳng hạn chọn giữ trong khi thanh bên hiển thị Chưa gắn cờ, tự động chuyển ảnh sẽ tiếp tục với ảnh thế chỗ nó. Nó không quay về đầu danh sách.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào."
   },
   "plurals": {
     " · {count} paired file linked": {

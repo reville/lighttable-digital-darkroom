@@ -2324,10 +2324,25 @@ async function createSemanticMask(kind, point = null) {
   if (target && maskComponents(target).length >= MAX_MASK_COMPONENTS) {
     return toast(tr("This mask has reached its component limit"));
   }
+  /* On-device segmentation takes seconds and its answer carries no photo
+   * identity, so without this the mask can be cut from one photograph and
+   * saved onto whichever one is open when the model returns. */
+  const requestedName = cur().name;
+  const stillHere = () => cur()?.name === requestedName;
   $('maskInstruction').textContent = tr('Selecting {tool} on device…', {tool: localToolLabel(kind)});
-  const result = await api('/api/mask/semantic', {
-    name: cur().name, kind, point, params: S.params,
-  });
+  let result;
+  try {
+    result = await api('/api/mask/semantic', {
+      name: requestedName, kind, point, params: S.params,
+    });
+  } catch (error) {
+    // Leaving the panel on "Selecting…" forever gives the user nothing to act
+    // on, so report the failure even though the request never answered.
+    const message = tr("That selection could not be completed. Try again.");
+    if (stillHere()) $('maskInstruction').textContent = message;
+    return toast(message);
+  }
+  if (!stillHere()) return;
   if (result.error) {
     $('maskInstruction').textContent = result.error;
     return toast(result.error);

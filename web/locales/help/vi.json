@@ -827,6 +827,7 @@
           "title": "Kiểm soát điều gì xảy ra tiếp theo",
           "paragraphs": [
             "Bật Auto-advance để chuyển sang ảnh tiếp theo sau khi chọn, từ chối, hoặc xếp hạng một ảnh đơn lẻ. Bỏ cờ không tự chuyển tiếp.",
+            "Khi việc đánh dấu đưa ảnh ra khỏi chế độ xem bạn đang làm việc, chẳng hạn chọn giữ trong khi thanh bên hiển thị Chưa gắn cờ, tự động chuyển ảnh sẽ tiếp tục với ảnh thế chỗ nó. Nó không quay về đầu danh sách.",
             "Khi nhiều ảnh được chọn trong một lưới, các đánh dấu sẽ áp dụng cho tập đó mà không chuyển sang ảnh tiếp theo. Nếu Liên kết siêu dữ liệu cặp đang bật, việc đánh dấu cũng cập nhật các bạn đồng hành RAW và JPEG đã nhận diện."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Điều chỉnh hình dạng chuyển sắc tuyến tính",
           "paragraphs": [
-            "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại."
+            "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại.",
+            "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất."
           ],
           "tips": [
             "Chọn một mặt nạ Tuyến tính hiện có để điều chỉnh lại. Nếu vừa tô bằng Thêm, Trừ hoặc Giao nhau, hãy chọn Chỉnh sửa hình dạng trước. Nhấn H nếu các chấm bị ẩn."
@@ -1901,7 +1903,8 @@
           "title": "Tạo một vùng chọn thông minh",
           "paragraphs": [
             "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng.",
-            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ."
+            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ.",
+            "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào."
           ],
           "steps": [
             "Mở Mặt nạ và mở rộng Tạo Mặt nạ Mới.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

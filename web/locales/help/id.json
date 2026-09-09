@@ -827,6 +827,7 @@
           "title": "Kontrol apa yang terjadi selanjutnya",
           "paragraphs": [
             "Aktifkan Auto-advance untuk berpindah ke foto berikutnya setelah memilih, menolak, atau memberi rating satu foto. Menghapus bendera tidak melakukan advance.",
+            "Ketika penandaan mengeluarkan foto dari tampilan tempat Anda bekerja, misalnya memilih saat bilah sisi menampilkan Tanpa Bendera, Otomatis maju melanjutkan dengan foto yang menggantikannya. Ini tidak kembali ke awal daftar.",
             "Saat beberapa foto dipilih dalam kisi, tanda diterapkan ke set tersebut tanpa maju. Jika Link pair metadata aktif, penandaan juga memperbarui pendamping RAW dan JPEG yang dikenali."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Mengubah bentuk gradien linear",
           "paragraphs": [
-            "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang."
+            "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang.",
+            "Menyeret kedua titik hingga bertemu membuat gradien tidak memiliki arah, sehingga tidak memilih apa pun sampai Anda memisahkannya lagi. Gradien yang sangat pendek adalah tepi keras yang sah dan diterapkan sama di pratinjau maupun di berkas hasil ekspor."
           ],
           "tips": [
             "Pilih masker Linear yang sudah ada untuk menyesuaikannya lagi. Jika Anda sebelumnya melukis dengan Tambahkan, Kurangi, atau Irisan, pilih Edit Bentuk terlebih dahulu. Tekan H jika titik-titiknya tersembunyi."
@@ -1901,7 +1903,8 @@
           "title": "Buat pilihan cerdas",
           "paragraphs": [
             "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform.",
-            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual."
+            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual.",
+            "Pemilihan diambil dari foto tempat pemilihan itu dimulai. Berpindah ke foto lain sebelum selesai akan membatalkannya, jadi tetaplah pada foto tersebut sampai masker muncul. Jika pemilihan tidak dapat diselesaikan, panel masker melaporkannya dan tidak ada yang ditambahkan."
           ],
           "steps": [
             "Buka Masker dan luaskan Buat Masker Baru.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

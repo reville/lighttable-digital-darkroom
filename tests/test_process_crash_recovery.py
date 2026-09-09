@@ -29,8 +29,9 @@ def checkpoint():
     os.kill(os.getpid(), signal.SIGSTOP)
 def guarded(updates):
     if stage == 'before-commit': checkpoint()
-    save(updates)
+    written = save(updates)
     if stage == 'after-commit': checkpoint()
+    return written
 server.save_image_states = guarded
 http = ThreadingHTTPServer(('127.0.0.1', 0), server.Handler)
 # The ephemeral test token stays inside these pipes and is never logged.

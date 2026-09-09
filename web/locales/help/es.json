@@ -827,6 +827,7 @@
           "title": "Controlar lo que sucede a continuación",
           "paragraphs": [
             "Active Avance automático para pasar a la siguiente foto después de seleccionar, rechazar o calificar una sola foto. Quitar marca no avanza.",
+            "Cuando la marca saca la foto de la vista en la que trabajas, como seleccionar mientras la barra lateral muestra Sin marca, el avance automático continúa con la foto que ocupa su lugar. No vuelve al principio de la lista.",
             "Cuando hay varias fotos seleccionadas en una cuadrícula, las marcas se aplican a ese conjunto sin avanzar. Si Vincular metadatos de par está activado, marcar también actualiza los compañeros RAW y JPEG reconocidos."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Dar forma a un degradado lineal",
           "paragraphs": [
-            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo."
+            "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo.",
+            "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado."
           ],
           "tips": [
             "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos."
@@ -1901,7 +1903,8 @@
           "title": "Crear una selección inteligente",
           "paragraphs": [
             "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma.",
-            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado."
+            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado.",
+            "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada."
           ],
           "steps": [
             "Abra Máscara y expanda Crear nueva máscara.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

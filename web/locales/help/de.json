@@ -827,6 +827,7 @@
           "title": "Steuern, was als Nächstes passiert",
           "paragraphs": [
             "Aktivieren Sie Automatisch weiter, um nach dem Auswählen, Ablehnen oder Bewerten eines einzelnen Fotos zum nächsten Foto zu wechseln. Das Aufheben einer Markierung führt nicht zum Weiterwechsel.",
+            "Wenn die Markierung das Foto aus der Ansicht entfernt, in der Sie arbeiten, etwa beim Auswählen während die Seitenleiste Ohne Markierung zeigt, fährt der automatische Wechsel mit dem Foto fort, das an dessen Stelle tritt. Er kehrt nicht an den Anfang der Liste zurück.",
             "Wenn mehrere Fotos in einem Raster ausgewählt sind, gelten Markierungen für diese Auswahl, ohne weiterzuschalten. Wenn Verknüpfte Paar-Metadaten aktiviert ist, aktualisiert das Markieren auch erkannte RAW- und JPEG-Begleiter."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Einen linearen Verlauf formen",
           "paragraphs": [
-            "Ziehe unter Form bearbeiten einen der Punkte, um dieses Ende des Verlaufs anzupassen. Ziehe die Verbindungslinie, um den gesamten Verlauf zu verschieben und dabei Winkel und Übergangsbreite beizubehalten. Ziehe an einer anderen Stelle im Foto, um ihn neu zu zeichnen."
+            "Ziehe unter Form bearbeiten einen der Punkte, um dieses Ende des Verlaufs anzupassen. Ziehe die Verbindungslinie, um den gesamten Verlauf zu verschieben und dabei Winkel und Übergangsbreite beizubehalten. Ziehe an einer anderen Stelle im Foto, um ihn neu zu zeichnen.",
+            "Zieht man die beiden Punkte aufeinander, hat der Verlauf keine Richtung mehr und wählt nichts aus, bis Sie sie wieder trennen. Ein sehr kurzer Verlauf ist eine gültige harte Kante und wirkt in der Vorschau genauso wie in der exportierten Datei."
           ],
           "tips": [
             "Wähle eine vorhandene lineare Maske aus, um sie erneut anzupassen. Wenn du mit Hinzufügen, Subtrahieren oder Schnittmenge gemalt hast, wähle zuerst Form bearbeiten. Drücke H, wenn die Punkte ausgeblendet sind."
@@ -1901,7 +1903,8 @@
           "title": "Eine intelligente Auswahl erstellen",
           "paragraphs": [
             "Maske bietet Motiv-, Himmel-, Objekt-, Tiefen- und Personen-Auswahlen. Diese laufen lokal; verfügbare Methoden hängen von Auswahlsart und Plattform ab.",
-            "Motiv-, Himmel- und Objekt-Auswahlen behalten bis zu 1.024 Pixel entlang ihrer längsten Kante bei. Kanten werden anhand der Bildfarben verfeinert, und Vision-Motivauswahlen bewahren weiche Übergänge. Feine Grenzen müssen dennoch geprüft und per Pinsel verfeinert werden."
+            "Motiv-, Himmel- und Objekt-Auswahlen behalten bis zu 1.024 Pixel entlang ihrer längsten Kante bei. Kanten werden anhand der Bildfarben verfeinert, und Vision-Motivauswahlen bewahren weiche Übergänge. Feine Grenzen müssen dennoch geprüft und per Pinsel verfeinert werden.",
+            "Eine Auswahl wird aus dem Foto erstellt, auf dem sie begonnen wurde. Ein Wechsel zu einem anderen Foto bricht sie ab, bleiben Sie also bei dem Foto, bis die Maske erscheint. Lässt sich die Auswahl nicht abschließen, meldet das Maskenfeld dies und es wird nichts hinzugefügt."
           ],
           "steps": [
             "Maske öffnen und Neue Maske erstellen erweitern.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

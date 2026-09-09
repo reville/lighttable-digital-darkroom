@@ -827,6 +827,7 @@
           "title": "Controlla cosa succede dopo",
           "paragraphs": [
             "Attiva Avanzamento automatico per passare alla foto successiva dopo aver selezionato, rifiutato o valutato una singola foto. Rimuovi contrassegno non avanza.",
+            "Quando il contrassegno toglie la foto dalla vista in cui stai lavorando, ad esempio selezionandola mentre la barra laterale mostra Senza contrassegno, l’avanzamento automatico prosegue con la foto che ne prende il posto. Non torna all’inizio dell’elenco.",
             "Quando più foto sono selezionate in una griglia, i contrassegni si applicano a quell'insieme senza avanzare. Se Link pair metadata è attivo, il contrassegno aggiorna anche i compagni RAW e JPEG riconosciuti."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Modellare un gradiente lineare",
           "paragraphs": [
-            "In Modifica forma, trascina uno dei punti per regolare quella estremità del gradiente. Trascina la linea che li collega per spostare l’intero gradiente mantenendone l’angolo e la larghezza della transizione. Trascina altrove sulla foto per ridisegnarlo."
+            "In Modifica forma, trascina uno dei punti per regolare quella estremità del gradiente. Trascina la linea che li collega per spostare l’intero gradiente mantenendone l’angolo e la larghezza della transizione. Trascina altrove sulla foto per ridisegnarlo.",
+            "Trascinando i due punti l’uno sull’altro il gradiente resta senza direzione e non seleziona nulla finché non li separi di nuovo. Un gradiente molto corto è un bordo netto valido e si applica allo stesso modo nell’anteprima e nel file esportato."
           ],
           "tips": [
             "Seleziona una maschera Lineare esistente per regolarla nuovamente. Se hai dipinto con Aggiungi, Sottrai o Interseca, scegli prima Modifica forma. Premi H se i punti sono nascosti."
@@ -1901,7 +1903,8 @@
           "title": "Crea una selezione intelligente",
           "paragraphs": [
             "Maschera offre selezioni Soggetto, Cielo, Oggetto, Profondità e Persone. Queste vengono eseguite localmente; i metodi disponibili dipendono dal tipo di selezione e dalla piattaforma.",
-            "Le selezioni di Soggetto, Cielo e Oggetto mantengono fino a 1.024 pixel lungo il loro lato più lungo. I bordi vengono rifiniti in base ai colori dell'immagine e le selezioni Vision del soggetto preservano transizioni morbide. I confini più fini richiedono comunque un controllo e un raffinamento dipinto."
+            "Le selezioni di Soggetto, Cielo e Oggetto mantengono fino a 1.024 pixel lungo il loro lato più lungo. I bordi vengono rifiniti in base ai colori dell'immagine e le selezioni Vision del soggetto preservano transizioni morbide. I confini più fini richiedono comunque un controllo e un raffinamento dipinto.",
+            "Una selezione viene ritagliata dalla foto su cui è stata avviata. Passare a un’altra foto prima che finisca la annulla, quindi resta sulla foto finché non compare la maschera. Se la selezione non può essere completata, il pannello della maschera lo segnala e non viene aggiunto nulla."
           ],
           "steps": [
             "Apri Maschera ed espandi Crea nuova maschera.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

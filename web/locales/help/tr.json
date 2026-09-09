@@ -827,6 +827,7 @@
           "title": "Sonraki ne olacağını kontrol edin",
           "paragraphs": [
             "Tek bir fotoğrafı seçtikten, reddettikten veya derecelendirdikten sonra bir sonraki fotoğrafa geçmek için Otomatik ilerletmeyi açın. Bayrağı Kaldırma ilerletmez.",
+            "İşaretleme fotoğrafı çalıştığınız görünümden çıkardığında, örneğin kenar çubuğu Bayraksız gösterirken seçim yaptığınızda, otomatik ilerle onun yerini alan fotoğraftan devam eder. Listenin başına dönmez.",
             "Bir ızgarada birden çok fotoğraf seçiliyken, işaretler ilerleme olmadan o kümeye uygulanır. Link pair metadata açıksa, işaretleme tanınan RAW ve JPEG eşlerini de günceller."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Doğrusal geçişi şekillendirme",
           "paragraphs": [
-            "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin."
+            "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin.",
+            "İki noktayı üst üste sürüklemek degradeyi yönsüz bırakır, bu yüzden onları yeniden ayırana kadar hiçbir şey seçmez. Çok kısa bir degrade geçerli bir sert kenardır ve önizlemede olduğu gibi dışa aktarılan dosyada da aynı şekilde uygulanır."
           ],
           "tips": [
             "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın."
@@ -1901,7 +1903,8 @@
           "title": "Akıllı bir seçim oluştur",
           "paragraphs": [
             "Maske, Konu, Gökyüzü, Nesne, Derinlik ve Kişiler seçimlerini sunar. Bunlar yerel olarak çalışır; kullanılabilir yöntemler seçim türüne ve platforma bağlıdır.",
-            "Konu, Gökyüzü ve Nesne seçimleri en uzun kenar boyunca 1.024 piksele kadar korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. İnce sınırlar yine de inceleme ve boyanmış ayrıntılandırma gerektirir."
+            "Konu, Gökyüzü ve Nesne seçimleri en uzun kenar boyunca 1.024 piksele kadar korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. İnce sınırlar yine de inceleme ve boyanmış ayrıntılandırma gerektirir.",
+            "Seçim, başlatıldığı fotoğraftan alınır. Bitmeden başka bir fotoğrafa geçmek onu iptal eder, bu yüzden maske görünene kadar o fotoğrafta kalın. Seçim tamamlanamazsa maske paneli bunu bildirir ve hiçbir şey eklenmez."
           ],
           "steps": [
             "Maske’yi açın ve Yeni Maske Oluştur’u genişletin.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

@@ -18,7 +18,8 @@ class PreviewEngineRoutingTests(unittest.TestCase):
             Image.new('RGB', (12, 8), 'blue').save(folder/'photo.jpg')
             steps = []
 
-            def rust(name, params, width, output, native_output, viewport):
+            def rust(name, params, width, output, native_output, viewport,
+                     variant=None):
                 steps.append('rust')
                 output.parent.mkdir(parents=True, exist_ok=True)
                 Image.new('RGB', (12, 8), 'green').save(output)

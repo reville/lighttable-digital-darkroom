@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "Weergavetester",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Voorinstellingen verschijnen als horizontale rijen in inklapbare pakketten. Ingebouwde looks zijn aanvankelijk ingedeeld in Kleur, Film, Film Simulation Drama en Zwart-wit. Klik op de kop van een pakket om het uit of in te klappen.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Open Voorinstellingen in de bewerkingstoolbalk. Ingebouwd bevat 23 meegeleverde looks en werkt offline. Uw bevat opgeslagen looks, imports en geïnstalleerde community-voorinstellingen. Community bladert door de beoordeelde online verzameling.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Elke look in Film Simulation Drama schakelt filmsimulatie in en voegt effecten voor toon, kleur, korrel, gloed of vignettering toe. Het pakket bevat acht looks, waaronder Silver Noir in zwart-wit."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Elke look in Film Simulation Drama schakelt filmsimulatie in en voegt effecten voor toon, kleur, korrel, gloed of vignettering toe. Het pakket bevat acht looks, waaronder Silver Noir in zwart-wit.",
+    "That photo is no longer in the library, so the edit was not saved": "Die foto staat niet meer in de bibliotheek, dus de bewerking is niet opgeslagen",
+    "That selection could not be completed. Try again.": "Die selectie kon niet worden voltooid. Probeer het opnieuw.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Wanneer de markering de foto uit de weergave haalt waarin je werkt, bijvoorbeeld kiezen terwijl de zijbalk Zonder markering toont, gaat Automatisch doorgaan verder met de foto die haar plaats inneemt. Het keert niet terug naar het begin van de lijst.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd."
   },
   "plurals": {
     " · {count} paired file linked": {

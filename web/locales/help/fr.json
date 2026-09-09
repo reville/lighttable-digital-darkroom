@@ -827,6 +827,7 @@
           "title": "Contrôler ce qui se passe ensuite",
           "paragraphs": [
             "Activez l’avance auto pour passer à la photo suivante après avoir sélectionné, rejeté ou noté une seule photo. Le retrait du drapeau n’avance pas.",
+            "Lorsque le marquage retire la photo de la vue dans laquelle vous travaillez, par exemple en sélectionnant alors que la barre latérale affiche Sans drapeau, le passage automatique continue avec la photo qui prend sa place. Il ne revient pas au début de la liste.",
             "Lorsque plusieurs photos sont sélectionnées dans une grille, les marques s’appliquent à cet ensemble sans avancer. Si Lier les métadonnées de la paire est activé, le marquage met aussi à jour les compagnons RAW et JPEG reconnus."
           ]
         }
@@ -1593,7 +1594,8 @@
         {
           "title": "Modifier la forme d’un dégradé linéaire",
           "paragraphs": [
-            "Dans Modifier la forme, faites glisser un point pour ajuster cette extrémité du dégradé. Faites glisser la ligne qui les relie pour déplacer tout le dégradé en conservant son angle et la largeur de transition. Faites glisser ailleurs sur la photo pour le redessiner."
+            "Dans Modifier la forme, faites glisser un point pour ajuster cette extrémité du dégradé. Faites glisser la ligne qui les relie pour déplacer tout le dégradé en conservant son angle et la largeur de transition. Faites glisser ailleurs sur la photo pour le redessiner.",
+            "Faire glisser les deux points l’un sur l’autre prive le dégradé de direction : il ne sélectionne plus rien tant que vous ne les séparez pas. Un dégradé très court est une bordure nette valide et s’applique de la même façon dans l’aperçu et dans le fichier exporté."
           ],
           "tips": [
             "Sélectionnez un masque Linéaire existant pour le modifier à nouveau. Si vous avez peint avec Ajouter, Soustraire ou Intersection, choisissez d’abord Modifier la forme. Appuyez sur H si les points sont masqués."
@@ -1901,7 +1903,8 @@
           "title": "Créer une sélection intelligente",
           "paragraphs": [
             "Masque propose les sélections Sujet, Ciel, Objet, Profondeur et Personnes. Elles s’exécutent localement ; les méthodes disponibles dépendent du type de sélection et de la plateforme.",
-            "Les sélections Sujet, Ciel et Objet conservent jusqu’à 1 024 pixels le long de leur bord le plus long. Les contours sont affinés par rapport aux couleurs de l’image, et les sélections de sujet Vision conservent des transitions douces. Les limites fines nécessitent encore une inspection et un refinement peint."
+            "Les sélections Sujet, Ciel et Objet conservent jusqu’à 1 024 pixels le long de leur bord le plus long. Les contours sont affinés par rapport aux couleurs de l’image, et les sélections de sujet Vision conservent des transitions douces. Les limites fines nécessitent encore une inspection et un refinement peint.",
+            "Une sélection est découpée dans la photo sur laquelle elle a été lancée. Passer à une autre photo avant la fin l’annule : restez sur la photo jusqu’à ce que le masque apparaisse. Si la sélection ne peut pas aboutir, le panneau de masque le signale et rien n’est ajouté."
           ],
           "steps": [
             "Ouvrir Masque et développer Créer un nouveau masque.",
@@ -3204,5 +3207,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3"
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
 }

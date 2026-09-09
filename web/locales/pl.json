@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "59712d3d9a9263ec00ceccd0789cd4d1a1dca232c149e87ea022c4b3b45e1ee3",
+  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4179,7 +4179,12 @@
     "Appearance tester": "Tester wyglądu",
     "Presets appear as horizontal rows inside collapsible packs. Built-in looks start in Color, Film, Film Simulation Drama, and Black & White packs. Click a pack heading to expand or collapse it.": "Presety są wyświetlane jako poziome wiersze w zwijanych pakietach. Wbudowane style są początkowo pogrupowane w pakietach Kolor, Film, Film Simulation Drama i Czarno-białe. Kliknij nagłówek pakietu, aby go rozwinąć lub zwinąć.",
     "Open Presets in the editing toolbar. Built-in contains 23 included looks and works offline. Yours contains saved looks, imports, and installed community presets. Community browses the reviewed online collection.": "Otwórz Presets na pasku narzędzi edycji. Built-in zawiera 23 dołączonych wyglądów i działa offline. Yours zawiera zapisane wyglądy, importy i zainstalowane presety społeczności. Community przegląda sprawdzoną kolekcję online.",
-    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Każdy styl w Film Simulation Drama włącza symulację filmu i dodaje efekty tonów, koloru, ziarna, poświaty lub winietowania. Pakiet zawiera osiem stylów, w tym czarno-biały Silver Noir."
+    "Every look in Film Simulation Drama enables film simulation and adds tone, color, grain, glow, or vignette effects. The pack contains eight looks, including Silver Noir in black and white.": "Każdy styl w Film Simulation Drama włącza symulację filmu i dodaje efekty tonów, koloru, ziarna, poświaty lub winietowania. Pakiet zawiera osiem stylów, w tym czarno-biały Silver Noir.",
+    "That photo is no longer in the library, so the edit was not saved": "Tego zdjęcia nie ma już w bibliotece, więc edycja nie została zapisana",
+    "That selection could not be completed. Try again.": "Nie udało się ukończyć tego zaznaczenia. Spróbuj ponownie.",
+    "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Gdy oznaczenie usuwa zdjęcie z widoku, w którym pracujesz, na przykład przy wybieraniu, gdy panel boczny pokazuje Bez flagi, automatyczne przechodzenie kontynuuje od zdjęcia, które zajęło jego miejsce. Nie wraca na początek listy.",
+    "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku.",
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Zaznaczenie jest wycinane ze zdjęcia, na którym je rozpoczęto. Przejście do innego zdjęcia przed jego ukończeniem anuluje je, więc pozostań na zdjęciu, aż pojawi się maska. Jeśli zaznaczenia nie da się ukończyć, panel maski zgłasza to i nic nie zostaje dodane."
   },
   "plurals": {
     " · {count} paired file linked": {

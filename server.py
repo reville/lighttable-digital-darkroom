@@ -1646,6 +1646,19 @@ def _remap_state_paths(old_prefix: str, new_prefix: str) -> None:
     _remap_state_paths_many([(old_prefix, new_prefix)])
 
 
+def _state_key_moves(key: str, old_prefix: str, new_prefix: str) -> bool:
+    """Whether a persisted state key belongs to the path being relocated.
+
+    A virtual copy is keyed `<relpath>::lighttable-copy::<id>`, which is neither
+    the path itself nor a child of it, so matching only on the path and its `/`
+    children left every virtual copy's edits stranded under the old key while
+    the copy itself was renamed to the new one.
+    """
+    return (key == old_prefix
+            or key.startswith(old_prefix.rstrip("/") + "/")
+            or key.startswith(old_prefix + catalog_module.VIRTUAL_MARKER))
+
+
 def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
     """Commit a batch of path changes in one durable state-file replacement."""
     with STATE_LOCK:
@@ -1654,16 +1667,14 @@ def _remap_state_paths_many(remaps: list[tuple[str, str]]) -> None:
         changed = False
         for old_prefix, new_prefix in remaps:
             for old in list(images):
-                if old == old_prefix or old.startswith(
-                        old_prefix.rstrip("/") + "/"):
+                if _state_key_moves(old, old_prefix, new_prefix):
                     suffix = old[len(old_prefix):]
                     images[new_prefix + suffix] = images.pop(old)
                     changed = True
         if changed:
             def remap(value):
                 for old_prefix, new_prefix in remaps:
-                    if value == old_prefix or value.startswith(
-                            old_prefix.rstrip("/") + "/"):
+                    if _state_key_moves(value, old_prefix, new_prefix):
                         return new_prefix + value[len(old_prefix):]
                 return value
             for virtual_copy in st.get("virtualCopies", []):
@@ -3057,10 +3068,18 @@ def schedule_raw_refinement(name: str, width: int,
 
 
 def selected_preview_tiff(name: str, width: int,
-                          params: dict | None = None) -> Path:
+                          params: dict | None = None,
+                          variant: str | None = None) -> Path:
     full = raw_preview_path(name, width, "full", params)
     if valid_tiff_cache(full):
         return full
+    # The caller decides the variant before this runs and keys its render cache
+    # on that answer. The shared input cache is pruned by size from other
+    # threads, so the full TIFF can disappear in between; substituting the draft
+    # demosaic here would store it under the accurate key and serve those pixels
+    # as final for the life of the cache version. Rebuild instead.
+    if variant == "full":
+        return build_raw_preview(name, width, "full", params)
     return build_raw_preview(name, width, "fast", params)
 
 
@@ -3508,7 +3527,14 @@ def preview_engine():
 
 
 
-def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
+def render_key(name: str, params: dict, width: int, engine: str = "rs",
+               variant: str | None = None) -> str:
+    """`variant` pins the RAW quality this key describes.
+
+    Left to itself the key re-asks `preview_variant`, which reads the cache and
+    can answer differently from the caller that is about to render, so the two
+    must be able to agree on one answer.
+    """
     cleaned = fp.clean_params(params)
     if not is_raw(name):
         # Capture WB is deliberately RAW-only. Preserve it in the saved edit
@@ -3522,7 +3548,7 @@ def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
         cleaned["raw_sensor_denoise"] = fp.DEFAULT_PARAMS["raw_sensor_denoise"]
     blob = json.dumps([RENDER_CACHE_VERSION, RENDERER_IDENTITY, file_key(name),
                        cleaned, width, engine,
-                       preview_variant(name, width, params)],
+                       variant or preview_variant(name, width, params)],
                       sort_keys=True)
     return hashlib.md5(blob.encode()).hexdigest()
 
@@ -3530,7 +3556,8 @@ def render_key(name: str, params: dict, width: int, engine: str = "rs") -> str:
 def render_rust(name: str, params: dict, width: int,
                 output: Path | None,
                 native_output: Path | None = None,
-                viewport: dict | None = None) -> dict:
+                viewport: dict | None = None,
+                variant: str | None = None) -> dict:
     """Render JPEG and/or a native RGBA surface in one resident pass."""
     global _LAST_WARM_PAIR
     cp = fp.clean_params(params)
@@ -3540,7 +3567,7 @@ def render_rust(name: str, params: dict, width: int,
         _LAST_WARM_PAIR = pair
     if viewport is not None:
         return render_viewport_rust(name, params, output, native_output, viewport)
-    src_tif = selected_preview_tiff(name, width, params) if is_raw(name) else \
+    src_tif = selected_preview_tiff(name, width, params, variant) if is_raw(name) else \
         CACHE / "rust" / f"v{INPUT_CACHE_VERSION}_{file_key(name)}_romm_{width}.tif"
     src_tif.parent.mkdir(parents=True, exist_ok=True)
     if RUST_WORKER_BIN:
@@ -4043,7 +4070,7 @@ def _render_preview(name: str, params: dict, width: int,
     def response_refining() -> bool:
         return bool(is_raw(name) and variant == "fast")
 
-    key = render_key(name, params, width, engine)
+    key = render_key(name, params, width, engine, variant)
     if viewport is not None:
         key = hashlib.md5(json.dumps([key, "viewport-v1", viewport], sort_keys=True).encode()).hexdigest()
     jpg = CACHE / "render" / f"{key}.jpg"
@@ -4112,7 +4139,7 @@ def _render_preview(name: str, params: dict, width: int,
             rust_metrics = render_rust(
                 name, params, width,
                 jpg if need_jpg else None,
-                native_surface if native else None, viewport)
+                native_surface if native else None, viewport, variant)
             if native and rust_metrics.get("native_shared"):
                 retain_native_shared(native_surface, rust_metrics["native_shared"])
             film_mean = float(rust_metrics["mean"])
