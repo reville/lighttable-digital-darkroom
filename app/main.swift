@@ -1634,7 +1634,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
             if let layer = ProcessInfo.processInfo.environment[
                 "LIGHTTABLE_NATIVE_JOURNEY_LAYER"],
-               ["pr", "package", "raw-curated", "raw-full"].contains(layer),
+               ["pr", "package", "raw-curated", "raw-full", "visual-review"].contains(layer),
                let encoded = try? JSONEncoder().encode(layer),
                let json = String(data: encoded, encoding: .utf8) {
                 nativeBootstrap +=
@@ -1670,6 +1670,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             forMainFrameOnly: true))
         webView = LightTableWebView(frame: .zero, configuration: cfg)
         webView.navigationDelegate = self
+        // Only recorded reviews wait for an external recorder's first captured frame.
+        if benchmarkRequested,
+           let readyPath = ProcessInfo.processInfo.environment["LIGHTTABLE_RECORDING_READY"] {
+            let deadline = Date().addingTimeInterval(45)
+            Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] timer in
+                if Date() > deadline { timer.invalidate(); return }
+                if FileManager.default.fileExists(atPath: readyPath) {
+                    self?.webView.evaluateJavaScript("location.protocol === 'http:' && document.querySelector('#appShell') ? (window.__LIGHTTABLE_RECORDING_READY__=true) : false") { result, error in
+                        if error == nil && (result as? Bool) == true { timer.invalidate() }
+                    }
+                }
+            }
+        }
         webView.uiDelegate = self
         webView.setValue(false, forKey: "drawsBackground")
         // The page handles pinch itself; don't let WebKit scale the whole UI.
