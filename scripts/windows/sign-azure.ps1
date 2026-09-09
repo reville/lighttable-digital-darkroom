@@ -70,9 +70,15 @@ try {
         )
     } | ConvertTo-Json | Set-Content -LiteralPath $MetadataPath -Encoding utf8
     foreach ($Executable in $Executables) {
+        # The Microsoft client can include HTTP response headers in failure
+        # diagnostics. Keep its output private and expose only an AADSTS code.
+        $SignLog = Join-Path $SigningDirectory "signing.log"
         & $env:AZURE_SIGNING_SIGNTOOL sign /q /fd SHA256 /tr http://timestamp.acs.microsoft.com /td SHA256 `
-            /dlib $env:AZURE_SIGNING_DLIB /dmdf $MetadataPath $Executable
-        if ($LASTEXITCODE -ne 0) { throw "Azure signing or timestamping failed." }
+            /dlib $env:AZURE_SIGNING_DLIB /dmdf $MetadataPath $Executable *> $SignLog
+        if ($LASTEXITCODE -ne 0) {
+            $FailureCode = [regex]::Match((Get-Content -LiteralPath $SignLog -Raw), 'AADSTS[0-9]+').Value
+            throw "Azure signing or timestamping failed. $FailureCode Check the federated identity and certificate-profile signer role."
+        }
         & $env:AZURE_SIGNING_SIGNTOOL verify /q /pa /all /tw $Executable
         if ($LASTEXITCODE -ne 0) { throw "Windows executable Authenticode verification failed." }
         $Signature = Get-AuthenticodeSignature -LiteralPath $Executable
