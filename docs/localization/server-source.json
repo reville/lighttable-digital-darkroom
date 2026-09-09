@@ -138,6 +138,7 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.",
     "This person group no longer exists",
     "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.",
     "This photo is unavailable. Reconnect its source and rescan.",
     "Unknown capture-time action",
     "Unknown external edit mode",
@@ -326,7 +327,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "31e6083f177a154f7c8f54610d0fe1ba72a2cc31249f3cf084357a767ba98dc4",
+  "sourceDigest": "49a056270c36e3906c2cebd9e9de075de30e0ed7083d77048062ed240a8f57e3",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -545,6 +546,7 @@
     ],
     "media_availability.py": [
       "This photo is stored in the cloud and is not downloaded. In Finder, choose Download Now or Keep Downloaded, then rescan the source in LightTable.",
+      "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.",
       "This photo is unavailable. Reconnect its source and rescan."
     ],
     "jobs.py": [

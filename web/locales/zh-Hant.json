@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "關閉預設詳情",
     "Close settings": "關閉設定",
     "Close the catalog results": "關閉目錄結果",
-    "Cloud only": "僅限雲端",
     "Collapse a group": "收合群組",
     "Collapse stack": "收合堆疊",
     "Collection": "集合",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在「編輯形狀」中，拖曳任一圓點可調整漸層的對應端點。拖曳連接兩點的線可移動整個漸層，同時保持角度和過渡寬度。在照片的其他位置拖曳可重新繪製。",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "選取現有的線性遮色片即可再次調整。如果剛剛使用了「新增」「減去」或「交集」進行繪製，請先選擇「編輯形狀」。如果圓點被隱藏，請按 H。",
     "Copy and Paste are below the photo in Detail view.": "在詳細檢視中，拷貝與貼上位於照片下方。",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "空檔案（0 位元組）不包含影像資料。重試前，請下載或還原原始照片。如果資料夾或磁碟機無法使用，請先重新連接來源。",
     "Could not reach LightTable. Check that the app is running, then retry.": "無法連線至 LightTable。請確認應用程式正在執行，然後重試。",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "在格狀檢視和底片帶中，「縮圖無法使用」會顯示縮圖失敗的原因，並在有診斷資訊時一併顯示。解決問題後，選擇「重試」。",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable 無法建立縮圖。請確認原始照片可以正常開啟，然後重試。",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "無法顯示縮圖。請重試。",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "此檔案是空的（0 位元組）。請下載或還原原始照片，然後重試。",
     "Thumbnail request failed (HTTP {status}). Try again.": "縮圖請求失敗（HTTP {status}）。請重試。",
-    "Thumbnail unavailable": "縮圖無法使用"
+    "Thumbnail unavailable": "縮圖無法使用",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox 的僅限線上預留位置檔案可能顯示為 0 位元組，但這不代表雲端原始檔案是空的。在 Finder 中選擇「設為可離線存取」，然後在 LightTable 中選擇「重試」。對於沒有雲端標記的空檔案，請下載或還原原始檔案。重試前，請重新連接無法使用的資料夾或磁碟機。",
+    "Hide photos that can't be displayed": "隱藏無法顯示的照片",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "此開關會隱藏已知無法使用或僅儲存於雲端的照片，以及已偵測到縮圖或預覽失敗的照片。其他解碼錯誤會在載入照片時發現。關閉開關、移除其篩選標籤或選擇「全部清除」即可再次顯示這些照片。成功「重試」或原始檔案變更後，記錄的失敗會被清除。",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "此照片儲存在 Dropbox 線上空間。在 Finder 中選擇「設為可離線存取」，然後重試。",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "當格狀檢視中可見縮圖錯誤時，選擇位置摘要旁的「隱藏無法顯示的照片」。這會開啟「篩選」中的對應開關。該開關預設關閉，其設定會在工作階段之間儲存。 此開關不會儲存到智慧型集合規則中。"
   },
   "plurals": {
     " · {count} paired file linked": {

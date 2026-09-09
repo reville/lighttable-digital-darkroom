@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "Details van voorinstelling sluiten",
     "Close settings": "Instellingen sluiten",
     "Close the catalog results": "Sluit de catalogusresultaten",
-    "Cloud only": "Alleen in de cloud",
     "Collapse a group": "Een groep samenvouwen",
     "Collapse stack": "Stapel samenvouwen",
     "Collection": "Collectie",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn.",
     "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Een leeg bestand (0 bytes) bevat geen afbeeldingsgegevens. Download of herstel de originele foto voordat je het opnieuw probeert. Sluit bij niet-beschikbare mappen of schijven eerst de bron opnieuw aan.",
     "Could not reach LightTable. Check that the app is running, then retry.": "LightTable kon niet worden bereikt. Controleer of de app actief is en probeer het opnieuw.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable kon geen miniatuur maken. Controleer of de originele foto goed opent en probeer het opnieuw.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "De miniatuur kon niet worden weergegeven. Probeer het opnieuw.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Dit bestand is leeg (0 bytes). Download of herstel de originele foto en probeer het opnieuw.",
     "Thumbnail request failed (HTTP {status}). Try again.": "De miniatuuraanvraag is mislukt (HTTP {status}). Probeer het opnieuw.",
-    "Thumbnail unavailable": "Miniatuur niet beschikbaar"
+    "Thumbnail unavailable": "Miniatuur niet beschikbaar",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert.",
+    "Hide photos that can't be displayed": "Foto’s verbergen die niet kunnen worden weergegeven",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "Deze foto staat online in Dropbox. Kies in Finder ‘Offline beschikbaar maken’ en probeer het opnieuw.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties."
   },
   "plurals": {
     " · {count} paired file linked": {

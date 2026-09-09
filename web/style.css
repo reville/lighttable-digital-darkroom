@@ -527,6 +527,13 @@ input[type=checkbox]:disabled { opacity:.4; }
 .library-head strong, .library-head span { display:block; }
 .library-head strong { font-size:15px; font-weight:600; letter-spacing:-.01em; }
 .library-head span { margin-top:2px; color:var(--muted); font-size:11px; }
+.library-summary { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 12px; }
+.library-summary a { font-size:11px; color:var(--accent); text-decoration:underline; text-underline-offset:2px; }
+.library-filter-switch { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:4px 0 12px; font-size:12px; }
+.library-filter-switch input[role="switch"] { appearance:none; flex:none; width:28px; height:16px; margin:0; border:1px solid var(--line); border-radius:10px; background:var(--inset); position:relative; }
+.library-filter-switch input[role="switch"]::after { content:''; position:absolute; width:10px; height:10px; top:2px; left:2px; border-radius:50%; background:var(--muted); }
+.library-filter-switch input[role="switch"]:checked { background:var(--accent); }
+.library-filter-switch input[role="switch"]:checked::after { transform:translateX(12px); background:var(--ink); }
 .library-actions { display:flex; flex-wrap:wrap; gap:4px 6px; justify-content:flex-end; align-items:center; }
 .library-tools { display:flex; align-items:center; justify-content:flex-end; gap:10px; }
 .library-tools label { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:10px; }

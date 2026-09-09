@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "プリセットの詳細を閉じる",
     "Close settings": "設定を閉じる",
     "Close the catalog results": "カタログの結果を閉じる",
-    "Cloud only": "クラウドのみ",
     "Collapse a group": "グループを折りたたむ",
     "Collapse stack": "スタックを折りたたむ",
     "Collection": "コレクション",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "「シェイプを編集」でどちらかの点をドラッグすると、その端点を調整できます。点を結ぶ線をドラッグすると、角度と遷移幅を保ったままグラデーション全体が移動します。写真の別の場所でドラッグすると描き直せます。",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "既存の「リニア」マスクを選択すると、再び調整できます。「追加」「減算」「交差」で描画していた場合は、先に「シェイプを編集」を選択してください。点が非表示の場合は H を押してください。",
     "Copy and Paste are below the photo in Detail view.": "詳細表示では、写真の下にコピーと貼り付けがあります。",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "空のファイル（0 バイト）には画像データがありません。再試行する前に、元の写真をダウンロードまたは復元してください。フォルダやドライブが利用できない場合は、まず保存元を再接続してください。",
     "Could not reach LightTable. Check that the app is running, then retry.": "LightTable に接続できませんでした。アプリが起動していることを確認してから、再試行してください。",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "グリッドとフィルムストリップでは、「サムネイルを表示できません」に失敗の理由が表示され、診断情報がある場合はその内容も表示されます。問題を解決したら、「再試行」を選んでください。",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable はサムネイルを作成できませんでした。元の写真が正常に開くことを確認してから、再試行してください。",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "サムネイルを表示できませんでした。もう一度お試しください。",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "このファイルは空です（0 バイト）。元の写真をダウンロードまたは復元してから、再試行してください。",
     "Thumbnail request failed (HTTP {status}). Try again.": "サムネイルのリクエストに失敗しました（HTTP {status}）。もう一度お試しください。",
-    "Thumbnail unavailable": "サムネイルを表示できません"
+    "Thumbnail unavailable": "サムネイルを表示できません",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox のオンラインのみのプレースホルダーは、クラウド上の元のファイルが空でなくても 0 バイトと表示される場合があります。Finder で「オフラインアクセスを許可」を選択し、LightTable で「再試行」を選択してください。クラウドのマーカーがない空のファイルは、元のファイルをダウンロードするか復元してください。利用できないフォルダーやドライブは、再試行する前に再接続してください。",
+    "Hide photos that can't be displayed": "表示できない写真を非表示にする",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "このスイッチは、利用できないことが判明している写真、クラウド上にしかない写真、サムネイルまたはプレビューの失敗が検出された写真を非表示にします。その他のデコードエラーは、写真の読み込み時に検出されます。スイッチをオフにするか、フィルターチップを削除するか、「すべてクリア」を選択すると、写真が再び表示されます。「再試行」が成功するか、元のファイルが変更されると、記録された失敗は消去されます。",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "この写真は Dropbox のオンライン上に保存されています。Finder で「オフラインアクセスを許可」を選択してから、再試行してください。",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "グリッドにサムネイルのエラーが表示されているときは、場所の概要の横にある「表示できない写真を非表示にする」を選択します。「フィルター」の対応するスイッチがオンになります。このスイッチは初期設定ではオフで、設定は次回の起動時にも保持されます。 このスイッチはスマートコレクションのルールには保存されません。"
   },
   "plurals": {
     " · {count} paired file linked": {

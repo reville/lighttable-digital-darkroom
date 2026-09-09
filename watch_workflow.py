@@ -219,9 +219,9 @@ class WatchService:
             stat = path.stat()
         except OSError:
             return False
-        if media_availability.from_stat(stat) != "local":
+        if media_availability.availability(path, stat=stat) != "local":
             self._candidates.pop(key, None)
-            raise OSError(media_availability.cloud_message())
+            raise OSError(media_availability.cloud_message(path))
         signature = file_identity.stat_signature(stat, path=path)
         signature_key = ":".join(map(str, signature))
         if self._handled_revisions.get(key) == signature:

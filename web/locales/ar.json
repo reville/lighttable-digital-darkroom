@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "إغلاق تفاصيل الإعداد المسبق",
     "Close settings": "إغلاق الإعدادات",
     "Close the catalog results": "أغلق نتائج الكتالوج",
-    "Cloud only": "سحابي فقط",
     "Collapse a group": "طيّ مجموعة",
     "Collapse stack": "طيّ المكدس",
     "Collection": "المجموعة",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "في تحرير الشكل، اسحب أيًّا من النقطتين لضبط ذلك الطرف من التدرج. اسحب الخط الواصل بينهما لتحريك التدرج بالكامل مع الحفاظ على زاويته وعرض الانتقال. اسحب في موضع آخر من الصورة لإعادة رسمه.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "اختر قناعًا خطيًا موجودًا لضبطه مجددًا. إذا كنت ترسم باستخدام أضف أو طرح أو تقاطع، فاختر تحرير الشكل أولًا. اضغط H إذا كانت النقطتان مخفيتين.",
     "Copy and Paste are below the photo in Detail view.": "يوجد زرا النسخ واللصق أسفل الصورة في عرض التفاصيل.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "لا يحتوي الملف الفارغ (0 بايت) على أي بيانات صورة. نزّل الصورة الأصلية أو استعدها قبل إعادة المحاولة. إذا كانت المجلدات أو محركات الأقراص غير متاحة، فأعد توصيل المصدر أولاً.",
     "Could not reach LightTable. Check that the app is running, then retry.": "تعذّر الاتصال بـ LightTable. تأكد من تشغيل التطبيق، ثم أعد المحاولة.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "في الشبكة وشريط الفيلم، توضح رسالة «الصورة المصغرة غير متاحة» سبب فشل الصورة المصغرة، وتتضمن معلومات التشخيص الواردة عند توفرها. بعد تصحيح المشكلة، اختر «إعادة المحاولة».",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "تعذّر على LightTable إنشاء صورة مصغرة. تحقق من أن الصورة الأصلية تُفتح بشكل صحيح، ثم أعد المحاولة.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "تعذّر عرض الصورة المصغرة. حاول مرة أخرى.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "هذا الملف فارغ (0 بايت). نزّل الصورة الأصلية أو استعدها، ثم أعد المحاولة.",
     "Thumbnail request failed (HTTP {status}). Try again.": "فشل طلب الصورة المصغرة (HTTP {status}). حاول مرة أخرى.",
-    "Thumbnail unavailable": "الصورة المصغرة غير متاحة"
+    "Thumbnail unavailable": "الصورة المصغرة غير متاحة",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "قد تشير ملفات العناصر النائبة في Dropbox المتاحة على الإنترنت فقط إلى 0 بايت، دون أن يكون الأصل في السحابة فارغًا. في Finder، اختر إتاحة دون اتصال، ثم إعادة المحاولة في LightTable. إذا كان الملف فارغًا دون علامة سحابة، فنزّل الأصل أو استعده. أعد توصيل المجلدات أو محركات الأقراص غير المتاحة قبل إعادة المحاولة.",
+    "Hide photos that can't be displayed": "إخفاء الصور التي لا يمكن عرضها",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "يخفي المفتاح الصور المعروفة بأنها غير متاحة أو موجودة في السحابة فقط، والصور التي رُصد فشل صورها المصغرة أو معايناتها. تُكتشف أخطاء فك الترميز الأخرى أثناء تحميل الصور. عطّل المفتاح، أو أزل شارة التصفية الخاصة به، أو اختر مسح الكل لإظهار الصور مجددًا. تؤدي إعادة المحاولة الناجحة أو تغيير الأصل إلى مسح الفشل المسجل.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "هذه الصورة مخزنة على الإنترنت في Dropbox. في Finder، اختر «إتاحة دون اتصال»، ثم أعد المحاولة.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "عندما يظهر خطأ في صورة مصغرة داخل الشبكة، اختر إخفاء الصور التي لا يمكن عرضها بجوار ملخص الموقع. يؤدي ذلك إلى تفعيل المفتاح المطابق في تصفية، وهو معطل افتراضيًا ويُحفظ اختياره بين الجلسات. لا يُحفظ هذا المفتاح ضمن قواعد المجموعات الذكية."
   },
   "plurals": {
     " · {count} paired file linked": {

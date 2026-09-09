@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "사전 설정 세부 정보 닫기",
     "Close settings": "설정 닫기",
     "Close the catalog results": "카탈로그 결과 닫기",
-    "Cloud only": "클라우드 전용",
     "Collapse a group": "그룹 접기",
     "Collapse stack": "스택 접기",
     "Collection": "컬렉션",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "모양 편집에서 어느 점이든 드래그하면 해당 끝점을 조정할 수 있습니다. 두 점을 잇는 선을 드래그하면 각도와 전환 폭을 유지하면서 그라디언트 전체가 이동합니다. 사진의 다른 곳에서 드래그하면 다시 그릴 수 있습니다.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "기존 선형 마스크를 선택하면 다시 조정할 수 있습니다. 추가, 빼기 또는 교집합으로 칠하고 있었다면 먼저 모양 편집을 선택하세요. 점이 숨겨져 있으면 H를 누르세요.",
     "Copy and Paste are below the photo in Detail view.": "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "빈 파일(0바이트)에는 이미지 데이터가 없습니다. 다시 시도하기 전에 원본 사진을 다운로드하거나 복원하세요. 폴더나 드라이브를 사용할 수 없으면 먼저 원본 위치를 다시 연결하세요.",
     "Could not reach LightTable. Check that the app is running, then retry.": "LightTable에 연결할 수 없습니다. 앱이 실행 중인지 확인한 후 다시 시도하세요.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "격자와 필름스트립에서 썸네일을 사용할 수 없음 메시지는 실패 원인을 표시하며, 보고된 진단 정보가 있으면 함께 보여 줍니다. 문제를 해결한 후 다시 시도를 선택하세요.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable이 썸네일을 만들 수 없습니다. 원본 사진이 정상적으로 열리는지 확인한 후 다시 시도하세요.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "썸네일을 표시할 수 없습니다. 다시 시도하세요.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "이 파일은 비어 있습니다(0바이트). 원본 사진을 다운로드하거나 복원한 후 다시 시도하세요.",
     "Thumbnail request failed (HTTP {status}). Try again.": "썸네일 요청에 실패했습니다(HTTP {status}). 다시 시도하세요.",
-    "Thumbnail unavailable": "썸네일을 사용할 수 없음"
+    "Thumbnail unavailable": "썸네일을 사용할 수 없음",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox의 온라인 전용 자리표시자 파일은 클라우드 원본이 비어 있지 않아도 0바이트로 표시될 수 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 LightTable에서 ‘다시 시도’를 선택하세요. 클라우드 표시가 없는 빈 파일은 원본을 다운로드하거나 복원하세요. 사용할 수 없는 폴더나 드라이브는 다시 시도하기 전에 다시 연결하세요.",
+    "Hide photos that can't be displayed": "표시할 수 없는 사진 숨기기",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "이 스위치는 사용할 수 없거나 클라우드에만 있는 것으로 확인된 사진과 썸네일 또는 미리 보기 실패가 감지된 사진을 숨깁니다. 그 밖의 디코딩 오류는 사진을 불러올 때 발견됩니다. 스위치를 끄거나 해당 필터 칩을 제거하거나 ‘모두 지우기’를 선택하면 사진이 다시 표시됩니다. ‘다시 시도’에 성공하거나 원본이 변경되면 기록된 실패가 지워집니다.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "이 사진은 Dropbox 온라인에 저장되어 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 다시 시도하세요.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "그리드에 썸네일 오류가 표시되면 위치 요약 옆의 ‘표시할 수 없는 사진 숨기기’를 선택하세요. ‘필터’의 해당 스위치가 켜집니다. 이 스위치는 기본적으로 꺼져 있으며 설정은 다음 세션에도 유지됩니다. 이 스위치는 스마트 컬렉션 규칙에 저장되지 않습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

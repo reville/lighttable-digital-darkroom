@@ -381,9 +381,10 @@ def guard_photo(name: str) -> None:
 
 
 def guard_local_photo(name: str) -> None:
-    availability = media_availability.availability(src_path(name))
+    path = src_path(name)
+    availability = media_availability.availability(path)
     if availability != "local":
-        raise APIError(409, media_availability.cloud_message() if availability == "cloud-only"
+        raise APIError(409, media_availability.cloud_message(path) if availability == "cloud-only"
                        else T("This photo is unavailable. Reconnect its source and rescan."),
                        availability, details={"name": name, "availability": availability})
 

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "Zamknij szczegóły presetu",
     "Close settings": "Zamknij ustawienia",
     "Close the catalog results": "Zamknij wyniki katalogu",
-    "Cloud only": "Tylko w chmurze",
     "Collapse a group": "Zwiń grupę",
     "Collapse stack": "Zwiń stos",
     "Collection": "Kolekcja",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Wybierz istniejącą maskę liniową, aby ponownie ją dostosować. Jeśli malowano w trybie Dodaj, Odejmij lub Przecięcie, najpierw wybierz Edytuj kształt. Naciśnij H, jeśli punkty są ukryte.",
     "Copy and Paste are below the photo in Detail view.": "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Pusty plik (0 bajtów) nie zawiera danych obrazu. Pobierz lub przywróć oryginalne zdjęcie przed ponowną próbą. Jeśli folder lub dysk jest niedostępny, najpierw ponownie podłącz źródło.",
     "Could not reach LightTable. Check that the app is running, then retry.": "Nie udało się połączyć z LightTable. Sprawdź, czy aplikacja jest uruchomiona, i spróbuj ponownie.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "W siatce i na taśmie filmowej komunikat Miniatura niedostępna pokazuje przyczynę błędu oraz zgłoszone informacje diagnostyczne, jeśli są dostępne. Po usunięciu problemu wybierz Spróbuj ponownie.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable nie mógł utworzyć miniatury. Sprawdź, czy oryginalne zdjęcie otwiera się poprawnie, i spróbuj ponownie.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "Nie udało się wyświetlić miniatury. Spróbuj ponownie.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Ten plik jest pusty (0 bajtów). Pobierz lub przywróć oryginalne zdjęcie i spróbuj ponownie.",
     "Thumbnail request failed (HTTP {status}). Try again.": "Żądanie miniatury nie powiodło się (HTTP {status}). Spróbuj ponownie.",
-    "Thumbnail unavailable": "Miniatura niedostępna"
+    "Thumbnail unavailable": "Miniatura niedostępna",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Pliki zastępcze Dropbox dostępne tylko online mogą wskazywać 0 bajtów, mimo że oryginał w chmurze nie jest pusty. W Finderze wybierz Udostępnij offline, a następnie Spróbuj ponownie w LightTable. Jeśli plik jest pusty i nie ma znacznika chmury, pobierz lub przywróć oryginał. Przed ponowną próbą podłącz niedostępne foldery lub dyski.",
+    "Hide photos that can't be displayed": "Ukryj zdjęcia, których nie można wyświetlić",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "Przełącznik ukrywa zdjęcia, o których wiadomo, że są niedostępne lub znajdują się tylko w chmurze, oraz zdjęcia z wykrytymi błędami miniatur lub podglądów. Inne błędy dekodowania są wykrywane podczas wczytywania zdjęć. Wyłącz przełącznik, usuń jego znacznik filtra lub wybierz Wyczyść wszystko, aby ponownie pokazać zdjęcia. Pomyślna operacja Spróbuj ponownie lub zmiana oryginału usuwa zapisany błąd.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "To zdjęcie jest przechowywane online w Dropbox. W Finderze wybierz „Udostępnij offline”, a następnie spróbuj ponownie.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Gdy w siatce jest widoczny błąd miniatury, wybierz Ukryj zdjęcia, których nie można wyświetlić obok podsumowania lokalizacji. Włącza to odpowiedni przełącznik w panelu Filtr. Jest on domyślnie wyłączony, a jego ustawienie jest zapisywane między sesjami. Ten przełącznik nie jest zapisywany w regułach kolekcji inteligentnych."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "ปิดรายละเอียดพรีเซ็ต",
     "Close settings": "ปิดการตั้งค่า",
     "Close the catalog results": "ปิดผลการค้นหาในแค็ตตาล็อก",
-    "Cloud only": "เฉพาะคลาวด์",
     "Collapse a group": "ยุบกลุ่ม",
     "Collapse stack": "ยุบสแต็ก",
     "Collection": "คอลเลกชัน",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "ในแก้ไขรูปร่าง ลากจุดใดจุดหนึ่งเพื่อปรับปลายด้านนั้นของการไล่ระดับ ลากเส้นที่เชื่อมจุดทั้งสองเพื่อย้ายการไล่ระดับทั้งหมดโดยคงมุมและความกว้างของช่วงเปลี่ยนผ่านไว้ ลากบริเวณอื่นบนภาพเพื่อวาดใหม่",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "เลือกมาสก์เส้นตรงที่มีอยู่เพื่อปรับอีกครั้ง หากเพิ่งระบายด้วยเพิ่ม ลบออก หรือจุดตัด ให้เลือกแก้ไขรูปร่างก่อน กด H หากจุดถูกซ่อนอยู่",
     "Copy and Paste are below the photo in Detail view.": "ปุ่มคัดลอกและวางอยู่ใต้ภาพในมุมมองรายละเอียด",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "ไฟล์ว่างเปล่า (0 ไบต์) ไม่มีข้อมูลภาพ ดาวน์โหลดหรือกู้คืนภาพต้นฉบับก่อนลองอีกครั้ง หากโฟลเดอร์หรือไดรฟ์ไม่พร้อมใช้งาน ให้เชื่อมต่อแหล่งที่มาอีกครั้งก่อน",
     "Could not reach LightTable. Check that the app is running, then retry.": "ไม่สามารถเชื่อมต่อกับ LightTable ได้ ตรวจสอบว่าแอปกำลังทำงาน แล้วลองอีกครั้ง",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "ในมุมมองตารางและแถบฟิล์ม ข้อความ ภาพขนาดย่อไม่พร้อมใช้งาน จะแสดงสาเหตุที่ภาพขนาดย่อล้มเหลว และแสดงข้อมูลวินิจฉัยที่ได้รับเมื่อมี หลังจากแก้ไขปัญหาแล้ว ให้เลือก ลองอีกครั้ง",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable ไม่สามารถสร้างภาพขนาดย่อได้ ตรวจสอบว่าภาพต้นฉบับเปิดได้ตามปกติ แล้วลองอีกครั้ง",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "ไม่สามารถแสดงภาพขนาดย่อได้ โปรดลองอีกครั้ง",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "ไฟล์นี้ว่างเปล่า (0 ไบต์) ดาวน์โหลดหรือกู้คืนภาพต้นฉบับ แล้วลองอีกครั้ง",
     "Thumbnail request failed (HTTP {status}). Try again.": "คำขอภาพขนาดย่อล้มเหลว (HTTP {status}) โปรดลองอีกครั้ง",
-    "Thumbnail unavailable": "ภาพขนาดย่อไม่พร้อมใช้งาน"
+    "Thumbnail unavailable": "ภาพขนาดย่อไม่พร้อมใช้งาน",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "ไฟล์ตัวยึดตำแหน่งแบบออนไลน์เท่านั้นของ Dropbox อาจรายงานขนาด 0 ไบต์ แม้ไฟล์ต้นฉบับบนคลาวด์จะไม่ได้ว่างเปล่า ใน Finder ให้เลือก ทำให้พร้อมใช้งานแบบออฟไลน์ แล้วเลือก ลองอีกครั้ง ใน LightTable สำหรับไฟล์ว่างที่ไม่มีเครื่องหมายคลาวด์ ให้ดาวน์โหลดหรือกู้คืนต้นฉบับ เชื่อมต่อโฟลเดอร์หรือไดรฟ์ที่ไม่พร้อมใช้งานอีกครั้งก่อนลองใหม่",
+    "Hide photos that can't be displayed": "ซ่อนรูปภาพที่ไม่สามารถแสดงได้",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "สวิตช์นี้จะซ่อนรูปภาพที่ทราบว่าไม่พร้อมใช้งานหรืออยู่บนคลาวด์เท่านั้น และรูปภาพที่ตรวจพบว่าภาพขนาดย่อหรือภาพตัวอย่างล้มเหลว ข้อผิดพลาดในการถอดรหัสอื่นจะถูกพบขณะโหลดรูปภาพ ปิดสวิตช์ ลบชิปตัวกรอง หรือเลือก ล้างทั้งหมด เพื่อแสดงรูปภาพอีกครั้ง การ ลองอีกครั้ง ที่สำเร็จหรือการเปลี่ยนแปลงไฟล์ต้นฉบับจะล้างความล้มเหลวที่บันทึกไว้",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "รูปภาพนี้เก็บไว้ทางออนไลน์ใน Dropbox ใน Finder ให้เลือก “ทำให้พร้อมใช้งานแบบออฟไลน์” แล้วลองอีกครั้ง",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "เมื่อเห็นข้อผิดพลาดของภาพขนาดย่อในตาราง ให้เลือก ซ่อนรูปภาพที่ไม่สามารถแสดงได้ ข้างข้อมูลสรุปตำแหน่ง การดำเนินการนี้จะเปิดสวิตช์ที่ตรงกันใน ตัวกรอง ซึ่งปิดไว้ตามค่าเริ่มต้นและบันทึกการตั้งค่าไว้ระหว่างเซสชัน สวิตช์นี้จะไม่ถูกบันทึกในกฎของคอลเลกชันอัจฉริยะ"
   },
   "plurals": {
     " · {count} paired file linked": {

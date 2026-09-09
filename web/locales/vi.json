@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "Đóng chi tiết thiết lập sẵn",
     "Close settings": "Đóng cài đặt",
     "Close the catalog results": "Đóng kết quả danh mục",
-    "Cloud only": "Chỉ trên đám mây",
     "Collapse a group": "Thu gọn một nhóm",
     "Collapse stack": "Thu gọn ngăn xếp",
     "Collection": "Bộ sưu tập",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Chọn một mặt nạ Tuyến tính hiện có để điều chỉnh lại. Nếu vừa tô bằng Thêm, Trừ hoặc Giao nhau, hãy chọn Chỉnh sửa hình dạng trước. Nhấn H nếu các chấm bị ẩn.",
     "Copy and Paste are below the photo in Detail view.": "Sao chép và Dán nằm bên dưới ảnh trong chế độ xem Chi tiết.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Tệp trống (0 byte) không chứa dữ liệu ảnh. Tải xuống hoặc khôi phục ảnh gốc trước khi thử lại. Nếu thư mục hoặc ổ đĩa không khả dụng, hãy kết nối lại nguồn trước.",
     "Could not reach LightTable. Check that the app is running, then retry.": "Không thể kết nối với LightTable. Kiểm tra xem ứng dụng có đang chạy không rồi thử lại.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable không thể tạo ảnh thu nhỏ. Kiểm tra xem ảnh gốc có mở bình thường không rồi thử lại.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "Không thể hiển thị ảnh thu nhỏ. Hãy thử lại.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Tệp này trống (0 byte). Tải xuống hoặc khôi phục ảnh gốc rồi thử lại.",
     "Thumbnail request failed (HTTP {status}). Try again.": "Yêu cầu ảnh thu nhỏ thất bại (HTTP {status}). Hãy thử lại.",
-    "Thumbnail unavailable": "Không có ảnh thu nhỏ"
+    "Thumbnail unavailable": "Không có ảnh thu nhỏ",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Các tệp giữ chỗ chỉ có trực tuyến của Dropbox có thể báo 0 byte dù tệp gốc trên đám mây không rỗng. Trong Finder, chọn Cho phép truy cập ngoại tuyến, rồi chọn Thử lại trong LightTable. Với tệp rỗng không có dấu đánh dấu đám mây, hãy tải xuống hoặc khôi phục tệp gốc. Kết nối lại các thư mục hoặc ổ đĩa không khả dụng trước khi thử lại.",
+    "Hide photos that can't be displayed": "Ẩn ảnh không thể hiển thị",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "Ảnh này được lưu trực tuyến trong Dropbox. Trong Finder, chọn “Cho phép truy cập ngoại tuyến”, rồi thử lại.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh."
   },
   "plurals": {
     " · {count} paired file linked": {

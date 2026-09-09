@@ -103,6 +103,7 @@ export function filterChips(values, types) {
   if (edits[values.editFilter]) chips.push({ id: 'editFilter', label: edits[values.editFilter] });
   const kinds = { raw: tr('RAW originals'), processed: tr('Processed files'), virtual: tr('Virtual copies') };
   if (kinds[values.kindFilter]) chips.push({ id: 'kindFilter', label: kinds[values.kindFilter] });
+  if (values.hideUndisplayablePhotos) chips.push({ id: 'hideUndisplayablePhotos', label: tr("Hide photos that can't be displayed") });
   for (const [key, value] of Object.entries(values.metadata || {})) {
     if (METADATA_FIELDS[key]) chips.push({id: `metadata:${key}`, label: `${METADATA_FIELDS[key]} ${value}${key.startsWith('focalLength') ? ' mm' : key.startsWith('shutter') ? ' s' : ''}`});
   }
@@ -112,6 +113,7 @@ export function filterChips(values, types) {
 export function installLibraryFilters({ el, onChange, closeDropdown }) {
   const trigger = el('libraryFilterBtn'), panel = el('libraryFilterPanel');
   const row = el('activeLibraryFilters'), chipsHost = el('libraryFilterChips');
+  const hideUnavailable = el('hideUndisplayablePhotos');
   const defaults = { filter: 'all', ratingFilter: '0', labelFilter: 'all', editFilter: 'all', kindFilter: 'all' };
   let types = [], paintKey = '', metadataRules = {};
   const metadataInputs = [...panel.querySelectorAll('[data-metadata-filter]')];
@@ -128,7 +130,7 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
     panel.querySelectorAll('[data-file-type]').forEach(input => { input.checked = types.includes(input.dataset.fileType); });
   }
   function sync() {
-    const chips = filterChips({...values(), metadata: metadataRules}, types), key = JSON.stringify(chips);
+    const chips = filterChips({...values(), metadata: metadataRules, hideUndisplayablePhotos: hideUnavailable.checked}, types), key = JSON.stringify(chips);
     if (paintKey === key) return;
     paintKey = key;
     el('libraryFilterLabel').textContent = chips.length ? tr('Filter · {count}', {count: chips.length}) : tr('Filter');
@@ -147,7 +149,8 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
         if (chip.id.startsWith('type:')) setTypes(types.filter(type => type !== chip.id.slice(5)));
         else if (chip.id.startsWith('metadata:')) {
           const next = metadata(); delete next[chip.id.slice(9)]; setMetadata(next);
-        } else el(chip.id).value = defaults[chip.id];
+        } else if (chip.id === 'hideUndisplayablePhotos') hideUnavailable.checked = false;
+        else el(chip.id).value = defaults[chip.id];
         sync(); onChange();
         (chipsHost.children[Math.min(index, chipsHost.children.length - 1)] || trigger).focus();
       };
@@ -156,6 +159,7 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
   }
   function clear() {
     setTypes([]); setMetadata({});
+    hideUnavailable.checked = false;
     for (const [id, value] of Object.entries(defaults)) el(id).value = value;
     sync(); onChange();
   }
@@ -196,6 +200,7 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
   });
   panel.addEventListener('toggle', place, true);
   panel.addEventListener('change', event => {
+    if (event.target === hideUnavailable) { sync(); onChange(); return; }
     if (event.target.matches('[data-metadata-filter]')) { applyMetadata(); return; }
     if (!event.target.matches('[data-file-type]')) return;
     setTypes([...panel.querySelectorAll('[data-file-type]:checked')].map(input => input.dataset.fileType));
@@ -226,5 +231,14 @@ export function installLibraryFilters({ el, onChange, closeDropdown }) {
   });
   window.addEventListener('resize', place);
   el('library').addEventListener('scroll', place);
-  return { types: () => types, setTypes, metadata, setMetadata, sync, close, clear };
+  const hideLink = el('hideUndisplayableLink');
+  hideLink.onclick = event => {
+    event.preventDefault();
+    hideUnavailable.checked = true;
+    sync(); onChange(); trigger.focus();
+  };
+  hideLink.addEventListener('keydown', event => event.stopPropagation());
+  return { types: () => types, setTypes, metadata, setMetadata, sync, close, clear,
+    hideUndisplayable: () => hideUnavailable.checked,
+    setHideUndisplayable: value => { hideUnavailable.checked = value === true; } };
 }

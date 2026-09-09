@@ -551,6 +551,13 @@
           ]
         },
         {
+          "title": "Hide photos that can't be displayed",
+          "paragraphs": [
+            "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
+            "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure."
+          ]
+        },
+        {
           "title": "Filter camera, exposure, and capture date",
           "paragraphs": [
             "Expand Camera, exposure & date in Filter. Camera and Lens match part of a name. Keyword matches a complete catalog keyword path and its descendants; for example, Places includes Places > Boston.",
@@ -3094,7 +3101,7 @@
           "title": "Read a thumbnail error",
           "paragraphs": [
             "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
-            "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first."
+            "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying."
           ]
         }
       ],

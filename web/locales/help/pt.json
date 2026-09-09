@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ocultar fotos que não podem ser exibidas",
+          "paragraphs": [
+            "Quando um erro de miniatura estiver visível na grade, escolha Ocultar fotos que não podem ser exibidas ao lado do resumo da localização. Isso ativa a opção correspondente em Filtro, que vem desativada por padrão e é salva entre sessões. Esta opção não é salva nas regras de coleções inteligentes.",
+            "A opção oculta fotos identificadas como indisponíveis ou armazenadas apenas na nuvem e fotos com falhas de miniatura ou prévia já detectadas. Outras falhas de decodificação são descobertas à medida que as fotos carregam. Desative a opção, remova seu marcador de filtro ou escolha Limpar tudo para mostrar as fotos novamente. Um Tentar novamente bem-sucedido ou uma alteração no original apaga a falha registrada."
+          ]
+        },
+        {
           "title": "Filtrar câmera, exposição e data de captura",
           "paragraphs": [
             "Expanda Câmera, exposição e data em Filtro. Câmera e Lente correspondem a parte de um nome. Palavra-chave corresponde a um caminho completo de palavra-chave do catálogo e seus descendentes; por exemplo, Places inclui Places > Boston.",
@@ -3151,7 +3158,7 @@
           "title": "Entender um erro de miniatura",
           "paragraphs": [
             "Na grade e na tira de filme, Miniatura indisponível mostra por que uma miniatura falhou e inclui o diagnóstico informado quando disponível. Após corrigir o problema, escolha Tentar novamente.",
-            "Um arquivo vazio (0 bytes) não contém dados de imagem. Baixe ou restaure a foto original antes de tentar novamente. Para pastas ou unidades indisponíveis, reconecte primeiro a origem."
+            "Os arquivos de espaço reservado do Dropbox disponíveis apenas online podem indicar 0 bytes sem que o original na nuvem esteja vazio. No Finder, escolha Disponibilizar offline e depois Tentar novamente no LightTable. Para um arquivo vazio sem marcador de nuvem, baixe ou restaure o original. Reconecte pastas ou unidades indisponíveis antes de tentar novamente."
           ]
         }
       ],
@@ -3164,5 +3171,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
 }

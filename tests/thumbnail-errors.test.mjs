@@ -13,21 +13,24 @@ class Element {
 }
 globalThis.document = { createElement: () => new Element() };
 const tick = async () => { for (let i = 0; i < 30; i++) await Promise.resolve(); };
-function cell(source = '/api/thumb?name=a.jpg') {
+function cell(source = '/api/thumb?name=a.jpg', onState) {
   const host = new Element(), image = new Element();
   host.append(image); image.dataset.thumbnailKind = 'source';
-  const sync = bindThumbnailErrors(host, image); sync(source);
+  const sync = bindThumbnailErrors(host, image, onState); sync(source);
   return {host, image, sync, panel: () => host.querySelector('.thumbnail-error')};
 }
 
 test('shows diagnostic text safely, retries explicitly, and clears on success', async () => {
-  const h = cell(); let calls = 0;
+  const states = [];
+  const h = cell('/api/thumb?name=a.jpg', failed => states.push(failed)); let calls = 0;
   globalThis.fetch = async () => { calls++; return {ok: false, json: async () => ({
     error: 'Original is empty (0 bytes). Restore it.', details: {diagnostic: '<img onerror=bad> is not HTML'},
   })}; };
   await h.image.emit('error'); await tick();
   assert.equal(calls, 1);
   assert.equal(h.image.style.visibility, 'hidden');
+  assert.equal(h.image.dataset.thumbnailError, '1');
+  assert.equal(states.at(-1), true);
   assert.match(h.panel().children[1].textContent, /0 bytes/);
   assert.match(h.panel().children[1].textContent, /<img onerror=bad>/);
   assert.equal(h.panel().children[1].children.length, 0);
@@ -37,6 +40,8 @@ test('shows diagnostic text safely, retries explicitly, and clears on success', 
   assert.match(h.image.src, /retry=/);
   assert.equal(h.panel(), undefined);
   await h.image.emit('load'); assert.equal(h.image.style.visibility, '');
+  assert.equal(h.image.dataset.thumbnailError, undefined);
+  assert.equal(states.at(-1), false);
 });
 
 test('late error responses cannot replace a new source or a loaded rendition', async () => {

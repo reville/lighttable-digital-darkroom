@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "Tutup detail prasetel",
     "Close settings": "Tutup pengaturan",
     "Close the catalog results": "Tutup hasil katalog",
-    "Cloud only": "Hanya cloud",
     "Collapse a group": "Ciutkan sebuah grup",
     "Collapse stack": "Ciutkan tumpukan",
     "Collection": "Koleksi",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Pilih masker Linear yang sudah ada untuk menyesuaikannya lagi. Jika Anda sebelumnya melukis dengan Tambahkan, Kurangi, atau Irisan, pilih Edit Bentuk terlebih dahulu. Tekan H jika titik-titiknya tersembunyi.",
     "Copy and Paste are below the photo in Detail view.": "Salin dan Tempel berada di bawah foto dalam tampilan Detail.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "File kosong (0 byte) tidak berisi data gambar. Unduh atau pulihkan foto asli sebelum mencoba lagi. Jika folder atau drive tidak tersedia, sambungkan kembali sumber terlebih dahulu.",
     "Could not reach LightTable. Check that the app is running, then retry.": "Tidak dapat menghubungi LightTable. Pastikan aplikasi sedang berjalan, lalu coba lagi.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Di kisi dan strip film, Gambar mini tidak tersedia menunjukkan alasan kegagalan gambar mini dan menyertakan informasi diagnostik yang dilaporkan jika tersedia. Setelah memperbaiki masalah, pilih Coba lagi.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable tidak dapat membuat gambar mini. Pastikan foto asli dapat dibuka dengan benar, lalu coba lagi.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "Gambar mini tidak dapat ditampilkan. Coba lagi.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "File ini kosong (0 byte). Unduh atau pulihkan foto asli, lalu coba lagi.",
     "Thumbnail request failed (HTTP {status}). Try again.": "Permintaan gambar mini gagal (HTTP {status}). Coba lagi.",
-    "Thumbnail unavailable": "Gambar mini tidak tersedia"
+    "Thumbnail unavailable": "Gambar mini tidak tersedia",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "File placeholder Dropbox yang hanya tersedia online dapat menunjukkan 0 byte meskipun file asli di cloud tidak kosong. Di Finder, pilih Jadikan tersedia offline, lalu Coba lagi di LightTable. Untuk file kosong tanpa penanda cloud, unduh atau pulihkan file aslinya. Sambungkan kembali folder atau drive yang tidak tersedia sebelum mencoba lagi.",
+    "Hide photos that can't be displayed": "Sembunyikan foto yang tidak dapat ditampilkan",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "Sakelar ini menyembunyikan foto yang diketahui tidak tersedia atau hanya ada di cloud serta foto dengan kegagalan thumbnail atau pratinjau yang telah terdeteksi. Kegagalan dekode lainnya ditemukan saat foto dimuat. Matikan sakelar, hapus chip filternya, atau pilih Bersihkan semua untuk menampilkan foto lagi. Coba lagi yang berhasil atau perubahan pada file asli menghapus kegagalan yang tercatat.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "Foto ini disimpan online di Dropbox. Di Finder, pilih “Jadikan tersedia offline”, lalu coba lagi.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Saat kesalahan thumbnail terlihat di kisi, pilih Sembunyikan foto yang tidak dapat ditampilkan di samping ringkasan lokasi. Ini mengaktifkan sakelar yang sesuai di Filter, yang secara default mati dan pengaturannya disimpan antar sesi. Sakelar ini tidak disimpan dalam aturan koleksi pintar."
   },
   "plurals": {
     " · {count} paired file linked": {

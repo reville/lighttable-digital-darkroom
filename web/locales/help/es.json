@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Ocultar fotos que no se pueden mostrar",
+          "paragraphs": [
+            "Cuando veas un error de miniatura en la cuadrícula, elige Ocultar fotos que no se pueden mostrar junto al resumen de ubicación. Esto activa el interruptor correspondiente en Filtro, que está desactivado de forma predeterminada y se guarda entre sesiones. Este interruptor no se guarda en las reglas de las colecciones inteligentes.",
+            "El interruptor oculta las fotos que se sabe que no están disponibles o que solo están en la nube, y aquellas cuyas miniaturas o vistas previas han fallado. Otros errores de decodificación se detectan al cargar las fotos. Desactiva el interruptor, elimina su etiqueta o elige Borrar todo para volver a mostrar las fotos. Un Reintentar exitoso o un cambio en el original borra el error registrado."
+          ]
+        },
+        {
           "title": "Filtrar por cámara, exposición y fecha de captura",
           "paragraphs": [
             "Expanda Cámara, exposición y fecha en Filtro. Cámara y Lente coinciden con una parte de un nombre. Palabra clave coincide con una ruta completa de palabra clave del catálogo y sus descendientes; por ejemplo, Lugares incluye Lugares > Boston.",
@@ -3151,7 +3158,7 @@
           "title": "Interpretar un error de miniatura",
           "paragraphs": [
             "En la cuadrícula y la tira de película, Miniatura no disponible muestra por qué falló una miniatura e incluye el diagnóstico recibido cuando está disponible. Tras corregir el problema, elige Reintentar.",
-            "Un archivo vacío (0 bytes) no contiene datos de imagen. Descarga o restaura la foto original antes de reintentarlo. Si una carpeta o unidad no está disponible, vuelve a conectar primero el origen."
+            "Los archivos de marcador de Dropbox disponibles solo en línea pueden indicar 0 bytes sin que el original en la nube esté vacío. En Finder, elige Hacer disponible sin conexión y luego Reintentar en LightTable. Si un archivo está vacío y no tiene un marcador de nube, descarga o restaura el original. Vuelve a conectar las carpetas o unidades no disponibles antes de reintentarlo."
           ]
         }
       ],
@@ -3164,5 +3171,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
 }

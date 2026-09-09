@@ -41,16 +41,18 @@ function diagnose(source) {
   return pending.get(source);
 }
 
-export function bindThumbnailErrors(element, image) {
+export function bindThumbnailErrors(element, image, onState = () => {}) {
   let source = '', generation = 0, checked = false, panel;
   function clear() {
     generation++;
     image.style.visibility = '';
+    delete image.dataset.thumbnailError;
     panel?.remove();
     panel = null;
   }
   function show(message, diagnostic = '') {
     image.style.visibility = 'hidden'; // keep thumbnail geometry and observation
+    image.dataset.thumbnailError = '1';
     if (!panel) {
       panel = document.createElement('div');
       panel.className = 'thumbnail-error';
@@ -80,8 +82,12 @@ export function bindThumbnailErrors(element, image) {
     panel.querySelector('.thumbnail-error-reason').textContent = text;
     panel.title = text;
     panel.setAttribute('aria-label', `${t('Thumbnail unavailable')}: ${text}`);
+    onState(true);
   }
-  image.addEventListener('load', () => { checked = false; clear(); });
+  image.addEventListener('load', () => {
+    checked = false; clear();
+    if (image.dataset.thumbnailKind === 'source') onState(false);
+  });
   image.addEventListener('error', async () => {
     // A failed edit-aware rendition should return to the usable source first.
     if (image.dataset.thumbnailKind === 'edited') {

@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Sembunyikan foto yang tidak dapat ditampilkan",
+          "paragraphs": [
+            "Saat kesalahan thumbnail terlihat di kisi, pilih Sembunyikan foto yang tidak dapat ditampilkan di samping ringkasan lokasi. Ini mengaktifkan sakelar yang sesuai di Filter, yang secara default mati dan pengaturannya disimpan antar sesi. Sakelar ini tidak disimpan dalam aturan koleksi pintar.",
+            "Sakelar ini menyembunyikan foto yang diketahui tidak tersedia atau hanya ada di cloud serta foto dengan kegagalan thumbnail atau pratinjau yang telah terdeteksi. Kegagalan dekode lainnya ditemukan saat foto dimuat. Matikan sakelar, hapus chip filternya, atau pilih Bersihkan semua untuk menampilkan foto lagi. Coba lagi yang berhasil atau perubahan pada file asli menghapus kegagalan yang tercatat."
+          ]
+        },
+        {
           "title": "Filter kamera, eksposur, dan tanggal tangkap",
           "paragraphs": [
             "Perluas Kamera, eksposur & tanggal di Filter. Kamera dan Lens cocok pada sebagian nama. Kata kunci cocok dengan jalur kata kunci katalog lengkap dan turunannya; misalnya, Places mencakup Places > Boston.",
@@ -3151,7 +3158,7 @@
           "title": "Memahami kesalahan gambar mini",
           "paragraphs": [
             "Di kisi dan strip film, Gambar mini tidak tersedia menunjukkan alasan kegagalan gambar mini dan menyertakan informasi diagnostik yang dilaporkan jika tersedia. Setelah memperbaiki masalah, pilih Coba lagi.",
-            "File kosong (0 byte) tidak berisi data gambar. Unduh atau pulihkan foto asli sebelum mencoba lagi. Jika folder atau drive tidak tersedia, sambungkan kembali sumber terlebih dahulu."
+            "File placeholder Dropbox yang hanya tersedia online dapat menunjukkan 0 byte meskipun file asli di cloud tidak kosong. Di Finder, pilih Jadikan tersedia offline, lalu Coba lagi di LightTable. Untuk file kosong tanpa penanda cloud, unduh atau pulihkan file aslinya. Sambungkan kembali folder atau drive yang tidak tersedia sebelum mencoba lagi."
           ]
         }
       ],
@@ -3164,5 +3171,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
 }

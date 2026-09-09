@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Masquer les photos qui ne peuvent pas être affichées",
+          "paragraphs": [
+            "Lorsqu’une erreur de vignette est visible dans la grille, choisissez Masquer les photos qui ne peuvent pas être affichées à côté du résumé de l’emplacement. Cela active le commutateur correspondant dans Filtre, désactivé par défaut et conservé d’une session à l’autre. Ce commutateur n’est pas enregistré dans les règles des collections intelligentes.",
+            "Le commutateur masque les photos connues comme indisponibles ou uniquement dans le cloud, ainsi que celles dont la vignette ou l’aperçu a échoué. Les autres erreurs de décodage sont découvertes au chargement des photos. Désactivez le commutateur, retirez sa pastille ou choisissez Tout effacer pour afficher à nouveau les photos. Une nouvelle tentative réussie avec Réessayer ou une modification de l’original efface l’échec enregistré."
+          ]
+        },
+        {
           "title": "Filtrer par appareil photo, exposition et date de capture",
           "paragraphs": [
             "Développez Appareil photo, exposition et date dans Filtre. Appareil photo et Objectif correspondent à une partie d’un nom. Mot-clé correspond à un chemin complet de mot-clé du catalogue et à ses descendants ; par exemple, Lieux inclut Lieux > Boston.",
@@ -3151,7 +3158,7 @@
           "title": "Comprendre une erreur de miniature",
           "paragraphs": [
             "Dans la grille et la pellicule, Miniature indisponible indique pourquoi une miniature a échoué et inclut le diagnostic signalé lorsqu’il est disponible. Après avoir corrigé le problème, choisissez Réessayer.",
-            "Un fichier vide (0 octet) ne contient aucune donnée d’image. Téléchargez ou restaurez la photo originale avant de réessayer. Si un dossier ou un disque est indisponible, reconnectez d’abord la source."
+            "Les fichiers de substitution Dropbox disponibles uniquement en ligne peuvent indiquer 0 octet sans que l’original dans le cloud soit vide. Dans le Finder, choisissez Rendre accessible hors ligne, puis Réessayer dans LightTable. Si un fichier est vide sans marqueur de cloud, téléchargez ou restaurez l’original. Reconnectez les dossiers ou disques indisponibles avant de réessayer."
           ]
         }
       ],
@@ -3164,5 +3171,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
 }

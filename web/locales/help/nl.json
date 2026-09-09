@@ -561,6 +561,13 @@
           ]
         },
         {
+          "title": "Foto’s verbergen die niet kunnen worden weergegeven",
+          "paragraphs": [
+            "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties.",
+            "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout."
+          ]
+        },
+        {
           "title": "Filter camera, belichting en opnamedatum",
           "paragraphs": [
             "Vouw Camera, belichting & datum uit in Filter. Camera en Lens komen overeen met een deel van een naam. Trefwoord komt overeen met een volledig catalogus-trefwoordpad en de onderliggende onderdelen; bijvoorbeeld: Plaatsen omvat Plaatsen > Boston.",
@@ -3151,7 +3158,7 @@
           "title": "Een miniatuurfout begrijpen",
           "paragraphs": [
             "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
-            "Een leeg bestand (0 bytes) bevat geen afbeeldingsgegevens. Download of herstel de originele foto voordat je het opnieuw probeert. Sluit bij niet-beschikbare mappen of schijven eerst de bron opnieuw aan."
+            "Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert."
           ]
         }
       ],
@@ -3164,5 +3171,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973"
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "4dfb832f349fcf8f6f8c9360a0f5eb6a6ae3f0145325d6839df8a1d6adda3973",
+  "sourceDigest": "7d3ab92086123cb162827c3505a130a18c9b7a0bd124698e9c0a3d8d5d7e5c4d",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -647,7 +647,6 @@
     "Close preset details": "Hazır ayar ayrıntılarını kapat",
     "Close settings": "Ayarları kapat",
     "Close the catalog results": "Katalog sonuçlarını kapat",
-    "Cloud only": "yalnızca bulut",
     "Collapse a group": "Bir grubu daralt",
     "Collapse stack": "Yığını daralt",
     "Collection": "Koleksiyon",
@@ -4125,7 +4124,6 @@
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin.",
     "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın.",
     "Copy and Paste are below the photo in Detail view.": "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır.",
-    "An empty file (0 bytes) contains no image data. Download or restore the original photo before retrying. For unavailable folders or drives, reconnect the source first.": "Boş bir dosya (0 bayt) görüntü verisi içermez. Tekrar denemeden önce özgün fotoğrafı indirin veya geri yükleyin. Klasörler veya sürücüler kullanılamıyorsa önce kaynağı yeniden bağlayın.",
     "Could not reach LightTable. Check that the app is running, then retry.": "LightTable’a ulaşılamadı. Uygulamanın çalıştığını kontrol edip tekrar deneyin.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Izgara ve film şeridinde Küçük resim kullanılamıyor mesajı, hatanın nedenini gösterir ve varsa bildirilen tanılama bilgisini içerir. Sorunu düzelttikten sonra Tekrar dene seçeneğini seçin.",
     "LightTable could not create a thumbnail. Check that the original photo opens correctly, then retry.": "LightTable küçük resim oluşturamadı. Özgün fotoğrafın düzgün açıldığını kontrol edip tekrar deneyin.",
@@ -4134,7 +4132,12 @@
     "The thumbnail could not be displayed. Try again.": "Küçük resim görüntülenemedi. Tekrar deneyin.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.": "Bu dosya boş (0 bayt). Özgün fotoğrafı indirin veya geri yükleyin, ardından tekrar deneyin.",
     "Thumbnail request failed (HTTP {status}). Try again.": "Küçük resim isteği başarısız oldu (HTTP {status}). Tekrar deneyin.",
-    "Thumbnail unavailable": "Küçük resim kullanılamıyor"
+    "Thumbnail unavailable": "Küçük resim kullanılamıyor",
+    "Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Dropbox’ın yalnızca çevrimiçi yer tutucu dosyaları, buluttaki orijinal boş olmasa da 0 bayt gösterebilir. Finder’da Çevrimdışı kullanılabilir yap, ardından LightTable’da Tekrar dene seçeneğini seçin. Bulut işareti olmayan boş bir dosya için orijinali indirin veya geri yükleyin. Tekrar denemeden önce kullanılamayan klasörleri veya sürücüleri yeniden bağlayın.",
+    "Hide photos that can't be displayed": "Görüntülenemeyen fotoğrafları gizle",
+    "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure.": "Anahtar, kullanılamadığı veya yalnızca bulutta olduğu bilinen fotoğrafları ve küçük resim ya da önizleme hatası gözlenen fotoğrafları gizler. Diğer kod çözme hataları fotoğraflar yüklenirken belirlenir. Fotoğrafları yeniden göstermek için anahtarı kapatın, filtre etiketini kaldırın veya Tümünü temizle seçeneğini seçin. Başarılı bir Tekrar dene işlemi veya orijinalin değişmesi, kaydedilen hatayı temizler.",
+    "This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.": "Bu fotoğraf Dropbox’ta çevrimiçi olarak saklanıyor. Finder’da “Çevrimdışı kullanılabilir yap” seçeneğini seçin, ardından tekrar deneyin.",
+    "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.": "Izgarada bir küçük resim hatası görünüyorsa konum özetinin yanındaki Görüntülenemeyen fotoğrafları gizle seçeneğini seçin. Bu, Filtre içindeki ilgili anahtarı açar. Anahtar varsayılan olarak kapalıdır ve ayarı oturumlar arasında kaydedilir. Bu anahtar akıllı koleksiyon kurallarına kaydedilmez."
   },
   "plurals": {
     " · {count} paired file linked": {

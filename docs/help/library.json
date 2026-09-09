@@ -315,6 +315,13 @@
         ]
       },
       {
+        "title": "Hide photos that can't be displayed",
+        "paragraphs": [
+          "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
+          "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure."
+        ]
+      },
+      {
         "title": "Filter camera, exposure, and capture date",
         "paragraphs": [
           "Expand Camera, exposure & date in Filter. Camera and Lens match part of a name. Keyword matches a complete catalog keyword path and its descendants; for example, Places includes Places > Boston.",
@@ -372,6 +379,14 @@
       {
         "path": "catalog_scan.py",
         "anchor": "METADATA_VERSION = 6"
+      },
+      {
+        "path": "web/photo-display-status.js",
+        "anchor": "export function createPhotoDisplayStatus()"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "function syncUndisplayableLink()"
       }
     ]
   },

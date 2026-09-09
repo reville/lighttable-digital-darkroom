@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { normalizeFileTypes, photoFileType, photoHasEdits, matchesLibraryFilters, filterChips, cleanMetadataFilters, matchesMetadataFilters } from '../web/library-filters.js';
 import { collapsePairs, pairViewPreference } from '../web/photo-pairs.js';
 import { normalizeMasks, normalizeHeals, normalizeOptics, OPTICS_DEFAULTS } from '../web/editor-panels.js';
+import { createPhotoDisplayStatus } from '../web/photo-display-status.js';
 
 const images = [
   {name:'1:Tree.ARW', raw:true, rating:5, status:'approved', hasEdits:true},
@@ -18,8 +19,11 @@ function harness() {
   const controls = Object.fromEntries(Object.entries({ filter:'all', ratingFilter:'0', kindFilter:'all',
     labelFilter:'all', editFilter:'all', search:'', sort:'name' }).map(([id,value])=>[id,{value}]));
   let types = [];
+  let hideUndisplayable = false;
+  const displayStatus = createPhotoDisplayStatus();
   const ctx = vm.createContext({ $: id=>controls[id], S:{images,library:{stacks:[]},cull:{review:'all',on:{}}},
-    LIBRARY_FILTERS:{types:()=>types, metadata:()=>({})}, APP_PREFS:{pairView:'raw'},
+    LIBRARY_FILTERS:{types:()=>types, metadata:()=>({}), hideUndisplayable:()=>hideUndisplayable},
+    PHOTO_DISPLAY_STATUS:displayStatus, APP_PREFS:{pairView:'raw'},
     _cachedVisibleList:null, _cachedVisibleKey:'', _visibleEpoch:0, _cachedVisibleImages:null, _cachedVisibleLibrary:null,
     CULL_SELECT:[], CULL_REJECT:[], matchesCullReview:()=>true, collectionScope:()=>images,
     cleanLabel:label=>label||'none', photoHasEdits, matchesLibraryFilters,
@@ -27,8 +31,44 @@ function harness() {
     collapsePairs, pairViewPreference, pairOverrides:new Map() });
   const source = readFileSync(new URL('../web/app.js', import.meta.url),'utf8');
   vm.runInContext(source.slice(source.indexOf('function visible() {'), source.indexOf('\nfunction inFolderScope')),ctx);
-  return { controls, types(next) {types=next;}, names:()=>Array.from(ctx.visible(),im=>im.name) };
+  return { controls, types(next) {types=next;}, hide(value) {hideUndisplayable=value;}, displayStatus,
+    names:()=>Array.from(ctx.visible(),im=>im.name) };
 }
+
+test('hide failures combines with existing filters and preserves a displayable paired JPEG', () => {
+  const h = harness();
+  h.displayStatus.record(images[0], true);
+  assert.equal(h.names().includes('1:Tree.ARW'), true, 'filter defaults off');
+  h.hide(true);
+  assert.equal(h.names().includes('1:Tree.ARW'), false);
+  assert.equal(h.names().includes('1:Tree.JPG'), true, 'hide before pair collapsing');
+  h.controls.ratingFilter.value = '4';
+  assert.equal(h.names().includes('2:Portrait.JPEG'), false);
+  h.hide(false);
+  assert.equal(h.names().includes('1:Tree.ARW'), true);
+  assert.equal(filterChips({hideUndisplayablePhotos:true},[])[0].id, 'hideUndisplayablePhotos');
+});
+
+test('success, replacement files, and preview failures update display eligibility independently', () => {
+  const state = createPhotoDisplayStatus();
+  const im = {name:'cloud.RAF',fileKey:'one',availability:'cloud-only'};
+  assert.equal(state.cannotDisplay(im), true);
+  state.record(im, false);
+  assert.equal(state.cannotDisplay(im), false, 'successful Retry overrides stale cloud metadata');
+  state.record(im, true, 'preview');
+  state.record(im, false, 'thumbnail');
+  assert.equal(state.cannotDisplay(im), true, 'thumbnail cannot clear a preview failure');
+  state.record(im, false, 'preview');
+  assert.equal(state.cannotDisplay(im), false);
+  assert.equal(state.cannotDisplay({...im,fileKey:'replacement'}), true, 'cloud state is rechecked for a replacement');
+  const local = {name:'photo.jpg',fileKey:'old'};
+  state.record(local, true);
+  assert.equal(state.cannotDisplay(local), true);
+  assert.equal(state.cannotDisplay({...local,fileKey:'new'}), false);
+  assert.equal(state.cannotDisplay({name:'unknown.jpg'}), false, 'unknown photos are not speculatively hidden');
+  state.retain([]);
+  assert.equal(state.cannotDisplay(local), false);
+});
 
 test('file types normalize safely and match source extensions, not display names',()=>{
   assert.deepEqual(normalizeFileTypes(['png','raw','raw','bad']),['raw','png']);

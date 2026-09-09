@@ -10,6 +10,7 @@ from unittest import mock
 from PIL import Image
 
 import server
+import media_availability
 from tests.test_server_catalog import CatalogServerTestCase
 
 
@@ -32,6 +33,20 @@ class ThumbnailErrorsTests(CatalogServerTestCase):
         self.assertEqual((status, kind, payload['code']), (409, 'application/json', 'empty-file'))
         self.assertIn('0 bytes', payload['error'])
         self.assertIn('restore', payload['error'])
+
+    def test_dropbox_placeholder_returns_provider_recovery_message_before_decode(self):
+        (self.root / 'a.jpg').write_bytes(b'')
+        with mock.patch.object(media_availability.sys, 'platform', 'darwin'), \
+             mock.patch.object(media_availability, '_macos_getxattr', return_value=lambda *args: 0), \
+             mock.patch.object(media_availability, 'T', side_effect=lambda message: message), \
+             mock.patch.object(server, '_build_thumb') as build:
+            status, data, kind = self.request_thumbnail(self.qualified('a.jpg'))
+        build.assert_not_called()
+        payload = json.loads(data)
+        self.assertEqual((status, kind, payload['code']), (409, 'application/json', 'cloud-only'))
+        self.assertEqual(payload['error'],
+                         'This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.')
+        self.assertEqual(payload['details']['availability'], 'cloud-only')
 
     def test_decoder_failure_keeps_diagnostic_and_retry_after_repair_returns_jpeg(self):
         (self.root / 'a.jpg').write_bytes(b'not an image')

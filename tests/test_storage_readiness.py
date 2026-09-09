@@ -1,6 +1,10 @@
 from pathlib import Path
 from types import SimpleNamespace
 from unittest import TestCase, mock
+from unittest import skipUnless
+import ctypes
+import os
+import sys
 import tempfile
 
 import catalog
@@ -9,6 +13,91 @@ import media_availability
 
 
 class StorageReadinessTests(TestCase):
+    def test_dropbox_marker_distinguishes_empty_files_without_reading_contents(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            placeholder, empty = root / 'online.RAF', root / 'empty.RAF'
+            placeholder.touch()
+            empty.touch()
+
+            def probe(path, name, value, size, position, options):
+                self.assertEqual((name, value, size, position, options),
+                                 (b'com.dropbox.placeholder', None, 0, 0, 0))
+                return 0 if path == os.fsencode(placeholder) else -1
+
+            with mock.patch.object(media_availability.sys, 'platform', 'darwin'), \
+                 mock.patch.object(media_availability, '_macos_getxattr', return_value=probe), \
+                 mock.patch.object(media_availability, 'T', side_effect=lambda message: message), \
+                 mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')):
+                self.assertEqual(media_availability.availability(placeholder), 'cloud-only')
+                self.assertEqual(media_availability.index_availability(placeholder), 'cloud-only')
+                self.assertEqual(media_availability.availability(empty), 'local')
+                self.assertEqual(media_availability.index_availability(empty), 'empty')
+                self.assertEqual(media_availability.cloud_message(placeholder),
+                                 'This photo is stored online in Dropbox. In Finder, choose “Make available offline,” then retry.')
+                self.assertEqual(media_availability.cloud_message(empty), media_availability.CLOUD_MESSAGE)
+                self.assertEqual(media_availability.cloud_message(), media_availability.CLOUD_MESSAGE)
+                with self.assertRaisesRegex(OSError, 'Make available offline'):
+                    media_availability.require_local(placeholder)
+                media_availability.require_local(empty)
+
+    def test_dropbox_probe_skips_nonempty_files_and_other_platforms(self):
+        with mock.patch.object(media_availability, '_macos_getxattr',
+                               side_effect=AssertionError('unnecessary xattr probe')):
+            with mock.patch.object(media_availability.sys, 'platform', 'darwin'):
+                self.assertEqual(media_availability.availability('/unused', stat=SimpleNamespace(
+                    st_size=100, st_flags=0)), 'local')
+                self.assertEqual(media_availability.availability('/unused', stat=SimpleNamespace(
+                    st_size=100, st_flags=media_availability.SF_DATALESS)), 'cloud-only')
+            with mock.patch.object(media_availability.sys, 'platform', 'linux'):
+                self.assertEqual(media_availability.availability('/unused', stat=SimpleNamespace(
+                    st_size=0)), 'local')
+
+    @skipUnless(sys.platform == 'darwin', 'macOS extended-attribute ABI')
+    def test_native_zero_length_dropbox_marker_is_detected(self):
+        library = ctypes.CDLL('/usr/lib/libSystem.B.dylib', use_errno=True)
+        setxattr = library.setxattr
+        setxattr.argtypes = (ctypes.c_char_p, ctypes.c_char_p, ctypes.c_void_p,
+                            ctypes.c_size_t, ctypes.c_uint32, ctypes.c_int)
+        setxattr.restype = ctypes.c_int
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'online.RAF'
+            path.touch()
+            self.assertEqual(setxattr(os.fsencode(path), b'com.dropbox.placeholder',
+                                      None, 0, 0, 0), 0, ctypes.get_errno())
+            with mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')):
+                self.assertEqual(media_availability.index_availability(path), 'cloud-only')
+            # A downloaded, nonempty file is local even if its old marker remains.
+            path.write_bytes(b'photo data')
+            self.assertEqual(media_availability.index_availability(path), 'local')
+
+    def test_scanner_records_dropbox_placeholder_without_hashing_or_decoding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            photos = root / 'photos'
+            photos.mkdir()
+            placeholder = photos / 'online.RAF'
+            placeholder.touch()
+            cat = catalog.Catalog(root / 'catalog.sqlite3')
+            source = cat.add_source(photos)
+            try:
+                with mock.patch.object(media_availability.sys, 'platform', 'darwin'), \
+                     mock.patch.object(media_availability, '_macos_getxattr', return_value=lambda *args: 0), \
+                     mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')), \
+                     mock.patch.object(catalog_scan.file_identity, 'content_hash', side_effect=AssertionError('must not hash')), \
+                     mock.patch.object(catalog_scan, '_read_exif_metadata', side_effect=AssertionError('must not decode')):
+                    self.assertEqual(catalog_scan.header_hash(placeholder), '')
+                    self.assertEqual(catalog_scan.read_metadata(placeholder), {})
+                    record, = catalog_scan.walk_source(photos)
+                    self.assertEqual(record['availability'], 'cloud-only')
+                    self.assertIsNone(record['content_signature'])
+                    result = catalog_scan.scan_source(cat, source)
+                    self.assertEqual((result['added'], result['cloudOnly']), (1, 1))
+                row, = cat.query({'limit': 10})['items']
+                self.assertEqual((row['filename'], row['availability']), ('online.RAF', 'cloud-only'))
+            finally:
+                cat.close()
+
     def test_index_probe_distinguishes_empty_missing_and_cloud_without_reading(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -142,6 +231,42 @@ class StorageReadinessTests(TestCase):
 
 
 class CloudReadEntryTests(TestCase):
+    def test_dropbox_import_and_watch_wait_without_reading_the_original(self):
+        import ingest_workflow as ingest
+        import watch_workflow
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            photos = root / 'photos'
+            photos.mkdir()
+            source = photos / 'online.RAF'
+            source.touch()
+            destination = root / 'destination.RAF'
+            destination.write_bytes(b'existing original')
+            cat = catalog.Catalog(root / 'catalog.sqlite3')
+            cat.add_source(photos)
+            watch = {'id': 'dropbox', 'name': 'Dropbox', 'path': str(photos), 'enabled': True, 'mode': 'catalog'}
+            service = watch_workflow.WatchService(cat, lambda: [watch])
+            try:
+                with mock.patch.object(media_availability.sys, 'platform', 'darwin'), \
+                     mock.patch.object(media_availability, '_macos_getxattr', return_value=lambda *args: 0), \
+                     mock.patch.object(media_availability, 'T', side_effect=lambda message: message), \
+                     mock.patch.object(Path, 'open', side_effect=AssertionError('must not hydrate')):
+                    items = ingest.scan_source(photos)
+                    self.assertEqual(items[0]['availability'], 'cloud-only')
+                    plan = ingest.build_plan(items, {'destination': str(root / 'exports')})
+                    self.assertEqual(plan['total'], 0)
+                    self.assertIn('Make available offline', plan['skipped'][0]['message'])
+                    result = ingest.copy_item({'source': str(source), 'destination': str(destination)})
+                    self.assertFalse(result['ok'])
+                    self.assertIn('Make available offline', result['error'])
+                    service.poll_once()
+                    service.poll_once()
+                    self.assertEqual(cat.query({'limit': 10})['total'], 0)
+                    self.assertIn('Make available offline', service.status[0]['error'])
+                self.assertEqual(destination.read_bytes(), b'existing original')
+            finally:
+                cat.close()
+
     def test_import_scan_reports_skipped_placeholder_and_no_copy_touches_existing_destination(self):
         import ingest_workflow as ingest
         with tempfile.TemporaryDirectory() as directory:
