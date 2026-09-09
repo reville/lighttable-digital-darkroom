@@ -87,7 +87,7 @@ import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { gradeBakeRequest, gradeBakeKey } from '/web/preview-processing.js';
 import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
-import { radialHandles, editRadial } from '/web/mask-shape.js';
+import { linearHandleAt, editLinear, radialHandles, editRadial } from '/web/mask-shape.js';
 import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 
@@ -1749,6 +1749,12 @@ function syncOverlayCursorClass() {
   overlay.classList.toggle('heal-cursor', S.activePane === 'healPane');
   overlay.classList.toggle('dragging-handle',
     !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
+  const linearShape = S.activePane === 'maskPane' && mask?.type === 'linear' &&
+    !S.maskRefineMode && !S.maskColorPick;
+  const linearDrag = linearShape && S.editGesture?.type === 'linear' && S.editGesture.handle;
+  const linearHover = linearShape && !S.editGesture && S.localPinsVisible && S.overlayHoverPoint &&
+    linearHandleAt(mask, S.overlayHoverPoint, $('cv').getBoundingClientRect());
+  overlay.style.cursor = linearDrag ? 'grabbing' : linearHover ? 'grab' : '';
 }
 
 function syncViewerChrome() {
@@ -1891,7 +1897,7 @@ function drawEditOverlayNow() {
 const previewFrameScheduler = createFrameScheduler((work) => {
   if (work.reference) updateReferenceCompositeNow(!work.grade);
   if (work.grade) drawGradeNow(Boolean(work.forceWebGL));
-  if (work.edits && !work.grade && nativePreviewActive()) {
+  if (work.edits && nativePreviewActive()) {
     postNative('nativeEdits', nativeEditsPayload());
   }
   if (work.visualization && nativePreviewActive()) {
@@ -1945,9 +1951,10 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   }
   if (native) {
     postNative('nativeGrade', nativeGradePayload(activeGrade));
-    if (channelUpload || upload) {
-      postNative('nativeMasks', channelUpload || nativeMaskPayload(upload));
-    }
+    // Local sliders and range/enable controls change mask settings without
+    // changing the raster. Send those settings on every grade update; omit
+    // bitmap data when the existing mask texture can be reused.
+    postNative('nativeMasks', channelUpload || nativeMaskPayload(upload));
   }
   // The WebGL surface is hidden while Metal is presenting. Avoid duplicating
   // continuous draws, but allow an explicit one-shot refresh before sampling
@@ -2173,6 +2180,7 @@ function syncMaskPanel() {
   if (S.maskRefineMode === 'subtract') $('maskInstruction').textContent = tr("Paint over areas to subtract from this mask.");
   else if (S.maskRefineMode === 'intersect') $('maskInstruction').textContent = tr("Paint the only area this mask should retain.");
   else if (S.maskRefineMode === 'add') $('maskInstruction').textContent = tr("Paint over areas to add to this mask. Hold Option to subtract.");
+  else if (mask.type === 'linear') $('maskInstruction').textContent = tr('Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.');
   else if (!['brush', 'linear', 'radial'].includes(mask.type)) {
     $('maskInstruction').textContent = tr('{tool} selected on device. Use Add, Subtract, or Intersect to refine it.', {tool: localToolLabel(mask.type)});
   } else $('maskInstruction').textContent = tr('Drag on the photo to edit the {tool} mask.', {tool: localToolLabel(mask.type)});
@@ -2787,8 +2795,10 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
       strokes.push(stroke);
       S.editGesture = { type: 'brush', pointerId: event.pointerId, stroke, rect };
     } else if (mask.type === 'linear') {
-      mask.start = point; mask.end = point;
-      S.editGesture = { type: 'linear', pointerId: event.pointerId, rect };
+      const handle = S.localPinsVisible ? linearHandleAt(mask, point, rect) : null;
+      S.editGesture = { type: 'linear', handle, origin: point,
+        start: [...mask.start], end: [...mask.end], pointerId: event.pointerId, rect };
+      if (!handle) { mask.start = point; mask.end = point; }
     } else {
       const handle = Object.entries(radialHandles(mask, rect.width, rect.height))
         .find(([, location]) => overlayDistance(point, location, rect) <= 11)?.[0];
@@ -2865,7 +2875,7 @@ $('editOverlay').addEventListener('pointermove', (event) => {
           }
         } else gesture.stroke.points.push(point);
       }
-    } else if (gesture.type === 'linear') mask.end = point;
+    } else if (gesture.type === 'linear') editLinear(mask, gesture, point);
     else if (gesture.type === 'radial') {
       editRadial(mask, gesture, point, rect, event.shiftKey);
     }
@@ -4606,6 +4616,7 @@ function saveState(immediate = false) {
   readControls();
   S.preset = reconcilePresetAdjustment(S.preset, presetEditState(S));
   const edits = JSON.parse(editHistorySnapshot());
+  const wasEdited = photoHasEdits(im);
   Object.assign(im, cloneValue(edits));
   const current = JSON.stringify(edits);
   const pending = editSaveQueue.getPending(im.name);
@@ -4618,6 +4629,11 @@ function saveState(immediate = false) {
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
   editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
+  if (wasEdited !== photoHasEdits(im)) {
+    invalidateVisibleCache();
+    _stripKey = _gridKey = '';
+    refreshLists();
+  }
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
 
@@ -9594,7 +9610,7 @@ function renderKeywords() {
       im.keywords = (im.keywords || []).filter(k => k !== keyword);
       for (const image of linkedMetadataTargets([im])) image.keywords = [...im.keywords];
       saveState(true); renderKeywords();
-      _stripKey = _gridKey = ''; refreshLists();
+      refreshFilteredView();
     };
     chip.append(label, remove);
     box.appendChild(chip);
@@ -9626,7 +9642,7 @@ function addKeyword() {
   }
   $('keywordInput').value = '';
   renderKeywords();
-  _stripKey = _gridKey = ''; refreshLists();
+  refreshFilteredView();
 }
 $('keywordAdd').onclick = addKeyword;
 $('keywordInput').addEventListener('keydown', (e) => {
@@ -9635,20 +9651,24 @@ $('keywordInput').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || separator) { e.preventDefault(); addKeyword(); }
 });
 
+function applyKeywordChanges(changes) {
+  for (const item of changes) {
+    const image = S.images.find(image => image.name === item.name);
+    if (!image) continue;
+    image.keywords = [...item.keywords];
+    if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
+    if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
+  }
+  renderKeywords(); refreshFilteredView();
+}
+
 KEYWORD_BATCH = installKeywordBatch({
   el: $, post: api, toast, enabled: () => S.catalogEnabled,
   names: () => [...S.msel], flush: flushEditSaves,
   values: () => $('keywordInput').value.split(APP_PREFS.keywordSeparators === 'comma-semicolon' ? /[,;]/ : /,/)
     .map(value => value.trim()).filter(Boolean),
   apply: changes => {
-    for (const item of changes) {
-      const image = S.images.find(image => image.name === item.name);
-      if (!image) continue;
-      image.keywords = [...item.keywords];
-      if (image.stateLoadEdits) image.stateLoadEdits.keywords = [...item.keywords];
-      if (editSaveQueue.getPending(image.name)) enqueuePhotoPatch(image, {keywords: item.keywords});
-    }
-    renderKeywords(); refreshFilteredView();
+    applyKeywordChanges(changes);
     METADATA?.refreshKeywordTree();
   },
 });
@@ -10985,6 +11005,8 @@ METADATA = createMetadataPanel({
   get: getJSON,
   toast,
   askName,
+  flush: () => saveState(true),
+  onKeywordsChanged: applyKeywordChanges,
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onKeywordFilter: (path) => {
     $('search').value = path.split(' > ').pop();
@@ -11450,6 +11472,8 @@ async function applyServerStateEvent(event) {
       ? tr('Updated by {eventOrigin}', {eventOrigin: event.origin}) : tr('Photo updated externally');
     if (event.origin !== 'batch-masks') toast(label, { label: tr('Undo'), run: undo });
   }
+  invalidateVisibleCache();
+  _stripKey = _gridKey = '';
   refreshLists();
   renderKeywords();
   renderVersions();

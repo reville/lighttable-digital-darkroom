@@ -39,6 +39,7 @@ export function createMetadataPanel(ctx) {
   let saveChain = Promise.resolve();
   let refreshSequence = 0;
   let loadedName = null;
+  let renamingKeyword = false;
 
   function coordinates() {
     const latText = String(el('iptcLat')?.value ?? '').trim();
@@ -224,13 +225,24 @@ export function createMetadataPanel(ctx) {
       });
       tree.addEventListener('dblclick', async (event) => {
         const node = event.target.closest('.keyword-node');
-        if (!node) return;
-        const name = await ctx.askName(tr("Rename keyword"),
-                                       node.querySelector('span').textContent);
-        if (!name) return;
-        await post('/api/catalog/keywords',
-                   { action: 'rename', id: Number(node.dataset.id), name });
-        refreshKeywordTree();
+        if (!node || renamingKeyword) return;
+        renamingKeyword = true;
+        try {
+          const name = await ctx.askName(tr("Rename keyword"),
+                                         node.querySelector('span').textContent);
+          if (!name) return;
+          if (await ctx.flush?.() === false) {
+            throw new Error(tr('Save pending edits before changing keywords'));
+          }
+          const result = await post('/api/catalog/keywords',
+                     { action: 'rename', id: Number(node.dataset.id), name });
+          if (!result?.ok || result.error) {
+            throw new Error(result?.error || tr('Keywords could not be saved'));
+          }
+          await ctx.onKeywordsChanged?.(result.changes || []);
+          await refreshKeywordTree();
+        } catch (error) { toast(error.message); }
+        finally { renamingKeyword = false; }
       });
     }
   }

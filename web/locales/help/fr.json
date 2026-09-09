@@ -1567,6 +1567,15 @@
           ]
         },
         {
+          "title": "Modifier la forme d’un dégradé linéaire",
+          "paragraphs": [
+            "Dans Modifier la forme, faites glisser un point pour ajuster cette extrémité du dégradé. Faites glisser la ligne qui les relie pour déplacer tout le dégradé en conservant son angle et la largeur de transition. Faites glisser ailleurs sur la photo pour le redessiner."
+          ],
+          "tips": [
+            "Sélectionnez un masque Linéaire existant pour le modifier à nouveau. Si vous avez peint avec Ajouter, Soustraire ou Intersection, choisissez d’abord Modifier la forme. Appuyez sur H si les points sont masqués."
+          ]
+        },
+        {
           "title": "Former un dégradé radial",
           "paragraphs": [
             "Dans Modifier la forme, faites glisser la poignée centrale pour déplacer le masque, l’une des poignées d’axe pour le redimensionner, ou la poignée extérieure pour le faire pivoter. Maintenez Maj en dessinant ou en redimensionnant pour rendre le dégradé circulaire."
@@ -3147,5 +3156,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "a9e663625fc9968f2b07005174319634607032926d7f644074b5ad28ffb7ffd7"
+  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2"
 }

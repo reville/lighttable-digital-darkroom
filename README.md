@@ -102,6 +102,8 @@ lens correction, crop and perspective, versions, and reusable export recipes
 sit alongside the film controls. HDR, panorama, and focus merge create new
 masters. Soft proofing covers sRGB, Display P3, matte paper, and gloss paper.
 
+Linear gradients stay adjustable: drag either endpoint to change the transition,
+or drag the connecting line to move the whole gradient.
 Local masks support gradual dodging and burning with cumulative brush Flow,
 a Density ceiling, and Auto Mask color matching. Radial gradients can be oval
 and rotated. Each mask has Whites, Blacks, and RGB or individual-channel tone
