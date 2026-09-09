@@ -45,7 +45,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: windows-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.build_run_id || 'build' }}
   cancel-in-progress: true
 
 jobs:

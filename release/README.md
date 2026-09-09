@@ -36,6 +36,16 @@ with the downloaded package manifest. An unsigned Windows CI package cannot
 establish Authenticode or public update trust. Do not push a release tag simply
 to test packaging: the separate Release workflow publishes successful builds.
 
+Windows retains a completed package before native acceptance runs. A native-only
+recheck can reuse those exact bytes with a newer test script:
+
+```sh
+gh workflow run windows-build.yml --ref CANDIDATE_BRANCH -f build_run_id=WINDOWS_BUILD_RUN_ID
+```
+
+The recheck verifies the selected build and embedded source revision, and records
+the package and tester commits separately. It does not rebuild or publish assets.
+
 Linux full-package validation also runs `scripts/linux/updater-smoke.py` with
 the bundled Python under Xvfb and a private D-Bus session. It copies the real
 bundle, changes only temporary version/key metadata, signs a local test archive,
