@@ -998,12 +998,15 @@ class MigrationTests(unittest.TestCase):
             catalog_scan.scan_source(cat, source, read_metadata_for_new=False)
             cat.save_state(cat.image_id_for(source, "a.jpg"), {"rating": 2})
 
+            # Classify the legacy file before mirroring. An unavailable
+            # original's pending recipe must survive alongside these keys.
+            catalog_scan.import_state_file(cat, source)
             self.assertTrue(catalog_scan.mirror_state_file(cat, source))
             written = json.loads(target.read_text())
             self.assertEqual(written["collections"][0]["name"], "Portable")
             self.assertEqual(written["stacks"][0]["id"], "s1")
             self.assertEqual(written["futureSetting"], {"enabled": True})
-            self.assertNotIn("gone.jpg", written["images"])
+            self.assertEqual(written["images"]["gone.jpg"]["rating"], 5)
 
     def test_second_mirror_reads_only_state_changed_since_revision(self):
         with tempfile.TemporaryDirectory() as directory:

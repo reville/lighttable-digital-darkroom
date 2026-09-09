@@ -28,8 +28,9 @@ compiler, administrator password, or disabling Gatekeeper.
 
 macOS installs to `~/Applications/LightTable.app`. An existing app in
 `/Applications` is used automatically. Use `--install-dir /absolute/directory`
-to select another directory. Windows uses the standard per-user NSIS installer
-at `%LOCALAPPDATA%\Programs\LightTable`; custom directories are currently
+to select another directory. Windows reuses the per-user installation registered
+by the NSIS installer, including a custom directory. With no existing install,
+it uses `%LOCALAPPDATA%\Programs\LightTable`. The `--install-dir` option is
 supported only on macOS.
 
 An existing app is reused unless `lighttable install --update` is explicit.

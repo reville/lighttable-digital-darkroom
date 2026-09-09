@@ -727,8 +727,8 @@
             "Lesen Sie die Fotoanzahl in der Bestätigung und bestätigen Sie nur, wenn sie Ihrer beabsichtigten Auswahl entspricht."
           ],
           "tips": [
-            "Benachbarte XMP-Sidecars wandern mit den Originalen mit. Versteckte RAW- oder JPEG-Begleitdateien bleiben in der Bibliothek; wählen Sie In Paar-Aufnahme-Einstellungen Beide Dateien, um sie einzuschließen.",
-            "Eine virtuelle Kopie teilt ihre Originaldatei. Beim Löschen einer virtuellen Kopie sollte die Aktion Foto-Aktionen → Virtuelle Kopie löschen verwendet werden; das Verschieben ihrer Quelle in den Papierkorb betrifft jede Bearbeitung, die dieses Original verwendet."
+            "Benachbarte XMP-Sidecars werden zusammen mit den Originalen verschoben. Eine gemeinsam genutzte XMP-Datei bleibt jedoch bei einem gepaarten Original, das in der Bibliothek verbleibt. Ausgeblendete RAW- oder JPEG-Begleitdateien bleiben in der Bibliothek; wählen Sie in den Einstellungen für gepaarte Aufnahmen Beide Dateien, um sie einzubeziehen.",
+            "„Abgelehnte Fotos in den Papierkorb verschieben“ überspringt virtuelle Kopien. Verwenden Sie Fotoaktionen → Virtuelle Kopie löschen, um eine Kopie zu entfernen, ohne ihr Original anzutasten."
           ]
         },
         {
@@ -2765,7 +2765,7 @@
             "Die meisten Einstellungsänderungen werden automatisch gespeichert. Die Sprache verwendet Sprache anwenden und lädt das Fenster nach dem Speichern der Änderungen neu. Allgemein steuert außerdem den automatischen Wechsel nach Auswählen, Ablehnen oder Bewerten, Benachrichtigungen beim Abschluss und die Update-Prüfung.",
             "Die Oberflächensteuerungen bestimmen den Hintergrund des Betrachters, die Schriftgröße, Lights Out, das Informations-Overlay der Lupe und die Zuschneidehilfen. Diese Einstellungen ändern das Erscheinungsbild des Arbeitsbereichs, ohne exportierte Pixel zu verändern.",
             "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
-            "Dateien & Metadaten steuert portable LightTable-Bearbeitungen neben Originalen, das automatische Schreiben von XMP, RAW/JPEG-Paarung und Stichworteingabe. Vollständige portable Bearbeitungen verwenden .lighttable-state.json; XMP enthält kompatible Bearbeitungen und Metadaten. XMP-Synchronisierung bewahrt nicht betroffene Felder und meldet widersprüchliche externe Änderungen; lesen Sie Austauschmetadaten über XMP-Sidecars für den unterstützten Workflow."
+            "Dateien & Metadaten steuert portable LightTable-Bearbeitungen neben Originalen, das automatische Schreiben von XMP, RAW/JPEG-Paarung und Stichworteingabe. Vollständige portable Bearbeitungen verwenden .lighttable-state.json; XMP enthält kompatible Bearbeitungen und Metadaten. XMP-Synchronisierung bewahrt nicht betroffene Felder und meldet widersprüchliche externe Änderungen; lesen Sie Austauschmetadaten über XMP-Sidecars für den unterstützten Workflow. Portable LightTable-Bearbeitungen enthalten auch virtuelle Kopien. Beim erneuten Öffnen eines Ordners bleiben die bereits im Katalog gespeicherten Bearbeitungen erhalten."
           ]
         },
         {
@@ -3196,5 +3196,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7de388f1d7750f9464ba45a91c2ff444072e4e79e4cac9e70edbb9244349ab9a"
+  "sourceDigest": "e289adf65e58e39b3af99d6301b1500f90ae37a145022677d8003479e6d3b30a"
 }

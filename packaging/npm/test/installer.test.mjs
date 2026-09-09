@@ -6,7 +6,7 @@ import os from 'node:os';
 import http from 'node:http';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { context, install, delegate, findInstalled, run } from '../lib/installer.mjs';
+import { context, install, delegate, findInstalled, run, windowsInstallLocation } from '../lib/installer.mjs';
 import { download } from '../lib/download.mjs';
 import { assetName, releaseAsset } from '../lib/release.mjs';
 import { parseInstallArgs, main } from '../lib/cli.mjs';
@@ -36,6 +36,7 @@ async function setup(t, extra = {}) {
   const ctx = context({ home: path.join(root, 'home'), temp: root,
     applications: path.join(root, 'Applications'), platform: 'darwin', arch: 'arm64', env: {},
     log: message => messages.push(message),
+    capture: async () => 'null',
     download: async (asset, destination) => { calls.push(['download', asset]); await fs.writeFile(destination, 'fixture'); },
     run: async (command, args, options) => {
       calls.push([command, args, options]);
@@ -142,11 +143,85 @@ test('Windows verifies Authenticode before starting per-user installer', async t
   await install(release, {}, ctx);
   assert.equal(calls[1][0], 'powershell.exe');
   assert.match(calls[1][2].env.LIGHTTABLE_INSTALLER_VERIFY_PATH, /-setup.exe$/);
-  assert.deepEqual(calls[2][1], ['/S']);
+  assert.deepEqual(calls[2][1], ['/S', `/D=${destination}`]);
+  assert.equal(calls[2][2].windowsVerbatimArguments, true);
+  assert.equal(calls[2][2].argv0, `"${calls[2][0]}"`);
   await delegate(['edit', 'set', 'a & b $(no).jpg'], ctx);
   assert.equal(calls.at(-1)[0], path.join(destination, 'Python', 'python.exe'));
   assert.deepEqual(calls.at(-1)[1], ['-B', '-m', 'lighttable_cli', 'edit', 'set', 'a & b $(no).jpg']);
   assert.equal(calls.at(-1)[2].cwd, path.join(destination, 'Resources', 'LightTable'));
+});
+
+test('Windows reads the installer registry location as UTF-8 JSON in the 64-bit current-user view', async t => {
+  const { ctx, root } = await setup(t);
+  const custom = path.join(root, 'Photographie été & photos', 'LightTable');
+  ctx.capture = async (command, args, options) => {
+    assert.equal(command, 'powershell.exe');
+    assert.match(args.at(-1), /RegistryHive\]::CurrentUser/);
+    assert.match(args.at(-1), /RegistryView\]::Registry64/);
+    assert.match(args.at(-1), /Uninstall\\LightTable/);
+    assert.match(args.at(-1), /OutputEncoding/);
+    assert.equal(options.env, ctx.env);
+    return JSON.stringify(custom) + '\r\n';
+  };
+  assert.equal(await windowsInstallLocation(ctx), custom);
+  ctx.capture = async () => 'null\r\n';
+  assert.equal(await windowsInstallLocation(ctx), null);
+  ctx.capture = async () => JSON.stringify('relative');
+  await assert.rejects(windowsInstallLocation(ctx), /directory is invalid/);
+});
+
+test('Windows reuses a registered custom install before a stale npm receipt without downloading', async t => {
+  const { ctx, root, calls } = await setup(t);
+  Object.assign(ctx, { platform: 'win32', arch: 'x64', env: { LOCALAPPDATA: root } });
+  const custom = path.join(root, 'custom & été', 'LightTable');
+  const stale = path.join(root, 'old-install');
+  for (const destination of [custom, stale]) {
+    await fs.mkdir(path.join(destination, 'Python'), { recursive: true });
+    await fs.writeFile(path.join(destination, 'Python/python.exe'), 'old');
+  }
+  await fs.mkdir(path.dirname(ctx.stateFile), { recursive: true });
+  await fs.writeFile(ctx.stateFile, JSON.stringify({ destination: stale }));
+  ctx.capture = async () => JSON.stringify(custom);
+  assert.deepEqual(await install(release, {}, ctx), { destination: custom, installed: false });
+  assert.equal(calls.length, 0);
+  assert.equal(JSON.parse(await fs.readFile(ctx.stateFile, 'utf8')).destination, custom);
+  await delegate(['photos', 'list'], ctx);
+  assert.equal(calls.at(-1)[0], path.join(custom, 'Python/python.exe'));
+});
+
+test('Windows custom update pins its destination and preserves/restores that installation', async t => {
+  const { ctx, root } = await setup(t);
+  Object.assign(ctx, { platform: 'win32', arch: 'x64', env: { LOCALAPPDATA: root } });
+  const custom = path.join(root, 'custom & été', 'LightTable');
+  const runtime = path.join(custom, 'Python/python.exe');
+  await fs.mkdir(path.dirname(runtime), { recursive: true });
+  await fs.writeFile(runtime, 'old');
+  ctx.capture = async () => JSON.stringify(custom);
+  let fail = false;
+  ctx.run = async (command, args, options) => {
+    if (!command.endsWith('-setup.exe')) return;
+    assert.deepEqual(args, ['/S', `/D=${custom}`]);
+    assert.equal(options.windowsVerbatimArguments, true);
+    assert.equal(options.argv0, `"${command}"`);
+    await fs.writeFile(runtime, fail ? 'partial' : 'new');
+    if (fail) throw new Error('installer failed');
+  };
+  const result = await install(release, { update: true }, ctx);
+  assert.equal(result.destination, custom);
+  const backup = (await fs.readdir(path.dirname(custom))).find(name => name.startsWith('LightTable.backup-'));
+  assert.equal(await fs.readFile(path.join(path.dirname(custom), backup, 'Python/python.exe'), 'utf8'), 'old');
+  fail = true;
+  await assert.rejects(install(release, { update: true }, ctx), /installer failed/);
+  assert.equal(await fs.readFile(runtime, 'utf8'), 'new');
+});
+
+test('Windows registry query failures cannot fall through into an install', async t => {
+  const { ctx, calls } = await setup(t);
+  Object.assign(ctx, { platform: 'win32', arch: 'x64' });
+  ctx.capture = async () => { throw new Error('registry unavailable'); };
+  await assert.rejects(install(release, {}, ctx), /registry unavailable/);
+  assert.equal(calls.length, 0);
 });
 
 test('Windows rejects an unsigned installer without executing it', async t => {
