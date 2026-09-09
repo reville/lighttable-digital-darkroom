@@ -1,0 +1,136 @@
+name: Windows client VM acceptance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/windows-client-acceptance]
+    paths:
+      - .github/workflows/windows-client-vm.yml
+      - scripts/windows/client-vm/**
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  client:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        windows: ['10', '11']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify the selected release build
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: 34408107209});
+            if (run.conclusion !== 'success' || run.head_sha !== '2e4d35d64dc09a35ec2262c1ca9c65bfa44c4912'
+                || run.path !== '.github/workflows/windows-build.yml') {
+              throw new Error('The selected signed candidate build identity is incorrect');
+            }
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-windows-x64
+          path: .build/windows-client-download
+          run-id: 34408107209
+          github-token: ${{ github.token }}
+
+      - name: Parse Windows test scripts
+        shell: pwsh
+        run: |
+          $Failed = $false
+          foreach ($File in Get-ChildItem scripts/windows -Filter *.ps1 -Recurse) {
+            $Tokens = $null; $Errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($File.FullName, [ref]$Tokens, [ref]$Errors) | Out-Null
+            if ($Errors.Count) { $Errors | Format-List; $Failed = $true }
+          }
+          if ($Failed) { throw "PowerShell test scripts contain syntax errors" }
+
+      - name: Stage a fresh Microsoft evaluation VM
+        env:
+          WINDOWS_VERSION: ${{ matrix.windows }}
+        run: |
+          set -euo pipefail
+          test -c /dev/kvm
+          # Disposable hosted runner only; reclaim unused SDKs for the VM disk.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          python3 scripts/windows/client-vm/prepare.py "$WINDOWS_VERSION"
+          mkdir -p .build/client-vm/evidence .build/client-vm/storage
+          if [[ "$WINDOWS_VERSION" == 10 ]]; then
+            iso='https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66750/19045.2006.220908-0225.22h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso'
+            digest='ef7312733a9f5d7d51cfa04ac497671995674ca5e1058d5164d6028f0938d668'
+          else
+            iso='https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso'
+            digest='a61adeab895ef5a4db436e0a7011c92a2ff17bb0357f58b13bbc4062e535e7b9'
+          fi
+          curl --fail --location --retry 2 --max-time 600 "$iso" -o .build/client-vm/windows.iso
+          echo "$digest  .build/client-vm/windows.iso" | sha256sum --check
+          printf '%s\n' "$iso" "$digest" > .build/client-vm/evidence/media.txt
+          df -h .
+
+      - name: Boot Windows and run offline client acceptance
+        run: |
+          set -euo pipefail
+          root="$PWD/.build/client-vm"
+          docker run --detach --name lighttable-client --stop-timeout 30 \
+            --device=/dev/kvm --device=/dev/net/tun --cap-add NET_ADMIN \
+            -e RAM_SIZE=8G -e CPU_CORES=4 -e DISK_SIZE=64G -e DISK_FMT=qcow2 \
+            -e DISK_TYPE=sata -e ADAPTER=e1000 -e NETWORK=user -e SAMBA=N \
+            -e BOOT_MODE=windows_secure -e TPM=Y -e VGA=std -e REMOVE=N -e VERSION=${{ matrix.windows }}e \
+            -v "$root/storage:/storage" -v "$root/windows.iso:/custom.iso:ro" \
+            -v "$root/custom.xml:/custom.xml:ro" -v "$root/oem:/oem:ro" \
+            -v "$root/evidence:/evidence" \
+            -v "$PWD/scripts/windows/client-vm/receive.py:/receive.py:ro" \
+            dockurr/windows@sha256:32cc92715a6c5dc1f63142d3be11059279d64d0faa7519618a07290b3076f9f2
+          docker exec -d lighttable-client python3 /receive.py
+          deadline=$((SECONDS + 2700))
+          while (( SECONDS < deadline )); do
+            if [[ -f "$root/evidence/complete" ]]; then break; fi
+            if [[ "$(docker inspect --format '{{.State.Running}}' lighttable-client)" != true ]]; then
+              docker logs --tail 80 lighttable-client
+              exit 1
+            fi
+            sleep 10
+          done
+          test -f "$root/evidence/complete"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('.build/client-vm/evidence')
+          host = json.loads((root / 'host.json').read_text(encoding='utf-8-sig'))
+          print(json.dumps(host, indent=2))
+          if not host.get('ok'):
+              raise SystemExit('Windows client setup failed; see host.json')
+          result = json.loads((root / 'result.json').read_text(encoding='utf-8-sig'))
+          print(json.dumps(result, indent=2))
+          if not result.get('ok'):
+              raise SystemExit('Windows client acceptance failed; see result.json')
+          if not host.get('webview2_absent_before_offline_install'):
+              raise SystemExit('Offline runtime-present checks passed, but WebView2-absent acceptance remains unproven')
+          PY
+
+      - name: Stop the disposable VM
+        if: always()
+        run: |
+          mkdir -p .build/client-vm/evidence
+          if docker inspect lighttable-client >/dev/null 2>&1; then
+            docker logs lighttable-client > .build/client-vm/evidence/vm.log 2>&1
+            docker stop --time 30 lighttable-client || true
+            docker rm -f lighttable-client || true
+          fi
+          # Do not upload account configuration, VM disks, or Windows media.
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-${{ matrix.windows }}-x64-client-acceptance
+          path: .build/client-vm/evidence/
+          retention-days: 7
+          if-no-files-found: warn

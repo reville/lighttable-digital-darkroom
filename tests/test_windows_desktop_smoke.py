@@ -24,6 +24,22 @@ SPEC.loader.exec_module(smoke)
 
 
 class DesktopSmokeSafetyTests(unittest.TestCase):
+    def test_installed_bundle_requires_explicit_disposable_account_opt_in(self):
+        with tempfile.TemporaryDirectory() as directory:
+            bundle = Path(directory)
+            for relative in ("LightTable.exe", "Python/python.exe", "Resources/LightTable/server.py"):
+                path = bundle / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+            marker = bundle / "install-channel.txt"
+            marker.write_text("direct")
+            with self.assertRaises(RuntimeError):
+                smoke.validate_bundle(bundle)
+            smoke.validate_bundle(bundle, allow_disposable_direct_install=True)
+            marker.write_text("winget")
+            with self.assertRaises(RuntimeError):
+                smoke.validate_bundle(bundle, allow_disposable_direct_install=True)
+
     def test_environment_removes_inherited_overrides_and_isolates_native_support(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

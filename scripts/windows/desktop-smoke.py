@@ -60,12 +60,13 @@ def validate_paths(report: dict, root: Path, bundle: Path) -> None:
         raise RuntimeError("The native shell is not using the packaged resources")
 
 
-def validate_bundle(bundle: Path) -> None:
+def validate_bundle(bundle: Path, *, allow_disposable_direct_install: bool = False) -> None:
     for relative in ("LightTable.exe", "Python/python.exe", "Resources/LightTable/server.py"):
         if not (bundle / relative).is_file():
             raise RuntimeError(f"The Windows bundle is incomplete: {relative}")
     marker = bundle / "install-channel.txt"
-    if marker.exists() and marker.read_text(encoding="utf-8-sig").strip() != "portable":
+    channel = marker.read_text(encoding="utf-8-sig").strip() if marker.exists() else "portable"
+    if channel != "portable" and not (allow_disposable_direct_install and channel == "direct"):
         # A signed direct install configures WinSparkle's global registry state.
         # Validate the extracted ZIP so this smoke cannot alter that preference.
         raise RuntimeError("Use the extracted portable ZIP, not an installed/package-managed copy")
@@ -569,6 +570,8 @@ def main():
     parser.add_argument("--report-dir", type=Path, help="New directory for JSON evidence, logs and the exported TIFF")
     parser.add_argument("--stack-dumper", type=Path,
                         help="Optional py-spy.exe for failure diagnostics only; adds at most four 5-second dumps without locals")
+    parser.add_argument("--allow-disposable-direct-install", action="store_true",
+                        help="Allow a direct install ONLY in a disposable test account; WinSparkle may change its registry preferences")
     args = parser.parse_args()
     if sys.platform != "win32":
         parser.error("Run with packaged Python in a logged-on Windows desktop")
@@ -576,7 +579,7 @@ def main():
         parser.error("--timeout must be between 60 and 270 seconds, plus at most 25 seconds of cleanup")
     require_interactive_desktop()
     bundle = args.bundle.resolve()
-    validate_bundle(bundle)
+    validate_bundle(bundle, allow_disposable_direct_install=args.allow_disposable_direct_install)
     if Path(sys.executable).resolve() != (bundle / "Python/python.exe").resolve():
         parser.error("Run this script with the tested bundle's Python/python.exe")
     if args.report_dir:
