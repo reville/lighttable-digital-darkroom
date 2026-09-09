@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # Disposable full-system VM; its SSH port listens only on runner loopback.
 set -euo pipefail
-mkdir -p evidence /tmp/lighttable-vm
+mkdir -p evidence baseline/dist /tmp/lighttable-vm
+package=lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst
+release=https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0
+curl -fsSL --retry 2 --max-time 180 "$release/$package" -o "baseline/dist/$package"
+curl -fsSL --retry 2 --max-time 30 "$release/$package.sha256" -o "baseline/dist/$package.sha256"
+(cd baseline/dist && sha256sum -c "$package.sha256")
+printf '28cfccff38e2de1955c1b899d64c6066fef1fc64f2f97de4437657e2285f84d8  %s\n' "baseline/dist/$package" | sha256sum -c -
+cp "baseline/dist/$package.sha256" evidence/public-package.sha256
 vm=/tmp/lighttable-vm
 image=Arch-Linux-x86_64-cloudimg.qcow2
 curl -fsSL --retry 2 --max-time 180 "https://geo.mirror.pkgbuild.com/images/latest/$image" -o "$vm/$image"

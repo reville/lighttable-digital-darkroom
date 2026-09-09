@@ -45,10 +45,11 @@ runuser -u tester -- bash -euo pipefail -c '
   cd /work
   export XDG_RUNTIME_DIR=$(mktemp -d)
   /opt/lighttable/Python/bin/python3 -B /opt/lighttable/runtime-smoke.py /opt/lighttable > evidence/runtime.txt
-  if [[ ${VM_GPU:-0} != 1 ]]; then
+  if [[ ${VM_GPU:-0} == 1 ]]; then
+    timeout 1200s dbus-run-session -- bash scripts/linux/arch-release-desktop.sh hyprland
+  else
     timeout 1200s xvfb-run -a --server-args="-screen 0 1440x1000x24" dbus-run-session -- bash scripts/linux/arch-release-desktop.sh x11
   fi
-  timeout 1200s dbus-run-session -- bash scripts/linux/arch-release-desktop.sh hyprland
 '
 pacman -Qkk lighttable-bin > evidence/package-integrity-after.txt
 sha256sum dist/*.pkg.tar.zst > dist/SHA256SUMS

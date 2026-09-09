@@ -5,7 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
+concurrency:
+  group: arch-vm-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   desktop:
     strategy:
@@ -18,12 +20,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: LightTable-${{ matrix.distribution }}-acceptance
-          path: baseline
-          run-id: 34408647542
-          github-token: ${{ github.token }}
       - name: Boot Arch with a virtual graphics device and test Hyprland
         env:
           DISTRIBUTION: ${{ matrix.distribution }}
