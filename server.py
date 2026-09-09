@@ -1522,7 +1522,10 @@ def library_snapshot() -> dict:
     with LIBRARY_CACHE_LOCK:
         if (LIBRARY_CACHE.get("folder") == folder_identity and
                 LIBRARY_CACHE.get("expires", 0.0) > now):
-            return LIBRARY_CACHE
+            # A copy, not the live dictionary. Callers read "names" and
+            # "folders" outside this lock, and a move or rename on another
+            # thread clears the cache in between, leaving them with a KeyError.
+            return dict(LIBRARY_CACHE)
 
     folder_root = FOLDER.resolve()
     excluded_roots = {(FOLDER / EXPORT_DIR_NAME).resolve(),
@@ -1574,7 +1577,7 @@ def library_snapshot() -> dict:
     with LIBRARY_CACHE_LOCK:
         LIBRARY_CACHE.clear()
         LIBRARY_CACHE.update(snapshot)
-        return LIBRARY_CACHE
+        return dict(LIBRARY_CACHE)
 
 
 def list_images() -> list[str]:
@@ -1752,6 +1755,31 @@ def _photo_move_plan(source: Path, target: Path, *, index=None) -> dict:
     return {"source": source, "target": target, "sidecars": pairs, "shared": shared}
 
 
+def _claim_shared_sidecars(plans: list[dict]) -> None:
+    """A RAW and its JPEG share one sidecar, so the batch moves it once.
+
+    Each plan is preflighted before any staging, so neither can see the other's
+    target, and both listed the same `<stem>.xmp`. Staging then copied it twice
+    and the second copy failed onto an existing name, breaking the move for
+    exactly the RAW and JPEG pairing the app treats as ordinary.
+    """
+    claimed: dict[str, str] = {}
+    for plan in plans:
+        remaining = []
+        for sidecar, sidecar_target in plan["sidecars"]:
+            key = str(sidecar_target)
+            owner = claimed.get(key)
+            if owner is not None:
+                if owner != str(sidecar):
+                    raise ValueError(T(
+                        "{name} already exists; no files were moved",
+                        name=sidecar_target.name))
+                continue
+            claimed[key] = str(sidecar)
+            remaining.append((sidecar, sidecar_target))
+        plan["sidecars"] = remaining
+
+
 def _stage_photo_move(plan: dict) -> None:
     """Copy sidecars first, then no-clobber move the original.
 
@@ -1816,7 +1844,9 @@ def create_subfolder(parent: str, name) -> str:
 def rename_subfolder(relative: str, name) -> str:
     source = folder_path(relative, allow_root=False)
     destination = source.with_name(clean_folder_name(name))
-    if destination.exists():
+    # `Trips` and `trips` are the same directory on macOS and Windows, so
+    # `exists()` alone refused every change of capitalisation as a name clash.
+    if destination.exists() and not same_existing_file(destination, source):
         raise ValueError(T("a folder with that name already exists"))
     old_rel = source.relative_to(FOLDER.resolve()).as_posix()
     source.rename(destination)
@@ -1852,6 +1882,7 @@ def move_images(names: list[str], destination: str) -> list[str]:
     indexes = {folder: index_photo_companions(folder) for folder in {source.parent for source in sources}}
     plans = [_photo_move_plan(source, target, index=indexes[source.parent])
              for source, target in zip(sources, targets)]
+    _claim_shared_sidecars(plans)
     staged = []
     try:
         for plan in plans:
@@ -3594,7 +3625,15 @@ def render_rust(name: str, params: dict, width: int,
             try:
                 arr = linear_for(name, width, params)
                 rgb16 = np.ascontiguousarray((np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16))
-                cache_key = f"prev-v{INPUT_CACHE_VERSION}:{file_key(name)}:{width}:{preview_variant(name, width, params)}"
+                # The engine keys its resident input cache on this exact string.
+                # Without the RAW develop fingerprint, white balance, profile,
+                # highlight recovery and sensor denoise all collapse onto one
+                # entry and the previous settings' pixels are served for the new
+                # ones. Every other producer of RAW pixels includes it.
+                develop_key = (color_pipeline.raw_decode_fingerprint(params)
+                               if is_raw(name) else "romm")
+                cache_key = (f"prev-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
+                             f"{develop_key}:{width}:{variant or preview_variant(name, width, params)}")
                 with array_shared_input(rgb16, cache_key) as shared:
                     request.update(shared)
                     return preview_engine().render(request)
@@ -4623,8 +4662,16 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
     render_start = time.perf_counter()
     metrics = BACKGROUND_ENGINE.render(request)
     phases["engine"] = (time.perf_counter() - render_start) * 1000
+    try:
+        exchange_bytes = source.stat().st_size
+    except OSError:
+        # The shared input cache is pruned by size from other threads, so the
+        # file can be gone by now. This is a reported metric, not a result, and
+        # raising here would strand the shared export segment the engine has
+        # already published, with nothing left holding its name.
+        exchange_bytes = 0
     return dict(metrics, input_transport="tiff-fallback" if fallback else "tiff",
-                input_exchange_bytes=source.stat().st_size, input_fallback=fallback,
+                input_exchange_bytes=exchange_bytes, input_fallback=fallback,
                 phase_ms=phases)
 
 
@@ -4694,7 +4741,15 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             metrics = _resident_render_full(name, params, request)
             # Adoption unlinks the name immediately, even if a subsequent
             # cancellation prevents caching or delivering the mapped pixels.
-            return export_surface.adopt_surface(metrics["export_shared"])
+            descriptor = metrics["export_shared"]
+            try:
+                return export_surface.adopt_surface(descriptor)
+            except Exception:
+                # Nothing else holds this segment's name, and it can be a
+                # gibibyte, so release it rather than leaving it mapped for the
+                # life of the process.
+                export_surface.discard_surface(descriptor)
+                raise
         try:
             pixels = EXPORT_SHARED_CACHE.get_or_build(cache_key, build_shared, check_cancel)
             check_cancel()
@@ -6301,8 +6356,12 @@ def analyze_program_image(body: dict) -> dict:
         result["regions"] = regions
     reference = body.get("reference")
     if reference:
+        # Render the reference from its own stored edit. Carrying `state` over
+        # would apply this photo's params, grade, crop and masks to it, with
+        # mask bitmaps rasterised for the wrong geometry, and the comparison
+        # would then measure the primary photo against itself.
         reference_body = dict(body, name=str(reference), reference=None,
-                              regions=None)
+                              regions=None, state=None)
         reference_image = program_render_image(reference_body)
         size = (min(image.width, reference_image.width),
                 min(image.height, reference_image.height))
@@ -6320,8 +6379,10 @@ def analyze_program_image(body: dict) -> dict:
 def compare_program_image(body: dict) -> Image.Image:
     after = program_render_image(dict(body, before=False))
     if body.get("against"):
+        # The other photo is rendered from its own stored edit, not from the
+        # state supplied for this one.
         other = program_render_image(dict(body, name=str(body["against"]),
-                                          before=False))
+                                          before=False, state=None))
     else:
         other = program_render_image(dict(body, before=True))
     height = min(after.height, other.height)
