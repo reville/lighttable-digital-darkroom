@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} foto's gekozen",
     "{count} preset file could not be read": "{count} voorinstellingsbestand kon niet worden gelezen",
     "{count} preset files could not be read": "{count} voorinstellingsbestand(en) konden niet worden gelezen",
-    "{count} preset · click to apply, click again to turn off": "{count} voorinstelling · klik om toe te passen, klik nogmaals om uit te schakelen",
-    "{count} presets · click to apply, click again to turn off": "{count} voorinstellingen · klik om toe te passen, klik nogmaals om uit te schakelen",
     "{count} rated photo": "{count} beoordeelde foto",
     "{count} rated photos": "{count} beoordeelde foto's",
     "{count} selected": "{count} geselecteerd",
@@ -4384,10 +4382,6 @@
       "one": "{value} onverwachte afsluiting in de afgelopen 24 uur.",
       "other": "{value} onverwachte afsluitingen in de afgelopen 24 uur."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} voorinstelling · klik om toe te passen, klik nogmaals om uit te schakelen",
-      "other": "{count} voorinstellingen · klik om toe te passen, klik nogmaals om uit te schakelen"
-    },
     "{count} empty file": {
       "one": "{count} leeg bestand",
       "other": "{count} lege bestanden"
@@ -4421,5 +4415,5 @@
       "other": "{count} niet-beschikbare foto's overgeslagen"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }

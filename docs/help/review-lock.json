@@ -191,8 +191,8 @@
         "web/app.js": "8057a581880ea4cb461ccafd93ea6aa007fabe6285bf77089a58ef175c734d52",
         "web/index.html": "28558d9bd160d43e46e2da52089c9128b772979bd5b9dc87b812193e7659e5a6",
         "web/preset-amount.js": "c754d290a1333444cc76e5dc50de2cc4cab17deb8f44707c3358c4044f7bb476",
-        "web/preset-browser.css": "b219f60ea85fe2adbb9b40834248137bad15eb9c46074e6a1c56f6b3dbdade9b",
-        "web/preset-browser.js": "0781d320c91562620299d49478dd29ea5b1b6ae9a0e131448c1220500b29780d",
+        "web/preset-browser.css": "095690d8148f331b4cabda69acab59d4a4704fb9769fd2e00b2cb73685bc85d9",
+        "web/preset-browser.js": "57906372bd5988c7d4480ec561912de00654dd4d44e7795ac7e86107f9f92730",
         "web/presets.js": "60dc4c7700e0f41761dfb562ff1b8cf4fb0b2761fe444145e544f1b10ad004af"
       }
     },

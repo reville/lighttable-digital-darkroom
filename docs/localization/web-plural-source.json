@@ -229,10 +229,6 @@
       "other": "{count} preset files could not be read"
     },
     {
-      "one": "{count} preset · click to apply, click again to turn off",
-      "other": "{count} presets · click to apply, click again to turn off"
-    },
-    {
       "one": "{count} rated photo",
       "other": "{count} rated photos"
     },

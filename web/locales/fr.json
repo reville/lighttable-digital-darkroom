@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "a44068fe1e8d365cc9d6050c48c75b880717292d897e32dbbf136dd2d33ca4e2",
+  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4005,8 +4005,6 @@
     "{count} picked photos": "{count} photos sélectionnées",
     "{count} preset file could not be read": "{count} fichier de préréglage n’a pas pu être lu",
     "{count} preset files could not be read": "{count} fichier de préréglage n’a pas pu être lu",
-    "{count} preset · click to apply, click again to turn off": "{count} préréglage · cliquez pour appliquer, cliquez à nouveau pour désactiver",
-    "{count} presets · click to apply, click again to turn off": "{count} préréglages · cliquez pour appliquer, cliquez à nouveau pour désactiver",
     "{count} rated photo": "{count} photo notée",
     "{count} rated photos": "{count} photos notées",
     "{count} selected": "{count} sélectionné",
@@ -4448,11 +4446,6 @@
       "many": "{value} fermetures inattendues au cours des dernières 24 heures.",
       "other": "{value} fermetures inattendues au cours des dernières 24 heures."
     },
-    "{count} preset · click to apply, click again to turn off": {
-      "one": "{count} préréglage · cliquez pour appliquer, cliquez à nouveau pour désactiver",
-      "many": "{count} préréglages · cliquez pour appliquer, cliquez à nouveau pour désactiver",
-      "other": "{count} préréglages · cliquez pour appliquer, cliquez à nouveau pour désactiver"
-    },
     "{count} empty file": {
       "one": "{count} fichier vide",
       "many": "{count} fichiers vides",
@@ -4494,5 +4487,5 @@
       "other": "{count} photos indisponibles ignorées"
     }
   },
-  "pluralsDigest": "b6a0d1e9d8137d9d65510e6ca73c8263efe4b04750658084992dd6d281750452"
+  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
 }
