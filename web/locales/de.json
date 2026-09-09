@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4184,7 +4184,9 @@
     "That selection could not be completed. Try again.": "Diese Auswahl konnte nicht abgeschlossen werden. Versuchen Sie es erneut.",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Wenn die Markierung das Foto aus der Ansicht entfernt, in der Sie arbeiten, etwa beim Auswählen während die Seitenleiste Ohne Markierung zeigt, fährt der automatische Wechsel mit dem Foto fort, das an dessen Stelle tritt. Er kehrt nicht an den Anfang der Liste zurück.",
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Zieht man die beiden Punkte aufeinander, hat der Verlauf keine Richtung mehr und wählt nichts aus, bis Sie sie wieder trennen. Ein sehr kurzer Verlauf ist eine gültige harte Kante und wirkt in der Vorschau genauso wie in der exportierten Datei.",
-    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Eine Auswahl wird aus dem Foto erstellt, auf dem sie begonnen wurde. Ein Wechsel zu einem anderen Foto bricht sie ab, bleiben Sie also bei dem Foto, bis die Maske erscheint. Lässt sich die Auswahl nicht abschließen, meldet das Maskenfeld dies und es wird nichts hinzugefügt."
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Eine Auswahl wird aus dem Foto erstellt, auf dem sie begonnen wurde. Ein Wechsel zu einem anderen Foto bricht sie ab, bleiben Sie also bei dem Foto, bis die Maske erscheint. Lässt sich die Auswahl nicht abschließen, meldet das Maskenfeld dies und es wird nichts hinzugefügt.",
+    "Previews are already being built; finish or cancel that first": "Vorschauen werden bereits erstellt; beenden oder brechen Sie das zuerst ab",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde."
   },
   "plurals": {
     " · {count} paired file linked": {

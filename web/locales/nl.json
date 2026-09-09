@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4184,7 +4184,9 @@
     "That selection could not be completed. Try again.": "Die selectie kon niet worden voltooid. Probeer het opnieuw.",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Wanneer de markering de foto uit de weergave haalt waarin je werkt, bijvoorbeeld kiezen terwijl de zijbalk Zonder markering toont, gaat Automatisch doorgaan verder met de foto die haar plaats inneemt. Het keert niet terug naar het begin van de lijst.",
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand.",
-    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd."
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd.",
+    "Previews are already being built; finish or cancel that first": "Voorvertoningen worden al gemaakt; rond dat eerst af of annuleer het",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Een bulkactie bereikt alleen de geselecteerde foto’s die het huidige filter, de map en de zoekopdracht nog tonen. Een filter wijzigen beperkt dus wat de volgende actie raakt, en de markeringsbalk telt wat ze zou bereiken."
   },
   "plurals": {
     " · {count} paired file linked": {

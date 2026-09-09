@@ -262,6 +262,7 @@
           "paragraphs": [
             "Klik memilih satu foto aktif. Shift-klik memilih rentang berurutan. Command-klik di Mac atau Control-klik menambahkan atau menghapus foto individual.",
             "Di kisi, aksi bendera, rating, dan label warna diterapkan ke set yang dipilih. Di Detail, aksi penandaan tersebut diterapkan ke foto aktif. Di Survey, aksi tersebut diterapkan ke sel survei aktif. Periksa konteks toolbar penandaan sebelum aksi batch.",
+            "Tindakan massal hanya menjangkau foto terpilih yang masih ditampilkan oleh filter, folder, dan pencarian saat ini. Mengubah filter karena itu mempersempit apa yang disentuh tindakan berikutnya, dan bilah penandaan menghitung apa yang akan dijangkaunya.",
             "Buka Info di samping salah satu kisi untuk melihat metadata atau memberi tag pada foto terpilih. Kisi menyempit untuk memberi ruang bagi inspector. Pilih alat inspector lain untuk kembali ke kisi yang lebih lebar."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

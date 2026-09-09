@@ -262,6 +262,7 @@
           "paragraphs": [
             "Klik selecteert één actieve foto. Shift-klik selecteert een aaneengesloten bereik. Command-klik op Mac of Control-klik voegt afzonderlijke foto's toe of verwijdert ze.",
             "In een raster gelden markering-, beoordelings- en kleurlabelacties voor de geselecteerde set. In Detail gelden die markeeracties voor de actieve foto. In Overzicht gelden ze voor de actieve overzichtscel. Controleer de context van de markeringstoolbalk vóór een batchactie.",
+            "Een bulkactie bereikt alleen de geselecteerde foto’s die het huidige filter, de map en de zoekopdracht nog tonen. Een filter wijzigen beperkt dus wat de volgende actie raakt, en de markeringsbalk telt wat ze zou bereiken.",
             "Open Info naast een van beide rasters om metagegevens te bekijken of geselecteerde foto's te taggen. Het raster wordt smaller om plaats te maken voor de inspecteur. Kies een ander inspectiegereedschap om terug te keren naar het bredere raster."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

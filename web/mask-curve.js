@@ -67,7 +67,7 @@ export function localCurveLUT(points) {
  * save(mask) runs once per completed gesture. Cancellation restores its input.
  * An optional select uses L/R/G/B values; without one, only curveL is exposed.
  */
-export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, changed, save }) {
+export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, dropUndo, changed, save }) {
   const cache = new WeakMap();
   let state = null, selected = 0, gesture = null;
   canvas.tabIndex = 0;
@@ -174,6 +174,9 @@ export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, ch
       if (!previous.hadGrade && Object.keys(previous.grade).length === 0) delete previous.mask.grade;
       previous.state.points = previous.beforePoints;
       previous.state.source = copyCurve(previous.beforeValue);
+      // The curve is back where it started, so the step this gesture pushed
+      // would be an Undo that does nothing. Withdraw it.
+      dropUndo?.(previous.undoState);
       changed(previous.mask);
     } else if (!cancel && stillOwned) save(previous.mask);
   }
@@ -207,7 +210,7 @@ export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, ch
   }
 
   function edit(update) {
-    if (!gesture.dirty) pushUndo();
+    if (!gesture.dirty) gesture.undoState = pushUndo();
     update();
     const grade = state.mask.grade ||= {};
     if (isIdentityPoints(state.points)) delete grade[state.key];

@@ -262,6 +262,7 @@
           "paragraphs": [
             "Ein Klick wählt ein einzelnes aktives Foto aus. Shift-Klick wählt einen zusammenhängenden Bereich aus. Command-Klick auf dem Mac oder Strg-Klick fügt einzelne Fotos hinzu oder entfernt sie.",
             "In einem Raster gelten Markierungs-, Bewertungs- und Farbetikett-Aktionen für die ausgewählte Gruppe. In Details gelten diese Markierungsaktionen für das aktive Foto. In Übersicht gelten sie für die aktive Übersichtszelle. Prüfen Sie vor einer Stapelaktion den Kontext der Markierungsleiste.",
+            "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde.",
             "Öffnen Sie Info neben einem der beiden Raster, um Metadaten anzuzeigen oder ausgewählte Fotos zu verschlagworten. Das Raster wird schmaler, um Platz für den Inspektor zu schaffen. Wählen Sie ein anderes Inspektorwerkzeug, um zum breiteren Raster zurückzukehren."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

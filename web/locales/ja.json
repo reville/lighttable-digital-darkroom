@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4184,7 +4184,9 @@
     "That selection could not be completed. Try again.": "その選択を完了できませんでした。もう一度お試しください。",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "サイドバーがフラグなしを表示している状態でピックするなど、マークによって写真が作業中のビューから外れる場合、自動進むはその位置に来た写真で続行します。リストの先頭には戻りません。",
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "2つの点を重ねるとグラデーションの方向がなくなり、離すまで何も選択されません。ごく短いグラデーションは有効なハードエッジで、プレビューと書き出したファイルで同じように適用されます。",
-    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選択は開始した写真から切り出されます。完了前に別の写真へ移動すると取り消されるので、マスクが現れるまでその写真にとどまってください。選択を完了できない場合は、マスクパネルがそれを知らせ、何も追加されません。"
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選択は開始した写真から切り出されます。完了前に別の写真へ移動すると取り消されるので、マスクが現れるまでその写真にとどまってください。選択を完了できない場合は、マスクパネルがそれを知らせ、何も追加されません。",
+    "Previews are already being built; finish or cancel that first": "プレビューはすでに作成中です。先に完了するかキャンセルしてください",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "一括操作は、現在のフィルター、フォルダ、検索がまだ表示している選択中の写真にのみ及びます。フィルターを変えると次の操作が及ぶ範囲は狭まり、マーキングバーは実際に及ぶ枚数を表示します。"
   },
   "plurals": {
     " · {count} paired file linked": {

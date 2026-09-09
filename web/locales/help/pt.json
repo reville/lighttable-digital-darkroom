@@ -262,6 +262,7 @@
           "paragraphs": [
             "Clicar seleciona uma única foto ativa. Shift+clique seleciona um intervalo contíguo. Command+clique no Mac ou Control+clique adiciona ou remove fotos individuais.",
             "Em uma grade, as ações de bandeira, avaliação e rótulo de cor se aplicam ao conjunto selecionado. Em Detalhe, essas ações de marcação se aplicam à foto ativa. Em Varredura, elas se aplicam à célula ativa da varredura. Verifique o contexto da barra de ferramentas de marcação antes de uma ação em lote.",
+            "Uma ação em lote alcança apenas as fotos selecionadas que o filtro, a pasta e a pesquisa atuais ainda mostram. Mudar um filtro reduz assim o que a ação seguinte toca, e a barra de marcação conta o que iria alcançar.",
             "Abra Informações ao lado de qualquer uma das grades para ver metadados ou etiquetar as fotos selecionadas. A grade se estreita para abrir espaço para o inspetor. Escolha outra ferramenta do inspetor para voltar à grade mais ampla."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

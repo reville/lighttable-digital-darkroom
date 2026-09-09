@@ -262,6 +262,7 @@
           "paragraphs": [
             "Al hacer clic se selecciona una sola foto activa. Shift+clic selecciona un rango contiguo. Command+clic en Mac o Control+clic agrega o quita fotos individuales.",
             "En una cuadrícula, las acciones de marca, calificación y etiqueta de color se aplican al conjunto seleccionado. En Detalle, esas acciones de marcado se aplican a la foto activa. En Vista general, se aplican a la celda activa de la vista general. Compruebe el contexto de la barra de herramientas de marcado antes de una acción por lote.",
+            "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría.",
             "Abra Información junto a cualquiera de las cuadrículas para ver metadatos o etiquetar fotos seleccionadas. La cuadrícula se estrecha para dejar espacio al inspector. Elija otra herramienta del inspector para volver a la cuadrícula más ancha."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

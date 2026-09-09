@@ -262,6 +262,7 @@
           "paragraphs": [
             "Nhấp chọn một ảnh đang hoạt động duy nhất. Shift-nhấp chọn một phạm vi liên tiếp. Command-nhấp trên Mac hoặc Control-nhấp sẽ thêm hoặc bỏ từng ảnh riêng lẻ.",
             "Trong lưới, các hành động cờ, xếp hạng và nhãn màu áp dụng cho tập hợp đã chọn. Trong Detail, các hành động đánh dấu đó áp dụng cho ảnh đang hoạt động. Trong Survey, chúng áp dụng cho ô xem nhanh đang hoạt động. Kiểm tra ngữ cảnh của thanh công cụ đánh dấu trước khi thực hiện thao tác lô.",
+            "Một thao tác hàng loạt chỉ tác động đến những ảnh đã chọn mà bộ lọc, thư mục và tìm kiếm hiện tại vẫn hiển thị. Vì vậy đổi bộ lọc sẽ thu hẹp phạm vi của thao tác kế tiếp, và thanh đánh dấu đếm đúng số ảnh sẽ bị tác động.",
             "Mở Thông tin bên cạnh một trong hai lưới để xem siêu dữ liệu hoặc gắn thẻ các ảnh đã chọn. Lưới thu hẹp lại để dành chỗ cho bảng kiểm tra. Chọn một công cụ bảng kiểm tra khác để quay lại lưới rộng hơn."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

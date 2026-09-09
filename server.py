@@ -5758,6 +5758,13 @@ class PreviewPregenQueue:
 
     def start(self, names: list[str], width: int = 3840) -> int:
         with self.lock:
+            # One batch at a time, as the mask queue already requires. Replacing
+            # a running batch abandoned its job record in "running" forever,
+            # kept the previous batch's width for the new names, and pointed the
+            # old cancel handle at the new work.
+            if self.active or (self.thread is not None and self.thread.is_alive()):
+                raise ValueError(T(
+                    "Previews are already being built; finish or cancel that first"))
             self.cancel_requested = False
             self.queue = [str(n) for n in names]
             self.total = len(self.queue)
@@ -5768,7 +5775,7 @@ class PreviewPregenQueue:
                 "cache.pregenerate", total=self.total,
                 state="running" if self.total else "done",
                 cancel=self.cancel)["id"]
-            if not self.active and self.queue:
+            if self.queue:
                 self.active = True
                 self.thread = threading.Thread(
                     target=self._worker, args=(width,), daemon=True,
@@ -5781,8 +5788,12 @@ class PreviewPregenQueue:
         with self.lock:
             self.cancel_requested = True
             self.queue.clear()
-            self.active = False
             self.current = ""
+            # The worker clears `active` when it stops. Clearing it here while
+            # it is still inside a render let the next start spawn a second
+            # worker onto the same queue.
+            if self.thread is None or not self.thread.is_alive():
+                self.active = False
 
     def status(self) -> dict:
         with self.lock:
@@ -7230,7 +7241,14 @@ class Handler(BaseHTTPRequestHandler):
                 body = self._body()
                 with UI_STATE_LOCK:
                     target = dict(UI_STATE)
-                if not target or time.time() - target.get("reportedAt", 0) > 10:
+                # The window's heartbeat is a timer, and browsers throttle
+                # timers in a window that is not in front, so a fresh report is
+                # not evidence of life and a stale one is not evidence of death.
+                # The event stream it answers on is, so trust that first and
+                # keep the heartbeat only as the fallback.
+                listening = EVENTS.client_connected(target.get("client", ""))
+                fresh = bool(target) and time.time() - target.get("reportedAt", 0) <= 10
+                if not target or not (listening or fresh):
                     raise APIError(409, T("no live LightTable window is connected"),
                                    "no-window")
                 if target.get("allowAutomation") is False:

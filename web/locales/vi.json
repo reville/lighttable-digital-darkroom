@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4184,7 +4184,9 @@
     "That selection could not be completed. Try again.": "Không thể hoàn tất vùng chọn đó. Hãy thử lại.",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "Khi việc đánh dấu đưa ảnh ra khỏi chế độ xem bạn đang làm việc, chẳng hạn chọn giữ trong khi thanh bên hiển thị Chưa gắn cờ, tự động chuyển ảnh sẽ tiếp tục với ảnh thế chỗ nó. Nó không quay về đầu danh sách.",
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất.",
-    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào."
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào.",
+    "Previews are already being built; finish or cancel that first": "Bản xem trước đang được tạo; hãy hoàn tất hoặc hủy trước đã",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Một thao tác hàng loạt chỉ tác động đến những ảnh đã chọn mà bộ lọc, thư mục và tìm kiếm hiện tại vẫn hiển thị. Vì vậy đổi bộ lọc sẽ thu hẹp phạm vi của thao tác kế tiếp, và thanh đánh dấu đếm đúng số ảnh sẽ bị tác động."
   },
   "plurals": {
     " · {count} paired file linked": {

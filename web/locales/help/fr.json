@@ -262,6 +262,7 @@
           "paragraphs": [
             "Un clic sélectionne une seule photo active. Shift-clic sélectionne une plage contiguë. Command-clic sur Mac ou Control-clic ajoute ou retire des photos individuelles.",
             "Dans une grille, les actions de drapeau, de note et d’étiquette couleur s’appliquent à l’ensemble sélectionné. Dans Détail, ces actions de marquage s’appliquent à la photo active. Dans Vue d’ensemble, elles s’appliquent à la cellule de vue d’ensemble active. Vérifiez le contexte de la barre d’outils de marquage avant une action par lot.",
+            "Une action par lot ne touche que les photos sélectionnées que le filtre, le dossier et la recherche actuels affichent encore. Changer de filtre réduit donc ce que la prochaine action atteindra, et la barre de marquage compte ce qu’elle toucherait.",
             "Ouvrez Infos à côté de l’une ou l’autre grille pour afficher les métadonnées ou étiqueter les photos sélectionnées. La grille se rétrécit pour laisser de la place à l’inspecteur. Choisissez un autre outil d’inspection pour revenir à la grille plus large."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

@@ -700,7 +700,10 @@ process.stdout.write(JSON.stringify({
         self.assertIn("<svg", export_button)
         self.assertNotIn(">Export<", export_button)
         self.assertIn("$('exportBtn').onclick = openExportModal;", javascript)
-        self.assertIn("$('exportBtn2').onclick = runExport;", javascript)
+        # Wrapped, not handed the handler directly: runExport's first argument
+        # is the option overrides, and a MouseEvent carries a truthy `which`
+        # that would replace the export scope with a mouse button number.
+        self.assertIn("$('exportBtn2').onclick = () => runExport();", javascript)
         self.assertIn("$('exportModalRun').onclick = async () => {", javascript)
 
     def test_crop_pane_immediately_activates_crop_mode(self):

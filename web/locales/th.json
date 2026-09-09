@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4184,7 +4184,9 @@
     "That selection could not be completed. Try again.": "ไม่สามารถทำการเลือกนั้นให้เสร็จได้ ลองอีกครั้ง",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.": "เมื่อการทำเครื่องหมายทำให้รูปภาพหลุดออกจากมุมมองที่คุณกำลังทำงานอยู่ เช่น การเลือกขณะที่แถบด้านข้างแสดงไม่ได้ตั้งธง การเลื่อนไปยังภาพถัดไปอัตโนมัติจะดำเนินต่อด้วยรูปภาพที่เข้ามาแทนที่ ไม่ย้อนกลับไปที่ต้นรายการ",
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "การลากจุดทั้งสองมาทับกันทำให้ไล่ระดับไม่มีทิศทาง จึงไม่เลือกสิ่งใดจนกว่าคุณจะแยกจุดออกจากกันอีกครั้ง ไล่ระดับที่สั้นมากถือเป็นขอบคมที่ใช้ได้ และให้ผลเหมือนกันทั้งในตัวอย่างและในไฟล์ที่ส่งออก",
-    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "การเลือกถูกตัดจากรูปภาพที่เริ่มไว้ การย้ายไปรูปภาพอื่นก่อนเสร็จจะยกเลิกการเลือก จึงควรอยู่ที่รูปภาพนั้นจนกว่ามาสก์จะปรากฏ หากทำการเลือกไม่สำเร็จ แผงมาสก์จะแจ้งให้ทราบและจะไม่มีการเพิ่มสิ่งใด"
+    "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "การเลือกถูกตัดจากรูปภาพที่เริ่มไว้ การย้ายไปรูปภาพอื่นก่อนเสร็จจะยกเลิกการเลือก จึงควรอยู่ที่รูปภาพนั้นจนกว่ามาสก์จะปรากฏ หากทำการเลือกไม่สำเร็จ แผงมาสก์จะแจ้งให้ทราบและจะไม่มีการเพิ่มสิ่งใด",
+    "Previews are already being built; finish or cancel that first": "กำลังสร้างตัวอย่างอยู่แล้ว โปรดทำให้เสร็จหรือยกเลิกก่อน",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "การดำเนินการเป็นชุดจะมีผลเฉพาะกับรูปภาพที่เลือกไว้ซึ่งตัวกรอง โฟลเดอร์ และการค้นหาปัจจุบันยังแสดงอยู่ การเปลี่ยนตัวกรองจึงลดขอบเขตของการดำเนินการถัดไป และแถบทำเครื่องหมายจะนับจำนวนที่จะมีผลจริง"
   },
   "plurals": {
     " · {count} paired file linked": {

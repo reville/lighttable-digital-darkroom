@@ -262,6 +262,7 @@
           "paragraphs": [
             "Kliknięcie wybiera pojedyncze aktywne zdjęcie. Shift+klik wybiera ciągły zakres. Command+klik na Macu lub Control+klik dodaje albo usuwa poszczególne zdjęcia.",
             "W siatce działania flag, oceny i etykiety kolorystycznej dotyczą zaznaczonego zestawu. W Szczegóły te działania oznaczania dotyczą aktywnego zdjęcia. W Przeglądzie dotyczą aktywnej komórki przeglądu. Przed działaniem wsadowym sprawdź kontekst paska narzędzi oznaczania.",
+            "Działanie zbiorcze obejmuje tylko wybrane zdjęcia, które bieżący filtr, folder i wyszukiwanie nadal pokazują. Zmiana filtra zawęża więc zakres następnego działania, a pasek oznaczania liczy to, co zostanie objęte.",
             "Otwórz Informacje obok dowolnej siatki, aby wyświetlić metadane lub oznaczyć wybrane zdjęcia. Siatka zwęża się, aby zrobić miejsce dla inspektora. Wybierz inne narzędzie inspektora, aby wrócić do szerszej siatki."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

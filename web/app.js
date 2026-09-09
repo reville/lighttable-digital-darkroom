@@ -728,7 +728,16 @@ function pushUndoState(state) {
   updateUndoRedoButtons();
   scheduleNativeMenuState();
 }
-function pushUndo() { pushUndoState(snapshot()); }
+function pushUndo() { const state = snapshot(); pushUndoState(state); return state; }
+/* Withdraw a step a cancelled gesture pushed, so Undo does not become a
+ * press that visibly does nothing. Guarded: it only drops the snapshot if
+ * it is still the newest one. */
+function dropUndo(state) {
+  if (typeof state !== 'string' || !photoUndo.dropLast(state)) return false;
+  updateUndoRedoButtons();
+  scheduleNativeMenuState();
+  return true;
+}
 function restore(json, stack, persist = true) {
   const previousFilm = filmRenderFingerprint();
   const previousBaseEdits = baseEditsFingerprint();
@@ -1403,6 +1412,9 @@ const smoothStep = (edge0, edge1, value) => {
   return t * t * (3 - 2 * t);
 };
 
+/* Each entry holds a full canvas at mask-texture resolution and was only ever
+ * removed when its stroke list emptied. Bounded, oldest entry out first. */
+const BRUSH_RASTER_CACHE_MAX = 24;
 const brushRasterCache = new Map();
 function legacyBrushStrokeValues(strokes, width, height, cacheKey = '') {
   const source = strokes || [];
@@ -1429,6 +1441,11 @@ function legacyBrushStrokeValues(strokes, width, height, cacheKey = '') {
       counts: [], settings: [], last: [] };
     entry.ctx.globalCompositeOperation = 'lighten';
     brushRasterCache.set(cacheKey, entry);
+    while (brushRasterCache.size > BRUSH_RASTER_CACHE_MAX) {
+      const oldest = brushRasterCache.keys().next().value;
+      if (oldest === cacheKey) break;
+      brushRasterCache.delete(oldest);
+    }
   }
   for (let index = 0; index < source.length; index++) {
     const stroke = source[index];
@@ -1502,7 +1519,7 @@ function captureBrushEdgeMask(point) {
   }
   ctx.putImageData(pixels, 0, 0);
   const data = canvas.toDataURL('image/png').split(',')[1];
-  semanticPngCache.set(data, {source: values, width: canvas.width, height: canvas.height});
+  cacheSemanticPng(data, {source: values, width: canvas.width, height: canvas.height});
   return {width: canvas.width, height: canvas.height, encoding: 'png', data};
 }
 
@@ -1558,7 +1575,7 @@ function semanticBitmapValues(component, width, height) {
     const key = String(bitmap.data || '');
     const cached = semanticPngCache.get(key);
     if (!cached) {
-      semanticPngCache.set(key, { loading: true });
+      cacheSemanticPng(key, { loading: true });
       const image = new Image();
       image.onload = () => {
         const canvas = document.createElement('canvas');
@@ -1568,13 +1585,13 @@ function semanticBitmapValues(component, width, height) {
         const rgba = context.getImageData(0, 0, sourceWidth, sourceHeight).data;
         const source = new Uint8Array(sourceWidth * sourceHeight);
         for (let i = 0; i < source.length; i++) source[i] = rgba[i * 4];
-        semanticPngCache.set(key, { source, width: sourceWidth, height: sourceHeight });
+        cacheSemanticPng(key, { source, width: sourceWidth, height: sourceHeight });
         // A first render may have cached the still-loading PNG as empty.
         maskGeometryCache.clear();
         cumulativeBrushCache.clear();
         S.maskTextureDirty = true; drawGrade();
       };
-      image.onerror = () => semanticPngCache.set(key, { failed: true });
+      image.onerror = () => cacheSemanticPng(key, { failed: true });
       image.src = `data:image/png;base64,${key}`;
       return new Uint8Array(width * height);
     }
@@ -1594,6 +1611,19 @@ function semanticBitmapValues(component, width, height) {
 }
 
 const semanticPngCache = new Map();
+/* Keyed by the base64 PNG itself and holding a decoded raster up to
+ * 1024 x 1024, so roughly a megabyte per entry. Every refine stroke and every
+ * AI mask painted in the session adds one, and nothing used to remove them.
+ * Bounded like the two neighbouring caches, oldest entry out first. */
+const SEMANTIC_PNG_CACHE_MAX = 48;
+function cacheSemanticPng(key, value) {
+  if (semanticPngCache.has(key)) semanticPngCache.delete(key);
+  semanticPngCache.set(key, value);
+  while (semanticPngCache.size > SEMANTIC_PNG_CACHE_MAX) {
+    semanticPngCache.delete(semanticPngCache.keys().next().value);
+  }
+  return value;
+}
 function resizeMaskValues(source, sourceWidth, sourceHeight, width, height) {
   const values = new Uint8Array(width * height);
   for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
@@ -2449,7 +2479,7 @@ $('maskBrushAutoMask').onchange = () => {
   syncMaskPanel();
 };
 MASK_CURVE = installMaskCurve({canvas: $('maskCurve'), reset: $('maskCurveReset'),
-  channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo,
+  channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo, dropUndo,
   changed: () => drawGrade(), save: () => saveState()});
 for (const [id, key] of [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
   ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
@@ -6799,7 +6829,11 @@ function broadcastToLoupe(photo) {
     type: 'sync',
     name: photo.name,
     metadata: metaParts,
-    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}&v=2`,
+    /* The server marks this response immutable for a year, so the URL has to
+     * carry the file's identity. Without it an external edit to the original
+     * leaves the loupe showing the previous frame for the life of the cache. */
+    url: `/api/orig?name=${encodeURIComponent(photo.name)}&w=${sourceLongEdge(photo)}&v=2`
+      + `&key=${encodeURIComponent(photo.fileKey || photo.mtime || '')}`,
   });
 }
 
@@ -6928,16 +6962,26 @@ async function loadLensProfile(name) {
   }
   syncOpticsPanel();
 }
+/* Selected photos that are still in the current view.
+ *
+ * Nothing clears the selection when the filter, folder, or search changes, so
+ * resolving it against the whole library let flags, ratings and labels land on
+ * photos that were no longer on screen while the marking bar still counted
+ * them. `openSurvey` already intersects the same way. */
+function selectedVisibleTargets() {
+  if (!S.msel.size) return [];
+  const listed = new Set(visible().map((image) => image.name));
+  return [...S.msel]
+    .map((name) => S.images.find((image) => image.name === name))
+    .filter((image) => image && listed.has(image.name));
+}
+
 function markingTargets() {
   if (SELECTION_REQUEST?.pending) return [];
   const survey = surveyTarget();
   if (survey) return [survey];
   if (S.msel.size || S.viewMode !== 'detail') {
-    if (S.msel.size) {
-      return [...S.msel]
-        .map((name) => S.images.find((image) => image.name === name))
-        .filter(Boolean);
-    }
+    if (S.msel.size) return selectedVisibleTargets();
     const ordered = visible();
     return ordered.includes(cur()) ? [cur()] : (ordered[0] ? [ordered[0]] : []);
   }
@@ -8255,9 +8299,9 @@ function confirmTransfer(id) {
 }
 function transferTargets() {
   if (SELECTION_REQUEST?.pending) return [];
-  const selected = [...S.msel]
-    .map((name) => S.images.find((im) => im.name === name))
-    .filter(Boolean);
+  // Same rule as marking: a selection that a filter change has hidden must not
+  // silently become the target of a paste, an export, or a batch action.
+  const selected = selectedVisibleTargets();
   return selected.length ? selected : (cur() ? [cur()] : []);
 }
 function photoReadyForEditing() {
@@ -8951,7 +8995,10 @@ $('exportModalRun').onclick = async () => {
 };
 
 $('exportBtn').onclick = openExportModal;
-$('exportBtn2').onclick = runExport;
+/* Call it, do not hand it the click. `runExport`'s first argument is the option
+ * overrides, and a MouseEvent carries a truthy `which`, which would override
+ * the export scope with a mouse button number and queue the whole catalog. */
+$('exportBtn2').onclick = () => runExport();
 loadExportRecipes();
 
 /* ------------------------------------------------ external pixel editor */

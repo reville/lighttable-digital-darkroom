@@ -89,6 +89,7 @@
     "Photo identity changed since preview",
     "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
     "Preview a bounded selection before applying",
+    "Previews are already being built; finish or cancel that first",
     "Render worker stopped responding; using CPU for this session",
     "Requested metadata could not be saved.",
     "Richer descriptions require macOS 27 or later",
@@ -333,7 +334,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "b26e507acc42a4091dc5f28d871740846b73ffd50fafa948e628151a0d8f8131",
+  "sourceDigest": "857bea6547bfab15267d520d5c7b7a583f0acf27d489a59271db87c3af030cf4",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -384,6 +385,7 @@
       "Photo identity changed since preview",
       "Photos are open in folder mode and the damaged catalog has not been changed. Open Library Health to salvage it, restore a backup, or start a new catalog.",
       "Preview a bounded selection before applying",
+      "Previews are already being built; finish or cancel that first",
       "Render worker stopped responding; using CPU for this session",
       "Requested metadata could not be saved.",
       "Select between 1 and 5,000 photos for a mask batch",

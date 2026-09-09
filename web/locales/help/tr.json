@@ -262,6 +262,7 @@
           "paragraphs": [
             "Tıklama tek bir etkin fotoğraf seçer. Shift+tıklama bitişik bir aralık seçer. Mac’te Command+tıklama ya da Control+tıklama tek tek fotoğrafları ekler veya kaldırır.",
             "Bir ızgarada bayrak, derecelendirme ve renk etiketi eylemleri seçili kümeye uygulanır. Ayrıntı'da bu işaretleme eylemleri etkin fotoğrafa uygulanır. İncele'de etkin inceleme hücresine uygulanır. Toplu bir işlemden önce işaretleme araç çubuğunun bağlamını kontrol edin.",
+            "Toplu bir işlem yalnızca geçerli süzgecin, klasörün ve aramanın hâlâ gösterdiği seçili fotoğraflara ulaşır. Bu nedenle süzgeci değiştirmek sonraki işlemin kapsamını daraltır ve işaretleme çubuğu ulaşacağı sayıyı gösterir.",
             "Üstveriyi görmek veya seçili fotoğraflara etiket eklemek için her iki ızgaranın yanındaki Bilgi’yi açın. Denetleyiciye yer açmak için ızgara daralır. Daha geniş ızgaraya dönmek için başka bir denetleyici aracı seçin."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }

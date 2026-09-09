@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9",
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -347,6 +347,7 @@
     "8 bit": "8 bit",
     "900 px": "900 px",
     "A RAW original cannot be edited in place; send an adjusted TIFF": "A RAW original cannot be edited in place; send an adjusted TIFF",
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.",
     "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.": "A batch can affect up to 5,000 photos, including linked companions. Removing a hierarchical keyword removes that exact path, not every descendant. The keyword tree and suggestions use terms already in the catalog.",
     "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.": "A built-in preset is read-only. Save a copy… puts a named copy in Yours. Hide preset removes it from the usual Built-in view; Show hidden and Restore to Built-in bring it back.",
     "A damaged local index was preserved and rebuilt.": "A damaged local index was preserved and rebuilt.",
@@ -2440,6 +2441,7 @@
     "Preview unavailable · select to apply": "Preview unavailable · select to apply",
     "Preview unavailable. Try again.": "Preview unavailable. Try again.",
     "Preview {value} px · source {value2} px": "Preview {value} px · source {value2} px",
+    "Previews are already being built; finish or cancel that first": "Previews are already being built; finish or cancel that first",
     "Previews show 200 files per page. Selection carries across pages; Select all and Select none apply to the whole scan, including pages you have not opened.": "Previews show 200 files per page. Selection carries across pages; Select all and Select none apply to the whole scan, including pages you have not opened.",
     "Previews use this photo’s edits. Choose a stock to apply it.": "Previews use this photo’s edits. Choose a stock to apply it.",
     "Previous": "Previous",

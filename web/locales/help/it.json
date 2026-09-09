@@ -262,6 +262,7 @@
           "paragraphs": [
             "Un clic seleziona una singola foto attiva. Shift-clic seleziona un intervallo contiguo. Command-clic su Mac o Control-clic aggiunge o rimuove singole foto.",
             "In una griglia, le azioni contrassegno, valutazione ed etichetta colore si applicano all’insieme selezionato. In Dettagli, tali azioni di marcatura si applicano alla foto attiva. In Panoramica, si applicano alla cella panoramica attiva. Controlla il contesto della barra degli strumenti di marcatura prima di un’azione in batch.",
+            "Un’azione in blocco raggiunge solo le foto selezionate che il filtro, la cartella e la ricerca attuali mostrano ancora. Cambiare un filtro restringe quindi ciò che l’azione successiva tocca, e la barra di contrassegno conta ciò che raggiungerebbe.",
             "Apri Info accanto a una delle due griglie per visualizzare i metadati o taggare le foto selezionate. La griglia si restringe per fare spazio all'ispettore. Scegli un altro strumento dell'ispettore per tornare alla griglia più ampia."
           ]
         }
@@ -3207,5 +3208,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "427ec2361f71b25e92365729305cc8bde2af284254dea2d87e4fe4e5a1b291d9"
+  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
 }
