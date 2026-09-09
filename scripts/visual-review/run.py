@@ -98,16 +98,20 @@ def preflight(app):
     return checks, recorder
 
 
-def completed_steps(folder):
+def progress_records(folder, stage):
     log = folder / 'native-perf.jsonl'
     records = []
     if log.is_file():
         for line in log.read_text().splitlines():
             try:
                 entry = json.loads(line)
-                if entry.get('stage') == 'visual-step-end': records.append(entry)
+                if entry.get('stage') == stage: records.append(entry)
             except json.JSONDecodeError: continue
     return records
+
+
+def completed_steps(folder):
+    return progress_records(folder, 'visual-step-end')
 
 
 def capture_coverage(metadata, steps):
@@ -184,6 +188,7 @@ def report(folder):
     review = load('review.json', {'reviewStatus': 'not-reviewed', 'findings': []})
     refs = load('references.json', [])
     analysis = load('frame-analysis.json', {})
+    bursts = load('bursts.json', [])
     esc = lambda x: html.escape(str(x), quote=True)
     parts = [f'<p class="label">LightTable · Recorded journey review</p><h1>{esc(result.get("status", "NOT DONE"))}</h1>',
              '<p>Functional assertions, capture coverage and visual inspection are reported separately.</p>',
@@ -191,9 +196,14 @@ def report(folder):
     if review.get('summary'): parts.append(f'<p>{esc(review["summary"])}</p>')
     if result.get('error'): parts.append(f'<p><strong>Blocker:</strong> {esc(result["error"])}</p>')
     parts.append('<h2>Run evidence</h2><ul>')
-    for name in ['setup.json', 'preflight.json', 'provenance.json', 'result.json', 'capture.json', 'frame-analysis.json', 'review.json', 'steps.json', 'window.mov']:
+    for name in ['setup.json', 'preflight.json', 'provenance.json', 'result.json', 'capture.json', 'frame-analysis.json', 'review.json', 'steps.json', 'bursts.json', 'window.mov']:
         if (folder / name).is_file(): parts.append(f'<li><a href="{name}">{name}</a></li>')
     parts.append('</ul>')
+    if bursts:
+        parts.append('<h2>Rapid input bursts</h2><p>Measured dispatch time for repeated UI commands or DOM inputs. This measures input dispatch, not completed rendering.</p><table><tr><th>Sequence</th><th>Inputs</th><th>Dispatch time</th></tr>')
+        for burst in bursts:
+            parts.append(f'<tr><td>{esc(burst["name"])}</td><td>{esc(burst["count"])}</td><td>{esc(burst["dispatchMs"])} ms</td></tr>')
+        parts.append('</table>')
     if result.get('previous'):
         previous = Path(result['previous'])
         parts.append(f'<p>Previous run: <a href="{esc(os.path.relpath(previous / "index.html", folder))}">open report</a>. '
@@ -243,7 +253,7 @@ def report(folder):
         url = str(ref.get('url', ''))
         if not url.startswith(('https://', 'http://')): continue
         parts.append(f'<p><a href="{esc(url)}">{esc(ref.get("title", "Reference"))}</a> · {esc(ref.get("journey"))} · {esc(ref.get("purpose"))}</p><p>{esc(ref.get("notes", ""))}</p>')
-    parts.append('<h2>Coverage limits</h2><p>Scripted UI commands and DOM events. This first version covers browse, zoom, basic exposure, undo/redo, compare, and navigation persistence. Presets, RAW decoding, crop, masks, window resizing, export, restart recovery and OS input routing are not covered.</p><p>Frame-change flags require review. Sparse extracted frames cannot rule out brief flicker. Capture settings and dropped frames affect what can be concluded.</p>')
+    parts.append('<h2>Coverage limits</h2><p>Only the actions listed in this report ran. Scripted UI commands and DOM events do not prove OS input routing. Preset application, RAW decoding, crop geometry edits, mask creation, window resizing, export and restart recovery are not covered.</p><p>Frame-change flags require review. Sparse extracted frames cannot rule out brief flicker. Capture settings and dropped frames affect what can be concluded.</p>')
     page = '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LightTable journey review</title><style>
 :root{--ink:#1a1a1a;--muted:#55575c;--line:#e5e5e5}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}main{max-width:1120px;margin:auto;padding:56px 24px 96px}h1,h2,h3,.label{font-family:"Space Mono",ui-monospace,monospace}h1{font-size:40px}h2{font-size:22px;margin-top:56px;border-bottom:1px solid var(--line);padding-bottom:16px}.label{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}a{color:#1e40af}video{width:100%;background:#111}table{width:100%;border-collapse:collapse;font-size:15px}td,th{text-align:left;border-bottom:1px solid var(--line);padding:12px}article{border:1px solid var(--line);padding:20px;margin:24px 0}p{max-width:76ch}.frames{display:flex;gap:12px;margin:16px 0}.frames a{flex:1;min-width:0;font-size:13px}.frames img{width:100%;height:auto}summary{cursor:pointer;padding:12px 0}@media(max-width:600px){.frames{display:block}h1{font-size:30px}}</style><main>'''+''.join(parts)+'</main></html>'
     (folder / 'index.html').write_text(page)
@@ -276,7 +286,7 @@ def run(args):
             'engineBinarySha256': digest(ROOT / 'rust-engine/target/release/lighttable-engine'),
             'fixtureHashes': {p.name: digest(p) for p in fixtures}, 'requestedFps': 60,
             'captureSize': 'window logical size, even pixels', 'machine': platform.platform(),
-            'app': str(args.app), 'sourceFiles': {str(p.relative_to(ROOT)): digest(p) for p in [ROOT/'app/main.swift', ROOT/'web/app.js', ROOT/'web/visual-journey.js', HERE/'run.py', HERE/'record-window.swift']}}
+            'app': str(args.app), 'sourceFiles': {str(p.relative_to(ROOT)): digest(p) for p in [ROOT/'app/main.swift', ROOT/'web/app.js', ROOT/'web/visual-journey.js', ROOT/'web/render-scheduler.js', ROOT/'web/zoom-motion.js', HERE/'run.py', HERE/'record-window.swift']}}
         write_json(folder / 'provenance.json', provenance)
         if args.previous:
             prior = json.loads((args.previous / 'provenance.json').read_text())
@@ -315,7 +325,9 @@ def run(args):
         if payload.get('error'):
             result['functionalStatus'] = 'failed'
             raise RuntimeError(payload['error'])
-        if not steps or any(s['status'] != 'passed' for s in steps): raise RuntimeError('Functional journey incomplete')
+        if not steps or any(s['status'] != 'passed' for s in steps):
+            result['functionalStatus'] = 'failed'
+            raise RuntimeError('Functional journey incomplete: ' + '; '.join(s['name'] + ': ' + s.get('error', s['status']) for s in steps if s['status'] != 'passed'))
         if {s['journey'] for s in steps} != {'browse', 'zoom', 'edit', 'explore'}: raise RuntimeError('Required journeys missing')
         if not result['coverageComplete']: raise RuntimeError('Video did not cover every journey step')
         if any(digest(ROOT / name) != sha for name, sha in provenance['sourceFiles'].items()):
@@ -336,6 +348,7 @@ def run(args):
             try: result.update(analyze(folder, steps))
             except Exception as error: result['partialAnalysisError'] = str(error)
         if not (folder / 'steps.json').exists(): write_json(folder / 'steps.json', steps)
+        write_json(folder / 'bursts.json', progress_records(folder, 'visual-burst'))
         write_json(folder / 'result.json', result)
         write_json(folder / 'review.json', {'reviewStatus': 'not-reviewed', 'findings': []})
         report(folder)
