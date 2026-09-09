@@ -8781,6 +8781,7 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "availability": item.get("availability", "local"),
             "mtime": item["mtime"],
             "date": item["captureTime"],
+            "captureTimeKnown": item.get("captureTimeKnown", False),
             **{key: item.get(key) for key in
                ("camera", "lens", "iso", "focalLength", "aperture", "shutterSeconds", "keywords")},
             "status": item["status"],

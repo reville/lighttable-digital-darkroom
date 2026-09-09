@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -92,6 +92,7 @@
     "A snapshot stores the photo’s current adjustment settings, crop, masks, Remove corrections, and optics. It is a saved editing state for this photo. Create snapshot is unavailable until a photo is loaded.": "Un instantané enregistre les réglages d’ajustement, le recadrage, les masques, les corrections Supprimer et les optiques actuels de la photo. Il s’agit d’un état d’édition enregistré pour cette photo. Créer un instantané est indisponible tant qu’aucune photo n’est chargée.",
     "A stored curve stays exact until you edit it. The editor rebuilds representative handles, so the first adjustment can reshape an imported curve beyond the point you move.": "Une courbe enregistrée reste exacte jusqu’à ce que vous la modifiiez. L’éditeur reconstruit des poignées représentatives, si bien que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez.",
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Une courbe enregistrée ou importée conserve sa table sauvegardée exacte jusqu’à ce que vous la modifiiez. L’application reconstruit des poignées représentatives pour l’édition, de sorte que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez.",
+    "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "Une photo suggérée a une évaluation nettement plus forte basée sur la netteté, les yeux ouverts et les problèmes détectés. En cas d’égalité ou de preuves insuffisantes, aucune recommandation claire n’est affichée. Les groupes de similarité sont des suggestions ; ils ne créent pas de piles et ne modifient pas les drapeaux.",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "Une copie virtuelle renvoie au même fichier original et conserve un état de retouche indépendant. Elle ne crée pas un deuxième original sur le disque.",
     "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "Une copie virtuelle partage son fichier d’origine. La suppression d’une copie virtuelle doit utiliser les actions Photo → Supprimer la copie virtuelle ; déplacer sa source vers la corbeille affecte chaque édition qui utilise cet original.",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "Une copie virtuelle partage son fichier source : en inclure une dans un renommage cible cet original. L’interface ne fournit pas de bouton dédié pour annuler un renommage.",
@@ -446,6 +447,7 @@
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.": "Choisissez Supprimer, Corriger ou Dupliquer, puis définissez Taille, Contour progressif et Opacité.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.": "Choisissez des critères de sélection tels que Netteté du sujet, Netteté des yeux ou Yeux ouverts, ou des critères de rejet tels que Problèmes d’exposition, Ratés ou Documents.",
     "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.": "Choisissez Sélectionner des visages, sélectionnez certains visages, puis Déplacer vers une personne distincte pour les séparer dans un nouveau groupe sans nom. Les deux groupes ne seront plus à nouveau proposés comme correspondance. Sélectionnez un visage et choisissez Utiliser comme couverture pour changer l’image de la galerie.",
+    "Choose Selects or Rejects to review matches before applying flags.": "Choisissez Sélections ou Rejets pour vérifier les correspondances avant d’appliquer les drapeaux.",
     "Choose Stock, or click Preview stocks on this photo… to compare rendered examples.": "Choisissez Pellicule, ou cliquez sur Prévisualiser les pellicules sur cette photo… pour comparer des exemples rendus.",
     "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.": "Choisissez Sujet ou Ciel pour une sélection automatique. Pour Objet, cliquez sur Objet puis cliquez sur l’objet dans la photo.",
     "Choose TIFF with current adjustments, then set TIFF colour space and TIFF bit depth.": "Choisissez TIFF avec les ajustements actuels, puis définissez l’espace colorimétrique TIFF et la profondeur TIFF.",
@@ -478,11 +480,9 @@
     "Choose a photo to rate or flag": "Choisir une photo à noter ou à marquer",
     "Choose a preset to see its source and conversion coverage.": "Choisissez un préréglage pour voir sa source et sa couverture de conversion.",
     "Choose a print process for negatives and understand why print controls disappear for slide film.": "Choisissez un processus d’impression pour les négatifs et comprenez pourquoi les contrôles d’impression disparaissent pour les films diapositives.",
-    "Choose a reject criterion above.": "Choisissez un critère de rejet ci-dessus.",
     "Choose a saved point in the selector to edit it, or use Delete point to remove it.": "Choisissez un point enregistré dans le sélecteur pour le modifier, ou utilisez Supprimer le point pour l’enlever.",
     "Choose a saved preset to submit": "Choisissez un préréglage enregistré à envoyer",
     "Choose a scheme": "Choisir un schéma",
-    "Choose a select criterion above.": "Choisissez un critère de sélection ci-dessus.",
     "Choose a settings folder": "Choisissez un dossier de réglages",
     "Choose a source and destination first.": "Choisissez d’abord une source et une destination.",
     "Choose a source and destination, then scan.": "Choisissez une source et une destination, puis numérisez.",
@@ -503,6 +503,7 @@
     "Choose another folder from the File menu.": "Choisissez un autre dossier dans le menu Fichier.",
     "Choose application…": "Choisir une application…",
     "Choose catalog…": "Choisir un catalogue…",
+    "Choose criteria above.": "Choisissez les critères ci-dessus.",
     "Choose edit settings to copy ({primaryKey}+Shift+C)": "Choisissez les réglages de modification à copier ({primaryKey}+Maj+C)",
     "Choose exactly which photos to export, preview the output, and monitor progress.": "Choisissez exactement quelles photos exporter, prévisualisez la sortie et surveillez la progression.",
     "Choose export size, format, and color space": "Choisir la taille, le format et l’espace colorimétrique d’exportation",
@@ -547,6 +548,7 @@
     "Choose your language": "Choisissez votre langue",
     "Choose your preferred language in the first-use dialog.": "Choisissez votre langue préférée dans la boîte de dialogue initiale.",
     "Choose…": "Choisir…",
+    "Choosing a criterion opens its matching photos in the grid. Use Selects, Rejects, or All to change the review view. Other library filters still apply.": "Le choix d’un critère ouvre ses photos correspondantes dans la grille. Utilisez Sélections, Rejets ou Tout pour modifier la vue de vérification. Les autres filtres de la bibliothèque s’appliquent toujours.",
     "Choosing a file needs the desktop app; paste a path instead": "La sélection d’un fichier nécessite l’application de bureau ; collez plutôt un chemin",
     "Choosing a folder needs the desktop app; paste a path instead": "Choisir un dossier nécessite l’application de bureau ; collez plutôt un chemin",
     "Chromatic aberration": "Aberration chromatique",
@@ -690,6 +692,7 @@
     "Compare": "Comparer",
     "Compare Before & After": "Comparer avant et après",
     "Compare several photos in Survey": "Comparer plusieurs photos dans Vue d'ensemble",
+    "Compare similar photos": "Comparer les photos similaires",
     "Compare the faces before combining their photos.": "Comparez les visages avant de fusionner leurs photos.",
     "Compare while zoomed in": "Comparer en effectuant un zoom avant",
     "Compare with a reference image": "Comparer avec une image de référence",
@@ -721,6 +724,7 @@
     "Copies every readable row into a fresh file. Readable now: {value}. Keeps edits made after the last backup; rows on damaged pages are lost.": "Copie chaque ligne lisible dans un nouveau fichier. Lisibles actuellement : {value}. Conserve les modifications effectuées après la dernière sauvegarde ; les lignes des pages endommagées sont perdues.",
     "Copy": "Copier",
     "Copy Edit Settings": "Copier les réglages de modification",
+    "Copy and Paste are below the photo in Detail view.": "Copier et Coller se trouvent sous la photo dans la vue Détail.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.": "Copier et Coller transfèrent les groupes que vous sélectionnez explicitement. Les réglages des groupes non cochés restent tels quels sur chaque destination. Il s’agit d’un flux de travail explicite de copier/coller : les modifications ultérieures de la source ne se synchronisent pas automatiquement vers les destinations.",
     "Copy and verify it into the library": "Le copier et le vérifier dans la bibliothèque",
     "Copy anyway": "Copier quand même",
@@ -980,6 +984,7 @@
     "Downloading update…": "Téléchargement de la mise à jour…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.": "Faites glisser la Quantité de 0 % à 100 %. À zéro, l’édition précédente au préréglage est restaurée ; à 100 %, le préréglage complet est utilisé. Double-cliquez sur Quantité pour la réinitialiser à 100 %.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.": "Faites glisser une poignée pour redimensionner le recadrage ; la photo zoome pour conserver le cadre centré. Faites glisser à l’intérieur du cadre pour déplacer la photo dessous, ou à l’extérieur pour définir un nouveau recadrage.",
+    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Faites glisser un point pour ajuster le dégradé. Faites glisser la ligne pour le déplacer. Faites glisser ailleurs pour le redessiner.",
     "Drag either on-image circle to refine the target or source.": "Faites glisser l’un ou l’autre des cercles à l’écran pour affiner la cible ou la source.",
     "Drag on the photo to change the selected gradient’s shape or position": "Faites glisser sur la photo pour modifier la forme ou la position du dégradé sélectionné",
     "Drag on the photo to edit the {tool} mask.": "Faites glisser sur la photo pour modifier le masque {tool}.",
@@ -993,6 +998,7 @@
     "Each brush or painted refinement holds up to 64 strokes, with up to 512 points per stroke and 20,000 mask points per photo. The editor tells you when a limit is reached.": "Chaque pinceau ou retouche peinte peut contenir jusqu’à 64 traits, avec jusqu’à 512 points par trait et 20 000 points de masque par photo. L’éditeur vous indique quand une limite est atteinte.",
     "Each new backup includes a contents manifest and checksum, and is reopened independently to verify it.": "Chaque nouvelle sauvegarde inclut un manifeste des contenus et une somme de contrôle, puis est rouvert indépendamment pour la vérifier.",
     "Edit": "Modifier",
+    "Edit History": "Historique des retouches",
     "Edit In…": "Modifier dans…",
     "Edit Shape": "Modifier la forme",
     "Edit a curve": "Modifier une courbe",
@@ -1066,7 +1072,6 @@
     "Error: {error}": "Erreur : {error}",
     "Errors: {details}": "Erreurs : {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Chaque exportation intègre le profil ICC sélectionné. Choisissez sRGB, Display P3 ou ProPhoto RGB dans Espace couleur.",
-    "Edit History": "Historique des retouches",
     "Everyone": "Tout le monde",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Tout le monde affiche les groupes de visages visibles. Sans nom affiche les groupes qui n’ont pas été nommés. Ouvrez un groupe, saisissez un nom et choisissez Enregistrer le nom. Seuls les noms que vous saisissez sont utilisés ; le modèle ne connaît pas les noms des personnes.",
     "Example download prepared. Your edit has not changed.": "Téléchargement d’exemple préparé. Votre modification n’a pas changé.",
@@ -1076,6 +1081,9 @@
     "Exchange metadata through XMP sidecars": "Échanger les métadonnées via des sidecars XMP",
     "Existing LightTable edits could not be merged safely": "Impossible de fusionner les modifications LightTable existantes en toute sécurité",
     "Existing files": "Fichiers existants",
+    "Existing flags are preserved by default. Enable Replace existing flags only when you want to change previous decisions. Batch actions affect the displayed matches and include linked RAW/JPEG files when metadata linking is enabled; protected or already matching flags are excluded from the action count.": "Les drapeaux existants sont conservés par défaut. Activez Remplacer les drapeaux existants uniquement lorsque vous souhaitez modifier les décisions précédentes. Les actions par lot affectent les correspondances affichées et incluent les fichiers RAW/JPEG liés lorsque la liaison des métadonnées est activée ; les drapeaux protégés ou déjà correspondants sont exclus du nombre d’actions.",
+    "Existing flags are preserved. Counts include unflagged linked RAW/JPEG files.": "Les drapeaux existants sont conservés. Les comptes incluent les fichiers RAW/JPEG liés non marqués.",
+    "Existing flags may be replaced. Counts include linked RAW/JPEG files.": "Les drapeaux existants peuvent être remplacés. Les comptes incluent les fichiers RAW/JPEG liés.",
     "Existing settings could not be loaded; this photo was left unchanged": "Les paramètres existants n’ont pas pu être chargés ; cette photo n’a pas été modifiée",
     "Expand Advanced and edit Filename template.": "Développer Avancé et modifier le modèle de nom de fichier.",
     "Expand Advanced in Export.": "Développer Avancé dans Exporter.",
@@ -1223,6 +1231,10 @@
     "Flag and rate survey photo": "Marquer et noter la photo de vue d'ensemble",
     "Flag and rating filters": "Filtres de drapeau et de note",
     "Flag as Pick": "Marquer comme sélection",
+    "Flag {count} photo as a pick": "Drapeau {count} photo comme sélection",
+    "Flag {count} photo as a reject": "Drapeau {count} photo comme rejet",
+    "Flag {count} photos as picks": "Drapeau {count} photos comme sélections",
+    "Flag {count} photos as rejects": "Drapeau {count} photos comme rejets",
     "Flags and ratings apply to selection": "Les drapeaux et les notes s’appliquent à la sélection",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.": "Les drapeaux et les étoiles sont distincts : une photo peut être sélectionnée et avoir n’importe quelle note en étoiles. Rejeter marque une photo pour révision ; cela ne la supprime pas.",
     "Flip horizontal": "Retourner horizontalement",
@@ -1300,6 +1312,9 @@
     "Group photos into collections": "Grouper les photos en collections",
     "Group similar faces and search names you add.": "Groupez les visages similaires et recherchez les noms que vous ajoutez.",
     "Group the rendered derivative with its source in the catalog.": "Regroupez le dérivé rendu avec sa source dans le catalogue.",
+    "Group {index} of {count}. No clear recommendation; compare these photos.": "Groupe {index} sur {count}. Aucune recommandation claire ; comparez ces photos.",
+    "Group {index} of {count}. Suggested: {name}. Based on focus and eye checks; review every frame.": "Groupe {index} sur {count}. Suggestion : {name}. Basé sur la netteté et les vérifications des yeux ; examinez chaque image.",
+    "Grouping requires actual capture times and current Photo Index analysis. Files with only filesystem dates, videos, virtual copies, and photos without enough visual detail are excluded. Existing index records are refreshed by the index worker after this update.": "Le groupement nécessite de vraies heures de capture et l’analyse actuelle de l’Index des photos. Les fichiers avec uniquement des dates du système de fichiers, les vidéos, les copies virtuelles et les photos sans suffisamment de détails visuels sont exclus. Les enregistrements d’index existants sont actualisés par le moteur d’index après cette mise à jour.",
     "Groups appear here as photos are scanned. You can keep editing while this runs.": "Les groupes apparaissent ici au fur et à mesure que les photos sont numérisées. Vous pouvez continuer à modifier pendant que cela s’exécute.",
     "Guides for your photographs, from first edit to export.": "Des guides pour vos photographies, de la première retouche à l’export.",
     "HDR accepts 2–9 exposure-bracketed photos with matching dimensions. It aligns and exposure-fuses display-rendered frames to balance useful tones. Review moving subjects and edges for blending artifacts.": "HDR accepte 2 à 9 photos bracketing d’exposition avec des dimensions correspondantes. Il aligne les images rendues à l’écran et fusionne l’exposition pour équilibrer les tons utiles. Vérifiez les sujets en mouvement et les bords pour repérer des artefacts de fusion.",
@@ -1431,6 +1446,7 @@
     "Import…": "Importer…",
     "Improve preview speed and check image detail": "Améliorer la vitesse d’aperçu et vérifier les détails de l’image",
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Select a preset to see its description, creator, version, Film behavior, and available example photos.": "Dans Communauté, choisissez En vedette, Nouveautés ou Tout et utilisez Sujet pour affiner la collection. Sélectionnez un préréglage pour voir sa description, son créateur, sa version, le comportement Film et les photos d’exemple disponibles.",
+    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Dans Modifier la forme, faites glisser un point pour ajuster cette extrémité du dégradé. Faites glisser la ligne qui les relie pour déplacer tout le dégradé en conservant son angle et la largeur de transition. Faites glisser ailleurs sur la photo pour le redessiner.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.": "Dans Modifier la forme, faites glisser la poignée centrale pour déplacer le masque, l’une des poignées d’axe pour le redimensionner, ou la poignée extérieure pour le faire pivoter. Maintenez Maj en dessinant ou en redimensionnant pour rendre le dégradé circulaire.",
     "In Film profile, choose Film format.": "Dans le profil Film, choisissez le format du film.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.": "Dans Infos, développez Description pour le titre, la légende et le titre ; Droits pour le créateur, les droits d’auteur et le crédit ; ou Lieu pour l’emplacement et les coordonnées. Les modifications sont enregistrées dans le catalogue au fur et à mesure de votre saisie. Ouvrir dans Plans est disponible une fois les métadonnées de cette photo chargées et lorsque la latitude et la longitude sont valides. Cela ouvre l’emplacement dans votre navigateur.",
@@ -1463,7 +1479,6 @@
     "Inspect the image at 1:1 and wait for preview detail to finish before judging texture.": "Inspectez l’image en 1:1 et attendez la fin du détail d’aperçu avant d’évaluer la texture.",
     "Inspect the overlay and use painted refinements around boundaries as needed.": "Inspectez la superposition et utilisez des raffinements peints autour des limites si nécessaire.",
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Inspectez les photos rejetées. Vérifiez les réglages de fichiers appariés et développez les piles si vous vous attendez à inclure leurs autres membres.",
-    "Inspect the suggestions, then use Pick selects or Reject rejects if you want to apply those flags.": "Inspectez les suggestions, puis utilisez Sélectionner sélectionne ou Rejeter rejette si vous souhaitez appliquer ces drapeaux.",
     "Interface": "Interface",
     "Interface and behavior": "Interface et comportement",
     "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Les contrôles de l’interface définissent l’arrière-plan du visualiseur, l’échelle de police, Lights Out, l’overlay d’informations de la loupe et les guides de recadrage. Ces préférences modifient l’apparence de l’espace de travail sans modifier les pixels exportés.",
@@ -1669,7 +1684,6 @@
     "Make local adjustments with Brush, Linear, and Radial masks": "Effectuez des ajustements locaux avec les masques Pinceau, Linéaire et Radial",
     "Make photos easier to find and prepare descriptive metadata for export.": "Rendez les photos plus faciles à trouver et préparez des métadonnées descriptives pour l’export.",
     "Make select": "Faire la sélection",
-    "Make select picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "La commande Sélectionner fait de la photo de vue d’ensemble active la photo sélectionnée et rejette les autres photos encore dans la vue d’ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux éléments associés.",
     "Make the source photo active.": "Rendre la photo source active.",
     "Make your adjustment, then check the save status in the app.": "Effectuez votre réglage, puis vérifiez l’état d’enregistrement dans l’application.",
     "Manage cache storage": "Gérer le stockage du cache",
@@ -1787,6 +1801,7 @@
     "Newer than this build": "Plus récent que cette version",
     "Next": "Suivant",
     "Next Photo": "Photo suivante",
+    "Next group": "Groupe suivant",
     "Next presets": "Préréglages suivants",
     "No Rating": "Aucune note",
     "No TIFF was created.": "Aucun TIFF n’a été créé.",
@@ -1826,6 +1841,7 @@
     "No presets in this collection yet.": "Aucun préréglage dans cette collection pour le moment.",
     "No rejected photos in this view": "Aucune photo rejetée dans cette vue",
     "No sampled colors": "Aucune couleur échantillonnée",
+    "No similar groups found. Photos need current index analysis and capture times.": "Aucun groupe similaire trouvé. Les photos nécessitent une analyse d’index actuelle et des heures de capture.",
     "No sources yet.": "Aucune source pour le moment.",
     "No steps recorded yet.": "Aucune étape enregistrée pour le moment.",
     "No usable lines found.": "Aucune ligne exploitable trouvée.",
@@ -2054,12 +2070,6 @@
     "Pick (P)": "Sélectionner (P)",
     "Pick / reject / unflag": "Sélectionner / rejeter / retirer le drapeau",
     "Pick a preset": "Choisir un préréglage",
-    "Pick selects": "Sélectionner sélectionne",
-    "Pick the selects": "Sélectionnez les photos choisies",
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Sélectionner {count} photo correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-    "Pick {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Sélectionner {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-    "Pick {count} select": "Sélectionner {count} élément",
-    "Pick {count} selects": "Sélectionner {count} éléments",
     "Pick, reject, and rate photos": "Sélectionner, rejeter et noter les photos",
     "Picked": "Sélectionné",
     "Picked only": "Sélectionnés uniquement",
@@ -2129,6 +2139,7 @@
     "Previews use this photo’s edits. Choose a stock to apply it.": "Les aperçus utilisent les retouches de cette photo. Choisissez un stock pour les appliquer.",
     "Previous": "Précédent",
     "Previous Photo": "Photo précédente",
+    "Previous group": "Groupe précédent",
     "Previous presets": "Préréglages précédents",
     "Print development": "Développement d’impression",
     "Print exposure": "Exposition d'impression",
@@ -2255,12 +2266,6 @@
     "Refreshing community…": "Actualisation de la communauté…",
     "Reject": "Rejeter",
     "Reject (X)": "Rejeter (X)",
-    "Reject rejects": "Rejeter les rejets",
-    "Reject the rejects": "Rejeter les rejets",
-    "Reject {count} photo": "Rejeter {count} photo",
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": "Rejeter {count} photo correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-    "Reject {count} photos": "Rejeter {count} photos",
-    "Reject {count} photos matching {criteria}? Existing flags on those photos are replaced.": "Rejeter {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
     "Rejected": "Rejeté",
     "Rejected {count} photo": "{count} photo rejetée",
     "Rejected {count} photos": "{count} photos rejetées",
@@ -2317,6 +2322,7 @@
     "Repair": "Réparer",
     "Repeat for the other regions, or click Edit global grade to change the global treatment.": "Répétez pour les autres régions, ou cliquez sur Modifier la tonalité globale pour changer le traitement global.",
     "Replace adjustment settings": "Remplacer les réglages de l’ajustement",
+    "Replace existing flags": "Remplacer les drapeaux existants",
     "Replace local masks; detect AI selections on each photo": "Remplacer les masques locaux ; détecter les sélections IA sur chaque photo",
     "Replace with imported": "Remplacer par l’importé",
     "Replaced adjustments with {name}": "Ajustements remplacés par {name}",
@@ -2368,6 +2374,8 @@
     "Restored that step": "Cette étape a été restaurée",
     "Restored {count} capture. You can also restore capture-time steps in History.": "{count} capture restaurée. Vous pouvez aussi restaurer les étapes de l’heure de capture dans l’Historique.",
     "Restored {count} captures. You can also restore capture-time steps in History.": "{count} captures restaurées. Vous pouvez aussi restaurer les étapes de l’heure de capture dans l’Historique.",
+    "Restored {count} photo flag. Later flag changes are preserved.": "Drapeau de {count} photo restauré. Les modifications de drapeau ultérieures sont conservées.",
+    "Restored {count} photo flags. Later flag changes are preserved.": "Drapeaux de {count} photos restaurés. Les modifications de drapeau ultérieures sont conservées.",
     "Restore…": "Restaurer…",
     "Restoring a backup returns catalog data to that backup’s state, so later edits are not in it. When a working catalog is restored, the current catalog is backed up first.": "La restauration d’une sauvegarde ramène les données du catalogue à l’état de cette sauvegarde, donc les modifications ultérieures n’y figurent pas. Lorsqu’un catalogue de travail est restauré, le catalogue actuel est d’abord sauvegardé.",
     "Result name": "Nom du résultat",
@@ -2389,18 +2397,17 @@
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Vérifier les correspondances présente deux groupes possibles avec des échantillons de visages. Même personne les combine. Personnes différentes enregistre une correction afin que l’association ne soit plus suggérée. Ignorer pour l’instant laisse la correspondance pour une visite ultérieure.",
     "Review photos from the source using the destination and naming settings": "Vérifier les photos de la source à l’aide des réglages de destination et de nommage",
     "Review signals": "Signaux de relecture",
+    "Review similar photos": "Vérifier les photos similaires",
+    "Review similar photos finds visually similar indexed photos captured within 30 seconds in the current folder or collection. Groups open in Survey with up to 16 photos. Use Previous group and Next group to compare the alternatives, then flag individual photos with the survey controls.": "Vérifier les photos similaires trouve des photos indexées visuellement similaires capturées dans un délai de 30 secondes dans le dossier ou la collection actuelle. Les groupes s’ouvrent en Vue d'ensemble avec jusqu’à 16 photos. Utilisez Groupe précédent et Groupe suivant pour comparer les alternatives, puis marquez les photos individuelles avec les commandes de la vue d'ensemble.",
     "Review the before-and-after filenames in the preview.": "Passez en revue les noms de fichiers avant et après dans l’aperçu.",
     "Review the current view carefully before moving rejected originals and sidecars.": "Examinez attentivement la vue actuelle avant de déplacer les originaux rejetés et les sidecars.",
+    "Review the displayed photos, then use Flag photos as picks or Flag photos as rejects. The button shows how many files will change.": "Examinez les photos affichées, puis utilisez Drapeau les photos comme sélections ou Drapeau les photos comme rejets. Le bouton indique combien de fichiers seront modifiés.",
     "Review the import result and the new preset’s conversion coverage before applying it.": "Examinez le résultat de l’importation et la couverture de conversion du nouveau préréglage avant de l’appliquer.",
     "Review the import result, then continue into the library.": "Vérifiez le résultat de l’import, puis continuez vers la bibliothèque.",
     "Review the result and refine the sliders for the photograph.": "Examinez le résultat et affinez les curseurs pour la photographie.",
     "Review transferred masks": "Examiner les masques transférés",
     "Review translated edits": "Vérifier les retouches traduites",
     "Reviewing every photo.": "Révision de chaque photo.",
-    "Reviewing {count} photo that met a reject criterion.": "Vérification de {count} photo qui a correspondu à un critère de rejet.",
-    "Reviewing {count} photo that met a select criterion.": "Vérification de {count} photo qui a correspondu à un critère de sélection.",
-    "Reviewing {count} photos that met a reject criterion.": "Vérification de {count} photos qui ont correspondu à un critère de rejet.",
-    "Reviewing {count} photos that met a select criterion.": "Vérification de {count} photos qui ont correspondu à un critère de sélection.",
     "Rich descriptions on": "Descriptions enrichies activées",
     "Richer descriptions require macOS 27 or later": "Des descriptions plus riches nécessitent macOS 27 ou ultérieur",
     "Rights": "Droits",
@@ -2520,6 +2527,7 @@
     "Select a range of distances from the camera; refine the far and near limits": "Sélectionner une plage de distances depuis l’appareil photo ; affiner les limites proche et lointaine",
     "Select all": "Tout sélectionner",
     "Select an active reference photo first": "Sélectionnez d’abord une photo de référence active",
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Sélectionnez un masque Linéaire existant pour le modifier à nouveau. Si vous avez peint avec Ajouter, Soustraire ou Intersection, choisissez d’abord Modifier la forme. Appuyez sur H si les points sont masqués.",
     "Select an existing mask, then expand Create New Mask.": "Sélectionnez un masque existant, puis développez Créer un nouveau masque.",
     "Select another band to continue, or use Color Mixer’s Reset to clear the mixer adjustments.": "Sélectionnez une autre bande pour continuer, ou utilisez Réinitialiser du mélangeur de couleur pour effacer les réglages du mélangeur.",
     "Select at least two distinct originals": "Sélectionnez au moins deux originaux distincts",
@@ -2617,6 +2625,7 @@
     "Settings…": "Réglages…",
     "Shadows": "Ombres",
     "Shape": "Forme",
+    "Shape a linear gradient": "Modifier la forme d’un dégradé linéaire",
     "Shape a radial gradient": "Former un dégradé radial",
     "Shape also provides Width, Height, Rotation, and Feather controls.": "Forme propose aussi les réglages Largeur, Hauteur, Rotation et Contour progressif.",
     "Shape contrast and color with curves": "Façonner le contraste et la couleur avec des courbes",
@@ -2824,7 +2833,6 @@
     "The catalog was left unchanged.": "Le catalogue est resté inchangé.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Le catalogue a été restauré à partir d’une sauvegarde vérifiée ; la copie endommagée se trouve dans le dossier Récupération.",
     "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Le modèle compact SFace INT8 compare les visages humains alignés. Le regroupement automatique utilise des règles de similarité conservatrices ; les correspondances possibles restent séparées pour vérification. Les nouveaux visages correspondant à une personne nommée sont proposés pour confirmation.",
-    "The confirmation shows the affected count and warns that existing flags on matching photos will be replaced. Linked RAW/JPEG metadata can also include the paired file when that preference is enabled.": "La confirmation affiche le nombre d’éléments concernés et avertit que les drapeaux existants sur les photos correspondantes seront remplacés. Les métadonnées RAW/JPEG liées peuvent aussi inclure le fichier jumelé lorsque cette préférence est activée.",
     "The current catalog is backed up first, then replaced by this one.": "Le catalogue actuel est d’abord sauvegardé, puis remplacé par celui-ci.",
     "The desktop Trash service (gio) is unavailable": "Le service Corbeille du bureau (gio) est indisponible",
     "The desktop app checks its signed update feed.": "L’application de bureau vérifie son flux de mise à jour signé.",
@@ -2987,6 +2995,7 @@
     "Undo last change": "Annuler la dernière modification",
     "Undo last correction": "Annuler la dernière correction",
     "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged.": "Annuler la dernière correction annule la correction la plus récente conservée dans cette fenêtre. Restaurer les heures de l’appareil photo… prévisualise la suppression des corrections du catalogue ; examinez l’aperçu et appliquez-le pour restaurer les heures d’origine de l’appareil photo. Les étapes de l’heure de capture sont également disponibles dans l’Historique. Lorsque l’écriture XMP est activée, la réinitialisation d’une correction restaure les dates du sidecar enregistrées avant que LightTable ne l’applique. Les dates de capture dans les anciens sidecars sans cette date enregistrée restent inchangées.",
+    "Undo last flag batch": "Annuler le dernier lot de drapeaux",
     "Undo or restore an earlier step": "Annuler ou restaurer une étape précédente",
     "Undo snapshots must be strings": "Les instantanés d’annulation doivent être des chaînes",
     "Unedited": "Non modifié",
@@ -3059,9 +3068,9 @@
     "Use Scale, Horizontal, and Vertical to align the reference with your photo.": "Utilisez Échelle, Horizontal et Vertical pour aligner la référence avec votre photo.",
     "Use Scan new photos after adding photos or restoring unavailable originals. Previously scanned, unchanged photos are reused.": "Utilisez Numériser de nouvelles photos après avoir ajouté des photos ou restauré des originaux indisponibles. Les photos déjà numérisées et inchangées sont réutilisées.",
     "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves.": "Utilisez Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap pour mettre à jour les installations qu’ils gèrent. Téléchargez un nouveau ZIP pour les copies portables Windows. Les versions sans signature des mises à jour configurée ne peuvent pas se mettre à jour seules.",
-    "Use Selects, Rejects, or All to review the matching photos.": "Utilisez Sélections, Rejets ou Tout pour revoir les photos correspondantes.",
     "Use Temp and Tint or sample a neutral area, then adjust Vibrance and Saturation.": "Utilisez Temp et Teinte ou échantillonnez une zone neutre, puis ajustez Vibrance et Saturation.",
     "Use Undo for recent work, History for stored editing steps, and named snapshots for looks you want to revisit.": "Utilisez Annuler pour le travail récent, Historique pour les étapes d’édition enregistrées et les instantanés nommés pour les looks que vous souhaitez revoir.",
+    "Use Undo in the completion message or Undo last flag batch in the sidebar to restore a batch. Undo remains available during this session and preserves any later manual or external flag decisions. If saving fails, use Retry save or undo the batch; failed writes remain queued.": "Utilisez Annuler dans le message d’achèvement ou Annuler le dernier lot de drapeaux dans la barre latérale pour restaurer un lot. Annuler reste disponible pendant cette session et conserve toute décision de drapeau manuelle ou externe ultérieure. Si l’enregistrement échoue, utilisez Réessayer l’enregistrement ou annulez le lot ; les écritures échouées restent en file d’attente.",
     "Use Undo keyword change to restore the last batch while this window remains open. Undo refuses to overwrite keywords changed after that batch. Photo History also retains the before and after keyword states.": "Utilisez Annuler changement de mot-clé pour restaurer le dernier lot tant que cette fenêtre reste ouverte. Annuler refuse d’écraser les mots-clés modifiés après ce lot. Historique photo conserve également les états de mots-clés avant et après.",
     "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.": "Utilisez teinte uniforme, saturation uniforme ou luminance uniforme pour rapprocher les couleurs de la plage du patch échantillonné.",
     "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.": "Utilisez quelques points et comparez la photo au fur et à mesure ; les courbes de canal peuvent introduire de fortes dominantes de couleur.",
@@ -3162,6 +3171,7 @@
     "What to expect": "À quoi s’attendre",
     "What to open": "Quoi ouvrir",
     "When MIDI is available, open Keyboard and MIDI controls and choose MIDI Learn. Allow MIDI access if your browser asks.": "Lorsque le MIDI est disponible, ouvrez Commandes clavier et MIDI et choisissez Apprentissage MIDI. Autorisez l’accès MIDI si votre navigateur le demande.",
+    "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.": "Lorsque Vue d'ensemble est ouverte depuis Tri assisté, comparez le groupe suggéré et marquez les photos individuellement. Faire la sélection est disponible dans une Vue d'ensemble normale : il sélectionne la photo active de la vue d'ensemble et rejette les autres photos toujours dans la vue d'ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux compagnons.",
     "When a photo already has edits": "Lorsqu’une photo a déjà des modifications",
     "When a photo arrives": "Lorsqu’une photo arrive",
     "When a photo seems missing": "Lorsqu’une photo semble manquante",
@@ -3973,6 +3983,8 @@
     "{count} groups": "{count} groupes",
     "{count} indexed photo remains local until deleted.": "{count} photo indexée reste locale jusqu’à sa suppression.",
     "{count} indexed photos remain local until deleted.": "{count} photos indexées restent locales jusqu’à leur suppression.",
+    "{count} matching photo shown: {criteria}.": "{count} photo correspondante affichée : {criteria}.",
+    "{count} matching photos shown: {criteria}.": "{count} photos correspondantes affichées : {criteria}.",
     "{count} minimum alignment inlier": "{count} inlier minimum d’alignement",
     "{count} minimum alignment inliers": "{count} inliers minimum d’alignement",
     "{count} missing": "{count} manquant",
@@ -4119,12 +4131,7 @@
     "‹ Back": "‹ Retour",
     "← Back to articles": "← Retour aux articles",
     "← People": "← Personnes",
-    "☆ Favorites": "☆ Favoris",
-    "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Faites glisser un point pour ajuster le dégradé. Faites glisser la ligne pour le déplacer. Faites glisser ailleurs pour le redessiner.",
-    "Shape a linear gradient": "Modifier la forme d’un dégradé linéaire",
-    "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Dans Modifier la forme, faites glisser un point pour ajuster cette extrémité du dégradé. Faites glisser la ligne qui les relie pour déplacer tout le dégradé en conservant son angle et la largeur de transition. Faites glisser ailleurs sur la photo pour le redessiner.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Sélectionnez un masque Linéaire existant pour le modifier à nouveau. Si vous avez peint avec Ajouter, Soustraire ou Intersection, choisissez d’abord Modifier la forme. Appuyez sur H si les points sont masqués.",
-    "Copy and Paste are below the photo in Detail view.": "Copier et Coller se trouvent sous la photo dans la vue Détail."
+    "☆ Favorites": "☆ Favoris"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4146,6 +4153,16 @@
       "one": "Exportation de {count} photo vers {destination}…",
       "many": "Exportation de {count} photos vers {destination}…",
       "other": "Exportation de {count} photos vers {destination}…"
+    },
+    "Flag {count} photo as a pick": {
+      "one": "Drapeau {count} photo comme sélection",
+      "many": "Drapeau {count} photos comme sélections",
+      "other": "Drapeau {count} photos comme sélections"
+    },
+    "Flag {count} photo as a reject": {
+      "one": "Drapeau {count} photo comme rejet",
+      "many": "Drapeau {count} photos comme rejets",
+      "other": "Drapeau {count} photos comme rejets"
     },
     "Imported {count} photo from Apple Photos{value}": {
       "one": "Importé {count} photo depuis Apple Photos{value}",
@@ -4172,30 +4189,10 @@
       "many": "Collé sur {count} photos",
       "other": "Collé sur {count} photos"
     },
-    "Pick {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Sélectionner {count} photo correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-      "many": "Sélectionner {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-      "other": "Sélectionner {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés."
-    },
-    "Pick {count} select": {
-      "one": "Sélectionner {count} élément",
-      "many": "Sélectionner {count} éléments",
-      "other": "Sélectionner {count} éléments"
-    },
     "Picked {count} photo": {
       "one": "{count} photo sélectionnée",
       "many": "{count} photos sélectionnées",
       "other": "{count} photos sélectionnées"
-    },
-    "Reject {count} photo": {
-      "one": "Rejeter {count} photo",
-      "many": "Rejeter {count} photos",
-      "other": "Rejeter {count} photos"
-    },
-    "Reject {count} photo matching {criteria}? Existing flags on those photos are replaced.": {
-      "one": "Rejeter {count} photo correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-      "many": "Rejeter {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés.",
-      "other": "Rejeter {count} photos correspondant à {criteria} ? Les drapeaux existants sur ces photos sont remplacés."
     },
     "Rejected {count} photo": {
       "one": "{count} photo rejetée",
@@ -4212,15 +4209,10 @@
       "many": "{count} captures restaurées. Vous pouvez aussi restaurer les étapes de l’heure de capture dans l’Historique.",
       "other": "{count} captures restaurées. Vous pouvez aussi restaurer les étapes de l’heure de capture dans l’Historique."
     },
-    "Reviewing {count} photo that met a reject criterion.": {
-      "one": "Vérification de {count} photo qui a correspondu à un critère de rejet.",
-      "many": "Vérification de {count} photos qui ont correspondu à un critère de rejet.",
-      "other": "Vérification de {count} photos qui ont correspondu à un critère de rejet."
-    },
-    "Reviewing {count} photo that met a select criterion.": {
-      "one": "Vérification de {count} photo qui a correspondu à un critère de sélection.",
-      "many": "Vérification de {count} photos qui ont correspondu à un critère de sélection.",
-      "other": "Vérification de {count} photos qui ont correspondu à un critère de sélection."
+    "Restored {count} photo flag. Later flag changes are preserved.": {
+      "one": "Drapeau de {count} photo restauré. Les modifications de drapeau ultérieures sont conservées.",
+      "many": "Drapeaux de {count} photos restaurés. Les modifications de drapeau ultérieures sont conservées.",
+      "other": "Drapeaux de {count} photos restaurés. Les modifications de drapeau ultérieures sont conservées."
     },
     "Wrote {count} sidecar.": {
       "one": "{count} sidecar écrit.",
@@ -4282,10 +4274,20 @@
       "many": "{count} groupe de doublons couvrant {files}.",
       "other": "{count} groupe de doublons couvrant {files}."
     },
+    "{count} empty file": {
+      "one": "{count} fichier vide",
+      "many": "{count} fichiers vides",
+      "other": "{count} fichiers vides"
+    },
     "{count} error": {
       "one": "{count} erreur",
       "many": "{count} erreurs",
       "other": "{count} erreurs"
+    },
+    "{count} face": {
+      "one": "{count} visage",
+      "many": "{count} visages",
+      "other": "{count} visages"
     },
     "{count} face detected": {
       "one": "{count} visage détecté",
@@ -4307,10 +4309,25 @@
       "many": "{count} fichiers",
       "other": "{count} fichiers"
     },
+    "{count} file not downloaded": {
+      "one": "{count} fichier non téléchargé",
+      "many": "{count} fichiers non téléchargés",
+      "other": "{count} fichiers non téléchargés"
+    },
+    "{count} group": {
+      "one": "{count} groupe",
+      "many": "{count} groupes",
+      "other": "{count} groupes"
+    },
     "{count} indexed photo remains local until deleted.": {
       "one": "{count} photo indexée reste locale jusqu’à sa suppression.",
       "many": "{count} photos indexées restent locales jusqu’à leur suppression.",
       "other": "{count} photos indexées restent locales jusqu’à leur suppression."
+    },
+    "{count} matching photo shown: {criteria}.": {
+      "one": "{count} photo correspondante affichée : {criteria}.",
+      "many": "{count} photos correspondantes affichées : {criteria}.",
+      "other": "{count} photos correspondantes affichées : {criteria}."
     },
     "{count} minimum alignment inlier": {
       "one": "{count} inlier minimum d’alignement",
@@ -4372,6 +4389,11 @@
       "many": "{count} photos sélectionnées",
       "other": "{count} photos sélectionnées"
     },
+    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
+      "one": "{count} photo ignorée{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index.",
+      "many": "{count} photos ignorées{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index.",
+      "other": "{count} photos ignorées{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index."
+    },
     "{count} photo updated": {
       "one": "{count} photo mise à jour",
       "many": "{count} photos mises à jour",
@@ -4392,6 +4414,11 @@
       "many": "{count} photos notées",
       "other": "{count} photos notées"
     },
+    "{count} selected": {
+      "one": "{count} sélectionné",
+      "many": "{count} sélectionné",
+      "other": "{count} sélectionné"
+    },
     "{count} selected photo": {
       "one": "{count} photo sélectionnée",
       "many": "{count} photos sélectionnées",
@@ -4411,6 +4438,16 @@
       "one": "{count} source",
       "many": "{count} sources",
       "other": "{count} sources"
+    },
+    "{count} unavailable file": {
+      "one": "{count} fichier indisponible",
+      "many": "{count} fichiers indisponibles",
+      "other": "{count} fichiers indisponibles"
+    },
+    "{count} unavailable photo skipped": {
+      "one": "{count} photo indisponible ignorée",
+      "many": "{count} photos indisponibles ignorées",
+      "other": "{count} photos indisponibles ignorées"
     },
     "{count} unsupported setting skipped": {
       "one": "{count} réglage non pris en charge ignoré",
@@ -4446,47 +4483,7 @@
       "one": "{value} fermeture inattendue au cours des dernières 24 heures.",
       "many": "{value} fermetures inattendues au cours des dernières 24 heures.",
       "other": "{value} fermetures inattendues au cours des dernières 24 heures."
-    },
-    "{count} empty file": {
-      "one": "{count} fichier vide",
-      "many": "{count} fichiers vides",
-      "other": "{count} fichiers vides"
-    },
-    "{count} file not downloaded": {
-      "one": "{count} fichier non téléchargé",
-      "many": "{count} fichiers non téléchargés",
-      "other": "{count} fichiers non téléchargés"
-    },
-    "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.": {
-      "one": "{count} photo ignorée{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index.",
-      "many": "{count} photos ignorées{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index.",
-      "other": "{count} photos ignorées{reasons}. Téléchargez ou restaurez les originaux, puis reconstruisez l’index."
-    },
-    "{count} unavailable file": {
-      "one": "{count} fichier indisponible",
-      "many": "{count} fichiers indisponibles",
-      "other": "{count} fichiers indisponibles"
-    },
-    "{count} face": {
-      "one": "{count} visage",
-      "many": "{count} visages",
-      "other": "{count} visages"
-    },
-    "{count} group": {
-      "one": "{count} groupe",
-      "many": "{count} groupes",
-      "other": "{count} groupes"
-    },
-    "{count} selected": {
-      "one": "{count} sélectionné",
-      "many": "{count} sélectionné",
-      "other": "{count} sélectionné"
-    },
-    "{count} unavailable photo skipped": {
-      "one": "{count} photo indisponible ignorée",
-      "many": "{count} photos indisponibles ignorées",
-      "other": "{count} photos indisponibles ignorées"
     }
   },
-  "pluralsDigest": "c417039fd0d51412fbc9cb239b97feb6377486f94ed666b8e588462bb0ad46dd"
+  "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6"
 }

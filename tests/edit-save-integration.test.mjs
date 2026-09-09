@@ -44,7 +44,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
       status: 'pending', rating: 0, label: 'none', keywords: [], versions: [],
       masks: [], heals: [], optics: {}, crop: null, stateLoaded: true,
     })),
-    idx: 0, seq: 0, activePane: 'editPane', viewMode: 'detail', catalogEnabled: true,
+    cull: {review: 'selects'}, idx: 0, seq: 0, activePane: 'editPane', viewMode: 'detail', catalogEnabled: true,
   };
   const context = {
     console, structuredClone, Promise, AggregateError, S, tr, trn, localToolLabel,
@@ -57,7 +57,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     window: {addEventListener: noop, confirm: () => true},
     CLIENT_ID: client,
     SURVEY: {active: 'B.raw', names: ['A.raw', 'B.raw']},
-    cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
+    visible: () => S.images, cullResults: () => S.images, chosenCull: () => ['sharp'], CULL_LABELS: {sharp: 'Sharp'},
     NATIVE_PREVIEW: false, GRADE_DEFAULTS: {},
     PRESET_BROWSER: null, METADATA: null, CAPTURE_TIME: null, ENHANCE: null,
     HISTORY: {
@@ -110,6 +110,8 @@ function harness({manual = false, client = 'test-window'} = {}) {
     read('edit-transfer.js').replaceAll('export ', ''),
     read('close-barrier.js').replace('export function ', 'function '),
     read('photo-undo.js').replace('export function ', 'function '),
+    read('cull-batch.js').replaceAll('export function ', 'function '),
+    appSource.match(/const CULL_BATCH = createCullBatch\(\{[^]*?^\}\);/m)[0],
     'const photoUndo = createPhotoUndoHistory();',
     'const _pendingStateFetches = new Map();',
     'let navigationGeneration = 0, lastNavigationDirection = 1, cropSession = null;',
@@ -122,7 +124,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
       'normalizeLibraryImage', 'prefetchState',
       'showCurrentImage', 'go', 'photoReadyForEditing', 'syncPhotoActions',
       'persistMark', 'saveStateFor', 'enqueuePhotoPatch',
-      'pasteSettingsTo', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
+      'pasteSettingsTo', 'refreshCullFlags', 'undoCullFlags', 'applyCullFlags', 'keepSurveySelection', 'reconcilePeerSave', 'applyServerStateEvent'].map(appFunction),
     appSource.slice(stateStart, stateEnd),
     'globalThis.app = {saveState, saveStateFor, persistMark, go, showCurrentImage, pushUndo, undo, redo, flushEditSaves, pasteSettingsTo, applyCullFlags, keepSurveySelection, applyServerStateEvent, queue: editSaveQueue, photoUndo};',
   ].join('\n').replace(/^import .*;\r?\n/gm, '');
@@ -655,4 +657,27 @@ test('peer reconciliation cannot interrupt a slider gesture before its change ev
   app.stateReads[0].resolve({grade: {exposure: 2}});
   await settle();
   assert.equal(app.S.grade.exposure, 4);
+});
+
+test('assisted culling cannot apply from All or without a selected criterion', async () => {
+  const app = harness();
+  app.S.cull.review = 'all';
+  await app.applyCullFlags([], 'approved');
+  app.S.cull.review = 'selects'; app.context.chosenCull = () => [];
+  await app.applyCullFlags([], 'approved');
+  assert.equal(app.requests.length, 0);
+});
+
+test('assisted culling applies only the reviewed view and preserves existing decisions', async () => {
+  const app = harness();
+  app.S.cull.review = 'rejects';
+  app.S.images[0].status = 'approved';
+  await app.applyCullFlags([], 'skipped');
+  assert.equal(app.S.images[0].status, 'approved');
+  assert.deepEqual(app.requests.map(request => request.state.name), ['B.raw']);
+  app.S.cull.review = 'selects';
+  app.context.visible = () => [app.S.images[1]];
+  app.nodes.get('cullReplaceFlags').checked = true;
+  await app.applyCullFlags([], 'approved');
+  assert.deepEqual(app.requests.map(request => request.state.name), ['B.raw', 'B.raw']);
 });

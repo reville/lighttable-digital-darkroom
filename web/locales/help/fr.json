@@ -409,7 +409,7 @@
         {
           "title": "Choisir un conservé",
           "paragraphs": [
-            "La commande Sélectionner fait de la photo de vue d’ensemble active la photo sélectionnée et rejette les autres photos encore dans la vue d’ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux éléments associés.",
+            "Lorsque Vue d'ensemble est ouverte depuis Tri assisté, comparez le groupe suggéré et marquez les photos individuellement. Faire la sélection est disponible dans une Vue d'ensemble normale : il sélectionne la photo active de la vue d'ensemble et rejette les autres photos toujours dans la vue d'ensemble. Cela modifie leurs drapeaux. Les métadonnées RAW et JPEG liées peuvent étendre ces modifications de drapeau aux compagnons.",
             "Pour juger une retouche par rapport à son original, utilisez comparer avant/après dans Détails ; Vue d’ensemble sert à choisir entre différents cadres."
           ]
         }
@@ -2932,15 +2932,24 @@
             "Activez Index photo dans Réglages et attendez que les photos soient notées.",
             "Développer Tri assisté dans la barre latérale de la bibliothèque.",
             "Choisissez des critères de sélection tels que Netteté du sujet, Netteté des yeux ou Yeux ouverts, ou des critères de rejet tels que Problèmes d’exposition, Ratés ou Documents.",
-            "Utilisez Sélections, Rejets ou Tout pour revoir les photos correspondantes.",
-            "Inspectez les suggestions, puis utilisez Sélectionner sélectionne ou Rejeter rejette si vous souhaitez appliquer ces drapeaux."
+            "Le choix d’un critère ouvre ses photos correspondantes dans la grille. Utilisez Sélections, Rejets ou Tout pour modifier la vue de vérification. Les autres filtres de la bibliothèque s’appliquent toujours.",
+            "Examinez les photos affichées, puis utilisez Drapeau les photos comme sélections ou Drapeau les photos comme rejets. Le bouton indique combien de fichiers seront modifiés."
           ]
         },
         {
           "title": "Application des drapeaux",
           "paragraphs": [
-            "La confirmation affiche le nombre d’éléments concernés et avertit que les drapeaux existants sur les photos correspondantes seront remplacés. Les métadonnées RAW/JPEG liées peuvent aussi inclure le fichier jumelé lorsque cette préférence est activée.",
+            "Les drapeaux existants sont conservés par défaut. Activez Remplacer les drapeaux existants uniquement lorsque vous souhaitez modifier les décisions précédentes. Les actions par lot affectent les correspondances affichées et incluent les fichiers RAW/JPEG liés lorsque la liaison des métadonnées est activée ; les drapeaux protégés ou déjà correspondants sont exclus du nombre d’actions.",
+            "Utilisez Annuler dans le message d’achèvement ou Annuler le dernier lot de drapeaux dans la barre latérale pour restaurer un lot. Annuler reste disponible pendant cette session et conserve toute décision de drapeau manuelle ou externe ultérieure. Si l’enregistrement échoue, utilisez Réessayer l’enregistrement ou annulez le lot ; les écritures échouées restent en file d’attente.",
             "Il s’agit de signaux d’analyse pour votre relecture, et non de jugements définitifs sur les photographies à conserver. Rejeter définit un drapeau ; cela ne déplace pas à lui seul les originaux vers la corbeille."
+          ]
+        },
+        {
+          "title": "Comparer les photos similaires",
+          "paragraphs": [
+            "Vérifier les photos similaires trouve des photos indexées visuellement similaires capturées dans un délai de 30 secondes dans le dossier ou la collection actuelle. Les groupes s’ouvrent en Vue d'ensemble avec jusqu’à 16 photos. Utilisez Groupe précédent et Groupe suivant pour comparer les alternatives, puis marquez les photos individuelles avec les commandes de la vue d'ensemble.",
+            "Une photo suggérée a une évaluation nettement plus forte basée sur la netteté, les yeux ouverts et les problèmes détectés. En cas d’égalité ou de preuves insuffisantes, aucune recommandation claire n’est affichée. Les groupes de similarité sont des suggestions ; ils ne créent pas de piles et ne modifient pas les drapeaux.",
+            "Le groupement nécessite de vraies heures de capture et l’analyse actuelle de l’Index des photos. Les fichiers avec uniquement des dates du système de fichiers, les vidéos, les copies virtuelles et les photos sans suffisamment de détails visuels sont exclus. Les enregistrements d’index existants sont actualisés par le moteur d’index après cette mise à jour."
           ]
         }
       ],
@@ -3157,5 +3166,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
 }

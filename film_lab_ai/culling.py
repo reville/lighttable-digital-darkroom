@@ -28,7 +28,7 @@ from scipy import ndimage
 # Bumping this re-analyzes every photo, because stored results carry the
 # version they were produced by. Raise it whenever a measurement or a
 # threshold changes enough that old verdicts would be misleading.
-ANALYSIS_VERSION = 2
+ANALYSIS_VERSION = 3
 
 SELECT_CRITERIA = ("subjectSharpness", "eyeSharpness", "eyesOpen")
 REJECT_CRITERIA = ("exposure", "misfire", "document")
@@ -439,14 +439,35 @@ def score(measurements: dict, tags: list[str] | None = None) -> dict:
     }
 
 
+def similarity_signature(rgb: np.ndarray) -> dict:
+    """Small local scene fingerprint; never an identity or a keep decision.
+
+    A difference hash captures edge layout; coarse RGB and aspect ratio keep
+    unrelated scenes with similar edges apart. Spatial contrast lets clients
+    decline flat/empty frames whose hashes carry too little information.
+    """
+    pixels = np.rint(np.clip(rgb, 0.0, 1.0) * 255).astype(np.uint8)
+    image = Image.fromarray(pixels)
+    gray = np.asarray(image.convert("L").resize((9, 8), Image.Resampling.BOX))
+    bits = (gray[:, 1:] > gray[:, :-1]).reshape(-1)
+    packed = np.packbits(bits).tobytes().hex()
+    layout = np.asarray(image.resize((4, 4), Image.Resampling.BOX))
+    contrast = float(_luminance(layout.astype(np.float32) / 255.0).std())
+    return {"version": 1, "hash": packed, "layout": layout.tobytes().hex(),
+            "contrast": round(contrast, 4),
+            "aspect": round(image.width / image.height, 4)}
+
+
 def analyze(preview: bytes | np.ndarray, vision: dict | None = None) -> dict:
     """The record stored per photo: verdicts plus the numbers behind them."""
-    measurements = measure(preview, vision)
+    rgb = preview_array(preview)
+    measurements = measure(rgb, vision)
     tags = (vision or {}).get("tags") if isinstance(vision, dict) else []
     return {
         "version": ANALYSIS_VERSION,
         "criteria": score(measurements, tags if isinstance(tags, list) else []),
         "metrics": measurements,
+        "similarity": similarity_signature(rgb),
     }
 
 

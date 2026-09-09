@@ -409,7 +409,7 @@
         {
           "title": "Chọn một ảnh giữ lại",
           "paragraphs": [
-            "Lệnh chọn sẽ chọn ảnh xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong xem nhanh. Điều này thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang ảnh đi kèm.",
+            "Khi Xem nhanh được mở từ Lọc ảnh có hỗ trợ, hãy so sánh nhóm được gợi ý và gắn cờ từng ảnh riêng lẻ. Tạo vùng chọn có sẵn trong một Xem nhanh bình thường: nó chọn ảnh Xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong Xem nhanh. Điều này sẽ thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang các ứng dụng đi kèm.",
             "Để đánh giá một chỉnh sửa so với bản gốc, dùng so sánh trước/sau trong Detail; Survey dùng để chọn giữa các khung hình khác nhau."
           ]
         }
@@ -2932,15 +2932,24 @@
             "Bật Photo Index trong Cài đặt và chờ ảnh được chấm điểm.",
             "Mở rộng Lọc ảnh có hỗ trợ trong thanh bên thư viện.",
             "Chọn tiêu chí Select như độ sắc nét Subject, độ sắc nét Eye, hoặc Eyes open, hoặc tiêu chí Reject như sự cố phơi sáng, bắn hụt, hoặc Documents.",
-            "Dùng Đã chọn, Đã từ chối, hoặc Tất cả để xem lại các ảnh khớp.",
-            "Kiểm tra các gợi ý, rồi dùng Pick selects hoặc Reject rejects nếu bạn muốn áp dụng các cờ đó."
+            "Chọn một tiêu chí sẽ mở các ảnh khớp của tiêu chí đó trong lưới. Dùng Đã chọn, Đã từ chối hoặc Tất cả để thay đổi chế độ xem xem lại. Các bộ lọc thư viện khác vẫn được áp dụng.",
+            "Xem lại các ảnh hiển thị, rồi dùng Gắn cờ ảnh làm ảnh chọn hoặc Gắn cờ ảnh làm ảnh từ chối. Nút sẽ cho biết có bao nhiêu tệp sẽ thay đổi."
           ]
         },
         {
           "title": "Đang áp dụng cờ",
           "paragraphs": [
-            "Hộp xác nhận hiển thị số lượng bị ảnh hưởng và cảnh báo rằng các cờ hiện có trên ảnh khớp sẽ bị thay thế. Siêu dữ liệu RAW/JPEG được liên kết cũng có thể bao gồm tệp ghép cặp khi tùy chọn đó được bật.",
+            "Theo mặc định, các cờ hiện có được giữ nguyên. Chỉ bật Thay thế các cờ hiện có khi bạn muốn thay đổi các quyết định trước đó. Các thao tác lô ảnh hưởng đến các ảnh khớp đang hiển thị và bao gồm các tệp RAW/JPEG được liên kết khi bật liên kết siêu dữ liệu; các cờ được bảo vệ hoặc đã khớp sẽ bị loại khỏi số lượng thao tác.",
+            "Dùng Hoàn tác trong thông báo hoàn tất hoặc Hoàn tác lô gắn cờ cuối cùng trong thanh bên để khôi phục một lô. Hoàn tác vẫn khả dụng trong phiên này và giữ nguyên mọi quyết định gắn cờ thủ công hoặc bên ngoài sau đó. Nếu lưu thất bại, hãy dùng Thử lưu lại hoặc hoàn tác lô; các lần ghi thất bại vẫn được xếp hàng.",
             "Đây là các tín hiệu phân tích cho việc xem lại của bạn, không phải phán quyết cuối cùng về ảnh nào nên giữ. Từ chối chỉ đặt một cờ; bản thân nó không di chuyển ảnh gốc vào Thùng rác."
+          ]
+        },
+        {
+          "title": "So sánh các ảnh tương tự",
+          "paragraphs": [
+            "Xem lại các ảnh tương tự tìm các ảnh đã được lập chỉ mục trông giống nhau được chụp trong vòng 30 giây trong thư mục hoặc bộ sưu tập hiện tại. Các nhóm sẽ mở trong Xem nhanh với tối đa 16 ảnh. Dùng Nhóm trước đó và Nhóm tiếp theo để so sánh các lựa chọn thay thế, rồi gắn cờ từng ảnh bằng các điều khiển của chế độ xem nhanh.",
+            "Một ảnh được gợi ý có đánh giá mạnh hơn một cách duy nhất dựa trên lấy nét, mắt mở và các vấn đề được phát hiện. Khi hòa điểm hoặc không đủ bằng chứng, sẽ không có đề xuất rõ ràng. Các nhóm tương tự chỉ là gợi ý; chúng không tạo ngăn xếp hay thay đổi cờ.",
+            "Việc nhóm yêu cầu thời gian chụp thực tế và phân tích Chỉ mục ảnh hiện tại. Các tệp chỉ có ngày hệ thống tệp, video, bản sao ảo và ảnh không có đủ chi tiết hình ảnh sẽ bị loại trừ. Các bản ghi chỉ mục hiện có sẽ được làm mới bởi tiến trình chỉ mục sau bản cập nhật này."
           ]
         }
       ],
@@ -3157,5 +3166,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5"
+  "sourceDigest": "485d16fa4c3493f97fcd12cd1c291acf728a87f2d86c6c7e6c73a0af19fa49ab"
 }
