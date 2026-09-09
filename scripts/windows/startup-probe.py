@@ -3,6 +3,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -74,6 +75,10 @@ with tempfile.TemporaryDirectory(prefix="lighttable-cold-startup-") as temporary
             report["elapsed_seconds"] = time.monotonic() - started
             (evidence / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
             print(json.dumps(report), flush=True)
+            if (root / "server.log").is_file():
+                shutil.copy2(root / "server.log", evidence / "server.log")
     if not report["ok"]:
-        print((evidence / "imports.log").read_text(encoding="utf-8", errors="replace")[-24000:], flush=True)
+        for name in ("imports.log", "server.log"):
+            if (evidence / name).is_file():
+                print((evidence / name).read_text(encoding="utf-8", errors="replace")[-24000:], flush=True)
         raise SystemExit(1)
