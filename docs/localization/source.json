@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "332979ea7de20f371a9a39cc141f4a5fe27207ad470d76055f609b284a987ddf",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -474,6 +474,7 @@
     "Aperture (f-number)",
     "Aperture ≤",
     "Aperture ≥",
+    "Appearance tester",
     "Apple Intelligence unavailable",
     "Apple Photos",
     "Apple Photos import is available in the macOS app",

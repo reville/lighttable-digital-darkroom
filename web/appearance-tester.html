@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-no-i18n>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Appearance tester</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/web/style.css">
+  <link rel="stylesheet" href="/web/appearance-tester.css">
+</head>
+<body class="appearance-test-window">
+  <main class="appearance-test" aria-labelledby="appearanceTestTitle">
+    <h1 id="appearanceTestTitle">Appearance tester</h1>
+    <label for="appearanceTestColor">Highlight color</label>
+    <div class="appearance-test-color">
+      <input id="appearanceTestColor" type="color" aria-label="Highlight color">
+      <input id="appearanceTestHex" type="text" aria-label="Hex color" maxlength="7" spellcheck="false" autocomplete="off" pattern="#[0-9a-fA-F]{6}">
+    </div>
+    <label class="check-row"><input id="appearanceTestBorders" type="checkbox" role="switch">Show active button borders</label>
+    <p>Changes apply immediately. Keep this window open while you use LightTable.</p>
+    <div class="modal-actions"><button id="appearanceTestReset">Reset</button><button id="appearanceTestClose">Close</button></div>
+  </main>
+  <script type="module" src="/web/appearance-tester-window.js"></script>
+</body>
+</html>

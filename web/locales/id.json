@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "98abe3cfb9b5f067fb56fb1de60c1f73eaa2f75bc091fec5383f4a45e71f599b",
+  "sourceDigest": "332979ea7de20f371a9a39cc141f4a5fe27207ad470d76055f609b284a987ddf",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -195,6 +195,7 @@
     "Aperture (f-number)": "Aperture (f-number)",
     "Aperture ≤": "Aperture ≤",
     "Aperture ≥": "Aperture ≥",
+    "Appearance tester": "Penguji tampilan",
     "Apple Intelligence unavailable": "Apple Intelligence tidak tersedia",
     "Apple Photos": "Apple Photos",
     "Apple Photos import is available in the macOS app": "Impor Apple Photos tersedia di aplikasi macOS",

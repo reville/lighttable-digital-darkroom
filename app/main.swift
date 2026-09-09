@@ -1392,6 +1392,25 @@ private final class AboutWindowController: NSWindowController {
     }
 }
 
+// The tester gets only a close-window bridge, never the editor's file/Metal APIs.
+private final class AppearanceTesterCloseHandler: NSObject, WKScriptMessageHandler {
+    weak var panel: NSPanel?
+    let pageURL: URL
+
+    init(pageURL: URL) { self.pageURL = pageURL }
+
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage) {
+        guard message.name == "appearanceTester", message.body as? String == "close",
+              let panel, message.webView === panel.contentView,
+              message.frameInfo.isMainFrame, message.webView?.url == pageURL,
+              message.frameInfo.securityOrigin.protocol == "http",
+              message.frameInfo.securityOrigin.host == "127.0.0.1",
+              message.frameInfo.securityOrigin.port == pageURL.port else { return }
+        panel.performClose(nil)
+    }
+}
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate,
@@ -1409,6 +1428,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var webView: WKWebView!
     private var javaScriptConfirmation: (alert: NSAlert, reply: NativeJavaScriptReply)?
     private var secondaryLoupeWindow: NSWindow?
+    private var appearanceTesterPanel: NSPanel?
     private var aboutWindowController: AboutWindowController?
     var nativePreview: NativePreviewRenderer?
     let nativePerfLogQueue = DispatchQueue(label: "lighttable.native-perf-log")
@@ -1793,10 +1813,49 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if notification.object as? NSWindow === window {
             cancelJavaScriptConfirmation()
             secondaryLoupeWindow?.close()
+            appearanceTesterPanel?.close()
             diagnosticWindow?.close()
         } else if notification.object as? NSWindow === secondaryLoupeWindow {
             secondaryLoupeWindow = nil
+        } else if notification.object as? NSWindow === appearanceTesterPanel {
+            appearanceTesterPanel = nil
         }
+    }
+
+    private func openAppearanceTester() {
+        if let panel = appearanceTesterPanel {
+            panel.makeKeyAndOrderFront(nil)
+            return
+        }
+        guard let pageURL = webView.url,
+              let url = URL(string: "/web/appearance-tester.html", relativeTo: pageURL)?.absoluteURL
+        else { return }
+
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = webView.configuration.websiteDataStore
+        let closeHandler = AppearanceTesterCloseHandler(pageURL: url)
+        configuration.userContentController.add(closeHandler, name: "appearanceTester")
+        let testerView = WKWebView(frame: .zero, configuration: configuration)
+        testerView.autoresizingMask = [.width, .height]
+        let panel = NSPanel(
+            contentRect: NSRect(x: window.frame.maxX - 360, y: window.frame.maxY - 360,
+                                width: 340, height: 300),
+            styleMask: [.titled, .closable, .resizable, .utilityWindow],
+            backing: .buffered, defer: false)
+        panel.title = L("Appearance tester")
+        panel.contentMinSize = NSSize(width: 320, height: 280)
+        panel.isFloatingPanel = true
+        panel.level = .floating
+        panel.hidesOnDeactivate = true
+        panel.collectionBehavior = [.fullScreenAuxiliary]
+        panel.isReleasedWhenClosed = false
+        panel.delegate = self
+        panel.contentView = testerView
+        panel.setFrameAutosaveName("LightTableAppearanceTester")
+        closeHandler.panel = panel
+        appearanceTesterPanel = panel
+        panel.makeKeyAndOrderFront(nil)
+        testerView.load(URLRequest(url: url))
     }
 
     private func openSecondaryLoupe() {
@@ -2429,6 +2488,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             cancelJavaScriptConfirmation()
             presetLinksReady = false
             secondaryLoupeWindow?.close()
+            appearanceTesterPanel?.close()
         }
     }
 
@@ -2552,6 +2612,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
         case "openSecondaryLoupe":
             openSecondaryLoupe()
+        case "openAppearanceTester":
+            guard let source = message.webView,
+                  isTrustedEditorFrame(message.frameInfo, in: source) else { return }
+            openAppearanceTester()
         case "requestSources":
             sendEvent(sourcePayload())
             replaySetupEvents()
