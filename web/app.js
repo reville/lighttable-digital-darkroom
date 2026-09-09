@@ -79,6 +79,7 @@ import {
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
 import { presetEditState, blendPresetState, reconcilePresetAdjustment } from '/web/preset-amount.js';
+import { syncNumericControl, readNumericControl } from '/web/numeric-controls.js';
 import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
 import { installDesktopTheme } from '/web/desktop-theme.js';
@@ -792,7 +793,7 @@ function syncControls() {
       $(id).min = String(Math.min(0.1, value));
       $(id).max = String(Math.max(2, value));
     }
-    $(id).value = value;
+    syncNumericControl($(id), value);
     syncFilmReadout(id, value);
   });
   FILM_TOGGLES.forEach((id) => { $(id).checked = !!S.params[id]; });
@@ -834,7 +835,7 @@ function syncControls() {
   $('rawResetCameraDefault').disabled = !rawInput || !S.rawDefault?.settings;
   $('learnedDenoiseApply').disabled = !rawInput ||
     $('learnedDenoiseApply').dataset.available !== '1';
-  $('learned_denoise_strength').value = S.params.learned_denoise_strength ?? 0.6;
+  syncNumericControl($('learned_denoise_strength'), S.params.learned_denoise_strength ?? 0.6);
   $('learnedDenoiseStrengthV').textContent = Number(
     S.params.learned_denoise_strength ?? 0.6).toFixed(2);
   if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
@@ -870,9 +871,10 @@ function readControls() {
   S.params.development_time = +$('development_time').value || 0;
   S.params.print_development_time = +$('print_development_time').value || 0;
   FILM_SELECTS.forEach((id) => { S.params[id] = $(id).value; });
-  FILM_SLIDERS.forEach((id) => { S.params[id] = +$(id).value; });
+  FILM_SLIDERS.forEach((id) => { S.params[id] = readNumericControl($(id), S.params[id]); });
   FILM_TOGGLES.forEach((id) => { S.params[id] = $(id).checked; });
-  S.params.learned_denoise_strength = +$('learned_denoise_strength').value;
+  S.params.learned_denoise_strength = readNumericControl(
+    $('learned_denoise_strength'), S.params.learned_denoise_strength ?? 0.6);
 }
 function syncGrade() {
   document.querySelectorAll('[data-g]').forEach((el) => {
@@ -7647,18 +7649,26 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
 FILM_SLIDERS.forEach((id) => {
   const input = $(id);
   if (!input) return;
+  let gesturePhoto = null;
   input.addEventListener('input', () => {
+    if (gesturePhoto !== S.editingName) { pushUndo(); gesturePhoto = S.editingName; }
+    // An explicit gesture owns this value, even if it matches the rounded
+    // thumb position from the last sync. Other controls retain their precision.
+    S.params[id] = +input.value;
     syncFilmReadout(id, +input.value);
     renderPhysicalPreview();
   });
   input.addEventListener('change', () => {
-    pushUndo(); saveState();
+    if (gesturePhoto !== S.editingName && readNumericControl(input, S.params[id]) !== S.params[id]) pushUndo();
+    gesturePhoto = null;
+    saveState();
   });
   const resetFilmSlider = () => {
     pushUndo();
+    gesturePhoto = null;
     const def = S.filmDefaults?.[id] ?? 0;
     S.params[id] = def;
-    input.value = String(def);
+    syncNumericControl(input, def);
     syncFilmReadout(id, def);
     saveState();
     renderFilm(0);
@@ -11329,6 +11339,7 @@ if ($('autoLevel')) {
 let denoiseTimer = null;
 if ($('learnedDenoiseApply')) {
   $('learned_denoise_strength').oninput = () => {
+    S.params.learned_denoise_strength = +$('learned_denoise_strength').value;
     $('learnedDenoiseStrengthV').textContent = Number(
       $('learned_denoise_strength').value).toFixed(2);
   };
