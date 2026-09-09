@@ -80,6 +80,7 @@ jobs:
           python3 -m unittest discover -s tests -p test_linux_packaging.py -v
           python3 -m unittest discover -s tests -p test_linux_arch_packaging.py -v
           python3 -m unittest discover -s tests -p test_linux_aur_packaging.py -v
+          python3 -m unittest discover -s tests -p test_linux_updater_smoke.py -v
           cargo +1.88.0 test --locked --manifest-path rust-engine/Cargo.toml
           cargo +1.88.0 test --locked --manifest-path windows-shell/Cargo.toml
           SPEKTRAFILM_BACKEND=wgpu cargo +1.88.0 test \
@@ -159,6 +160,16 @@ jobs:
           BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
           timeout 125s dbus-run-session -- "$BUNDLE/Python/bin/python3" -B \
             scripts/linux/wayland-smoke.py "$BUNDLE"
+
+      - name: Require signed native update and failed-startup launcher recovery
+        if: github.event_name != 'pull_request' || inputs.build_package
+        timeout-minutes: 10
+        run: |
+          BUNDLE="$PWD/.build/linux/native desktop smoke/LightTable"
+          # Copies use ephemeral test signing/version metadata and private XDG
+          # data. No release credentials or public update feed are contacted.
+          timeout --kill-after=20s 540s xvfb-run -a --server-args="-screen 0 1280x900x24" dbus-run-session -- \
+            "$BUNDLE/Python/bin/python3" -B scripts/linux/updater-smoke.py "$BUNDLE"
 
       - name: Prepare local pacman package recipe
         if: github.event_name != 'pull_request' || inputs.build_package
