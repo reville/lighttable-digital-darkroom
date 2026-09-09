@@ -261,7 +261,7 @@ and saves per-case pixel differences and CI reports.
 
 - [GitHub Issues](https://github.com/reville/lighttable-digital-darkroom/issues): bug reports and feature requests.
 - [GitHub Discussions](https://github.com/reville/lighttable-digital-darkroom/discussions): general questions and community conversation.
-- [team@lighttable.app](mailto:team@lighttable.app): private questions, collaboration, press, or just getting in touch.
+- [hello@lighttable.app](mailto:hello@lighttable.app): private questions, collaboration, press, or just getting in touch.
 
 ## Project documentation
 
