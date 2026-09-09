@@ -68,6 +68,7 @@ import media_formats  # noqa: E402
 import media_availability  # noqa: E402
 import file_identity  # noqa: E402
 import durable_io  # noqa: E402
+import launcher_control  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
@@ -7513,11 +7514,12 @@ def _watch_parent() -> None:
             _exit_with_parent()
 
 
-def _watch_launcher_stdin() -> None:
+def _watch_launcher_stdin(reader) -> None:
     # Only launchers that create an owned pipe enable this channel. EOF means
     # the launcher released this server, including normal window/folder closes.
     try:
-        sys.stdin.buffer.read()
+        with reader:
+            reader.read()
     except (AttributeError, OSError, ValueError):
         return
     _exit_with_parent("launcher-closed")
@@ -7570,8 +7572,16 @@ def main() -> None:
     STARTUP.phase("starting", T("Starting LightTable…"))
     prepare_windows_image_runtime()
     if IS_WINDOWS and os.environ.get("LIGHTTABLE_WATCH_STDIN") == "1":
-        threading.Thread(target=_watch_launcher_stdin, daemon=True,
-                         name="lighttable-launcher-control").start()
+        reader = launcher_control.separate_launcher_stdin()
+        try:
+            threading.Thread(target=_watch_launcher_stdin, args=(reader,), daemon=True,
+                             name="lighttable-launcher-control").start()
+        except BaseException:
+            try:
+                reader.close()
+            except OSError:
+                pass
+            raise
     if os.environ.get("LIGHTTABLE_WATCH_PARENT"):
         threading.Thread(target=_watch_parent, daemon=True).start()
     if not FOLDER.is_dir():
