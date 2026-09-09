@@ -176,7 +176,7 @@ def expect_rejected(update, updater, arguments: dict, text: str) -> None:
         raise RuntimeError(f"Updater accepted a release that should fail with {text}")
 
 
-def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path) -> dict:
+def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path, live_download: bool = False) -> dict:
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
     from PIL import Image
 
@@ -226,7 +226,18 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path) -> 
             updater = ObservedUpdater(old)
             require(updater.status().get("supported"), f"Packaged updater is disabled: {updater.status()}")
             updater.state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
-            shutil.copy2(target_archive, updater.archive_file)
+            if live_download:
+                checked = updater.check()
+                require(checked.get('state')=='available', 'Public update feed did not offer the release')
+                downloaded = updater.download()
+                require(downloaded.get('state')=='ready', 'Public HTTPS archive download did not verify')
+                delivered = json.loads(updater.envelope_file.read_text())
+                require(delivered['signed']['sha256']==envelope['signed']['sha256'] and
+                        delivered['signed']['source_revision']==envelope['signed']['source_revision'],
+                        'Public feed delivered different release bytes')
+                envelope = delivered
+            else:
+                shutil.copy2(target_archive, updater.archive_file)
             authorization = root / "cache/lighttable/updates/pending-0123456789abcdef"
             authorization.mkdir(mode=0o700, parents=True)
             (authorization / "authorized").write_text("isolated native smoke\n")
@@ -250,6 +261,22 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path) -> 
             expect_rejected(update, updater, arguments, "signature")
             require((commands / "lighttable-desktop").resolve() == old / "bin/lighttable-desktop",
                     "Rejected metadata changed the desktop launcher")
+            backup_verified = False
+            if live_download:
+                from urllib.error import HTTPError
+                for attempt in range(50):
+                    try:
+                        prepared = request(instance['port'], '/api/updates/prepare', {}, instance['token'])
+                        break
+                    except HTTPError as error:
+                        if error.code != 409 or attempt == 49: raise
+                        time.sleep(0.2)
+                backup = Path(prepared.get('backup') or '')
+                require(backup.is_file() and backup.is_relative_to(root), 'Update preparation did not create an isolated catalog backup')
+                backup_verified = backup.stat().st_size > 0
+                request(instance['port'], '/api/updates/cancel', {}, instance['token'])
+                native = load('live_native_acceptance', Path(__file__).with_name('desktop-acceptance.py'))
+                native.normal_close(original, before['server_pid'], time.monotonic()+35)
             stop_group(original)
             children.remove(original)
             require(all(update.process_identity(pid) is None for pid in arguments["wait_pids"]),
@@ -286,6 +313,10 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path) -> 
             require(installed_manifest['source_revision']==envelope['signed']['source_revision'],
                     'Wrong target source was installed')
             require(after["server_pid"] != before["server_pid"], "The upgraded server did not restart")
+            if live_download:
+                screenshot = Path.cwd()/'evidence/public-upgraded-desktop.png'
+                screenshot.parent.mkdir(parents=True,exist_ok=True)
+                subprocess.run(['import','-window','root',str(screenshot)],check=True,timeout=15)
             stop_group(children[-1])
             children.pop()
 
@@ -315,7 +346,8 @@ def run(bundle: Path, timeout: int, target_archive: Path, target_feed: Path) -> 
                     "source_package_version": original_manifest["version"], "test_versions": ["0.4.99", envelope["signed"]["version"]],
                     "target_source": envelope["signed"]["source_revision"], "production_signature": True,
                     "saved_edit_persistence": True, "baseline_version_override": True,
-                    "desktop": "GTK/WebKitGTK", "display_backend": "x11", "archive_delivery": "locally staged",
+                    "desktop": "GTK/WebKitGTK", "display_backend": "x11", "archive_delivery": "public HTTPS" if live_download else "locally staged",
+                    "catalog_backup_verified": backup_verified, "normal_original_close": live_download,
                     "signature_rejection": True, "checksum_rejection": True,
                     "owned_launchers_retargeted": True, "native_before": before, "native_after": after,
                     "failed_native_startup_rollback": True, "original_photo_preserved": True}
@@ -338,6 +370,7 @@ def main() -> None:
     parser.add_argument("bundle", type=Path)
     parser.add_argument("--target-archive", type=Path, required=True)
     parser.add_argument("--target-feed", type=Path, required=True)
+    parser.add_argument("--live-download", action="store_true")
     parser.add_argument("--timeout", type=int, default=90, help="Seconds allowed for each native UI to render (10–105)")
     args = parser.parse_args()
     if sys.platform != "linux" or not os.environ.get("DISPLAY") or not os.environ.get("DBUS_SESSION_BUS_ADDRESS"):
@@ -348,7 +381,7 @@ def main() -> None:
     if Path(sys.prefix).resolve() != bundle / "Python":
         parser.error("Run this gate with the package's own Python runtime")
     signal.signal(signal.SIGTERM, lambda number, _frame: sys.exit(128 + number))
-    print(json.dumps(run(bundle, args.timeout, args.target_archive.resolve(), args.target_feed.resolve())))
+    print(json.dumps(run(bundle, args.timeout, args.target_archive.resolve(), args.target_feed.resolve(), args.live_download)))
 
 
 if __name__ == "__main__":
