@@ -1,0 +1,44 @@
+/* Override both the default palette and Linux's scoped desktop palette only
+   while a test color is set. Reset removes the attributes and restores both. */
+:root[data-appearance-color],
+:root[data-appearance-color] :is(.topbar,.left-panel,.right-shell,.modal,.context-menu,.dd-menu,.setup-window,.help-panel,.view-options-popover,.library-filter-panel) {
+  --accent:var(--appearance-accent);
+  --accent-strong:var(--appearance-accent);
+  --accent-soft:var(--appearance-soft);
+  --slider-accent:var(--appearance-accent);
+  --on-ink:var(--appearance-accent);
+  --on-soft:var(--appearance-soft);
+}
+
+/* Keep photographic/color swatches, ratings, verdicts and switch mechanics
+   semantic. Ordinary active controls share the experimental text/icon color. */
+:root:is([data-appearance-color],[data-appearance-no-borders]) button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face)) {
+  color:var(--appearance-accent,var(--on-ink)) !important;
+}
+:root[data-appearance-color] :is(.source-row.on,.folder-row.on,.collection-row.on,.edit-item.on,.dd-option[aria-selected="true"]) {
+  color:var(--appearance-accent) !important;
+  background:var(--appearance-soft) !important;
+}
+
+/* Preserve geometry and keyboard focus outlines. Transparent borders and no
+   active fill/underline leave text and icons as the only active-button cue. */
+:root[data-appearance-no-borders] button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face)) {
+  border-color:transparent !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* No dimming or blur: the actual controls remain visible during experiments. */
+.appearance-test-backdrop {
+  background:transparent;
+  backdrop-filter:none;
+  place-items:start;
+  padding:64px 20px 20px;
+  overflow:auto;
+}
+.appearance-test { width:min(320px,calc(100vw - 40px)); }
+.appearance-test-color { display:flex; gap:10px; margin:8px 0 16px; }
+.appearance-test-color input[type="color"] { width:52px; height:34px; padding:2px; cursor:pointer; }
+.appearance-test-color input[type="text"] { width:112px; font-family:monospace; }
+.appearance-test-color input[aria-invalid="true"] { border-color:var(--skip); }
+.appearance-test p { margin:12px 0 0; color:var(--muted); font-size:11px; }

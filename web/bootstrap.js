@@ -6,6 +6,8 @@ async function start() {
     await import('./dropdown.js');
     await import('./app.js');
     await import('./slider-ux.js');
+    const { installAppearanceTester } = await import('./appearance-tester.js');
+    installAppearanceTester();
     document.body.classList.remove('locale-loading');
   } catch (error) { showBootError(error, start); }
 }
