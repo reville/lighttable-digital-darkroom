@@ -466,6 +466,121 @@ class DesktopDirectoryCleanupTests(unittest.TestCase):
                 temporary.cleanup()
 
 
+class DesktopStackDiagnosticTests(unittest.TestCase):
+    def test_export_snapshot_keeps_only_counters_and_bounded_state(self):
+        snapshot = smoke.export_status_snapshot({"total": 1, "done": 0, "completed": 0,
+            "running": True, "cancel_requested": False, "state": "waiting", "phase": "x" * 120,
+            "token": "SECRET", "log": ["SECRET"], "destination": "SECRET",
+            "errors": [{"token": "SECRET"}], "warnings": [], "skipped": {"token": "SECRET"}})
+        self.assertEqual(snapshot, {"total": 1, "done": 0, "completed": 0,
+            "running": True, "cancel_requested": False, "state": "waiting", "phase": "x" * 100,
+            "errors_count": 1, "warnings_count": 0})
+        self.assertNotIn("SECRET", json.dumps(snapshot))
+
+    def test_job_pid_query_is_scoped_and_rejects_an_incomplete_list(self):
+        desktop = smoke.WindowsDesktop.__new__(smoke.WindowsDesktop)
+        desktop.job, desktop.kernel = 1234, Mock()
+        def query(job, info_class, output, size, length):
+            self.assertEqual((job, info_class), (1234, 3))
+            listing = output._obj
+            listing.assigned = listing.count = 3
+            listing.pids[:3] = [11, 22, 11]
+            return 1
+        desktop.kernel.QueryInformationJobObject.side_effect = query
+        self.assertEqual(desktop.job_process_ids(), [11, 22])
+        def incomplete(*args):
+            query(*args)
+            args[2]._obj.assigned = 257
+            return 1
+        desktop.kernel.QueryInformationJobObject.side_effect = incomplete
+        with self.assertRaisesRegex(RuntimeError, "diagnostic bound"):
+            desktop.job_process_ids()
+
+    def test_only_owned_matching_python_processes_are_held_and_selected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            python, other = Path(directory) / "python.exe", Path(directory) / "other.exe"
+            python.touch()
+            other.touch()
+            desktop = smoke.WindowsDesktop.__new__(smoke.WindowsDesktop)
+            desktop.job, desktop.kernel = 1234, Mock()
+            desktop.job_process_ids = Mock(return_value=list(range(1, 11)))
+            desktop.kernel.OpenProcess.side_effect = lambda rights, inherit, pid: pid if pid != 5 else None
+            def membership(handle, job, output):
+                self.assertEqual(job, desktop.job)
+                ctypes.cast(output, ctypes.POINTER(smoke.wintypes.BOOL))[0] = handle != 2
+                return 1
+            def executable(handle, flags, output, length):
+                self.assertEqual(flags, 0)
+                output.value = str(other if handle == 3 else python)
+                return handle != 4
+            desktop.kernel.IsProcessInJob.side_effect = membership
+            desktop.kernel.QueryFullProcessImageNameW.side_effect = executable
+            with desktop.owned_python_pids(python) as pids:
+                self.assertEqual(pids, [1, 6, 7, 8])
+                self.assertEqual([call.args[0] for call in desktop.kernel.CloseHandle.call_args_list], [2, 3, 4])
+            self.assertEqual([call.args[0] for call in desktop.kernel.CloseHandle.call_args_list], [2, 3, 4, 1, 6, 7, 8])
+            self.assertNotIn(2, [call.args[0] for call in desktop.kernel.QueryFullProcessImageNameW.call_args_list])
+
+    def test_absent_dumper_and_no_matching_processes_do_not_run_a_profiler(self):
+        desktop = Mock()
+        with tempfile.TemporaryDirectory() as directory, patch.object(smoke.subprocess, "run") as run:
+            root = Path(directory)
+            self.assertIsNone(smoke.capture_python_stacks(desktop, root, None, root))
+            desktop.owned_python_pids.assert_not_called()
+            dumper = root / "py-spy.exe"
+            dumper.touch()
+            context = MagicMock()
+            context.__enter__.return_value = []
+            desktop.owned_python_pids.return_value = context
+            self.assertEqual(smoke.capture_python_stacks(desktop, root, dumper, root), {"processes": []})
+            run.assert_not_called()
+
+    def test_stack_dumps_are_capped_timed_and_never_request_locals(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, desktop = Path(directory), Mock()
+            dumper = root / "py-spy.exe"
+            dumper.touch()
+            context = MagicMock()
+            context.__enter__.return_value = [11, 22, 33, 44, 55]
+            desktop.owned_python_pids.return_value = context
+            outcomes = [subprocess.TimeoutExpired("py-spy", 5, output=b"partial", stderr=b"waiting"),
+                        subprocess.CompletedProcess([], 0, stdout=b"s" * 70000, stderr=b"e" * 70000),
+                        PermissionError("SECRET diagnostic detail"),
+                        subprocess.CompletedProcess([], 1, stdout=b"", stderr=b"unavailable")]
+            with patch.object(smoke.subprocess, "run", side_effect=outcomes) as run:
+                summary = smoke.capture_python_stacks(desktop, root, dumper, root)
+            desktop.owned_python_pids.assert_called_once_with(root / "Python/python.exe")
+            self.assertEqual(run.call_count, 4)
+            for call, pid in zip(run.call_args_list, (11, 22, 33, 44)):
+                self.assertEqual(call.args[0], [str(dumper), "dump", "--pid", str(pid)])
+                self.assertEqual(call.kwargs["timeout"], 5)
+                self.assertNotIn("env", call.kwargs)
+            self.assertTrue(summary["processes"][0]["timed_out"])
+            self.assertTrue(summary["processes"][1]["stdout"]["truncated"])
+            self.assertEqual(summary["processes"][2]["error"], "PermissionError")
+            self.assertNotIn("SECRET", json.dumps(summary))
+            self.assertEqual((root / "python-11-stdout.txt").read_bytes(), b"partial")
+            self.assertEqual((root / "python-22-stdout.txt").stat().st_size, 65536)
+            self.assertEqual((root / "python-22-stderr.txt").stat().st_size, 65536)
+            self.assertTrue(context.__exit__.called)
+
+    def test_diagnostic_failure_does_not_mask_the_original_native_exception(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, desktop = Path(directory), Mock()
+            dumper = root / "py-spy.exe"
+            dumper.touch()
+            desktop.owned_python_pids.side_effect = OSError("SECRET")
+            original = RuntimeError("Export timed out")
+            with self.assertRaises(RuntimeError) as raised:
+                try:
+                    raise original
+                except RuntimeError:
+                    summary = smoke.capture_python_stacks(desktop, root, dumper, root)
+                    raise
+            self.assertIs(raised.exception, original)
+            self.assertEqual(summary, {"processes": [], "error": "OSError"})
+
+
 @unittest.skipUnless(os.name == "nt", "Requires the Windows job APIs")
 class WindowsJobCleanupTests(unittest.TestCase):
     def test_cleanup_owns_only_its_process_tree_even_after_parent_exit(self):
@@ -489,6 +604,9 @@ class WindowsJobCleanupTests(unittest.TestCase):
                 pid = json.loads(receipt.read_text())["pid"]
                 self.assertTrue(desktop.owns_pid(pid))
                 self.assertFalse(desktop.owns_pid(unrelated.pid))
+                with desktop.owned_python_pids(Path(sys.executable)) as matching:
+                    self.assertIn(pid, matching)
+                    self.assertNotIn(unrelated.pid, matching)
                 child_handle = desktop.kernel.OpenProcess(0x100000, False, pid)
                 self.assertTrue(child_handle)
                 desktop.close()
