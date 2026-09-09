@@ -4623,7 +4623,7 @@ window.addEventListener('beforeunload', (event) => {
 });
 
 function saveState(immediate = false) {
-  if (window.__LIGHTTABLE_BENCHMARK__) return Promise.resolve(true);
+  if (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review') return Promise.resolve(true);
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
   readControls();
@@ -4922,7 +4922,7 @@ function pumpEditedThumbnailQueue() {
 
 function queueEditedThumbnail(im, attempt = 0) {
   if (im?.availability === 'cloud-only') return;
-  if (!im || im.kind === 'video' || window.__LIGHTTABLE_BENCHMARK__) return;
+  if (!im || im.kind === 'video' || (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review')) return;
   const visible = !_editedThumbnailObserver || im === cur() ||
     [...document.querySelectorAll('img[data-thumbnail-name]')].some(
       (image) => image.dataset.thumbnailName === im.name &&
