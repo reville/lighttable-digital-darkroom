@@ -1375,11 +1375,13 @@ for (const section of document.querySelectorAll('#editPane .sec, #filmPane .sec'
 }
 
 let histogramTimer = null;
+const histogramFrameScheduler = createFrameScheduler(() => drawHistogram());
 function scheduleHistogram(immediate = false) {
   clearTimeout(histogramTimer);
+  histogramFrameScheduler.cancel();
   const isInteracting = (performance.now() - lastContinuousInputAt) < 120;
   const delay = immediate ? 0 : (isInteracting ? 140 : 55);
-  histogramTimer = setTimeout(() => requestAnimationFrame(drawHistogram), delay);
+  histogramTimer = setTimeout(() => histogramFrameScheduler.request(), delay);
 }
 
 let packedMaskData = null;
@@ -1962,12 +1964,12 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   if (S.gl && (!native || forceWebGL) && !interactiveMask) {
     S.gl.draw(activeGrade, S.gradeEditsBaked ? [] : S.masks, upload,
       S.softProof, spotVisualization());
-    if (refreshScope) scheduleHistogram();
     if (!native) {
       const input = GRADE_PERF.take();
       if (input) afterVisiblePaint().then(() => GRADE_PERF.presented(input, 'webgl-paint-proxy'));
     }
   }
+  if (refreshScope && S.gl && !interactiveMask) scheduleHistogram();
 }
 
 function drawGrade() {
@@ -3903,7 +3905,6 @@ function nativeViewportPayload() {
   };
 }
 
-let nativeLayoutFrame = null;
 let lastNativeViewportKey = '';
 let nativeHelperTimer = null;
 function nativePreviewActive() {
@@ -3944,7 +3945,6 @@ function syncPreviewBackend() {
 }
 
 function flushNativeViewportLayout() {
-  nativeLayoutFrame = null;
   const payload = nativeViewportPayload();
   const key = JSON.stringify(payload);
   if (key !== lastNativeViewportKey) {
@@ -3952,15 +3952,14 @@ function flushNativeViewportLayout() {
     postNative('nativeViewportLayout', payload);
   }
 }
+const nativeLayoutScheduler = createFrameScheduler(flushNativeViewportLayout);
 function scheduleNativeViewportLayout() {
   if (!NATIVE_PREVIEW) return;
   if (zoomMotion.active) {
     // Keep Metal on this animation frame rather than one RAF behind overlays.
-    if (nativeLayoutFrame !== null) cancelAnimationFrame(nativeLayoutFrame);
+    nativeLayoutScheduler.cancel();
     flushNativeViewportLayout();
-  } else if (nativeLayoutFrame === null) {
-    nativeLayoutFrame = requestAnimationFrame(flushNativeViewportLayout);
-  }
+  } else nativeLayoutScheduler.request();
 }
 
 function scheduleNativeHelper(url, generation) {
