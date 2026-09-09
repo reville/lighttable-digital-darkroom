@@ -484,6 +484,10 @@
         "anchor": "export function createZoomMotion("
       },
       {
+        "path": "app/main.swift",
+        "anchor": "func forwardEditorMagnification(_ event: NSEvent) -> Bool {"
+      },
+      {
         "path": "web/photo-pan.js",
         "anchor": "export function createPhotoPanMemory()"
       }

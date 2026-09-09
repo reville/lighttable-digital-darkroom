@@ -9124,6 +9124,17 @@ function finishSpeedKey(key) {
     }
     wheelScale = 1; wheelPanX = 0; wheelPanY = 0;
   };
+  window.addEventListener('lighttable-magnify', ({detail}) => {
+    if (S.viewMode !== 'detail' || !cur() || S.editGesture || S.cropTransition ||
+        document.querySelector('.modal-backdrop.on')) return;
+    const {factor, x, y} = detail || {};
+    if (!Number.isFinite(factor) || factor <= 0 || factor === 1 ||
+        !Number.isFinite(x) || !Number.isFinite(y) ||
+        !wrap.contains(document.elementFromPoint(x, y))) return;
+    wheelScale *= factor;
+    wheelPoint = [x, y];
+    if (!wheelFrame) wheelFrame = requestAnimationFrame(flushWheel);
+  });
   wrap.addEventListener('wheel', (e) => {
     if (S.speed) {
       e.preventDefault();
