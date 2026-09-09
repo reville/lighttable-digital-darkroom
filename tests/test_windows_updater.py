@@ -4,6 +4,8 @@ import importlib.util
 from pathlib import Path
 import plistlib
 import re
+import shutil
+import subprocess
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
@@ -46,6 +48,38 @@ class WindowsAppcastTests(unittest.TestCase):
         build = (ROOT / "scripts/windows/build-release.ps1").read_text()
         self.assertEqual(re.search(r'PUBLIC_KEY: &str = "([^"]+)"', native)[1], key)
         self.assertEqual(re.search(r'\$PublicKey = "([^"]+)"', build)[1], key)
+
+
+@unittest.skipUnless(shutil.which("pwsh") or shutil.which("powershell"), "PowerShell is required")
+class WinSparkleStagingTests(unittest.TestCase):
+    def test_stages_the_x64_release_dll_and_notices_without_development_files(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            sdk, payload = root / "SDK with spaces", root / "payload"
+            for name, data in {"x64/Release/WinSparkle.dll": b"x64 updater", "Win32/Release/WinSparkle.dll": b"wrong arch",
+                               "bin/winsparkle-tool.exe": b"signing tool", "COPYING": b"license",
+                               "COPYING.expat": b"dependency license"}.items():
+                path = sdk / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+            result = self.stage(sdk, payload)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((payload / "WinSparkle.dll").read_bytes(), b"x64 updater")
+            self.assertEqual({p.relative_to(payload).as_posix() for p in payload.rglob("*") if p.is_file()},
+                             {"WinSparkle.dll", "Resources/LightTable/licenses/winsparkle/COPYING",
+                              "Resources/LightTable/licenses/winsparkle/COPYING.expat"})
+            # An incomplete SDK fails before touching an existing payload.
+            (sdk / "bin/winsparkle-tool.exe").unlink()
+            (sdk / "x64/Release/WinSparkle.dll").write_bytes(b"replacement")
+            result = self.stage(sdk, payload)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual((payload / "WinSparkle.dll").read_bytes(), b"x64 updater")
+
+    @staticmethod
+    def stage(sdk, payload):
+        return subprocess.run([shutil.which("pwsh") or shutil.which("powershell"), "-NoProfile", "-File",
+                               str(ROOT / "scripts/windows/stage-winsparkle.ps1"), "-Sdk", str(sdk),
+                               "-Payload", str(payload)], capture_output=True, text=True, timeout=30)
 
 
 if __name__ == "__main__":
