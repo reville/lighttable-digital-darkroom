@@ -1,10 +1,34 @@
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { spawn } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
+import { promisify } from 'node:util';
 import { randomUUID } from 'node:crypto';
 import { download } from './download.mjs';
 import { PLATFORMS, releaseAsset } from './release.mjs';
+
+const execFileAsync = promisify(execFile);
+export async function capture(command, args, options = {}) {
+  const { stdout } = await execFileAsync(command, args, {
+    encoding: 'utf8', windowsHide: true, timeout: 15000, maxBuffer: 1024 * 1024, ...options,
+  });
+  return stdout;
+}
+
+export async function windowsInstallLocation(ctx) {
+  // Match NSIS's per-user, 64-bit uninstall key even when Node is 32-bit.
+  // JSON plus explicit UTF-8 preserves spaces and non-ASCII user paths.
+  const output = await ctx.capture('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
+    "$ErrorActionPreference='Stop'; [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); " +
+    "$root=[Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::CurrentUser,[Microsoft.Win32.RegistryView]::Registry64); " +
+    "$key=$null; try { $key=$root.OpenSubKey('Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\LightTable'); " +
+    "$value=if($null -ne $key){$key.GetValue('InstallLocation')}else{$null}; ConvertTo-Json -InputObject $value -Compress } " +
+    "finally { if($null -ne $key){$key.Dispose()}; $root.Dispose() }"], { env: ctx.env });
+  const value = JSON.parse(output.trim() || 'null');
+  if (value === null || value === '') return null;
+  if (typeof value !== 'string' || !path.isAbsolute(value)) throw new Error('The registered LightTable installation directory is invalid.');
+  return value;
+}
 
 export function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
@@ -25,7 +49,7 @@ export function context(overrides = {}) {
   const home = overrides.home ?? os.homedir();
   return {
     platform, arch: overrides.arch ?? process.arch, env, home,
-    fs, run, download, log: console.log, temp: os.tmpdir(),
+    fs, run, capture, download, log: console.log, temp: os.tmpdir(),
     applications: '/Applications',
     ...overrides,
     stateFile: overrides.stateFile ?? (platform === 'win32'
@@ -46,6 +70,10 @@ export function defaultDestination(ctx) {
 
 export async function findInstalled(ctx) {
   const candidates = [];
+  if (ctx.platform === 'win32') {
+    const registered = await windowsInstallLocation(ctx);
+    if (registered) candidates.push(registered);
+  }
   try {
     const state = JSON.parse(await ctx.fs.readFile(ctx.stateFile, 'utf8'));
     if (typeof state.destination === 'string' && path.isAbsolute(state.destination)) candidates.push(state.destination);
@@ -113,7 +141,13 @@ async function installWindows(installer, destination, update, ctx) {
     await ctx.fs.cp(destination, backup, { recursive: true, errorOnExist: true, force: false });
   }
   try {
-    await ctx.run(installer, ['/S']);
+    // NSIS requires /D to be the last argument, with its value unquoted even
+    // when it contains spaces. Quote argv0 ourselves and pass the remaining
+    // command line verbatim; CreateProcess receives the executable separately.
+    // No command shell interprets &, %, or other characters in this path.
+    await ctx.run(installer, ['/S', `/D=${destination}`], {
+      env: ctx.env, windowsVerbatimArguments: true, argv0: `"${installer}"`,
+    });
     if (!await exists(path.join(destination, 'Python', 'python.exe'), ctx)) throw new Error('The Windows installer finished without the bundled CLI runtime.');
   } catch (error) {
     if (backup) {
@@ -128,7 +162,7 @@ async function installWindows(installer, destination, update, ctx) {
 export async function install(metadata, options = {}, ctx = context()) {
   const key = `${ctx.platform}-${ctx.arch}`;
   if (!PLATFORMS[key]) releaseAsset(metadata, key);
-  if (options.installDir && ctx.platform !== 'darwin') throw new Error('--install-dir is supported on macOS only; Windows uses its standard per-user installer location.');
+  if (options.installDir && ctx.platform !== 'darwin') throw new Error('--install-dir is supported on macOS only; Windows uses its registered or default per-user installer location.');
   const installed = await findInstalled(ctx);
   const destination = options.installDir ? path.join(path.resolve(options.installDir), 'LightTable.app') : installed ?? defaultDestination(ctx);
   if (!options.update && await exists(destination, ctx)) {

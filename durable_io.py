@@ -8,10 +8,13 @@ user may need to recover after an external or interrupted write.
 """
 from __future__ import annotations
 
+import ctypes
+import errno
 import hashlib
 import json
 import os
 import shutil
+import sys
 import threading
 import time
 from pathlib import Path
@@ -203,14 +206,55 @@ def publish_file(staged: Path | str, destination: Path | str) -> Path:
 
 
 def publish_file_no_replace(staged: Path | str, destination: Path | str) -> Path:
-    """Publish completed bytes only if the destination name is still free."""
+    """Publish completed bytes without replacement; may consume the stage."""
     staged, destination = Path(staged), Path(destination)
     # Windows _commit (os.fsync) requires a writable file handle.
     with staged.open("r+b" if os.name == "nt" else "rb") as handle:
         os.fsync(handle.fileno())
-    os.link(staged, destination)
+    try:
+        os.link(staged, destination)
+    except OSError as error:
+        if not _link_unsupported(error):
+            raise
+        _rename_no_replace(staged, destination)
     _flush_directory(destination.parent)
     return destination
+
+
+def _link_unsupported(error: OSError) -> bool:
+    # FAT/exFAT and some network filesystems have no hard links. Do not turn
+    # collisions, missing sources, or a disconnected/full volume into retries.
+    return error.errno in {errno.EPERM, errno.ENOTSUP, errno.ENOSYS} or \
+        getattr(error, "winerror", None) in (1, 50)
+
+
+def _rename_no_replace(source: Path, destination: Path) -> None:
+    """Atomic no-clobber rename for filesystems without hard links.
+
+    Never emulate this with exists()+replace() or an exposed partial copy.
+    Unsupported platforms/filesystems fail while keeping the source intact.
+    """
+    if sys.platform == "win32":
+        # Unlike POSIX rename, Windows os.rename refuses an existing target.
+        os.rename(source, destination)
+        return
+    libc = ctypes.CDLL(None, use_errno=True)
+    if sys.platform == "darwin" and hasattr(libc, "renamex_np"):
+        rename = libc.renamex_np
+        rename.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_uint]
+        args = (os.fsencode(source), os.fsencode(destination), 0x4)  # RENAME_EXCL
+    elif sys.platform.startswith("linux") and hasattr(libc, "renameat2"):
+        rename = libc.renameat2
+        rename.argtypes = [ctypes.c_int, ctypes.c_char_p,
+                           ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+        args = (-100, os.fsencode(source), -100, os.fsencode(destination), 1)
+        # AT_FDCWD, RENAME_NOREPLACE; supported by modern Linux filesystems.
+    else:
+        raise OSError(errno.ENOTSUP, os.strerror(errno.ENOTSUP), str(source))
+    rename.restype = ctypes.c_int
+    if rename(*args) != 0:
+        number = ctypes.get_errno()
+        raise OSError(number, os.strerror(number), str(destination))
 
 
 def copy_file_no_replace(source: Path | str, destination: Path | str) -> Path:
@@ -224,7 +268,7 @@ def copy_file_no_replace(source: Path | str, destination: Path | str) -> Path:
             shutil.copystat(source, staged)
         except OSError:
             pass
-        # Linking a completed sibling is the portable no-clobber publish step.
+        # Publish a completed sibling with the filesystem's no-clobber primitive.
         # Unlike exists()+replace(), another process winning the name is an
         # error rather than permission to overwrite its file.
         publish_file_no_replace(staged, destination)
@@ -241,7 +285,15 @@ def move_file_no_replace(source: Path | str, destination: Path | str) -> Path:
     both names reference the same bytes, which is recoverable and lossless.
     """
     source, destination = Path(source), Path(destination)
-    os.link(source, destination)
+    try:
+        os.link(source, destination)
+    except OSError as error:
+        if not _link_unsupported(error):
+            raise
+        _rename_no_replace(source, destination)
+        _flush_directory(destination.parent)
+        _flush_directory(source.parent)
+        return destination
     _flush_directory(destination.parent)
     try:
         source.unlink()

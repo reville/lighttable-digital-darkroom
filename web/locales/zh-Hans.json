@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3",
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -94,7 +94,6 @@
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "已保存或导入的曲线会保留其精确保存的表，直到你编辑它。应用程序会重建用于编辑的代表性控制柄，因此第一次调整可能会将导入的曲线重新塑形到超出你移动的点。",
     "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "被建议的照片在对焦、睁眼情况和检测到的问题方面具有明显更强的评估。若并列或证据不足，则不会显示明确建议。相似组仅为建议；它们不会创建堆栈，也不会更改标记。",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "虚拟副本引用同一个原始文件，并保持独立的编辑状态。它不会在磁盘上创建第二个原始文件。",
-    "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "虚拟副本共享其原始文件。删除虚拟副本应使用 照片操作 → 删除虚拟副本；将其源文件移到废纸篓会影响使用该原始文件的每个编辑。",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "虚拟副本共享其源文件：对其中一份执行重命名会作用于该原始文件。界面不提供专用的重命名撤销按钮。",
     "About LightTable": "关于 LightTable",
     "About LightTable and open source": "关于 LightTable 和开源",
@@ -140,7 +139,7 @@
     "Added to Yours": "已添加到你的",
     "Added to collection": "已添加到集合",
     "Adding folders needs the desktop app": "添加文件夹需要桌面应用",
-    "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "相邻的 XMP 侧车文件会随原文件一起移动。隐藏的 RAW 或 JPEG 伴侣文件会保留在资料库中；在成对拍摄设置中选择“两种文件”可将其包含在内。",
+    "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "相邻的 XMP 侧车文件会随原文件一起移动，但如果配对的原文件仍留在资料库中，共享的 XMP 也会保留。隐藏的 RAW 或 JPEG 配对文件会留在资料库中；在成对拍摄设置中选择“两个文件”可将其包含在内。",
     "Adjust Clarity while checking contrast around the subject and edges.": "调整 清晰度，同时检查主体和边缘周围的对比度。",
     "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.": "如果修正边缘或强度需要细化，请调整羽化或不透明度。",
     "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.": "调整高光和阴影以平衡亮部和暗部，然后微调白色、黑色和对比度。",
@@ -1183,7 +1182,7 @@
     "Filename template": "文件名模板",
     "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.": "文件名模板支持 {filename}、{stock}、{date}、{rating} 和 {sequence}。例如，{filename}_{stock} 会包含源名称和胶片。较长的文件名字段会被缩短，以便为输出和副档名称留出空间；请检查输出预览。",
     "Files & Metadata": "文件与元数据",
-    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow.": "“文件与元数据”控制位于原始文件旁边的便携式 LightTable 编辑、自动 XMP 写入、RAW/JPEG 配对和关键词输入。完整的便携式编辑使用 .lighttable-state.json；XMP 载入兼容的编辑和元数据。XMP 同步会保留无关字段，并报告冲突的外部更改；通过 XMP 副档读取 Exchange 元数据，以使用受支持的工作流程。",
+    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "“文件与元数据”控制位于原始文件旁边的便携式 LightTable 编辑、自动 XMP 写入、RAW/JPEG 配对和关键词输入。完整的便携式编辑使用 .lighttable-state.json；XMP 载入兼容的编辑和元数据。XMP 同步会保留无关字段，并报告冲突的外部更改；通过 XMP 副档读取 Exchange 元数据，以使用受支持的工作流程。 便携式 LightTable 编辑包含虚拟副本。重新打开文件夹时，会保留已存入目录的编辑。",
     "Fill a distraction using surrounding image detail": "使用周围图像细节填补干扰",
     "Film": "胶片",
     "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off.": "胶片会将模拟的胶片和输出流程应用到静态照片。胶片配置文件开关控制此处理；当你关闭胶片时，你的编辑调整仍会保持启用。",
@@ -1769,6 +1768,7 @@
     "Missing photo": "照片缺失",
     "Mode": "模式",
     "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.": "大多数设置更改会自动保存。语言会使用“应用语言”并在保存编辑后重新加载窗口。“通用”还控制在选取、拒绝或评分后自动前进、完成通知以及更新检查。",
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "“将已拒绝照片移到废纸篓”会跳过虚拟副本。使用“照片操作 → 删除虚拟副本”可删除副本而不影响原文件。",
     "Move Rejected Photos to Trash…": "将已拒绝照片移到废纸篓…",
     "Move Target": "移动目标",
     "Move any MIDI knob to map it to the active slider": "移动任意 MIDI 旋钮，将其映射到当前滑块",

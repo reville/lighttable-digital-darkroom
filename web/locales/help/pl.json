@@ -735,8 +735,8 @@
             "Odczytaj liczbę zdjęć w potwierdzeniu i potwierdzaj tylko wtedy, gdy odpowiada zamierzonemu zestawowi."
           ],
           "tips": [
-            "Sąsiednie sidecary XMP przemieszczają się razem z oryginałami. Ukryte towarzyszące pliki RAW lub JPEG pozostają w bibliotece; wybierz Oba pliki w ustawieniach sparowanego przechwytywania, aby je uwzględnić.",
-            "Kopia wirtualna współdzieli oryginalny plik. Usuwanie kopii wirtualnej powinno używać akcji Zdjęcie → Usuń kopię wirtualną; przeniesienie jej źródła do Kosza wpływa na każdą edycję korzystającą z tego oryginału."
+            "Sąsiednie pliki towarzyszące XMP są przenoszone razem z oryginałami, ale współdzielony plik XMP pozostaje przy sparowanym oryginale, który zostaje w bibliotece. Ukryte pliki towarzyszące RAW lub JPEG pozostają w bibliotece; wybierz Oba pliki w ustawieniach sparowanych zdjęć, aby je uwzględnić.",
+            "Polecenie „Przenieś odrzucone zdjęcia do Kosza” pomija wirtualne kopie. Użyj Akcje zdjęcia → Usuń wirtualną kopię, aby usunąć kopię bez naruszania jej oryginału."
           ]
         },
         {
@@ -2772,7 +2772,7 @@
             "Większość zmian ustawień zapisuje się automatycznie. Język używa opcji Zastosuj język i po zapisaniu zmian przeładowuje okno. Ogólne kontroluje też Automatyczne przechodzenie po wybraniu, odrzuceniu lub ocenieniu, powiadomienia o zakończeniu oraz sprawdzanie aktualizacji.",
             "Opcje interfejsu sterują tłem przeglądarki, skalą czcionki, Lights Out, nakładką informacji lupy i prowadnicami kadrowania. Te preferencje zmieniają wygląd obszaru roboczego bez zmiany wyeksportowanych pikseli.",
             "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio.",
-            "Pliki i metadane kontrolują przenośne edycje LightTable obok oryginałów, automatyczny zapis XMP, parowanie RAW/JPEG oraz wprowadzanie słów kluczowych. Pełne przenośne edycje używają .lighttable-state.json; XMP przenosi zgodne edycje i metadane. Synchronizacja XMP zachowuje niepowiązane pola i zgłasza konflikty zmian zewnętrznych; odczytuj metadane Exchange przez sidecary XMP dla obsługiwanego przepływu pracy."
+            "Pliki i metadane kontrolują przenośne edycje LightTable obok oryginałów, automatyczny zapis XMP, parowanie RAW/JPEG oraz wprowadzanie słów kluczowych. Pełne przenośne edycje używają .lighttable-state.json; XMP przenosi zgodne edycje i metadane. Synchronizacja XMP zachowuje niepowiązane pola i zgłasza konflikty zmian zewnętrznych; odczytuj metadane Exchange przez sidecary XMP dla obsługiwanego przepływu pracy. Przenośne edycje LightTable obejmują wirtualne kopie. Ponowne otwarcie folderu zachowuje edycje już zapisane w katalogu."
           ]
         },
         {
@@ -3203,5 +3203,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f"
 }

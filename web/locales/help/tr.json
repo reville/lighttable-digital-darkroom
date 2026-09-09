@@ -735,8 +735,8 @@
             "Onay penceresindeki fotoğraf sayısını okuyun ve yalnızca amaçladığınız kümeyle eşleştiğinde onaylayın."
           ],
           "tips": [
-            "Komşu XMP yan dosyaları özgün dosyalarla birlikte taşınır. Gizli RAW veya JPEG eşleri kitaplıkta kalır; bunları dahil etmek için eşleştirilmiş yakalama ayarlarında Her iki dosya’yı seçin.",
-            "Bir sanal kopya özgün dosyasını paylaşır. Sanal bir kopyayı silmek için Photo actions → Delete virtual copy kullanılmalıdır; kaynağını Çöp Kutusu’na taşımak, o özgünü kullanan her düzenlemeyi etkiler."
+            "Bitişikteki XMP yan dosyaları özgün dosyalarla birlikte taşınır; ancak paylaşılan XMP, kitaplıkta kalan eşleştirilmiş özgün dosyayla birlikte korunur. Gizli RAW veya JPEG eşleri kitaplıkta kalır; bunları dahil etmek için eşleştirilmiş çekim ayarlarında Her iki dosya seçeneğini seçin.",
+            "“Reddedilen Fotoğrafları Çöp Sepetine Taşı” sanal kopyaları atlar. Bir kopyayı özgün dosyasına dokunmadan kaldırmak için Fotoğraf işlemleri → Sanal kopyayı sil seçeneğini kullanın."
           ]
         },
         {
@@ -2772,7 +2772,7 @@
             "Çoğu ayar değişikliği otomatik olarak kaydedilir. Dil, düzenlemeleri kaydettikten sonra Uygula dilini kullanır ve pencereyi yeniden yükler. Genel ayrıca seçme, reddetme veya puanlama sonrası Otomatik ilerle’yi, tamamlanma bildirimlerini ve güncelleme denetimlerini de yönetir.",
             "Arayüz, görüntüleyici arka planını, yazı tipi ölçeğini, Lights Out'u, büyüteç bilgi katmanını ve kırpma kılavuzlarını denetler. Bu tercihler, dışa aktarılan pikselleri değiştirmeden çalışma alanının görünümünü değiştirir.",
             "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
-            "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun."
+            "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun. Taşınabilir LightTable düzenlemeleri sanal kopyaları da içerir. Bir klasörü yeniden açtığınızda kataloğunuzda önceden kaydedilmiş düzenlemeler korunur."
           ]
         },
         {
@@ -3203,5 +3203,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f"
 }

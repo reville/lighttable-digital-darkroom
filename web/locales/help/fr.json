@@ -735,8 +735,8 @@
             "Lisez le nombre de photos dans la confirmation et confirmez uniquement lorsqu’il correspond à l’ensemble que vous souhaitez."
           ],
           "tips": [
-            "Les sidecars XMP adjacents suivent les originaux. Les compagnons RAW ou JPEG masqués restent dans la bibliothèque ; choisissez Les deux fichiers dans les paramètres de capture en paire pour les inclure.",
-            "Une copie virtuelle partage son fichier d’origine. La suppression d’une copie virtuelle doit utiliser les actions Photo → Supprimer la copie virtuelle ; déplacer sa source vers la corbeille affecte chaque édition qui utilise cet original."
+            "Les sidecars XMP adjacents suivent les originaux, mais un XMP partagé reste avec tout original apparié conservé dans la bibliothèque. Les fichiers RAW ou JPEG associés et masqués restent dans la bibliothèque ; choisissez Les deux fichiers dans les paramètres de capture en paire pour les inclure.",
+            "« Déplacer les photos rejetées vers la corbeille » ignore les copies virtuelles. Utilisez Actions photo → Supprimer la copie virtuelle pour supprimer une copie sans toucher à son original."
           ]
         },
         {
@@ -2772,7 +2772,7 @@
             "La plupart des modifications des réglages sont enregistrées automatiquement. La langue utilise Appliquer la langue et recharge la fenêtre après l'enregistrement des modifications. Général contrôle aussi le Passage automatique après choix, rejet ou notation, les notifications de fin et les vérifications de mise à jour.",
             "Les contrôles de l’interface définissent l’arrière-plan du visualiseur, l’échelle de police, Lights Out, l’overlay d’informations de la loupe et les guides de recadrage. Ces préférences modifient l’apparence de l’espace de travail sans modifier les pixels exportés.",
             "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement.",
-            "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge."
+            "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge. Les modifications portables de LightTable incluent les copies virtuelles. Lorsque vous rouvrez un dossier, les modifications déjà enregistrées dans votre catalogue sont conservées."
           ]
         },
         {
@@ -3203,5 +3203,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f"
 }

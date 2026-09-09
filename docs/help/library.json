@@ -1109,8 +1109,8 @@
           "Read the photo count in the confirmation and confirm only when it matches your intended set."
         ],
         "tips": [
-          "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.",
-          "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original."
+          "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.",
+          "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original."
         ]
       },
       {
@@ -1133,7 +1133,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "const rejected = visible().filter((image) => image.status === 'skipped');"
+        "anchor": "const rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);"
       },
       {
         "path": "web/app.js",
@@ -1149,7 +1149,7 @@
       },
       {
         "path": "server.py",
-        "anchor": "for sidecar in (path.with_suffix(\".xmp\"), Path(str(path) + \".xmp\")):"
+        "anchor": "for item in photo_companion_inventory(path, path, indexes[path.parent]):"
       }
     ]
   },

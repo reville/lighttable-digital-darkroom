@@ -11271,17 +11271,23 @@ function openSurvey(mode = 'survey') {
 /* Move every rejected photo in the current view to the Trash, through the
  * host. The server resolves and validates the paths but never unlinks. */
 async function trashRejected() {
-  const rejected = visible().filter((image) => image.status === 'skipped');
+  if (!await saveState(true)) return;
+  const rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);
   if (!rejected.length) { toast(tr("No rejected photos in this view")); return; }
   if (!window.confirm(
     trn("Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", rejected.length, {rejectedLength: rejected.length}))) return;
-  const result = await api('/api/photos/trash',
-                           { names: rejected.map((image) => image.name) });
+  let result;
+  try {
+    result = await api('/api/photos/trash',
+                       { names: rejected.map((image) => image.name) });
+    if (result.error) { toast(result.error); return; }
+  } catch (error) { toast(error.message); return; }
+  if (!result.paths?.length) { toast(tr("No rejected photos in this view")); return; }
   if (!sendNative('trashFiles', { paths: result.paths })) {
     toast(tr("Moving files to the Trash needs the desktop app"));
     return;
   }
-  toast(tr("Moving {rejectedLength} photos to the Trash", {rejectedLength: rejected.length}));
+  toast(tr("Moving {rejectedLength} photos to the Trash", {rejectedLength: result.photoCount ?? rejected.length}));
 }
 
 /* ------------------------------------------------------- survey controls */

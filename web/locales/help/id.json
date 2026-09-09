@@ -735,8 +735,8 @@
             "Baca jumlah foto di konfirmasi dan konfirmasikan hanya jika sesuai dengan set yang Anda inginkan."
           ],
           "tips": [
-            "Sidecar XMP yang bersebelahan ikut berpindah bersama file asli. Pendamping RAW atau JPEG yang tersembunyi tetap ada di pustaka; pilih Both files pada pengaturan pasangan tangkapan untuk menyertakannya.",
-            "Salinan virtual berbagi file aslinya. Menghapus salinan virtual harus menggunakan tindakan Foto → Delete virtual copy; memindahkan sumbernya ke Trash memengaruhi setiap edit yang menggunakan aslinya."
+            "Sidecar XMP yang bersebelahan ikut dipindahkan bersama file asli, tetapi XMP yang dipakai bersama tetap bersama file asli pasangannya yang masih ada di pustaka. File pendamping RAW atau JPEG yang tersembunyi tetap ada di pustaka; pilih Kedua file pada pengaturan pengambilan berpasangan untuk menyertakannya.",
+            "“Pindahkan Foto yang Ditolak ke Tempat Sampah” melewati salinan virtual. Gunakan Aksi foto → Hapus salinan virtual untuk menghapus salinan tanpa menyentuh file aslinya."
           ]
         },
         {
@@ -2772,7 +2772,7 @@
             "Sebagian besar perubahan pengaturan tersimpan secara otomatis. Bahasa menggunakan Terapkan bahasa dan memuat ulang jendela setelah menyimpan suntingan. Umum juga mengontrol Otomatis maju setelah memilih, menolak, atau memberi rating, notifikasi penyelesaian, dan pemeriksaan pembaruan.",
             "Kontrol antarmuka mengatur latar belakang penampil, skala font, Lights Out, overlay info loupe, dan panduan pangkas. Preferensi ini mengubah tampilan ruang kerja tanpa mengubah piksel yang diekspor.",
             "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
-            "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung."
+            "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung. Suntingan LightTable portabel menyertakan salinan virtual. Membuka kembali folder mempertahankan suntingan yang sudah tersimpan di katalog Anda."
           ]
         },
         {
@@ -3203,5 +3203,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f"
 }

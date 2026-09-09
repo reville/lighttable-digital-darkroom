@@ -735,8 +735,8 @@
             "Leia a contagem de fotos na confirmação e confirme somente quando ela corresponder ao conjunto pretendido."
           ],
           "tips": [
-            "Sidecars XMP adjacentes acompanham os originais. Companheiros RAW ou JPEG ocultos permanecem na biblioteca; escolha Ambos os arquivos nas configurações de captura pareada para incluí-los.",
-            "Uma cópia virtual compartilha seu arquivo original. Excluir uma cópia virtual deve usar ações de foto → Excluir cópia virtual; mover sua origem para o Lixo afeta todas as edições que usam esse original."
+            "Os sidecars XMP adjacentes acompanham os originais, mas um XMP compartilhado permanece com qualquer original pareado que fique na biblioteca. Os arquivos RAW ou JPEG pareados que estão ocultos permanecem na biblioteca; escolha Ambos os arquivos nas configurações de captura pareada para incluí-los.",
+            "“Mover Fotos Rejeitadas para o Lixo” ignora as cópias virtuais. Use Ações da foto → Excluir cópia virtual para remover uma cópia sem tocar no original."
           ]
         },
         {
@@ -2772,7 +2772,7 @@
             "A maioria das alterações de configurações é salva automaticamente. O idioma usa Aplicar idioma e recarrega a janela após salvar as edições. Geral também controla Avanço automático após selecionar, rejeitar ou avaliar, notificações de conclusão e verificações de atualização.",
             "Interface controla o fundo do visualizador, a escala da fonte, Lights Out, a sobreposição de informações da lupa e as guias de corte. Essas preferências alteram a aparência do espaço de trabalho sem modificar os pixels exportados.",
             "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente.",
-            "Arquivos e metadados controla edições portáteis do LightTable ao lado dos originais, gravação automática de XMP, pareamento RAW/JPEG e entrada de palavras-chave. As edições portáteis completas usam .lighttable-state.json; XMP carrega edições e metadados compatíveis. A sincronização XMP preserva campos não relacionados e relata alterações externas conflitantes; leia metadados de Exchange por meio de sidecars XMP para o fluxo de trabalho compatível."
+            "Arquivos e metadados controla edições portáteis do LightTable ao lado dos originais, gravação automática de XMP, pareamento RAW/JPEG e entrada de palavras-chave. As edições portáteis completas usam .lighttable-state.json; XMP carrega edições e metadados compatíveis. A sincronização XMP preserva campos não relacionados e relata alterações externas conflitantes; leia metadados de Exchange por meio de sidecars XMP para o fluxo de trabalho compatível. As edições portáteis do LightTable incluem cópias virtuais. Ao reabrir uma pasta, as edições já salvas no catálogo são mantidas."
           ]
         },
         {
@@ -3203,5 +3203,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3"
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f"
 }

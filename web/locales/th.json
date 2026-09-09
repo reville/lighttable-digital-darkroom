@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "dc3b6cfec3e4552de43ee8d118d7fbe6fd708c0462e2554f6cbe047457fbeaf3",
+  "sourceDigest": "6ad3245ae1d43ee0428f334fa1d7ee840d03065d493e2e01cc8011e2604ffe7f",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -94,7 +94,6 @@
     "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move.": "Curve ที่บันทึกไว้หรือนำเข้าจะคงตารางที่บันทึกไว้อย่างแม่นยำจนกว่าคุณจะแก้ไข แอปจะสร้างจุดจับแทนสำหรับการแก้ไขใหม่ ดังนั้นการปรับครั้งแรกอาจปรับรูปทรงของ curve ที่นำเข้ามาเกินจุดที่คุณลาก",
     "A suggested photo has a uniquely stronger assessment based on focus, open eyes, and detected issues. Ties or insufficient evidence show no clear recommendation. Similarity groups are suggestions; they do not create stacks or change flags.": "ภาพถ่ายที่แนะนำจะมีการประเมินที่ดีกว่าอย่างชัดเจนโดยอิงจากโฟกัส ดวงตาที่เปิดอยู่ และปัญหาที่ตรวจพบ หากสูสีกันหรือตรวจพบหลักฐานไม่เพียงพอจะไม่แสดงคำแนะนำที่ชัดเจน กลุ่มความคล้ายกันเป็นเพียงข้อเสนอแนะ; ไม่ได้สร้างสแต็กหรือเปลี่ยนธง",
     "A virtual copy refers to the same original file and keeps an independent edit state. It does not create a second original on disk.": "virtual copy อ้างถึงไฟล์ต้นฉบับเดียวกันและคงสถานะการแก้ไขแยกกันไว้ มันไม่ได้สร้างต้นฉบับที่สองบนดิสก์",
-    "A virtual copy shares its original file. Deleting a virtual copy should use Photo actions → Delete virtual copy; moving its source to the Trash affects every edit that uses that original.": "สำเนาเสมือนใช้ไฟล์ต้นฉบับร่วมกัน การลบสำเนาเสมือนควรใช้ Photo actions → Delete virtual copy; การย้ายไฟล์ต้นทางไปที่ถังขยะจะกระทบทุกการแก้ไขที่ใช้ไฟล์ต้นฉบับนั้น",
     "A virtual copy shares its source file: including one in a rename targets that original. The interface does not provide a dedicated rename-undo button.": "สำเนาเสมือนจะใช้ไฟล์ต้นทางร่วมกัน: การรวมสำเนาเข้าไปในชื่อใหม่จะไปตั้งชื่อไฟล์ต้นฉบับนั้น อินเทอร์เฟซไม่มีปุ่มเลิกทำการเปลี่ยนชื่อโดยเฉพาะ",
     "About LightTable": "เกี่ยวกับ LightTable",
     "About LightTable and open source": "เกี่ยวกับ LightTable และโอเพนซอร์ส",
@@ -140,7 +139,7 @@
     "Added to Yours": "เพิ่มไปยังของคุณแล้ว",
     "Added to collection": "เพิ่มไปยังคอลเลกชันแล้ว",
     "Adding folders needs the desktop app": "การเพิ่มโฟลเดอร์ต้องใช้แอปเดสก์ท็อป",
-    "Adjacent XMP sidecars move with the originals. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "ไฟล์ XMP sidecar ที่อยู่ติดกันจะย้ายไปพร้อมกับไฟล์ต้นฉบับ ไฟล์ RAW หรือ JPEG ที่ซ่อนอยู่จะยังคงอยู่ในไลบรารี; เลือก Both files ในการตั้งค่าการจับคู่ไฟล์เพื่อรวมไฟล์เหล่านั้น",
+    "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.": "ไฟล์ XMP sidecar ที่อยู่ข้างกันจะย้ายไปพร้อมกับไฟล์ต้นฉบับ แต่ XMP ที่ใช้ร่วมกันจะยังอยู่กับไฟล์ต้นฉบับที่จับคู่กันซึ่งเหลืออยู่ในไลบรารี ไฟล์ RAW หรือ JPEG ที่จับคู่กันและถูกซ่อนไว้จะยังคงอยู่ในไลบรารี เลือก ทั้งสองไฟล์ ในการตั้งค่าการจับคู่ไฟล์เพื่อรวมไฟล์เหล่านั้นด้วย",
     "Adjust Clarity while checking contrast around the subject and edges.": "ปรับ ความชัดเจน ขณะตรวจสอบคอนทราสต์รอบวัตถุหลักและขอบ",
     "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.": "ปรับ Feather หรือ Opacity หากขอบหรือความแรงของการแก้ไขต้องการการเกลี่ย",
     "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.": "ปรับ Highlights และ Shadows เพื่อปรับสมดุลบริเวณสว่างและมืด จากนั้นปรับ Whites, Blacks และ Contrast",
@@ -1183,7 +1182,7 @@
     "Filename template": "เทมเพลตชื่อไฟล์",
     "Filename templates support {filename}, {stock}, {date}, {rating}, and {sequence}. For example, {filename}_{stock} includes the source name and film stock. Long filename fields are shortened to leave room for output and sidecar names; check Output preview.": "เทมเพลตชื่อไฟล์รองรับ {filename}, {stock}, {date}, {rating}, และ {sequence} ตัวอย่างเช่น {filename}_{stock} จะรวมชื่อแหล่งที่มาและสต็อกฟิล์ม ช่องชื่อไฟล์ที่ยาวจะถูกย่อเพื่อเผื่อพื้นที่ให้ชื่อเอาต์พุตและไซด์คาร์; ตรวจสอบ ตัวอย่างก่อนพิมพ์ของเอาต์พุต",
     "Files & Metadata": "ไฟล์และเมทาดาทา",
-    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow.": "ไฟล์และเมทาดาทาควบคุมการแก้ไข LightTable แบบพกพาข้างต้นฉบับ, การเขียน XMP อัตโนมัติ, การจับคู่ RAW/JPEG, และการป้อนคีย์เวิร์ด การแก้ไขแบบพกพาเต็มรูปแบบใช้ .lighttable-state.json; XMP เก็บการแก้ไขและเมทาดาทาที่เข้ากันได้ การซิงค์ XMP รักษาฟิลด์ที่ไม่เกี่ยวข้องไว้และรายงานการเปลี่ยนแปลงภายนอกที่ขัดแย้ง; อ่านเมทาดาทา Exchange ผ่านไซด์คาร์ XMP สำหรับเวิร์กโฟลว์ที่รองรับ",
+    "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog.": "ไฟล์และเมทาดาทาควบคุมการแก้ไข LightTable แบบพกพาข้างต้นฉบับ, การเขียน XMP อัตโนมัติ, การจับคู่ RAW/JPEG, และการป้อนคีย์เวิร์ด การแก้ไขแบบพกพาเต็มรูปแบบใช้ .lighttable-state.json; XMP เก็บการแก้ไขและเมทาดาทาที่เข้ากันได้ การซิงค์ XMP รักษาฟิลด์ที่ไม่เกี่ยวข้องไว้และรายงานการเปลี่ยนแปลงภายนอกที่ขัดแย้ง; อ่านเมทาดาทา Exchange ผ่านไซด์คาร์ XMP สำหรับเวิร์กโฟลว์ที่รองรับ การแก้ไข LightTable แบบพกพารวมถึงสำเนาเสมือนด้วย เมื่อเปิดโฟลเดอร์อีกครั้ง การแก้ไขที่บันทึกไว้แล้วในแค็ตตาล็อกจะยังคงอยู่",
     "Fill a distraction using surrounding image detail": "เติมเต็มการรบกวนโดยใช้รายละเอียดของภาพที่อยู่รอบๆ",
     "Film": "ฟิล์ม",
     "Film applies a modeled film and output process to a still photo. The Film profile switch controls this processing; your Edit adjustments remain active when you switch Film off.": "Film จะใช้ฟิล์มและกระบวนการเอาต์พุตที่จำลองขึ้นกับภาพนิ่ง สวิตช์ Film profile ควบคุมการประมวลผลนี้; การปรับ Edit ของคุณจะยังคงใช้งานอยู่เมื่อคุณปิด Film",
@@ -1769,6 +1768,7 @@
     "Missing photo": "ภาพถ่ายหายไป",
     "Mode": "โหมด",
     "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.": "การเปลี่ยนแปลงการตั้งค่าส่วนใหญ่จะบันทึกโดยอัตโนมัติ ภาษาใช้ Apply language และโหลดหน้าต่างใหม่หลังจากบันทึกการแก้ไขแล้ว ทั่วไปยังควบคุม เลื่อนไปยังภาพถัดไปอัตโนมัติ หลังจากเลือก, ปฏิเสธ หรือให้คะแนน, การแจ้งเตือนเมื่อเสร็จสิ้น และการตรวจหาการอัปเดต",
+    "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original.": "คำสั่ง “ย้ายภาพถ่ายที่ปฏิเสธแล้วไปถังขยะ” จะข้ามสำเนาเสมือน ใช้ การกระทำกับภาพถ่าย → ลบสำเนาเสมือน เพื่อลบสำเนาโดยไม่กระทบไฟล์ต้นฉบับ",
     "Move Rejected Photos to Trash…": "ย้ายภาพถ่ายที่ปฏิเสธแล้วไปถังขยะ…",
     "Move Target": "ย้ายเป้าหมาย",
     "Move any MIDI knob to map it to the active slider": "ขยับปุ่ม MIDI ใดก็ได้เพื่อแมปกับสไลด์ที่ใช้งานอยู่",
