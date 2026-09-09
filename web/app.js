@@ -4810,7 +4810,7 @@ function inFolderScope(im) {
   return dir === selected || (S.includeSubfolders && dir.startsWith(selected + '/'));
 }
 
-function starStr(n) { return '★'.repeat(n) + '☆'.repeat(5 - n); }
+function starStr(n) { return '<span class="rated">' + '★'.repeat(n) + '</span>' + '★'.repeat(5 - n); }
 
 let _stripKey = '', _gridKey = '', _gridMembershipKey = '';
 const _stripEls = new Map(), _gridEls = new Map();
@@ -5288,7 +5288,7 @@ function renderGrid() {
       badge.title = stack.collapsed ? tr("Expand stack") : tr("Collapse stack");
     }
     const st = d.querySelector('.stars'), want = starStr(im.rating || 0);
-    if (st.textContent !== want) st.textContent = want;
+    if (st.innerHTML !== want) st.innerHTML = want;
     d.querySelector('.idx').textContent = S.msel?.has(im.name) ? '✓' : '';
     paintLabelDot(d, im);
   });

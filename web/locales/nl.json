@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "Fout: {error}",
     "Errors: {details}": "Fouten: {details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "Elke export sluit het geselecteerde ICC-profiel in. Kies sRGB, Display P3 of ProPhoto RGB in Kleurruimte.",
-    "Every step, kept with the photo": "Elke stap, bewaard bij de foto",
+    "Edit History": "Bewerkingsgeschiedenis",
     "Everyone": "Iedereen",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "Iedereen toont zichtbare gezichtsgroepen. Naamloos toont groepen die nog niet zijn benoemd. Open een groep, typ een naam en kies Naam opslaan. Alleen namen die je invoert worden gebruikt; het model kent de namen van personen niet.",
     "Example download prepared. Your edit has not changed.": "Voorbeelddownload voorbereid. Je bewerking is niet gewijzigd.",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "Versleep een van de punten om het verloop aan te passen. Versleep de lijn om het te verplaatsen. Sleep ergens anders om het opnieuw te tekenen.",
     "Shape a linear gradient": "Een lineair verloop vormgeven",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn."
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn.",
+    "Copy and Paste are below the photo in Detail view.": "Kopiëren en Plakken staan onder de foto in de detailweergave."
   },
   "plurals": {
     " · {count} paired file linked": {

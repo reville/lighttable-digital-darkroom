@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "08cf59c39b7f4278df6466a59b2e22107196fb338c1a5544c9ba6d826dba8f87",
+  "sourceDigest": "6a8219434f6b3fdca256e019890f034e63e949fcc8c03871d1e7cae35aa927b5",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1066,7 +1066,7 @@
     "Error: {error}": "错误：{error}",
     "Errors: {details}": "错误：{details}",
     "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.": "每次导出都会嵌入所选 ICC 配置文件。在颜色空间中选择 sRGB、Display P3 或 ProPhoto RGB。",
-    "Every step, kept with the photo": "每一步都随照片一起保留",
+    "Edit History": "编辑历史",
     "Everyone": "所有人",
     "Everyone shows visible face groups. Unnamed shows groups that have not been named. Open a group, type a name, and choose Save name. Only names you enter are used; the model does not know people’s names.": "所有人会显示可见的面部组。未命名会显示尚未命名的组。打开一个组，输入名称，然后选择保存名称。只有你输入的名称会被使用；模型不知道人名。",
     "Example download prepared. Your edit has not changed.": "示例下载已准备就绪。你的编辑未发生变化。",
@@ -4123,7 +4123,8 @@
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.": "拖动任一圆点可调整渐变。拖动连线可移动整个渐变。在其他位置拖动可重新绘制。",
     "Shape a linear gradient": "调整线性渐变的形状",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.": "在“编辑形状”中，拖动任一圆点可调整渐变的对应端点。拖动连接两点的线可移动整个渐变，同时保持角度和过渡宽度。在照片的其他位置拖动可重新绘制。",
-    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "选择已有的线性蒙版即可再次调整。如果刚刚使用了“添加”“减去”或“交集”进行绘制，请先选择“编辑形状”。如果圆点被隐藏，请按 H。"
+    "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden.": "选择已有的线性蒙版即可再次调整。如果刚刚使用了“添加”“减去”或“交集”进行绘制，请先选择“编辑形状”。如果圆点被隐藏，请按 H。",
+    "Copy and Paste are below the photo in Detail view.": "在详细视图中，复制和粘贴位于照片下方。"
   },
   "plurals": {
     " · {count} paired file linked": {
