@@ -1954,9 +1954,10 @@ function drawGradeNow(forceWebGL = false, refreshScope = true) {
   }
   if (native) {
     postNative('nativeGrade', nativeGradePayload(activeGrade));
-    if (channelUpload || upload) {
-      postNative('nativeMasks', channelUpload || nativeMaskPayload(upload));
-    }
+    // Local sliders and range/enable controls change mask settings without
+    // changing the raster. Send those settings on every grade update; omit
+    // bitmap data when the existing mask texture can be reused.
+    postNative('nativeMasks', channelUpload || nativeMaskPayload(upload));
   }
   // The WebGL surface is hidden while Metal is presenting. Avoid duplicating
   // continuous draws, but allow an explicit one-shot refresh before sampling
