@@ -187,15 +187,21 @@ class WindowsDesktop:
         callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
         self.user.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
         self.user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+        self.user.IsWindowVisible.argtypes = [wintypes.HWND]
+        self.user.IsWindowVisible.restype = wintypes.BOOL
         self.user.PostMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
+        windows = []
         @callback_type
-        def close_window(window, _):
+        def find_window(window, _):
             pid = wintypes.DWORD()
             self.user.GetWindowThreadProcessId(window, ctypes.byref(pid))
-            if pid.value == self.pid:
-                self.user.PostMessageW(window, 0x10, 0, 0)  # WM_CLOSE invokes normal save barrier.
+            if pid.value == self.pid and self.user.IsWindowVisible(window):
+                windows.append(window)
             return True
-        self.user.EnumWindows(close_window, 0)
+        self._check(self.user.EnumWindows(find_window, 0))
+        if len(windows) != 1:
+            raise RuntimeError(f"Expected exactly one visible native test window to close; found {len(windows)}")
+        self._check(self.user.PostMessageW(windows[0], 0x10, 0, 0))  # WM_CLOSE invokes the normal save barrier.
         if self.kernel.WaitForSingleObject(self.process, max(1, int(timeout * 1000))) != 0:
             raise RuntimeError("The native window did not finish its normal save-and-close flow")
 
@@ -231,8 +237,19 @@ class API:
                           data=json.dumps(body).encode() if body is not None else None,
                           headers={"Content-Type": "application/json", "X-LightTable-Token": self.token,
                                    "X-LightTable-Strict": "1"})
-        with self.opener.open(request, timeout=min(5, remaining)) as response:
-            result = json.load(response)
+        try:
+            with self.opener.open(request, timeout=min(5, remaining)) as response:
+                result = json.load(response)
+        except HTTPError as error:
+            try:
+                with error:
+                    payload = json.loads(error.read(65536))
+                detail = payload.get("error") if isinstance(payload, dict) else None
+                if isinstance(detail, str) and detail:
+                    error.msg = f"{error.msg}: {detail[:500]}"
+            except (OSError, ValueError, TypeError):
+                pass
+            raise
         if result.get("error"):
             raise RuntimeError(str(result["error"]))
         return result
@@ -334,6 +351,13 @@ def render_photo(desktop, api, deadline, basename):
         return next((item["name"] for item in api.request("/api/images").get("images", [])
                      if Path(item["name"]).name == basename), None)
     name = wait_for(desktop, deadline, "the imported test photo", find_photo)
+    def photo_visible():
+        state = api.request("/api/ui/state")
+        return state if (state.get("client") and state.get("age", 999) < 10
+                         and state.get("visibleCount", 0) >= 1) else None
+    # Server import can finish before the window reloads its own image list.
+    # This isolated catalog contains exactly the one test photo.
+    wait_for(desktop, deadline, "the test photo in the native window's library", photo_visible)
     send_ui_command(api, "goto", {"name": name})
     def ready():
         state = api.request("/api/ui/state")

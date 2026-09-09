@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ctypes
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -80,6 +81,94 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
         api.request.side_effect = HTTPError("http://127.0.0.1", 403, "Disabled", {}, None)
         with self.assertRaises(HTTPError):
             smoke.send_ui_command(api, "goto", {"name": "smoke.tif"})
+
+    def test_goto_is_sent_once_only_after_the_live_window_has_loaded_the_test_photo(self):
+        desktop, api = Mock(), Mock()
+        desktop.running.return_value = True
+        empty = {"client": "native", "age": 0, "visibleCount": 0}
+        visible = {**empty, "visibleCount": 1}
+        rendered = {**visible, "current": "smoke.tif", "render": {"name": "smoke.tif", "state": "ready"}}
+        states = iter((empty, empty, {**visible, "age": 11}, {**visible, "client": None}, visible, rendered))
+        observed, commands = [], []
+        def request(route, body=None):
+            if route == "/api/ui/state":
+                observed.append(next(states))
+                return observed[-1]
+            if route == "/api/images":
+                return {"images": [{"name": "smoke.tif"}]}
+            self.assertEqual(route, "/api/ui/command")
+            self.assertEqual(observed[-1], visible)
+            commands.append(body)
+            return {"ok": True}
+        api.request.side_effect = request
+        with patch.object(smoke.time, "sleep"):
+            name, state = smoke.render_photo(desktop, api, time.monotonic() + 5, "smoke.tif")
+        self.assertEqual(name, "smoke.tif")
+        self.assertEqual(state, rendered)
+        self.assertEqual(commands, [{"command": "goto", "args": {"name": "smoke.tif"}, "timeout": 3}])
+
+    def test_http_errors_keep_status_and_append_only_a_bounded_json_error_string(self):
+        examples = (
+            (json.dumps({"error": "Photo is not loaded", "token": "SECRET_TOKEN",
+                         "other": {"error": "SECRET_NESTED"}}).encode(), "Photo is not loaded"),
+            (json.dumps({"error": "x" * 500 + "SECRET_TRUNCATED"}).encode(), "x" * 500),
+            (json.dumps({"error": {"token": "SECRET_TOKEN"}}).encode(), None),
+            (json.dumps({"message": "SECRET_OTHER"}).encode(), None),
+            (b'<html>SECRET_RAW_BODY</html>', None),
+        )
+        for body, detail in examples:
+            with self.subTest(detail=detail):
+                api = smoke.API({"port": 12345, "token": "SECRET_REQUEST_TOKEN"}, time.monotonic() + 5)
+                response = io.BytesIO(body)
+                error = HTTPError("http://127.0.0.1:12345/api/ui/command", 409, "Conflict", {}, response)
+                api.opener = Mock()
+                api.opener.open.side_effect = error
+                with self.assertRaises(HTTPError) as raised:
+                    api.request("/api/ui/command", {"command": "goto"})
+                self.assertIs(raised.exception, error)
+                self.assertEqual(error.code, 409)
+                self.assertEqual(error.msg, "Conflict" + (f": {detail}" if detail else ""))
+                self.assertNotIn("SECRET", str(error))
+                self.assertTrue(response.closed)
+                api.opener.open.assert_called_once()
+
+    def test_normal_quit_closes_only_one_visible_owned_window_and_rejects_ambiguity(self):
+        desktop = smoke.WindowsDesktop.__new__(smoke.WindowsDesktop)
+        desktop.pid, desktop.process = 123, 1234
+        desktop.user, desktop.kernel = Mock(), Mock()
+        desktop.kernel.WaitForSingleObject.return_value = 0
+        windows = {10: (123, False), 20: (123, True), 30: (999, True)}
+        def enumerate_windows(callback, argument):
+            for window in windows:
+                self.assertTrue(callback(window, argument))
+            return 1
+        def owner(window, output):
+            ctypes.cast(output, ctypes.POINTER(smoke.wintypes.DWORD))[0] = windows[window][0]
+            return 1
+        desktop.user.EnumWindows.side_effect = enumerate_windows
+        desktop.user.GetWindowThreadProcessId.side_effect = owner
+        desktop.user.IsWindowVisible.side_effect = lambda window: windows[window][1]
+        desktop.user.PostMessageW.return_value = 1
+        with patch.object(smoke.ctypes, "WINFUNCTYPE", return_value=lambda function: function, create=True):
+            desktop.quit(2)
+            desktop.user.PostMessageW.assert_called_once_with(20, 0x10, 0, 0)
+            desktop.kernel.WaitForSingleObject.assert_called_once_with(1234, 2000)
+            for replacement in ({10: (123, False), 30: (999, True)},
+                                {10: (123, False), 20: (123, True), 30: (999, True), 40: (123, True)}):
+                windows = replacement
+                desktop.user.PostMessageW.reset_mock()
+                desktop.kernel.WaitForSingleObject.reset_mock()
+                with self.assertRaisesRegex(RuntimeError, "exactly one visible"):
+                    desktop.quit(2)
+                desktop.user.PostMessageW.assert_not_called()
+                desktop.kernel.WaitForSingleObject.assert_not_called()
+            windows = {20: (123, True)}
+            desktop.user.PostMessageW.return_value = 0
+            with patch.object(smoke.ctypes, "get_last_error", return_value=5, create=True), \
+                    patch.object(smoke.ctypes, "WinError", return_value=OSError("Posting close failed"), create=True):
+                with self.assertRaisesRegex(OSError, "Posting close failed"):
+                    desktop.quit(2)
+            desktop.kernel.WaitForSingleObject.assert_not_called()
 
     def test_expected_edits_wait_for_a_grade_and_require_both_saved_values(self):
         pending_or_wrong = (
