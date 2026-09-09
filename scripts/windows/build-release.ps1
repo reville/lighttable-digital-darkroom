@@ -86,7 +86,7 @@ try {
         "..\Resources\LightTable"
         "..\Resources\LightTable\vendor\spektrafilm\src"
         "import site"
-    ) | Set-Content -Encoding ascii (Join-Path $Python "python313._pth")
+    ) | Set-Content -LiteralPath (Join-Path $Python "python313._pth") -Encoding ascii
 
     $VCRuntimeVersion = & (Join-Path $PSScriptRoot "stage-vc-runtime.ps1") -Payload $Payload
 
@@ -137,7 +137,7 @@ try {
     New-Item -ItemType Directory -Force -Path $Engine | Out-Null
     Copy-Item (Join-Path $RustSource "data") $Engine -Recurse
     Copy-Item (Join-Path $Project "profiles\*.json") (Join-Path $Engine "data\profiles")
-    Set-Content -Encoding ascii (Join-Path $Engine "VERSION.txt") $RustSourceRevision
+    Set-Content -LiteralPath (Join-Path $Engine "VERSION.txt") -Value $RustSourceRevision -Encoding ascii
 
     $Licenses = Join-Path $Resources "licenses"
     New-Item -ItemType Directory -Force -Path $Licenses | Out-Null
@@ -163,7 +163,7 @@ try {
     $WinSparkle = Join-Path $WinSparkleRoot "WinSparkle-$WinSparkleVersion"
     & (Join-Path $PSScriptRoot "stage-winsparkle.ps1") -Sdk $WinSparkle -Payload $Payload
     # ZIP extraction stays portable; NSIS writes direct ownership after copying.
-    Set-Content -Encoding ascii -NoNewline (Join-Path $Payload "install-channel.txt") "portable"
+    Set-Content -LiteralPath (Join-Path $Payload "install-channel.txt") -Value "portable" -Encoding ascii -NoNewline
 
     # Pull requests exercise the exact embedded Python and updater payload before paying
     # for native engine/shell compilation, signing, or installer creation.
@@ -233,7 +233,7 @@ try {
         python_version = $PythonVersion
         vc_runtime_version = $VCRuntimeVersion
         authenticode_signed = [bool]$SigningEnabled
-    } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Payload "build-manifest.json")
+    } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Payload "build-manifest.json") -Encoding utf8
 
     if (-not $PortableOnly) {
         $Installer = Join-Path $Output "LightTable-$Version-windows-x64-setup.exe"
