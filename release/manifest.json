@@ -90,11 +90,14 @@
       "validation": {
         "status": "pending",
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34434174967"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34434174967",
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34436651354",
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34481336232"
         ]
       },
       "gates": [
-        "Native Windows 10/11 x64 offline acceptance"
+        "Windows 11 offline installation with WebView2 absent remains unproved",
+        "Candidate bundle lacks required clean-source and platform metadata"
       ],
       "artifacts": []
     }

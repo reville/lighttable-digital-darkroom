@@ -318,6 +318,10 @@ require another application rewrite or a forked Windows pipeline.
    reference. Check ICC profiles, orientation, and smooth gradients using the
    exported files, not only the remote desktop stream.
 
+The [Windows client acceptance record](docs/windows-client-acceptance.md) records
+the completed 0.6.0 Windows 10/11 and Windows 11 ARM emulation checks, exact
+candidate identity, and remaining publication gates.
+
 ## First Windows GPU session
 
 Use a Windows x64 desktop with a graphics-capable GPU driver. Record the OS,
