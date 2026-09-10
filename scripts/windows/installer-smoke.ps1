@@ -5,7 +5,8 @@ param(
     [string]$Version,
     [switch]$VerifyStoreSignatures,
     [string]$SignatureReport = "",
-    [string]$ExpectedPublisher = "Nicholas Reville"
+    [string]$ExpectedPublisher = "Nicholas Reville",
+    [string]$NativeAcceptanceReport = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -62,6 +63,10 @@ try {
     }
     if ($VerifyStoreSignatures) {
         & (Join-Path $PSScriptRoot "store-pe-signatures.ps1") -Payload $InstallPath -Report $SignatureReport
+    }
+    if ($NativeAcceptanceReport) {
+        & (Join-Path $InstallPath "Python/python.exe") -B (Join-Path $PSScriptRoot "desktop-smoke.py") $InstallPath --allow-disposable-direct-install --timeout 270 --report-dir $NativeAcceptanceReport
+        if ($LASTEXITCODE -ne 0) { throw "Installed desktop acceptance failed" }
     }
     $Installed = Get-ItemProperty $RegistryPath
     if ($Installed.DisplayVersion -ne $Version -or $Installed.Publisher -ne $ExpectedPublisher) {

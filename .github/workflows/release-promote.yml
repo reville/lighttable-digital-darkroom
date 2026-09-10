@@ -1,0 +1,111 @@
+name: Promote verified release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: One platform; other platforms and updater feeds are preserved
+        type: choice
+        options: [linux-x86_64, windows-x64, macos-arm64]
+        required: true
+      version:
+        description: Exact candidate version (for example 0.7.0)
+        type: string
+        required: true
+      source_revision:
+        description: Full immutable release source commit
+        type: string
+        required: true
+      build_run_id:
+        description: Successful original platform build run
+        type: string
+        required: true
+      preparation_run_id:
+        description: Successful release preparation run containing the promotion artifact
+        type: string
+        required: true
+      native_run_id:
+        description: Windows client VM run (both Windows 10 and 11 native x64); otherwise leave blank
+        type: string
+        required: false
+      dry_run:
+        description: Verify and plan only; no release or feed changes
+        type: boolean
+        default: true
+      make_public:
+        description: Publish the verified draft, creating it if missing, after all evidence passes
+        type: boolean
+        default: false
+      advance_feed:
+        description: Advance only this platform's signed feed after verifying public downloads
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  # Share the original release lock to prevent cross-workflow pointer races.
+  group: lighttable-release
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install signature verification dependency
+        run: python -m pip install cryptography==50.0.1
+      - name: Verify exact artifacts and native receipts, then plan or promote
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PLATFORM: ${{ inputs.platform }}
+          VERSION: ${{ inputs.version }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          PREPARATION_RUN_ID: ${{ inputs.preparation_run_id }}
+          NATIVE_RUN_ID: ${{ inputs.native_run_id }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          MAKE_PUBLIC: ${{ inputs.make_public }}
+          ADVANCE_FEED: ${{ inputs.advance_feed }}
+          LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY: ${{ vars.LIGHTTABLE_LINUX_UPDATE_PUBLIC_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p .build/release-promotion
+          arguments=(--platform "$PLATFORM" --version "$VERSION" --source-revision "$SOURCE_REVISION"
+            --build-run-id "$BUILD_RUN_ID" --manifest-run-id "$PREPARATION_RUN_ID"
+            --manifest-artifact "LightTable-$PLATFORM-promotion"
+            --output .build/release-promotion/result.json)
+          if [[ -n "$NATIVE_RUN_ID" ]]; then arguments+=(--native-run-id "$NATIVE_RUN_ID"); fi
+          if [[ "$DRY_RUN" == false ]]; then arguments+=(--apply); fi
+          if [[ "$MAKE_PUBLIC" == true ]]; then arguments+=(--make-public); fi
+          if [[ "$ADVANCE_FEED" == true ]]; then arguments+=(--advance-feed); fi
+          python scripts/release/promote_candidate.py "${arguments[@]}"
+      - name: Prepare the canonical index and website handoff
+        if: inputs.dry_run == false
+        run: |
+          if python -c 'import json; r=json.load(open(".build/release-promotion/result.json")); raise SystemExit(not (r.get("published_release") and r.get("public_bytes_verified")))'; then
+            python scripts/release/update_index.py --index release/manifest.json \
+              --promotion-result .build/release-promotion/result.json \
+              --output .build/release-promotion/manifest.json
+            echo "Verified manifest.json is attached to the promotion result. Review and merge it into release/manifest.json, then run the website metadata sync workflow and deploy." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Retain promotion or blocking receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-${{ inputs.platform }}-promotion-result
+          path: .build/release-promotion/
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/reville/lighttable-digital-darkroom/blob/main/scripts/release/release-manifest.schema.json",
+  "title": "LightTable release manifest v1",
+  "description": "Structural schema. release_process.py also enforces cross-field version, source, URL ownership, unique asset names and publication policy. No credentials or secret values belong in this document.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "version",
+    "source_revision",
+    "platforms"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-beta\\.[1-9][0-9]*)?$"
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repository": {
+      "const": "reville/lighttable-digital-darkroom"
+    },
+    "tag": {
+      "type": "string",
+      "minLength": 1
+    },
+    "published_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "platforms": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "properties": {
+        "linux-x86_64": {
+          "$ref": "#/$defs/platform"
+        },
+        "windows-x64": {
+          "$ref": "#/$defs/platform"
+        },
+        "macos-arm64": {
+          "$ref": "#/$defs/platform"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "platform": {
+      "type": "object",
+      "required": [
+        "version",
+        "channel",
+        "minimum_os",
+        "update_owner",
+        "state",
+        "signing",
+        "validation",
+        "artifacts"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-beta\\.[1-9][0-9]*)?$"
+        },
+        "channel": {
+          "enum": [
+            "stable",
+            "beta"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minimum_os": {
+          "type": "string",
+          "minLength": 1
+        },
+        "update_owner": {
+          "enum": [
+            "app",
+            "package-manager",
+            "manual"
+          ]
+        },
+        "state": {
+          "enum": [
+            "candidate",
+            "blocked",
+            "ready",
+            "published"
+          ]
+        },
+        "signing": {
+          "enum": [
+            "ed25519",
+            "authenticode",
+            "developer-id-notarized",
+            "ad-hoc",
+            "unsigned"
+          ]
+        },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "validation": {
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "passed",
+                "failed"
+              ]
+            },
+            "receipts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "url",
+              "bytes",
+              "sha256"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "update_owner": {
+                "enum": [
+                  "app",
+                  "package-manager",
+                  "manual"
+                ]
+              }
+            }
+          }
+        },
+        "build_run_id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "build_source_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "published_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "native_run_id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "build_workflow_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "source_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    }
+  }
+}

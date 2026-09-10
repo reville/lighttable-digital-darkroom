@@ -11,14 +11,21 @@ x86_64. Each platform needs its own native release validation.
 
 ## Current readiness
 
-Installer generation, the bundled CLI, npm installer code, and release workflows
-are implemented. There is no published desktop version yet. A public Mac release
-requires a Developer ID Application certificate and notarization credentials.
-Windows code signing and npm authentication must also be configured before their
-signed/npm distribution paths can be used. A failed preflight publishes nothing.
-Windows and Linux updater integration is present in source. A signed native
-upgrade, configured signing keys, and published feeds are still required before
-automatic updates can be delivered.
+See [the machine-readable release manifest](manifest.json) for exact current
+platform versions, artifacts, signing and blockers. Linux portable 0.6 and
+macOS 0.6 beta are public; Windows 0.6 remains a signed candidate pending native
+Windows 10/11 x64 clean/offline acceptance. A Mac beta is manual-update only.
+Store enrollment and review remain separate from direct distribution.
+
+## Repeatable release process
+
+Use [the release process guide](process.md): pin one source tag, build selected
+platforms independently, prepare the existing artifact bytes, then promote a
+verified platform without rebuilding successful candidates. All release
+workflows are manually dispatched, with no schedule or tag-triggered publication.
+Promotion defaults to a read-only plan and never replaces public binaries.
+Each platform gets its own immutable installer-definition archive and checksums.
+The canonical manifest drives the website's version labels and download choices.
 
 ## Validate candidates before publication
 
@@ -33,8 +40,8 @@ gh workflow run linux-build.yml --ref CANDIDATE_BRANCH
 These workflows upload CI artifacts; they do not create a public release or
 publish update feeds. Record the resolved commit from each run, and compare it
 with the downloaded package manifest. An unsigned Windows CI package cannot
-establish Authenticode or public update trust. Do not push a release tag simply
-to test packaging: the separate Release workflow publishes successful builds.
+establish Authenticode or public update trust. Release tags pin source only. The Release build workflow retains candidates;
+the separate promotion workflow validates exact evidence before publication.
 
 Portable Windows and Linux apps read their source revision from the bundled
 manifest. Extracting an app inside a Git checkout must not run that checkout's

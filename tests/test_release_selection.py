@@ -31,14 +31,15 @@ class ReleaseSelectionTests(unittest.TestCase):
         output.unlink(missing_ok=True)
         result = subprocess.run(["bash", "-euo", "pipefail", "-c", self.script], cwd=self.repo,
                                 env=os.environ | {"REQUESTED_VERSION": version, "GITHUB_REF_NAME": "v0.5.0",
-                                                  "PLATFORMS": platforms, "GITHUB_OUTPUT": str(output)},
+                                                  "PLATFORMS": platforms, "GITHUB_OUTPUT": str(output), "MACOS_CHANNEL": "stable",
+                                                  "GITHUB_STEP_SUMMARY": str(self.repo/"summary")},
                                 text=True, capture_output=True)
         fields = dict(line.split("=", 1) for line in output.read_text().splitlines()) if output.exists() else {}
         return result, fields
 
     def test_all_and_independent_platforms_select_only_requested_builds(self):
         for selection, expected in (("all", {"linux", "macos", "windows"}),
-                                    ("both", {"macos", "windows"}), ("linux", {"linux"}),
+                                    ("linux", {"linux"}),
                                     ("macos", {"macos"}), ("windows", {"windows"})):
             with self.subTest(selection=selection):
                 result, fields = self.run_selection(selection)

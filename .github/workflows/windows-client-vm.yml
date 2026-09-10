@@ -1,0 +1,204 @@
+name: Windows client VM acceptance
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Completed signed Windows candidate build
+        required: true
+        type: string
+      source_revision:
+        description: Exact package source when the producer workflow revision differs
+        required: false
+        default: ''
+        type: string
+      installer_sha256:
+        description: Independently verified exact installer SHA-256
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  client:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        windows: ['10', '11']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify the selected release build
+        id: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+        run: |
+          python3 - <<'PYCODE'
+          import os, re, sys
+          sys.path.insert(0, 'scripts/release')
+          from prepare_candidate import build_run
+          if not re.fullmatch(r'[0-9a-f]{64}', os.environ['INSTALLER_SHA256']):
+              raise SystemExit('Exact installer SHA-256 required')
+          run = build_run(os.environ['BUILD_RUN_ID'], 'windows-x64')
+          source = os.environ['SOURCE_REVISION'] or run['head_sha']
+          if not re.fullmatch(r'[0-9a-f]{40}', source):
+              raise SystemExit('Exact package source required')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('source_sha=' + source + '\n')
+              output.write('build_workflow_revision=' + run['head_sha'] + '\n')
+          PYCODE
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-windows-x64
+          path: .build/windows-client-download
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify exact candidate bytes and immutable version tag
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ steps.candidate.outputs.source_sha }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $Version = & ./scripts/windows/verify-native-candidate.ps1 -Directory .build/windows-client-download `
+            -SourceRevision $env:SOURCE_REVISION -InstallerSha256 $env:INSTALLER_SHA256
+          $TagSource = (& gh api "repos/$env:GITHUB_REPOSITORY/commits/v$Version" --jq '.sha').Trim()
+          if ($LASTEXITCODE -ne 0 -or $TagSource -cne $env:SOURCE_REVISION) {
+            throw "The candidate version tag does not select this source"
+          }
+
+      - name: Parse Windows test scripts
+        shell: pwsh
+        run: |
+          $Failed = $false
+          foreach ($File in Get-ChildItem scripts/windows -Filter *.ps1 -Recurse) {
+            $Tokens = $null; $Errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($File.FullName, [ref]$Tokens, [ref]$Errors) | Out-Null
+            if ($Errors.Count) { $Errors | Format-List; $Failed = $true }
+          }
+          if ($Failed) { throw "PowerShell test scripts contain syntax errors" }
+
+      - name: Stage a fresh Microsoft evaluation VM
+        env:
+          WINDOWS_VERSION: ${{ matrix.windows }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.source_sha }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+        run: |
+          set -euo pipefail
+          test -c /dev/kvm
+          # Disposable hosted runner only; reclaim unused SDKs for the VM disk.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          python3 - <<'PYCODE'
+          import json, os, re
+          from pathlib import Path
+          receipt = json.loads(Path('.build/windows-client-download/store-candidate-receipt.json').read_text(encoding='utf-8-sig'))
+          assert receipt['source_revision'] == os.environ['SOURCE_SHA']
+          assert re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', receipt['version'])
+          installer = 'LightTable-' + receipt['version'] + '-windows-x64-setup.exe'
+          assert any(a['file'] == installer and a['sha256'] == os.environ['INSTALLER_SHA256'] for a in receipt['artifacts'])
+          Path('.build/candidate-version').write_text(receipt['version'])
+          PYCODE
+          python3 scripts/windows/client-vm/prepare.py "$WINDOWS_VERSION" \
+            --version "$(cat .build/candidate-version)" --source-sha "$SOURCE_SHA" --installer-sha256 "$INSTALLER_SHA256"
+          mkdir -p .build/client-vm/evidence .build/client-vm/storage
+          if [[ "$WINDOWS_VERSION" == 10 ]]; then
+            iso='https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66750/19045.2006.220908-0225.22h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso'
+            digest='ef7312733a9f5d7d51cfa04ac497671995674ca5e1058d5164d6028f0938d668'
+          else
+            iso='https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso'
+            digest='a61adeab895ef5a4db436e0a7011c92a2ff17bb0357f58b13bbc4062e535e7b9'
+          fi
+          # Microsoft throttles large single-stream downloads. Use four bounded
+          # connections and verify the complete image before starting the VM.
+          if ! command -v aria2c >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y aria2
+          fi
+          timeout 1200 aria2c --max-connection-per-server=4 --split=4 --min-split-size=16M \
+            --max-tries=3 --timeout=30 --retry-wait=5 --summary-interval=30 \
+            --file-allocation=none --dir=.build/client-vm --out=windows.iso "$iso"
+          echo "$digest  .build/client-vm/windows.iso" | sha256sum --check
+          printf '%s\n' "$iso" "$digest" > .build/client-vm/evidence/media.txt
+          df -h .
+
+      - name: Boot Windows and run offline client acceptance
+        run: |
+          set -euo pipefail
+          root="$PWD/.build/client-vm"
+          docker run --detach --name lighttable-client --stop-timeout 30 \
+            --device=/dev/kvm --device=/dev/net/tun --cap-add NET_ADMIN \
+            -e RAM_SIZE=8G -e CPU_CORES=4 -e DISK_SIZE=64G -e DISK_FMT=qcow2 \
+            -e DISK_TYPE=sata -e ADAPTER=e1000 -e NETWORK=slirp -e IP=10.0.2.15 -e SAMBA=N \
+            -e BOOT_MODE=windows_secure -e TPM=Y -e VGA=std -e REMOVE=N -e VERSION=${{ matrix.windows }}e \
+            -v "$root/storage:/storage" -v "$root/windows.iso:/custom.iso:ro" \
+            -v "$root/custom.xml:/custom.xml:ro" -v "$root/oem:/oem:ro" \
+            -v "$root/evidence:/evidence" \
+            -v "$PWD/scripts/windows/client-vm/receive.py:/receive.py:ro" \
+            dockurr/windows@sha256:32cc92715a6c5dc1f63142d3be11059279d64d0faa7519618a07290b3076f9f2
+          # Explicit slirp subnet maps the guest gateway 10.0.2.1 to this container.
+          # NETWORK=user selected passt and did not provide the old 10.0.2.2 receiver.
+          docker exec -d lighttable-client python3 /receive.py
+          docker exec lighttable-client python3 -c "import socket,time; time.sleep(1); s=socket.create_connection(('127.0.0.1',18080),5); s.close()"
+          deadline=$((SECONDS + 2700))
+          while (( SECONDS < deadline )); do
+            if [[ -f "$root/evidence/complete" ]]; then break; fi
+            if [[ "$(docker inspect --format '{{.State.Running}}' lighttable-client)" != true ]]; then
+              docker logs --tail 80 lighttable-client
+              exit 1
+            fi
+            sleep 10
+          done
+          if [[ ! -f "$root/evidence/complete" ]]; then
+            if [[ -f "$root/evidence/bootstrap-started.json" ]]; then
+              echo 'Guest booted and evidence transport worked; client acceptance did not return a final receipt.' >&2
+            else
+              echo 'No bootstrap receipt: inspect guest startup and evidence transport before diagnosing the app.' >&2
+            fi
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('.build/client-vm/evidence')
+          host = json.loads((root / 'host.json').read_text(encoding='utf-8-sig'))
+          print(json.dumps(host, indent=2))
+          if not host.get('ok'):
+              raise SystemExit('Windows client setup failed; see host.json')
+          result = json.loads((root / 'result.json').read_text(encoding='utf-8-sig'))
+          print(json.dumps(result, indent=2))
+          if not result.get('ok'):
+              raise SystemExit('Windows client acceptance failed; see result.json')
+          if not host.get('webview2_absent_before_offline_install'):
+              raise SystemExit('Offline runtime-present checks passed, but WebView2-absent acceptance remains unproven')
+          PY
+
+      - name: Stop the disposable VM
+        if: always()
+        run: |
+          mkdir -p .build/client-vm/evidence
+          if docker inspect lighttable-client >/dev/null 2>&1; then
+            docker logs lighttable-client > .build/client-vm/evidence/vm.log 2>&1
+            docker stop --time 30 lighttable-client || true
+            docker rm -f lighttable-client || true
+          fi
+          # Do not upload account configuration, VM disks, or Windows media.
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-${{ matrix.windows }}-x64-client-acceptance
+          path: .build/client-vm/evidence/
+          retention-days: 90
+          if-no-files-found: warn
