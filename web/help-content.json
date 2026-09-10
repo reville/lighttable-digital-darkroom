@@ -1420,6 +1420,7 @@
         {
           "title": "Copy a photo",
           "paragraphs": [
+            "On Mac, right-click the photo preview and choose Copy.",
             "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."
           ]
         },
@@ -1624,6 +1625,7 @@
             "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."
           ],
           "tips": [
+            "Hover over a handle to see its action. Hidden pins cannot be dragged.",
             "Shape also provides Width, Height, Rotation, and Feather controls.",
             "Dragging away from its handles redraws the selected radial mask."
           ]

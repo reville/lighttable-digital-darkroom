@@ -1411,6 +1411,22 @@ func presetExportData(content: String, encoding: String = "utf8") throws -> Data
 
 // MARK: - Photo clipboard
 
+func photoClipboardMenu(title: String, target: AnyObject, action: Selector) -> NSMenu {
+    let menu = NSMenu()
+    menu.autoenablesItems = false
+    let copy = NSMenuItem(title: title, action: action, keyEquivalent: "")
+    copy.target = target
+    menu.addItem(copy)
+    return menu
+}
+
+func photoClipboardMenuPoint(_ body: [String: Any], bounds: NSRect, flipped: Bool) -> NSPoint? {
+    guard let x = body["x"] as? Double, let y = body["y"] as? Double,
+          x.isFinite, y.isFinite, x >= 0, y >= 0,
+          x < bounds.width, y < bounds.height else { return nil }
+    return NSPoint(x: bounds.minX + x, y: flipped ? bounds.minY + y : bounds.maxY - y)
+}
+
 func writePhotoClipboard(_ base64: String, to pasteboard: NSPasteboard = .general) -> Bool {
     guard base64.utf8.count <= 64 * 1024 * 1024,
           let data = Data(base64Encoded: base64),
@@ -2799,6 +2815,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               let body = message.body as? [String: Any],
               let action = body["action"] as? String else { return }
         switch action {
+        case "showPhotoCopyMenu":
+            guard message.frameInfo.isMainFrame,
+                  isLocalEditorPage(message.frameInfo.request.url, port: Int(server.port)),
+                  let point = photoClipboardMenuPoint(body, bounds: webView.bounds,
+                                                      flipped: webView.isFlipped) else { return }
+            let menu = photoClipboardMenu(title: L("Copy"), target: self,
+                                          action: #selector(copyPreviewPhoto(_:)))
+            menu.popUp(positioning: nil, at: point, in: webView)
         case "copyPhotoImage":
             guard message.frameInfo.isMainFrame,
                   isLocalEditorPage(message.frameInfo.request.url, port: Int(server.port)),
@@ -3564,6 +3588,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     @objc func openHelp(_ sender: Any?) {
         sendEvent(["type": "menuCommand", "command": "help"])
+    }
+
+    @objc func copyPreviewPhoto(_ sender: NSMenuItem) {
+        sendEvent(["type": "menuCommand", "command": "copyPhoto"])
     }
 
     @objc func performEditorCommand(_ sender: NSMenuItem) {

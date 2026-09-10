@@ -73,6 +73,20 @@ class DesktopSmokeSafetyTests(unittest.TestCase):
             (bundle / "install-channel.txt").write_text("\ufeffportable\n", encoding="utf-8")
             smoke.validate_bundle(bundle)
 
+    def test_disposable_override_only_allows_direct_installs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            bundle = Path(temporary)
+            for relative in ("LightTable.exe", "Python/python.exe", "Resources/LightTable/server.py"):
+                path = bundle / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+            (bundle / 'install-channel.txt').write_text('direct')
+            smoke.validate_bundle(bundle, allow_disposable_direct_install=True)
+            for channel in ('scoop', 'winget', 'chocolatey'):
+                (bundle / 'install-channel.txt').write_text(channel)
+                with self.assertRaises(RuntimeError):
+                    smoke.validate_bundle(bundle, allow_disposable_direct_install=True)
+
     def test_timeout_does_not_resubmit_a_delivered_native_command(self):
         api = Mock()
         api.request.side_effect = HTTPError("http://127.0.0.1", 504, "UI timed out", {}, None)

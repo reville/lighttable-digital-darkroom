@@ -1446,6 +1446,7 @@
         {
           "title": "Een foto kopiëren",
           "paragraphs": [
+            "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren.",
             "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen."
           ]
         },
@@ -1652,6 +1653,7 @@
             "Sleep in Vorm bewerken de middelste handgreep om het masker te verplaatsen, een van de ashandgrepen om de grootte aan te passen, of de buitenste handgreep om het te roteren. Houd Shift ingedrukt tijdens het tekenen of vergroten/verkleinen om het verloop rond te maken."
           ],
           "tips": [
+            "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept.",
             "Vorm biedt ook de regelaars Breedte, Hoogte, Rotatie en Vervaging.",
             "Als u van de handgrepen weg sleept, wordt het geselecteerde radiale masker opnieuw getekend."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

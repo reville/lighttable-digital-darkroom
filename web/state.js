@@ -11,7 +11,7 @@ export function createAppState(gradeDefaults, opticsDefaults) {
     maskTextureDirty: true, maskCreateOpen: true, maskRefineMode: null,
     brushSize: 0.08, brushFeather: 0.65, brushFlow: 1,
     brushDensity: 1, brushAutoMask: false, brushTolerance: 0.18,
-    healToolMode: 'remove', overlayHoverPoint: null, overlayHoverClientPoint: null, localPinsVisible: true,
+    healToolMode: 'remove', overlayAltKey: false, overlayHoverPoint: null, overlayHoverClientPoint: null, localPinsVisible: true,
     seq: 0, matchFactor: 1, clipboard: null,
     undo: [], redo: [], baseImg: null, gl: null,
     presentedRenderKey: null, presentedBackend: null,

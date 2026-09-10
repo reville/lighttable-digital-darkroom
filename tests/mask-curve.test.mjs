@@ -287,3 +287,15 @@ test('no selected mask disables interaction and unrelated pointers cannot finish
   f.canvas.fire('pointerup');
   assert.equal(f.calls.save.length, 1);
 });
+
+test('local curve cursor follows endpoint constraints and resets after drag, cancel and mask changes', () => {
+  const f = fixture();
+  f.pointer('pointermove', 0, 0); assert.equal(f.canvas.style.cursor, 'ns-resize');
+  f.pointer('pointermove', .5, .5); assert.equal(f.canvas.style.cursor, 'crosshair');
+  f.pointer('pointerdown', .5, .5); assert.equal(f.canvas.style.cursor, 'grabbing');
+  f.pointer('pointerup', .5, .5); assert.equal(f.canvas.style.cursor, 'grab');
+  f.canvas.fire('lostpointercapture'); assert.equal(f.canvas.style.cursor, 'grab');
+  f.pointer('pointerdown', .5, .5); f.canvas.fire('pointercancel');
+  assert.equal(f.canvas.style.cursor, '');
+  f.pointer('pointermove', .5, .5); f.select(null); assert.equal(f.canvas.style.cursor, 'default');
+});

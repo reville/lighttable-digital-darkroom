@@ -48,9 +48,11 @@ class MacReleaseWorkflowContractTests(unittest.TestCase):
         )
         self.assertIn("--layer package", workflow)
         notarize = workflow.index("scripts/notarize-app.sh dist/LightTable.app")
-        publish = workflow.index("gh release create")
+        self.assertNotIn("gh release create", workflow)
+        self.assertNotIn("    tags:", workflow)
+        self.assertNotIn("schedule:", workflow)
         self.assertLess(smoke, notarize)
-        self.assertLess(smoke, publish)
+        self.assertIn("macos-release-proof.json", workflow)
 
 
 if __name__ == "__main__":
