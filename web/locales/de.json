@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Auf einen neutralen Bereich klicken, um den Weißabgleich festzulegen",
     "Click a neutral grey area": "Klicken Sie auf einen neutralen Graubereich",
     "Click a new position in the photo for the selected correction’s target": "Klicke an eine neue Position im Foto für das Ziel der ausgewählten Korrektur",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Klicken Sie auf ein Foto, um diese Übersichtszelle aktiv zu machen. Verwenden Sie die Pfeile links und rechts, um zwischen Zellen zu wechseln.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Klicke auf eine Vorgabenzeile, um sie sofort anzuwenden. Der Regler „Menge“ erscheint unter der Zeile. Klicke erneut auf dieselbe Zeile, um die Vorgabe zu deaktivieren und den Regler auszublenden. Dein Foto bleibt auf diesem Computer.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Klicke auf eine Vorgabe, um sie anzuwenden, passe die Menge an und speichere oder teile Deine eigenen Looks.",
     "Click a spot or drag over a distraction in the photo.": "Klicken Sie auf einen Fleck oder ziehen Sie über eine Ablenkung im Foto.",
@@ -3205,7 +3204,6 @@
     "Use the Parametric curve": "Verwende die Parametrische Kurve",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Verwenden Sie die Schaltfläche Soft Proof ein in der Viewer-Symbolleiste, um die Vorschau auszuschalten.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Verwenden Sie die Raster, um eine Auswahl zu treffen, und Details, um ein einzelnes Foto zu prüfen.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Verwenden Sie die Pfeiltasten links und rechts, um zwischen Fotos zu wechseln. In Details schaltet die Leertaste zwischen Anpassen und 1:1 um, wenn der Foto-Bereich den Fokus hat.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Verwenden Sie das Suchfeld der Bibliothek, um neben Dateinamen und Stichwörtern auch nach Fotoinhalten, sichtbarem Text oder Gesichtern zu suchen.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Verwenden Sie die Markierungsleiste oder die Shortcuts für Markieren, Bewertung und Beschriftung auf der aktiven Kachel.",
     "Use the name “{name}”.": "Verwenden Sie den Namen „{name}“.",
@@ -4256,7 +4254,9 @@
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Einige Personen können in getrennten Gruppen erscheinen. Überprüfen Sie mögliche Übereinstimmungen, um sie zusammenzuführen.",
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wenn mögliche Übereinstimmungen vorliegen, öffnet eine ausblendbare Leiste in Personen die Ansicht zum Prüfen von Übereinstimmungen. Das Ausblenden wird auf diesem Gerät gespeichert.",
-    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Neue Gesichter können unbenannten Gruppen oder bei stärkeren Übereinstimmungen benannten Gruppen zugeordnet werden. Mehrdeutige Treffer bleiben zur Überprüfung getrennt. Scans behalten vorhandene Gruppen, Namen und Korrekturen bei; geänderte Abgleichregeln führen bereits vorhandene Gruppen in Ihrer Bibliothek nicht automatisch zusammen."
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Neue Gesichter können unbenannten Gruppen oder bei stärkeren Übereinstimmungen benannten Gruppen zugeordnet werden. Mehrdeutige Treffer bleiben zur Überprüfung getrennt. Scans behalten vorhandene Gruppen, Namen und Korrekturen bei; geänderte Abgleichregeln führen bereits vorhandene Gruppen in Ihrer Bibliothek nicht automatisch zusammen.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Verwenden Sie die Pfeiltasten links und rechts, um zwischen Fotos zu wechseln. In beiden Rastern wechseln die Pfeiltasten nach oben und unten zum Foto darüber oder darunter, statt zu scrollen. In Details schaltet die Leertaste zwischen Anpassen und 1:1 um, wenn der Foto-Bereich den Fokus hat.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Klicken Sie auf ein Foto, um diese Übersichtszelle aktiv zu machen. Verwenden Sie die Pfeile links und rechts, um zwischen Zellen zu wechseln, und die Pfeile nach oben und unten, um zwischen Zeilen zu wechseln."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Kliknij obszar neutralny, aby ustawić balans bieli",
     "Click a neutral grey area": "Kliknij neutralny szary obszar",
     "Click a new position in the photo for the selected correction’s target": "Kliknij nowe położenie na zdjęciu dla celu wybranej korekty",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Kliknij zdjęcie, aby aktywować tę komórkę przeglądu. Użyj strzałek w lewo i w prawo, aby przechodzić między komórkami.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Kliknij wiersz presetu, aby od razu go zastosować. Suwak Ilość pojawi się pod wierszem. Kliknij ponownie ten sam wiersz, aby wyłączyć preset i ukryć suwak. Zdjęcie pozostaje na tym komputerze.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Kliknij preset, aby go zastosować, dostosuj Ilość i zapisz lub udostępnij własne wyglądy.",
     "Click a spot or drag over a distraction in the photo.": "Kliknij plamkę lub przeciągnij po rozpraszającym elemencie na zdjęciu.",
@@ -3205,7 +3204,6 @@
     "Use the Parametric curve": "Użyj krzywej Parametryczna",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Użyj przycisku Soft Proof w pasku narzędzi przeglądarki, aby wyłączyć podgląd.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Użyj siatek, aby wybrać zestaw, oraz Szczegóły, aby sprawdzić pojedyncze zdjęcie.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Użyj klawiszy strzałek w lewo i w prawo, aby przechodzić między zdjęciami. W Szczegóły Spacja przełącza Dopasuj i 1:1, gdy obszar zdjęcia ma fokus.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Użyj pola wyszukiwania biblioteki, aby przeszukiwać treść zdjęć, widoczny tekst lub twarze, obok nazw plików i słów kluczowych.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Użyj paska narzędzi oznaczania lub skrótów klawiszowych dla flag, oceny i etykiety na aktywnej komórce.",
     "Use the name “{name}”.": "Użyj nazwy „{name}”.",
@@ -4256,7 +4254,9 @@
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Najedź na uchwyt, aby zobaczyć jego działanie. Ukrytych punktów nie można przeciągać.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Ta sama osoba może pojawiać się w osobnych grupach. Przejrzyj możliwe dopasowania, aby je połączyć.",
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Gdy dostępne są możliwe dopasowania, zamykany pasek w widoku Osoby otwiera przegląd dopasowań. Zamknięcie paska jest zapamiętywane na tym urządzeniu.",
-    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Nowe twarze mogą trafiać do grup bez nazwy lub, przy mocniejszych dowodach, do grup nazwanych. Niejednoznaczne dopasowania pozostają oddzielne do przeglądu. Skanowanie zachowuje istniejące grupy, nazwy i poprawki; zmiana reguł dopasowania nie łączy automatycznie grup już obecnych w bibliotece."
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Nowe twarze mogą trafiać do grup bez nazwy lub, przy mocniejszych dowodach, do grup nazwanych. Niejednoznaczne dopasowania pozostają oddzielne do przeglądu. Skanowanie zachowuje istniejące grupy, nazwy i poprawki; zmiana reguł dopasowania nie łączy automatycznie grup już obecnych w bibliotece.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Użyj klawiszy strzałek w lewo i w prawo, aby przechodzić między zdjęciami. W obu siatkach strzałki w górę i w dół przechodzą do zdjęcia powyżej lub poniżej zamiast przewijać widok. W Szczegóły Spacja przełącza Dopasuj i 1:1, gdy obszar zdjęcia ma fokus.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Kliknij zdjęcie, aby aktywować tę komórkę przeglądu. Użyj strzałek w lewo i w prawo, aby przechodzić między komórkami, oraz strzałek w górę i w dół, aby przechodzić między wierszami."
   },
   "plurals": {
     " · {count} paired file linked": {

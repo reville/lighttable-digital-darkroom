@@ -241,7 +241,7 @@
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
             "Bir ızgarada, küçük resim boyutunu değiştirmek için Boyut kaydırıcısını kullanın.",
-            "Fotoğraflar arasında geçmek için sol ve sağ ok tuşlarını kullanın. Ayrıntı'da, fotoğraf alanında odak varken Boşluk Fit ile 1:1 arasında geçiş yapar."
+            "Fotoğraflar arasında geçmek için sol ve sağ ok tuşlarını kullanın. Her iki ızgarada da yukarı ve aşağı ok tuşları kaydırmak yerine üstteki veya alttaki fotoğrafa geçer. Ayrıntı'da, fotoğraf alanında odak varken Boşluk Fit ile 1:1 arasında geçiş yapar."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Adayları bir ızgarada seçin ve N’ye basın ya da Bilgi → İncele seçimini açın.",
-            "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları kullanın.",
+            "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları, satırlar arasında geçmek için yukarı ve aşağı okları kullanın.",
             "Etkin hücredeki işaretleme araç çubuğunu veya bayrak, derecelendirme ve etiket kısayollarını kullanın.",
             "İncelemeden silmeden veya reddetmeden kaldırmak için bir hücredeki × işaretine tıklayın. O fotoğrafı Ayrıntı'da açmak için bir hücreye çift tıklayın.",
             "İnceleme’den çıkmak için Kapat’a tıklayın veya Escape tuşuna basın."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

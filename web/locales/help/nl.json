@@ -241,7 +241,7 @@
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
             "Gebruik in een raster de schuifregelaar Grootte om de miniatuurgrootte te wijzigen.",
-            "Gebruik de pijltoetsen links en rechts om tussen foto's te bewegen. In Details schakelt Spatie tussen Passend maken en 1:1 wanneer het fotogebied focus heeft."
+            "Gebruik de pijltoetsen links en rechts om tussen foto's te bewegen. In beide rasters gaan de pijltoetsen omhoog en omlaag naar de foto erboven of eronder in plaats van te scrollen. In Details schakelt Spatie tussen Passend maken en 1:1 wanneer het fotogebied focus heeft."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Selecteer kandidaten in een raster en druk op N, of open Info → Selectie overzicht.",
-            "Klik op een foto om die overzichtscel actief te maken. Gebruik de linker- en rechterpijl om tussen cellen te bewegen.",
+            "Klik op een foto om die overzichtscel actief te maken. Gebruik de linker- en rechterpijl om tussen cellen te bewegen en de pijl omhoog en omlaag om tussen rijen te bewegen.",
             "Gebruik de markeerwerkbalk of de sneltoetsen voor markering, beoordeling en label op de actieve cel.",
             "Klik op × op een cel om deze uit het overzicht te verwijderen zonder deze te wissen of af te wijzen. Dubbelklik op een cel om die foto in Details te openen.",
             "Klik op Sluiten of druk op Escape om Overzicht te verlaten."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

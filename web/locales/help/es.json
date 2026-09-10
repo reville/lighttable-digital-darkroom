@@ -241,7 +241,7 @@
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
             "En una cuadrícula, usa el deslizador de Tamaño para cambiar el tamaño de las miniaturas.",
-            "Use las flechas izquierda y derecha para moverse entre fotos. En Detalle, Espacio alterna Ajustar y 1:1 cuando el área de la foto tiene el foco."
+            "Use las flechas izquierda y derecha para moverse entre fotos. En cualquiera de las cuadrículas, las flechas arriba y abajo pasan a la foto de arriba o de abajo en lugar de desplazar la vista. En Detalle, Espacio alterna Ajustar y 1:1 cuando el área de la foto tiene el foco."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Selecciona candidatos en una cuadrícula y pulsa N, o abre Información → Vista general de la selección.",
-            "Haz clic en una foto para activar esa celda de vista general. Usa las flechas izquierda y derecha para moverte entre celdas.",
+            "Haz clic en una foto para activar esa celda de vista general. Usa las flechas izquierda y derecha para moverte entre celdas, y las flechas arriba y abajo para moverte entre filas.",
             "Usa la barra de herramientas de marcado o los atajos de marca, calificación y etiqueta en la celda activa.",
             "Haga clic en × de una celda para quitarla de la vista general sin eliminarla ni rechazarla. Haga doble clic en una celda para abrir esa foto en Detalle.",
             "Haga clic en Cerrar o pulse Escape para salir de Vista general."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }
