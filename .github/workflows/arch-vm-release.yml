@@ -2,6 +2,12 @@ name: Arch virtual GPU acceptance
 on:
   workflow_dispatch:
     inputs:
+      distribution:
+        description: Distribution to verify using the same publishable Arch package
+        required: false
+        default: both
+        type: choice
+        options: [both, arch, omarchy]
       package_run_id:
         description: Completed Arch release acceptance run containing the packages to test
         required: true
@@ -17,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distribution: [arch, omarchy]
+        distribution: ${{ fromJSON(inputs.distribution == 'arch' && '["arch"]' || inputs.distribution == 'omarchy' && '["omarchy"]' || '["arch","omarchy"]') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -26,7 +32,7 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@v4
         with:
-          name: LightTable-${{ matrix.distribution }}-acceptance
+          name: LightTable-arch-acceptance
           path: baseline
           run-id: ${{ inputs.package_run_id }}
           github-token: ${{ github.token }}
