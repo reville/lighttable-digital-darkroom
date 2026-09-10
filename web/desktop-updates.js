@@ -1,6 +1,7 @@
 import { api } from './api.js';
 import { sendNative, nativeBridge } from './native-bridge.js';
 import { t as tr } from './i18n.js';
+import { showManualUpdateModal } from './manual-update-modal.js';
 
 export function installDesktopUpdates({ prepare, cancel, onError }) {
   const platform = window.__LIGHTTABLE_PLATFORM__;
@@ -10,8 +11,26 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
   const notice = document.getElementById('desktopUpdateNotice');
   const noticeText = document.getElementById('desktopUpdateNoticeText');
   const noticeAction = document.getElementById('desktopUpdateNoticeAction');
+  const guideButton = document.getElementById('manualUpdateGuide');
   let latest = {}, poll = null, pollDeadline = 0, deferredVersion = null;
-  document.getElementById('desktopUpdateControls').hidden = platform === 'macos';
+  const controls = document.getElementById('desktopUpdateControls');
+  if (controls) controls.hidden = platform === 'macos';
+
+  const openModal = (opts = {}) => {
+    const fn = (typeof showManualUpdateModal !== 'undefined' && showManualUpdateModal)
+      || (typeof window !== 'undefined' && window.lightTableShowUpdateModal);
+    if (typeof fn === 'function') {
+      return fn({
+        platform,
+        owner: latest.owner,
+        managedBy: latest.managedBy,
+        version: latest.available_version,
+        channel: latest.channel,
+        ...opts,
+      });
+    }
+    return null;
+  };
 
   async function request(path, body = {}) {
     const result = await api(path, body);
@@ -61,6 +80,9 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
       : value.supported === false ? tr('Automatic updates are not configured for this build.')
       : value.last_checked ? tr('LightTable is up to date.') : tr('Check for updates when you are ready.');
     status.textContent = message;
+    if (guideButton) {
+      guideButton.hidden = !(managed || value.supported === false || platform === 'macos');
+    }
     if (announce && ['available', 'ready'].includes(value.state)
         && deferredVersion !== value.available_version) {
       noticeText.textContent = message;
@@ -89,7 +111,10 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
   }
 
   async function act() {
-    if (!nativeBridge() || latest.supported === false) return;
+    if (!nativeBridge() || latest.supported === false) {
+      if (latest.state === 'available') openModal();
+      return;
+    }
     if (platform !== 'linux') { sendNative('checkForUpdates'); return; }
     try {
       if (latest.state === 'ready') {
@@ -113,6 +138,7 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
   }
   button.addEventListener('click', act);
   noticeAction.addEventListener('click', act);
+  if (guideButton) guideButton.addEventListener('click', () => openModal());
   document.getElementById('desktopUpdateLater').addEventListener('click', () => {
     deferredVersion = latest.available_version;
     notice.hidden = true;
@@ -138,6 +164,7 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
   return {
     nativeEvent(message) {
       if (message?.type === 'updateStatus') render(message);
+      if (message?.type === 'showUpdateModal') openModal(message.options || message);
     },
   };
 }
