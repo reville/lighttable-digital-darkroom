@@ -279,7 +279,7 @@ fn apply_color_grading(pixel: &mut [f32], settings: &Value) {
 pub(crate) fn grade_is_identity(grade: &Value) -> bool {
     // Vignette size and feather only shape a nonzero amount, so they do not
     // affect identity on their own.
-    const NUMERIC_DEFAULTS: [(&str, f32); 22] = [
+    const NUMERIC_DEFAULTS: [(&str, f32); 23] = [
         ("exposure", 0.0),
         ("contrast", 0.0),
         ("highlights", 0.0),

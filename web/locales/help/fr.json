@@ -1,6 +1,4 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
-  "locale": "fr",
   "version": 1,
   "articles": [
     {
@@ -237,7 +235,8 @@
             "Ajuster peut agrandir les petites photos. 1:1 affiche les pixels réels même si la photo devient plus petite qu’en mode Ajuster, et conserve la même échelle de pixels lorsque vous redimensionnez la fenêtre.",
             "Survolez le compteur de photos dans la barre supérieure pour voir ce que signifient ses nombres.",
             "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement.",
-            "Tant que la fenêtre reste ouverte, LightTable mémorise la position de chaque photo dans la vue et conserve le niveau de zoom actuel lorsque vous changez de photo. Les nouvelles photos s’affichent centrées."
+            "Tant que la fenêtre reste ouverte, LightTable mémorise la position de chaque photo dans la vue et conserve le niveau de zoom actuel lorsque vous changez de photo. Les nouvelles photos s’affichent centrées.",
+            "Sur Mac, placez le pointeur sur la zone de la photo à examiner dans Détails, puis pincez ou écartez deux doigts sur le trackpad pour zoomer autour du pointeur."
           ],
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
@@ -702,6 +701,13 @@
           "paragraphs": [
             "Le menu ••• à côté d’une collection supprime la collection. Cela retire le regroupement au lieu de déplacer les fichiers originaux vers la Corbeille. La recherche et les filtres peuvent encore restreindre les photos affichées dans une collection."
           ]
+        },
+        {
+          "title": "Dossiers et collections",
+          "paragraphs": [
+            "Les dossiers représentent la hiérarchie physique du disque où se trouvent les fichiers. Les collections sont des groupes flexibles et légers dans LightTable qui peuvent rassembler des photos à travers plusieurs dossiers sans déplacer ni dupliquer de fichiers sur le disque.",
+            "Lors de l’importation d’un catalogue ou de l’ajout d’un dossier source, l’activation de Créer une collection pour chaque dossier de premier niveau crée automatiquement des collections correspondantes pour chaque dossier de premier niveau afin que votre structure existante soit immédiatement accessible dans Collections."
+          ]
         }
       ],
       "related": [
@@ -1099,7 +1105,7 @@
           "steps": [
             "Définir l’Exposition pour le sujet principal.",
             "Ajustez Hautes lumières et Ombres pour équilibrer les zones claires et sombres, puis affinez Blancs, Noirs et Contraste.",
-            "Utilisez le bouton d’avertissement de clipping à côté de l’histogramme pour inspecter le clipping.",
+            "Utilisez le bouton Avertissement de clipping à côté de l’histogramme ou appuyez sur J pour activer ou désactiver directement sur l’image les indicateurs de clipping des hautes lumières et des ombres (rouge pour les hautes lumières écrêtées, bleu pour les ombres écrêtées).",
             "Comparez votre résultat avec l’original à l’aide du contrôle avant, ou maintenez B enfoncé pendant que la photo est active."
           ],
           "tips": [
@@ -1355,6 +1361,19 @@
             "Point Color conserve jusqu’à huit points échantillonnés. Si vous échantillonnez à nouveau alors que huit existent déjà, le huitième point est remplacé.",
             "Réinitialiser de Couleur ponctuelle efface les points échantillonnés sans nécessiter une réinitialisation complète de Couleur."
           ]
+        },
+        {
+          "title": "Traitement et mélangeur noir et blanc",
+          "paragraphs": [
+            "Le sélecteur de Traitement en haut du panneau Couleur bascule entre Couleur et N&B. En mode N&B, l’image passe en monochrome tout en conservant un contrôle tonal complet sur 8 bandes de couleur.",
+            "Les curseurs du Mélangeur N&B ajustent l’intensité avec laquelle chaque couleur d’origine contribue à la luminance en niveaux de gris."
+          ],
+          "steps": [
+            "Dans Modifier → Couleur, cliquez sur N&B dans le sélecteur de Traitement.",
+            "Le Mélangeur de couleurs devient le Mélangeur N&B, affichant les curseurs Rouge, Orange, Jaune, Vert, Aqua, Bleu, Violet et Magenta.",
+            "Faites glisser un curseur vers la droite pour éclaircir cette couleur dans la conversion noir et blanc, ou vers la gauche pour l’assombrir (par ex. assombrir le Bleu pour approfondir un ciel).",
+            "Cliquez sur Couleur dans le sélecteur de Traitement pour revenir à la couleur complète."
+          ]
         }
       ],
       "related": [
@@ -1434,7 +1453,8 @@
           "title": "Transférer les réglages sélectionnés",
           "paragraphs": [
             "Copier et Coller se trouvent sous la photo dans la vue Détail.",
-            "Copier et Coller transfèrent les groupes que vous sélectionnez explicitement. Les réglages des groupes non cochés restent tels quels sur chaque destination. Il s’agit d’un flux de travail explicite de copier/coller : les modifications ultérieures de la source ne se synchronisent pas automatiquement vers les destinations."
+            "Copier et Coller transfèrent les groupes que vous sélectionnez explicitement. Les réglages des groupes non cochés restent tels quels sur chaque destination. Il s’agit d’un flux de travail explicite de copier/coller : les modifications ultérieures de la source ne se synchronisent pas automatiquement vers les destinations.",
+            "Coller s’applique aux photos sélectionnées encore affichées par le dossier, la collection et les filtres actuels. Si aucune des photos sélectionnées n’est encore visible, cela s’applique à la photo active. Vérifiez les photos de destination sélectionnées avant de coller."
           ],
           "steps": [
             "Ouvrez la photo source et cliquez sur Copier les réglages de modification, ou appuyez sur Commande-Maj-C sur Mac ou Ctrl-Maj-C sur Linux et Windows.",
@@ -1472,6 +1492,22 @@
           ],
           "tips": [
             "La photo de référence est exclue des mises à jour de la cible. La correspondance est un point de départ, surtout lorsque les photos contiennent des sujets ou des cadrages différents."
+          ]
+        },
+        {
+          "title": "Appliquer les réglages précédents",
+          "paragraphs": [
+            "Réglages précédents applique directement à la photo active les modifications de la photo immédiatement précédente, ce qui vous permet d’étalonner rapidement une séquence sans ouvrir la boîte de dialogue Copier les réglages."
+          ],
+          "steps": [
+            "Sélectionnez une photo que vous avez déjà modifiée.",
+            "Naviguer vers la photo suivante de votre séquence.",
+            "Choisissez Photo → Réglages précédents, ou appuyez sur Option-Command-V sur Mac (Alt-Ctrl-V sur Windows et Linux).",
+            "Les réglages de développement, l’apparence film, les courbes, l’étalonnage des couleurs et les corrections d’objectif de la photo précédente sont appliqués immédiatement."
+          ],
+          "tips": [
+            "Réglages précédents fonctionne sans qu’il soit nécessaire d’utiliser d’abord une commande Copier explicite.",
+            "Le recadrage, la géométrie et la correction des défauts sont exclus par défaut afin de préserver le cadrage individuel de chaque photo."
           ]
         }
       ],
@@ -1855,7 +1891,8 @@
         {
           "title": "Vérifier que votre travail est enregistré",
           "paragraphs": [
-            "Les commandes de modification sont indisponibles tant qu’aucune photo n’est chargée. Les ajustements sont enregistrés comme réglages de modification pour la photo. L’éditeur enregistre automatiquement les changements lorsque vous terminez les interactions ; vous n’avez pas besoin d’une commande Enregistrer distincte pour chaque ajustement."
+            "Les commandes de modification sont indisponibles tant qu’aucune photo n’est chargée. Les ajustements sont enregistrés comme réglages de modification pour la photo. L’éditeur enregistre automatiquement les changements lorsque vous terminez les interactions ; vous n’avez pas besoin d’une commande Enregistrer distincte pour chaque ajustement.",
+            "Le changement de photo met également en file d’attente l’enregistrement des réglages actuels du curseur. Attendez l’état Enregistré avant de fermer la fenêtre ; si un enregistrement échoue, laissez la fenêtre ouverte et utilisez Réessayer l’enregistrement."
           ],
           "steps": [
             "Effectuez votre réglage, puis vérifiez l’état d’enregistrement dans l’application.",
@@ -2025,6 +2062,19 @@
           "tips": [
             "Utilisez quelques points et comparez la photo au fur et à mesure ; les courbes de canal peuvent introduire de fortes dominantes de couleur.",
             "Une courbe enregistrée ou importée conserve sa table sauvegardée exacte jusqu’à ce que vous la modifiiez. L’application reconstruit des poignées représentatives pour l’édition, de sorte que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez."
+          ]
+        },
+        {
+          "title": "Utilisez la courbe Paramétrique",
+          "paragraphs": [
+            "L’onglet Paramétrique propose quatre curseurs de région — Hautes lumières, Lumières, Sombres et Ombres — ainsi que des contrôles de point de séparation qui définissent les limites de seuil entre les régions tonales.",
+            "Cela vous permet de modeler en douceur le contraste tonal et les tons moyens sans placer de points d’ancrage manuels sur le graphique."
+          ],
+          "steps": [
+            "Passez à l’onglet Paramétrique dans Modifier → Courbe.",
+            "Faites glisser Hautes lumières ou Lumières pour façonner les valeurs tonales supérieures, et Sombres ou Ombres pour les valeurs inférieures.",
+            "Ajustez les repères de séparation entre les bandes pour décaler la transition de chaque région.",
+            "Double-cliquez sur n’importe quel curseur pour le réinitialiser à zéro."
           ]
         }
       ],
@@ -2626,6 +2676,7 @@
         {
           "title": "Vérifier la portée et le résultat",
           "paragraphs": [
+            "Photos sélectionnées utilise les photos sélectionnées encore affichées par le dossier, la collection et les filtres actuels. Si aucune des photos sélectionnées n’est encore visible, il utilise la photo active. Vérifiez le nombre de photos et le nom dans Exporter avant de démarrer.",
             "Sélectionné uniquement, Noté 1+ et Tout sauf rejeté sélectionnent les photos fixes correspondantes du catalogue actif et peuvent inclure des photos en dehors de la collection ou du filtre affichés. Photos sélectionnées offre un contrôle explicite sur l’ensemble.",
             "Si un lot écrit vers plusieurs dossiers, Afficher dans le Finder affiche la première photo exportée avec succès. Le lien est absent lorsqu’aucune photo n’a été exportée. Utilisez Annuler l’exportation pour demander l’arrêt. Détails de l'export indique les nombres de terminés, ignorés et annulés, ainsi que les avertissements et les erreurs ; un avertissement peut se produire après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’exportation des photos fixes. Si un original change pendant que son exportation est en file d’attente ou en cours de rendu, cette photo échoue avec une erreur ; remettez-la en file d’attente après avoir vérifié l’original."
           ]
@@ -3214,5 +3265,7 @@
       ],
       "categoryLabel": "Dépannage"
     }
-  ]
+  ],
+  "locale": "fr",
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

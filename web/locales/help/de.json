@@ -1,6 +1,4 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
-  "locale": "de",
   "version": 1,
   "articles": [
     {
@@ -237,7 +235,8 @@
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
             "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
-            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt."
+            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt.",
+            "Bewegen Sie auf dem Mac den Zeiger in Details über den Bereich des Fotos, den Sie untersuchen möchten. Ziehen Sie dann zwei Finger auf dem Trackpad zusammen oder auseinander, um um den Zeiger herum zu zoomen."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -702,6 +701,13 @@
           "paragraphs": [
             "Das × neben einer Sammlung löscht die Sammlung. Dadurch wird die Gruppierung entfernt, statt Originaldateien in den Papierkorb zu verschieben. Suche und Filter können die in einer Sammlung angezeigten Fotos weiter eingrenzen."
           ]
+        },
+        {
+          "title": "Ordner und Sammlungen",
+          "paragraphs": [
+            "Ordner stehen für die physische Datenträgerhierarchie, in der sich Dateien befinden. Sammlungen sind flexible, leichtgewichtige Gruppen in LightTable, die Fotos aus mehreren ordnern zusammenfassen können, ohne Dateien auf dem Datenträger zu verschieben oder zu duplizieren.",
+            "Beim Importieren eines Katalogs oder Hinzufügen eines Quellordners erstellt das Aktivieren von Für jeden Ordner der obersten Ebene eine Sammlung erstellen automatisch passende Sammlungen für jeden Ordner der obersten Ebene, sodass Ihre vorhandene Struktur in Sammlungen sofort zugänglich ist."
+          ]
         }
       ],
       "related": [
@@ -1099,7 +1105,7 @@
           "steps": [
             "Belichtung für das Hauptmotiv festlegen.",
             "Passen Sie Highlights und Shadows an, um helle und dunkle Bereiche auszugleichen, und verfeinern Sie dann Whites, Blacks und Contrast.",
-            "Verwenden Sie die Schaltfläche für die Spitzlichtwarnung neben dem Histogramm, um Clipping zu prüfen.",
+            "Verwenden Sie die Schaltfläche Übersteuerungswarnung neben dem Histogramm oder drücken Sie J, um Übersteuerungsanzeigen für Lichter und Schatten direkt im Bild umzuschalten (rot für übersteuerte Lichter, blau für übersteuerte Schatten).",
             "Vergleichen Sie Ihr Ergebnis mit dem Original mithilfe der before-Steuerung, oder halten Sie B gedrückt, während das Foto aktiv ist."
           ],
           "tips": [
@@ -1355,6 +1361,19 @@
             "Farbpunkt speichert bis zu acht gesampelte Punkte. Wenn Sie erneut samplen, obwohl bereits acht vorhanden sind, wird der achte Punkt ersetzt.",
             "Zurücksetzen in Punktfarbe löscht die aufgenommenen Punkte, ohne dass ein vollständiges Zurücksetzen von Farbe erforderlich ist."
           ]
+        },
+        {
+          "title": "Schwarzweiß-Behandlung und Mischer",
+          "paragraphs": [
+            "Der Umschalter Behandlung oben im Bedienfeld Farbe wechselt zwischen Farbe und S/W. Im S/W-Modus wird das Bild in Monochrom umgewandelt, während die vollständige Tonwertsteuerung über 8 Farbbänder erhalten bleibt.",
+            "Die S/W-Mischer-Schieberegler passen an, wie stark jede ursprüngliche Farbe zur Graustufen-Luminanz beiträgt."
+          ],
+          "steps": [
+            "Klicken Sie in Bearbeiten → Farbe im Umschalter Behandlung auf S/W.",
+            "Der Farbmischer wird zum S/W-Mischer und zeigt Schieberegler für Rot, Orange, Gelb, Grün, Cyan, Blau, Violett und Magenta an.",
+            "Ziehen Sie einen Schieberegler nach rechts, um diese Farbe in der Schwarzweiß-Umwandlung aufzuhellen, oder nach links, um sie abzudunkeln (z. B. Blau abdunkeln, um einen Himmel zu vertiefen).",
+            "Klicken Sie im Umschalter Behandlung auf Farbe, um zu Vollfarbe zurückzukehren."
+          ]
         }
       ],
       "related": [
@@ -1434,7 +1453,8 @@
           "title": "Ausgewählte Einstellungen übertragen",
           "paragraphs": [
             "Kopieren und Einfügen befinden sich in der Detailansicht unter dem Foto.",
-            "Kopieren und Einfügen übertragen die Gruppen, die Sie ausdrücklich auswählen. Einstellungen in nicht aktivierten Gruppen bleiben auf jedem Ziel unverändert. Dies ist ein expliziter Kopieren/Einfügen-Workflow: Spätere Änderungen an der Quelle werden nicht automatisch auf die Ziele synchronisiert."
+            "Kopieren und Einfügen übertragen die Gruppen, die Sie ausdrücklich auswählen. Einstellungen in nicht aktivierten Gruppen bleiben auf jedem Ziel unverändert. Dies ist ein expliziter Kopieren/Einfügen-Workflow: Spätere Änderungen an der Quelle werden nicht automatisch auf die Ziele synchronisiert.",
+            "Einfügen wird auf ausgewählte Fotos angewendet, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird es auf das aktive Foto angewendet. Überprüfen Sie vor dem Einfügen Ihre Zielauswahl."
           ],
           "steps": [
             "Öffnen Sie das Quellfoto und klicken Sie auf Bearbeitungseinstellungen kopieren, oder drücken Sie Command-Shift-C auf dem Mac bzw. Ctrl-Shift-C unter Linux und Windows.",
@@ -1472,6 +1492,22 @@
           ],
           "tips": [
             "Das Referenzfoto wird von den Zielaktualisierungen ausgeschlossen. Das Angleichen ist ein Ausgangspunkt, besonders wenn die Fotos unterschiedliche Motive oder Bildausschnitte enthalten."
+          ]
+        },
+        {
+          "title": "Vorherige Einstellungen anwenden",
+          "paragraphs": [
+            "Vorherige wendet die Bearbeitungen des unmittelbar vorhergehenden Fotos direkt auf das aktive Foto an und ermöglicht so eine schnelle Bearbeitung einer Sequenz, ohne den Dialog Kopiereinstellungen zu öffnen."
+          ],
+          "steps": [
+            "Wählen Sie ein Foto aus, das Sie bereits bearbeitet haben.",
+            "Zum nächsten Foto in Ihrer Sequenz navigieren.",
+            "Wählen Sie Foto → Vorherige Einstellungen oder drücken Sie unter Mac Option-Command-V (unter Windows und Linux Alt-Ctrl-V).",
+            "Die Entwicklungseinstellungen, der Film-Look, die Kurven, das color grading und die Objektivkorrekturen des vorherigen Fotos werden sofort angewendet."
+          ],
+          "tips": [
+            "Vorherige Einstellungen funktionieren, ohne dass zuvor ein expliziter Kopieren-Befehl erforderlich ist.",
+            "Zuschneiden, Geometrie und Punktreparatur sind standardmäßig ausgeschlossen, um die individuelle Bildkomposition zu schützen."
           ]
         }
       ],
@@ -1855,7 +1891,8 @@
         {
           "title": "Prüfen, dass Ihre Arbeit gespeichert ist",
           "paragraphs": [
-            "Bearbeitungssteuerungen sind nicht verfügbar, bis ein Foto geladen ist. Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, sobald Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Befehl Speichern."
+            "Bearbeitungssteuerungen sind nicht verfügbar, bis ein Foto geladen ist. Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, sobald Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Befehl Speichern.",
+            "Beim Wechseln von Fotos werden auch die aktuellen Schieberegler-Anpassungen zum Speichern in die Warteschlange gestellt. Warten Sie vor dem Schließen des Fensters auf Gespeichert; wenn das Speichern fehlschlägt, lassen Sie das Fenster geöffnet und verwenden Sie Speichern erneut versuchen."
           ],
           "steps": [
             "Nehmen Sie Ihre Anpassung vor und prüfen Sie dann den Speicherstatus in der App.",
@@ -2025,6 +2062,19 @@
           "tips": [
             "Verwenden Sie nur wenige Punkte und vergleichen Sie das Foto während der Arbeit; Kanal-Kurven können starke Farbstiche erzeugen.",
             "Eine gespeicherte oder importierte Kurve behält ihre exakt gespeicherte Tabelle, bis Sie sie bearbeiten. Die App erstellt repräsentative Griffe für die Bearbeitung neu, daher kann die erste Anpassung eine importierte Kurve über den von Ihnen bewegten Punkt hinaus verändern."
+          ]
+        },
+        {
+          "title": "Verwende die Parametrische Kurve",
+          "paragraphs": [
+            "Der Reiter Parametrisch bietet vier Bereichs-Schieberegler — Lichter, Helle Bereiche, Dunkle Bereiche und Schatten — sowie Trennpunkt-Steuerungen, die die Schwellenwerte zwischen den Tonbereichen definieren.",
+            "Damit können Sie den Tonkontrast und die Mitteltöne weich formen, ohne manuelle Ankerpunkte auf dem Diagramm zu setzen."
+          ],
+          "steps": [
+            "Wechseln Sie in der Bearbeiten → Kurve zum Reiter Parametrisch.",
+            "Ziehen Sie Lichter oder Helle Bereiche, um die oberen Tonwerte zu formen, und Dunkle Bereiche oder Schatten für niedrigere Werte.",
+            "Passen Sie die Trennmarkierungen zwischen den Bereichen an, um zu verschieben, wo jeder Bereich übergeht.",
+            "Doppelklicken Sie auf einen Schieberegler, um ihn auf null zurückzusetzen."
           ]
         }
       ],
@@ -2626,6 +2676,7 @@
         {
           "title": "Bereich und Ergebnis prüfen",
           "paragraphs": [
+            "Ausgewählte Fotos verwendet ausgewählte Fotos, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird das aktive Foto verwendet. Überprüfen Sie vor dem Start in Export die Fotoanzahl und den Namen.",
             "Nur Ausgewählt, Bewertet 1+ und Alle außer abgelehnt wählen passende Standfotos aus dem aktiven Katalog aus und können Fotos außerhalb der angezeigten Sammlung oder des Filters einschließen. Ausgewählte Fotos bietet eine explizite Kontrolle über die Auswahl.",
             "Wenn ein Stapel in mehrere Ordner schreibt, zeigt Im Finder anzeigen das zuerst erfolgreich exportierte Foto an. Der Link ist nicht vorhanden, wenn keine Fotos exportiert wurden. Verwenden Sie Export abbrechen, um das Stoppen anzufordern. Exportdetails meldet die Anzahl der abgeschlossenen, übersprungenen und abgebrochenen Vorgänge sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standbilder nicht gerendert. Wenn sich ein Original ändert, während sein Export in der Warteschlange steht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; stellen Sie es nach der Überprüfung des Originals erneut in die Warteschlange."
           ]
@@ -3214,5 +3265,7 @@
       ],
       "categoryLabel": "Fehlerbehebung"
     }
-  ]
+  ],
+  "locale": "de",
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

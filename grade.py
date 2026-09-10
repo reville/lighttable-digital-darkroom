@@ -185,6 +185,21 @@ def clean(g: dict | None) -> dict:
         c = _clean_curve(g.get(k))
         if c:
             out[k] = c
+    # Retain the editor controls alongside their authoritative sampled curve.
+    parametric = g.get("parametricCurve")
+    if isinstance(parametric, dict):
+        ranges = {"highlights": (-100, 100, 0), "lights": (-100, 100, 0),
+                  "darks": (-100, 100, 0), "shadows": (-100, 100, 0),
+                  "splitSD": (0.10, 0.40, 0.25), "splitDL": (0.40, 0.60, 0.50),
+                  "splitLH": (0.60, 0.90, 0.75)}
+        controls = {}
+        for key, (low, high, default) in ranges.items():
+            try:
+                value = float(parametric.get(key, default))
+                controls[key] = min(high, max(low, value)) if np.isfinite(value) else default
+            except (TypeError, ValueError):
+                controls[key] = default
+        out["parametricCurve"] = controls
     h = _clean_hsl(g.get("hsl"))
     if h:
         out["hsl"] = h
@@ -682,7 +697,7 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
                 y = (c @ LUMA)[..., None]
                 c = np.clip(y + (c - y) * (1.0 + g["vibrance"] * (1.0 - sat)), 0.0, 1.0)
 
-    if g.get("monochrome"):
+    if g.get("monochrome", 0.0) > 0.5:
         c = _apply_monochrome(c, g.get("hsl"))
     elif g.get("hsl"):
         c = _apply_hsl(c, g["hsl"])

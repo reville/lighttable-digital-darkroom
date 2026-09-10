@@ -5419,6 +5419,12 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             spec["filter"] = spec_flt
             res = cat.query(spec)
             target_names = set(res.get("names", []))
+            total = res["total"]
+            for offset in range(len(target_names), total, 100000):
+                page = cat.query(dict(spec, offset=offset))
+                if page["total"] != total or not page.get("names"):
+                    raise ValueError("Catalog changed while preparing export; try again")
+                target_names.update(page["names"])
     elif which == "selected":
         target_names = {str(x) for x in (opts.get("selected") or [])}
 

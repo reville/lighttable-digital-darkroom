@@ -1,6 +1,4 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
-  "locale": "it",
   "version": 1,
   "articles": [
     {
@@ -237,7 +235,8 @@
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
             "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
-            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro."
+            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro.",
+            "Su Mac, pizzica sul trackpad sopra la foto in Dettagli per eseguire lo zoom attorno al puntatore. Sposta il puntatore sull'area che vuoi ispezionare prima di pizzicare."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -702,6 +701,13 @@
           "paragraphs": [
             "Il menu ••• di una raccolta elimina la raccolta. Questo rimuove il raggruppamento invece di spostare i file originali nel Cestino. La ricerca e i filtri possono restringere ulteriormente le foto mostrate all’interno di una raccolta."
           ]
+        },
+        {
+          "title": "Cartelle e raccolte",
+          "paragraphs": [
+            "Le cartelle rappresentano la gerarchia fisica del disco in cui risiedono i file. Le collezioni sono gruppi flessibili e leggeri all'interno di LightTable che possono raccogliere foto da più cartelle senza spostare o duplicare alcun file sul disco.",
+            "Quando importi un catalogo o aggiungi una cartella origine, abilitare Crea una collezione per ogni cartella di livello superiore crea automaticamente collezioni corrispondenti per ogni cartella di livello superiore, così la tua struttura esistente è subito accessibile in Collezioni."
+          ]
         }
       ],
       "related": [
@@ -1099,7 +1105,7 @@
           "steps": [
             "Imposta Esposizione per il soggetto principale.",
             "Regola Alte luci e Ombre per bilanciare le aree chiare e scure, quindi rifinisci Bianchi, Neri e Contrasto.",
-            "Usa il pulsante di avviso clipping accanto all'istogramma per ispezionare il clipping.",
+            "Usa il pulsante Avviso di clipping accanto all'istogramma oppure premi J per attivare direttamente sull'immagine gli indicatori di clipping delle alte luci e delle ombre (rosso per le alte luci clippate, blu per le ombre clippate).",
             "Confronta il risultato con l’originale usando il controllo prima, oppure tieni premuto B mentre la foto è attiva."
           ],
           "tips": [
@@ -1355,6 +1361,19 @@
             "Colore punto mantiene fino a otto punti campionati. Se campioni di nuovo quando ne esistono già otto, l'ottavo punto viene sostituito.",
             "Reimposta di Colore punto cancella i punti campionati senza richiedere un reimpostazione completa di Colore."
           ]
+        },
+        {
+          "title": "Trattamento e miscelatore bianco e nero",
+          "paragraphs": [
+            "Il selettore di Trattamento nella parte superiore del pannello Colore alterna tra Colore e B&W. In modalità B&W, l'immagine viene convertita in monocromatico mantenendo il pieno controllo tonale su 8 bande colore.",
+            "I cursori del Miscelatore B&W regolano quanto fortemente ciascun colore originale contribuisce alla luminanza in scala di grigi."
+          ],
+          "steps": [
+            "In Modifica → Colore, fai clic su B&W nel selettore di Trattamento.",
+            "Il Miscelatore colore diventa il Miscelatore B&W, mostrando i cursori Rosso, Arancione, Giallo, Verde, Acqua, Blu, Viola e Magenta.",
+            "Trascina un cursore a destra per schiarire quel colore nella conversione in bianco e nero, oppure a sinistra per scurirlo (ad es. scurire Blu per intensificare un cielo).",
+            "Fai clic su Colore nel selettore di Trattamento per tornare al colore completo."
+          ]
         }
       ],
       "related": [
@@ -1434,7 +1453,8 @@
           "title": "Trasferisci le impostazioni selezionate",
           "paragraphs": [
             "Copia e Incolla si trovano sotto la foto nella vista Dettaglio.",
-            "Copia e Incolla trasferiscono i gruppi che selezioni esplicitamente. Le impostazioni nei gruppi non selezionati restano come sono su ogni destinazione. Questo è un flusso di lavoro esplicito di copia/incolla: le modifiche successive all’origine non si sincronizzano automaticamente con le destinazioni."
+            "Copia e Incolla trasferiscono i gruppi che selezioni esplicitamente. Le impostazioni nei gruppi non selezionati restano come sono su ogni destinazione. Questo è un flusso di lavoro esplicito di copia/incolla: le modifiche successive all’origine non si sincronizzano automaticamente con le destinazioni.",
+            "Incolla si applica alle foto selezionate ancora mostrate dalla cartella, collezione e dai filtri correnti. Se nessuna parte della selezione rimane visibile, si applica alla foto attiva. Controlla la selezione di destinazione prima di incollare."
           ],
           "steps": [
             "Apri la foto sorgente e fai clic su Copia impostazioni di modifica, oppure premi Command-Shift-C su Mac o Ctrl-Shift-C su Linux e Windows.",
@@ -1472,6 +1492,22 @@
           ],
           "tips": [
             "La foto di riferimento è esclusa dagli aggiornamenti della destinazione. L'abbinamento è un punto di partenza, soprattutto quando le foto contengono soggetti o inquadrature diversi."
+          ]
+        },
+        {
+          "title": "Applica impostazioni precedenti",
+          "paragraphs": [
+            "Previous applica direttamente alla foto attiva le modifiche della foto immediatamente precedente, consentendoti di correggere rapidamente una sequenza senza aprire la finestra di dialogo Copia impostazioni."
+          ],
+          "steps": [
+            "Seleziona una foto che hai già modificato.",
+            "Naviga alla foto successiva nella sequenza.",
+            "Scegli Foto → Impostazioni precedenti, oppure premi Opzione-Comando-V su Mac (Alt-Ctrl-V su Windows e Linux).",
+            "Le impostazioni di sviluppo, l'aspetto pellicola, le curve, la correzione colore e le correzioni obiettivo della foto precedente vengono applicate immediatamente."
+          ],
+          "tips": [
+            "Impostazioni precedenti funziona senza bisogno prima di un comando Copia esplicito.",
+            "Ritaglio, geometria e correzione punti sono esclusi per impostazione predefinita per proteggere l'inquadratura di ogni foto."
           ]
         }
       ],
@@ -1855,7 +1891,8 @@
         {
           "title": "Verifica che il tuo lavoro sia salvato",
           "paragraphs": [
-            "I controlli di modifica non sono disponibili finché non viene caricata una foto. Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche quando completi le interazioni; non serve un comando Salva separato per ogni regolazione."
+            "I controlli di modifica non sono disponibili finché non viene caricata una foto. Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche quando completi le interazioni; non serve un comando Salva separato per ogni regolazione.",
+            "Passare da una foto all'altra mette in coda anche le regolazioni correnti dei cursori per il salvataggio. Attendi Salvato prima di chiudere la finestra; se un salvataggio non riesce, lascia aperta la finestra e usa Riprova salvataggio."
           ],
           "steps": [
             "Apporta la tua regolazione, quindi controlla lo stato di salvataggio nell'app.",
@@ -2025,6 +2062,19 @@
           "tips": [
             "Usa pochi punti e confronta la foto mentre lavori; le curve dei canali possono introdurre forti dominanti di colore.",
             "Una curva salvata o importata conserva esattamente la propria tabella salvata finché non la modifichi. L’app ricostruisce maniglie rappresentative per la modifica, quindi il primo intervento può rimodellare una curva importata oltre il punto che sposti."
+          ]
+        },
+        {
+          "title": "Usa la curva Parametrica",
+          "paragraphs": [
+            "La scheda Parametrica offre quattro cursori di regione — Alte luci, Luci, Scuri e Ombre — insieme ai controlli dei punti di dividi che definiscono le soglie tra le regioni tonali.",
+            "Questo ti consente di scolpire in modo uniforme il contrasto tonale e i mezzitoni senza posizionare manualmente punti di ancoraggio sul grafico."
+          ],
+          "steps": [
+            "Passa alla scheda Parametrica in Modifica → Curva.",
+            "Trascina Alte luci o Luci per modellare i valori tonali superiori, e Scuri o Ombre per i valori inferiori values.",
+            "Regola i marcatori di dividi tra le bande per spostare il punto in cui transita ciascuna regione.",
+            "Fai doppio clic su qualsiasi cursore per reimpostarlo a zero."
           ]
         }
       ],
@@ -2626,6 +2676,7 @@
         {
           "title": "Controlla l'ambito e il risultato",
           "paragraphs": [
+            "Foto selezionate usa le foto selezionate ancora mostrate dalla cartella, collezione e dai filtri correnti. Se nessuna parte della selezione rimane visibile, usa la foto attiva. Controlla il numero di foto e il nome in Esporta prima di avviare.",
             "Solo selezionati, Classificate 1+ e Tutti eccetto rifiutati selezionano le foto fisse corrispondenti dal catalogo attivo e possono includere foto al di fuori della raccolta o del filtro visualizzati. Foto selezionate offre un controllo esplicito sull’insieme.",
             "Se un lotto scrive in più cartelle, Mostra nel Finder mostra la prima foto esportata correttamente. Il collegamento è assente quando non è stata esportata alcuna foto. Usa Annulla esportazione per richiedere l’interruzione. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre a avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta correttamente. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in fase di rendering, quella foto non riesce con un errore; inseriscila di nuovo in coda dopo aver verificato l’originale."
           ]
@@ -3214,5 +3265,7 @@
       ],
       "categoryLabel": "Risoluzione problemi"
     }
-  ]
+  ],
+  "locale": "it",
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

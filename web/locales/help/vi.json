@@ -1,6 +1,4 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
-  "locale": "vi",
   "version": 1,
   "articles": [
     {
@@ -237,7 +235,8 @@
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
             "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
-            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa."
+            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa.",
+            "Trên máy Mac, chụm hai ngón trên trackpad khi trỏ vào ảnh trong Chi tiết để thu phóng quanh con trỏ. Di chuyển con trỏ đến vùng bạn muốn kiểm tra trước khi chụm."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -702,6 +701,13 @@
           "paragraphs": [
             "Menu ••• bên cạnh một thư mục sẽ xóa thư mục đó. Thao tác này xóa nhóm thay vì chuyển tệp gốc vào Thùng rác. Tìm kiếm và bộ lọc có thể thu hẹp thêm các ảnh hiển thị bên trong một bộ sưu tập."
           ]
+        },
+        {
+          "title": "Thư mục và bộ sưu tập",
+          "paragraphs": [
+            "Thư mục đại diện cho cấu trúc phân cấp trên đĩa vật lý nơi tệp được lưu. Bộ sưu tập là các nhóm linh hoạt, nhẹ bên trong LightTable có thể gom ảnh từ nhiều thư mục mà không di chuyển hay nhân bản bất kỳ tệp nào trên đĩa.",
+            "Khi nhập một danh mục hoặc thêm một thư mục nguồn, bật Tạo bộ sưu tập cho mỗi thư mục cấp cao nhất sẽ tự động tạo các bộ sưu tập khớp cho mọi thư mục cấp cao nhất để cấu trúc hiện có của bạn có thể truy cập ngay trong Bộ sưu tập."
+          ]
         }
       ],
       "related": [
@@ -1099,7 +1105,7 @@
           "steps": [
             "Đặt Phơi sáng cho đối tượng chính.",
             "Chỉnh Highlights và Shadows để cân bằng vùng sáng và vùng tối, rồi tinh chỉnh Whites, Blacks và Contrast.",
-            "Dùng nút cảnh báo clipping bên cạnh biểu đồ histogram để kiểm tra clipping.",
+            "Dùng nút Cảnh báo cắt xén bên cạnh biểu đồ histogram hoặc nhấn J để bật/tắt chỉ báo cắt xén vùng sáng và bóng tối trực tiếp trên ảnh (đỏ cho vùng sáng bị cắt xén, xanh dương cho bóng tối bị cắt xén).",
             "So sánh kết quả của bạn với bản gốc bằng điều khiển before, hoặc giữ B khi ảnh đang hoạt động."
           ],
           "tips": [
@@ -1355,6 +1361,19 @@
             "Point Color giữ tối đa tám điểm đã lấy mẫu. Nếu bạn lấy mẫu lại khi đã có tám điểm, điểm thứ tám sẽ bị thay thế.",
             "Đặt lại của Màu sắc điểm sẽ xóa các điểm đã lấy mẫu mà không cần đặt lại toàn bộ Màu sắc."
           ]
+        },
+        {
+          "title": "Xử lý và trộn đen trắng",
+          "paragraphs": [
+            "Bộ chuyển đổi Kiểu xử lý ở đầu bảng Màu sắc chuyển giữa Màu sắc và Đen trắng. Ở chế độ Đen trắng, ảnh chuyển sang đơn sắc trong khi vẫn giữ toàn bộ khả năng kiểm soát tông trên 8 dải màu.",
+            "Các thanh trượt của Bộ trộn màu đen trắng điều chỉnh mức độ mỗi màu gốc đóng góp vào độ chói thang xám."
+          ],
+          "steps": [
+            "Trong Chỉnh sửa → Màu sắc, bấm Đen trắng trên bộ chuyển đổi Kiểu xử lý.",
+            "Bộ trộn màu trở thành Bộ trộn màu đen trắng, hiển thị các thanh trượt Đỏ, Cam, Vàng, Xanh lá, Xanh lơ, Xanh dương, Tím và Tím hồng.",
+            "Kéo thanh trượt sang phải để làm sáng màu đó trong phép chuyển đổi đen trắng, hoặc sang trái để làm tối nó (ví dụ: làm tối Xanh dương để làm bầu trời sâu hơn).",
+            "Bấm Màu sắc trên bộ chuyển đổi Kiểu xử lý để quay lại màu đầy đủ."
+          ]
         }
       ],
       "related": [
@@ -1434,7 +1453,8 @@
           "title": "Chuyển các cài đặt đã chọn",
           "paragraphs": [
             "Sao chép và Dán nằm bên dưới ảnh trong chế độ xem Chi tiết.",
-            "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích."
+            "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích.",
+            "Dán áp dụng cho các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ áp dụng cho ảnh đang hoạt động. Kiểm tra vùng chọn đích đến trước khi dán."
           ],
           "steps": [
             "Mở ảnh nguồn và nhấp Sao chép cài đặt chỉnh sửa, hoặc nhấn Command-Shift-C trên Mac hoặc Ctrl-Shift-C trên Linux và Windows.",
@@ -1472,6 +1492,22 @@
           ],
           "tips": [
             "Ảnh tham chiếu bị loại trừ khỏi các cập nhật mục tiêu. Việc khớp chỉ là điểm khởi đầu, nhất là khi ảnh có chủ thể hoặc bố cục khung hình khác nhau."
+          ]
+        },
+        {
+          "title": "Áp dụng cài đặt trước đó",
+          "paragraphs": [
+            "Previous áp dụng trực tiếp các chỉnh sửa từ ảnh ngay trước đó vào ảnh đang hoạt động, cho phép bạn chỉnh màu nhanh một chuỗi mà không cần mở hộp thoại Sao chép cài đặt."
+          ],
+          "steps": [
+            "Chọn một ảnh bạn đã chỉnh sửa.",
+            "Điều hướng đến ảnh tiếp theo trong chuỗi của bạn.",
+            "Chọn Ảnh → Cài đặt trước đó, hoặc nhấn Option-Command-V trên Mac (Alt-Ctrl-V trên Windows và Linux).",
+            "Các cài đặt phát triển, kiểu phim, đường cong, chỉnh màu và hiệu chỉnh ống kính của ảnh trước đó được áp dụng ngay lập tức."
+          ],
+          "tips": [
+            "Cài đặt trước đó hoạt động mà không cần lệnh Sao chép rõ ràng trước đó.",
+            "Cắt xén, hình học và chữa điểm bị loại trừ theo mặc định để bảo vệ khung hình riêng của từng ảnh."
           ]
         }
       ],
@@ -1855,7 +1891,8 @@
         {
           "title": "Kiểm tra công việc của bạn đã được lưu",
           "paragraphs": [
-            "Các điều khiển Chỉnh sửa không khả dụng cho đến khi ảnh được tải. Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu các thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh."
+            "Các điều khiển Chỉnh sửa không khả dụng cho đến khi ảnh được tải. Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu các thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh.",
+            "Chuyển sang ảnh khác cũng sẽ xếp các điều chỉnh thanh trượt hiện tại vào hàng đợi để lưu. Hãy đợi đến khi Đã lưu rồi mới đóng cửa sổ; nếu lưu thất bại, hãy để cửa sổ mở và dùng Thử lưu lại."
           ],
           "steps": [
             "Thực hiện điều chỉnh của bạn, rồi kiểm tra trạng thái lưu trong ứng dụng.",
@@ -2025,6 +2062,19 @@
           "tips": [
             "Dùng vài điểm và so sánh ảnh trong khi làm; các đường cong kênh có thể tạo ra ám màu mạnh.",
             "Đường cong đã lưu hoặc đã nhập sẽ giữ nguyên bảng đã lưu chính xác cho đến khi bạn chỉnh sửa nó. Ứng dụng dựng lại các tay nắm đại diện để chỉnh sửa, vì vậy điều chỉnh đầu tiên có thể làm thay đổi một đường cong đã nhập vượt quá điểm bạn kéo."
+          ]
+        },
+        {
+          "title": "Sử dụng đường cong Thông số",
+          "paragraphs": [
+            "Tab Thông số cung cấp bốn thanh trượt vùng — Vùng sáng, Sáng, Bóng tối và Bóng tối — cùng với các điều khiển điểm tách xác định ranh giới ngưỡng giữa các vùng tông.",
+            "Điều này cho phép bạn tinh chỉnh mượt mà độ tương phản tông và tông trung mà không cần đặt các điểm neo thủ công trên biểu đồ."
+          ],
+          "steps": [
+            "Chuyển sang tab Thông số trong Chỉnh sửa → Đường cong.",
+            "Kéo Vùng sáng hoặc Sáng để định hình các giá trị tông phía trên, và Bóng tối hoặc Bóng tối để định hình các giá trị phía dưới.",
+            "Điều chỉnh các điểm đánh dấu tách giữa các dải để thay đổi vị trí chuyển tiếp của từng vùng.",
+            "Nhấp đúp vào bất kỳ thanh trượt nào để đặt lại về 0."
           ]
         }
       ],
@@ -2626,6 +2676,7 @@
         {
           "title": "Kiểm tra biểu đồ và kết quả",
           "paragraphs": [
+            "Ảnh đã chọn sử dụng các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ sử dụng ảnh đang hoạt động. Kiểm tra số lượng ảnh và tên trong Xuất trước khi bắt đầu.",
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
             "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
           ]
@@ -3214,5 +3265,7 @@
       ],
       "categoryLabel": "Khắc phục sự cố"
     }
-  ]
+  ],
+  "locale": "vi",
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

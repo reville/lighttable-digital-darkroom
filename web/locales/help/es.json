@@ -1,6 +1,4 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
-  "locale": "es",
   "version": 1,
   "articles": [
     {
@@ -237,7 +235,8 @@
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
             "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
-            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas."
+            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas.",
+            "En Mac, pellizca en el trackpad sobre la foto en Detalle para hacer zoom alrededor del puntero. Mueve el puntero sobre el área que quieras inspeccionar antes de pellizcar."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -702,6 +701,13 @@
           "paragraphs": [
             "El menú ••• de una colección elimina la colección. Esto quita el grupo en lugar de mover los archivos originales a la Papelera. La búsqueda y los filtros pueden refinar aún más las fotos mostradas dentro de una colección."
           ]
+        },
+        {
+          "title": "Carpetas y colecciones",
+          "paragraphs": [
+            "Las carpetas representan la jerarquía física del disco donde residen los archivos. Las colecciones son grupos flexibles y ligeros dentro de LightTable que pueden reunir fotos de varias carpetas sin mover ni duplicar ningún archivo en el disco.",
+            "Al importar un catálogo o añadir una carpeta de origen, activar Crear colección para cada carpeta de nivel superior crea automáticamente colecciones coincidentes para cada carpeta de nivel superior, de modo que tu estructura existente quede accesible de inmediato en Colecciones."
+          ]
         }
       ],
       "related": [
@@ -1099,7 +1105,7 @@
           "steps": [
             "Configure Exposición para el sujeto principal.",
             "Ajusta Iluminaciones y Sombras para equilibrar las zonas claras y oscuras, y luego refina Blancos, Negros y Contraste.",
-            "Usa el botón de aviso de recorte junto al histograma para inspeccionar el recorte.",
+            "Usa el botón Advertencia de recorte junto al histograma o pulsa J para alternar directamente sobre la imagen los indicadores de recorte de iluminaciones y sombras (rojo para iluminaciones recortadas, azul para sombras recortadas).",
             "Compara tu resultado con el original usando el control Antes, o mantén B mientras la foto está activa."
           ],
           "tips": [
@@ -1355,6 +1361,19 @@
             "Point Color conserva hasta ocho puntos muestreados. Si vuelve a muestrear cuando ya existen ocho, el octavo punto se reemplaza.",
             "Restablecer de Color puntual borra los puntos muestreados sin requerir un restablecimiento completo de Color."
           ]
+        },
+        {
+          "title": "Tratamiento y mezclador de blanco y negro",
+          "paragraphs": [
+            "El selector de Tratamiento en la parte superior del panel Color alterna entre Color y Blanco y negro. En modo blanco y negro, la imagen se convierte a monocromo mientras conserva el control tonal completo en 8 bandas de color.",
+            "Los deslizadores del Mezclador de blanco y negro ajustan con qué intensidad contribuye cada color original a la luminancia en escala de grises."
+          ],
+          "steps": [
+            "En Editar → Color, haz clic en Blanco y negro en el selector de Tratamiento.",
+            "El Mezclador de color se convierte en el Mezclador de blanco y negro, mostrando deslizadores de Rojo, Naranja, Amarillo, Verde, Cian, Azul, Púrpura y Magenta.",
+            "Arrastra un deslizador a la derecha para aclarar ese color en la conversión a blanco y negro, o a la izquierda para oscurecerlo (por ejemplo, oscurecer Azul para profundizar un cielo).",
+            "Haz clic en Color en el selector de Tratamiento para volver al color completo."
+          ]
         }
       ],
       "related": [
@@ -1434,7 +1453,8 @@
           "title": "Transferir los ajustes seleccionados",
           "paragraphs": [
             "Copiar y Pegar están debajo de la foto en la vista Detalle.",
-            "Copiar y Pegar transfieren los grupos que usted selecciona explícitamente. Los ajustes en grupos no marcados permanecen como están en cada destino. Este es un flujo de trabajo explícito de copiar y pegar: las ediciones posteriores en el origen no se sincronizan automáticamente con los destinos."
+            "Copiar y Pegar transfieren los grupos que usted selecciona explícitamente. Los ajustes en grupos no marcados permanecen como están en cada destino. Este es un flujo de trabajo explícito de copiar y pegar: las ediciones posteriores en el origen no se sincronizan automáticamente con los destinos.",
+            "Pegar se aplica a las fotos seleccionadas que siguen mostradas por la carpeta, colección y filtros actuales. Si ninguna de la selección sigue visible, se aplica a la foto activa. Comprueba tu selección de destino antes de pegar."
           ],
           "steps": [
             "Abra la foto de origen y haga clic en Copiar ajustes de edición, o presione Command-Shift-C en Mac o Ctrl-Shift-C en Linux y Windows.",
@@ -1472,6 +1492,22 @@
           ],
           "tips": [
             "La foto de referencia se excluye de las actualizaciones del destino. La coincidencia es un punto de partida, especialmente cuando las fotos contienen sujetos o encuadres diferentes."
+          ]
+        },
+        {
+          "title": "Aplicar la configuración anterior",
+          "paragraphs": [
+            "Anterior aplica directamente a la foto activa los ajustes de la foto inmediatamente anterior, lo que te permite gradar rápidamente una secuencia sin abrir el cuadro de diálogo Copiar configuración."
+          ],
+          "steps": [
+            "Selecciona una foto que ya hayas editado.",
+            "Navegar a la foto siguiente en tu secuencia.",
+            "Elige Foto → Configuración anterior, o pulsa Option-Command-V en Mac (Alt-Ctrl-V en Windows y Linux).",
+            "Las configuraciones de revelado, el aspecto de película, las curvas, la gradación de color y las correcciones de lente de la foto anterior se aplican inmediatamente."
+          ],
+          "tips": [
+            "Configuración anterior funciona sin necesidad de usar antes un comando Copiar explícito.",
+            "Recorte, geometría y corrección de puntos se excluyen de forma predeterminada para proteger el encuadre individual de cada foto."
           ]
         }
       ],
@@ -1855,7 +1891,8 @@
         {
           "title": "Verificar que su trabajo esté guardado",
           "paragraphs": [
-            "Los controles de edición no están disponibles hasta que se carga una foto. Los ajustes se guardan como configuración de edición de la foto. El editor guarda los cambios automáticamente cuando terminas las interacciones; no necesitas un comando Guardar separado para cada ajuste."
+            "Los controles de edición no están disponibles hasta que se carga una foto. Los ajustes se guardan como configuración de edición de la foto. El editor guarda los cambios automáticamente cuando terminas las interacciones; no necesitas un comando Guardar separado para cada ajuste.",
+            "Al cambiar de foto, también se ponen en cola los ajustes actuales del deslizador para guardarlos. Espera a que aparezca Guardado antes de cerrar la ventana; si falla un guardado, deja la ventana abierta y usa Reintentar guardar."
           ],
           "steps": [
             "Haz tu ajuste y luego comprueba el estado de guardado en la aplicación.",
@@ -2025,6 +2062,19 @@
           "tips": [
             "Usa unos pocos puntos y compara la foto mientras trabajas; las curvas de canal pueden introducir fuertes dominantes de color.",
             "Una curva guardada o importada conserva exactamente su tabla guardada hasta que la edite. La app reconstruye manejadores representativos para editarla, de modo que el primer ajuste puede remodelar una curva importada más allá del punto que mueva."
+          ]
+        },
+        {
+          "title": "Usa la curva paramétrica",
+          "paragraphs": [
+            "La pestaña Paramétrico ofrece cuatro deslizadores de región — Iluminaciones, Luces, Oscuros y Sombras — junto con controles de punto de división que definen los límites de umbral entre regiones tonales.",
+            "Esto te permite esculpir suavemente el contraste tonal y los medios tonos sin colocar puntos de anclaje manuales en el gráfico."
+          ],
+          "steps": [
+            "Cambiar a la pestaña Paramétrico en Editar → Curva.",
+            "Arrastra Iluminaciones o Luces para moldear los valores tonales superiores, y Oscuros o Sombras para los valores inferiores values.",
+            "Ajusta los marcadores de división entre las bandas para desplazar dónde transita cada región.",
+            "Haz doble clic en cualquier deslizador para restablecerlo a cero."
           ]
         }
       ],
@@ -2626,6 +2676,7 @@
         {
           "title": "Verificar el alcance y el resultado",
           "paragraphs": [
+            "Fotos seleccionadas usa las fotos seleccionadas que siguen mostradas por la carpeta, colección y filtros actuales. Si ninguna de la selección sigue visible, usa la foto activa. Comprueba el recuento de fotos y el nombre en Exportar antes de iniciar.",
             "Seleccionadas solo, Calificadas 1+ y Todas excepto rechazadas seleccionan fotos fijas coincidentes del catálogo activo, y pueden incluir fotos fuera de la colección o filtro mostrado. Fotos seleccionadas proporciona control explícito sobre el conjunto.",
             "Si un lote escribe en varias carpetas, Mostrar en Finder revela la primera foto exportada correctamente. El vínculo no aparece cuando no se exportó ninguna foto. Use Cancelar exportación para solicitar la detención. Detalles de exportación informa los recuentos de completadas, omitidas y canceladas, además de advertencias y errores; puede producirse una advertencia después de que una foto se haya escrito correctamente. Los clips de video no se renderizan mediante el flujo de trabajo de exportación de fotos fijas. Si un original cambia mientras su exportación está en cola o se está renderizando, esa foto falla con un error; vuelva a ponerla en cola después de comprobar el original."
           ]
@@ -3214,5 +3265,7 @@
       ],
       "categoryLabel": "Solución de problemas"
     }
-  ]
+  ],
+  "locale": "es",
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

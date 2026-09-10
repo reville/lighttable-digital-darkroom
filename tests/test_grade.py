@@ -12,6 +12,16 @@ import grade
 ROOT = Path(__file__).resolve().parents[1]
 
 
+class ParametricStateTests(unittest.TestCase):
+    def test_controls_survive_cleaning_without_changing_authoritative_pixels(self):
+        curve = [(x / 255) ** .8 for x in range(256)]
+        state = grade.clean({'curveL': curve, 'parametricCurve': {'lights': 40}})
+        self.assertEqual(state['parametricCurve']['lights'], 40)
+        self.assertEqual(state['parametricCurve']['splitDL'], .5)
+        self.assertEqual(state['curveL'], grade.clean({'curveL': curve})['curveL'])
+        self.assertEqual(grade.clean(state), state)
+
+
 class GradeEffectsTests(unittest.TestCase):
     def setUp(self):
         y, x = np.mgrid[0:32, 0:32].astype(np.float32)

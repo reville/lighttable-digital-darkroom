@@ -1,6 +1,289 @@
 {
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "version": 1,
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
+  "pluralPairs": [
+    {
+      "one": " · {count} paired file linked",
+      "other": " · {count} paired files linked"
+    },
+    {
+      "one": "Corrected {count} capture. You can also restore capture-time steps in History.",
+      "other": "Corrected {count} captures. You can also restore capture-time steps in History."
+    },
+    {
+      "one": "Export {count} Photo",
+      "other": "Export {count} Photos"
+    },
+    {
+      "one": "Exporting {count} photo to {destination}…",
+      "other": "Exporting {count} photos to {destination}…"
+    },
+    {
+      "one": "Flag {count} photo as a pick",
+      "other": "Flag {count} photos as picks"
+    },
+    {
+      "one": "Flag {count} photo as a reject",
+      "other": "Flag {count} photos as rejects"
+    },
+    {
+      "one": "Imported {count} photo from Apple Photos{value}",
+      "other": "Imported {count} photos from Apple Photos{value}"
+    },
+    {
+      "one": "Imported {value} preset",
+      "other": "Imported {value} presets"
+    },
+    {
+      "one": "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.",
+      "other": "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes."
+    },
+    {
+      "one": "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.",
+      "other": "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them."
+    },
+    {
+      "one": "Pasted to {count} photo",
+      "other": "Pasted to {count} photos"
+    },
+    {
+      "one": "Picked {count} photo",
+      "other": "Picked {count} photos"
+    },
+    {
+      "one": "Rejected {count} photo",
+      "other": "Rejected {count} photos"
+    },
+    {
+      "one": "Removed generated masks from {count} photo",
+      "other": "Removed generated masks from {count} photos"
+    },
+    {
+      "one": "Restored {count} capture. You can also restore capture-time steps in History.",
+      "other": "Restored {count} captures. You can also restore capture-time steps in History."
+    },
+    {
+      "one": "Restored {count} photo flag. Later flag changes are preserved.",
+      "other": "Restored {count} photo flags. Later flag changes are preserved."
+    },
+    {
+      "one": "Wrote {count} sidecar.",
+      "other": "Wrote {count} sidecars."
+    },
+    {
+      "one": "{count} already added",
+      "other": "{count} already added"
+    },
+    {
+      "one": "{count} already in the catalog",
+      "other": "{count} already in the catalog"
+    },
+    {
+      "one": "{count} article",
+      "other": "{count} articles"
+    },
+    {
+      "one": "{count} capture will change. Originals stay unchanged.",
+      "other": "{count} captures will change. Originals stay unchanged."
+    },
+    {
+      "one": "{count} cloud-only photo skipped; download it in Finder and scan again.",
+      "other": "{count} cloud-only photos skipped; download them in Finder and scan again."
+    },
+    {
+      "one": "{count} could not be imported.",
+      "other": "{count} could not be imported."
+    },
+    {
+      "one": "{count} could not be imported. Run this import again to retry.",
+      "other": "{count} could not be imported. Run this import again to retry."
+    },
+    {
+      "one": "{count} crash while {stage} · {time} · set aside",
+      "other": "{count} crashes while {stage} · {time} · set aside"
+    },
+    {
+      "one": "{count} crash while {stage} · {time} · still open",
+      "other": "{count} crashes while {stage} · {time} · still open"
+    },
+    {
+      "one": "{count} damaged recovery draft kept for repair; other drafts remain available.",
+      "other": "{count} damaged recovery drafts kept for repair; other drafts remain available."
+    },
+    {
+      "one": "{count} duplicate group covering {files}.",
+      "other": "{count} duplicate groups covering {files}."
+    },
+    {
+      "one": "{count} empty file",
+      "other": "{count} empty files"
+    },
+    {
+      "one": "{count} error",
+      "other": "{count} errors"
+    },
+    {
+      "one": "{count} face",
+      "other": "{count} faces"
+    },
+    {
+      "one": "{count} face detected",
+      "other": "{count} faces detected"
+    },
+    {
+      "one": "{count} face found",
+      "other": "{count} faces found"
+    },
+    {
+      "one": "{count} failed",
+      "other": "{count} failed"
+    },
+    {
+      "one": "{count} file",
+      "other": "{count} files"
+    },
+    {
+      "one": "{count} file not downloaded",
+      "other": "{count} files not downloaded"
+    },
+    {
+      "one": "{count} group",
+      "other": "{count} groups"
+    },
+    {
+      "one": "{count} indexed photo remains local until deleted.",
+      "other": "{count} indexed photos remain local until deleted."
+    },
+    {
+      "one": "{count} matching photo shown: {criteria}.",
+      "other": "{count} matching photos shown: {criteria}."
+    },
+    {
+      "one": "{count} minimum alignment inlier",
+      "other": "{count} minimum alignment inliers"
+    },
+    {
+      "one": "{count} original could not be found; reconnect its folder to edit it.",
+      "other": "{count} originals could not be found; reconnect their folders to edit them."
+    },
+    {
+      "one": "{count} original could not be imported. Check your connection and available disk space, then try again.",
+      "other": "None of the {count} originals could be imported. Check your connection and available disk space, then try again."
+    },
+    {
+      "one": "{count} original imported",
+      "other": "{count} originals imported"
+    },
+    {
+      "one": "{count} photo",
+      "other": "{count} photos"
+    },
+    {
+      "one": "{count} photo added. Your original catalog is unchanged.",
+      "other": "{count} photos added. Your original catalog is unchanged."
+    },
+    {
+      "one": "{count} photo copied",
+      "other": "{count} photos copied"
+    },
+    {
+      "one": "{count} photo exported",
+      "other": "{count} photos exported"
+    },
+    {
+      "one": "{count} photo imported.",
+      "other": "{count} photos imported."
+    },
+    {
+      "one": "{count} photo indexed on this Mac.",
+      "other": "{count} photos indexed on this Mac."
+    },
+    {
+      "one": "{count} photo restored",
+      "other": "{count} photos restored"
+    },
+    {
+      "one": "{count} photo selected",
+      "other": "{count} photos selected"
+    },
+    {
+      "one": "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.",
+      "other": "{count} photos skipped{reasons}. Download or restore the originals, then rebuild the index."
+    },
+    {
+      "one": "{count} photo updated",
+      "other": "{count} photos updated"
+    },
+    {
+      "one": "{count} picked photo",
+      "other": "{count} picked photos"
+    },
+    {
+      "one": "{count} preset file could not be read",
+      "other": "{count} preset files could not be read"
+    },
+    {
+      "one": "{count} rated photo",
+      "other": "{count} rated photos"
+    },
+    {
+      "one": "{count} selected",
+      "other": "{count} selected"
+    },
+    {
+      "one": "{count} selected photo",
+      "other": "{count} selected photos"
+    },
+    {
+      "one": "{count} sidecar needs retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.",
+      "other": "{count} sidecars need retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now."
+    },
+    {
+      "one": "{count} sidecar waiting to be written.",
+      "other": "{count} sidecars waiting to be written."
+    },
+    {
+      "one": "{count} source",
+      "other": "{count} sources"
+    },
+    {
+      "one": "{count} unavailable file",
+      "other": "{count} unavailable files"
+    },
+    {
+      "one": "{count} unavailable photo skipped",
+      "other": "{count} unavailable photos skipped"
+    },
+    {
+      "one": "{count} unsupported setting skipped",
+      "other": "{count} unsupported settings skipped"
+    },
+    {
+      "one": "{count} unsupported setting skipped: {details}",
+      "other": "{count} unsupported settings skipped: {details}"
+    },
+    {
+      "one": "{count} warning",
+      "other": "{count} warnings"
+    },
+    {
+      "one": "{message} {completed} of {count} original",
+      "other": "{message} {completed} of {count} originals"
+    },
+    {
+      "one": "{selected} of {count} photo selected, {size} GB",
+      "other": "{selected} of {count} photos selected, {size} GB"
+    },
+    {
+      "one": "{source} · {count} mapped setting",
+      "other": "{source} · {count} mapped settings"
+    },
+    {
+      "one": "{value} unexpected exit in the last 24 hours.",
+      "other": "{value} unexpected exits in the last 24 hours."
+    }
+  ],
   "messages": [
     " (Safe Mode)",
     " (shared metadata retained)",
@@ -152,6 +435,7 @@
     "Adjust film grain and format",
     "Adjust halation, diffusion, and scan character",
     "Adjust the interface, culling behavior, portable edits, and starting edits for new photos.",
+    "Adjust the split markers between the bands to shift where each region transitions.",
     "Advanced",
     "Advanced preview override",
     "After completion, find the new result in the refreshed library and inspect it.",
@@ -172,6 +456,7 @@
     "All topics",
     "Allow automation",
     "Allow pop-up windows to open the secondary loupe",
+    "Already on the source photo",
     "Amount",
     "An alignment failure can mean the frames lack enough overlap or a common area. Try a more consistent sequence rather than adding unrelated frames.",
     "An edit save function is required",
@@ -203,6 +488,7 @@
     "Application",
     "Applications",
     "Applied only to photos that do not already have saved edits.",
+    "Applied previous settings",
     "Applied {name}",
     "Applied {versionName}",
     "Applies the included adjustments.",
@@ -215,6 +501,10 @@
     "Apply mapped adjustments",
     "Apply preset",
     "Apply previewed changes",
+    "Apply previous settings",
+    "Apply settings from previous photo",
+    "Apply settings from previous photo (Ctrl/⌘⌥V)",
+    "Apply settings from previous photo ({key}+V)",
     "Apply stock",
     "Apply to selection",
     "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file.",
@@ -224,6 +514,7 @@
     "Applying flags",
     "Applying the same label again clears it. Colour-label actions do not auto-advance.",
     "Aqua",
+    "Aquas",
     "Arabic",
     "Are these the same person?",
     "As shot",
@@ -265,6 +556,8 @@
     "Available",
     "Available tokens include {filename}, {camera}, {sequence}, {custom}, {yyyy}, {yy}, {mm}, {dd}, {hh}, {min}, and {ss}. Sequence numbers use four digits.",
     "B",
+    "B&W",
+    "B&W Mixer",
     "Back Up Catalog Now",
     "Back to Edit",
     "Back to Film",
@@ -287,6 +580,7 @@
     "Before",
     "Black",
     "Black & White",
+    "Black and white treatment and mixer",
     "Blacks",
     "Blend channels",
     "Blend detail from a source area with the target’s color and brightness",
@@ -295,6 +589,7 @@
     "Blue",
     "Blue / Yellow",
     "Blue label",
+    "Blues",
     "Both files",
     "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0–5 for stars.",
     "Bring All to Front",
@@ -335,14 +630,11 @@
     "Camera EV and capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls.",
     "Camera Raw",
     "Camera and ISO",
-    "Camera color",
     "Camera default removed",
     "Camera default saved",
     "Camera default unavailable.",
     "Camera model",
     "Camera model or maker",
-    "Camera profile",
-    "Camera profile, capture white balance and denoise",
     "Camera serial number",
     "Camera, exposure & date",
     "Cancel",
@@ -446,6 +738,7 @@
     "Choose People, then the part you want to adjust.",
     "Choose Photo Grid, Culling Grid, or Detail at the top. Click a photo to make it active.",
     "Choose Photo → Photo Merge… in the Mac menu.",
+    "Choose Photo → Previous Settings, or press Option-Command-V on Mac (Alt-Ctrl-V on Windows and Linux).",
     "Choose RGB, R, G, or B.",
     "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.",
     "Choose Select criteria such as Subject sharpness, Eye sharpness, or Eyes open, or Reject criteria such as Exposure issues, Misfires, or Documents.",
@@ -545,6 +838,7 @@
     "Choose whether to Stack rendered file with original.",
     "Choose whether to write a Recipe sidecar beside each exported photo.",
     "Choose which companion to show and whether new metadata changes affect both.",
+    "Choose which settings to apply from XMP sidecar files found beside your photos.",
     "Choose which settings to transfer, review mask-specific limits, or match a group to an active exposure reference.",
     "Choose your first photo folder",
     "Choose your language",
@@ -577,6 +871,7 @@
     "Click Apply previewed changes. If you change the selection or correction controls, preview again first.",
     "Click Back up now and check for a Verified backup result.",
     "Click Close or press Escape to leave Survey.",
+    "Click Color on the Treatment switcher to return to full color.",
     "Click Compare in Detail to split the original and edited photo. Each time you turn Compare on, the divider automatically centers in the current view without changing your zoom or pan. Drag the divider to move the split; drag elsewhere on a zoomed photo to pan. The divider and its handle stay the same size as you zoom.",
     "Click Continue. The app proceeds after the choice is saved.",
     "Click Create collection or the + beside Collections, enter a name, and save. The current selection is included.",
@@ -636,6 +931,7 @@
     "Click to disable preset",
     "Click × on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
     "Clipping warning",
+    "Clipping warning (J)",
     "Clipping warning active",
     "Clipping warning off",
     "Clone",
@@ -652,6 +948,7 @@
     "Close preset details",
     "Close settings",
     "Close the catalog results",
+    "Cloudy · 6500 K",
     "Collapse a group",
     "Collapse stack",
     "Collection",
@@ -838,6 +1135,7 @@
     "Create and add photos",
     "Create and refine local adjustments",
     "Create collection",
+    "Create collection for each top-level folder",
     "Create local selections on the device, inspect their accuracy, and refine the result before applying adjustments.",
     "Create mask",
     "Create named groups without moving the original files.",
@@ -859,10 +1157,12 @@
     "Crop and geometry",
     "Crop and geometry, Local masks, and Healing are separate choices and are not included by default.",
     "Crop and rotate",
+    "Crop and rotation",
     "Crop guide",
     "Crop has no output pixels",
     "Crop selection, {cropWidth} by {cropHeight} pixels. Drag to move; use the handles to resize.",
     "Crop selection. Drag to move; use the handles to resize.",
+    "Crop, geometry, and spot healing are excluded by default to protect individual photo framing.",
     "Crop, rotation, flips and perspective",
     "Crop, straighten, rotate, and correct perspective",
     "Crop’s Reset resets the crop, rotation, flips, and perspective together.",
@@ -887,6 +1187,8 @@
     "Daily",
     "Damaged",
     "Dark gray",
+    "Darks",
+    "Darks / Lights",
     "Daylight",
     "Decoder adjusts non-square source pixels",
     "Default Backups folder",
@@ -921,6 +1223,8 @@
     "Delete {collectionName}",
     "Delete {versionName}",
     "Deleted",
+    "Demosaic",
+    "Demosaic, capture white balance and denoise",
     "Denoise",
     "Denoise applied.",
     "Denoise availability could not be checked.",
@@ -979,6 +1283,7 @@
     "Documents",
     "Done",
     "Double-click an interior point to remove it. The two endpoint handles remain.",
+    "Double-click any slider to reset it to zero.",
     "Download complete report",
     "Download example on this photo",
     "Download models & enable",
@@ -989,7 +1294,9 @@
     "Downloading and copying {count} photos. iCloud photos may take a little longer.",
     "Downloading update…",
     "Drag Amount from 0% to 100%. Zero restores the edit before the preset; 100% uses the full preset. Double-click Amount to reset it to 100%.",
+    "Drag Highlights or Lights to shape upper tonal values, and Darks or Shadows for lower values.",
     "Drag a handle to resize the crop; the photo zooms to keep the frame centred. Drag inside the frame to move the photo under it, or outside it to draw a new crop.",
+    "Drag a slider right to lighten that color in the black-and-white conversion, or left to darken it (e.g. darkening Blue to deepen a sky).",
     "Drag either dot to adjust the gradient. Drag the line to move it. Drag elsewhere to redraw it.",
     "Drag either on-image circle to refine the target or source.",
     "Drag on the photo to change the selected gradient’s shape or position",
@@ -1245,11 +1552,13 @@
     "Flag {count} photos as rejects",
     "Flags and ratings apply to selection",
     "Flags and stars are separate: a photo can be Picked and have any star rating. Reject marks a photo for review; it does not delete it.",
+    "Flash · 5500 K",
     "Flip horizontal",
     "Flip image",
     "Flip vertical",
     "Flow",
     "Flow controls how much coverage each new stroke adds, and Density sets its ceiling. Both range from 1% to 100%. Release the pointer and paint again to build coverage; retracing within one continuous stroke does not build it further.",
+    "Fluorescent · 3800 K",
     "Focal",
     "Focal length (mm)",
     "Focal length ≤",
@@ -1266,6 +1575,8 @@
     "Folder path on this computer",
     "Folder template",
     "Folders",
+    "Folders and collections",
+    "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
     "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors.",
     "Folders → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
     "Follow the newest arrival when I am not culling",
@@ -1320,6 +1631,7 @@
     "Grain size multiplies the chosen stock’s baseline particle area. The readout shows the resulting area in µm², so the same multiplier can show a different area after you change stocks.",
     "Green",
     "Green label",
+    "Greens",
     "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.",
     "Group and find people",
     "Group photos into collections",
@@ -1464,6 +1776,7 @@
     "In Community, choose Featured, New, or All and use Subject to narrow the collection. Use the … button beside a preset to see its description, creator, version, Film behavior, and available example photos.",
     "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.",
     "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round.",
+    "In Edit → Color, click B&W on the Treatment switcher.",
     "In Film profile, choose Film format.",
     "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
     "In Physical film stages, adjust Print glare, Print preflash, Yellow filter, and Magenta filter. Reopen the section if you collapsed it.",
@@ -1629,6 +1942,8 @@
     "Lightroom",
     "Lightroom Classic",
     "Lightroom XMP · approximate",
+    "Lights",
+    "Lights / Highs",
     "Lights Out",
     "Lights Out dim level",
     "Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment.",
@@ -1695,6 +2010,7 @@
     "MIDI: {label}  {value}",
     "Magenta",
     "Magenta filter",
+    "Magentas",
     "Make an export",
     "Make cloud photos available offline",
     "Make local adjustments with Brush, Linear, and Radial masks",
@@ -1800,6 +2116,7 @@
     "Native preview data is missing",
     "Native preview unavailable",
     "Navigate",
+    "Navigate to the next photo in your sequence.",
     "Near limit",
     "Needs attention",
     "Negative film and paper",
@@ -1859,6 +2176,7 @@
     "No photos in this album.",
     "No photos match this selection",
     "No presets in this collection yet.",
+    "No previous photo settings to apply",
     "No rejected photos in this view",
     "No sampled colors",
     "No similar groups found. Photos need current index analysis and capture times.",
@@ -1894,6 +2212,7 @@
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.",
     "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.",
     "On a new library, setup offers a local folder or Lightroom migration. The macOS app also offers Apple Photos. You can skip setup and add photos later.",
     "On disk",
@@ -1971,6 +2290,7 @@
     "Optionally enter a Result name, then click Merge.",
     "Or choose Email maintainer. This copies the report and opens a draft addressed to team@lighttable.app.",
     "Orange",
+    "Oranges",
     "Organize a workflow with colour labels",
     "Organize preset packs",
     "Original",
@@ -2011,11 +2331,14 @@
     "Panorama accepts 2–20 overlapping frames. Select neighboring frames in sequence so adjacent inputs share visual detail. The app aligns features and blends overlaps; featureless areas or insufficient overlap can prevent a reliable stitch. Panorama canvases are limited to 120 megapixels.",
     "Panorama · feature aligned",
     "Paper",
+    "Parametric",
     "Paste",
     "Paste Edit Settings",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.",
     "Paste edit settings",
     "Paste edit settings ({primaryKey}+Shift+V)",
     "Paste edit settings to {targetsLength} selected photos ({primaryKey}+Shift+V)",
+    "Paste from Previous Photo",
     "Paste selected settings",
     "Paste to All Visible Photos",
     "Paste to all visible photos",
@@ -2105,6 +2428,7 @@
     "Place",
     "Places > Boston",
     "Plan the copy",
+    "Point",
     "Point Color",
     "Point Color gives a sampled hue its own controls. It affects matching colors throughout the photo; use a local mask when you also need to restrict the area.",
     "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.",
@@ -2166,7 +2490,10 @@
     "Previews use this photo’s edits. Choose a stock to apply it.",
     "Previous",
     "Previous Photo",
+    "Previous applies the edits from the immediately preceding photo directly to the active photo, letting you rapidly grade a sequence without opening the Copy Settings dialog.",
     "Previous group",
+    "Previous settings",
+    "Previous settings works without needing an explicit Copy command first.",
     "Print development",
     "Print exposure",
     "Print glare",
@@ -2184,6 +2511,7 @@
     "Purge generated previews and render caches? Originals and edits are not affected.",
     "Purple",
     "Purple label",
+    "Purples",
     "Python (reference)",
     "Quality",
     "Quit",
@@ -2220,6 +2548,7 @@
     "Rated 1+ ({ratedCount})",
     "Rating",
     "Ratings, flags, labels, and IPTC",
+    "Ratings, labels, flags, and metadata",
     "Read XMP Sidecars…",
     "Read a preview error",
     "Read a thumbnail error",
@@ -2265,6 +2594,7 @@
     "Red · 42%",
     "Redo",
     "Redo (Ctrl/⌘Shift+Z)",
+    "Reds",
     "Reference Match",
     "Reference Match is in Realistic Film Simulation, opened with Film in the tool rail. Use a reference with corresponding image content so alignment and comparison are meaningful.",
     "Reference could not be measured.",
@@ -2377,6 +2707,7 @@
     "Reset MIDI",
     "Reset Shadows, Midtones, Highlights, and Global color grading",
     "Reset Texture, Clarity, Dehaze, and Vignette",
+    "Reset all B&W Mixer channels",
     "Reset all Color Mixer channels",
     "Reset crop, rotation, flips, and perspective",
     "Reset curve",
@@ -2551,6 +2882,7 @@
     "Select a photo to copy its settings",
     "Select a photo to edit",
     "Select a photo to preview",
+    "Select a photo you have already edited.",
     "Select a photo, expand a pack, and click a preset row.",
     "Select a photo, or a set in a grid, and open Info.",
     "Select a photo.",
@@ -2614,6 +2946,7 @@
     "Selected photo ({value})",
     "Selected photo(s)",
     "Selected photos ({targetsLength})",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.",
     "Selected point color",
     "Selected preset",
     "Selected: {count}",
@@ -2657,7 +2990,9 @@
     "Settings → Performance → Advanced contains Preview resolution override. Automatic (recommended) adapts the preview to your view. A fixed resolution can reduce processing, but may look softer; 100% zoom still requests source detail, subject to the preview limit. Export dimensions are set separately.",
     "Settings → Shortcuts & Hardware contains the shortcut scheme and a keyboard reference under Keyboard and MIDI controls. On macOS, the desktop Help menu also has Keyboard Shortcuts. Use Ctrl for Command/Ctrl shortcuts on Linux and Windows.",
     "Settings…",
+    "Shade · 7500 K",
     "Shadows",
+    "Shadows / Darks",
     "Shape",
     "Shape a linear gradient",
     "Shape a radial gradient",
@@ -2716,7 +3051,7 @@
     "Smart collection saved",
     "Smart selection action",
     "Smart selection action controls whether the next smart selection becomes a new mask or combines with the currently selected mask.",
-    "Smooth color",
+    "Smooth",
     "Smooth zoom",
     "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
     "Snapshots",
@@ -2815,7 +3150,9 @@
     "Swap",
     "Swap A and B",
     "Swap crop orientation",
+    "Switch to the Parametric tab in Edit → Curve.",
     "Switch views and select photos",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.",
     "Synchronize Folder",
     "TIFF",
@@ -2848,14 +3185,18 @@
     "That photo is no longer in the library, so the edit was not saved",
     "That photo is not available in Finder",
     "That selection could not be completed. Try again.",
+    "The B&W Mixer sliders adjust how strongly each original color contributes to the grayscale luminance.",
     "The Calibration target button downloads an image you can use in a reference workflow.",
+    "The Color Mixer becomes the B&W Mixer, showing Red, Orange, Yellow, Green, Aqua, Blue, Purple, and Magenta sliders.",
     "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls.",
     "The Detail section includes Sharpening, Radius, Detail, Masking, Luminance NR, and Color NR. Effects contains Texture, Clarity, Dehaze, and Vignette.",
     "The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance",
     "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its ×, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
     "The Grain size setting belongs to the film simulation. Detail sharpening and noise reduction in Edit are separate adjustments.",
+    "The Parametric tab provides four region sliders — Highlights, Lights, Darks, and Shadows — along with split point controls that define the threshold boundaries between tonal regions.",
     "The Photo Index is off by default and requires macOS. Linux and Windows show Not available on this platform, and new indexing cannot be enabled. On Mac, analysis stays on the device and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available.",
     "The TIFF is still rendering.",
+    "The Treatment switcher at the top of the Color panel toggles between Color and B&W. In B&W mode, the image converts to monochrome while preserving full tonal control across 8 color bands.",
     "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings.",
     "The XMP sidecar was created, removed, or renamed by another application. Read its metadata before syncing again.",
     "The adjusted TIFF is written beside its original.",
@@ -2908,6 +3249,7 @@
     "The photo preview could not be decoded",
     "The photo was rotated during detection; retry this photo",
     "The previous session did not end cleanly{value}.",
+    "The prior photo’s develop settings, film look, curves, color grading, and lens corrections are applied immediately.",
     "The ratio Lock control lets you keep the current aspect ratio while resizing.",
     "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing.",
     "The report could not be copied. Select the text and copy it manually.",
@@ -2950,6 +3292,7 @@
     "This file is empty (0 bytes). Download or restore the original photo, then retry.",
     "This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren’t transferred.",
     "This is a starting adjustment based on measured image statistics, not a guarantee of an exact film or color match. Review the image after applying it and use Undo if needed. Clear removes the reference overlay.",
+    "This lets you smoothly sculpt tonal contrast and midtones without placing manual anchor points on the graph.",
     "This mask has reached its component limit",
     "This person group no longer exists",
     "This photo has reached the 20,000-point mask limit",
@@ -2993,6 +3336,7 @@
     "Transfer selected settings",
     "Trash requires an absolute photo path",
     "Trash requires the native LightTable window",
+    "Treatment",
     "Trial variants created",
     "Troubleshooting",
     "Try 20 variants",
@@ -3009,7 +3353,7 @@
     "Try virtual copies and group photos in stacks",
     "Tune the editing canvas without changing exported pixels.",
     "Tuned and original stocks",
-    "Tungsten · 3200 K",
+    "Tungsten · 2850 K",
     "Turn Auto-advance on to move to the next photo after picking, rejecting, or rating a single photo. Unflagging does not advance.",
     "Turn Film off for the actions below",
     "Turn Include subfolders on to include child folders, or off to view only that folder.",
@@ -3138,8 +3482,9 @@
     "Use keyboard shortcuts and MIDI controls",
     "Use matched lens profile",
     "Use optional on-device face matching to group similar faces, add names, and review possible matches.",
-    "Use the Clipping warning button beside the histogram to inspect clipping.",
+    "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).",
     "Use the Folders ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu.",
+    "Use the Parametric curve",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.",
     "Use the grids to choose a set and Detail to inspect an individual photo.",
     "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.",
@@ -3153,7 +3498,7 @@
     "Use this computer’s local timezone",
     "Use verified catalog backups, Library Health, and desktop diagnostics when something goes wrong.",
     "Uses embedded camera color and capture-stage processing.",
-    "Using cloud-based Lightroom? Export your originals to a folder, then choose that folder here.",
+    "Using cloud-based Lightroom? Export your originals to a folder, then",
     "Vectorscope",
     "Verified backup: {resultArchive}",
     "Verify",
@@ -3226,6 +3571,7 @@
     "When a photo arrives",
     "When a photo seems missing",
     "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
+    "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections.",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.",
     "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.",
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.",
@@ -3267,9 +3613,11 @@
     "XMP could not be written.",
     "XMP declarations cannot be updated safely",
     "XMP exchanges supported metadata; it is not a complete catalog backup. Keep catalog backups for collections, history, and variants, and enable portable LightTable edits when you need the full editing recipe to travel with a folder.",
+    "XMP sidecars were found in this folder. You can import their ratings, metadata, and develop settings.",
     "Yellow",
     "Yellow filter",
     "Yellow label",
+    "Yellows",
     "You can add more folders later from the Library menu.",
     "You can add more sources any time.",
     "You can change the language later in Settings.",
@@ -3376,6 +3724,7 @@
     "choose a specific export folder",
     "choose a specific ingest folder",
     "choose an ingest destination",
+    "choose that folder here.",
     "chromatic aberration",
     "clarity",
     "classic",
@@ -4186,288 +4535,5 @@
     "← Back to articles",
     "← People",
     "☆ Favorites"
-  ],
-  "version": 1,
-  "pluralPairs": [
-    {
-      "one": " · {count} paired file linked",
-      "other": " · {count} paired files linked"
-    },
-    {
-      "one": "Corrected {count} capture. You can also restore capture-time steps in History.",
-      "other": "Corrected {count} captures. You can also restore capture-time steps in History."
-    },
-    {
-      "one": "Export {count} Photo",
-      "other": "Export {count} Photos"
-    },
-    {
-      "one": "Exporting {count} photo to {destination}…",
-      "other": "Exporting {count} photos to {destination}…"
-    },
-    {
-      "one": "Flag {count} photo as a pick",
-      "other": "Flag {count} photos as picks"
-    },
-    {
-      "one": "Flag {count} photo as a reject",
-      "other": "Flag {count} photos as rejects"
-    },
-    {
-      "one": "Imported {count} photo from Apple Photos{value}",
-      "other": "Imported {count} photos from Apple Photos{value}"
-    },
-    {
-      "one": "Imported {value} preset",
-      "other": "Imported {value} presets"
-    },
-    {
-      "one": "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.",
-      "other": "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes."
-    },
-    {
-      "one": "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.",
-      "other": "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them."
-    },
-    {
-      "one": "Pasted to {count} photo",
-      "other": "Pasted to {count} photos"
-    },
-    {
-      "one": "Picked {count} photo",
-      "other": "Picked {count} photos"
-    },
-    {
-      "one": "Rejected {count} photo",
-      "other": "Rejected {count} photos"
-    },
-    {
-      "one": "Removed generated masks from {count} photo",
-      "other": "Removed generated masks from {count} photos"
-    },
-    {
-      "one": "Restored {count} capture. You can also restore capture-time steps in History.",
-      "other": "Restored {count} captures. You can also restore capture-time steps in History."
-    },
-    {
-      "one": "Restored {count} photo flag. Later flag changes are preserved.",
-      "other": "Restored {count} photo flags. Later flag changes are preserved."
-    },
-    {
-      "one": "Wrote {count} sidecar.",
-      "other": "Wrote {count} sidecars."
-    },
-    {
-      "one": "{count} already added",
-      "other": "{count} already added"
-    },
-    {
-      "one": "{count} already in the catalog",
-      "other": "{count} already in the catalog"
-    },
-    {
-      "one": "{count} article",
-      "other": "{count} articles"
-    },
-    {
-      "one": "{count} capture will change. Originals stay unchanged.",
-      "other": "{count} captures will change. Originals stay unchanged."
-    },
-    {
-      "one": "{count} cloud-only photo skipped; download it in Finder and scan again.",
-      "other": "{count} cloud-only photos skipped; download them in Finder and scan again."
-    },
-    {
-      "one": "{count} could not be imported.",
-      "other": "{count} could not be imported."
-    },
-    {
-      "one": "{count} could not be imported. Run this import again to retry.",
-      "other": "{count} could not be imported. Run this import again to retry."
-    },
-    {
-      "one": "{count} crash while {stage} · {time} · set aside",
-      "other": "{count} crashes while {stage} · {time} · set aside"
-    },
-    {
-      "one": "{count} crash while {stage} · {time} · still open",
-      "other": "{count} crashes while {stage} · {time} · still open"
-    },
-    {
-      "one": "{count} damaged recovery draft kept for repair; other drafts remain available.",
-      "other": "{count} damaged recovery drafts kept for repair; other drafts remain available."
-    },
-    {
-      "one": "{count} duplicate group covering {files}.",
-      "other": "{count} duplicate groups covering {files}."
-    },
-    {
-      "one": "{count} empty file",
-      "other": "{count} empty files"
-    },
-    {
-      "one": "{count} error",
-      "other": "{count} errors"
-    },
-    {
-      "one": "{count} face",
-      "other": "{count} faces"
-    },
-    {
-      "one": "{count} face detected",
-      "other": "{count} faces detected"
-    },
-    {
-      "one": "{count} face found",
-      "other": "{count} faces found"
-    },
-    {
-      "one": "{count} failed",
-      "other": "{count} failed"
-    },
-    {
-      "one": "{count} file",
-      "other": "{count} files"
-    },
-    {
-      "one": "{count} file not downloaded",
-      "other": "{count} files not downloaded"
-    },
-    {
-      "one": "{count} group",
-      "other": "{count} groups"
-    },
-    {
-      "one": "{count} indexed photo remains local until deleted.",
-      "other": "{count} indexed photos remain local until deleted."
-    },
-    {
-      "one": "{count} matching photo shown: {criteria}.",
-      "other": "{count} matching photos shown: {criteria}."
-    },
-    {
-      "one": "{count} minimum alignment inlier",
-      "other": "{count} minimum alignment inliers"
-    },
-    {
-      "one": "{count} original could not be found; reconnect its folder to edit it.",
-      "other": "{count} originals could not be found; reconnect their folders to edit them."
-    },
-    {
-      "one": "{count} original could not be imported. Check your connection and available disk space, then try again.",
-      "other": "None of the {count} originals could be imported. Check your connection and available disk space, then try again."
-    },
-    {
-      "one": "{count} original imported",
-      "other": "{count} originals imported"
-    },
-    {
-      "one": "{count} photo",
-      "other": "{count} photos"
-    },
-    {
-      "one": "{count} photo added. Your original catalog is unchanged.",
-      "other": "{count} photos added. Your original catalog is unchanged."
-    },
-    {
-      "one": "{count} photo copied",
-      "other": "{count} photos copied"
-    },
-    {
-      "one": "{count} photo exported",
-      "other": "{count} photos exported"
-    },
-    {
-      "one": "{count} photo imported.",
-      "other": "{count} photos imported."
-    },
-    {
-      "one": "{count} photo indexed on this Mac.",
-      "other": "{count} photos indexed on this Mac."
-    },
-    {
-      "one": "{count} photo restored",
-      "other": "{count} photos restored"
-    },
-    {
-      "one": "{count} photo selected",
-      "other": "{count} photos selected"
-    },
-    {
-      "one": "{count} photo skipped{reasons}. Download or restore the originals, then rebuild the index.",
-      "other": "{count} photos skipped{reasons}. Download or restore the originals, then rebuild the index."
-    },
-    {
-      "one": "{count} photo updated",
-      "other": "{count} photos updated"
-    },
-    {
-      "one": "{count} picked photo",
-      "other": "{count} picked photos"
-    },
-    {
-      "one": "{count} preset file could not be read",
-      "other": "{count} preset files could not be read"
-    },
-    {
-      "one": "{count} rated photo",
-      "other": "{count} rated photos"
-    },
-    {
-      "one": "{count} selected",
-      "other": "{count} selected"
-    },
-    {
-      "one": "{count} selected photo",
-      "other": "{count} selected photos"
-    },
-    {
-      "one": "{count} sidecar needs retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now.",
-      "other": "{count} sidecars need retry. Edits are safe in the catalog. Reconnect the folder or check write permission, then Write now."
-    },
-    {
-      "one": "{count} sidecar waiting to be written.",
-      "other": "{count} sidecars waiting to be written."
-    },
-    {
-      "one": "{count} source",
-      "other": "{count} sources"
-    },
-    {
-      "one": "{count} unavailable file",
-      "other": "{count} unavailable files"
-    },
-    {
-      "one": "{count} unavailable photo skipped",
-      "other": "{count} unavailable photos skipped"
-    },
-    {
-      "one": "{count} unsupported setting skipped",
-      "other": "{count} unsupported settings skipped"
-    },
-    {
-      "one": "{count} unsupported setting skipped: {details}",
-      "other": "{count} unsupported settings skipped: {details}"
-    },
-    {
-      "one": "{count} warning",
-      "other": "{count} warnings"
-    },
-    {
-      "one": "{message} {completed} of {count} original",
-      "other": "{message} {completed} of {count} originals"
-    },
-    {
-      "one": "{selected} of {count} photo selected, {size} GB",
-      "other": "{selected} of {count} photos selected, {size} GB"
-    },
-    {
-      "one": "{source} · {count} mapped setting",
-      "other": "{source} · {count} mapped settings"
-    },
-    {
-      "one": "{value} unexpected exit in the last 24 hours.",
-      "other": "{value} unexpected exits in the last 24 hours."
-    }
   ]
 }

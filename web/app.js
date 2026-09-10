@@ -10705,11 +10705,13 @@ function drawParamCurve() {
 
 function commitCurves() {
   if (S.curveMode === 'parametric') {
+    S.grade.parametricCurve = {...S.paramCurve};
     const lut = evalParametricLUT(S.paramCurve);
     if (lut) S.grade.curveL = lut;
     else delete S.grade.curveL;
     drawParamCurve();
   } else {
+    delete S.grade.parametricCurve;
     for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
       if (isIdentityPoints(S.curve[ch])) delete S.grade[key];
       else S.grade[key] = monotoneLUT(S.curve[ch]);
@@ -10719,6 +10721,11 @@ function commitCurves() {
   drawGrade();
 }
 function syncCurveFromGrade() {
+  S.paramCurve = {...(S.grade.parametricCurve || {
+    highlights: 0, lights: 0, darks: 0, shadows: 0,
+    splitSD: 0.25, splitDL: 0.50, splitLH: 0.75,
+  })};
+  syncParamCurveControls();
   // Persisted/imported curves are sampled tables. Rebuild representative
   // handles for editing while drawing the exact table until the first edit.
   for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
@@ -10805,6 +10812,7 @@ function drawCurve() {
 (function paramCurveEvents() {
   $('curveModePoint')?.addEventListener('click', () => {
     S.curveMode = 'point';
+    syncCurveFromGrade();
     $('curveModePoint').classList.add('on');
     $('curveModeParametric').classList.remove('on');
     $('pointCurveWrap').hidden = false;
@@ -12242,6 +12250,9 @@ SELECTION_REQUEST = createSelectionRequest({
     if (!S.catalogEnabled) return null;
     const spec = buildCatalogQuerySpec({ namesOnly: true, limit: 100000 });
     const res = await api('/api/catalog/query', spec);
+    // The loaded-row path already resolves the complete view. Retain it for
+    // catalogs larger than a single names page rather than selecting a subset.
+    if (res?.names?.length < res?.total) return null;
     return res?.names || null;
   },
   scope: selectionScope, visible, selection: () => S.msel,
