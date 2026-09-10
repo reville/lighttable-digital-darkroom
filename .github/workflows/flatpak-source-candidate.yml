@@ -1,0 +1,84 @@
+name: Flatpak source candidate
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/linux-package-channels-20260909]
+    paths:
+      - .github/workflows/flatpak-source-candidate.yml
+      - packaging/flatpak/source-*
+      - scripts/flatpak/source-*
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      APP_ID: app.lighttable.LightTable
+      FLATPAK_BUILDER_N_JOBS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Generate the pinned source graph and install its SDK
+        id: runtime
+        run: |
+          mkdir -p evidence dist
+          python3 scripts/flatpak/source-manifest.py --source-revision be537f2f3e2e431ae6b42af716c2a8b365f57bab --output .build/source-flatpak/manifest.json
+          python3 scripts/flatpak/source-preflight.py packaging/flatpak/source-status.json
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder appstream desktop-file-utils xvfb xauth dbus-x11
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak-builder --user --install-deps-from=flathub --install-deps-only --assumeyes .build/source-flatpak/build .build/source-flatpak/manifest.json
+          flatpak info --user org.gnome.Sdk//50 > evidence/sdk.txt
+          echo "sdk_commit=$(flatpak info --user --show-commit org.gnome.Sdk//50)" >> "$GITHUB_OUTPUT"
+          flatpak run --user --command=sh org.gnome.Sdk//50 -ec 'for tool in gcc g++ gfortran cmake ninja pkg-config nasm; do command -v "$tool"; done' > evidence/sdk-tools.txt
+          appstreamcli validate --no-net packaging/flatpak/app.lighttable.LightTable.metainfo.xml
+          desktop-file-validate packaging/flatpak/app.lighttable.LightTable.desktop
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/source-*.json', 'scripts/flatpak/source-*.py') }}
+          restore-keys: flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-
+      - name: Fetch pinned sources, then compile offline
+        run: |
+          flatpak-builder --user --download-only --disable-rofiles-fuse .build/source-flatpak/build .build/source-flatpak/manifest.json
+          flatpak-builder --user --force-clean --disable-download --disable-rofiles-fuse --jobs=2 --default-branch=source-candidate --repo=.build/source-flatpak/repo --install .build/source-flatpak/build .build/source-flatpak/manifest.json
+          flatpak info --user "$APP_ID//source-candidate" > evidence/app-info.txt
+          flatpak info --user --show-permissions "$APP_ID//source-candidate" > evidence/permissions.txt
+      - name: Exercise the installed source-built runtime and native window
+        run: |
+          common="$HOME/.var/app/$APP_ID/data/acceptance"
+          mkdir -p "$common"
+          cp scripts/flatpak/sandbox-smoke.py scripts/linux/desktop-smoke.py "$common/"
+          denied="$HOME/lighttable-flatpak-ungranted.txt"
+          printf 'This file has not been granted to LightTable\n' > "$denied"
+          timeout 360s dbus-run-session -- flatpak run --user --command=/app/LightTable/Python/bin/python3 "$APP_ID//source-candidate" -B "$common/sandbox-smoke.py" --denied-host-file "$denied" > evidence/runtime-smoke.txt
+          timeout 125s xvfb-run -a --server-args="-screen 0 1280x900x24" dbus-run-session -- flatpak run --user --command=/app/LightTable/Python/bin/python3 "$APP_ID//source-candidate" -B "$common/desktop-smoke.py" /app/LightTable > evidence/native-smoke.txt
+      - name: Assemble a source-built test artifact
+        run: |
+          flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo .build/source-flatpak/repo dist/LightTable-0.5.0-source-x86_64.flatpak "$APP_ID" source-candidate
+          sha256sum dist/*.flatpak > dist/SHA256SUMS
+      - name: Preserve completed dependency stages
+        if: always() && steps.cache.outcome == 'success' && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .flatpak-builder/cache
+            .flatpak-builder/downloads
+            .flatpak-builder/git
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LightTable-flatpak-source-candidate
+          path: |
+            evidence
+            dist
+            .build/source-flatpak/manifest.json
+          include-hidden-files: true
+          if-no-files-found: error

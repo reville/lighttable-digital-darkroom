@@ -3,7 +3,7 @@
 
 Generation is offline. Fetching sources belongs to flatpak-builder --download-only.
 The generated full graph is not a verified build: see source-status.json for the
-remaining imagecodecs native-library closure and the required validation gates.
+required native build and runtime validation gates.
 """
 from __future__ import annotations
 
@@ -155,10 +155,22 @@ def generate(revision: str, version: str, output: Path, *, allow_incomplete=Fals
             'make -j${FLATPAK_BUILDER_N_JOBS}', 'make install',
         ], [native['fftw']])
     cmake('llvm22', ['-DCMAKE_INSTALL_PREFIX=/app/llvm22', '-DCMAKE_BUILD_TYPE=Release',
+                    '-DLLVM_PARALLEL_LINK_JOBS=1', '-DLLVM_PARALLEL_COMPILE_JOBS=2',
                     '-DLLVM_TARGETS_TO_BUILD=X86;AArch64', '-DLLVM_ENABLE_PROJECTS=',
                     '-DLLVM_ENABLE_RTTI=ON', '-DLLVM_INCLUDE_TESTS=OFF',
                     '-DLLVM_INCLUDE_BENCHMARKS=OFF', '-DLLVM_INCLUDE_EXAMPLES=OFF'], native['llvm'], 'llvm')
     modules.extend(copy.deepcopy(dependencies['native_recipes']))
+    # Explicit source recipes retain every extension in the upstream Linux
+    # imagecodecs wheel. Rust C libraries get the same offline vendoring as the
+    # application, with separately pinned upstream lockfiles.
+    codec_graph = json.loads((PACKAGING / 'source-native-codecs.json').read_text())
+    for recipe in copy.deepcopy(codec_graph['modules']):
+        lock_name = recipe.pop('x-cargo-lock', None)
+        if lock_name:
+            lock_path = PACKAGING / lock_name
+            recipe['sources'].extend(cargo_sources([lock_path.read_bytes()]))
+            recipe['sources'].append(pinned_file(lock_path, output, **{'dest-filename': 'Cargo.lock'}))
+        modules.append(recipe)
     for name, options in (
         ('fmt', ['-DFMT_TEST=OFF', '-DFMT_DOC=OFF', '-DBUILD_SHARED_LIBS=ON']),
         ('robin-map', ['-DROBIN_MAP_BUILD_TESTS=OFF']),
@@ -205,6 +217,8 @@ def generate(revision: str, version: str, output: Path, *, allow_incomplete=Fals
     python('imagecodecs')
     modules[-1]['sources'].append(pinned_file(ROOT / 'scripts/flatpak/source-imagecodecs.py', output,
                                               **{'dest-filename': 'imagecodecs_distributor_setup.py'}))
+    modules[-1]['build-commands'].append(PYTHON + ' source-codec-check.py')
+    modules[-1]['sources'].append(pinned_file(ROOT / 'scripts/flatpak/source-codec-check.py', output))
     locks = [read_revision(revision, p) for p in ('rust-engine/Cargo.lock', 'windows-shell/Cargo.lock')]
     source_list = [
         {'type': 'git', 'url': 'https://github.com/reville/lighttable-digital-darkroom.git',
@@ -269,7 +283,7 @@ def main() -> None:
                         help='For bounded recipe experiments only: omit the initial known-closure-failure gate')
     args = parser.parse_args()
     manifest = generate(args.source_revision, args.version, args.output.resolve(), allow_incomplete=args.allow_incomplete)
-    print(f"Generated {len(manifest['modules'])} source modules; native verification and codec closure remain pending")
+    print(f"Generated {len(manifest['modules'])} source modules; native build and runtime parity verification remain pending")
 
 
 if __name__ == '__main__':

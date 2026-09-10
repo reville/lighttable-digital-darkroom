@@ -10,42 +10,9 @@
   },
   "unresolved": [
     {
-      "id": "imagecodecs-native-closure",
-      "blocks_build": true,
-      "detail": "Add and verify source recipes for the Linux imagecodecs wheel codec set. The default sdist build silently selects a reduced core set; source-imagecodecs.py preserves the wheel set and deliberately does not suppress missing-header failures.",
-      "libraries_not_yet_supplied": [
-        "libaec/szip",
-        "libavif with its required AV1 codecs",
-        "c-blosc",
-        "c-blosc2",
-        "CharLS",
-        "libjxl",
-        "jxrlib",
-        "liblzfse",
-        "lzham",
-        "lzokay",
-        "meshoptimizer",
-        "pcodec",
-        "snappy",
-        "SPERR",
-        "SZ3",
-        "ultrahdr",
-        "zfp",
-        "zlib-ng",
-        "zopfli"
-      ],
-      "additional_sdk_libraries_to_probe": [
-        "brotli",
-        "giflib",
-        "libisal",
-        "Lerc",
-        "liblz4",
-        "libtiff",
-        "libwebp",
-        "libzstd",
-        "OpenJPEG",
-        "wavpack"
-      ]
+      "id": "imagecodecs-native-validation",
+      "blocks_build": false,
+      "detail": "The source-native-codecs.json graph supplies all previously missing native libraries and retains the upstream Linux wheel extension set. Source archives/commits and Rust dependencies are pinned. An actual GNOME 50 build must still verify compatibility; source-codec-check.py fails if any required extension cannot import. No native source-build or runtime parity result is claimed."
     },
     {
       "id": "native-source-validation",
@@ -58,6 +25,10 @@
     "Build OpenCV with an isolated source-built NumPy 2.1.3 and setuptools 69.5.1 build environment, retaining NumPy 2.5.3 at runtime.",
     "Use isolated source-built setuptools-scm 7.1.0 for python-dateutil; retain SCM 9.2.2 for current build backends.",
     "Disable OpenCV IPP/ITT/G-API implicit downloads; validate full application behavior before acceptance.",
-    "Disable OIIO OpenColorIO and command-line tools; LightTable uses its own ICC path. This source-build feature difference requires native regression validation."
+    "Disable OIIO OpenColorIO and command-line tools; LightTable uses its own ICC path. This source-build feature difference requires native regression validation.",
+    "Build all four imagecodecs AVIF backends (AOM, dav1d, rav1e and SVT-AV1) from pinned source; no external downloads inside compilation.",
+    "Apply the upstream libpng 1.6.58 APNG patch; use libjpeg-turbo 3 for the imagecodecs JPEG8 API.",
+    "Keep lzham compatibility headers isolated so its bundled zlib.h cannot replace the SDK zlib header.",
+    "Disable libultrahdr HEIF integration: imagecodecs uses the JPEG gain-map API and omits the HEIF extension in its Linux wheel set. This feature choice remains subject to native parity validation."
   ]
 }

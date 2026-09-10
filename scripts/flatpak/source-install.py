@@ -27,6 +27,7 @@ def main() -> None:
     colors.mkdir()
     for path in (source / 'icc').iterdir():
         shutil.copy2(path, colors / path.name)
+    (bundle / 'installation-owner.json').write_text(json.dumps({'owner': 'flatpak'}) + '\n')
     manifest = json.loads((source / 'source-provenance.json').read_text())
     (bundle / 'build-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     app_id = 'app.lighttable.LightTable'

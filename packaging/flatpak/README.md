@@ -108,28 +108,33 @@ recipe revision used for Exiv2/OpenEXR modules. It also records build dependenci
 checks the application's runtime lock and upstream CLI identity before emitting
 a manifest. The generated source recipe is **not a verified Flathub package**.
 
-The known remaining blocker is the full native codec-library closure for
-imagecodecs. Its default source build silently produces a reduced codec set.
-`source-imagecodecs.py` retains the Linux wheel codec set and lets missing headers
-fail; it does not suppress JPEG XL or other codecs to make the build pass.
-`source-status.json` lists the missing recipes and native checks still required.
-The first module rejects this known incomplete state **before compiling Python or
-LLVM**. It must not be described as a runnable source-only application yet.
+`source-native-codecs.json` supplies 38 pinned native codec/build-tool recipes,
+including the APNG patch, libjpeg-turbo 3, JPEG XL/Highway, JPEG XR, Blosc/Blosc2,
+SZ3, SPERR, Pcodec, and all four AVIF backends (AOM, dav1d, rav1e, SVT-AV1).
+Pcodec, rav1e and cargo-c use checked-in upstream Cargo lockfiles and fully
+vendored, checksum-pinned crate sources. lzham's compatibility `zlib.h` stays in
+its own include directory so it cannot replace the SDK header.
+
+`source-imagecodecs.py` retains the Linux wheel's complete extension set rather
+than imagecodecs' reduced default source set. `source-codec-check.py` imports all
+60 required compiled modules and fails if any are missing. This is an availability
+gate; it does not establish codec numerical parity or completed native acceptance.
+`source-status.json` records that native validation is still pending. The SDK
+preflight checks compilers (including gfortran and NASM) before expensive builds;
+LLVM compilation is limited to two jobs and its linker to one job.
 
 ```sh
 python3 scripts/flatpak/source-manifest.py --source-revision FULL_APPLICATION_COMMIT
 python3 scripts/flatpak/source-check.py
 python3 scripts/flatpak/source-preflight.py packaging/flatpak/source-status.json
-# The last command currently exits 2 with the concrete unresolved dependencies.
+flatpak-builder --user --install-deps-from=flathub --download-only .build/source-flatpak packaging/flatpak/source-candidate.json
+flatpak-builder --user --disable-download --jobs=2 --repo=.build/source-flatpak-repo .build/source-flatpak packaging/flatpak/source-candidate.json
 ```
 
-For a deliberate, bounded foundation experiment, generate another manifest with
-`--allow-incomplete --output .build/source-flatpak/source-candidate.json`, then use
-flatpak-builder's `--stop-at=openblas`. This omits the recorded-closure gate while
-retaining compiler checks and offline builds; it does not reduce the codec set.
-Fetch sources with `--download-only`, then compile with `--disable-download`.
-The Rust SDK extension is a build tool only; LLVM runtime libraries are compiled
-from source, never copied from an SDK extension.
+Compilation runs without network access. The Rust SDK extension is a build tool
+only; LLVM runtime libraries are built from source. Use `--stop-at=openblas` for
+a bounded foundation probe, or `--stop-at=python-imagecodecs` to reach the codec
+availability gate before the application. Flatpak owns updates for this install.
 
 Current maintained GIMP recipes build LAPACK under GNOME 50 without a Fortran SDK
 extension, but this work has **not executed gfortran inside that SDK**. The first

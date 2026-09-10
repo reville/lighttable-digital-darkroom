@@ -13,7 +13,7 @@ def main():
     args = parser.parse_args()
     status = json.loads(args.status.read_text())
     if args.check_tools:
-        missing = [name for name in ('gcc', 'g++', 'gfortran', 'cmake', 'ninja', 'pkg-config', 'cargo')
+        missing = [name for name in ('gcc', 'g++', 'gfortran', 'cmake', 'ninja', 'pkg-config', 'cargo', 'nasm')
                    if shutil.which(name) is None]
         if missing:
             parser.exit(2, 'Source SDK is missing: ' + ', '.join(missing) + '\n')

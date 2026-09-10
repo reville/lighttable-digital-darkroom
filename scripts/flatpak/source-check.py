@@ -59,20 +59,41 @@ def main():
         else:
             raise AssertionError('Mutable source identity was accepted')
         assert not target.exists()
-    blocked = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
-                              str(PACKAGING / 'source-status.json')], capture_output=True, text=True)
-    assert blocked.returncode == 2 and 'imagecodecs-native-closure' in blocked.stdout
+    status = json.loads((PACKAGING / 'source-status.json').read_text())
+    assert not any(row.get('blocks_build', True) for row in status['unresolved'])
+    assert status['source_build_verified'] is False
+    preflight = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
+                                str(PACKAGING / 'source-status.json')], capture_output=True, text=True)
+    assert preflight.returncode == 0, preflight.stdout + preflight.stderr
+    native = json.loads((PACKAGING / 'source-native-codecs.json').read_text())
+    assert native['native_build_verified'] is False
+    assert all(row['name'] in names for row in native['modules'])
+    # A future known dependency blocker must still fail before expensive builds.
     with tempfile.TemporaryDirectory() as directory:
-        status = json.loads((PACKAGING / 'source-status.json').read_text())
-        status['unresolved'] = [item for item in status['unresolved'] if not item.get('blocks_build', True)]
-        target = Path(directory) / 'pending-validation.json'
+        status['unresolved'].append({'id': 'missing-native-codec', 'blocks_build': True,
+                                     'detail': 'Required source recipe is missing.'})
+        target = Path(directory) / 'blocked.json'
         target.write_text(json.dumps(status))
-        pending = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
+        blocked = subprocess.run(['python3', str(ROOT / 'scripts/flatpak/source-preflight.py'),
                                   str(target)], capture_output=True, text=True)
-        assert pending.returncode == 0 and 'native verification is still required' in pending.stdout
-        assert status['source_build_verified'] is False
+        assert blocked.returncode == 2 and 'missing-native-codec' in blocked.stdout
+    codec_spec = importlib.util.spec_from_file_location('codec_check', ROOT / 'scripts/flatpak/source-codec-check.py')
+    codec_check = importlib.util.module_from_spec(codec_spec)
+    codec_spec.loader.exec_module(codec_check)
+    imported = []
+    assert len(codec_check.check(imported.append)) == 60
+    assert len(imported) == 60
+    def missing_jxl(name):
+        if name == 'imagecodecs._jpegxl':
+            raise ImportError('Unavailable native libjxl')
+    try:
+        codec_check.check(missing_jxl)
+    except RuntimeError as error:
+        assert 'jpegxl' in str(error)
+    else:
+        raise AssertionError('A reduced codec set was accepted')
     print(f'PASS: {len(manifest["modules"])} modules, all 29 runtime pins, {len(crates)} Cargo source archives, '
-          f'{count} pinned/inline source entries, and intentional pre-build closure rejection')
+          f'{count} pinned/inline source entries, {len(native["modules"])} native codec recipes, and reduced-codec rejection')
 
 
 if __name__ == '__main__':
