@@ -2,13 +2,10 @@
 # Disposable full-system VM; its SSH port listens only on runner loopback.
 set -euo pipefail
 mkdir -p evidence baseline/dist /tmp/lighttable-vm
-package=lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst
-release=https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0
-curl -fsSL --retry 2 --max-time 180 "$release/$package" -o "baseline/dist/$package"
-curl -fsSL --retry 2 --max-time 30 "$release/$package.sha256" -o "baseline/dist/$package.sha256"
-(cd baseline/dist && sha256sum -c "$package.sha256")
-printf '28cfccff38e2de1955c1b899d64c6066fef1fc64f2f97de4437657e2285f84d8  %s\n' "baseline/dist/$package" | sha256sum -c -
-cp "baseline/dist/$package.sha256" evidence/public-package.sha256
+package=lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst
+test -f "baseline/dist/$package"
+(cd baseline && sha256sum -c dist/SHA256SUMS)
+sha256sum "baseline/dist/$package" > evidence/tested-package.sha256
 vm=/tmp/lighttable-vm
 image=Arch-Linux-x86_64-cloudimg.qcow2
 curl -fsSL --retry 2 --max-time 180 "https://geo.mirror.pkgbuild.com/images/latest/$image" -o "$vm/$image"
@@ -54,5 +51,5 @@ for attempt in $(seq 1 90); do
 done
 "${remote[@]}" 'cloud-init status --wait; mkdir -p /work/dist /work/evidence; ls -l /dev/dri; uname -a'
 tar -czf - --exclude=.git --exclude=baseline --exclude=evidence . | "${remote[@]}" 'tar -xzf - -C /work'
-cat baseline/dist/lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst | "${remote[@]}" 'cat > /work/dist/lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst'
+cat baseline/dist/lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst | "${remote[@]}" 'cat > /work/dist/lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst'
 "${remote[@]}" "cd /work && DISTRIBUTION=$DISTRIBUTION VM_GPU=1 REUSE_PACKAGE=1 bash scripts/linux/arch-release-container.sh" > evidence/guest.log 2>&1

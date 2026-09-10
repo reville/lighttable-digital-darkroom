@@ -1,0 +1,42 @@
+name: Linux release acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  public-upgrade:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare a fresh Ubuntu VM and download the public release
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgtk-3-0 libwebkit2gtk-4.1-0 libxdo3 libopenblas0 libgfortran5 libvulkan1 mesa-vulkan-drivers liblcms2-2 xvfb xauth dbus-x11 imagemagick xdg-utils desktop-file-utils gvfs
+          mkdir -p baseline candidate evidence
+          curl --fail --location --retry 2 --max-time 180 -o baseline/LightTable-0.5.0-linux-x86_64.tar.gz https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz
+          echo "eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01  LightTable-0.5.0-linux-x86_64.tar.gz" > baseline/baseline.sha256
+          curl --fail --location --retry 2 --max-time 180 -o candidate/LightTable-0.6.0-linux-x86_64.tar.gz https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/LightTable-0.6.0-linux-x86_64.tar.gz
+          curl --fail --location --retry 2 --max-time 30 -o candidate/LightTable-0.6.0-linux-x86_64.tar.gz.sha256 https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/LightTable-0.6.0-linux-x86_64.tar.gz.sha256
+          curl --fail --location --retry 2 --max-time 30 -o evidence/linux-x86_64.json https://github.com/reville/lighttable-digital-darkroom/releases/download/desktop-updates/linux-x86_64.json
+          (cd candidate && sha256sum -c *.sha256)
+          (cd baseline && sha256sum -c *.sha256)
+          tar -xzf candidate/*.tar.gz -C candidate
+          tar -xzf baseline/*.tar.gz -C baseline
+      - name: Validate the downloaded release runtime on a fresh VM
+        run: |
+          candidate/LightTable/Python/bin/python3 -B candidate/LightTable/runtime-smoke.py candidate/LightTable > evidence/public-runtime.json
+      - name: Install a production-signed upgrade through the public HTTPS feed
+        run: |
+          timeout 480s xvfb-run -a --server-args='-screen 0 1280x900x24' dbus-run-session -- \
+            baseline/LightTable/Python/bin/python3 scripts/linux/release-update-acceptance.py baseline/LightTable \
+              --target-archive candidate/LightTable-0.6.0-linux-x86_64.tar.gz --target-feed evidence/linux-x86_64.json --live-download \
+              > evidence/public-upgrade.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Linux-public-release-acceptance
+          path: evidence
+          if-no-files-found: error

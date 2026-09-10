@@ -1,6 +1,6 @@
 # Generated from a verified official release archive; SHA-256 pins its exact bytes.
 pkgname=lighttable-bin
-pkgver=0.5.0
+pkgver=0.6.0
 pkgrel=1
 pkgdesc='Photo editing and film simulation'
 arch=(x86_64)
@@ -16,8 +16,8 @@ provides=("lighttable=$pkgver")
 conflicts=('lighttable')
 # Preserve the exact Python and native binaries that passed bundle validation.
 options=('!strip' '!debug')
-source=(https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz 'app.lighttable.LightTable.desktop')
-sha256sums=(eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01 7da0e45fb5201961f26b9227f29b3d46f6ef38604158c3f4f7fb4f80c7d0c7dd)
+source=(https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/LightTable-0.6.0-linux-x86_64.tar.gz 'app.lighttable.LightTable.desktop')
+sha256sums=(4b116ac098df209a3c755ef751e19ed226da5621d9238f9c2bb3dbe94fe020f5 7da0e45fb5201961f26b9227f29b3d46f6ef38604158c3f4f7fb4f80c7d0c7dd)
 
 check() {
   desktop-file-validate "$srcdir/app.lighttable.LightTable.desktop"

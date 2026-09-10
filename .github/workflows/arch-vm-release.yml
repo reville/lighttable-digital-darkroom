@@ -1,10 +1,14 @@
 name: Arch virtual GPU acceptance
 on:
-  push:
-    branches: [codex/arch-omarchy-release-20260909]
   workflow_dispatch:
+    inputs:
+      package_run_id:
+        description: Completed Arch release acceptance run containing the packages to test
+        required: true
+        type: string
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: arch-vm-${{ github.ref }}
   cancel-in-progress: true
@@ -20,6 +24,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: LightTable-${{ matrix.distribution }}-acceptance
+          path: baseline
+          run-id: ${{ inputs.package_run_id }}
+          github-token: ${{ github.token }}
       - name: Boot Arch with a virtual graphics device and test Hyprland
         env:
           DISTRIBUTION: ${{ matrix.distribution }}
