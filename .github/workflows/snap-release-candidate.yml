@@ -9,7 +9,8 @@ on:
   push:
     branches: [codex/linux-package-channels-20260909]
     paths:
-      - packaging/snap/**
+      - packaging/snap/snapcraft.yaml.in
+      - packaging/snap/environment.sh
       - scripts/linux/make-snap-package.py
 permissions:
   contents: read
@@ -45,7 +46,7 @@ jobs:
           revision=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID" --jq .head_sha)
           [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
           git fetch --no-tags --depth=1 origin "$revision"
-          git diff --exit-code "$revision" HEAD -- packaging/snap scripts/linux/make-snap-package.py
+          git diff --exit-code "$revision" HEAD -- packaging/snap/snapcraft.yaml.in packaging/snap/environment.sh scripts/linux/make-snap-package.py
           mkdir -p evidence dist
           printf '%s\n' "$CANDIDATE_RUN_ID $revision" > evidence/reused-candidate.txt
       - uses: actions/download-artifact@v4
@@ -93,10 +94,22 @@ jobs:
           readlink /snap/lighttable/current > evidence/revision-after.txt
           if cmp -s evidence/revision-before.txt evidence/revision-after.txt; then echo 'Snap revision did not advance' >&2; exit 1; fi
           timeout 1020s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-desktop-acceptance.sh after
+      - name: Native removable-folder portal grant and reopen
+        run: |
+          sudo apt-get install -y --no-install-recommends xdotool xdg-desktop-portal xdg-desktop-portal-gtk
+          sudo mkdir -p /media/lighttable-portal/photos
+          sudo chown -R "$USER:$USER" /media/lighttable-portal
+          convert -size 128x128 xc:'#3296d2' /media/lighttable-portal/photos/smoke.png
+          timeout 250s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-portal-acceptance.sh
+          sudo snap connect lighttable:removable-media
+          timeout 30s snap run --shell lighttable.cli -c 'test -r /media/lighttable-portal/photos/smoke.png'
+          snap connections lighttable > evidence/connections-removable.txt
+          sudo snap disconnect lighttable:removable-media
       - name: Collect diagnostics and remove ephemeral installation
         if: always()
         run: |
           cp -R "$HOME/snap/lighttable/common/acceptance-evidence" evidence/desktop 2>/dev/null || true
+          cp -R "$HOME/snap/lighttable/common/portal-evidence" evidence/portal 2>/dev/null || true
           cp .build/snap/{candidate.json,snapcraft.yaml} evidence/ 2>/dev/null || true
           for log in "$HOME/snap/lighttable/common/acceptance-evidence/"*.log; do
             if [[ -f "$log" ]]; then tail -60 "$log"; fi

@@ -23,6 +23,8 @@ driver or disable WebKit sandboxing. A private `shared-memory` plug lets the
 Python server and Rust engines exchange data without exposing host shared memory.
 `network-bind` is needed by the local HTTP server; `network` supports the
 embedded client and optional verified model downloads. File dialogs use portals.
+`network-status` lets the desktop portal report network and proxy settings to
+WebKit; omitting it prevents the embedded client from loading when portals run.
 `home` supports existing photo libraries and CLI file arguments; `removable-media`
 is optional and does not normally auto-connect.
 The session D-Bus slot permits GTK application registration only under
@@ -48,9 +50,18 @@ Photo originals and exported images stay in their selected folders.
 7. Verify store-name ownership, review licenses/metadata, change `grade` to `stable`
    only after the above checks, then publish through the maintainer's Snap account.
 
-CI checks the installed CLI and runs isolated CPU renders, codec imports and the
-local server inside confinement. These checks do not complete the desktop,
-upgrade and hardware checklist above.
+The **Snap release candidate** workflow checks the installed CLI, isolated CPU
+renders, codec imports and the local server inside strict confinement. It also
+runs the actual GTK/WebKit desktop under Xvfb: Canon CR2 and Fuji RAF imports,
+film rendering, full-size 16-bit ICC exports, normal close/reopen, and a local
+Snap revision update that preserves the catalog and saved edits. Native screens,
+export hashes and reports are retained as workflow artifacts. Run 34421280370
+passed these checks for application source
+`be537f2f3e2e431ae6b42af716c2a8b365f57bab` and packaging revision
+`f9ce9602a6c0f5c0dd3131363c9dd29177f54062`.
+
+First-run and removable-folder portal interactions, backup restoration and real
+GPU coverage remain unverified. The candidate therefore remains `grade: devel`.
 Snap manages its own user data and removal/snapshots. Before uninstalling or
 switching package formats, preserve a catalog backup; do not describe Snap removal
 as equivalent to the portable installer's launcher-only uninstall.

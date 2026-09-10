@@ -37,12 +37,12 @@ apps:
     desktop: LightTable/share/applications/app.lighttable.LightTable.desktop
     common-id: app.lighttable.LightTable
     slots: [lighttable-dbus]
-    plugs: [home, network, network-bind, removable-media, shared-memory]
+    plugs: [home, network, network-bind, network-status, removable-media, shared-memory]
   cli:
     extensions: [gnome]
     command: LightTable/bin/lighttable
     command-chain: [bin/lighttable-snap-environment]
-    plugs: [home, network, network-bind, removable-media, shared-memory]
+    plugs: [home, network, network-bind, network-status, removable-media, shared-memory]
 
 parts:
   lighttable:
