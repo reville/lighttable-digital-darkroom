@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "يقع الكتالوج داخل {catalogSyncService}. قواعد البيانات داخل مجلد تتم مزامنته سبب شائع للتلف.",
     "The catalog was left unchanged.": "تم ترك الكتالوج دون تغيير.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "تمت استعادة الكتالوج من نسخة احتياطية موثقة؛ توجد النسخة المتضررة في مجلد Recovery.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "يقارن نموذج SFace INT8 المدمج الوجوه البشرية المحاذاة. يستخدم التجميع التلقائي قواعد تشابه محافظة؛ وتبقى التطابقات المحتملة منفصلة للمراجعة. تُقترح الوجوه الجديدة المطابقة لشخص مُسمّى للتأكيد.",
     "The current catalog is backed up first, then replaced by this one.": "يُنسخ الكتالوج الحالي احتياطيًا أولًا، ثم يُستبدل بهذا الكتالوج.",
     "The desktop Trash service (gio) is unavailable": "خدمة سلة مهملات سطح المكتب (gio) غير متوفرة",
     "The desktop app checks its signed update feed.": "يتحقق تطبيق سطح المكتب من موجز التحديث الموقع الخاص به.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "على Mac، انقر بزر الماوس الأيمن على معاينة الصورة واختر نسخ.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "مرّر المؤشر فوق مقبض لمعرفة وظيفته. لا يمكن سحب الدبابيس المخفية.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "قد يظهر الشخص نفسه في مجموعات منفصلة. راجع التطابقات المحتملة لدمجها.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "عند توفر تطابقات محتملة، يظهر شريط قابل للإغلاق في قسم الأشخاص يفتح مراجعة التطابقات. يتذكر هذا الجهاز إغلاق الشريط."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "عند توفر تطابقات محتملة، يظهر شريط قابل للإغلاق في قسم الأشخاص يفتح مراجعة التطابقات. يتذكر هذا الجهاز إغلاق الشريط.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "يقارن نموذج SFace INT8 المدمج الوجوه البشرية بعد محاذاتها. يمكن إضافة الوجوه الجديدة إلى مجموعات غير مسماة، أو إلى مجموعات مسماة عند وجود أدلة أقوى. تبقى التطابقات الملتبسة منفصلة للمراجعة. تحافظ عمليات المسح على المجموعات والأسماء والتصحيحات الموجودة؛ ولا يؤدي تغيير قواعد المطابقة إلى دمج المجموعات الموجودة في مكتبتك تلقائيًا."
   },
   "plurals": {
     " · {count} paired file linked": {

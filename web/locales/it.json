@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Il catalogo si trova dentro {catalogSyncService}. I database all'interno di una cartella in sincronizzazione sono una causa comune di corruzione.",
     "The catalog was left unchanged.": "Il catalogo è rimasto invariato.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Il catalogo è stato ripristinato da un backup verificato; la copia danneggiata si trova nella cartella Recupero.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Il modello compatto SFace INT8 confronta volti umani allineati. Il raggruppamento automatico usa regole di somiglianza conservative; le possibili corrispondenze restano separate per la revisione. I nuovi volti che corrispondono a una persona con nome vengono suggeriti per la conferma.",
     "The current catalog is backed up first, then replaced by this one.": "Il catalogo corrente viene prima salvato in backup, poi sostituito con questo.",
     "The desktop Trash service (gio) is unavailable": "il servizio Cestino del desktop (gio) non è disponibile",
     "The desktop app checks its signed update feed.": "L'app desktop controlla il feed di aggiornamento firmato.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Alcune persone potrebbero apparire in gruppi separati. Controlla le possibili corrispondenze per unirli.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando sono disponibili possibili corrispondenze, una barra chiudibile in Persone apre la revisione delle corrispondenze. La chiusura viene ricordata su questo dispositivo."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando sono disponibili possibili corrispondenze, una barra chiudibile in Persone apre la revisione delle corrispondenze. La chiusura viene ricordata su questo dispositivo.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Il modello compatto SFace INT8 confronta volti umani allineati. I nuovi volti possono unirsi a gruppi senza nome o, con riscontri più solidi, a gruppi con nome. Le corrispondenze ambigue restano separate per la revisione. Le scansioni mantengono gruppi, nomi e correzioni esistenti; modificare le regole di corrispondenza non unisce automaticamente i gruppi già presenti nella libreria."
   },
   "plurals": {
     " · {count} paired file linked": {

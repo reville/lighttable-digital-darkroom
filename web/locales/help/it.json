@@ -660,7 +660,7 @@
         {
           "title": "Cosa aspettarsi",
           "paragraphs": [
-            "Il modello compatto SFace INT8 confronta volti umani allineati. Il raggruppamento automatico usa regole di somiglianza conservative; le possibili corrispondenze restano separate per la revisione. I nuovi volti che corrispondono a una persona con nome vengono suggeriti per la conferma.",
+            "Il modello compatto SFace INT8 confronta volti umani allineati. I nuovi volti possono unirsi a gruppi senza nome o, con riscontri più solidi, a gruppi con nome. Le corrispondenze ambigue restano separate per la revisione. Le scansioni mantengono gruppi, nomi e correzioni esistenti; modificare le regole di corrispondenza non unisce automaticamente i gruppi già presenti nella libreria.",
             "Volti piccoli, sfocati, oscurati, di profilo e notevolmente separati per età possono non essere rilevati o possono essere divisi tra gruppi. Il modello può anche effettuare abbinamenti errati. I volti che compaiono insieme in una sola foto non vengono abbinati automaticamente; resta possibile un'unione manuale per specchi e collage. Questa funzione non raggruppa gli animali domestici né fornisce un'accuratezza garantita dell'identità."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

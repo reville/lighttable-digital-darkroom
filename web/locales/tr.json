@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Katalog {catalogSyncService} içinde yer alıyor. Eşzamanlanan bir klasör içindeki veritabanları bozulmanın yaygın bir nedenidir.",
     "The catalog was left unchanged.": "Katalog değişmeden kaldı.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Katalog doğrulanmış bir yedekten geri yüklendi; hasarlı kopya Kurtarma klasöründe.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Kompakt SFace INT8 modeli, hizalanmış insan yüzlerini karşılaştırır. Otomatik gruplama, temkinli benzerlik kuralları kullanır; olası eşleşmeler inceleme için ayrı tutulur. Adlandırılmış bir kişiyle eşleşen yeni yüzler doğrulama için önerilir.",
     "The current catalog is backed up first, then replaced by this one.": "Önce geçerli katalog yedeklenir, sonra bununla değiştirilir.",
     "The desktop Trash service (gio) is unavailable": "Masaüstü Çöp Sepeti hizmeti (gio) kullanılamıyor",
     "The desktop app checks its signed update feed.": "Masaüstü uygulaması, imzalı güncelleme beslemesini denetler.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "İşlevini görmek için işaretçiyi bir tutamacın üzerine getirin. Gizli iğneler sürüklenemez.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Aynı kişi ayrı gruplarda görünebilir. Bunları birleştirmek için olası eşleşmeleri inceleyin.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Kompakt SFace INT8 modeli hizalanmış insan yüzlerini karşılaştırır. Yeni yüzler adsız gruplara veya daha güçlü kanıtlarla adlandırılmış gruplara katılabilir. Belirsiz eşleşmeler inceleme için ayrı kalır. Taramalar mevcut grupları, adları ve düzeltmeleri korur; eşleştirme kurallarını değiştirmek kitaplığınızdaki mevcut grupları otomatik olarak birleştirmez."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -660,7 +660,7 @@
         {
           "title": "Was Sie erwartet",
           "paragraphs": [
-            "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Die automatische Gruppierung verwendet konservative Ähnlichkeitsregeln; mögliche Übereinstimmungen bleiben zur Überprüfung getrennt. Neue Gesichter, die zu einer benannten Person passen, werden zur Bestätigung vorgeschlagen.",
+            "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Neue Gesichter können unbenannten Gruppen oder bei stärkeren Übereinstimmungen benannten Gruppen zugeordnet werden. Mehrdeutige Treffer bleiben zur Überprüfung getrennt. Scans behalten vorhandene Gruppen, Namen und Korrekturen bei; geänderte Abgleichregeln führen bereits vorhandene Gruppen in Ihrer Bibliothek nicht automatisch zusammen.",
             "Kleine, unscharfe, verdeckte, im Profil aufgenommene und deutlich altersabweichende Gesichter können übersehen oder auf Gruppen aufgeteilt werden. Das Modell kann auch falsche Übereinstimmungen erzeugen. Gesichter, die zusammen in einem Foto erscheinen, werden nicht automatisch abgeglichen; für Spiegelungen und Collagen bleibt eine manuelle Zusammenführung möglich. Diese Funktion gruppiert keine Haustiere und bietet keine garantierte Identitätsgenauigkeit."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "目录位于 {catalogSyncService} 内。位于同步文件夹中的数据库是损坏的常见原因。",
     "The catalog was left unchanged.": "目录未更改。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "目录已从已验证的备份中恢复；损坏的副本位于 Recovery 文件夹中。",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "紧凑的 SFace INT8 模型会比较对齐的人脸。自动分组使用保守的相似度规则；可能的匹配项会保持分开以供审阅。与已命名人物匹配的新面部会被建议确认。",
     "The current catalog is backed up first, then replaced by this one.": "当前目录会先备份，然后替换为此目录。",
     "The desktop Trash service (gio) is unavailable": "桌面废纸篓服务（gio）不可用",
     "The desktop app checks its signed update feed.": "桌面应用会检查其已签名的更新源。",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，右键点击照片预览并选择“复制”。",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "将指针悬停在控制柄上可查看其操作。隐藏的控制点无法拖动。",
     "Some people may appear in separate groups. Review possible matches to combine them.": "同一个人可能出现在不同的分组中。查看可能的匹配以合并这些分组。",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。"
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "紧凑的 SFace INT8 模型比较对齐后的人脸。新的人脸可以加入未命名的分组，匹配证据更充分时也可以加入已命名的分组。不明确的匹配仍会保持分开，等待审核。扫描会保留现有的分组、名称和更正；更改匹配规则不会自动合并图库中已有的分组。"
   },
   "plurals": {
     " · {count} paired file linked": {

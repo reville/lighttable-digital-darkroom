@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Danh mục nằm bên trong {catalogSyncService}. Cơ sở dữ liệu nằm trong thư mục đang đồng bộ là một nguyên nhân thường gặp của hỏng dữ liệu.",
     "The catalog was left unchanged.": "Danh mục không thay đổi.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Danh mục đã được khôi phục từ bản sao lưu đã xác minh; bản sao bị hỏng nằm trong thư mục Khôi phục.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Mô hình SFace INT8 gọn so sánh các khuôn mặt người đã căn chỉnh. Ghép tự động dùng các quy tắc tương đồng thận trọng; các kết quả khớp có thể có sẽ vẫn tách riêng để xem lại. Các khuôn mặt mới khớp với một người đã đặt tên sẽ được đề xuất để xác nhận.",
     "The current catalog is backed up first, then replaced by this one.": "Danh mục hiện tại sẽ được sao lưu trước, rồi được thay thế bằng danh mục này.",
     "The desktop Trash service (gio) is unavailable": "Dịch vụ Thùng rác của desktop (gio) không khả dụng",
     "The desktop app checks its signed update feed.": "Ứng dụng desktop kiểm tra nguồn cập nhật đã ký của nó.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Cùng một người có thể xuất hiện trong các nhóm riêng biệt. Hãy xem xét các kết quả có thể trùng khớp để gộp nhóm.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Mô hình SFace INT8 gọn nhẹ so sánh các khuôn mặt người đã được căn chỉnh. Khuôn mặt mới có thể được thêm vào nhóm chưa đặt tên hoặc, khi có bằng chứng mạnh hơn, nhóm đã đặt tên. Những kết quả khớp chưa rõ ràng vẫn được tách riêng để xem xét. Quá trình quét giữ nguyên các nhóm, tên và chỉnh sửa hiện có; việc thay đổi quy tắc đối sánh không tự động gộp các nhóm đã có trong thư viện."
   },
   "plurals": {
     " · {count} paired file linked": {

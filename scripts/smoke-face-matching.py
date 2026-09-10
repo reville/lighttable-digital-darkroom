@@ -6,6 +6,7 @@ import argparse
 import io
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 from PIL import Image, ImageEnhance
 from film_lab_ai.face_models import FaceAnalyzer, MODELS, valid_model
+from film_lab_ai.face_store import FaceStore
 
 
 def main():
@@ -39,9 +41,19 @@ def main():
         blank = io.BytesIO()
         Image.new('RGB', (640, 480), (128, 128, 128)).save(blank, format='JPEG')
         assert not analyzer.analyze(blank.getvalue()), 'A blank image must not create a face'
+        with tempfile.TemporaryDirectory() as temp:
+            store = FaceStore(Path(temp) / 'faces.sqlite3')
+            store.add_photo('original.jpg', 'v1', 'smoke', first)
+            group = store.gallery()[0]['id']
+            store.edit('rename', {'group': group, 'name': 'Portrait fixture'})
+            store.add_photo('transformed.jpg', 'v1', 'smoke', second)
+            assert store.stats()['groups'] == 1, 'Strong real-image match must join the named group'
+            assert store.labels(['transformed.jpg']) == {'transformed.jpg': ['Portrait fixture']}
+            assert not store.suggestions(), 'Automatically matched portrait should not need review'
         print(json.dumps(dict(model=analyzer.capabilities()['model'], faces=1,
                               embeddingDimensions=len(first[0]['vector']),
-                              transformedPortraitSimilarity=round(score, 4), blankFaces=0)))
+                              transformedPortraitSimilarity=round(score, 4), blankFaces=0,
+                              namedGroupAutoMatch=True)))
     finally:
         analyzer.shutdown()
 

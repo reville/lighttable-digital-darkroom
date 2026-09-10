@@ -660,7 +660,7 @@
         {
           "title": "Wat u kunt verwachten",
           "paragraphs": [
-            "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Automatische groepering gebruikt conservatieve gelijkenisregels; mogelijke matches blijven gescheiden voor beoordeling. Nieuwe gezichten die overeenkomen met een benoemde persoon worden voorgesteld ter bevestiging.",
+            "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Nieuwe gezichten kunnen worden toegevoegd aan naamloze groepen of, bij sterkere aanwijzingen, aan benoemde groepen. Onduidelijke overeenkomsten blijven apart voor beoordeling. Scans behouden bestaande groepen, namen en correcties; gewijzigde regels voor overeenkomsten voegen groepen die al in uw bibliotheek staan niet automatisch samen.",
             "Kleine, wazige, aan het zicht onttrokken, profiel- en aanzienlijk in leeftijd uiteenlopende gezichten kunnen worden gemist of over meerdere groepen worden verdeeld. Het model kan ook onjuiste matches maken. Gezichten die samen in één foto voorkomen, worden niet automatisch gematcht; een handmatige samenvoeging blijft mogelijk voor spiegels en collages. Deze functie groepeert geen huisdieren en biedt geen gegarandeerde identiteitsnauwkeurigheid."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }
