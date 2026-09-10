@@ -27,8 +27,11 @@ try {
     if (($Config.windows -eq '11') -ne ([int]$OS.BuildNumber -ge 22000)) { throw 'Windows client version mismatch' }
     . (Join-Path $Root 'scripts/ensure-webview2.ps1')
     $HostReport.webview2_initially_present = Test-WebView2Runtime
+    # Windows 10 covers bootstrap with the runtime absent; Windows 11 keeps its
+    # normal preinstalled runtime. Record the case and the actual observations.
+    $HostReport.webview2_test_case = if ($Config.windows -eq '10') { 'absent' } else { 'preinstalled' }
     # Use the vendor uninstaller only. Never fake absence by deleting registry keys.
-    if ($HostReport.webview2_initially_present) {
+    if ($Config.windows -eq '10' -and $HostReport.webview2_initially_present) {
         $Setups = @(Get-ChildItem "${env:ProgramFiles(x86)}\Microsoft\EdgeWebView\Application\*\Installer\setup.exe" -ErrorAction SilentlyContinue)
         foreach ($Setup in $Setups) {
             $Process = Start-Process $Setup.FullName -ArgumentList '--uninstall --msedgewebview --system-level --force-uninstall' -PassThru

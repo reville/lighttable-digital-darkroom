@@ -87,6 +87,20 @@ def verify_native_report(report, manifest, platform):
                 'Native Linux quit/reopen persistence is unproven')
 
 
+def verify_windows_runtime_case(host, windows):
+    """Require explicit, observed prerequisite coverage for each client OS."""
+    require(windows in ('10', '11'), 'Unsupported Windows client runtime case')
+    if windows == '10':
+        require(host.get('webview2_test_case') == 'absent'
+                and host.get('webview2_absent_before_offline_install') is True,
+                'Windows 10 offline WebView2-absent coverage is unproven')
+    else:
+        require(host.get('webview2_test_case') == 'preinstalled'
+                and host.get('webview2_initially_present') is True
+                and host.get('webview2_absent_before_offline_install') is False,
+                'Windows 11 preinstalled WebView2 coverage is unproven')
+
+
 def verify_windows_client(directory, windows, manifest, installer_hash):
     host = release.read_json(directory / 'host.json')
     result = release.read_json(directory / 'result.json')
@@ -95,8 +109,8 @@ def verify_windows_client(directory, windows, manifest, installer_hash):
             and host.get('architecture') == 'AMD64'
             and ((windows == '11' and build >= 22000) or (windows == '10' and 19041 <= build < 22000)),
             f'Windows {windows} native x64 client identity is unproven')
-    require(host.get('webview2_absent_before_offline_install') is True
-            and host.get('network_adapters_disabled') is True
+    verify_windows_runtime_case(host, windows)
+    require(host.get('network_adapters_disabled') is True
             and host.get('installer_signature_before_disconnect') == 'Valid'
             and result.get('ok') is True and result.get('offline') is True
             and result.get('account_is_elevated') is False

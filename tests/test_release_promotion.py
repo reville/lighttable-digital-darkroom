@@ -36,7 +36,8 @@ class PromotionProofTests(unittest.TestCase):
 
     def test_windows_requires_actual_offline_native_client_receipts(self):
         fixture = {'host.json': {'ok': True, 'product_type': 1, 'architecture': 'AMD64', 'build': '26200',
-                   'webview2_absent_before_offline_install': True, 'network_adapters_disabled': True,
+                   'webview2_absent_before_offline_install': False, 'network_adapters_disabled': True,
+                   'webview2_initially_present': True, 'webview2_test_case': 'preinstalled',
                    'installer_signature_before_disconnect': 'Valid'},
                    'result.json': {'ok': True, 'offline': True, 'account_is_elevated': False,
                                    'installer_sha256': 'b' * 64},
@@ -45,7 +46,9 @@ class PromotionProofTests(unittest.TestCase):
                    'native/report.json': self.native()}
         mutations = [None,
             ('host.json', 'product_type', 3), ('host.json', 'architecture', 'ARM64'),
-            ('host.json', 'webview2_absent_before_offline_install', False),
+            ('host.json', 'webview2_absent_before_offline_install', True),
+            ('host.json', 'webview2_initially_present', False),
+            ('host.json', 'webview2_test_case', 'absent'),
             ('host.json', 'network_adapters_disabled', False), ('host.json', 'build', '19045'),
             ('result.json', 'account_is_elevated', True), ('result.json', 'offline', False),
             ('result.json', 'installer_sha256', 'c' * 64), ('native/report.json', 'ok', False),
@@ -66,6 +69,24 @@ class PromotionProofTests(unittest.TestCase):
                         promote.verify_windows_client(directory, '11', self.manifest(), 'b' * 64)
                 else:
                     promote.verify_windows_client(directory, '11', self.manifest(), 'b' * 64)
+
+    def test_runtime_cases_require_actual_observations_and_explicit_case(self):
+        cases = {
+            '10': {'webview2_test_case': 'absent', 'webview2_absent_before_offline_install': True},
+            '11': {'webview2_test_case': 'preinstalled', 'webview2_initially_present': True,
+                   'webview2_absent_before_offline_install': False},
+        }
+        for windows, host in cases.items():
+            promote.verify_windows_runtime_case(host, windows)
+            for key in host:
+                missing = {k: v for k, v in host.items() if k != key}
+                with self.subTest(windows=windows, missing=key), self.assertRaises(ValueError):
+                    promote.verify_windows_runtime_case(missing, windows)
+            wrong = dict(host, webview2_absent_before_offline_install=windows != '10')
+            with self.assertRaises(ValueError):
+                promote.verify_windows_runtime_case(wrong, windows)
+        with self.assertRaises(ValueError):
+            promote.verify_windows_runtime_case(cases['11'], '12')
 
     def test_native_source_and_restart_are_required(self):
         for key, value in [('source_revision', 'b' * 40), ('source_dirty', True), ('architecture', 'arm64')]:

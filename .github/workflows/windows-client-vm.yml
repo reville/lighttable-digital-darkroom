@@ -169,8 +169,10 @@ jobs:
             exit 1
           fi
           python3 - <<'PY'
-          import json
+          import json, sys
           from pathlib import Path
+          sys.path.insert(0, 'scripts/release')
+          from promote_candidate import verify_windows_runtime_case
           root = Path('.build/client-vm/evidence')
           host = json.loads((root / 'host.json').read_text(encoding='utf-8-sig'))
           print(json.dumps(host, indent=2))
@@ -180,8 +182,7 @@ jobs:
           print(json.dumps(result, indent=2))
           if not result.get('ok'):
               raise SystemExit('Windows client acceptance failed; see result.json')
-          if not host.get('webview2_absent_before_offline_install'):
-              raise SystemExit('Offline runtime-present checks passed, but WebView2-absent acceptance remains unproven')
+          verify_windows_runtime_case(host, '${{ matrix.windows }}')
           PY
 
       - name: Stop the disposable VM
