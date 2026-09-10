@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,9 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের"
+    "☆ Favorites": "☆ পছন্দের",
+    "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।"
   },
   "plurals": {
     " · {count} paired file linked": {

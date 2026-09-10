@@ -1446,6 +1446,7 @@
         {
           "title": "Copiar una foto",
           "paragraphs": [
+            "En Mac, haz clic derecho en la vista previa de la foto y elige Copiar.",
             "Command-C copia la vista previa de la foto editada (hasta 2048 píxeles de ancho) para pegarla en otras apps. Los campos de texto conservan la copia normal; Command-Shift-C copia los ajustes de edición."
           ]
         },
@@ -1652,6 +1653,7 @@
             "En Editar forma, arrastre el tirador central para mover la máscara, cualquiera de los tiradores de eje para cambiar su tamaño o el tirador exterior para rotarla. Mantenga presionada Shift mientras dibuja o cambia el tamaño para que el degradado sea circular."
           ],
           "tips": [
+            "Pasa el cursor sobre un tirador para ver su función. Los puntos ocultos no se pueden arrastrar.",
             "Forma también proporciona controles de Ancho, Altura, Rotación y Desvanecer.",
             "Al arrastrarla lejos de sus tiradores, se redibuja la máscara radial seleccionada."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

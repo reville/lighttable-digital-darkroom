@@ -1,3 +1,4 @@
+import { installCanvasHandleCursor } from './edit-cursor.js';
 import { isIdentityPoints } from './color-tools.js';
 import { t as tr } from './i18n.js';
 
@@ -70,6 +71,7 @@ export function localCurveLUT(points) {
 export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, dropUndo, changed, save }) {
   const cache = new WeakMap();
   let state = null, selected = 0, gesture = null;
+  let refreshCursor = () => {};
   canvas.tabIndex = 0;
   canvas.style.touchAction = 'none';
   canvas.setAttribute('role', 'slider');
@@ -107,6 +109,7 @@ export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, dr
   }
 
   function draw() {
+    refreshCursor();
     const active = !!state;
     canvas.setAttribute('aria-disabled', String(!active));
     canvas.tabIndex = active ? 0 : -1;
@@ -163,6 +166,7 @@ export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, dr
     const previous = gesture;
     if (!previous) return;
     gesture = null;
+    refreshCursor();
     release(previous);
     if (!previous.dirty) return;
     // An external edit or Undo owns a replaced value; never roll it back.
@@ -319,6 +323,15 @@ export function installMaskCurve({ canvas, reset, channel, getMask, pushUndo, dr
     edit(() => { state.points = identity(); selected = 0; }); finish();
   });
   channel?.addEventListener('change', sync);
+  refreshCursor = installCanvasHandleCursor(canvas, {
+    hitCursor: point => {
+      if (!state) return 'default';
+      const index = near(at(point));
+      return index < 0 ? 'crosshair' : index === 0 || index === state.points.length - 1 ? 'ns-resize' : 'grab';
+    },
+    dragCursor: () => gesture?.pointerId == null ? null :
+      selected === 0 || selected === state.points.length - 1 ? 'ns-resize' : 'grabbing',
+  });
   sync();
   return { sync };
 }

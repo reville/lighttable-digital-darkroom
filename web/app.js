@@ -11,7 +11,7 @@ import { createFilmBrowser, filmParamsForStock, filmChoiceValue, filmSelectionFo
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
-import { createPhotoClipboard } from '/web/photo-clipboard.js';
+import { createPhotoClipboard, installPhotoCopyContextMenu } from '/web/photo-clipboard.js';
 import { createCloseBarrier } from '/web/close-barrier.js';
 import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
@@ -94,7 +94,8 @@ import { createInteractionRecorder } from '/web/interaction-perf.js';
 import { createPresentationCache, renderRequestKey } from '/web/presentation-cache.js';
 import { gradeBakeRequest, gradeBakeKey } from '/web/preview-processing.js';
 import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
-import { linearHandleAt, editLinear, radialHandles, editRadial } from '/web/mask-shape.js';
+import { linearHandleAt, editLinear, radialHandles, radialHandleAt, editRadial } from '/web/mask-shape.js';
+import { editOverlayCursor, healHandleAt as findHealHandle, installCanvasHandleCursor } from '/web/edit-cursor.js';
 import { installMaskCurve } from '/web/mask-curve.js';
 import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 import { bindThumbnailErrors } from '/web/thumbnail-errors.js';
@@ -243,6 +244,13 @@ const PHOTO_CLIPBOARD = createPhotoClipboard({
   },
   nativeBridge: () => window.webkit?.messageHandlers?.lightTable,
   notify: message => toast(message),
+});
+
+installPhotoCopyContextMenu($('zoomwrap'), {
+  available: () => !!window.webkit?.messageHandlers?.lightTable &&
+    !!cur() && !isVideo(cur()) && !!S.params && S.editingName === cur().name &&
+    !document.querySelector('.modal-backdrop.on'),
+  openMenu: point => postNative('showPhotoCopyMenu', point, true),
 });
 
 function isLibraryVisible() {
@@ -689,9 +697,12 @@ function syncEngineForProfile() {
 
 function normalizeFilmParams(raw = {}) {
   const source = raw && typeof raw === 'object' ? { ...raw } : {};
+  const legacyStock = Object.prototype.hasOwnProperty.call(source, 'stock') &&
+    !Object.prototype.hasOwnProperty.call(source, 'film_tuning') &&
+    (source.profile_enabled !== false || source.stock !== (S.filmDefaults?.stock || 'kodak_portra_400'));
   const params = normalizeFilmTuning({ ...S.filmDefaults, ...source,
-    film_tuning: source.film_tuning || 'original',
-    film_tuning_version: source.film_tuning_version || '1' }, S.profiles);
+    film_tuning: source.film_tuning || (legacyStock ? 'original' : (S.filmDefaults?.film_tuning || 'lighttable')),
+    film_tuning_version: source.film_tuning_version || (legacyStock ? '1' : (S.filmDefaults?.film_tuning_version || '1')) }, S.profiles);
   if (!Object.prototype.hasOwnProperty.call(source, 'grain_amount')) {
     const legacyArea = +source.grain_um2;
     params.grain_amount = Number.isFinite(legacyArea)
@@ -699,6 +710,34 @@ function normalizeFilmParams(raw = {}) {
       : (S.filmDefaults.grain_amount ?? 1);
   }
   delete params.grain_um2;
+  const film = (S.profiles || []).find((p) => p.id === params.stock);
+  if (film) {
+    const times = film.developmentTimes || [];
+    if (times.length) {
+      const current = +params.development_time;
+      params.development_time = times.includes(current)
+        ? current
+        : (film.defaultDevelopmentTime ?? times[0]);
+    } else if (Object.hasOwn(params, 'development_time')) {
+      params.development_time = 0;
+    }
+  }
+  const paper = (S.profiles || []).find((p) => p.id === params.paper);
+  if (film?.type === 'positive') {
+    if (Object.hasOwn(params, 'print_development_time')) {
+      params.print_development_time = 0;
+    }
+  } else if (paper) {
+    const paperTimes = paper.developmentTimes || [];
+    if (paperTimes.length) {
+      const currentPrint = +params.print_development_time;
+      params.print_development_time = paperTimes.includes(currentPrint)
+        ? currentPrint
+        : (paper.defaultDevelopmentTime ?? paperTimes[0]);
+    } else if (Object.hasOwn(params, 'print_development_time')) {
+      params.print_development_time = 0;
+    }
+  }
   return params;
 }
 
@@ -895,6 +934,9 @@ function setDevelopMode(profileEnabled) {
   readControls();
   pushUndo();
   S.params.profile_enabled = profileEnabled;
+  if (profileEnabled && S.params.stock === 'kodak_portra_400' && S.params.film_tuning === 'original') {
+    Object.assign(S.params, filmSelectionForChoice('kodak_portra_400::lighttable::1', S.profiles));
+  }
   syncControls();
   saveState();
   renderFilm(0);
@@ -1823,20 +1865,9 @@ function drawBrushCursor(ctx, surface, point, size, feather, accent = '#fff') {
 }
 
 function syncOverlayCursorClass() {
-  const overlay = $('editOverlay');
-  const mask = selectedMask();
-  const maskBrush = S.activePane === 'maskPane' && mask &&
-    (mask.type === 'brush' || !!S.maskRefineMode);
-  overlay.classList.toggle('brush-cursor', !!maskBrush);
-  overlay.classList.toggle('heal-cursor', S.activePane === 'healPane');
-  overlay.classList.toggle('dragging-handle',
-    !!S.editGesture && String(S.editGesture.type).startsWith('heal-move'));
-  const linearShape = S.activePane === 'maskPane' && mask?.type === 'linear' &&
-    !S.maskRefineMode && !S.maskColorPick;
-  const linearDrag = linearShape && S.editGesture?.type === 'linear' && S.editGesture.handle;
-  const linearHover = linearShape && !S.editGesture && S.localPinsVisible && S.overlayHoverPoint &&
-    linearHandleAt(mask, S.overlayHoverPoint, $('cv').getBoundingClientRect());
-  overlay.style.cursor = linearDrag ? 'grabbing' : linearHover ? 'grab' : '';
+  const cursor = editOverlayCursor(S, selectedMask(), $('cv').getBoundingClientRect());
+  $('editOverlay').style.cursor = cursor;
+  return cursor;
 }
 
 function syncViewerChrome() {
@@ -1857,8 +1888,7 @@ function drawEditOverlayNow() {
     canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
     $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
   const surface = prepareScreenOverlay(overlay, geometry);
-  syncOverlayCursorClass();
-  if (!surface) return;
+  if (!surface) { syncOverlayCursorClass(); return; }
   const { ctx } = surface;
   if (S.overlayHoverClientPoint) {
     const [clientX, clientY] = S.overlayHoverClientPoint;
@@ -1866,6 +1896,7 @@ function drawEditOverlayNow() {
     S.overlayHoverPoint = clientX >= rect.left && clientX <= rect.right &&
       clientY >= rect.top && clientY <= rect.bottom ? overlayPoint({clientX, clientY}) : null;
   }
+  const cursor = syncOverlayCursorClass();
   if (S.activePane === 'maskPane') {
     const mask = selectedMask();
     if (!mask) return;
@@ -1939,9 +1970,9 @@ function drawEditOverlayNow() {
         ctx.beginPath(); ctx.arc(u * surface.width, v * surface.height, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       }
     }
-    if (mask.type === 'brush' || S.maskRefineMode) {
+    if (cursor === 'none') {
       drawBrushCursor(ctx, surface, S.overlayHoverPoint, S.brushSize, S.brushFeather,
-        S.maskRefineMode === 'subtract' ? '#ff9c9c' : '#fff');
+        (S.maskRefineMode === 'subtract' || S.overlayAltKey) ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
     for (const spot of S.localPinsVisible ? S.heals : []) {
@@ -1971,7 +2002,7 @@ function drawEditOverlayNow() {
       }
       ctx.restore();
     }
-    drawBrushCursor(ctx, surface, S.overlayHoverPoint,
+    if (cursor === 'none') drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
   }
 }
@@ -2820,18 +2851,7 @@ function overlayDistance(a, b, rect = $('cv').getBoundingClientRect()) {
 }
 
 function healHandleAt(point, rect) {
-  const selected = selectedHeal();
-  const candidates = [...(selected ? [selected] : []),
-    ...[...S.heals].reverse().filter((spot) => spot !== selected)];
-  const minimum = Math.min(rect.width, rect.height);
-  for (const spot of candidates) {
-    const hitRadius = Math.max(9, spot.radius * minimum + 5);
-    if (spot.mode !== 'remove' && overlayDistance(point, spot.source, rect) <= hitRadius) {
-      return { spot, handle: 'source' };
-    }
-    if (overlayDistance(point, spot.target, rect) <= hitRadius) return { spot, handle: 'target' };
-  }
-  return null;
+  return S.localPinsVisible ? findHealHandle(S.heals, S.selectedHealId, point, rect) : null;
 }
 
 function maskPointCount() {
@@ -2847,6 +2867,7 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
   event.preventDefault();
   const rect = $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
+  S.overlayAltKey = event.altKey;
   S.overlayHoverPoint = point;
   S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (S.activePane === 'maskPane') {
@@ -2898,8 +2919,7 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
         start: [...mask.start], end: [...mask.end], pointerId: event.pointerId, rect };
       if (!handle) { mask.start = point; mask.end = point; }
     } else {
-      const handle = Object.entries(radialHandles(mask, rect.width, rect.height))
-        .find(([, location]) => overlayDistance(point, location, rect) <= 11)?.[0];
+      const handle = S.localPinsVisible ? radialHandleAt(mask, point, rect) : null;
       if (!handle) {
         mask.center = point; mask.radius = mask.radiusX = mask.radiusY = 0.01; mask.angle = 0;
       }
@@ -2947,6 +2967,7 @@ $('editOverlay').addEventListener('pointermove', (event) => {
   const gesture = S.editGesture;
   const rect = gesture?.rect || $('cv').getBoundingClientRect();
   const point = overlayPoint(event, rect);
+  S.overlayAltKey = event.altKey;
   S.overlayHoverPoint = point;
   S.overlayHoverClientPoint = [event.clientX, event.clientY];
   if (!gesture || gesture.pointerId !== event.pointerId) { drawEditOverlay(); return; }
@@ -3000,7 +3021,7 @@ function finishEditGesture(event) {
     if ($('editOverlay').hasPointerCapture(event.pointerId)) {
       $('editOverlay').releasePointerCapture(event.pointerId);
     }
-    if (event.type !== 'pointercancel') {
+    if (event.type === 'pointerup') {
       sampleMaskColorArea(gesture.start, overlayPoint(event, gesture.rect));
     }
     drawEditOverlay();
@@ -3020,9 +3041,23 @@ function finishEditGesture(event) {
 }
 $('editOverlay').addEventListener('pointerup', finishEditGesture);
 $('editOverlay').addEventListener('pointercancel', finishEditGesture);
+$('editOverlay').addEventListener('lostpointercapture', finishEditGesture);
 $('editOverlay').addEventListener('pointerleave', () => {
   if (S.editGesture?.pointerId !== undefined) return;
   S.overlayHoverPoint = null; S.overlayHoverClientPoint = null; drawEditOverlay();
+});
+
+for (const type of ['keydown', 'keyup']) {
+  document.addEventListener(type, event => {
+    if (S.overlayAltKey === event.altKey) return;
+    S.overlayAltKey = event.altKey;
+    if (S.overlayHoverClientPoint) drawEditOverlay();
+  });
+}
+window.addEventListener('blur', () => {
+  S.overlayAltKey = false;
+  S.overlayHoverPoint = null; S.overlayHoverClientPoint = null;
+  drawEditOverlay();
 });
 
 /* ------------------------------------------------------------ film render */
@@ -10738,7 +10773,9 @@ function syncCurveFromGrade() {
   drawCurve();
   drawParamCurve();
 }
+let refreshCurveCursor = () => {};
 function drawCurve() {
+  refreshCurveCursor();
   const cv = $('curve'), x = cv.getContext('2d');
   const W = cv.width, H = cv.height;
   x.clearRect(0, 0, W, H);
@@ -10774,6 +10811,7 @@ function drawCurve() {
   const near = (p) => S.curve[S.curveCh]
     .findIndex(([x, y]) => Math.hypot(x - p[0], y - p[1]) < 0.05);
   cv.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
     const p = at(e); const i = near(p);
     pushUndo();
     if (i >= 0) drag = i;
@@ -10793,7 +10831,18 @@ function drawCurve() {
     drag = pts.indexOf(p);
     drawCurve(); commitCurves();
   });
-  cv.addEventListener('pointerup', () => { if (drag >= 0) { drag = -1; saveState(); } });
+  const finish = () => {
+    if (drag >= 0) { drag = -1; saveState(); }
+    refreshCurveCursor();
+  };
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) cv.addEventListener(type, finish);
+  refreshCurveCursor = installCanvasHandleCursor(cv, {
+    hitCursor: point => {
+      const index = near(at(point));
+      return index < 0 ? 'crosshair' : index === 0 || index === S.curve[S.curveCh].length - 1 ? 'ns-resize' : 'grab';
+    },
+    dragCursor: () => drag < 0 ? null : drag === 0 || drag === S.curve[S.curveCh].length - 1 ? 'ns-resize' : 'grabbing',
+  });
   cv.addEventListener('dblclick', (e) => {
     const i = near(at(e));
     const pts = S.curve[S.curveCh];

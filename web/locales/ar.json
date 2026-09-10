@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,9 @@
     "‹ Back": "‹ رجوع",
     "← Back to articles": "← العودة إلى المقالات",
     "← People": "← أشخاص",
-    "☆ Favorites": "☆ المفضلات"
+    "☆ Favorites": "☆ المفضلات",
+    "On Mac, right-click the photo preview and choose Copy.": "على Mac، انقر بزر الماوس الأيمن على معاينة الصورة واختر نسخ.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "مرّر المؤشر فوق مقبض لمعرفة وظيفته. لا يمكن سحب الدبابيس المخفية."
   },
   "plurals": {
     " · {count} paired file linked": {

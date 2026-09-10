@@ -450,7 +450,7 @@
       {
         "title": "Shape a radial gradient",
         "paragraphs": ["In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."],
-        "tips": ["Shape also provides Width, Height, Rotation, and Feather controls.", "Dragging away from its handles redraws the selected radial mask."]
+        "tips": ["Hover over a handle to see its action. Hidden pins cannot be dragged.", "Shape also provides Width, Height, Rotation, and Feather controls.", "Dragging away from its handles redraws the selected radial mask."]
       },
       {
         "title": "Adjust a local tone curve",
@@ -467,6 +467,7 @@
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
       {"path": "web/mask-raster.js", "anchor": "export function accumulateStroke("},
       {"path": "web/mask-raster.js", "anchor": "export function autoMaskValues("},
+      {"path": "web/edit-cursor.js", "anchor": "export function editOverlayCursor"},
       {"path": "web/mask-shape.js", "anchor": "export function editRadial("},
       {"path": "web/mask-shape.js", "anchor": "export function editLinear("},
       {"path": "web/mask-curve.js", "anchor": "export function installMaskCurve("},
@@ -810,7 +811,7 @@
     "sections": [
       {
         "title": "Copy a photo",
-        "paragraphs": ["Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."]
+        "paragraphs": ["On Mac, right-click the photo preview and choose Copy.", "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."]
       },
       {
         "title": "Transfer selected settings",
@@ -852,6 +853,7 @@
       {"path": "web/app.js", "anchor": "async function applyPreviousSettings() {"},
       {"path": "web/edit-transfer.js", "anchor": "Edit transfer plans preserve every unselected destination setting."},
       {"path": "web/photo-clipboard.js", "anchor": "export function createPhotoClipboard"},
+      {"path": "app/main.swift", "anchor": "func photoClipboardMenu(title: String"},
       {"path": "web/edit-transfer.js", "anchor": "const defaults = ['film', 'raw', 'tone', 'color', 'detail', 'optics'];"},
       {"path": "web/edit-transfer.js", "anchor": "Copy spot positions; use only with matching framing"},
       {"path": "web/edit-transfer.js", "anchor": "needs a new object selection. Exclude masks to paste other edits."},

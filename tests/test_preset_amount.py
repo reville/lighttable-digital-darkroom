@@ -87,6 +87,92 @@ console.log(JSON.stringify({partial,off:blendPresetState(base,target,0),
         self.assertEqual(result["off"]["params"]["development_time"], 0)
         self.assertTrue(result["retained"])
 
+    def test_classic_bw_and_film_development_presets_retain_amount_over_differing_base_film(self):
+        result = self.run_js("""
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {composePresetState} from './web/presets.js';
+import {blendPresetState, reconcilePresetAdjustment, presetEditState} from './web/preset-amount.js';
+import {normalizeFilmTuning, mergeFilmTuning} from './web/film-browser.js';
+
+const builtin = JSON.parse(readFileSync('./presets/builtin.json', 'utf8'));
+const classicBw = builtin.presets.find(p => p.id === 'lighttable/classic-bw');
+const silverNoir = builtin.presets.find(p => p.id === 'lighttable/silver-noir');
+
+const profiles = [
+  {id: 'kodak_portra_400', stage: 'filming', type: 'negative', developmentTimes: []},
+  {id: 'kodak_doublex', stage: 'filming', type: 'negative', developmentTimes: [4.0, 5.0, 6.5, 9.0, 12.0], defaultDevelopmentTime: 6.5},
+  {id: 'kodak_trix', stage: 'filming', type: 'positive', developmentTimes: [1.0], defaultDevelopmentTime: 1.0},
+  {id: 'kodak_2302', stage: 'printing', channelModel: 'cmy', developmentTimes: [2.0, 3.5, 5.0, 7.0, 9.0], defaultDevelopmentTime: 5.0},
+  {id: 'kodak_portra_endura', stage: 'printing', channelModel: 'cmy', developmentTimes: []}
+];
+
+const appSource = readFileSync('./web/app.js', 'utf8');
+const runtime = vm.createContext({
+  normalizeFilmTuning, mergeFilmTuning,
+  S: {profiles, filmDefaults: {stock: 'kodak_portra_400', grain_amount: 1}},
+  grainBaseline: () => 0.2,
+  $: () => ({value: ''}),
+  tr: (s, params) => s,
+});
+for (const name of ['normalizeFilmParams', 'mergeFilmParams']) {
+  vm.runInContext(appSource.match(new RegExp(`^function ${name}\\\\([^]*?^}`, 'm'))[0], runtime);
+}
+
+const baseDoubleX = {
+  params: {stock: 'kodak_doublex', paper: 'kodak_2302', development_time: 6.5, print_development_time: 5.0, profile_enabled: true},
+  grade: {contrast: 0.1}, masks: [], heals: [], optics: {}
+};
+const targetClassic = composePresetState(baseDoubleX, classicBw, {
+  normalizeFilmParams: runtime.normalizeFilmParams,
+  mergeFilmParams: runtime.mergeFilmParams,
+});
+const adjClassic = {
+  id: classicBw.id, name: classicBw.name, amount: 100, enabled: true,
+  base: structuredClone(baseDoubleX), target: presetEditState(targetClassic)
+};
+const reconciledClassic = reconcilePresetAdjustment(adjClassic, targetClassic);
+const blendedClassicHalf = blendPresetState(reconciledClassic.base, reconciledClassic.target, 50);
+const blendedClassicZero = blendPresetState(reconciledClassic.base, reconciledClassic.target, 0);
+
+const basePortra = {
+  params: {stock: 'kodak_portra_400', paper: 'kodak_portra_endura', development_time: 0, print_development_time: 0, profile_enabled: true},
+  grade: {contrast: 0.1}, masks: [], heals: [], optics: {}
+};
+const targetSilver = composePresetState(basePortra, silverNoir, {
+  normalizeFilmParams: runtime.normalizeFilmParams,
+  mergeFilmParams: runtime.mergeFilmParams,
+});
+const adjSilver = {
+  id: silverNoir.id, name: silverNoir.name, amount: 100, enabled: true,
+  base: structuredClone(basePortra), target: presetEditState(targetSilver)
+};
+const reconciledSilver = reconcilePresetAdjustment(adjSilver, targetSilver);
+const blendedSilverHalf = blendPresetState(reconciledSilver.base, reconciledSilver.target, 50);
+const blendedSilverZero = blendPresetState(reconciledSilver.base, reconciledSilver.target, 0);
+
+console.log(JSON.stringify({
+  classicReconciled: !!reconciledClassic,
+  classicTargetDev: targetClassic.params.development_time,
+  classicHalfDev: blendedClassicHalf.params.development_time,
+  classicZeroDev: blendedClassicZero.params.development_time,
+  silverReconciled: !!reconciledSilver,
+  silverTargetDev: targetSilver.params.development_time,
+  silverTargetPrintDev: targetSilver.params.print_development_time,
+  silverHalfDev: blendedSilverHalf.params.development_time,
+  silverZeroDev: blendedSilverZero.params.development_time,
+}));
+""")
+        self.assertTrue(result["classicReconciled"])
+        self.assertEqual(result["classicTargetDev"], 1.0)
+        self.assertEqual(result["classicHalfDev"], 1.0)
+        self.assertEqual(result["classicZeroDev"], 6.5)
+        self.assertTrue(result["silverReconciled"])
+        self.assertEqual(result["silverTargetDev"], 6.5)
+        self.assertEqual(result["silverTargetPrintDev"], 5.0)
+        self.assertEqual(result["silverHalfDev"], 6.5)
+        self.assertEqual(result["silverZeroDev"], 0.0)
+
     def test_all_builtin_amounts_survive_production_state_cleaning(self):
         base, _ = server.cleaned_state_request({
             "params": {"profile_enabled": False, "print_exposure": .8, "grain_amount": .35},

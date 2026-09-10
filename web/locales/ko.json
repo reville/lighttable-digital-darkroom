@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,9 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "On Mac, right-click the photo preview and choose Copy.": "Mac에서 사진 미리보기를 마우스 오른쪽 버튼으로 클릭하고 복사를 선택하세요.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "핸들 위에 포인터를 올리면 해당 동작을 확인할 수 있습니다. 숨겨진 핀은 드래그할 수 없습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

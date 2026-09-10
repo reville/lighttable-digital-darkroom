@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,9 @@
     "‹ Back": "‹ Zurück",
     "← Back to articles": "← Zurück zu Artikeln",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favoriten"
+    "☆ Favorites": "☆ Favoriten",
+    "On Mac, right-click the photo preview and choose Copy.": "Klicke auf dem Mac mit der rechten Maustaste auf die Fotovorschau und wähle Kopieren.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen."
   },
   "plurals": {
     " · {count} paired file linked": {
