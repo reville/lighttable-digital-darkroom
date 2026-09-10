@@ -53,6 +53,6 @@ else
   python -c 'import json; errors=json.load(open("evidence/hyprland/config-errors.json")); assert isinstance(errors,list) and not any(str(error).strip() for error in errors), errors'
 fi
 /opt/lighttable/Python/bin/python3 -B scripts/linux/arch-desktop-acceptance.py /opt/lighttable \
-  --source be537f2f3e2e431ae6b42af716c2a8b365f57bab --backend "$backend" --film \
-  --package /work/dist/lighttable-bin-0.5.0-1-x86_64.pkg.tar.zst \
+  --source 0ae5e9aaf90b3554ad1d027d5b6b10667cd61ae2 --backend "$backend" --film \
+  --package /work/dist/lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst \
   --fixtures demo-assets/cc0-raw/files --output "evidence/$backend"
