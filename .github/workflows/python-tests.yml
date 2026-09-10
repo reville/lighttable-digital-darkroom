@@ -46,9 +46,6 @@ jobs:
           cp -R "$RUNNER_TEMP/spektrafilm-rust/data" engine/data
           cp -R "$RUNNER_TEMP/spektrafilm-python/src/spektrafilm" vendor/spektrafilm/src/spektrafilm
 
-      - name: Unit and contract tests
-        run: PYTHONPATH=".:vendor/spektrafilm/src" python -m unittest discover -s tests -p 'test_*.py' -t tests --verbose
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -57,6 +54,39 @@ jobs:
         with:
           path: build/processing-cargo
           key: processing-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-engine/Cargo.lock', 'rust-engine/**/Cargo.toml') }}
+
+      # The control audit and the frozen renders drive this engine. Build it
+      # before the unit step or both suites skip themselves and the job stays
+      # green while checking nothing.
+      - name: Build the resident film engine
+        run: CARGO_TARGET_DIR=build/processing-cargo cargo build --manifest-path rust-engine/Cargo.toml --locked
+
+      - name: Unit and contract tests
+        run: PYTHONPATH=".:vendor/spektrafilm/src" python -m unittest discover -s tests -p 'test_*.py' -t tests --verbose
+
+      - name: Confirm the engine-backed gates were not skipped
+        run: |
+          test -x build/processing-cargo/debug/lighttable-engine
+          PYTHONPATH=".:vendor/spektrafilm/src:tests" python - <<'CHECK'
+          import engine_runner
+          assert engine_runner.available(), "engine missing; audit and goldens skipped"
+          print("engine present:", engine_runner.binary())
+          CHECK
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: control-audit
+          path: build/control-audit
+          if-no-files-found: warn
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: golden-diffs
+          path: build/golden-diffs
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Prepare the pinned browser test runtime
         run: |
           npm install --prefix "$RUNNER_TEMP/processing-browser" --no-save playwright@1.62.1

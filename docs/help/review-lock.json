@@ -127,7 +127,7 @@
     "editing-effects": {
       "content": "e65c38833c6557b83b0e471394ed3d4fda54c7e44a5a7f4cba7a7e25fd04df71",
       "sources": {
-        "grade.py": "00ef46d7ec888724ed25c86cb42914bcd6fbafbf411964c295aa7648d938a669",
+        "grade.py": "100de6598730626187bf171cfdbd7b9e3b1b24498d203d85d745fefbbae30a8f",
         "web/app.js": "61c31bebb7694ff59d1e351090fad1cc9d4d07d35c09df3d2d29c737f02ea69b",
         "web/index.html": "d1b08fec20a429a6f0d46f6130e279ee155239e3ac176e82a7d2315b9136c011"
       }
@@ -386,7 +386,7 @@
       "sources": {
         "app/NativePreview.swift": "03c3766b8fdbb7545e4017e39ab3c834a12ec6e67c30d31ae2cb487ecc712264",
         "gpu_compute.py": "6aaf344c93689e2673c957fdad76c1aed4c81cc144d9d64e3b91cc3a44859ba4",
-        "grade.py": "00ef46d7ec888724ed25c86cb42914bcd6fbafbf411964c295aa7648d938a669",
+        "grade.py": "100de6598730626187bf171cfdbd7b9e3b1b24498d203d85d745fefbbae30a8f",
         "media_availability.py": "c450d7734d3e39f2c9bb6c5e39c855374ee4e03d6947c299315f558072aca25e",
         "merge_acceleration.py": "3d87500b5ee5222f111cbf6edb99b9136720475466b7300c0b15920729de4f01",
         "server.py": "be9b62f5e7ec92cb7229fd22bd90279a1b631084081f99de6cb581c716051f25",
