@@ -4830,6 +4830,19 @@ function activeCollection() {
   return (S.library.collections || []).find((item) => item.id === S.activeCollection) || null;
 }
 
+/* The catalog spans every source that has been opened; the window shows one.
+ * These two keep that boundary in one place: which source is open, and the
+ * query fragment that keeps a catalog request inside it. */
+function catalogSourceId(payload) {
+  const id = payload?.catalog?.primarySource;
+  return Number.isInteger(id) ? id : null;
+}
+
+function sourceScopeSpec() {
+  if (!S.catalogEnabled || S.primarySourceId == null) return {};
+  return { scope: 'source', sourceId: S.primarySourceId };
+}
+
 function collectionScope() {
   const collection = activeCollection();
   if (!collection) return S.images.filter(inFolderScope);
@@ -4972,6 +4985,11 @@ function visible() {
 }
 
 function inFolderScope(im) {
+  // Folder paths are relative to their own source, so the open source is the
+  // outer boundary of the view. Without this an empty selection means the root
+  // of the open source, not every source the catalog has ever seen.
+  if (S.primarySourceId != null && im.sourceId != null &&
+      im.sourceId !== S.primarySourceId) return false;
   const dir = im.folder || '';
   const selected = S.activeFolder || '';
   if (!selected) return S.includeSubfolders || !dir;
@@ -7641,6 +7659,7 @@ function buildCatalogQuerySpec(extra = {}) {
   const spec = {
     scope,
     filter,
+    ...(scope === 'all' ? sourceScopeSpec() : {}),
     sort: {
       field: s === 'date' ? 'capture' : s,
       dir: 'desc',
@@ -7667,7 +7686,8 @@ function loadRemainingCatalogRows(total) {
     const known = new Set(images.map(image => image.name));
     while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
       await catalogIdleTurn();
-      const page = await api('/api/catalog/query', {limit: LIBRARY_CHUNK_SIZE, offset, sort: {field: 'capture', dir: 'desc'}});
+      const page = await api('/api/catalog/query', {limit: LIBRARY_CHUNK_SIZE, offset, sort: {field: 'capture', dir: 'desc'},
+        ...sourceScopeSpec()});
       if (generation !== catalogPageGeneration || images !== S.images) throw new Error(tr('The library changed; select photos again'));
       if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
       total = Number.isFinite(+page.total) ? +page.total : total;
@@ -7834,6 +7854,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.rootFolder = d.folder;
   S.catalogEnabled = !!d.catalog?.enabled;
   S.catalogTotal = Number.isFinite(+d.total) ? +d.total : 0;
+  S.primarySourceId = catalogSourceId(d);
   S.folders = Array.isArray(d.folders) ? d.folders : [];
   if (typeof S.activeFolders[S.rootFolder] === 'string') {
     S.activeFolder = S.activeFolders[S.rootFolder];
@@ -11779,6 +11800,7 @@ async function reloadLibrary() {
     clearEditedThumbnails();
     S.catalogEnabled = !!data.catalog?.enabled;
     S.catalogTotal = Number.isFinite(+data.total) ? +data.total : data.images.length;
+    S.primarySourceId = catalogSourceId(data);
     S.folders = Array.isArray(data.folders) ? data.folders : S.folders;
     S.images = data.images.map((image) => normalizeLibraryImage(
       image, !S.catalogEnabled));
