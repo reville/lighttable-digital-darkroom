@@ -215,7 +215,7 @@ console.log(JSON.stringify(states.filter(state=>
         result = self.run_js("""
 import {readFileSync} from 'node:fs';
 import {composePresetState} from './web/presets.js';
-import {presetEditState,blendPresetState,reconcilePresetAdjustment} from './web/preset-amount.js';
+import {presetEditState,blendPresetState,reconcilePresetAdjustment,presetControlledSettings} from './web/preset-amount.js';
 const source=readFileSync('./web/app.js','utf8');
 const S={editingName:'A',params:{profile_enabled:false},grade:{exposure:0.7,contrast:0.1,saturation:0},masks:[],heals:[],optics:{},preset:null};
 let photoName='A', LAST_PRESET_APPLICATION=null;

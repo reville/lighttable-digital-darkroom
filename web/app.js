@@ -82,7 +82,7 @@ import {
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
-import { presetEditState, blendPresetState, reconcilePresetAdjustment } from '/web/preset-amount.js';
+import { presetEditState, blendPresetState, reconcilePresetAdjustment, presetControlledSettings } from '/web/preset-amount.js';
 import { syncNumericControl, readNumericControl } from '/web/numeric-controls.js';
 import { createPresetBrowser, presetKey, migratePresetFavorites } from '/web/preset-browser.js';
 import { installNativeWindowChrome } from '/web/window-chrome.js';
@@ -720,6 +720,12 @@ function normalizeFilmParams(raw = {}) {
         : (film.defaultDevelopmentTime ?? times[0]);
     } else if (Object.hasOwn(params, 'development_time')) {
       params.development_time = 0;
+    }
+    const compatiblePapers = (S.profiles || []).filter((profile) =>
+      profile.stage === 'printing' && (!film.channelModel || profile.channelModel === film.channelModel));
+    const allowedPaperIds = new Set(compatiblePapers.map((profile) => profile.id));
+    if (params.paper && !allowedPaperIds.has(params.paper)) {
+      params.paper = (allowedPaperIds.has(film.targetPrint) ? film.targetPrint : compatiblePapers[0]?.id) || params.paper;
     }
   }
   const paper = (S.profiles || []).find((p) => p.id === params.paper);
@@ -4782,7 +4788,11 @@ function saveState(immediate = false) {
   const im = cur();
   if (!im || S.editingName !== im.name) return immediate ? flushEditSaves() : Promise.resolve(true);
   readControls();
+  const previousPreset = S.preset;
   S.preset = reconcilePresetAdjustment(S.preset, presetEditState(S));
+  if (previousPreset?.id !== S.preset?.id || (previousPreset && !S.preset)) {
+    PRESET_BROWSER?.select();
+  }
   const edits = JSON.parse(editHistorySnapshot());
   const wasEdited = photoHasEdits(im);
   Object.assign(im, cloneValue(edits));
@@ -10373,8 +10383,10 @@ function toggleBrowserPreset(preset, photo, identity = presetKey(preset)) {
   if (previous?.id !== identity && !presetHasApplicableSettings(preset)) return;
   pushUndo(); presetAmountGesture = null;
   let adjustment;
+  const controlled = typeof presetControlledSettings === 'function' ? presetControlledSettings(preset) : null;
   if (previous?.id === identity) {
-    adjustment = { ...previous, enabled: !previous.enabled };
+    adjustment = { ...previous, enabled: !previous.enabled,
+      controlled: previous.controlled || controlled };
     if (adjustment.enabled && adjustment.amount === 0) adjustment.amount = 100;
   } else {
     const base = previous ? previous.base : presetEditState(S);
@@ -10382,7 +10394,8 @@ function toggleBrowserPreset(preset, photo, identity = presetKey(preset)) {
       normalizeFilmParams, mergeFilmParams, createId: editId,
     });
     adjustment = { id: identity, name: preset.name, amount: 100, enabled: true,
-      base: cloneValue(base), target: presetEditState(target) };
+      base: cloneValue(base), target: presetEditState(target),
+      controlled };
   }
   LAST_PRESET_APPLICATION = null;
   presentPresetAdjustment(adjustment);

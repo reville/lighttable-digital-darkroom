@@ -16,15 +16,16 @@
 [dir="rtl"] .preset-browser-pack-disclosure[aria-expanded="false"] .preset-browser-pack-chevron { transform:rotate(180deg); }
 .preset-browser-pack-disclosure[aria-expanded="true"] .preset-browser-pack-chevron { transform:rotate(90deg); }
 .preset-browser-pack-count { color:var(--muted); font-size:10px; font-variant-numeric:tabular-nums; font-weight:400; }
-.preset-browser-pack-list { padding:4px 0; }
-.preset-browser-card { display:grid; grid-template-columns:minmax(0,1fr) 23px 23px; align-items:center; position:relative; min-width:0; border-radius:var(--radius-sm); transition:background .12s ease; }
+.preset-browser-pack-list { display:flex; flex-direction:column; gap:2px; padding:4px 0; }
+.preset-browser-card { display:grid; grid-template-columns:minmax(0,1fr) 23px 23px; grid-auto-rows:auto; align-content:start; align-items:center; position:relative; min-width:0; height:auto; border-radius:var(--radius-sm); transition:background .12s ease; }
 .preset-browser-card:hover { background:var(--field-hover); }
-.preset-browser-card.is-active { background:var(--on-soft); box-shadow:0 0 0 1px var(--slider-accent); }
+.preset-browser-card.is-active, .preset-browser-card.is-active:hover { background:var(--on-soft); box-shadow:0 0 0 1px var(--slider-accent); }
 /* The preset, actions, and Amount control share one selection boundary. */
 .preset-browser-card:has(> .preset-browser-apply:focus-visible) { outline:2px solid var(--slider-accent); outline-offset:1px; }
 .preset-browser-apply:focus-visible { outline:0; }
 .preset-browser-apply { display:flex; align-items:center; gap:9px; width:100%; min-height:58px; min-width:0; padding:6px 4px; border:0; border-radius:var(--radius-sm); text-align:start; white-space:normal; background:transparent; }
-.preset-browser-apply:hover:not(:disabled), .preset-browser-apply[aria-pressed="true"] { background:transparent; }
+.preset-browser-card button:is(.preset-browser-apply, .preset-browser-favorite, .preset-browser-info) { background:transparent !important; border-color:transparent !important; box-shadow:none !important; }
+.preset-browser-card button:is(.preset-browser-apply, .preset-browser-favorite, .preset-browser-info):is(:hover, :active, :focus, [aria-pressed="true"]) { background:transparent !important; border-color:transparent !important; box-shadow:none !important; }
 .preset-browser-apply:disabled { opacity:.6; }
 .preset-browser-apply[draggable="true"] { cursor:grab; }
 .preset-browser-apply[draggable="true"]:active { cursor:grabbing; }
@@ -36,8 +37,10 @@
 .preset-browser-source { color:var(--muted); font-size:10px; line-height:1.4; overflow-wrap:anywhere; }
 .preset-browser-warning { color:var(--warn); font-size:10px; line-height:1.4; }
 .preset-browser-favorite, .preset-browser-info, .preset-browser-pack-rename, .preset-browser-pack-remove { display:grid; place-items:center; width:23px; height:28px; min-height:28px; padding:0; border:0; background:transparent; color:var(--muted); font-size:17px; line-height:1; }
+.preset-browser-info svg { display:block; width:14px; height:14px; pointer-events:none; }
 .preset-browser-favorite[aria-pressed="true"] { color:var(--slider-accent); }
-.preset-browser-favorite:hover:not(:disabled), .preset-browser-info:hover, .preset-browser-pack-rename:hover, .preset-browser-pack-remove:hover { background:var(--field-hover); color:var(--ink); }
+.preset-browser-favorite:hover:not(:disabled), .preset-browser-info:hover { color:var(--ink); }
+.preset-browser-pack-rename:hover, .preset-browser-pack-remove:hover { background:var(--field-hover); color:var(--ink); }
 .preset-browser-empty-pack { margin:8px 10px; color:var(--muted); font-size:10px; line-height:1.5; }
 .preset-browser-pack-header.is-drop-target { background:var(--on-soft); outline:1px solid var(--slider-accent); }
 .preset-browser-pack-choice { display:flex; align-items:center; gap:10px; font-size:11px; color:var(--ink-2); }
