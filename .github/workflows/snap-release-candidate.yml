@@ -28,8 +28,9 @@ jobs:
         if: inputs.candidate_run_id == ''
         working-directory: .build/snap
         run: |
+          set -o pipefail
           sudo snap install snapcraft --classic
-          sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-0.5.0-linux-x86_64.snap"
+          sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-0.5.0-linux-x86_64.snap" 2>&1 | tee "$GITHUB_WORKSPACE/evidence/snapcraft-build.log"
       - name: Validate requested candidate reuse
         if: inputs.candidate_run_id != ''
         env:
@@ -40,7 +41,7 @@ jobs:
           revision=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID" --jq .head_sha)
           [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
           git fetch --no-tags --depth=1 origin "$revision"
-          git diff --exit-code "$revision" HEAD -- packaging/snap/snapcraft.yaml.in packaging/snap/environment.sh scripts/linux/make-snap-package.py
+          git diff --exit-code "$revision" HEAD -- packaging/snap/snapcraft.yaml.in packaging/snap/environment.sh packaging/snap/native-licenses scripts/linux/make-snap-package.py scripts/linux/snap-native-licenses.py scripts/linux/make-arch-package.py scripts/linux/desktop-integration.py
           mkdir -p evidence dist
           printf '%s\n' "$CANDIDATE_RUN_ID $revision" > evidence/reused-candidate.txt
       - uses: actions/download-artifact@v4

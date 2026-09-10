@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("snap_package", ROOT / "scripts/linux/make-snap-package.py")
 package = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(package)
-REVISION = "a" * 40
+REVISION = "be537f2f3e2e431ae6b42af716c2a8b365f57bab"
 
 
 class SnapPackageTests(unittest.TestCase):
@@ -44,6 +44,13 @@ class SnapPackageTests(unittest.TestCase):
         self.assertTrue((bundle / "Resources/LightTable/engine/lighttable-engine").is_file())
         self.assertFalse((bundle / "install.sh").exists())
         self.assertFalse((bundle / "uninstall.sh").exists())
+        notices = bundle / "Resources/LightTable/licenses/native-rust"
+        provenance = json.loads((notices / "provenance.json").read_text())
+        self.assertEqual(provenance["source_revision"], REVISION)
+        self.assertTrue(any(row["path"].startswith("crates/rfd-0.17.2/") for row in provenance["files"]))
+        import hashlib
+        for row in provenance["files"]:
+            self.assertEqual(hashlib.sha256((notices / row["path"]).read_bytes()).hexdigest(), row["sha256"])
         self.assertTrue((bundle / "share/applications/app.lighttable.LightTable.desktop").is_file())
         self.assertFalse(json.loads((self.output / "candidate.json").read_text())["store_published"])
 
@@ -63,6 +70,17 @@ class SnapPackageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "new or empty"):
             self.generate()
         self.assertEqual(sentinel.read_text(), "preserve")
+
+    def test_corrupted_native_notice_rejects_package_without_partial_output(self):
+        from unittest.mock import patch
+        original = package.NOTICES.regular_bytes
+        def corrupted(path):
+            data = original(path)
+            return data + b"corrupted" if path.parent.name == "objects" else data
+        with patch.object(package.NOTICES, "regular_bytes", side_effect=corrupted):
+            with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+                self.generate()
+        self.assertFalse(self.output.exists())
 
     def test_environment_keeps_catalog_location_across_snap_revisions_and_quotes_arguments(self):
         self.generate()

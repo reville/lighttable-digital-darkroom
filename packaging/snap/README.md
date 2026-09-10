@@ -1,7 +1,7 @@
 # Snap development candidate
 
 This prepares a complete strict-confinement Snap from the verified Ubuntu 24.04
-x86_64 bundle. It does not register a Snap Store name or upload a release.
+x86_64 bundle. The generator only prepares the package; Store registration and publication are separate steps.
 The generated package stays `grade: devel` until the native checklist below
 passes. Version **0.5.0** is displayed as **LightTable 0.5** in release titles.
 
@@ -36,7 +36,7 @@ Both use `$SNAP_USER_COMMON/{data,config,cache,state}` for stable locations acro
 Snap revision upgrades. Existing portable/AUR catalogs are not copied implicitly.
 Photo originals and exported images stay in their selected folders.
 
-## Required before a store release
+## Acceptance before stable publication
 
 1. Build successfully on native Ubuntu 24.04 amd64 and retain Snapcraft's lint output.
 2. Run with strict confinement, without `--devmode` or `--classic`.
@@ -64,8 +64,11 @@ photo display and close/reopen using the retained document-portal path, denial
 of direct `/media` access before connection, and access after explicitly
 connecting `removable-media`. Proxy handling remained enabled throughout.
 
-The web onboarding flow, backup restoration and real GPU coverage remain
-unverified. The candidate therefore remains `grade: devel`.
+The web onboarding and backup restoration checks run in the release-candidate
+workflow. Physical AMD, Intel and NVIDIA GPU coverage remains unverified.
+The package therefore stays `grade: devel`; an initial Store release must use
+`latest/beta`, never `candidate` or `stable`. Stable promotion requires all the
+acceptance checks above, including real GPU evidence.
 Snap manages its own user data and removal/snapshots. Before uninstalling or
 switching package formats, preserve a catalog backup; do not describe Snap removal
 as equivalent to the portable installer's launcher-only uninstall.
@@ -73,3 +76,34 @@ as equivalent to the portable installer's launcher-only uninstall.
 References: [GNOME extension](https://ubuntu.com/docs/snapcraft/latest/reference/extensions/gnome-extension/),
 [private shared memory](https://snapcraft.io/docs/reference/interfaces/shared-memory-interface/),
 [desktop portals](https://snapcraft.io/docs/explanation/snap-development/xdg-desktop-portals/).
+
+## Native dependency notices
+
+The immutable 0.5.0 application bundle did not retain all native Rust dependency
+notices. Snap packaging supplements it with verbatim upstream license, copyright
+and notice files under `Resources/LightTable/licenses/native-rust`. This does not
+change the application binaries or its source manifest.
+
+`python3 scripts/linux/snap-native-licenses.py` verifies 441 crates and 825 retained
+files from the Linux normal/build dependency graphs for the desktop shell,
+resident engine and standalone film engine. The inventory retains the exact
+release Cargo lockfiles and each crate archive checksum; upstream VCS sources
+are recorded when a published crate omitted its notice text. Packaging rejects
+corruption, missing files, unresolved coverage and a different release identity.
+Python distribution notices and Ubuntu package copyright files remain in their
+existing locations. See `native-licenses/provenance.json` for scope and limitations.
+
+Snapcraft run 34424616546 completed the classic, GPU, library and metadata
+linters. Its six unused-library warnings concern libpython3.13, libpython3,
+libcolordprivate, libdconf, libssl and libxdo. These libraries remain available
+for runtime loading; no lint errors were reported.
+
+## Store publication
+
+The public `lighttable` name is approved for publisher `LightTable`
+(`lighttable-app`), Snap ID `aR4yGHHrroWcBo0quMe2wgaE0BzJFLis`.
+`store-metadata.json` contains the proposed beta listing text. Registration,
+upload acceptance, Store interface review, channel release and public listing
+visibility are separate checks. The session D-Bus slot may require Canonical
+review; an upload must not be reported as a published release before acceptance
+and channel verification.

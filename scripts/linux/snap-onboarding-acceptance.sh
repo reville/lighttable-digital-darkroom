@@ -18,13 +18,16 @@ openbox > "$common/onboarding-evidence/openbox.log" 2>&1 & children+=("$!")
     for request in "$common/onboarding-evidence/"*.request; do
       checkpoint="${request%.request}"
       if [[ ! -f "$checkpoint.done" ]]; then
-        sleep 1
+        # Client registration precedes WebKit's first paint and focusPage().
+        sleep 3
         import -window root "$checkpoint.png"
         case "$(basename "$checkpoint")" in
           onboarding-choices)
             window=$(xdotool search --onlyvisible --name '^LightTable — photos$' | head -1)
             xdotool windowactivate --sync "$window"
-            xdotool key --clearmodifiers Tab Tab Return
+            # The pinned 0.5.0 UI includes its unavailable Apple Photos choice
+            # between Lightroom and Folder. Later source versions hide it.
+            xdotool key --clearmodifiers Tab Tab Tab Return
             ;;
           onboarding-folder)
             xdotool key --clearmodifiers Tab
