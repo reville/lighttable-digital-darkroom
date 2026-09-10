@@ -371,15 +371,15 @@
       }
     },
     "people-face-matching": {
-      "content": "1878e46f46b115adb486e1540ec123d3ed8495e32c59fec6795a163dd2c9ac6f",
+      "content": "4a721270e3a525631dc96063bddf42755b70c49c57f53f1c9fba5af47b7fc3da",
       "sources": {
         "film_lab_ai/face_models.py": "d98d2848681d56e440a0fdb9ff8d451ced8ab257dda59747131fad8381cf85d7",
         "film_lab_ai/face_service.py": "e88e557e10bf9f64cf6d366e6fb11d3e6a1011e8e9163740921a35d115daadca",
         "film_lab_ai/face_store.py": "869ebb3cb7c6970015cfdf5603370d0277317e7ce948d973e038b4a7f53d9f4f",
         "server.py": "be9b62f5e7ec92cb7229fd22bd90279a1b631084081f99de6cb581c716051f25",
         "web/library.js": "224f647c4d20a2c6efd65711391be3792ba01f4140ff392cd72b9032c059e4a8",
-        "web/people.css": "5749fa637dddafb20b1eb1146cb7f5c8fae06f922c9a5f966bd5a883ff05c0b5",
-        "web/people.js": "0ab6040b96b48bb6d9d0cbae2716c47cb9a6f8d7794cb12091808ba75dc4dc99"
+        "web/people.css": "410bf0c174ef306e03f8301a257864524061f9d9f1a189ef68a9a79112709e9e",
+        "web/people.js": "ac97cde05e8202114c2ad2b28b6aaa2500efedd4dc3b3f7627a5f704661db2f3"
       }
     },
     "performance-previews": {

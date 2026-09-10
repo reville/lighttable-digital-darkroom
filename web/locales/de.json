@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← Personen",
     "☆ Favorites": "☆ Favoriten",
     "On Mac, right-click the photo preview and choose Copy.": "Klicke auf dem Mac mit der rechten Maustaste auf die Fotovorschau und wähle Kopieren.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Einige Personen können in getrennten Gruppen erscheinen. Prüfe mögliche Übereinstimmungen, um sie zusammenzuführen.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wenn mögliche Übereinstimmungen vorliegen, öffnet eine ausblendbare Leiste in Personen die Ansicht zum Prüfen von Übereinstimmungen. Das Ausblenden wird auf diesem Gerät gespeichert."
   },
   "plurals": {
     " · {count} paired file linked": {

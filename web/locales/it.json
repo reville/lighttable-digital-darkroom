@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← Persone",
     "☆ Favorites": "☆ Preferiti",
     "On Mac, right-click the photo preview and choose Copy.": "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Alcune persone potrebbero apparire in gruppi separati. Controlla le possibili corrispondenze per unirli.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando sono disponibili possibili corrispondenze, una barra chiudibile in Persone apre la revisione delle corrispondenze. La chiusura viene ricordata su questo dispositivo."
   },
   "plurals": {
     " · {count} paired file linked": {

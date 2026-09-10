@@ -643,6 +643,7 @@
         {
           "title": "Rivedi e correggi gli abbinamenti",
           "paragraphs": [
+            "Quando sono disponibili possibili corrispondenze, una barra chiudibile in Persone apre la revisione delle corrispondenze. La chiusura viene ricordata su questo dispositivo.",
             "Rivedi gli abbinamenti presenta due possibili gruppi con campioni di volti. Stessa persona li unisce. Persone diverse registra una correzione in modo che l'accoppiamento non venga suggerito di nuovo. Salta per ora lascia la corrispondenza per una visita successiva.",
             "All'interno di un gruppo, Unisci con… ti consente di scegliere un altro gruppo e rivedere la combinazione prima di confermarla. Il nome del gruppo corrente viene mantenuto; se è senza nome, viene usato il nome dell'altro gruppo. Salvare lo stesso nome su due gruppi non li unisce automaticamente.",
             "Scegli Seleziona i volti, seleziona alcuni volti, quindi Sposta in una persona separata per dividerli in un nuovo gruppo senza nome. I due gruppi non verranno più suggeriti come corrispondenza. Seleziona un volto e scegli Usa come copertina per cambiare l'immagine della galleria.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688"
 }

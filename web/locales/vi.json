@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← Mọi người",
     "☆ Favorites": "☆ Mục yêu thích",
     "On Mac, right-click the photo preview and choose Copy.": "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Cùng một người có thể xuất hiện trong các nhóm riêng biệt. Hãy xem xét các kết quả có thể trùng khớp để gộp nhóm.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh."
   },
   "plurals": {
     " · {count} paired file linked": {

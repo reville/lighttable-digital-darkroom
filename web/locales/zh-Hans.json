@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← 人物",
     "☆ Favorites": "☆ 收藏",
     "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，右键点击照片预览并选择“复制”。",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "将指针悬停在控制柄上可查看其操作。隐藏的控制点无法拖动。"
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "将指针悬停在控制柄上可查看其操作。隐藏的控制点无法拖动。",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "同一个人可能出现在不同的分组中。查看可能的匹配以合并这些分组。",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。"
   },
   "plurals": {
     " · {count} paired file linked": {

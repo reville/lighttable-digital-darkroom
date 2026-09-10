@@ -643,6 +643,7 @@
         {
           "title": "Revisar y corregir coincidencias",
           "paragraphs": [
+            "Cuando hay posibles coincidencias, una barra que se puede cerrar en Personas abre Revisar coincidencias. Este dispositivo recuerda si la cierras.",
             "Revisar coincidencias presenta dos grupos posibles con muestras de rostros. Misma persona los combina. Personas diferentes registra una corrección para que el emparejamiento no se sugiera de nuevo. Saltar por ahora deja la coincidencia para una visita posterior.",
             "Dentro de un grupo, Combinar con… le permite elegir otro grupo y revisar la combinación antes de confirmarla. Se conserva el nombre del grupo actual; si no tiene nombre, se usa el nombre del otro grupo. Guardar el mismo nombre en dos grupos no los combina automáticamente.",
             "Elija Seleccionar rostros, seleccione algunos rostros y luego Mover a una persona separada para dividirlos en un nuevo grupo sin nombre. Los dos grupos no volverán a sugerirse como coincidencia. Seleccione un rostro y elija Usar como portada para cambiar la imagen de la galería.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688"
 }

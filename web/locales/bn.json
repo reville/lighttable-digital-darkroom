@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← মানুষ",
     "☆ Favorites": "☆ পছন্দের",
     "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।"
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "একই ব্যক্তি আলাদা আলাদা দলে দেখা যেতে পারেন। দলগুলো একত্র করতে সম্ভাব্য মিলগুলো পর্যালোচনা করুন।",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।"
   },
   "plurals": {
     " · {count} paired file linked": {

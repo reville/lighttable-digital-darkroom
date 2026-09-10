@@ -643,6 +643,7 @@
         {
           "title": "Matches beoordelen en corrigeren",
           "paragraphs": [
+            "Wanneer er mogelijke overeenkomsten zijn, opent een sluitbare balk in Personen de beoordeling van overeenkomsten. Het sluiten van de balk wordt op dit apparaat onthouden.",
             "Beoordelen van matches toont twee mogelijke groepen met gezichtssamples. Dezelfde persoon voegt ze samen. Verschillende personen registreert een correctie zodat koppelen niet opnieuw wordt voorgesteld. Voor nu overslaan laat de match staan voor een later moment.",
             "Binnen een groep laat Samenvoegen met… je een andere groep kiezen en de combinatie beoordelen voordat je bevestigt. De naam van de huidige groep blijft behouden; als die naamloos is, wordt de naam van de andere groep gebruikt. Het opslaan van dezelfde naam op twee groepen voegt ze niet automatisch samen.",
             "Kies Gezichten selecteren, selecteer enkele gezichten en kies vervolgens Naar een aparte persoon verplaatsen om ze te splitsen in een nieuwe naamloze groep. De twee groepen zullen niet opnieuw als match worden voorgesteld. Selecteer één gezicht en kies Gebruiken als omslag om de galerijafbeelding te wijzigen.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688"
 }

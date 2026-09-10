@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -4537,6 +4537,8 @@
     "‹ Back": "‹ Back",
     "← Back to articles": "← Back to articles",
     "← People": "← People",
-    "☆ Favorites": "☆ Favorites"
+    "☆ Favorites": "☆ Favorites",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Some people may appear in separate groups. Review possible matches to combine them.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device."
   }
 }

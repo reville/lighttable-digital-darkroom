@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← Personen",
     "☆ Favorites": "☆ Favorieten",
     "On Mac, right-click the photo preview and choose Copy.": "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Dezelfde persoon kan in afzonderlijke groepen verschijnen. Bekijk mogelijke overeenkomsten om ze samen te voegen.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wanneer er mogelijke overeenkomsten zijn, opent een sluitbare balk in Personen de beoordeling van overeenkomsten. Het sluiten van de balk wordt op dit apparaat onthouden."
   },
   "plurals": {
     " · {count} paired file linked": {

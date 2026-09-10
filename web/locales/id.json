@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← Orang",
     "☆ Favorites": "☆ Favorit",
     "On Mac, right-click the photo preview and choose Copy.": "Di Mac, klik kanan pratinjau foto dan pilih Salin.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Orang yang sama mungkin muncul dalam grup terpisah. Tinjau kemungkinan kecocokan untuk menggabungkannya.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4258,7 +4258,9 @@
     "← People": "← लोग",
     "☆ Favorites": "☆ पसंदीदा",
     "On Mac, right-click the photo preview and choose Copy.": "Mac पर फ़ोटो के पूर्वावलोकन पर राइट-क्लिक करें और कॉपी चुनें।",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "हैंडल का काम देखने के लिए उस पर पॉइंटर रखें। छिपे हुए पिन खींचे नहीं जा सकते।"
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "हैंडल का काम देखने के लिए उस पर पॉइंटर रखें। छिपे हुए पिन खींचे नहीं जा सकते।",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "एक ही व्यक्ति अलग-अलग समूहों में दिखाई दे सकता है। उन्हें मिलाने के लिए संभावित मेल की समीक्षा करें।",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "संभावित मेल उपलब्ध होने पर, लोग में बंद की जा सकने वाली पट्टी से मेल की समीक्षा खुलती है। इस डिवाइस पर पट्टी को बंद करने की स्थिति याद रखी जाती है।"
   },
   "plurals": {
     " · {count} paired file linked": {
