@@ -1446,6 +1446,7 @@
         {
           "title": "Kopiowanie zdjęcia",
           "paragraphs": [
+            "Na Macu kliknij podgląd zdjęcia prawym przyciskiem myszy i wybierz Kopiuj.",
             "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
           ]
         },
@@ -1652,6 +1653,7 @@
             "W Edytuj kształt przeciągnij uchwyt środkowy, aby przesunąć maskę, uchwyt osi, aby zmienić jej rozmiar, lub uchwyt zewnętrzny, aby ją obrócić. Przytrzymaj Shift podczas rysowania lub zmiany rozmiaru, aby gradient był okrągły."
           ],
           "tips": [
+            "Najedź na uchwyt, aby zobaczyć jego działanie. Ukrytych punktów nie można przeciągać.",
             "Kształt udostępnia też kontrolki Szerokość, Wysokość, Obrót i Wtapianie.",
             "Przeciągnięcie z dala od uchwytów powoduje przerysowanie wybranej maski promieniowej."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

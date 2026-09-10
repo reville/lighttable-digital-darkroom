@@ -1446,6 +1446,7 @@
         {
           "title": "Copiare una foto",
           "paragraphs": [
+            "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
             "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica."
           ]
         },
@@ -1652,6 +1653,7 @@
             "In Modifica forma, trascina la maniglia centrale per spostare la maschera, una delle maniglie degli assi per ridimensionarla o la maniglia esterna per ruotarla. Tieni premuto Maiusc durante il disegno o il ridimensionamento per rendere il gradiente circolare."
           ],
           "tips": [
+            "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati.",
             "Forma offre anche i controlli Larghezza, Altezza, Rotazione e Sfumatura.",
             "Trascinando lontano dalle sue maniglie si ridisegna la maschera radiale selezionata."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

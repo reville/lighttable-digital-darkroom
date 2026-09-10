@@ -1446,6 +1446,7 @@
         {
           "title": "Copiar uma foto",
           "paragraphs": [
+            "No Mac, clique com o botão direito na prévia da foto e escolha Copiar.",
             "Command-C copia a prévia da foto editada (até 2048 pixels de largura) para colar em outros apps. Os campos de texto mantêm a cópia normal; Command-Shift-C copia os ajustes de edição."
           ]
         },
@@ -1652,6 +1653,7 @@
             "Em Editar forma, arraste a alça central para mover a máscara, qualquer alça de eixo para redimensioná-la ou a alça externa para girá-la. Segure Shift enquanto desenha ou redimensiona para tornar o gradiente circular."
           ],
           "tips": [
+            "Passe o cursor sobre uma alça para ver sua função. Os pontos ocultos não podem ser arrastados.",
             "Forma também oferece controles de Largura, Altura, Rotação e Suavizar bordas.",
             "Arrastar para longe das alças redesenha a máscara radial selecionada."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

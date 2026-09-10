@@ -41,6 +41,12 @@ export function radialHandles(mask, width, height) {
   return {center: [...mask.center], x: at(rx, 0), y: at(0, ry), rotate: at(0, -ry - 24)};
 }
 
+export function radialHandleAt(mask, point, rect) {
+  return Object.entries(radialHandles(mask, rect.width, rect.height))
+    .find(([, location]) => Math.hypot((point[0] - location[0]) * rect.width,
+      (point[1] - location[1]) * rect.height) <= 11)?.[0] || null;
+}
+
 export function editRadial(mask, gesture, point, rect, round = false) {
   const minimum = Math.min(rect.width, rect.height);
   if (gesture.handle === 'center') {

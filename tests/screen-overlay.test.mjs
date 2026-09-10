@@ -130,7 +130,7 @@ test('radial and linear mask pins and brush outlines retain screen size', () => 
     source.slice(source.indexOf('function drawEditOverlayNow()'), source.indexOf('const previewFrameScheduler')) +
     '\nreturn drawEditOverlayNow;')(
     S, id => elements[id], { devicePixelRatio: 2 }, screenOverlayGeometry, prepareScreenOverlay,
-    () => {}, () => mask, radialHandles);
+    () => mask.type === 'brush' ? 'none' : 'crosshair', () => mask, radialHandles);
   for (const zoom of [1, 8, 32]) {
     image = rect(120 - 450 * (zoom - 1), 80 - 300 * (zoom - 1), 900 * zoom, 600 * zoom);
     for (const type of ['radial', 'linear', 'brush']) {

@@ -1446,6 +1446,7 @@
         {
           "title": "Menyalin foto",
           "paragraphs": [
+            "Di Mac, klik kanan pratinjau foto dan pilih Salin.",
             "Command-C menyalin pratinjau foto yang telah diedit (hingga lebar 2048 piksel) untuk ditempelkan ke aplikasi lain. Kolom teks tetap menggunakan penyalinan biasa; Command-Shift-C menyalin pengaturan pengeditan."
           ]
         },
@@ -1652,6 +1653,7 @@
             "Di Edit Bentuk, seret handle tengah untuk memindahkan masker, handle sumbu mana pun untuk mengubah ukurannya, atau handle luar untuk memutarnya. Tahan Shift saat menggambar atau mengubah ukuran agar gradien menjadi bulat."
           ],
           "tips": [
+            "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
             "Bentuk juga menyediakan kontrol Lebar, Tinggi, Rotasi, dan Bulu.",
             "Menyeret menjauh dari handle-nya akan menggambar ulang masker radial terpilih."
           ]
@@ -3267,5 +3269,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
 }

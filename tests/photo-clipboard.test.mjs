@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import test from 'node:test';
-import {createPhotoClipboard} from '../web/photo-clipboard.js';
+import {createPhotoClipboard, installPhotoCopyContextMenu} from '../web/photo-clipboard.js';
 
 const payload = {name:'a.jpg',state:{grade:{exposure:1},crop:{x:0,y:0,w:.5,h:.5}}};
 function harness(t, {native=false, failed=false}={}) {
@@ -67,4 +67,24 @@ test('Command/Ctrl-C copies images; Shift-C and text editing keep their behavior
   for(const target of [{tagName:'INPUT'},{tagName:'TEXTAREA'},{tagName:'DIV',isContentEditable:true}])handler(event({target}));
   handler(event({altKey:true}));context.S.editingName='loading.jpg';handler(event());
   assert.equal(copies,2);
+});
+
+
+test('preview context menu opens at the pointer and leaves ordinary controls alone',()=>{
+  const handlers={},requests=[];let ready=true,blurred=0;
+  const preview={addEventListener:(name,handler)=>handlers[name]=handler,
+    ownerDocument:{activeElement:{blur:()=>blurred++}}};
+  installPhotoCopyContextMenu(preview,{available:()=>ready,openMenu:point=>requests.push(point)});
+  const event=(extra={})=>({clientX:240,clientY:170,target:{closest:()=>null},
+    preventDefault(){this.prevented=true;},stopPropagation(){this.stopped=true;},
+    stopImmediatePropagation(){this.stopped=true;},...extra});
+  const right=event({button:2});handlers.pointerdown(right);assert.equal(right.stopped,true);
+  const control=event({button:0,ctrlKey:true});handlers.pointerdown(control);assert.equal(control.stopped,true);
+  const left=event({button:0});handlers.pointerdown(left);assert.equal(left.stopped,undefined);
+  const menu=event();handlers.contextmenu(menu);
+  assert.equal(menu.prevented,true);assert.equal(blurred,1);assert.deepEqual(requests,[{x:240,y:170}]);
+  const button=event({target:{closest:()=>({tagName:'BUTTON'})}});handlers.contextmenu(button);
+  assert.equal(button.prevented,undefined);assert.equal(blurred,1);
+  ready=false;const unavailable=event();handlers.contextmenu(unavailable);
+  assert.equal(unavailable.prevented,undefined);assert.equal(requests.length,1);
 });

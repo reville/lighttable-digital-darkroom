@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { editOverlayCursor } from '../web/edit-cursor.js';
 import { linearHandleAt, editLinear } from '../web/mask-shape.js';
 
 const source = fs.readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
@@ -15,7 +16,7 @@ function editor() {
   let mask = initial();
   const S = { activePane: 'maskPane', localPinsVisible: true, masks: [mask],
     maskRefineMode: null, brushSize: 0.1, brushFeather: 0.5, brushFlow: 1, brushDensity: 1 };
-  const handlers = {}, undo = [], saves = [];
+  const handlers = {}, undo = [], saves = [], samples = [];
   let captured = null;
   const overlay = {
     addEventListener: (type, handler) => { handlers[type] = handler; },
@@ -26,16 +27,17 @@ function editor() {
   const deps = { S, $: id => id === 'cv' ? {getBoundingClientRect: () => rect} : overlay,
     cur: () => ({}), selectedMask: () => mask, linearHandleAt, editLinear,
     overlayPoint: (event, r) => [(event.clientX - r.left) / r.width, (event.clientY - r.top) / r.height],
+    sampleMaskColorArea: (...args) => samples.push(args),
     pushUndo: () => undo.push(structuredClone(mask)), saveState: () => saves.push(structuredClone(mask)),
     drawGrade: () => {}, drawEditOverlay: () => {}, syncMaskPanel: () => {},
-    maskPointCount: () => 0, MAX_TOTAL_MASK_POINTS: 20000 };
+    maskPointCount: () => 0, MAX_TOTAL_MASK_POINTS: 20000, document: {addEventListener() {}}, window: {addEventListener() {}} };
   new Function(...Object.keys(deps), source.slice(
     source.indexOf("$('editOverlay').addEventListener('pointerdown'"),
     source.indexOf('/* ------------------------------------------------------------ film render */')))(...Object.values(deps));
   const fire = (type, point, extra = {}) => handlers[type]({ type, button: 0, pointerId: 1,
     clientX: rect.left + point[0] * rect.width, clientY: rect.top + point[1] * rect.height,
     stopPropagation() {}, preventDefault() {}, ...extra });
-  return { S, mask, undo, saves, fire, captured: () => captured };
+  return { S, mask, undo, saves, samples, fire, captured: () => captured };
 }
 
 for (const handle of ['start', 'end']) {
@@ -134,16 +136,30 @@ test('moving a diagonal gradient clamps a shared offset on both axes', () => {
 test('cursor distinguishes a draggable dot or line from drawing and painting', () => {
   const mask = initial(), overlay = { style: {}, classList: {toggle() {}} };
   const S = {activePane: 'maskPane', localPinsVisible: true, overlayHoverPoint: [0.25, 0.5]};
-  const sync = new Function('S', '$', 'selectedMask', 'linearHandleAt', source.slice(
+  const sync = new Function('S', '$', 'selectedMask', 'editOverlayCursor', source.slice(
     source.indexOf('function syncOverlayCursorClass()'), source.indexOf('function syncViewerChrome()')) +
     '\nreturn syncOverlayCursorClass;')(S,
-    id => id === 'cv' ? {getBoundingClientRect: () => rect} : overlay, () => mask, linearHandleAt);
+    id => id === 'cv' ? {getBoundingClientRect: () => rect} : overlay, () => mask, editOverlayCursor);
   sync(); assert.equal(overlay.style.cursor, 'grab');
   S.overlayHoverPoint = [0.5, 0.5]; sync(); assert.equal(overlay.style.cursor, 'grab');
   S.editGesture = {type: 'linear', handle: 'move'}; sync(); assert.equal(overlay.style.cursor, 'grabbing');
-  S.editGesture = null; S.overlayHoverPoint = [0.1, 0.1]; sync(); assert.equal(overlay.style.cursor, '');
+  S.editGesture = null; S.overlayHoverPoint = [0.1, 0.1]; sync(); assert.equal(overlay.style.cursor, 'crosshair');
   S.overlayHoverPoint = [0.25, 0.5]; S.localPinsVisible = false;
-  sync(); assert.equal(overlay.style.cursor, '');
-  S.localPinsVisible = true; S.maskRefineMode = 'add'; sync(); assert.equal(overlay.style.cursor, '');
-  S.maskRefineMode = null; S.maskColorPick = true; sync(); assert.equal(overlay.style.cursor, '');
+  sync(); assert.equal(overlay.style.cursor, 'crosshair');
+  S.localPinsVisible = true; S.maskRefineMode = 'add'; sync(); assert.equal(overlay.style.cursor, 'none');
+  S.maskRefineMode = null; S.maskColorPick = true; sync(); assert.equal(overlay.style.cursor, 'crosshair');
+});
+
+
+test('losing pointer capture clears the drag cursor without sampling an unfinished color area', () => {
+  const e = editor();
+  e.fire('pointerdown', [.25, .5]);
+  e.fire('lostpointercapture', [.25, .5]);
+  assert.equal(e.S.editGesture, null);
+  assert.equal(e.captured(), null);
+  e.S.maskColorPick = true;
+  e.fire('pointerdown', [.3, .4], {shiftKey:true});
+  e.fire('lostpointercapture', [.3, .4]);
+  assert.equal(e.S.editGesture, null);
+  assert.deepEqual(e.samples, []);
 });
