@@ -36,6 +36,7 @@ for key in ('XDG_DATA_DIRS', 'XDG_CONFIG_DIRS', 'XDG_CURRENT_DESKTOP', 'XDG_SESS
         environment[key] = os.environ[key]
 deadline, tokens, children = time.monotonic() + 210, set(), []
 report = {'ok': False, 'confinement': 'strict', 'web_onboarding_tested': False}
+report['proxy_resolver'] = environment.get('GIO_USE_PROXY_RESOLVER')
 signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
 
 def launch():
@@ -62,6 +63,8 @@ def connect(process):
     a.require(a.same_path(health.get('catalog'), root / 'catalog/library.sqlite3'), 'Unexpected catalog')
     photo = folder / 'smoke.png'
     a.require(photo.is_file(), 'Selected portal directory did not expose its photo')
+    report['selected_folder'] = str(folder)
+    report['portal_photo_readable'] = True
     a.render_photo(process, api, deadline, photo)
     return health, folder
 
@@ -97,10 +100,14 @@ try:
     report['ok'] = True
 except BaseException as error:
     report['error'] = a.redact(str(error), tokens)
+    report['startup_records'] = a.startup_snapshot(root)
     raise
 finally:
     for process in reversed(children):
         a.cleanup(process)
     if (root / 'desktop.log').exists():
         (output / 'desktop.log').write_text(a.redact((root / 'desktop.log').read_text(errors='replace')[-24000:], tokens))
+    server_log = root / 'state/lighttable/logs/server.log'
+    if server_log.exists():
+        (output / 'server.log').write_text(a.redact(server_log.read_text(errors='replace')[-24000:], tokens))
     (output / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

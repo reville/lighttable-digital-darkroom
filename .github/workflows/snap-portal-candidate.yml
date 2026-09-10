@@ -33,6 +33,10 @@ jobs:
           mkdir -p evidence
           snap connections lighttable > evidence/connections-before.txt
       - name: Native folder grant and catalog reopen without removable-media connection
+        env:
+          # Diagnostic only: determine whether the host's proxy portal blocks
+          # WebKit's loopback request. Remove this override before acceptance.
+          GIO_USE_PROXY_RESOLVER: dummy
         run: |
           timeout 250s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-portal-acceptance.sh
       - name: Explicit removable-media connection permits direct access
