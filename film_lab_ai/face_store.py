@@ -213,7 +213,10 @@ class FaceStore:
                     result.setdefault(row["photo"], []).append(row["name"])
         return result
 
-    def suggestions(self, limit=40):
+    def suggestions(self, limit=500):
+        # People counts the pairs still waiting, so the returned window has to
+        # cover the whole realistic pool. A small cap refilled itself after each
+        # merge or correction and pinned that count at the cap forever.
         if not self.path.exists():
             return []
         with self.connect() as db:
