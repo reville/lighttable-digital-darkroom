@@ -60,7 +60,7 @@ def connect(process):
               'Native shell did not start a healthy desktop server')
     a.require('/doc/' in str(folder) and folder.name == 'photos', 'Expected a document-portal folder grant')
     a.require(a.same_path(health.get('catalog'), root / 'catalog/library.sqlite3'), 'Unexpected catalog')
-    photo = folder / 'smoke.ppm'
+    photo = folder / 'smoke.png'
     a.require(photo.is_file(), 'Selected portal directory did not expose its photo')
     a.render_photo(process, api, deadline, photo)
     return health, folder
@@ -75,7 +75,7 @@ def capture(name):
 try:
     report['build'] = a.validate_bundle(bundle, 'be537f2f3e2e431ae6b42af716c2a8b365f57bab')
     try:
-        Path('/media/lighttable-portal/photos/smoke.ppm').read_bytes()
+        Path('/media/lighttable-portal/photos/smoke.png').read_bytes()
     except PermissionError:
         report['direct_removable_access_denied'] = True
     else:
@@ -83,7 +83,7 @@ try:
     desktop = launch()
     health, folder = connect(desktop)
     report['selected_folder'] = str(folder)
-    report['photo_sha256'] = hashlib.sha256((folder / 'smoke.ppm').read_bytes()).hexdigest()
+    report['photo_sha256'] = hashlib.sha256((folder / 'smoke.png').read_bytes()).hexdigest()
     capture('portal-photo')
     report['first_close'] = a.normal_close(desktop, health['pid'], deadline)
     a.cleanup(desktop)

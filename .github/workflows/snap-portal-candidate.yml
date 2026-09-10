@@ -29,10 +29,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends xvfb xauth openbox imagemagick xdotool dbus-x11 xdg-desktop-portal xdg-desktop-portal-gtk
           sudo mkdir -p /media/lighttable-portal/photos
           sudo chown -R "$USER:$USER" /media/lighttable-portal
-          python3 - <<'PY'
-          from pathlib import Path
-          Path('/media/lighttable-portal/photos/smoke.ppm').write_bytes(b'P6\n128 128\n255\n' + bytes([50,150,210]) * 128 * 128)
-          PY
+          convert -size 128x128 xc:'#3296d2' /media/lighttable-portal/photos/smoke.png
           mkdir -p evidence
           snap connections lighttable > evidence/connections-before.txt
       - name: Native folder grant and catalog reopen without removable-media connection
@@ -41,7 +38,7 @@ jobs:
       - name: Explicit removable-media connection permits direct access
         run: |
           sudo snap connect lighttable:removable-media
-          timeout 30s snap run --shell lighttable.cli -c 'test -r /media/lighttable-portal/photos/smoke.ppm'
+          timeout 30s snap run --shell lighttable.cli -c 'test -r /media/lighttable-portal/photos/smoke.png'
           snap connections lighttable > evidence/connections-connected.txt
           sudo snap disconnect lighttable:removable-media
       - name: Retain actual native evidence and remove ephemeral installation
