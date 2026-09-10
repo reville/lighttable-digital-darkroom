@@ -24,11 +24,18 @@ openbox > "$common/portal-evidence/openbox.log" 2>&1 & children+=("$!")
       window=$(xdotool search --onlyvisible --name '^Choose a photo folder$' 2>/dev/null | head -1 || true)
       if [[ -n "$window" ]]; then
         import -window root "$common/portal-evidence/folder-chooser.png"
-        xdotool windowactivate --sync "$window" key --clearmodifiers ctrl+l
-        xdotool type --clearmodifiers --delay 20 '/media/lighttable-portal/photos/'
-        xdotool key --clearmodifiers Return
+        xdotool windowactivate --sync "$window"
+        sleep 2
+        xdotool key --clearmodifiers ctrl+l
         sleep 1
-        xdotool key --clearmodifiers alt+o
+        xdotool type --clearmodifiers --delay 20 '/media/lighttable-portal/photos/'
+        sleep 1
+        xdotool key --clearmodifiers Return
+        sleep 2
+        import -window root "$common/portal-evidence/folder-entered.png"
+        if xdotool search --onlyvisible --name '^Choose a photo folder$' >/dev/null 2>&1; then
+          xdotool key --clearmodifiers alt+s
+        fi
         selected=true
       fi
     fi
