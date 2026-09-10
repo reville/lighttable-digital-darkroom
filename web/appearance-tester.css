@@ -12,7 +12,7 @@
 
 /* Keep photographic/color swatches, ratings, verdicts and switch mechanics
    semantic. Ordinary active controls share the experimental text/icon color. */
-:root:is([data-appearance-color],[data-appearance-no-borders]) button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face)) {
+:root:is([data-appearance-color],[data-appearance-no-borders]) button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face,.apple-photos-card)) {
   color:var(--appearance-accent,var(--on-ink)) !important;
 }
 :root[data-appearance-color] :is(.source-row.on,.folder-row.on,.collection-row.on,.edit-item.on,.dd-option[aria-selected="true"]) {
@@ -22,7 +22,7 @@
 
 /* Preserve geometry and keyboard focus outlines. Transparent borders and no
    active fill/underline leave text and icons as the only active-button cue. */
-:root[data-appearance-no-borders] button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face)) {
+:root[data-appearance-no-borders] button:is(.on,[aria-pressed="true"],[aria-selected="true"],[aria-current="true"]):not(:where(.hsl-dots button,.grading-wheel,.label-btn,.cull-mark,.cull-star,.stars-edit .s,.section-switch,.film-preview-card,.preset-browser-apply,.person-face,.apple-photos-card)) {
   border-color:transparent !important;
   background:transparent !important;
   box-shadow:none !important;
