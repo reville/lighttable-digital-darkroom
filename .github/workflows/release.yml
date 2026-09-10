@@ -179,6 +179,7 @@ jobs:
         env:
           VERSION: ${{ needs.prepare.outputs.macos_version }}
         run: |
+          /usr/libexec/PlistBuddy -c 'Add :LightTableSourceDirty bool false' dist/LightTable.app/Contents/Info.plist 2>/dev/null || /usr/libexec/PlistBuddy -c 'Set :LightTableSourceDirty false' dist/LightTable.app/Contents/Info.plist
           /usr/libexec/PlistBuddy -c 'Set :SUEnableAutomaticChecks false' dist/LightTable.app/Contents/Info.plist
           scripts/sign-app.sh dist/LightTable.app -
           codesign --verify --deep --strict dist/LightTable.app
