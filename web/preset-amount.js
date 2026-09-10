@@ -1,5 +1,6 @@
 import { cloneValue } from './state.js';
 import { GRADE_DEFAULTS } from './gl.js';
+import { LOOK_GRADE_KEYS, CREATIVE_FILM_KEYS } from './presets.js';
 
 const GROUPS = ['params', 'grade', 'masks', 'heals', 'optics'];
 function equal(a, b) {
@@ -90,12 +91,141 @@ export function blendPresetState(base, target, amount) {
   return result;
 }
 
+export function presetControlledSettings(preset) {
+  if (!preset) return { grade: [], film: [], filmMode: 'preserve' };
+  const look = preset.scope === 'look';
+  const gradeKeys = [];
+  const includedGrade = preset.includedGrade || Object.keys(preset.grade || {});
+  for (const key of includedGrade) {
+    if (Object.prototype.hasOwnProperty.call(preset.grade || {}, key)) {
+      if (!look || LOOK_GRADE_KEYS.has(key)) {
+        gradeKeys.push(key);
+      }
+    }
+  }
+  const filmKeys = [];
+  const rawFilmKeys = preset.includedFilm || Object.keys(preset.params || {});
+  if (look && preset.params) {
+    for (const key of rawFilmKeys) {
+      if (CREATIVE_FILM_KEYS.has(key) && Object.prototype.hasOwnProperty.call(preset.params, key)) {
+        filmKeys.push(key);
+      }
+    }
+  } else if (preset.includeFilm && preset.params) {
+    for (const key of rawFilmKeys) {
+      if (key !== 'profile_enabled' && Object.prototype.hasOwnProperty.call(preset.params, key)) {
+        filmKeys.push(key);
+      }
+    }
+  }
+  const filmMode = preset.filmMode || (preset.includeFilm ? 'on' : 'preserve');
+  return { grade: gradeKeys, film: filmKeys, filmMode };
+}
+
 /** Preserve manual changes outside the preset; retire it if a controlled setting changed. */
 export function reconcilePresetAdjustment(adjustment, current) {
   if (!adjustment?.base || !adjustment?.target) return null;
   const expected = blendPresetState(adjustment.base, adjustment.target,
     adjustment.enabled ? adjustment.amount : 0);
   const next = cloneValue(adjustment);
+  const controlled = adjustment.controlled;
+
+  if (controlled && typeof controlled === 'object') {
+    const controlledGrade = new Set(controlled.grade || []);
+    const controlledFilm = new Set(controlled.film || []);
+    const filmMode = controlled.filmMode || 'preserve';
+    const controlledOptics = new Set(controlled.optics || []);
+
+    // 1. Film profile enabled check
+    const currentFilmOn = current?.params?.profile_enabled !== false;
+    const expectedFilmOn = expected?.params?.profile_enabled !== false;
+    if (filmMode === 'on' && !currentFilmOn && expectedFilmOn) {
+      return null;
+    }
+    if (filmMode === 'off' && currentFilmOn && !expectedFilmOn) {
+      return null;
+    }
+    if (currentFilmOn !== expectedFilmOn) {
+      if (filmMode === 'preserve') {
+        next.base.params = { ...(next.base.params || {}), profile_enabled: currentFilmOn };
+        next.target.params = { ...(next.target.params || {}), profile_enabled: currentFilmOn };
+      } else {
+        return null;
+      }
+    }
+
+    // 2. Check params
+    const currentParams = current?.params || {};
+    const expectedParams = expected?.params || {};
+    for (const key of new Set([...Object.keys(expectedParams), ...Object.keys(currentParams)])) {
+      if (key === 'profile_enabled') continue;
+      if (equal(currentParams[key], expectedParams[key])) continue;
+      if (controlledFilm.has(key)) {
+        return null;
+      }
+      if (currentParams[key] === undefined) {
+        delete next.base.params[key];
+        delete next.target.params[key];
+      } else {
+        next.base.params = next.base.params || {};
+        next.target.params = next.target.params || {};
+        next.base.params[key] = cloneValue(currentParams[key]);
+        next.target.params[key] = cloneValue(currentParams[key]);
+      }
+    }
+
+    // 3. Check grade
+    const currentGrade = current?.grade || {};
+    const expectedGrade = expected?.grade || {};
+    for (const key of new Set([...Object.keys(expectedGrade), ...Object.keys(currentGrade)])) {
+      if (equal(currentGrade[key], expectedGrade[key])) continue;
+      if (controlledGrade.has(key)) {
+        return null;
+      }
+      if (currentGrade[key] === undefined) {
+        delete next.base.grade[key];
+        delete next.target.grade[key];
+      } else {
+        next.base.grade = next.base.grade || {};
+        next.target.grade = next.target.grade || {};
+        next.base.grade[key] = cloneValue(currentGrade[key]);
+        next.target.grade[key] = cloneValue(currentGrade[key]);
+      }
+    }
+
+    // 4. Check optics
+    const currentOptics = current?.optics || {};
+    const expectedOptics = expected?.optics || {};
+    for (const key of new Set([...Object.keys(expectedOptics), ...Object.keys(currentOptics)])) {
+      if (equal(currentOptics[key], expectedOptics[key])) continue;
+      if (controlledOptics.has(key)) {
+        return null;
+      }
+      if (currentOptics[key] === undefined) {
+        delete next.base.optics[key];
+        delete next.target.optics[key];
+      } else {
+        next.base.optics = next.base.optics || {};
+        next.target.optics = next.target.optics || {};
+        next.base.optics[key] = cloneValue(currentOptics[key]);
+        next.target.optics[key] = cloneValue(currentOptics[key]);
+      }
+    }
+
+    // 5. Check masks & heals
+    for (const group of ['masks', 'heals']) {
+      if (equal(current[group], expected[group])) continue;
+      const controlledList = controlled[group];
+      if (Array.isArray(controlledList) && controlledList.length > 0) {
+        return null;
+      }
+      next.base[group] = cloneValue(current[group] || []);
+      next.target[group] = cloneValue(current[group] || []);
+    }
+
+    return next;
+  }
+
   function reconcile(base, target, expected, current) {
     if (equal(current, expected)) return true;
     if (equal(base, target)) return true;
