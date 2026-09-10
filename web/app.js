@@ -97,7 +97,7 @@ import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
 import { linearHandleAt, editLinear, radialHandles, radialHandleAt, editRadial } from '/web/mask-shape.js';
 import { editOverlayCursor, healHandleAt as findHealHandle, installCanvasHandleCursor } from '/web/edit-cursor.js';
 import { installMaskCurve } from '/web/mask-curve.js';
-import { createGridLayout, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
+import { createGridLayout, gridRowNeighbour, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 import { bindThumbnailErrors } from '/web/thumbnail-errors.js';
 import { createPhotoDisplayStatus } from '/web/photo-display-status.js';
 
@@ -7010,6 +7010,18 @@ async function go(i) {
   prefetch();
 }
 
+function scrollGridToImage(image) {
+  if (!image || !$('library').classList.contains('show') || !_gridLayout) return;
+  const position = _gridLayout.positions[_gridIndexByName.get(image.name)];
+  if (!position) return;
+  const top = gridViewportTop();
+  const inset = $('library').querySelector('.library-head').offsetHeight;
+  if (position.top < top + inset) $('library').scrollTop += position.top - top - inset;
+  else if (position.bottom > top + $('library').clientHeight) {
+    $('library').scrollTop += position.bottom - top - $('library').clientHeight;
+  }
+}
+
 function goRelative(direction) {
   const list = visible();
   if (!list.length) return;
@@ -7019,19 +7031,31 @@ function goRelative(direction) {
     : (direction > 0 ? 0 : list.length - 1);
   const next = list[nextIndex];
   if (next) {
-    if ($('library').classList.contains('show') && _gridLayout) {
-      const position = _gridLayout.positions[_gridIndexByName.get(next.name)];
-      if (position) {
-        const top = gridViewportTop();
-        const inset = $('library').querySelector('.library-head').offsetHeight;
-        if (position.top < top + inset) $('library').scrollTop += position.top - top - inset;
-        else if (position.bottom > top + $('library').clientHeight) {
-          $('library').scrollTop += position.bottom - top - $('library').clientHeight;
-        }
-      }
-    }
+    scrollGridToImage(next);
     go(S.images.indexOf(next));
   }
+}
+
+/* Up and down in the grid move the selection a row, the way culling expects;
+ * the browser would otherwise scroll the library and leave the photo behind.
+ * Returns false when there is no grid to move within, so the caller can let
+ * the key do its ordinary thing. */
+function goGridRow(direction) {
+  if (!$('library').classList.contains('show')) return false;
+  const list = visible();
+  if (!list.length) return false;
+  // A stale layout would move by the wrong number of columns, so lay out
+  // first; the work is the same as one scroll frame and mostly short-circuits.
+  renderGrid();
+  if (!_gridLayout || _gridList !== list) return false;
+  const index = _gridIndexByName.get(cur()?.name);
+  const next = index === undefined
+    ? (direction > 0 ? list[0] : list[list.length - 1])
+    : list[gridRowNeighbour(_gridLayout, index, direction)];
+  if (!next) return false;
+  scrollGridToImage(next);
+  go(S.images.indexOf(next));
+  return true;
 }
 
 const _rawDefaultCache = new Map();
@@ -9880,7 +9904,8 @@ document.addEventListener('keydown', (e) => {
   if (meta && e.key.toLowerCase() === 'a') {
     e.preventDefault(); void setAllPhotoSelection(!e.shiftKey); return;
   }
-  if (cur() && S.editingName !== cur().name && !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+  if (cur() && S.editingName !== cur().name &&
+      !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
   if (meta && e.key.toLowerCase() === 'z') {
     e.preventDefault(); e.shiftKey ? redo() : undo(); return;
   }
@@ -10015,6 +10040,10 @@ document.addEventListener('keydown', (e) => {
     if (SURVEY && SURVEY.isOpen) SURVEY.step(1); else goRelative(1);
   } else if (e.key === 'ArrowLeft') {
     if (SURVEY && SURVEY.isOpen) SURVEY.step(-1); else goRelative(-1);
+  } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    if (SURVEY && SURVEY.isOpen) SURVEY.stepRow(direction);
+    else if (!goGridRow(direction)) return;
   }
   else if (KEYS.pick.includes(k)) setStatus('approved');
   else if (KEYS.reject.includes(k)) setStatus('skipped');

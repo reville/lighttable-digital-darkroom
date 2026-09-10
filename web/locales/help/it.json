@@ -241,7 +241,7 @@
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
             "In una griglia, usa il cursore Dimensione per cambiare la dimensione delle miniature.",
-            "Usa i tasti freccia sinistra e destra per spostarti tra le foto. In Dettagli, Spazio alterna Adatta e 1:1 quando l'area foto ha il focus."
+            "Usa i tasti freccia sinistra e destra per spostarti tra le foto. In entrambe le griglie, le frecce su e giù passano alla foto sopra o sotto invece di scorrere. In Dettagli, Spazio alterna Adatta e 1:1 quando l'area foto ha il focus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Seleziona i candidati in una griglia e premi N, oppure apri Info → Panoramica selezione.",
-            "Fai clic su una foto per rendere attiva quella cella della panoramica. Usa le frecce sinistra e destra per spostarti tra le celle.",
+            "Fai clic su una foto per rendere attiva quella cella della panoramica. Usa le frecce sinistra e destra per spostarti tra le celle e le frecce su e giù per spostarti tra le righe.",
             "Usa la barra strumenti di marcatura oppure le scorciatoie per contrassegno, valutazione ed etichetta sulla cella attiva.",
             "Fai clic su × su una cella per rimuoverla dalla panoramica senza eliminarla o rifiutarla. Fai doppio clic su una cella per aprire quella foto in Dettagli.",
             "Fai clic su Chiudi o premi Esc per uscire da Panoramica."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

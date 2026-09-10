@@ -241,7 +241,7 @@
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
             "Dans une grille, utilisez le curseur Taille pour modifier la taille des vignettes.",
-            "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus."
+            "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans l’une ou l’autre grille, les flèches haut et bas passent à la photo du dessus ou du dessous au lieu de faire défiler. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Sélectionnez des candidats dans une grille et appuyez sur N, ou ouvrez Infos → Vue d'ensemble de la sélection.",
-            "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre.",
+            "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre, et les flèches haut et bas pour passer d’une ligne à l’autre.",
             "Utilisez la barre d’outils de marquage ou les raccourcis de drapeau, de note et d’étiquette sur la cellule active.",
             "Cliquez sur × dans une cellule pour la retirer de la vue d’ensemble sans la supprimer ni la rejeter. Double-cliquez sur une cellule pour ouvrir cette photo dans Détails.",
             "Cliquez sur Fermer ou appuyez sur Échap pour quitter Vue d’ensemble."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

@@ -237,7 +237,7 @@
           "steps": [
             "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
             "In a grid, use the Size slider to change thumbnail size.",
-            "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus."
+            "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus."
           ]
         },
         {
@@ -403,7 +403,7 @@
           ],
           "steps": [
             "Select candidates in a grid and press N, or open Info → Survey selection.",
-            "Click a photo to make that survey cell active. Use left and right arrows to move between cells.",
+            "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.",
             "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.",
             "Click × on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
             "Click Close or press Escape to leave Survey."
