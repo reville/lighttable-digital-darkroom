@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Katalog berada di dalam {catalogSyncService}. Basis data di dalam folder yang sedang sinkron adalah penyebab umum kerusakan.",
     "The catalog was left unchanged.": "Katalog dibiarkan tidak berubah.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Katalog dipulihkan dari cadangan terverifikasi; salinan yang rusak ada di folder Recovery.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Model SFace INT8 yang compact membandingkan wajah manusia yang sejajar. Pengelompokan otomatis menggunakan aturan kemiripan yang konservatif; kemungkinan kecocokan tetap terpisah untuk ditinjau. Wajah baru yang cocok dengan orang bernama akan disarankan untuk konfirmasi.",
     "The current catalog is backed up first, then replaced by this one.": "Katalog saat ini dicadangkan terlebih dahulu, lalu diganti dengan yang ini.",
     "The desktop Trash service (gio) is unavailable": "Layanan Tempat Sampah desktop (gio) tidak tersedia",
     "The desktop app checks its signed update feed.": "Aplikasi desktop memeriksa umpan pembaruan bertandatangannya.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Di Mac, klik kanan pratinjau foto dan pilih Salin.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Orang yang sama mungkin muncul dalam grup terpisah. Tinjau kemungkinan kecocokan untuk menggabungkannya.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Model ringkas SFace INT8 membandingkan wajah manusia yang disejajarkan. Wajah baru dapat bergabung dengan grup tanpa nama atau, dengan bukti yang lebih kuat, grup bernama. Kecocokan ambigu tetap terpisah untuk ditinjau. Pemindaian mempertahankan grup, nama, dan koreksi yang ada; mengubah aturan pencocokan tidak otomatis menggabungkan grup yang sudah ada di pustaka Anda."
   },
   "plurals": {
     " · {count} paired file linked": {

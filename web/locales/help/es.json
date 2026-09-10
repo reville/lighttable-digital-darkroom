@@ -660,7 +660,7 @@
         {
           "title": "Qué esperar",
           "paragraphs": [
-            "El modelo compacto SFace INT8 compara rostros humanos alineados. La agrupación automática usa reglas de similitud conservadoras; las posibles coincidencias permanecen separadas para su revisión. Se sugieren para confirmación nuevos rostros que coincidan con una persona con nombre.",
+            "El modelo compacto SFace INT8 compara rostros humanos alineados. Los rostros nuevos pueden unirse a grupos sin nombre o, con pruebas más sólidas, a grupos con nombre. Las coincidencias ambiguas permanecen separadas para su revisión. Los escaneos conservan los grupos, nombres y correcciones existentes; cambiar las reglas de coincidencia no combina automáticamente los grupos que ya están en tu biblioteca.",
             "Los rostros pequeños, borrosos, obstruidos, de perfil y con una diferencia de edad considerable pueden pasarse por alto o dividirse entre grupos. El modelo también puede hacer coincidencias incorrectas. Los rostros que aparecen juntos en una misma foto no se emparejan automáticamente; sigue siendo posible una combinación manual para espejos y collages. Esta función no agrupa mascotas ni proporciona una precisión de identidad garantizada."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

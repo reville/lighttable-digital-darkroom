@@ -660,7 +660,7 @@
         {
           "title": "Czego się spodziewać",
           "paragraphs": [
-            "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Automatyczne grupowanie używa zachowawczych reguł podobieństwa; możliwe dopasowania pozostają osobno do przeglądu. Nowe twarze pasujące do nazwanej osoby są sugerowane do potwierdzenia.",
+            "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Nowe twarze mogą trafiać do grup bez nazwy lub, przy mocniejszych dowodach, do grup nazwanych. Niejednoznaczne dopasowania pozostają oddzielne do przeglądu. Skanowanie zachowuje istniejące grupy, nazwy i poprawki; zmiana reguł dopasowania nie łączy automatycznie grup już obecnych w bibliotece.",
             "Małe, nieostre, zasłonięte, z profilu oraz wyraźnie różniące się wiekiem twarze mogą zostać pominięte lub podzielone między grupy. Model może też błędnie dopasowywać twarze. Twarze występujące razem na jednym zdjęciu nie są automatycznie dopasowywane; ręczne scalenie pozostaje możliwe w przypadku luster i kolaży. Ta funkcja nie grupuje zwierząt domowych ani nie zapewnia gwarantowanej dokładności identyfikacji."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "แค็ตตาล็อกอยู่ภายใน {catalogSyncService} ฐานข้อมูลที่อยู่ในโฟลเดอร์ที่ซิงค์อยู่เป็นสาเหตุที่พบบ่อยของความเสียหาย",
     "The catalog was left unchanged.": "แค็ตตาล็อกไม่ได้เปลี่ยนแปลง",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "แค็ตตาล็อกถูกกู้คืนจากข้อมูลสำรองที่ยืนยันแล้ว; สำเนาที่เสียหายอยู่ในโฟลเดอร์ Recovery",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "โมเดล SFace INT8 แบบกะทัดรัดจะเปรียบเทียบใบหน้าคนที่จัดแนวแล้ว การจัดกลุ่มอัตโนมัติใช้กฎความคล้ายคลึงที่ระมัดระวัง การจับคู่ที่เป็นไปได้จะยังคงแยกไว้เพื่อตรวจทาน ใบหน้าใหม่ที่ตรงกับบุคคลที่มีชื่อแล้วจะถูกแนะนำให้ยืนยัน",
     "The current catalog is backed up first, then replaced by this one.": "แค็ตตาล็อกปัจจุบันจะถูกสำรองข้อมูลก่อน แล้วจึงแทนที่ด้วยอันนี้",
     "The desktop Trash service (gio) is unavailable": "บริการถังขยะของเดสก์ท็อป (gio) ไม่พร้อมใช้งาน",
     "The desktop app checks its signed update feed.": "แอปเดสก์ท็อปตรวจสอบฟีดการอัปเดตที่ลงนามแล้ว",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "บน Mac ให้คลิกขวาที่ภาพตัวอย่างแล้วเลือกคัดลอก",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "เลื่อนตัวชี้ไปเหนือจุดจับเพื่อดูการทำงาน ไม่สามารถลากหมุดที่ซ่อนไว้ได้",
     "Some people may appear in separate groups. Review possible matches to combine them.": "บุคคลเดียวกันอาจปรากฏในหลายกลุ่มแยกกัน ตรวจสอบรายการที่อาจตรงกันเพื่อรวมกลุ่ม",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "เมื่อมีรายการที่อาจตรงกัน แถบที่ปิดได้ในหน้าบุคคลจะเปิดการตรวจสอบรายการที่ตรงกัน อุปกรณ์นี้จะจดจำการปิดแถบ"
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "เมื่อมีรายการที่อาจตรงกัน แถบที่ปิดได้ในหน้าบุคคลจะเปิดการตรวจสอบรายการที่ตรงกัน อุปกรณ์นี้จะจดจำการปิดแถบ",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "โมเดล SFace INT8 ขนาดเล็กเปรียบเทียบใบหน้ามนุษย์ที่จัดแนวแล้ว ใบหน้าใหม่อาจเข้าร่วมกลุ่มที่ยังไม่มีชื่อ หรือกลุ่มที่มีชื่อเมื่อมีหลักฐานการจับคู่ที่ชัดเจนกว่า รายการที่ไม่แน่ชัดจะยังแยกไว้เพื่อตรวจสอบ การสแกนจะเก็บกลุ่ม ชื่อ และการแก้ไขที่มีอยู่ไว้ การเปลี่ยนกฎการจับคู่จะไม่รวมกลุ่มที่มีอยู่แล้วในคลังโดยอัตโนมัติ"
   },
   "plurals": {
     " · {count} paired file linked": {

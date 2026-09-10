@@ -660,7 +660,7 @@
         {
           "title": "Neler beklenmeli",
           "paragraphs": [
-            "Kompakt SFace INT8 modeli, hizalanmış insan yüzlerini karşılaştırır. Otomatik gruplama, temkinli benzerlik kuralları kullanır; olası eşleşmeler inceleme için ayrı tutulur. Adlandırılmış bir kişiyle eşleşen yeni yüzler doğrulama için önerilir.",
+            "Kompakt SFace INT8 modeli hizalanmış insan yüzlerini karşılaştırır. Yeni yüzler adsız gruplara veya daha güçlü kanıtlarla adlandırılmış gruplara katılabilir. Belirsiz eşleşmeler inceleme için ayrı kalır. Taramalar mevcut grupları, adları ve düzeltmeleri korur; eşleştirme kurallarını değiştirmek kitaplığınızdaki mevcut grupları otomatik olarak birleştirmez.",
             "Küçük, bulanık, gizlenmiş, profil ve belirgin biçimde yaş farkı olan yüzler kaçırılabilir ya da gruplar arasında bölünebilir. Model yanlış eşleşmeler de yapabilir. Aynı fotoğrafta birlikte görünen yüzler otomatik olarak eşleştirilmez; aynalar ve kolajlar için manuel birleştirme yine de mümkündür. Bu özellik evcil hayvanları gruplamaz veya kimlik doğruluğunu garanti etmez."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

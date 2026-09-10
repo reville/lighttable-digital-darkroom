@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "De catalogus bevindt zich in {catalogSyncService}. Databases in een synchroniserende map zijn een veelvoorkomende oorzaak van beschadiging.",
     "The catalog was left unchanged.": "De catalogus is ongewijzigd gebleven.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "De catalogus is hersteld vanuit een geverifieerde back-up; de beschadigde kopie staat in de map Recovery.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Automatische groepering gebruikt conservatieve gelijkenisregels; mogelijke matches blijven gescheiden voor beoordeling. Nieuwe gezichten die overeenkomen met een benoemde persoon worden voorgesteld ter bevestiging.",
     "The current catalog is backed up first, then replaced by this one.": "De huidige catalogus wordt eerst geback-upt en daarna vervangen door deze.",
     "The desktop Trash service (gio) is unavailable": "De Prullenmandservice van het bureaublad (gio) is niet beschikbaar",
     "The desktop app checks its signed update feed.": "De desktopapp controleert zijn ondertekende updatefeed.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Dezelfde persoon kan in afzonderlijke groepen verschijnen. Bekijk mogelijke overeenkomsten om ze samen te voegen.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wanneer er mogelijke overeenkomsten zijn, opent een sluitbare balk in Personen de beoordeling van overeenkomsten. Het sluiten van de balk wordt op dit apparaat onthouden."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wanneer er mogelijke overeenkomsten zijn, opent een sluitbare balk in Personen de beoordeling van overeenkomsten. Het sluiten van de balk wordt op dit apparaat onthouden.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Het compacte SFace INT8-model vergelijkt uitgelijnde menselijke gezichten. Nieuwe gezichten kunnen worden toegevoegd aan naamloze groepen of, bij sterkere aanwijzingen, aan benoemde groepen. Onduidelijke overeenkomsten blijven apart voor beoordeling. Scans behouden bestaande groepen, namen en correcties; gewijzigde regels voor overeenkomsten voegen groepen die al in uw bibliotheek staan niet automatisch samen."
   },
   "plurals": {
     " · {count} paired file linked": {

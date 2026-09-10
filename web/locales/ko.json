@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "카탈로그가 {catalogSyncService} 안에 있습니다. 동기화 중인 폴더 안의 데이터베이스는 손상의 흔한 원인입니다.",
     "The catalog was left unchanged.": "카탈로그는 변경되지 않았습니다.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "검증된 백업에서 카탈로그를 복원했습니다. 손상된 복사본은 Recovery 폴더에 있습니다.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "컴팩트 SFace INT8 모델은 정렬된 사람 얼굴을 비교합니다. 자동 그룹화는 보수적인 유사도 규칙을 사용하며, 가능한 일치는 검토를 위해 별도로 유지됩니다. 이름이 지정된 사람과 일치하는 새 얼굴은 확인을 위해 제안됩니다.",
     "The current catalog is backed up first, then replaced by this one.": "현재 카탈로그를 먼저 백업한 다음 이 카탈로그로 바꿉니다.",
     "The desktop Trash service (gio) is unavailable": "데스크톱 휴지통 서비스(gio)를 사용할 수 없습니다",
     "The desktop app checks its signed update feed.": "데스크톱 앱이 서명된 업데이트 피드를 확인합니다.",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac에서 사진 미리보기를 마우스 오른쪽 버튼으로 클릭하고 복사를 선택하세요.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "핸들 위에 포인터를 올리면 해당 동작을 확인할 수 있습니다. 숨겨진 핀은 드래그할 수 없습니다.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "같은 사람이 여러 그룹에 나뉘어 표시될 수 있습니다. 일치 후보를 검토하여 그룹을 합치세요.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "일치 후보가 있으면 사람 화면에 닫을 수 있는 안내 표시줄이 나타나 일치 검토 화면을 열 수 있습니다. 표시줄을 닫은 상태는 이 기기에 저장됩니다."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "일치 후보가 있으면 사람 화면에 닫을 수 있는 안내 표시줄이 나타나 일치 검토 화면을 열 수 있습니다. 표시줄을 닫은 상태는 이 기기에 저장됩니다.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "경량 SFace INT8 모델은 정렬된 사람 얼굴을 비교합니다. 새 얼굴은 이름 없는 그룹에 추가될 수 있으며, 더 확실한 일치 근거가 있으면 이름 있는 그룹에도 추가될 수 있습니다. 모호한 일치는 검토를 위해 별도로 유지됩니다. 스캔은 기존 그룹, 이름, 수정 사항을 유지하며, 일치 규칙을 변경해도 라이브러리에 있는 기존 그룹이 자동으로 합쳐지지 않습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

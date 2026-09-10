@@ -649,7 +649,7 @@
         {
           "title": "What to expect",
           "paragraphs": [
-            "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.",
+            "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.",
             "Small, blurry, obscured, profile, and substantially age-separated faces may be missed or split across groups. The model can also make incorrect matches. Faces appearing together in one photo are not automatically matched; a manual merge remains possible for mirrors and collages. This feature does not group pets or provide guaranteed identity accuracy."
           ]
         }

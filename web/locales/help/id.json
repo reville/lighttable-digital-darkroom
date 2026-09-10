@@ -660,7 +660,7 @@
         {
           "title": "Yang perlu diharapkan",
           "paragraphs": [
-            "Model SFace INT8 yang compact membandingkan wajah manusia yang sejajar. Pengelompokan otomatis menggunakan aturan kemiripan yang konservatif; kemungkinan kecocokan tetap terpisah untuk ditinjau. Wajah baru yang cocok dengan orang bernama akan disarankan untuk konfirmasi.",
+            "Model ringkas SFace INT8 membandingkan wajah manusia yang disejajarkan. Wajah baru dapat bergabung dengan grup tanpa nama atau, dengan bukti yang lebih kuat, grup bernama. Kecocokan ambigu tetap terpisah untuk ditinjau. Pemindaian mempertahankan grup, nama, dan koreksi yang ada; mengubah aturan pencocokan tidak otomatis menggabungkan grup yang sudah ada di pustaka Anda.",
             "Wajah yang kecil, buram, terhalang, profil, dan yang berbeda usia secara signifikan dapat terlewat atau terpisah ke beberapa grup. Model juga dapat membuat kecocokan yang salah. Wajah yang muncul bersama dalam satu foto tidak dicocokkan secara otomatis; penggabungan manual tetap dimungkinkan untuk cermin dan kolase. Fitur ini tidak mengelompokkan hewan peliharaan atau memberikan akurasi identitas yang dijamin."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
 }

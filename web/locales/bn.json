@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2929,7 +2929,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "ক্যাটালগটি {catalogSyncService}-এর ভিতরে রয়েছে। সিঙ্ক করা ফোল্ডারের ভিতরে থাকা ডেটাবেস দুর্নীতির একটি সাধারণ কারণ।",
     "The catalog was left unchanged.": "ক্যাটালগটি অপরিবর্তিত রাখা হয়েছে।",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "ক্যাটালগটি একটি যাচাইকৃত ব্যাকআপ থেকে পুনঃস্থাপন করা হয়েছে; ক্ষতিগ্রস্ত কপি Recovery ফোল্ডারে আছে।",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "কম্প্যাক্ট SFace INT8 model সারিবদ্ধ human faces তুলনা করে। Automatic grouping সংযত similarity rules ব্যবহার করে; possible matches পর্যালোচনার জন্য আলাদা থাকে। নামকরণ করা কোনো ব্যক্তির সঙ্গে মেলা নতুন মুখসমূহ নিশ্চিতকরণের জন্য প্রস্তাব করা হয়।",
     "The current catalog is backed up first, then replaced by this one.": "বর্তমান ক্যাটালগটি আগে ব্যাকআপ করা হয়, তারপর এটির দ্বারা প্রতিস্থাপিত হয়।",
     "The desktop Trash service (gio) is unavailable": "ডেস্কটপ ট্র্যাশ সার্ভিস (gio) অনুপলব্ধ",
     "The desktop app checks its signed update feed.": "ডেস্কটপ অ্যাপটি তার স্বাক্ষরিত আপডেট ফিড পরীক্ষা করে।",
@@ -4256,7 +4255,8 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।",
     "Some people may appear in separate groups. Review possible matches to combine them.": "একই ব্যক্তি আলাদা আলাদা দলে দেখা যেতে পারেন। দলগুলো একত্র করতে সম্ভাব্য মিলগুলো পর্যালোচনা করুন।",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।"
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "কমপ্যাক্ট SFace INT8 মডেল সারিবদ্ধ মানুষের মুখ তুলনা করে। নতুন মুখ নামহীন দলে যোগ হতে পারে, অথবা আরও জোরালো প্রমাণ থাকলে নাম দেওয়া দলে যোগ হতে পারে। অস্পষ্ট মিলগুলো পর্যালোচনার জন্য আলাদা থাকে। স্ক্যান বিদ্যমান দল, নাম এবং সংশোধন বজায় রাখে; মিল খোঁজার নিয়ম বদলালে লাইব্রেরিতে আগে থেকে থাকা দলগুলো স্বয়ংক্রিয়ভাবে একত্র হয় না।"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -13,7 +13,9 @@ from pathlib import Path
 
 import numpy as np
 
-AUTO_THRESHOLD = 0.55
+AUTO_THRESHOLD = 0.50
+# A name is user-curated identity, so require stronger evidence to extend it.
+NAMED_AUTO_THRESHOLD = 0.60
 REVIEW_THRESHOLD = 0.40
 AUTO_MARGIN = 0.08
 
@@ -114,7 +116,7 @@ class FaceStore:
                     face_id, group = identifier(), None
                     candidates = []
                     for gid, p in profiles.items():
-                        if p["name"] or p["hidden"] or photo in p["photos"] or gid in used_groups:
+                        if p["hidden"] or photo in p["photos"] or gid in used_groups:
                             continue
                         # Require both a strong exemplar and agreement across
                         # reference faces, avoiding single-link chaining.
@@ -122,9 +124,15 @@ class FaceStore:
                         score = min(float(scores.max()), float(scores.mean()) + 0.04)
                         candidates.append((score, gid))
                     candidates.sort(reverse=True)
-                    if candidates and candidates[0][0] >= AUTO_THRESHOLD and (
-                            len(candidates) == 1 or candidates[0][0] - candidates[1][0] >= AUTO_MARGIN):
-                        group = candidates[0][1]
+                    if candidates:
+                        score, best_group = candidates[0]
+                        threshold = NAMED_AUTO_THRESHOLD if profiles[best_group]["name"] else AUTO_THRESHOLD
+                        # Rank named and unnamed groups together, including those
+                        # below their own threshold, so a plausible rival still
+                        # prevents an ambiguous automatic assignment.
+                        if score >= threshold and (
+                                len(candidates) == 1 or score - candidates[1][0] >= AUTO_MARGIN):
+                            group = best_group
                     if group is None:
                         group = identifier()
                         db.execute("INSERT INTO groups(id) VALUES (?)", (group,))
