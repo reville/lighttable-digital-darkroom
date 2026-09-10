@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "无法将照片复制到剪贴板",
     "Copy a photo": "复制照片",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C 可复制编辑后的照片预览（宽度最高 2048 像素），以便粘贴到其他应用中。文本框保留正常的复制操作；Command-Shift-C 用于复制编辑设置。",
-    "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，右键点击照片预览并选择“复制”。"
+    "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，右键点击照片预览并选择“复制”。",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "将指针悬停在控制柄上可查看其操作。隐藏的控制点无法拖动。"
   },
   "plurals": {
     " · {count} paired file linked": {

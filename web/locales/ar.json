@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "تعذر نسخ الصورة إلى الحافظة",
     "Copy a photo": "نسخ صورة",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "ينسخ Command-C معاينة الصورة المعدّلة (بعرض يصل إلى 2048 بكسل) للصقها في تطبيقات أخرى. تحتفظ الحقول النصية بالنسخ المعتاد؛ وينسخ Command-Shift-C إعدادات التحرير.",
-    "On Mac, right-click the photo preview and choose Copy.": "على Mac، انقر بزر الماوس الأيمن على معاينة الصورة واختر نسخ."
+    "On Mac, right-click the photo preview and choose Copy.": "على Mac، انقر بزر الماوس الأيمن على معاينة الصورة واختر نسخ.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "مرّر المؤشر فوق مقبض لمعرفة وظيفته. لا يمكن سحب الدبابيس المخفية."
   },
   "plurals": {
     " · {count} paired file linked": {

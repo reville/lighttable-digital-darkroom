@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "Không thể sao chép ảnh vào khay nhớ tạm",
     "Copy a photo": "Sao chép ảnh",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C sao chép bản xem trước của ảnh đã chỉnh sửa (rộng tối đa 2048 pixel) để dán vào ứng dụng khác. Các ô văn bản vẫn sao chép như bình thường; Command-Shift-C sao chép cài đặt chỉnh sửa.",
-    "On Mac, right-click the photo preview and choose Copy.": "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép."
+    "On Mac, right-click the photo preview and choose Copy.": "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn."
   },
   "plurals": {
     " · {count} paired file linked": {

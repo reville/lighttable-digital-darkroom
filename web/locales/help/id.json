@@ -1615,6 +1615,7 @@
             "Di Edit Bentuk, seret handle tengah untuk memindahkan masker, handle sumbu mana pun untuk mengubah ukurannya, atau handle luar untuk memutarnya. Tahan Shift saat menggambar atau mengubah ukuran agar gradien menjadi bulat."
           ],
           "tips": [
+            "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
             "Bentuk juga menyediakan kontrol Lebar, Tinggi, Rotasi, dan Bulu.",
             "Menyeret menjauh dari handle-nya akan menggambar ulang masker radial terpilih."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

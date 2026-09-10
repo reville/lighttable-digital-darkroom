@@ -1615,6 +1615,7 @@
             "Dans Modifier la forme, faites glisser la poignée centrale pour déplacer le masque, l’une des poignées d’axe pour le redimensionner, ou la poignée extérieure pour le faire pivoter. Maintenez Maj en dessinant ou en redimensionnant pour rendre le dégradé circulaire."
           ],
           "tips": [
+            "Survolez une poignée pour voir son action. Les repères masqués ne peuvent pas être déplacés.",
             "Forme propose aussi les réglages Largeur, Hauteur, Rotation et Contour progressif.",
             "Le fait de le faire glisser loin de ses poignées redessine le masque radial sélectionné."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "Impossibile copiare la foto negli appunti",
     "Copy a photo": "Copiare una foto",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica.",
-    "On Mac, right-click the photo preview and choose Copy.": "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia."
+    "On Mac, right-click the photo preview and choose Copy.": "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati."
   },
   "plurals": {
     " · {count} paired file linked": {

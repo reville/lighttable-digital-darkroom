@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -1667,6 +1667,7 @@
     "Hold-key slider control",
     "Horizontal",
     "Hourly",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.",
     "Hover over the photo counter in the top bar to see what its numbers mean.",
     "Hue",
     "Hue shift",

@@ -1615,6 +1615,7 @@
             "Sleep in Vorm bewerken de middelste handgreep om het masker te verplaatsen, een van de ashandgrepen om de grootte aan te passen, of de buitenste handgreep om het te roteren. Houd Shift ingedrukt tijdens het tekenen of vergroten/verkleinen om het verloop rond te maken."
           ],
           "tips": [
+            "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept.",
             "Vorm biedt ook de regelaars Breedte, Hoogte, Rotatie en Vervaging.",
             "Als u van de handgrepen weg sleept, wordt het geselecteerde radiale masker opnieuw getekend."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

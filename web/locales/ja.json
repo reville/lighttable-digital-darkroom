@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "写真をクリップボードにコピーできませんでした",
     "Copy a photo": "写真をコピー",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-Cで編集済み写真のプレビュー（幅最大2048ピクセル）をコピーし、他のアプリに貼り付けられます。テキスト欄では通常のコピーが維持され、Command-Shift-Cで編集設定をコピーします。",
-    "On Mac, right-click the photo preview and choose Copy.": "Macでは、写真のプレビューを右クリックして「コピー」を選択します。"
+    "On Mac, right-click the photo preview and choose Copy.": "Macでは、写真のプレビューを右クリックして「コピー」を選択します。",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "ハンドルにポインターを合わせると、その操作がわかります。非表示のピンはドラッグできません。"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1615,6 +1615,7 @@
             "Trong Chỉnh sửa hình dạng, kéo tay nắm giữa để di chuyển mặt nạ, tay nắm theo trục để thay đổi kích thước, hoặc tay nắm ngoài để xoay nó. Giữ Shift trong khi vẽ hoặc thay đổi kích thước để làm cho dốc trở nên tròn."
           ],
           "tips": [
+            "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn.",
             "Hình dạng cũng cung cấp các điều khiển Chiều rộng, Chiều cao, Xoay và Làm mềm mép.",
             "Kéo ra xa các tay nắm sẽ vẽ lại mặt nạ hình tròn đã chọn."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

@@ -1615,6 +1615,7 @@
             "Em Editar forma, arraste a alça central para mover a máscara, qualquer alça de eixo para redimensioná-la ou a alça externa para girá-la. Segure Shift enquanto desenha ou redimensiona para tornar o gradiente circular."
           ],
           "tips": [
+            "Passe o cursor sobre uma alça para ver sua função. Os pontos ocultos não podem ser arrastados.",
             "Forma também oferece controles de Largura, Altura, Rotação e Suavizar bordas.",
             "Arrastar para longe das alças redesenha a máscara radial selecionada."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

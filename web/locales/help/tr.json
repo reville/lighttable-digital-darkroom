@@ -1615,6 +1615,7 @@
             "Şekli Düzenle’de maskeyi taşımak için merkez tutamacını, yeniden boyutlandırmak için eksen tutamaçlarından birini, döndürmek için de dış tutamacı sürükleyin. Gradyanı daire biçimli yapmak için çizerken veya yeniden boyutlandırırken Shift tuşunu basılı tutun."
           ],
           "tips": [
+            "İşlevini görmek için işaretçiyi bir tutamacın üzerine getirin. Gizli iğneler sürüklenemez.",
             "Şekil ayrıca Genişlik, Yükseklik, Döndürme ve Yumuşatma kontrolleri sunar.",
             "Tutamaçlarından uzağa sürüklemek seçili radyal maskeyi yeniden çizer."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

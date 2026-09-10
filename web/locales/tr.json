@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "Fotoğraf panoya kopyalanamadı",
     "Copy a photo": "Fotoğraf kopyalama",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C, düzenlenmiş fotoğraf önizlemesini (en fazla 2048 piksel genişliğinde) diğer uygulamalara yapıştırmak için kopyalar. Metin alanlarında normal kopyalama korunur; Command-Shift-C düzenleme ayarlarını kopyalar.",
-    "On Mac, right-click the photo preview and choose Copy.": "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin."
+    "On Mac, right-click the photo preview and choose Copy.": "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "İşlevini görmek için işaretçiyi bir tutamacın üzerine getirin. Gizli iğneler sürüklenemez."
   },
   "plurals": {
     " · {count} paired file linked": {

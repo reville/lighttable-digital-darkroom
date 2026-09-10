@@ -421,7 +421,7 @@
       {
         "title": "Shape a radial gradient",
         "paragraphs": ["In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."],
-        "tips": ["Shape also provides Width, Height, Rotation, and Feather controls.", "Dragging away from its handles redraws the selected radial mask."]
+        "tips": ["Hover over a handle to see its action. Hidden pins cannot be dragged.", "Shape also provides Width, Height, Rotation, and Feather controls.", "Dragging away from its handles redraws the selected radial mask."]
       },
       {
         "title": "Adjust a local tone curve",
@@ -438,6 +438,7 @@
       {"path": "web/index.html", "anchor": "id=\"maskBrushFlow\""},
       {"path": "web/mask-raster.js", "anchor": "export function accumulateStroke("},
       {"path": "web/mask-raster.js", "anchor": "export function autoMaskValues("},
+      {"path": "web/edit-cursor.js", "anchor": "export function editOverlayCursor"},
       {"path": "web/mask-shape.js", "anchor": "export function editRadial("},
       {"path": "web/mask-shape.js", "anchor": "export function editLinear("},
       {"path": "web/mask-curve.js", "anchor": "export function installMaskCurve("},

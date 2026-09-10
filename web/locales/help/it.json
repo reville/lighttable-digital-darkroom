@@ -1615,6 +1615,7 @@
             "In Modifica forma, trascina la maniglia centrale per spostare la maschera, una delle maniglie degli assi per ridimensionarla o la maniglia esterna per ruotarla. Tieni premuto Maiusc durante il disegno o il ridimensionamento per rendere il gradiente circolare."
           ],
           "tips": [
+            "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati.",
             "Forma offre anche i controlli Larghezza, Altezza, Rotazione e Sfumatura.",
             "Trascinando lontano dalle sue maniglie si ridisegna la maschera radiale selezionata."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

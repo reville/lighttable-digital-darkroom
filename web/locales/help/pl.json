@@ -1615,6 +1615,7 @@
             "W Edytuj kształt przeciągnij uchwyt środkowy, aby przesunąć maskę, uchwyt osi, aby zmienić jej rozmiar, lub uchwyt zewnętrzny, aby ją obrócić. Przytrzymaj Shift podczas rysowania lub zmiany rozmiaru, aby gradient był okrągły."
           ],
           "tips": [
+            "Najedź na uchwyt, aby zobaczyć jego działanie. Ukrytych punktów nie można przeciągać.",
             "Kształt udostępnia też kontrolki Szerokość, Wysokość, Obrót i Wtapianie.",
             "Przeciągnięcie z dala od uchwytów powoduje przerysowanie wybranej maski promieniowej."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

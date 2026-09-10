@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4191,7 +4191,8 @@
     "Could not copy photo to clipboard": "Impossible de copier la photo dans le presse-papiers",
     "Copy a photo": "Copier une photo",
     "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copie l’aperçu de la photo retouchée (jusqu’à 2048 pixels de large) pour le coller dans d’autres apps. Les champs de texte conservent la copie habituelle ; Command-Shift-C copie les réglages de retouche.",
-    "On Mac, right-click the photo preview and choose Copy.": "Sur Mac, faites un clic droit sur l’aperçu de la photo et choisissez Copier."
+    "On Mac, right-click the photo preview and choose Copy.": "Sur Mac, faites un clic droit sur l’aperçu de la photo et choisissez Copier.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Survolez une poignée pour voir son action. Les repères masqués ne peuvent pas être déplacés."
   },
   "plurals": {
     " · {count} paired file linked": {

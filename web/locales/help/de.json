@@ -1615,6 +1615,7 @@
             "Ziehe in Form bearbeiten den mittleren Griff, um die Maske zu verschieben, einen der Achsgriffe, um ihre Größe zu ändern, oder den äußeren Griff, um sie zu drehen. Halte beim Zeichnen oder Ändern der Größe die Umschalttaste gedrückt, um den Verlauf rund zu machen."
           ],
           "tips": [
+            "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen.",
             "Form bietet außerdem die Regler Breite, Höhe, Drehung und Weiche Kante.",
             "Wenn du vom Griff wegziehst, wird die ausgewählte radiale Maske neu gezeichnet."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }

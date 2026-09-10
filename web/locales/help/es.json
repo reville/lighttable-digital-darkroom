@@ -1615,6 +1615,7 @@
             "En Editar forma, arrastre el tirador central para mover la máscara, cualquiera de los tiradores de eje para cambiar su tamaño o el tirador exterior para rotarla. Mantenga presionada Shift mientras dibuja o cambia el tamaño para que el degradado sea circular."
           ],
           "tips": [
+            "Pasa el cursor sobre un tirador para ver su función. Los puntos ocultos no se pueden arrastrar.",
             "Forma también proporciona controles de Ancho, Altura, Rotación y Desvanecer.",
             "Al arrastrarla lejos de sus tiradores, se redibuja la máscara radial seleccionada."
           ]
@@ -3215,5 +3216,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
+  "sourceDigest": "eba627cbedd6e5b0b6ae4bef3f773c259a8deb72d78439de6614b80d65c41422"
 }
