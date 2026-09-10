@@ -23,6 +23,12 @@ plugs:
   shared-memory:
     private: true
 
+slots:
+  lighttable-dbus:
+    interface: dbus
+    bus: session
+    name: app.lighttable.LightTable
+
 apps:
   lighttable:
     extensions: [gnome]
@@ -30,6 +36,7 @@ apps:
     command-chain: [bin/lighttable-snap-environment]
     desktop: LightTable/share/applications/app.lighttable.LightTable.desktop
     common-id: app.lighttable.LightTable
+    slots: [lighttable-dbus]
     plugs: [home, network, network-bind, removable-media, shared-memory]
   cli:
     extensions: [gnome]

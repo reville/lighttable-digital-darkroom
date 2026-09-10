@@ -25,6 +25,8 @@ Python server and Rust engines exchange data without exposing host shared memory
 embedded client and optional verified model downloads. File dialogs use portals.
 `home` supports existing photo libraries and CLI file arguments; `removable-media`
 is optional and does not normally auto-connect.
+The session D-Bus slot permits GTK application registration only under
+`app.lighttable.LightTable`; the desktop cannot claim arbitrary service names.
 
 After installing a local development candidate with `snap install --dangerous`,
 the desktop command is `snap run lighttable` and the CLI is `snap run lighttable.cli`.

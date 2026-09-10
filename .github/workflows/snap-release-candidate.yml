@@ -1,14 +1,19 @@
 name: Snap release candidate
 on:
   workflow_dispatch:
+    inputs:
+      candidate_run_id:
+        description: Optional existing candidate run; accepted only if its Snap recipe and generator match this revision
+        type: string
+        default: ''
   push:
     branches: [codex/linux-package-channels-20260909]
     paths:
-      - .github/workflows/snap-release-candidate.yml
       - packaging/snap/**
-      - scripts/linux/*snap*
+      - scripts/linux/make-snap-package.py
 permissions:
   contents: read
+  actions: read
 jobs:
   snap:
     runs-on: ubuntu-24.04
@@ -18,16 +23,54 @@ jobs:
         with:
           persist-credentials: false
       - name: Download the immutable public Linux release
+        if: inputs.candidate_run_id == ''
         run: |
           mkdir -p dist evidence
           curl -fL --retry 2 --max-time 180 https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz -o dist/LightTable-0.5.0-linux-x86_64.tar.gz
           echo 'eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01  dist/LightTable-0.5.0-linux-x86_64.tar.gz' | sha256sum -c -
           python3 scripts/linux/make-snap-package.py dist/LightTable-0.5.0-linux-x86_64.tar.gz --version 0.5.0 --source-revision be537f2f3e2e431ae6b42af716c2a8b365f57bab --output-dir .build/snap
       - name: Build strict confinement package
+        if: inputs.candidate_run_id == ''
         working-directory: .build/snap
         run: |
           sudo snap install snapcraft --classic
           sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-0.5.0-linux-x86_64.snap"
+      - name: Validate requested candidate reuse
+        if: inputs.candidate_run_id != ''
+        env:
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$CANDIDATE_RUN_ID" =~ ^[1-9][0-9]*$ ]] || { echo 'Use a numeric candidate run ID'; exit 1; }
+          revision=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID" --jq .head_sha)
+          [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
+          git fetch --no-tags --depth=1 origin "$revision"
+          git diff --exit-code "$revision" HEAD -- packaging/snap scripts/linux/make-snap-package.py
+          mkdir -p evidence dist
+          printf '%s\n' "$CANDIDATE_RUN_ID $revision" > evidence/reused-candidate.txt
+      - uses: actions/download-artifact@v4
+        if: inputs.candidate_run_id != ''
+        with:
+          name: LightTable-snap-release-candidate
+          path: .build/reused-snap
+          run-id: ${{ inputs.candidate_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify the reused artifact and exact release identity
+        if: inputs.candidate_run_id != ''
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,shutil
+          root=pathlib.Path('.build/reused-snap')
+          package=root/'dist/LightTable-0.5.0-linux-x86_64.snap'
+          digest=(root/'dist/SHA256SUMS').read_text().split()[0]
+          assert hashlib.file_digest(package.open('rb'),'sha256').hexdigest()==digest
+          identity=json.loads((root/'evidence/candidate.json').read_text())
+          assert identity['version']=='0.5.0' and identity['source_revision']=='be537f2f3e2e431ae6b42af716c2a8b365f57bab'
+          assert identity['sha256']=='eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01'
+          shutil.copy2(package,'dist/'+package.name)
+          shutil.copy2(root/'evidence/candidate.json','evidence/candidate.json')
+          shutil.copy2(root/'evidence/snapcraft.yaml','evidence/snapcraft.yaml')
+          PY
       - name: Install and exercise packaged runtime
         run: |
           sudo snap install --dangerous dist/LightTable-0.5.0-linux-x86_64.snap
@@ -55,6 +98,9 @@ jobs:
         run: |
           cp -R "$HOME/snap/lighttable/common/acceptance-evidence" evidence/desktop 2>/dev/null || true
           cp .build/snap/{candidate.json,snapcraft.yaml} evidence/ 2>/dev/null || true
+          for log in "$HOME/snap/lighttable/common/acceptance-evidence/"*.log; do
+            if [[ -f "$log" ]]; then tail -60 "$log"; fi
+          done
           sudo journalctl -k --no-pager | tail -300 > evidence/kernel-tail.txt
           if snap list lighttable >/dev/null 2>&1; then sudo snap remove --purge lighttable; fi
           if [[ -f dist/LightTable-0.5.0-linux-x86_64.snap ]]; then sha256sum dist/*.snap > dist/SHA256SUMS; fi
