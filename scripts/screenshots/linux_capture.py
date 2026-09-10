@@ -187,7 +187,7 @@ def main():
                             if field in patch:
                                 merged[field] = {**(current.get(field) or {}), **patch[field]}
                         merged = shot_geometry.fit_state(
-                            merged, shot, bundle / "Python/bin/python3", bundle / "Resources/LightTable")
+                            merged, shot, bundle / "Python/bin/python3", bundle / "Resources/LightTable", photos / shot["source"])
                         for field in ("name", "provenance", "width", "height", "raw", "kind", "folder",
                                       "sourceName", "displayName", "fileKey", "mtime", "ai", "virtual"):
                             merged.pop(field, None)
