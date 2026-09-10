@@ -28,7 +28,7 @@ jobs:
           python3 scripts/flatpak/source-manifest.py --source-revision be537f2f3e2e431ae6b42af716c2a8b365f57bab --output .build/source-flatpak/manifest.json
           python3 scripts/flatpak/source-preflight.py packaging/flatpak/source-status.json
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder appstream desktop-file-utils xvfb xauth dbus-x11
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder elfutils appstream desktop-file-utils xvfb xauth dbus-x11
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak-builder --user --install-deps-from=flathub --install-deps-only --assumeyes .build/source-flatpak/build .build/source-flatpak/manifest.json
           flatpak info --user org.gnome.Sdk//50 > evidence/sdk.txt
