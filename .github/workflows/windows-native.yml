@@ -7,11 +7,43 @@ on:
         description: Windows build run containing a successfully built LightTable-windows-x64 artifact
         required: true
         type: string
+      runner:
+        description: Windows Server x64 or Windows 11 ARM (x64 application under emulation)
+        required: false
+        default: windows-2022
+        type: choice
+        options:
+          - windows-2022
+          - windows-11-arm
+      source_revision:
+        description: Exact package source when the build workflow ran from a different revision
+        required: false
+        default: ''
+        type: string
+      installer_sha256:
+        description: Independently verified signed installer SHA-256; enables installer acceptance
+        required: false
+        default: ''
+        type: string
   workflow_call:
     inputs:
       build_run_id:
         description: Windows build run containing a successfully built LightTable-windows-x64 artifact
         required: true
+        type: string
+
+      runner:
+        required: false
+        default: windows-2022
+        type: string
+      source_revision:
+        description: Exact package source when the build workflow ran from a different revision
+        required: false
+        default: ''
+        type: string
+      installer_sha256:
+        required: false
+        default: ''
         type: string
 
 permissions:
@@ -20,8 +52,9 @@ permissions:
 
 jobs:
   native:
-    runs-on: windows-2022
-    timeout-minutes: 10
+    # Do not let workflow_call inputs select arbitrary self-hosted runners.
+    runs-on: ${{ inputs.runner == 'windows-11-arm' && 'windows-11-arm' || 'windows-2022' }}
+    timeout-minutes: 25
     steps:
       - name: Check out the dispatched native tester
         uses: actions/checkout@v4
@@ -31,42 +64,69 @@ jobs:
 
       - name: Verify selected package build
         id: selected
-        uses: actions/github-script@v7
+        shell: bash
         env:
+          GH_TOKEN: ${{ github.token }}
           BUILD_RUN_ID: ${{ inputs.build_run_id }}
-        with:
-          script: |
-            const fs = require('node:fs/promises');
-            const evidence = '.build/windows-native-recheck-evidence';
-            await fs.mkdir(evidence, {recursive: true});
-            const requested = process.env.BUILD_RUN_ID;
-            const selection = {build_run_id: requested, tester_sha: context.sha,
-              tester_run_id: context.runId, selection_verified: false};
-            await fs.writeFile(`${evidence}/selection.json`, JSON.stringify(selection, null, 2) + '\n');
-            if (!/^[1-9][0-9]{0,14}$/.test(requested)) {
-              throw new Error('build_run_id must be a positive numeric workflow run ID');
-            }
-            const run_id = Number(requested);
-            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id});
-            if (run.path !== '.github/workflows/windows-build.yml'
-                || run.head_repository?.full_name !== `${context.repo.owner}/${context.repo.repo}`
-                || !/^[0-9a-f]{40}$/.test(run.head_sha)) {
-              throw new Error('Select a Windows build run from this repository with a valid source commit');
-            }
-            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun,
-              {...context.repo, run_id, filter: 'latest', per_page: 100});
-            if (!jobs.some(job => job.name === 'package' && job.steps?.some(step =>
-                step.name === 'Build and smoke-test package' && step.conclusion === 'success'))) {
-              throw new Error('The selected run did not successfully finish building and smoke-testing its package');
-            }
-            Object.assign(selection, {selection_verified: true, bundle_source_sha: run.head_sha,
-              build_run_url: run.html_url, build_run_attempt: run.run_attempt,
-              artifact_name: 'LightTable-windows-x64'});
-            await fs.writeFile(`${evidence}/selection.json`, JSON.stringify(selection, null, 2) + '\n');
-            core.setOutput('source_sha', run.head_sha);
-            core.info(`Tester ${context.sha}; package source ${run.head_sha}; build run ${run_id}`);
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          EXPECTED_RUNNER: ${{ inputs.runner || 'windows-2022' }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+          TESTER_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PYCODE'
+          import json, os, re, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts/release')
+          from prepare_candidate import build_run
+          if os.environ['EXPECTED_RUNNER'] not in ('windows-2022', 'windows-11-arm'):
+              raise SystemExit('Unsupported acceptance runner')
+          if os.environ['INSTALLER_SHA256'] and not re.fullmatch(r'[0-9a-f]{64}', os.environ['INSTALLER_SHA256']):
+              raise SystemExit('An exact lowercase installer SHA-256 is required')
+          run = build_run(os.environ['BUILD_RUN_ID'], 'windows-x64')
+          source = os.environ['SOURCE_REVISION'] or run['head_sha']
+          if not re.fullmatch(r'[0-9a-f]{40}', source):
+              raise SystemExit('A full source revision is required')
+          evidence = Path('.build/windows-native-recheck-evidence')
+          evidence.mkdir(parents=True, exist_ok=True)
+          (evidence / 'selection.json').write_text(json.dumps({
+              'build_run_id': os.environ['BUILD_RUN_ID'], 'build_workflow_revision': run['head_sha'],
+              'bundle_source_sha': source, 'tester_sha': os.environ['TESTER_SHA'],
+              'selection_verified': True, 'artifact_name': 'LightTable-windows-x64'}, indent=2) + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('source_sha=' + source + '\n')
+          PYCODE
+
+      - name: Record and verify Windows test host
+        shell: pwsh
+        env:
+          EXPECTED_RUNNER: ${{ inputs.runner || 'windows-2022' }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $OS = Get-CimInstance Win32_OperatingSystem
+          $Arch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+          @{
+            caption = $OS.Caption
+            version = $OS.Version
+            build = $OS.BuildNumber
+            product_type = $OS.ProductType
+            os_architecture = $Arch
+            application_architecture = "x64"
+            execution = $(if ($Arch -eq "Arm64") { "x64 emulation" } else { "native x64" })
+            image_version = $env:ImageVersion
+            runner = $env:EXPECTED_RUNNER
+            fresh_offline_webview2_absent_test = $false
+          } | ConvertTo-Json | Set-Content .build/windows-native-recheck-evidence/host.json
+          if ($env:EXPECTED_RUNNER -eq "windows-2022" -and
+              ($OS.ProductType -eq 1 -or $Arch -ne "X64")) {
+            throw "Expected a Windows Server x64 host"
+          }
+          if ($env:EXPECTED_RUNNER -eq "windows-11-arm" -and
+              ($OS.ProductType -ne 1 -or [int]$OS.BuildNumber -lt 22000 -or $Arch -ne "Arm64")) {
+            throw "Expected a Windows 11 ARM client host"
+          }
 
       - name: Download the selected Windows package
+        id: download
         uses: actions/download-artifact@v4
         with:
           name: LightTable-windows-x64
@@ -75,14 +135,69 @@ jobs:
           run-id: ${{ inputs.build_run_id }}
           github-token: ${{ github.token }}
 
+      - name: Check the signed installer on the selected host
+        if: inputs.installer_sha256 != ''
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
+          BUNDLE_SOURCE_SHA: ${{ steps.selected.outputs.source_sha }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $Clock = [Diagnostics.Stopwatch]::StartNew()
+          $Report = @{ok = $false; installer_sha256 = $env:INSTALLER_SHA256}
+          try {
+            if ($env:INSTALLER_SHA256 -cnotmatch '^[0-9a-f]{64}$') { throw "Expected a SHA-256 digest" }
+            $Version = & ./scripts/windows/verify-native-candidate.ps1 -Directory .build/windows-native-download `
+              -SourceRevision $env:BUNDLE_SOURCE_SHA -InstallerSha256 $env:INSTALLER_SHA256
+            $TagSource = (& gh api "repos/$env:GITHUB_REPOSITORY/commits/v$Version" --jq '.sha').Trim()
+            if ($LASTEXITCODE -ne 0 -or $TagSource -cne $env:BUNDLE_SOURCE_SHA) {
+              throw "Signed candidate version tag does not select its source"
+            }
+            $Report.bundle_source_sha = $env:BUNDLE_SOURCE_SHA
+            $Installers = @(Get-ChildItem .build/windows-native-download -Filter '*-setup.exe')
+            if ($Installers.Count -ne 1) { throw "Expected one installer" }
+            $Installer = $Installers[0]
+            if ((Get-FileHash $Installer.FullName -Algorithm SHA256).Hash.ToLowerInvariant() -cne $env:INSTALLER_SHA256) {
+              throw "Installer differs from the independently verified candidate"
+            }
+            $Signature = Get-AuthenticodeSignature $Installer.FullName
+            if ($Signature.Status -ne 'Valid') { throw "Installer signature is not valid" }
+            $Report.signer = $Signature.SignerCertificate.Subject
+            $Report.version = $Version
+            & ./scripts/windows/installer-smoke.ps1 -Installer $Installer.FullName -Version $Version -ExpectedPublisher 'Chonkers LLC' -VerifyStoreSignatures -SignatureReport .build/windows-native-recheck-evidence/installed-signatures.json
+            if ($LASTEXITCODE -ne 0) { throw "Installer acceptance failed" }
+            $Report.ok = $true
+          } catch {
+            $Report.error = $_.Exception.Message
+            throw
+          } finally {
+            $Report.elapsed_seconds = [Math]::Round($Clock.Elapsed.TotalSeconds, 3)
+            $Report | ConvertTo-Json -Depth 5 | Set-Content .build/windows-native-recheck-evidence/installer.json
+          }
+
       - name: Verify bundle identity and run native acceptance
+        if: ${{ !cancelled() && steps.download.conclusion == 'success' }}
         shell: pwsh
         env:
           BUNDLE_SOURCE_SHA: ${{ steps.selected.outputs.source_sha }}
           TESTER_SHA: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          INSTALLER_SHA256: ${{ inputs.installer_sha256 }}
         run: |
           $ErrorActionPreference = "Stop"
           Set-StrictMode -Version Latest
+          if ($env:INSTALLER_SHA256) {
+            # Still run native checks after an installer failure, but never execute
+            # an archive that failed the candidate's source/hash verification.
+            $CandidateVersion = & ./scripts/windows/verify-native-candidate.ps1 -Directory .build/windows-native-download `
+              -SourceRevision $env:BUNDLE_SOURCE_SHA -InstallerSha256 $env:INSTALLER_SHA256
+            $TagSource = (& gh api "repos/$env:GITHUB_REPOSITORY/commits/v$CandidateVersion" --jq '.sha').Trim()
+            if ($LASTEXITCODE -ne 0 -or $TagSource -cne $env:BUNDLE_SOURCE_SHA) {
+              throw "Candidate tag/source identity did not pass"
+            }
+          }
           # Diagnostic tooling stays outside the release archive. The pinned
           # profiler reads stacks only after failure, from test-owned Python.
           $ProfilerArchive = "./.build/windows-stack-dumper.zip"
@@ -101,6 +216,12 @@ jobs:
           if ($Manifest.source_revision -cne $env:BUNDLE_SOURCE_SHA) {
             throw "The downloaded bundle source does not match the selected Windows build run"
           }
+          if ($env:SOURCE_REVISION) {
+            $TagSource = (& gh api "repos/$env:GITHUB_REPOSITORY/commits/v$($Manifest.version)" --jq '.sha').Trim()
+            if ($LASTEXITCODE -ne 0 -or $TagSource -cne $env:BUNDLE_SOURCE_SHA) {
+              throw "Explicit package source does not match its immutable version tag"
+            }
+          }
           $Tester = (& git rev-parse HEAD).Trim()
           if ($LASTEXITCODE -ne 0 -or $Tester -cne $env:TESTER_SHA) { throw "The native tester checkout has an unexpected source commit" }
           @{
@@ -110,8 +231,17 @@ jobs:
             archive = $Archive.Name
             archive_sha256 = (Get-FileHash -LiteralPath $Archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
           } | ConvertTo-Json | Set-Content -LiteralPath ./.build/windows-native-recheck-evidence/identity.json -Encoding utf8
-          & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native --stack-dumper $StackDumper
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          . ./scripts/windows/build-timing.ps1
+          $Timing = New-BuildTiming -Path .build/windows-native-recheck-evidence/native-timings.json -Version $Manifest.version
+          $Succeeded = $false
+          try {
+            Start-BuildStage $Timing "native-client-smoke"
+            & "$Bundle/Python/python.exe" -B ./scripts/windows/desktop-smoke.py $Bundle --timeout 240 --report-dir ./.build/windows-native-recheck-evidence/native --stack-dumper $StackDumper
+            if ($LASTEXITCODE -ne 0) { throw "Native acceptance failed with exit code $LASTEXITCODE" }
+            $Succeeded = $true
+          } finally {
+            Complete-BuildTiming $Timing $Succeeded
+          }
 
       - name: Upload native recheck evidence
         if: always()
@@ -120,3 +250,4 @@ jobs:
           name: Windows-native-recheck
           path: .build/windows-native-recheck-evidence/
           if-no-files-found: ignore
+          retention-days: 90

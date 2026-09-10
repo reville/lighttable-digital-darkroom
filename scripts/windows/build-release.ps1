@@ -98,7 +98,12 @@ if (-not $RuntimeSmokeOnly) {
     New-Item -ItemType Directory -Force -Path $Output | Out-Null
 }
 
+. (Join-Path $PSScriptRoot "build-timing.ps1")
+$Timing = New-BuildTiming -Path (Join-Path $Project ".build/windows-build-timings.json") -Version $Version
+$BuildSucceeded = $false
+
 try {
+    Start-BuildStage $Timing "dependency-acquisition-and-staging"
     $PythonArchive = Join-Path $BuildRoot "python.zip"
     Invoke-WebRequest `
         -Uri "https://www.python.org/ftp/python/$PythonVersion/python-$PythonVersion-embed-amd64.zip" `
@@ -198,33 +203,41 @@ try {
     # Pull requests exercise the exact embedded Python and updater payload before paying
     # for native engine/shell compilation, signing, or installer creation.
     if ($RuntimeSmokeOnly) {
+        Start-BuildStage $Timing "runtime-smoke"
         & $PythonExe -B (Join-Path $PSScriptRoot "runtime-smoke.py") $Resources
         if ($LASTEXITCODE -ne 0) { throw "The staged Windows runtime smoke test failed" }
+        $BuildSucceeded = $true
         Write-Host "Staged Windows runtime smoke passed"
         return
     }
 
+    Start-BuildStage $Timing "rust-toolchain"
     & rustup target add $Target
     if ($LASTEXITCODE -ne 0) { throw "The Windows Rust target could not be installed" }
 
+    Start-BuildStage $Timing "rust-engine-tests"
     & cargo test --locked --target $Target --manifest-path (Join-Path $Project "rust-engine\Cargo.toml")
     if ($LASTEXITCODE -ne 0) { throw "The resident render-engine tests failed" }
+    Start-BuildStage $Timing "shell-tests"
     $env:LIGHTTABLE_TEST_WINSPARKLE_DLL = Join-Path $Payload "WinSparkle.dll"
     & cargo test --locked --target $Target --manifest-path (Join-Path $Project "windows-shell\Cargo.toml")
     if ($LASTEXITCODE -ne 0) { throw "The Windows desktop-shell tests failed" }
 
+    Start-BuildStage $Timing "rust-engine-build"
     & cargo build --locked --release --target $Target --manifest-path (Join-Path $Project "rust-engine\Cargo.toml")
     if ($LASTEXITCODE -ne 0) { throw "The resident render engine failed to build" }
     Copy-Item `
         (Join-Path $Project "rust-engine\target\$Target\release\lighttable-engine.exe") `
         (Join-Path $Engine "lighttable-engine.exe")
 
+    Start-BuildStage $Timing "export-engine-build"
     & cargo build --locked --release --target $Target --manifest-path (Join-Path $RustSource "Cargo.toml") -p spektrafilm-cli --bin spektrafilm
     if ($LASTEXITCODE -ne 0) { throw "The export render engine failed to build" }
     Copy-Item `
         (Join-Path $RustSource "target\$Target\release\spektrafilm.exe") `
         (Join-Path $Engine "spektrafilm-rs.exe")
 
+    Start-BuildStage $Timing "shell-build"
     $Icon = Join-Path $BuildRoot "LightTable.ico"
     & $PythonExe (Join-Path $Project "scripts\windows\make-icon.py") (Join-Path $Project "build\icon-1024.png") $Icon
     if ($LASTEXITCODE -ne 0) { throw "The Windows icon could not be built" }
@@ -236,6 +249,7 @@ try {
         (Join-Path $Project "windows-shell\target\$Target\release\lighttable-desktop-shell.exe") `
         (Join-Path $Payload "LightTable.exe")
 
+    Start-BuildStage $Timing "payload-signing"
     if ($StoreCandidate) {
         & (Join-Path $PSScriptRoot "store-pe-signatures.ps1") -Payload $Payload -SignMissing
     }
@@ -248,19 +262,30 @@ try {
         )
     }
 
+    Start-BuildStage $Timing "runtime-smoke"
     & $PythonExe -B `
         (Join-Path $Project "scripts\windows\runtime-smoke.py") `
         $Resources `
         (Join-Path $Payload "LightTable.exe")
     if ($LASTEXITCODE -ne 0) { throw "The packaged Windows runtime smoke test failed" }
 
+    Start-BuildStage $Timing "updater-smoke"
     & (Join-Path $PSScriptRoot "updater-smoke.ps1") -Application (Join-Path $Payload "LightTable.exe")
 
+    Start-BuildStage $Timing "package-manifest"
     $SourceRevision = & git -C $Project rev-parse HEAD
     if ($LASTEXITCODE -ne 0) { throw "Could not resolve the package source revision" }
+    $SourceStatus = @(& git -C $Project status --porcelain --untracked-files=normal)
+    if ($LASTEXITCODE -ne 0) { throw "Could not verify the package source worktree" }
+    $SourceDirty = $SourceStatus.Count -gt 0
+    if ($RequireSigning -and $SourceDirty) {
+        throw "Signed release artifacts require a clean source worktree."
+    }
     @{
         version = $Version
         source_revision = $SourceRevision.Trim()
+        source_dirty = [bool]$SourceDirty
+        platform = "windows"
         architecture = "x64"
         winsparkle_version = $WinSparkleVersion
         python_version = $PythonVersion
@@ -271,6 +296,7 @@ try {
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Payload "build-manifest.json") -Encoding utf8
 
     if (-not $PortableOnly) {
+        Start-BuildStage $Timing "installer-build-and-embedded-uninstaller-signing"
         $Installer = Join-Path $Output "LightTable-$Version-windows-x64-setup.exe"
         $UninstallManifest = Join-Path $BuildRoot "uninstall-files.nsh"
         & $PythonExe -B (Join-Path $Project "scripts\windows\make-uninstall-manifest.py") $Payload $UninstallManifest
@@ -293,11 +319,14 @@ try {
             "/DUNINSTALL_MANIFEST=$UninstallManifest" `
             (Join-Path $Project "scripts\windows\installer.nsi")
         if ($LASTEXITCODE -ne 0) { throw "The Windows installer failed to build" }
+        Start-BuildStage $Timing "installer-signing"
         if ($SigningEnabled) {
             & (Join-Path $PSScriptRoot "sign-release.ps1") -RequireSigning -Files $Installer
         }
+        Start-BuildStage $Timing "installer-client-smoke"
         & (Join-Path $Project "scripts\windows\installer-smoke.ps1") -Installer $Installer -Version $Version `
             -VerifyStoreSignatures:$StoreCandidate -ExpectedPublisher $(if ($StoreCandidate) { "Chonkers LLC" } else { "Nicholas Reville" }) -SignatureReport (Join-Path $Output "windows-store-pe-signatures.json")
+        Start-BuildStage $Timing "update-signing"
         if ($RequireSigning) {
             # WinSparkle accepts both the current Sparkle 32-byte seed and its
             # older 96-byte private-key format. No key material is logged or
@@ -330,12 +359,15 @@ try {
     }
 
     # Archive only after every required signature and installer check passes.
+    Start-BuildStage $Timing "portable-compression"
     $Zip = Join-Path $Output "LightTable-$Version-windows-x64.zip"
     if (Test-Path $Zip) { Remove-Item -Force $Zip }
     Compress-Archive -Path $Payload -DestinationPath $Zip -CompressionLevel Optimal
 
+    $BuildSucceeded = $true
     Write-Host "Built Windows artifacts in $Output"
 } finally {
+    Complete-BuildTiming $Timing $BuildSucceeded
     [Environment]::SetEnvironmentVariable("LIGHTTABLE_TEST_WINSPARKLE_DLL", $PreviousTestUpdater, "Process")
     [Environment]::SetEnvironmentVariable("LIGHTTABLE_ICON_ICO", $PreviousIcon, "Process")
     if (Test-Path $BuildRoot) {

@@ -146,6 +146,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_release_process.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_store_packaging.py -v
@@ -275,6 +277,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_packaging.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p test_windows_release_process.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_updater.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p test_windows_store_packaging.py -v
@@ -340,4 +344,12 @@ jobs:
         with:
           name: Windows-native-acceptance
           path: .build/windows-desktop-evidence/
+          if-no-files-found: ignore
+
+      - name: Retain Windows build-stage timings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-build-timings
+          path: .build/windows-build-timings.json
           if-no-files-found: ignore

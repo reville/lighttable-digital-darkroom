@@ -1,0 +1,70 @@
+name: Prepare an existing release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Exact platform to prepare independently
+        type: choice
+        options: [linux-x86_64, windows-x64, macos-arm64]
+        required: true
+      version:
+        description: Version already embedded in the original build
+        type: string
+        required: true
+      build_run_id:
+        description: Original run with a successful selected platform package job; never rebuilt
+        type: string
+        required: true
+      source_revision:
+        description: Expected full original build commit
+        type: string
+        required: true
+      native_run_id:
+        description: Optional exact-candidate native acceptance run (promotion verifies it)
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: prepare-${{ inputs.platform }}-${{ inputs.version }}-${{ inputs.build_run_id }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install the existing Linux metadata signing dependency
+        if: inputs.platform == 'linux-x86_64'
+        run: python3 -m pip install cryptography==50.0.1
+      - name: Download and prepare the exact candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PLATFORM: ${{ inputs.platform }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          NATIVE_RUN_ID: ${{ inputs.native_run_id }}
+          LIGHTTABLE_LINUX_UPDATE_PRIVATE_KEY: ${{ inputs.platform == 'linux-x86_64' && secrets.LIGHTTABLE_LINUX_UPDATE_PRIVATE_KEY || '' }}
+        run: |
+          args=(--platform "$RELEASE_PLATFORM" --version "$RELEASE_VERSION" --build-run-id "$BUILD_RUN_ID" --source-revision "$SOURCE_REVISION" --output-dir prepared)
+          if [[ -n "$NATIVE_RUN_ID" ]]; then args+=(--native-run-id "$NATIVE_RUN_ID"); fi
+          python3 scripts/release/prepare_candidate.py "${args[@]}" > preparation-summary.json
+          cat preparation-summary.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LightTable-${{ inputs.platform }}-promotion
+          path: prepared/*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Explain the next independent step
+        run: |
+          echo 'Candidate prepared only. Use this preparation run and original build run in Promote a verified release candidate. Default promotion is a read-only plan; no release or feed was published here.' >> "$GITHUB_STEP_SUMMARY"
