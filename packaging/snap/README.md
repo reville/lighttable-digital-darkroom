@@ -55,17 +55,22 @@ renders, codec imports and the local server inside strict confinement. It also
 runs the actual GTK/WebKit desktop under Xvfb: Canon CR2 and Fuji RAF imports,
 film rendering, full-size 16-bit ICC exports, normal close/reopen, and a local
 Snap revision update that preserves the catalog and saved edits. Native screens,
-export hashes and reports are retained as workflow artifacts. Run 34424616546
+export hashes and reports are retained as workflow artifacts. Run [34427122032](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34427122032)
 passed these checks for application source
 `be537f2f3e2e431ae6b42af716c2a8b365f57bab` and packaging revision
-`c8ef478e12404c4a4a873d1eb603ff579526e2b4`.
+`ec14baa49327f51f30561e37ec00dc3034f4f5ec`.
 It also passed initial native folder selection through the real desktop portal,
 photo display and close/reopen using the retained document-portal path, denial
 of direct `/media` access before connection, and access after explicitly
 connecting `removable-media`. Proxy handling remained enabled throughout.
 
-The web onboarding and backup restoration checks run in the release-candidate
-workflow. Physical AMD, Intel and NVIDIA GPU coverage remains unverified.
+The same run passed fresh web onboarding through the actual native WebKit UI,
+folder-source creation, initial editing, an independent catalog backup, a
+post-backup rating change, and backup restoration in a new desktop process.
+The restored photo retained rating 4 and exposure +0.50, onboarding stayed
+complete, and the original file hash was unchanged. Native screenshots and all
+five acceptance reports were reviewed. Physical AMD, Intel and NVIDIA GPU
+coverage remains unverified.
 The package therefore stays `grade: devel`; an initial Store release must use
 `latest/beta`, never `candidate` or `stable`. Stable promotion requires all the
 acceptance checks above, including real GPU evidence.
@@ -93,10 +98,22 @@ corruption, missing files, unresolved coverage and a different release identity.
 Python distribution notices and Ubuntu package copyright files remain in their
 existing locations. See `native-licenses/provenance.json` for scope and limitations.
 
-Snapcraft run 34424616546 completed the classic, GPU, library and metadata
+Snapcraft run 34427122032 completed the classic, GPU, library and metadata
 linters. Its six unused-library warnings concern libpython3.13, libpython3,
 libcolordprivate, libdconf, libssl and libxdo. These libraries remain available
 for runtime loading; no lint errors were reported.
+
+## CPython stack flag
+
+Store review of revision 1 identified an unnecessary executable-stack flag on
+`Python/lib/libpython3.13.so.1.0`. This matches the upstream
+[CPython standalone-build issue](https://github.com/astral-sh/python-build-standalone/issues/1072).
+`snap-python-noexecstack.py` clears only `PF_X` in that library's existing
+`PT_GNU_STACK` header. The helper checks the exact input and output SHA-256,
+source revision and ELF layout, and records the one-byte change in
+`snap-runtime-adjustments.json` and candidate metadata. The application source
+manifest and public release archive stay unchanged. CI verifies the installed
+library and receipt before exercising the packaged runtime and native desktop.
 
 ## Store publication
 

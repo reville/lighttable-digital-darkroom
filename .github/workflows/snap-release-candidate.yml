@@ -41,7 +41,7 @@ jobs:
           revision=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID" --jq .head_sha)
           [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
           git fetch --no-tags --depth=1 origin "$revision"
-          git diff --exit-code "$revision" HEAD -- packaging/snap/snapcraft.yaml.in packaging/snap/environment.sh packaging/snap/native-licenses scripts/linux/make-snap-package.py scripts/linux/snap-native-licenses.py scripts/linux/make-arch-package.py scripts/linux/desktop-integration.py
+          git diff --exit-code "$revision" HEAD -- packaging/snap/snapcraft.yaml.in packaging/snap/environment.sh packaging/snap/native-licenses scripts/linux/make-snap-package.py scripts/linux/snap-native-licenses.py scripts/linux/snap-python-noexecstack.py scripts/linux/make-arch-package.py scripts/linux/desktop-integration.py
           mkdir -p evidence dist
           printf '%s\n' "$CANDIDATE_RUN_ID $revision" > evidence/reused-candidate.txt
       - uses: actions/download-artifact@v4
@@ -71,6 +71,9 @@ jobs:
         run: |
           sudo snap install --dangerous dist/LightTable-0.5.0-linux-x86_64.snap
           snap connections lighttable > evidence/connections.txt
+          python3 scripts/linux/snap-python-noexecstack.py --verify /snap/lighttable/current/LightTable > evidence/python-noexecstack.json
+          readelf --program-headers --wide /snap/lighttable/current/LightTable/Python/lib/libpython3.13.so.1.0 > evidence/python-program-headers.txt
+          awk '$1 == "GNU_STACK" { found++; if ($7 != "RW") exit 1 } END { if (found != 1) exit 1 }' evidence/python-program-headers.txt
           timeout 30s snap run lighttable.cli --help > evidence/cli-help.txt
           timeout 360s snap run --shell lighttable.cli -c 'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP/LightTable/runtime-smoke.py" "$SNAP/LightTable"' > evidence/runtime-smoke.txt
       - name: Native editing, RGB16 export, and graceful close/reopen

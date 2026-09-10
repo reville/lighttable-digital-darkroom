@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 from test_linux_arch_packaging import fixture
+from test_linux_snap_python_noexecstack import library_fixture, fixture_hashes
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("snap_package", ROOT / "scripts/linux/make-snap-package.py")
@@ -25,7 +26,12 @@ class SnapPackageTests(unittest.TestCase):
         self.archive = self.root / "LightTable-0.5.0-linux-x86_64.tar.gz"
         self.output = self.root / "snap project"
         fixture(self.archive, manifest={"version": "0.5.0", "source_revision": REVISION,
-                                        "source_dirty": False})
+                                        "source_dirty": False},
+                extra_files={package.STACK.LIBRARY: library_fixture()})
+        from unittest.mock import patch
+        stack_pins = patch.multiple(package.STACK, **fixture_hashes())
+        stack_pins.start()
+        self.addCleanup(stack_pins.stop)
 
     def generate(self, **changes):
         return package.generate(self.archive, self.output,
@@ -52,7 +58,9 @@ class SnapPackageTests(unittest.TestCase):
         for row in provenance["files"]:
             self.assertEqual(hashlib.sha256((notices / row["path"]).read_bytes()).hexdigest(), row["sha256"])
         self.assertTrue((bundle / "share/applications/app.lighttable.LightTable.desktop").is_file())
-        self.assertFalse(json.loads((self.output / "candidate.json").read_text())["store_published"])
+        candidate = json.loads((self.output / "candidate.json").read_text())
+        self.assertFalse(candidate["store_published"])
+        self.assertEqual(candidate["runtime_adjustments"], [package.STACK.verify(bundle)])
 
     def test_wrong_source_or_checksum_leaves_no_partial_project(self):
         with self.assertRaisesRegex(ValueError, "source revision"):
@@ -79,6 +87,13 @@ class SnapPackageTests(unittest.TestCase):
             return data + b"corrupted" if path.parent.name == "objects" else data
         with patch.object(package.NOTICES, "regular_bytes", side_effect=corrupted):
             with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+                self.generate()
+        self.assertFalse(self.output.exists())
+
+    def test_unrecognized_libpython_rejects_package_without_partial_output(self):
+        from unittest.mock import patch
+        with patch.object(package.STACK, "BEFORE_SHA256", "0" * 64):
+            with self.assertRaisesRegex(ValueError, "pinned upstream binary"):
                 self.generate()
         self.assertFalse(self.output.exists())
 
