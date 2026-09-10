@@ -71,6 +71,9 @@ const merge = (base, overlay) => JSON.parse(JSON.stringify(runtime.mergeFilmPara
 test('loading old edits keeps the original rendering, while grain migration still works', () => {
   assert.deepEqual(normal({stock: 'portra160', grain_um2: 0.4}), {...original, grain_amount: 2});
   assert.equal(normal(tuned).film_tuning, 'lighttable');
+  assert.equal(normal({}).film_tuning, 'lighttable');
+  assert.equal(normal().film_tuning, 'lighttable');
+  assert.equal(normal({profile_enabled: false}).film_tuning, 'lighttable');
   assert.equal(merge(tuned, {exposure_ev: 0.5}).film_tuning, 'lighttable');
   assert.equal(merge(tuned, {stock: 'portra160'}).film_tuning, 'original');
 });

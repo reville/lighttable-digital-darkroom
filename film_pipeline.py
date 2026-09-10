@@ -255,9 +255,10 @@ DEFAULT_PARAMS = {
     # settings remain stored so the film look can be restored with one click.
     "profile_enabled": True,
     "stock": "kodak_portra_400",
-    # Missing variant fields always preserve the upstream rendering of old
-    # photos/presets. Version is persisted separately from the base stock.
-    "film_tuning": "original",
+    # LightTable tuned Kodak Portra 400 is the default when film simulation
+    # is enabled. Missing variant fields on legacy edits with a saved stock
+    # preserve original upstream rendering.
+    "film_tuning": "lighttable",
     "film_tuning_version": "1",
     "paper": "kodak_portra_endura",
     "workflow_mode": "authentic",
@@ -496,7 +497,11 @@ def clean_params(p: dict) -> dict:
         out[key] = round(max(minimum, min(maximum, out[key])), 4)
     if out["stock"] not in {p["id"] for p in FILM_PROFILES}:
         out["stock"] = DEFAULT_PARAMS["stock"]
-    if (out["film_tuning"] != "lighttable"
+    if "film_tuning" not in source and "stock" in source:
+        if source.get("stock") != "kodak_portra_400" or source.get("profile_enabled") is True:
+            out["film_tuning"] = "original"
+            out["film_tuning_version"] = "1"
+    elif (out["film_tuning"] != "lighttable"
             or out["film_tuning_version"] != film_tuning.VERSION
             or out["stock"] not in film_tuning.TUNINGS):
         out["film_tuning"] = "original"

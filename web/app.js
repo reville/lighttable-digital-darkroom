@@ -689,9 +689,12 @@ function syncEngineForProfile() {
 
 function normalizeFilmParams(raw = {}) {
   const source = raw && typeof raw === 'object' ? { ...raw } : {};
+  const legacyStock = Object.prototype.hasOwnProperty.call(source, 'stock') &&
+    !Object.prototype.hasOwnProperty.call(source, 'film_tuning') &&
+    (source.profile_enabled !== false || source.stock !== (S.filmDefaults?.stock || 'kodak_portra_400'));
   const params = normalizeFilmTuning({ ...S.filmDefaults, ...source,
-    film_tuning: source.film_tuning || 'original',
-    film_tuning_version: source.film_tuning_version || '1' }, S.profiles);
+    film_tuning: source.film_tuning || (legacyStock ? 'original' : (S.filmDefaults?.film_tuning || 'lighttable')),
+    film_tuning_version: source.film_tuning_version || (legacyStock ? '1' : (S.filmDefaults?.film_tuning_version || '1')) }, S.profiles);
   if (!Object.prototype.hasOwnProperty.call(source, 'grain_amount')) {
     const legacyArea = +source.grain_um2;
     params.grain_amount = Number.isFinite(legacyArea)
@@ -895,6 +898,9 @@ function setDevelopMode(profileEnabled) {
   readControls();
   pushUndo();
   S.params.profile_enabled = profileEnabled;
+  if (profileEnabled && S.params.stock === 'kodak_portra_400' && S.params.film_tuning === 'original') {
+    Object.assign(S.params, filmSelectionForChoice('kodak_portra_400::lighttable::1', S.profiles));
+  }
   syncControls();
   saveState();
   renderFilm(0);
