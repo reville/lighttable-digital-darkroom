@@ -2475,6 +2475,37 @@ class Catalog:
                 [(collection_id, int(i), start + n)
                  for n, i in enumerate(image_ids)])
 
+    def create_collections_for_source_folders(self, source_id: int) -> list[int]:
+        """Create a collection for each top-level folder under this source."""
+        created = []
+        top_folders = self.connection.execute(
+            "SELECT id, name, relpath FROM folders WHERE source_id=? AND instr(relpath, '/') = 0 ORDER BY name",
+            (int(source_id),)).fetchall()
+        for folder in top_folders:
+            folder_name = folder["name"]
+            prefix = folder["relpath"] + "/%"
+            rows = self.connection.execute(
+                "SELECT i.id FROM images i JOIN files f ON f.id=i.file_id"
+                " WHERE f.source_id=? AND (f.folder_id=? OR f.relpath = ? OR f.relpath LIKE ?)",
+                (int(source_id), folder["id"], folder["relpath"], prefix)).fetchall()
+            image_ids = [row["id"] for row in rows]
+            if image_ids:
+                cid = self.add_collection(folder_name)
+                self.add_to_collection(cid, image_ids)
+                created.append(cid)
+        if not top_folders:
+            source = self.source(source_id)
+            if source:
+                rows = self.connection.execute(
+                    "SELECT i.id FROM images i JOIN files f ON f.id=i.file_id WHERE f.source_id=?",
+                    (int(source_id),)).fetchall()
+                image_ids = [row["id"] for row in rows]
+                if image_ids:
+                    cid = self.add_collection(source["name"])
+                    self.add_to_collection(cid, image_ids)
+                    created.append(cid)
+        return created
+
     # --------------------------------------------------------------- stacks
 
     def stack_id_for(self, image_id: int) -> int | None:

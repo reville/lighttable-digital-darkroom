@@ -293,6 +293,7 @@ export function createCatalogUI(ctx) {
       addSources: el('impAddSources').checked, options: {
       metadata: el('impMetadata').checked, keywords: el('impKeywords').checked,
       collections: el('impCollections').checked, stacks: el('impStacks').checked,
+      foldersToCollections: el('impFoldersToCollections')?.checked || false,
       develop: el('impDevelop').checked, history: el('impHistory').checked,
       conflict: el('impConflict').value, referenceRoot: el('impReferenceRoot').value.trim(),
     }});

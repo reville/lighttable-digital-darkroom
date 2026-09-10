@@ -8058,6 +8058,10 @@ def catalog_sources_action(body: dict) -> dict:
             imported = catalog_scan.import_state_file(cat, source_id)
         elif SCANNER is not None:
             SCANNER.request(source_id)
+        if body.get("foldersToCollections"):
+            if not body.get("importState", True):
+                catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
+            cat.create_collections_for_source_folders(source_id)
         has_sidecars = False
         try:
             with os.scandir(path) as it:

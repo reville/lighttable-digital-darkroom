@@ -730,6 +730,13 @@
         "paragraphs": [
           "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
         ]
+      },
+      {
+        "title": "Folders and collections",
+        "paragraphs": [
+          "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
+          "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+        ]
       }
     ],
     "related": [
@@ -757,6 +764,10 @@
       {
         "path": "web/index.html",
         "anchor": "id=\"addToCollection\""
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "id=\"impFoldersToCollections\""
       }
     ]
   },

@@ -68,7 +68,7 @@
       {
         "title": "Start with Light",
         "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation."],
-        "steps": ["Set Exposure for the main subject.", "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.", "Use the Clipping warning button beside the histogram to inspect clipping.", "Compare your result with the original using the before control, or hold B while the photo is active."],
+        "steps": ["Set Exposure for the main subject.", "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.", "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).", "Compare your result with the original using the before control, or hold B while the photo is active."],
         "tips": ["Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment."]
       },
       {
@@ -123,11 +123,25 @@
         "paragraphs": ["In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels."],
         "steps": ["Open Edit and expand Curve.", "Choose RGB, R, G, or B.", "Click the graph to add a point, then drag it to shape the curve. Drag an existing handle to move it.", "Double-click an interior point to remove it. The two endpoint handles remain.", "Use Curve’s Reset to reset the curves, or Undo to reverse the latest change."],
         "tips": ["Use a few points and compare the photo as you work; channel curves can introduce strong color casts.", "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."]
+      },
+      {
+        "title": "Use the Parametric curve",
+        "paragraphs": [
+          "The Parametric tab provides four region sliders — Highlights, Lights, Darks, and Shadows — along with split point controls that define the threshold boundaries between tonal regions.",
+          "This lets you smoothly sculpt tonal contrast and midtones without placing manual anchor points on the graph."
+        ],
+        "steps": [
+          "Switch to the Parametric tab in Edit → Curve.",
+          "Drag Highlights or Lights to shape upper tonal values, and Darks or Shadows for lower values.",
+          "Adjust the split markers between the bands to shift where each region transitions.",
+          "Double-click any slider to reset it to zero."
+        ]
       }
     ],
     "related": ["editing-tone", "editing-color-grading", "editing-presets"],
     "sources": [
       {"path": "web/index.html", "anchor": "data-ch=\"L\""},
+      {"path": "web/index.html", "anchor": "id=\"curveModeParametric\""},
       {"path": "web/app.js", "anchor": "(function curveEvents()"},
       {"path": "web/app.js", "anchor": "if (i > 0 && i < pts.length - 1)"},
       {"path": "web/app.js", "anchor": "handles for editing while drawing the exact table until the first edit."}
@@ -150,10 +164,24 @@
         "paragraphs": ["Point Color gives a sampled hue its own controls. It affects matching colors throughout the photo; use a local mask when you also need to restrict the area."],
         "steps": ["Click Sample color under Point Color, then click a colorful patch in the photo.", "Adjust Range to narrow or widen the hues affected, then refine Hue shift, Saturation, and Luminance.", "Use Uniform hue, Uniform saturation, or Uniform luminance to make colors in the range more like the sampled patch.", "Choose a saved point in the selector to edit it, or use Delete point to remove it."],
         "tips": ["Neutral gray patches cannot provide a useful hue sample; choose a more colorful area when prompted.", "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.", "Point Color’s Reset clears the sampled points without requiring a full Color reset."]
+      },
+      {
+        "title": "Black and white treatment and mixer",
+        "paragraphs": [
+          "The Treatment switcher at the top of the Color panel toggles between Color and B&W. In B&W mode, the image converts to monochrome while preserving full tonal control across 8 color bands.",
+          "The B&W Mixer sliders adjust how strongly each original color contributes to the grayscale luminance."
+        ],
+        "steps": [
+          "In Edit → Color, click B&W on the Treatment switcher.",
+          "The Color Mixer becomes the B&W Mixer, showing Red, Orange, Yellow, Green, Aqua, Blue, Purple, and Magenta sliders.",
+          "Drag a slider right to lighten that color in the black-and-white conversion, or left to darken it (e.g. darkening Blue to deepen a sky).",
+          "Click Color on the Treatment switcher to return to full color."
+        ]
       }
     ],
     "related": ["editing-white-balance", "editing-color-grading", "editing-masks-ranges-refinements"],
     "sources": [
+      {"path": "web/index.html", "anchor": "id=\"treatmentBw\""},
       {"path": "web/index.html", "anchor": "<div class=\"hsl-dots\" id=\"hslBands\"></div>"},
       {"path": "web/index.html", "anchor": "Uniformity evens the sampled colour across its range. Sample the patch the rest should match."},
       {"path": "web/app.js", "anchor": "? S.grade.pointColor.slice(0, 7) : [];"},
@@ -795,11 +823,28 @@
         "paragraphs": ["Match total exposure uses the active photo as its reference. When capture exposure metadata is available, it compares that information; otherwise it falls back to average image brightness. Review the result when scenes or lighting differ."],
         "steps": ["Select at least two photos and make the intended reference photo active.", "Let the reference edits finish saving.", "Choose Match total exposure in Photo actions, or Library → Match Total Exposure in the Mac menu.", "Inspect each result. The operation updates the relevant exposure control and limits the resulting adjustment to the supported range."],
         "tips": ["The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing."]
+      },
+      {
+        "title": "Apply previous settings",
+        "paragraphs": [
+          "Previous applies the edits from the immediately preceding photo directly to the active photo, letting you rapidly grade a sequence without opening the Copy Settings dialog."
+        ],
+        "steps": [
+          "Select a photo you have already edited.",
+          "Navigate to the next photo in your sequence.",
+          "Choose Photo → Previous Settings, or press Option-Command-V on Mac (Alt-Ctrl-V on Windows and Linux).",
+          "The prior photo’s develop settings, film look, curves, color grading, and lens corrections are applied immediately."
+        ],
+        "tips": [
+          "Previous settings works without needing an explicit Copy command first.",
+          "Crop, geometry, and spot healing are excluded by default to protect individual photo framing."
+        ]
       }
     ],
     "related": ["editing-tone", "editing-presets", "editing-masks-ai", "editing-remove-heal"],
     "sources": [
       {"path": "web/index.html", "anchor": "detail-transfer-actions"},
+      {"path": "web/app.js", "anchor": "async function applyPreviousSettings() {"},
       {"path": "web/edit-transfer.js", "anchor": "Edit transfer plans preserve every unselected destination setting."},
       {"path": "web/edit-transfer.js", "anchor": "const defaults = ['film', 'raw', 'tone', 'color', 'detail', 'optics'];"},
       {"path": "web/edit-transfer.js", "anchor": "Copy spot positions; use only with matching framing"},
