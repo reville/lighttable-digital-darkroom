@@ -23,7 +23,7 @@ For four-star photos taken at 50mm in 2026, choose **4 stars and up**, enter
 updates when relevant metadata changes. Additional live filters narrow the
 saved rules; they do not replace them. The current folder is not a saved rule.
 
-Existing catalogs gain exposure values on their next scan. Use **Local ••• →
+Existing catalogs gain exposure values on their next scan. Use **Folders ••• →
 Rescan folders** if those values are missing. Filter choices persist across
 reloads and have removable chips above the grid.
 
@@ -40,6 +40,13 @@ See [CLI.md](CLI.md) for server selection and command options.
 
 The existing flag, rating, and label shortcuts work on grid selections. Survey
 compares different frames; Detail's Compare checks an edit against its original.
+Grid marking actions use the selected photos still shown by the current folder,
+collection, and filters. Check the marking toolbar count after changing the view.
+
+Paste and **Selected photos** export also use the selection still in view, falling
+back to the active photo when no selected photos remain visible. Export's
+**Picked only**, **Rated 1+**, and **All except rejected** instead search the
+active catalog and can include photos outside the current view.
 
 Open **Info** beside Photo Grid or Culling Grid. Enter keywords, check the
 selected-photo count, and choose **Add to selection** or **Remove from
@@ -68,7 +75,7 @@ the macOS Photo Index; existing records refresh through its worker.
 ## Exchange metadata through XMP
 
 1. In the other editor, save metadata to adjacent XMP sidecars.
-2. Choose **Local ••• → Import sidecars…** in LightTable. This menu action reads
+2. Choose **Folders ••• → Import sidecars…** in LightTable. This menu action reads
    supported metadata; it does not apply another editor's develop settings or
    crop. Review the import report.
 3. To write later changes beside originals, enable automatic XMP writing in

@@ -1,4 +1,6 @@
 {
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "locale": "nl",
   "version": 1,
   "articles": [
     {
@@ -3212,7 +3214,5 @@
       ],
       "categoryLabel": "Probleemoplossing"
     }
-  ],
-  "locale": "nl",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  ]
 }

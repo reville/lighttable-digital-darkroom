@@ -132,6 +132,10 @@ choose this computer's local timezone. Metadata and recipe-sidecar policies are
 saved with the recipe. Cancel stops queued work, waits for active cleanup, and
 retains completed files. Export details list skipped files, errors and warnings.
 
+The **23 built-in presets** work offline and are grouped into collapsible packs.
+Click a preset to apply it, adjust **Amount**, or click it again to disable it.
+The selected preset and amount are saved with each photo.
+
 The **Film Simulation Drama** preset pack includes eight looks that enable film
 simulation and layer creative effects over it: Cinema Teal, Tungsten Rain, Portra
 Ember, Gold Rush, Velvia Storm, Faded Epic, Silver Noir, and Velvet Dusk. Each
