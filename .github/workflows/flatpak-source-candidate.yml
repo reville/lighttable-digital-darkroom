@@ -24,6 +24,7 @@ jobs:
         id: runtime
         run: |
           mkdir -p evidence dist
+          git fetch --no-tags --depth=1 origin be537f2f3e2e431ae6b42af716c2a8b365f57bab
           python3 scripts/flatpak/source-manifest.py --source-revision be537f2f3e2e431ae6b42af716c2a8b365f57bab --output .build/source-flatpak/manifest.json
           python3 scripts/flatpak/source-preflight.py packaging/flatpak/source-status.json
           sudo apt-get update -qq
