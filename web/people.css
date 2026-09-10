@@ -94,3 +94,14 @@
   .people-examples img { width: 30px; height: 30px; }.people-review h2 { font-size: 21px; }
 }
 @media (prefers-reduced-motion: reduce) { .people-panel, .people-dot.active { animation: none; }.person-tile img { transition: none; } }
+
+.people-review-nudge { display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin-bottom: 24px; background: #26282b; border: 1px solid #3b3d42; border-radius: 9px; }
+.people-review-nudge p { flex: 1; min-width: 0; margin: 0; color: #bdbfc5; font-size: 12px; line-height: 1.5; }
+.people-review-nudge button { flex-shrink: 0; }
+.people-nudge-dismiss { font-size: 20px; line-height: 1; padding: 6px 9px; }
+@media (max-width: 750px) {
+  .people-review-nudge { flex-wrap: wrap; }
+  .people-review-nudge p { flex-basis: calc(100% - 50px); }
+  .people-nudge-dismiss { order: -1; margin-inline-start: auto; }
+  .people-review-nudge p { order: -2; }
+}

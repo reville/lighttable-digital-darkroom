@@ -643,6 +643,7 @@
         {
           "title": "Przejrzyj i popraw dopasowania",
           "paragraphs": [
+            "Gdy dostępne są możliwe dopasowania, zamykany pasek w widoku Osoby otwiera przegląd dopasowań. Zamknięcie paska jest zapamiętywane na tym urządzeniu.",
             "Przejrzyj dopasowania pokazuje dwie możliwe grupy z próbkami twarzy. Ta sama osoba łączy je. Różne osoby zapisuje poprawkę, aby sparowanie nie było proponowane ponownie. Pomiń na razie pozostawia dopasowanie do późniejszego przeglądu.",
             "W obrębie grupy Scal z… pozwala wybrać inną grupę i przejrzeć połączenie przed jego zatwierdzeniem. Zachowana zostaje nazwa bieżącej grupy; jeśli nie ma nazwy, używana jest nazwa drugiej grupy. Zapisanie tej samej nazwy w dwóch grupach nie powoduje ich automatycznego scalenia.",
             "Wybierz Wybierz twarze, zaznacz kilka twarzy, a następnie wybierz Przenieś do osobnej osoby, aby podzielić je na nową grupę bez nazwy. Te dwie grupy nie będą ponownie sugerowane jako dopasowanie. Zaznacz jedną twarz i wybierz Użyj jako okładki, aby zmienić obraz w galerii.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb"
 }

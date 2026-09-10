@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -759,7 +759,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.",
     "Choose a different person group",
     "Choose a face from this group",
-    "Choose a face to see their photos.",
     "Choose a few…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.",
     "Choose a folder",
@@ -993,7 +992,6 @@
     "Compare Before & After",
     "Compare several photos in Survey",
     "Compare similar photos",
-    "Compare the faces before combining their photos.",
     "Compare while zoomed in",
     "Compare with a reference image",
     "Compare your result with the original using the before control, or hold B while the photo is active.",
@@ -3068,6 +3066,7 @@
     "Software rendering",
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.",
     "Some edits have not been saved",
+    "Some people may appear in separate groups. Review possible matches to combine them.",
     "Something went wrong. Please try again.",
     "Sort",
     "Source",
@@ -3575,6 +3574,7 @@
     "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
     "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections.",
     "When multiple photos are selected in a grid, marks apply to that set without advancing. If Link pair metadata is on, marking also updates recognized RAW and JPEG companions.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.",
     "When switching photos while zoomed in, LightTable shows a matching cached preview immediately when available. Sharper detail loads in the background, and nearby photos preload for your zoom level.",
     "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds.",
     "When the mark removes the photo from the view you are working in, such as picking while the sidebar shows Unflagged, Auto-advance continues with the photo that takes its place. It does not return to the start of the list.",
@@ -3635,7 +3635,6 @@
     "Your language choice could not be saved",
     "Your language preference could not be read. The preferences file was left unchanged.",
     "Your library in Photos stays unchanged.",
-    "Your people",
     "Your photo originals are ready in LightTable.",
     "Your photos are ready",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.",

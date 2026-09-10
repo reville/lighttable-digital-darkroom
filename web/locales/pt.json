@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Escolha um layout de destino e decida o que acontece quando um nome de arquivo já existe.",
     "Choose a different person group": "Escolha um grupo de pessoa diferente",
     "Choose a face from this group": "Escolha um rosto deste grupo",
-    "Choose a face to see their photos.": "Escolha um rosto para ver as fotos dele.",
     "Choose a few…": "Escolher alguns…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Escolha uma substituição fixa da resolução da Pré-visualização apenas se necessário para desempenho ou solução de problemas.",
     "Choose a folder": "Escolha uma pasta",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Comparar Antes e Depois",
     "Compare several photos in Survey": "Comparar várias fotos em Varredura",
     "Compare similar photos": "Comparar fotos semelhantes",
-    "Compare the faces before combining their photos.": "Compare os rostos antes de combinar as fotos deles.",
     "Compare while zoomed in": "Comparar com zoom aplicado",
     "Compare with a reference image": "Comparar com uma imagem de referência",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Compare o resultado com o original usando o controle de antes ou segure B enquanto a foto estiver ativa.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Sua escolha de idioma não pôde ser salva",
     "Your language preference could not be read. The preferences file was left unchanged.": "Sua preferência de idioma não pôde ser lida. O arquivo de preferências foi deixado inalterado.",
     "Your library in Photos stays unchanged.": "Sua biblioteca no Fotos permanece inalterada.",
-    "Your people": "Suas pessoas",
     "Your photo originals are ready in LightTable.": "Seus originais de foto estão prontos no LightTable.",
     "Your photos are ready": "Suas fotos estão prontas",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Suas fotos permanecem em suas pastas atuais. O LightTable as referencia sem duplicá-las. A importação deixa sua configuração e catálogo do Lightroom inalterados.",
@@ -4258,7 +4255,9 @@
     "← People": "← Pessoas",
     "☆ Favorites": "☆ Favoritos",
     "On Mac, right-click the photo preview and choose Copy.": "No Mac, clique com o botão direito na prévia da foto e escolha Copiar.",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passe o cursor sobre uma alça para ver sua função. Os pontos ocultos não podem ser arrastados."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passe o cursor sobre uma alça para ver sua função. Os pontos ocultos não podem ser arrastados.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Algumas pessoas podem aparecer em grupos separados. Revise as possíveis correspondências para combiná-los.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando há possíveis correspondências, uma barra que pode ser fechada em Pessoas abre a revisão de correspondências. Este dispositivo lembra se você a fechou."
   },
   "plurals": {
     " · {count} paired file linked": {

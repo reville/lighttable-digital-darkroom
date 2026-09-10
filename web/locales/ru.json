@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Выберите схему назначения и решите, что делать, если имя файла уже существует.",
     "Choose a different person group": "Выберите другую группу человека",
     "Choose a face from this group": "Выберите лицо из этой группы",
-    "Choose a face to see their photos.": "Выберите лицо, чтобы увидеть его фото.",
     "Choose a few…": "Выберите несколько…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Выбирайте фиксированное переопределение «Разрешение предпросмотра» только при необходимости для производительности или устранения неполадок.",
     "Choose a folder": "Выберите папку",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Сравнить до и после",
     "Compare several photos in Survey": "Сравнить несколько фото в Обзор",
     "Compare similar photos": "Сравнить похожие фото",
-    "Compare the faces before combining their photos.": "Сравните лица перед объединением их фото.",
     "Compare while zoomed in": "Сравнить при увеличении",
     "Compare with a reference image": "Сравнить с эталонным изображением",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Сравните результат с оригиналом с помощью элемента before или удерживайте B, пока фото активно.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Не удалось сохранить выбранный язык",
     "Your language preference could not be read. The preferences file was left unchanged.": "Не удалось прочитать ваш предпочтительный язык. Файл настроек оставлен без изменений.",
     "Your library in Photos stays unchanged.": "Ваша библиотека в Photos останется без изменений.",
-    "Your people": "Ваши люди",
     "Your photo originals are ready in LightTable.": "Ваши оригиналы фото готовы в LightTable.",
     "Your photos are ready": "Ваши фото готовы",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Ваши фото остаются в текущих папках. LightTable ссылается на них, не создавая дубликатов. При импорте ваша настройка Lightroom и каталог не изменяются.",
@@ -4258,7 +4255,9 @@
     "← People": "← Люди",
     "☆ Favorites": "☆ Избранное",
     "On Mac, right-click the photo preview and choose Copy.": "На Mac нажмите правой кнопкой мыши на предпросмотр фото и выберите «Копировать».",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Наведите указатель на маркер, чтобы увидеть его действие. Скрытые точки нельзя перетаскивать."
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Наведите указатель на маркер, чтобы увидеть его действие. Скрытые точки нельзя перетаскивать.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Один человек может появляться в разных группах. Проверьте возможные совпадения, чтобы объединить их.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Когда есть возможные совпадения, в разделе «Люди» появляется закрываемая панель для перехода к проверке совпадений. Её закрытие запоминается на этом устройстве."
   },
   "plurals": {
     " · {count} paired file linked": {

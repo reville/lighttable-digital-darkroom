@@ -643,6 +643,7 @@
         {
           "title": "Revisar e corrigir correspondências",
           "paragraphs": [
+            "Quando há possíveis correspondências, uma barra que pode ser fechada em Pessoas abre a revisão de correspondências. Este dispositivo lembra se você a fechou.",
             "Revisar correspondências apresenta dois grupos possíveis com amostras de rostos. Mesma pessoa os combina. Pessoas diferentes registra uma correção para que o pareamento não seja sugerido novamente. Pular por enquanto deixa a correspondência para uma visita posterior.",
             "Dentro de um grupo, Mesclar com… permite escolher outro grupo e revisar a combinação antes de confirmá-la. O nome do grupo atual é mantido; se ele estiver sem nome, o nome do outro grupo é usado. Salvar o mesmo nome em dois grupos não os mescla automaticamente.",
             "Escolha Selecionar rostos, selecione alguns rostos e depois Mover para uma pessoa separada para dividi-los em um novo grupo sem nome. Os dois grupos não serão sugeridos como correspondência novamente. Selecione um rosto e escolha Usar como capa para alterar a imagem da galeria.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a"
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb"
 }
