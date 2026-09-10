@@ -13,8 +13,10 @@ x86_64. Each platform needs its own native release validation.
 
 See [the machine-readable release manifest](manifest.json) for exact current
 platform versions, artifacts, signing and blockers. Linux portable 0.6 and
-macOS 0.6 beta are public; Windows 0.6 remains a signed candidate pending native
-Windows 10/11 x64 clean/offline acceptance. A Mac beta is manual-update only.
+macOS 0.6 beta are public. Signed Windows 0.6.1 is public after native Windows
+10/11 x64 offline acceptance and Windows 11 ARM x64-emulation checks passed.
+See [Windows acceptance and coverage limits](../docs/windows-client-acceptance.md).
+A Mac beta is manual-update only.
 Store enrollment and review remain separate from direct distribution.
 
 ## Repeatable release process

@@ -5,8 +5,8 @@
 Public releases are published at
 [reville/lighttable-digital-darkroom](https://github.com/reville/lighttable-digital-darkroom/releases).
 The Windows x64 artifacts are `LightTable-VERSION-windows-x64-setup.exe` and
-`LightTable-VERSION-windows-x64.zip`. Availability depends on a successful
-release build; installer manifests do not create downloadable binaries.
+`LightTable-VERSION-windows-x64.zip`. See the [Windows installation guide](https://lighttable.app/windows.html)
+and [exact-binary acceptance record](docs/windows-client-acceptance.md) for the current release.
 
 The installer runs without administrator rights and defaults to
 `%LOCALAPPDATA%\Programs\LightTable`. It adds a dedicated `bin` directory to
@@ -16,14 +16,17 @@ checkout, Python installation, or Node.js. The dedicated directory prevents
 Windows from resolving the desktop `LightTable.exe` before the CLI.
 
 Before copying or replacing LightTable, setup checks for the Microsoft Edge
-WebView2 Runtime in both the per-machine and per-user registry locations. If
-it is missing, setup downloads Microsoft's Evergreen bootstrapper, requires a
-valid Microsoft Authenticode signature, and installs the Runtime without
-elevation. Downloads and installation have time limits; failure stops setup
-before changing an existing LightTable installation. Internet access is only
-needed for this prerequisite when the Runtime is missing. For offline setup,
-install Microsoft's [Evergreen Standalone Installer](https://developer.microsoft.com/microsoft-edge/webview2)
-first. LightTable uninstall leaves this shared Microsoft runtime installed.
+WebView2 Runtime in both the per-machine and per-user registry locations. The
+signed 0.6.1 installer bundles Microsoft's verified standalone runtime and can
+install it without network access when missing. Windows 10 acceptance covers
+that missing-runtime case; Windows 11 acceptance preserves its preinstalled
+runtime. Setup runs without elevation and leaves this shared Microsoft runtime
+installed when LightTable is removed.
+
+Developer installers built without the offline prerequisite use Microsoft's
+Evergreen bootstrapper when the runtime is missing. That fallback requires
+internet access and a valid Microsoft Authenticode signature; a bounded download
+or installation failure stops setup before changing the existing app.
 
 For unattended installation:
 
@@ -33,7 +36,7 @@ Start-Process -Wait .\LightTable-VERSION-windows-x64-setup.exe -ArgumentList '/S
 
 An optional `/D=C:\path with spaces\LightTable` must be the last installer
 argument and its value must not be quoted separately. The per-user uninstall
-registry key is `LightTable`, publisher is `Nicholas Reville`, and the
+registry key is `LightTable`, publisher metadata is `Chonkers LLC`, and the
 `QuietUninstallString` supports `/S` for WinGet and other package managers.
 Uninstall removes shipped files, shortcuts, and the CLI's PATH entry. Catalogs,
 preferences, caches, photos, and unrelated files in the install directory remain.
@@ -210,7 +213,8 @@ Configuring this workflow does not itself obtain a certificate or prove a
 successful signed release.
 
 To produce a signed candidate without publishing a release, dispatch
-`windows-build.yml` on `main` with `version=0.5.0` and `require_signing=true`.
+`windows-build.yml` on a pinned version tag with the matching new numeric
+`version` and `require_signing=true`.
 Inspect the signature report and native acceptance evidence before publishing.
 
 Windows support is an additional host around the shared render core, not a
@@ -319,8 +323,8 @@ require another application rewrite or a forked Windows pipeline.
    exported files, not only the remote desktop stream.
 
 The [Windows client acceptance record](docs/windows-client-acceptance.md) records
-the completed 0.6.0 Windows 10/11 and Windows 11 ARM emulation checks, exact
-candidate identity, and remaining publication gates.
+the current Windows 10/11 and Windows 11 ARM emulation checks, exact
+release identity, and physical hardware coverage limits.
 
 ## First Windows GPU session
 
@@ -385,19 +389,18 @@ Candidate builds:
   with the Chonkers LLC Partner Center account before submission.
 
 Partner Center installation arguments: `/S` (case-sensitive). Silent uninstall
-uses `/S`. The installer is per-user and currently leaves its own update service
-in control, as with other EXE installations; it is not an MSIX package.
+uses `/S`. The installer is per-user and currently uses the direct WinSparkle updater;
+it is not an MSIX package.
 
 ### Evidence still required before initial submission
 
-The existing successful Windows release run predates this candidate mode. Run
-it on Windows and retain the installed-payload signature report, installer
-hash, build manifest, native startup/edit/export/restart evidence, and install,
-repair, uninstall results. Separately exercise installation on clean Windows
-10/11 x64 with WebView2 absent and network disabled, then launch and export.
-An ordinary CI image with WebView2 already present cannot prove this case.
-Check that `/S` shows no setup UI and no app is launched by setup. Confirm all
-supported OS/device claims and that uninstall preserves photos and catalogs.
+The [current acceptance record](docs/windows-client-acceptance.md) binds the
+selected installer to its source, hash, signatures and native edit/export/restart
+checks. Windows 10 covers offline installation with WebView2 absent; Windows 11
+covers offline installation with its preinstalled runtime. Keep those cases
+explicit when selecting future candidates. Recheck Store-specific requirements,
+listing screenshots, update ownership, and declarations against the final
+submitted installer; direct release validation is not Store certification.
 
 Host the final signed EXE at a permanent **versioned HTTPS URL** only after
 release approval. Record its SHA256 and never replace bytes at that URL.
@@ -409,7 +412,7 @@ signatures or the standard Windows workflow passed.
 Sources: [Store EXE package requirements](https://learn.microsoft.com/windows/apps/publish/publish-your-app/msi/app-package-requirements)
 and [Microsoft's offline WebView2 deployment](https://learn.microsoft.com/microsoft-edge/webview2/concepts/distribution#offline-deployment).
 
-### Dispatch the initial candidate after the preparation branch is merged
+### Build a future candidate
 
 The checked-in `packaging/webview2-store-input.json` pins the acquired Microsoft
 x64 standalone download (258,614,480 bytes; SHA256
@@ -421,11 +424,12 @@ never replace the checksum automatically.
 
 ```sh
 gh workflow run windows-build.yml --repo reville/lighttable-digital-darkroom \
-  --ref main -f version=0.5.0 -F store_candidate=true -F require_signing=true
+  --ref VERSION_TAG -f version=VERSION -F store_candidate=true -F require_signing=true
 ```
 
-This command is an instruction for a future authorized run, not evidence that a
-run occurred. Store mode implies required signing even when the separate signing
+Replace `VERSION_TAG` and `VERSION` with a new immutable source tag and its
+numeric version. Do not rebuild or overwrite an already published version.
+Store mode implies required signing even when the separate signing
 input is false, uses the existing `windows-release` environment, accepts only
 main/version-tag dispatches, and cannot be combined with native-recheck mode.
 The direct-download workflow defaults and artifact name remain unchanged.
@@ -438,8 +442,7 @@ edit/export/restart still gates the job and uploads separate
 `Windows-native-acceptance` evidence. The receipt explicitly leaves clean-machine
 offline acceptance unconfirmed until that independent Windows test is done.
 
-For the selected initial release `0.5.0`, the proposed public EXE URL is
-`https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-windows-x64-setup.exe`.
-This is a proposed location, not a live download. Publish only the exact verified
-candidate bytes after all release and Store gates pass; do not replace bytes at
-that URL after submission.
+Select the current permanent installer URL and checksum from the
+[canonical release manifest](release/manifest.json), after verifying that the
+Windows entry is published. Store account approval, listing preparation and
+certification remain separate gates. Never replace bytes at a submitted URL.
