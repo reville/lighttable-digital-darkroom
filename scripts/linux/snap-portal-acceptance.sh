@@ -26,6 +26,10 @@ openbox > "$common/portal-evidence/openbox.log" 2>&1 & children+=("$!")
         import -window root "$common/portal-evidence/folder-chooser.png"
         xdotool windowactivate --sync "$window"
         sleep 2
+        # The retained native screenshots show Home at (55,60) within this
+        # GTK chooser. Leave its empty Recent view before opening a location.
+        xdotool mousemove --window "$window" 55 60 click 1
+        sleep 1
         xdotool key --clearmodifiers ctrl+l
         sleep 1
         xdotool type --clearmodifiers --delay 20 '/media/lighttable-portal/photos/'
@@ -34,7 +38,13 @@ openbox > "$common/portal-evidence/openbox.log" 2>&1 & children+=("$!")
         sleep 2
         import -window root "$common/portal-evidence/folder-entered.png"
         if xdotool search --onlyvisible --name '^Choose a photo folder$' >/dev/null 2>&1; then
-          xdotool key --clearmodifiers alt+s
+          geometry=$(xdotool getwindowgeometry --shell "$window")
+          width=$(sed -n 's/^WIDTH=//p' <<< "$geometry")
+          height=$(sed -n 's/^HEIGHT=//p' <<< "$geometry")
+          [[ "$width" =~ ^[0-9]+$ && "$height" =~ ^[0-9]+$ ]]
+          # Native screenshots place Select fifty pixels from the right edge
+          # and twenty-six from the bottom; Alt+S opens GTK's Search instead.
+          xdotool mousemove --window "$window" "$((width-50))" "$((height-26))" click 1
         fi
         selected=true
       fi
