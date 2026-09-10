@@ -4086,11 +4086,16 @@ function setNativeBaseImage(render, generation, { preserveCanvasSize = false } =
   const canvasHeight = surface.viewport?.fullHeight || surface.height;
   if (canvasWidth > 0 && canvasHeight > 0 && !preserveCanvasSize) {
     if ($('cv').width !== canvasWidth || $('cv').height !== canvasHeight) {
+      // Keep the old drawable at its existing size until nativePreview installs
+      // the new texture and viewport together. Layout messages can otherwise
+      // stretch the previous orientation while this surface is still loading.
+      postNative('nativeNavigate', { generation });
       S.maskTextureDirty = true;
       $('cv').width = canvasWidth;
       $('cv').height = canvasHeight;
     }
     applyCropVisual();
+    cropFrameScheduler.flush();
     if (S.maskTextureDirty) drawGrade();
   }
   scheduleNativeViewportLayout();
@@ -4253,6 +4258,9 @@ function setWebGLBaseImage(dataUri, {
       } else drawGrade();
       scheduleHistogram(true);
       applyCropVisual();
+      // The upload changes the canvas orientation now; do not leave its CSS
+      // frame at the old aspect until the next animation-frame callback.
+      cropFrameScheduler.flush();
       res({ decodeMs: uploadStartedAt - startedAt,
         uploadMs: uploadedAt - uploadStartedAt, uploadedAt, textureCacheHit });
     };
@@ -6361,7 +6369,9 @@ function syncCropPresentationNow() {
   }
 
   const frameCrop = crop || { x: 0, y: 0, w: 1, h: 1 };
-  const source = cropSourceSize();
+  // Crop constraints use the requested orientation, but the visible frame must
+  // follow the pixels already uploaded. Rotation renders arrive asynchronously.
+  const source = { width: canvas.width, height: canvas.height };
   const viewport = cropViewportSize(
     wrap.width, wrap.height, source.width, source.height, frameCrop);
   if (viewport) {

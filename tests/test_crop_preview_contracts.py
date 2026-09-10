@@ -31,13 +31,22 @@ class CropPreviewContractTests(unittest.TestCase):
                       self.javascript)
         for selector in ("#cv", "#orig", "#referenceImg"):
             self.assertIn(f".cmp.preview-framed > {selector}", self.css)
-        self.assertIn("const source = cropSourceSize();", self.javascript)
         self.assertIn(
             "wrap.width, wrap.height, source.width, source.height, frameCrop",
             self.javascript,
         )
         self.assertIn("const frame = $('cmp').getBoundingClientRect()",
                       self.javascript)
+
+    def test_rotation_presentation(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("Node.js is required for rotation presentation checks")
+        result = subprocess.run(
+            [node, "--test", "tests/rotation-presentation.test.mjs"],
+            cwd=ROOT, capture_output=True, text=True, timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_crop_viewport_and_compare_mapping_math(self):
         node = shutil.which("node")
