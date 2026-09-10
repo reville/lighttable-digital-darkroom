@@ -241,7 +241,7 @@
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
             "Di kisi, gunakan penggeser Ukuran untuk mengubah ukuran thumbnail.",
-            "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus."
+            "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di kedua grid, tombol panah atas dan bawah berpindah ke foto di atas atau di bawah alih-alih menggulir. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Pilih kandidat dalam kisi dan tekan N, atau buka Info → Survey selection.",
-            "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel.",
+            "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel, dan panah atas dan bawah untuk berpindah antar baris.",
             "Gunakan toolbar penandaan atau shortcut flag, rating, dan label pada sel aktif.",
             "Klik × pada sel untuk menghapusnya dari survei tanpa menghapus atau menolaknya. Klik dua kali sel untuk membuka foto tersebut di Detail.",
             "Klik Tutup atau tekan Escape untuk keluar dari Survey."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "انقر على منطقة محايدة لضبط توازن الأبيض",
     "Click a neutral grey area": "انقر على منطقة رمادية محايدة",
     "Click a new position in the photo for the selected correction’s target": "انقر موضعًا جديدًا في الصورة لهدف التصحيح المحدد",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "انقر صورة لجعل خلية الاستعراض تلك نشطة. استخدم السهمين الأيسر والأيمن للتنقل بين الخلايا.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "انقر على صف إعداد مسبق لتطبيقه فورًا. يظهر شريط تمرير «الكمية» أسفل الصف. انقر على الصف نفسه مرة أخرى لتعطيل الإعداد المسبق وإخفاء شريط التمرير. تبقى صورتك على هذا الكمبيوتر.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "انقر إعدادًا مسبقًا لتطبيقه، ثم عدّل الكمية واحفظ مظهرك الخاص أو شاركه.",
     "Click a spot or drag over a distraction in the photo.": "انقر بقعة أو اسحب فوق عنصر مشتّت في الصورة.",
@@ -3205,7 +3204,6 @@
     "Use the Parametric curve": "استخدم المنحنى المعامل",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "استخدم زر تشغيل المعاينة الناعمة في شريط أدوات العارض لإيقاف المعاينة.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "استخدم الشبكات لاختيار مجموعة و Detail لفحص صورة فردية.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "استخدم مفتاحي السهم الأيسر والأيمن للتنقل بين الصور. في التفاصيل، يبدّل Space بين ملاءمة و1:1 عندما تكون منطقة الصورة في التركيز.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "استخدم حقل البحث في المكتبة للبحث في محتويات الصور أو النص الظاهر أو الوجوه إلى جانب أسماء الملفات والكلمات المفتاحية.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "استخدم شريط أدوات الوسم أو اختصارات العلامة والتقييم والتسمية على الخلية النشطة.",
     "Use the name “{name}”.": "استخدم الاسم «{name}».",
@@ -4256,7 +4254,9 @@
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "مرّر المؤشر فوق مقبض لمعرفة وظيفته. لا يمكن سحب الدبابيس المخفية.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "قد يظهر الشخص نفسه في مجموعات منفصلة. راجع التطابقات المحتملة لدمجها.",
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "عند توفر تطابقات محتملة، يظهر شريط قابل للإغلاق في قسم الأشخاص يفتح مراجعة التطابقات. يتذكر هذا الجهاز إغلاق الشريط.",
-    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "يقارن نموذج SFace INT8 المدمج الوجوه البشرية بعد محاذاتها. يمكن إضافة الوجوه الجديدة إلى مجموعات غير مسماة، أو إلى مجموعات مسماة عند وجود أدلة أقوى. تبقى التطابقات الملتبسة منفصلة للمراجعة. تحافظ عمليات المسح على المجموعات والأسماء والتصحيحات الموجودة؛ ولا يؤدي تغيير قواعد المطابقة إلى دمج المجموعات الموجودة في مكتبتك تلقائيًا."
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "يقارن نموذج SFace INT8 المدمج الوجوه البشرية بعد محاذاتها. يمكن إضافة الوجوه الجديدة إلى مجموعات غير مسماة، أو إلى مجموعات مسماة عند وجود أدلة أقوى. تبقى التطابقات الملتبسة منفصلة للمراجعة. تحافظ عمليات المسح على المجموعات والأسماء والتصحيحات الموجودة؛ ولا يؤدي تغيير قواعد المطابقة إلى دمج المجموعات الموجودة في مكتبتك تلقائيًا.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "استخدم مفتاحي السهم الأيسر والأيمن للتنقل بين الصور. في أي من الشبكتين، ينتقل سهما الأعلى والأسفل إلى الصورة الموجودة فوق أو تحت بدلاً من التمرير. في التفاصيل، يبدّل Space بين ملاءمة و1:1 عندما تكون منطقة الصورة في التركيز.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "انقر صورة لجعل خلية الاستعراض تلك نشطة. استخدم السهمين الأيسر والأيمن للتنقل بين الخلايا، والسهمين الأعلى والأسفل للتنقل بين الصفوف."
   },
   "plurals": {
     " · {count} paired file linked": {

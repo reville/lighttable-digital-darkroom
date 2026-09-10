@@ -241,7 +241,7 @@
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
             "Trong lưới, dùng thanh trượt Kích thước để thay đổi kích thước hình thu nhỏ.",
-            "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm."
+            "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Ở cả hai lưới, phím mũi tên lên và xuống chuyển tới ảnh phía trên hoặc phía dưới thay vì cuộn. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Chọn các ảnh ứng viên trong lưới và nhấn N, hoặc mở Thông tin → Xem nhanh lựa chọn.",
-            "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô.",
+            "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô, và phím mũi tên lên và xuống để di chuyển giữa các hàng.",
             "Dùng thanh công cụ đánh dấu hoặc các phím tắt cờ, xếp hạng và nhãn trên ô đang hoạt động.",
             "Nhấp × trên một ô để xóa nó khỏi survey mà không xóa hoặc từ chối nó. Nhấp đúp một ô để mở ảnh đó trong Detail.",
             "Nhấp Đóng hoặc nhấn Escape để rời khỏi Xem nhanh."
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }
