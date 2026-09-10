@@ -36,9 +36,9 @@ The Windows 11 host and installer receipts report success; the overall job corre
 
 ## Remaining release gates and test choices
 
-Windows remains blocked in the [canonical release manifest](../release/manifest.json). Two issues remain:
+The historical 0.6.0 candidate remains blocked in the [canonical release manifest](../release/manifest.json). Its original gates were:
 
-1. The currently declared gate requires Windows 11 offline installation with WebView2 genuinely absent. Keep that case open unless a deliberate release-policy decision accepts Windows 10 absence coverage plus normal Windows 11 runtime-present coverage. Do not relabel the failed run as passing.
+1. The historical gate required Windows 11 offline installation with WebView2 genuinely absent. The 0.6.1 publication coverage below supersedes that requirement with an explicit OS-specific matrix. The old failed run is not relabeled as passing.
 2. The older 0.6.0 ZIP lacks the clean-source and platform fields required by the newer preparation verifier. It cannot pass automated promotion as-is. A future versioned candidate should include the required embedded metadata and repeat acceptance; never change existing versioned binary bytes or invent a clean-source receipt.
 
 For further testing:
@@ -48,3 +48,19 @@ For further testing:
 - **Azure client VMs:** an alternative repeatable environment if appropriately licensed client images and an Azure subscription are available. [Microsoft's dev/test requirements](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/client-images) apply. A Windows Server VM cannot substitute for Windows 10/11 client evidence, and a different provider does not by itself remove the preinstalled runtime.
 
 The current manual workflow is `.github/workflows/windows-client-vm.yml`, with explicit candidate version/source/build/hash inputs, bounded jobs, real guest receipts and automatic VM cleanup. Do not restart the superseded pinned 0.5.1 workflow or its expired monitor. See [release/process.md](../release/process.md) for preparation and immutable publication.
+
+## Windows 0.6.1 publication coverage
+
+The September 10 publication request adopts the OS-specific matrix: Windows 10
+must establish genuine WebView2 absence before offline installation; Windows 11
+must preserve and observe its normal preinstalled runtime. Both cases retain
+network-disabled, unelevated installation, exact installer hashes, installed
+signature audits, native editing/export and reopen requirements. The guest records
+`webview2_test_case` plus actual runtime observations; the workflow and promotion
+verifier enforce the same case. Missing fields and the wrong runtime state fail.
+
+The historical failed 0.6.0 Windows 11 receipt is unchanged and cannot satisfy the
+new explicit case contract. Run fresh acceptance on the new signed 0.6.1 candidate,
+whose embedded metadata includes clean-source and platform identity. ARM x64
+emulation is rechecked separately and still does not imply native ARM64 or
+physical GPU/display validation.

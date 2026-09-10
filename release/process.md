@@ -185,7 +185,10 @@ been published, conflicting metadata must not be overwritten to force a retry.
 Keep original build, preparation, signature verification, native acceptance,
 public download and live website verification distinct. Windows Server and
 Windows 11 ARM emulation do not establish native Windows 10/11 x64 offline
-acceptance. Store enrollment/review and direct download readiness are separate.
+acceptance. The client matrix requires Windows 10 with WebView2 genuinely absent
+before offline install and Windows 11 with its preinstalled runtime preserved;
+both require actual offline, unelevated native acceptance. See
+[the client test contract](../docs/windows-client-acceptance.md). Store enrollment/review and direct download readiness are separate.
 
 Windows build timing records separate compilation, runtime/native tests,
 installer construction/signing and compression. Optimize the measured expensive
