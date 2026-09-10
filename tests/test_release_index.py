@@ -27,7 +27,8 @@ class ReleaseIndexTests(unittest.TestCase):
     def test_resume_preserves_arch_and_other_platforms(self):
         original = copy.deepcopy(self.index)
         out = merge(self.index, self.result)
-        self.assertEqual(len(out['platforms']['linux-x86_64']['artifacts']), 4)
+        expected_count = len(self.index['platforms']['linux-x86_64']['artifacts'])
+        self.assertEqual(len(out['platforms']['linux-x86_64']['artifacts']), expected_count)
         self.assertEqual(out['platforms']['macos-arm64']['artifacts'], self.index['platforms']['macos-arm64']['artifacts'])
         self.assertEqual(out['platforms']['windows-x64'], self.index['platforms']['windows-x64'])
         self.assertEqual(self.index, original)
@@ -35,8 +36,9 @@ class ReleaseIndexTests(unittest.TestCase):
     def test_new_linux_version_preserves_older_mac_source(self):
         m = self.result['manifest'];m['version'] = '0.7.0';m['source_revision'] = 'a'*40;m['tag'] = 'v0.7.0'
         e = m['platforms']['linux-x86_64'];e['version'] = '0.7.0';e['tag'] = 'v0.7.0';e['source_revision'] = 'a'*40
+        current_version = self.index['platforms']['linux-x86_64']['version']
         for a in e['artifacts']:
-            a['name'] = a['name'].replace('0.6.0','0.7.0');a['url'] = a['url'].replace('0.6.0','0.7.0')
+            a['name'] = a['name'].replace(current_version, '0.7.0');a['url'] = a['url'].replace(current_version, '0.7.0')
         self.result.update(version='0.7.0', source_revision='a'*40)
         out = merge(self.index, self.result)
         self.assertEqual(out['version'], '0.7.0')

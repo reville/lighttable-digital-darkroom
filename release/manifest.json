@@ -3,46 +3,56 @@
     "linux-x86_64": {
       "artifacts": [
         {
-          "bytes": 363504544,
-          "name": "LightTable-0.6.0-linux-x86_64.tar.gz",
-          "sha256": "4b116ac098df209a3c755ef751e19ed226da5621d9238f9c2bb3dbe94fe020f5",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/LightTable-0.6.0-linux-x86_64.tar.gz"
+          "bytes": 411,
+          "name": "LightTable-0.6.1-linux-x86_64-SHA256SUMS",
+          "sha256": "7baf2e2b69f5595cf8a72f4b9241f2e22c602fb47b14352785a36bf20792b7f1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.1/LightTable-0.6.1-linux-x86_64-SHA256SUMS"
+        },
+        {
+          "bytes": 1625,
+          "name": "LightTable-0.6.1-linux-x86_64-installers.tar.gz",
+          "sha256": "d31385e55285b37e1429bf6bd17a554392996408bbaff20d599fb5c30c52e3f9",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.1/LightTable-0.6.1-linux-x86_64-installers.tar.gz"
+        },
+        {
+          "bytes": 363526984,
+          "name": "LightTable-0.6.1-linux-x86_64.tar.gz",
+          "sha256": "80fe30d84be74db9840e05dd4c4b87b70b32952caf02ec0362daddce49a12a26",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.1/LightTable-0.6.1-linux-x86_64.tar.gz"
         },
         {
           "bytes": 103,
-          "name": "LightTable-0.6.0-linux-x86_64.tar.gz.sha256",
-          "sha256": "9ee243d24344a8448feaa916fc7c1a0761acd113e171d58b5ff247118c0b6f33",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/LightTable-0.6.0-linux-x86_64.tar.gz.sha256"
+          "name": "LightTable-0.6.1-linux-x86_64.tar.gz.sha256",
+          "sha256": "553da831c14f5b017074d011d97dedb3f6dc6cc4b2a2fa5439b7abbab1890c92",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.1/LightTable-0.6.1-linux-x86_64.tar.gz.sha256"
         },
         {
-          "bytes": 343675816,
-          "name": "lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst",
-          "sha256": "0a2f964ec1be558cd92537484e4d0f8c0789d4b79f5af967f7de58865e3c8565",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst"
-        },
-        {
-          "bytes": 108,
-          "name": "lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst.sha256",
-          "sha256": "2690a6412aba7ce048f074d3b166ea64f6bb8eb2035e202211de2663d0d3bd46",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.0/lighttable-bin-0.6.0-1-x86_64.pkg.tar.zst.sha256"
+          "bytes": 611,
+          "name": "linux-x86_64.json",
+          "sha256": "5cb8c107970c799a430539e4e5b8e4e0588d1a5f7b818b023a173fca9e913f1f",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.6.1/linux-x86_64.json"
         }
       ],
+      "build_run_id": "34514459927",
+      "build_workflow_revision": "f3c0035348653ae6eefffd7f3485003e8583e71b",
       "channel": "stable",
       "gates": [],
-      "minimum_os": "Ubuntu 24.04+",
-      "published_at": "2026-09-10T03:51:06Z",
+      "minimum_os": "Ubuntu 24.04+; current Arch Linux/Omarchy",
+      "native_run_id": "34514459927",
+      "published_at": "2026-09-10T18:21:13Z",
       "signing": "ed25519",
-      "source_revision": "0ae5e9aaf90b3554ad1d027d5b6b10667cd61ae2",
+      "source_revision": "2382de7ccb6a2e81c304a6c9116bf578b95aee69",
       "state": "published",
-      "tag": "v0.6.0",
+      "tag": "v0.6.1",
       "update_owner": "app",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34435011848"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34514459927",
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34514459927"
         ],
         "status": "passed"
       },
-      "version": "0.6.0"
+      "version": "0.6.1"
     },
     "macos-arm64": {
       "artifacts": [
