@@ -50,7 +50,7 @@ jobs:
         run: |
           sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libgtk-3-0t64 libwebkit2gtk-4.1-0 libxdo3 libvulkan1 mesa-vulkan-drivers libgl1-mesa-dri libgomp1 libopenblas0-pthread xvfb xauth dbus-x11 openbox xdotool x11-utils imagemagick python3-pil fonts-dejavu-core
+          sudo apt-get install -y --no-install-recommends libgtk-3-0t64 libwebkit2gtk-4.1-0 libxdo3 libvulkan1 mesa-vulkan-drivers libgl1-mesa-dri libgomp1 libopenblas0-pthread xvfb xauth dbus-x11 openbox xdotool x11-utils imagemagick tesseract-ocr python3-pil fonts-dejavu-core
       - name: Fetch the exact checksummed Pexels inputs
         run: |
           python3 - <<'PYCODE'
@@ -81,7 +81,7 @@ jobs:
             manager_pid=$!
             trap "kill $manager_pid 2>/dev/null || true" EXIT
             export GDK_SCALE=2 GDK_DPI_SCALE=1 GTK_CSD=1 GTK_THEME=Adwaita:dark
-            python3 scripts/screenshots/linux_capture.py --bundle /tmp/lighttable-capture-bundle/LightTable --output-dir /tmp/pexels-linux-captures
+            python3 scripts/screenshots/linux_capture.py --bundle /tmp/lighttable-capture-bundle/LightTable --output-dir /tmp/pexels-linux-captures --only export-workflow
           '
       - name: Retain native masters and provenance for local review
         if: always()

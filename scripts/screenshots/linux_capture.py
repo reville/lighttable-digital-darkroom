@@ -79,7 +79,7 @@ def main():
     if (os.uname().sysname != "Linux" or os.environ.get("GDK_SCALE") != "2"
             or not os.environ.get("DISPLAY") or not os.environ.get("DBUS_SESSION_BUS_ADDRESS")):
         parser.error("Use a private Linux X11 display and D-Bus session with GDK_SCALE=2")
-    for tool in ("xdotool", "xwininfo", "import"):
+    for tool in ("xdotool", "xwininfo", "import", "tesseract"):
         if not shutil.which(tool):
             parser.error(f"Install the native capture dependency: {tool}")
     bundle = args.bundle.resolve()
@@ -246,6 +246,26 @@ def main():
                             "click", "--repeat", 24, "--delay", 50, "5")
                     if shot.get("dialog") == "export":
                         command("exportPhotos")
+                        # The main viewer can be ready while Export is still
+                        # computing its own output preview. Read actual pixels.
+                        deadline = time.monotonic() + 180
+                        settled = None
+                        while time.monotonic() < deadline:
+                            probe = temporary / "export-preview-check.png"
+                            run("import", "-window", window, probe)
+                            visible = run("tesseract", probe, "stdout", stderr=subprocess.DEVNULL).lower()
+                            pending = any(label in visible for label in (
+                                "updating preview", "applying film", "loading preview", "preparing", "could not"))
+                            if "export 1 photo" in visible and "output preview" in visible and not pending:
+                                settled = settled or time.monotonic()
+                                if time.monotonic() - settled >= 3:
+                                    print("Export output preview is visibly ready", flush=True)
+                                    break
+                            else:
+                                settled = None
+                            time.sleep(2)
+                        else:
+                            raise RuntimeError("Export output preview did not visibly finish")
                     # Move the cursor outside the captured window, clearing tooltips.
                     run("xdotool", "mousemove", "0", "0")
                     time.sleep(4)
