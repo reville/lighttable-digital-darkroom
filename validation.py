@@ -120,6 +120,18 @@ def clean_state_patch(raw: dict, *, params_cleaner, grade_cleaner,
             if valid:
                 cleaned["preset"] = {key: value[key] for key in ("id", "name", "amount", "enabled")}
                 cleaned["preset"].update(states)
+                if isinstance(value.get("controlled"), dict):
+                    ctrl = value["controlled"]
+                    cleaned_ctrl = {}
+                    if isinstance(ctrl.get("grade"), list):
+                        cleaned_ctrl["grade"] = [str(k) for k in ctrl["grade"] if isinstance(k, str) and len(k) <= 50]
+                    if isinstance(ctrl.get("film"), list):
+                        cleaned_ctrl["film"] = [str(k) for k in ctrl["film"] if isinstance(k, str) and len(k) <= 50]
+                    if ctrl.get("filmMode") in ("on", "off", "preserve"):
+                        cleaned_ctrl["filmMode"] = ctrl["filmMode"]
+                    if isinstance(ctrl.get("optics"), list):
+                        cleaned_ctrl["optics"] = [str(k) for k in ctrl["optics"] if isinstance(k, str) and len(k) <= 50]
+                    cleaned["preset"]["controlled"] = cleaned_ctrl
         if value is not None and cleaned["preset"] is None:
             issues.append({"path": "preset", "kind": "invalid"})
     if strict and issues:
