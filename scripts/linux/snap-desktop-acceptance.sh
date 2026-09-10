@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This runs only on an ephemeral runner, inside Xvfb and a private D-Bus session.
+# This runs only on an ephemeral runner, inside Xvfb with its systemd user bus.
 set -euo pipefail
 common="$HOME/snap/lighttable/common"
 mkdir -p "$common/acceptance" "$common/acceptance-evidence"

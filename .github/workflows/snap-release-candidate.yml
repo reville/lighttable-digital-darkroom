@@ -38,7 +38,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends xvfb xauth openbox imagemagick dbus-x11
-          timeout 300s xvfb-run -a --server-args="-screen 0 1440x1000x24" dbus-run-session -- bash scripts/linux/snap-desktop-acceptance.sh
+          # Snap needs the runner's systemd user bus to create its application scope.
+          timeout 300s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-desktop-acceptance.sh
       - name: Collect diagnostics and remove ephemeral installation
         if: always()
         run: |
