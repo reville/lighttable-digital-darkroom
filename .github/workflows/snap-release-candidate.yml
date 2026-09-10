@@ -119,4 +119,5 @@ jobs:
             dist/*.snap
             dist/SHA256SUMS
             evidence
+          retention-days: 14
           if-no-files-found: error

@@ -55,13 +55,17 @@ renders, codec imports and the local server inside strict confinement. It also
 runs the actual GTK/WebKit desktop under Xvfb: Canon CR2 and Fuji RAF imports,
 film rendering, full-size 16-bit ICC exports, normal close/reopen, and a local
 Snap revision update that preserves the catalog and saved edits. Native screens,
-export hashes and reports are retained as workflow artifacts. Run 34421280370
+export hashes and reports are retained as workflow artifacts. Run 34424616546
 passed these checks for application source
 `be537f2f3e2e431ae6b42af716c2a8b365f57bab` and packaging revision
-`f9ce9602a6c0f5c0dd3131363c9dd29177f54062`.
+`c8ef478e12404c4a4a873d1eb603ff579526e2b4`.
+It also passed initial native folder selection through the real desktop portal,
+photo display and close/reopen using the retained document-portal path, denial
+of direct `/media` access before connection, and access after explicitly
+connecting `removable-media`. Proxy handling remained enabled throughout.
 
-First-run and removable-folder portal interactions, backup restoration and real
-GPU coverage remain unverified. The candidate therefore remains `grade: devel`.
+The web onboarding flow, backup restoration and real GPU coverage remain
+unverified. The candidate therefore remains `grade: devel`.
 Snap manages its own user data and removal/snapshots. Before uninstalling or
 switching package formats, preserve a catalog backup; do not describe Snap removal
 as equivalent to the portable installer's launcher-only uninstall.
