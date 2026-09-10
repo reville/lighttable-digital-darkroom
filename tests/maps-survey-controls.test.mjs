@@ -141,7 +141,7 @@ function surveyHarness() {
     },
   };
   const context = vm.createContext({ document, tr, labelSwatch });
-  vm.runInContext(source('survey.js').replace(/^import .*;$/gm, '').replace('export function', 'function'), context);
+  vm.runInContext(source('survey.js').replace(/^import .*;$/gm, '').replace(/export function/g, 'function'), context);
   const survey = context.createSurvey({ el: (id) => elements.get(id), images: () => images });
   return {
     survey, swap: elements.get('surveySwap'),

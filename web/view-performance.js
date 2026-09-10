@@ -12,13 +12,24 @@ export function createGridLayout(images, { width, cell = 180, photo = false }) {
     const ratio = image.width > 0 && image.height > 0 ? image.height / image.width : (image.thumbnailAspectRatio || 1);
     const height = photo ? cellWidth * ratio : cellWidth + 44;
     const top = photo ? bottoms[column] : Math.floor(index / columns) * (height + gap);
-    const position = { index, left: column * (cellWidth + gap), top, width: cellWidth,
+    const position = { index, column, row: lanes[column].length,
+      left: column * (cellWidth + gap), top, width: cellWidth,
       height, bottom: top + height };
     lanes[column].push(position);
     bottoms[column] = position.bottom + gap;
     return position;
   });
   return { positions, lanes, height: Math.max(0, ...bottoms) - (images.length ? gap : 0) };
+}
+
+/* One row up or down, not one cell. Square rows are uniform, but the photo grid
+ * packs lanes to different depths, so the neighbour is the next cell in the
+ * same lane rather than a fixed stride through the list. */
+export function gridRowNeighbour(layout, index, direction) {
+  const position = layout?.positions?.[index];
+  if (!position) return -1;
+  const neighbour = layout.lanes[position.column]?.[position.row + direction];
+  return neighbour ? neighbour.index : -1;
 }
 
 export function visibleGridPositions(layout, top, height, overscan = 500) {

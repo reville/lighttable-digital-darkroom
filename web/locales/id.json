@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "89aedcbed7ea4825ab5dc87cd65afffa89d2bf92ac57b7507a5a53b172f31091",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Klik area netral untuk mengatur white balance",
     "Click a neutral grey area": "Klik area abu-abu netral",
     "Click a new position in the photo for the selected correction’s target": "Klik posisi baru di foto untuk target koreksi terpilih",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Klik baris preset untuk langsung menerapkannya. Penggeser Jumlah muncul di bawah baris tersebut. Klik baris yang sama lagi untuk menonaktifkannya dan menyembunyikan penggeser. Foto Anda tetap berada di komputer ini.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Klik preset untuk menerapkannya, sesuaikan Jumlah, lalu simpan atau bagikan tampilan Anda sendiri.",
     "Click a spot or drag over a distraction in the photo.": "Klik bintik atau seret melintasi gangguan pada foto.",
@@ -3205,7 +3204,6 @@
     "Use the Parametric curve": "Gunakan kurva Parametrik",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Gunakan tombol Soft Proof on di toolbar penampil untuk mematikan pratinjau.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Gunakan kisi untuk memilih set dan Detail untuk memeriksa foto individual.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Gunakan field pencarian pustaka untuk mencari isi foto, teks yang terlihat, atau wajah selain nama file dan keyword.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Gunakan toolbar penandaan atau shortcut flag, rating, dan label pada sel aktif.",
     "Use the name “{name}”.": "Gunakan nama “{name}”.",
@@ -4256,7 +4254,9 @@
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Orang yang sama mungkin muncul dalam grup terpisah. Tinjau kemungkinan kecocokan untuk menggabungkannya.",
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini.",
-    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Model ringkas SFace INT8 membandingkan wajah manusia yang disejajarkan. Wajah baru dapat bergabung dengan grup tanpa nama atau, dengan bukti yang lebih kuat, grup bernama. Kecocokan ambigu tetap terpisah untuk ditinjau. Pemindaian mempertahankan grup, nama, dan koreksi yang ada; mengubah aturan pencocokan tidak otomatis menggabungkan grup yang sudah ada di pustaka Anda."
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Model ringkas SFace INT8 membandingkan wajah manusia yang disejajarkan. Wajah baru dapat bergabung dengan grup tanpa nama atau, dengan bukti yang lebih kuat, grup bernama. Kecocokan ambigu tetap terpisah untuk ditinjau. Pemindaian mempertahankan grup, nama, dan koreksi yang ada; mengubah aturan pencocokan tidak otomatis menggabungkan grup yang sudah ada di pustaka Anda.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di kedua grid, tombol panah atas dan bawah berpindah ke foto di atas atau di bawah alih-alih menggulir. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel, dan panah atas dan bawah untuk berpindah antar baris."
   },
   "plurals": {
     " · {count} paired file linked": {
