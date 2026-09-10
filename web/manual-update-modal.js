@@ -1,5 +1,12 @@
-import { t as tr } from './i18n.js';
 import { sendNative } from './native-bridge.js';
+
+const tr = (source, values = {}) => {
+  if (typeof window !== 'undefined' && typeof window.lightTableTranslate === 'function') {
+    return window.lightTableTranslate(source, values);
+  }
+  return String(source).replace(/\{(\w+)\}/g, (token, name) =>
+    Object.hasOwn(values, name) ? String(values[name]) : token);
+};
 
 const escapeHTML = (value) => String(value ?? '')
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
