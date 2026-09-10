@@ -15,7 +15,10 @@ def main():
     generator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(generator)
     manifest = json.loads((PACKAGING / 'source-candidate.json').read_text())
-    app = manifest['modules'][-1]
+    app = next(m for m in manifest['modules'] if m['name'] == 'lighttable-source')
+    notices = manifest['modules'][-1]
+    assert notices['name'] == 'native-license-notices'
+    assert notices == json.loads((PACKAGING / 'source-native-licenses.json').read_text())
     provenance = next(s for s in app['sources'] if s.get('dest-filename') == 'source-provenance.json')
     provenance = json.loads(provenance['contents'])
     assert provenance['source_build_verified'] is False

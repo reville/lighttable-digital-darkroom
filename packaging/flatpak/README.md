@@ -115,6 +115,18 @@ Pcodec, rav1e and cargo-c use checked-in upstream Cargo lockfiles and fully
 vendored, checksum-pinned crate sources. lzham's compatibility `zlib.h` stays in
 its own include directory so it cannot replace the SDK header.
 
+`source-native-licenses.json` appends an install-only module after compilation.
+It retains exact upstream notices for all 38 native modules and the three codec
+Cargo lockfiles, with source paths, hashes and explicit coverage gaps in the
+installed `native/provenance.json`. Lockfile membership includes development and
+non-Linux dependencies; the actual linked dependency set still needs review.
+The conservative inventory flags five Rust packages without standalone notices
+and 31 Vortex packages with a dirty published source identity. Offline, locked
+dependency-tree checks with the exact Linux recipe features exclude all of these
+from the selected targets except `simd_helpers 0.1.0`, a rav1e procedural macro.
+Its generated-code notice coverage remains unresolved. Retaining available
+notices does not establish release readiness.
+
 `source-imagecodecs.py` retains the Linux wheel's complete extension set rather
 than imagecodecs' reduced default source set. `source-codec-check.py` imports all
 60 required compiled modules and fails if any are missing. This is an availability
@@ -136,9 +148,9 @@ only; LLVM runtime libraries are built from source. Use `--stop-at=openblas` for
 a bounded foundation probe, or `--stop-at=python-imagecodecs` to reach the codec
 availability gate before the application. Flatpak owns updates for this install.
 
-Current maintained GIMP recipes build LAPACK under GNOME 50 without a Fortran SDK
-extension, but this work has **not executed gfortran inside that SDK**. The first
-build check requires it explicitly; `source-status.json` gives the native probe.
+Native CI has verified the required compiler paths, including gfortran, inside
+GNOME 50 and compiled the CPython and initial packaging-tool stages. The complete
+source build is still under validation.
 All source-built runtime imports, codec/ICC/TIFF precision, film-engine parity,
 license installation, and the installed native window still require Linux proof.
 

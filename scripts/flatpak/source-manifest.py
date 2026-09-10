@@ -257,6 +257,9 @@ def generate(revision: str, version: str, output: Path, *, allow_incomplete=Fals
     commands.extend([f'{PYTHON} source-install.py', f'{PYTHON} -m pip check',
                      f'{PYTHON} -B /app/LightTable/runtime-smoke.py /app/LightTable'])
     simple('lighttable-source', commands, source_list)
+    # Keep notice-only changes after every compiled module so completed build
+    # stages remain reusable when the license inventory is corrected.
+    modules.append(json.loads((PACKAGING / 'source-native-licenses.json').read_text()))
     manifest = {
         'app-id': APP_ID, 'runtime': 'org.gnome.Platform', 'runtime-version': '50',
         'sdk': 'org.gnome.Sdk', 'sdk-extensions': ['org.freedesktop.Sdk.Extension.rust-stable'],

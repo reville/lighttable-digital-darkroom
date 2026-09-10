@@ -1,12 +1,6 @@
 name: Flatpak source candidate
 on:
   workflow_dispatch:
-  push:
-    branches: [codex/linux-package-channels-20260909]
-    paths:
-      - .github/workflows/flatpak-source-candidate.yml
-      - packaging/flatpak/source-*
-      - scripts/flatpak/source-*
 permissions:
   contents: read
 jobs:
@@ -48,6 +42,7 @@ jobs:
             flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/source-*.json', 'scripts/flatpak/source-*.py') }}-
             flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-
       - name: Fetch pinned sources, then compile offline
+        timeout-minutes: 70
         run: |
           flatpak-builder --user --download-only --disable-rofiles-fuse .build/source-flatpak/build .build/source-flatpak/manifest.json
           flatpak-builder --user --force-clean --disable-download --disable-rofiles-fuse --jobs=2 --default-branch=source-candidate --repo=.build/source-flatpak/repo --install .build/source-flatpak/build .build/source-flatpak/manifest.json

@@ -6,12 +6,6 @@ on:
         description: Optional existing candidate run; accepted only if its Snap recipe and generator match this revision
         type: string
         default: ''
-  push:
-    branches: [codex/linux-package-channels-20260909]
-    paths:
-      - packaging/snap/snapcraft.yaml.in
-      - packaging/snap/environment.sh
-      - scripts/linux/make-snap-package.py
 permissions:
   contents: read
   actions: read
