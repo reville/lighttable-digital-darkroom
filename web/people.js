@@ -40,6 +40,9 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
   let mode = 'faces', selected = new Set(), selecting = false, busy = false, timer = null;
   let pollCount = 0, generation = 0, later = new Set(), mergeTarget = null, oldFocus = null;
   const nameDrafts = new Map();
+  const nudgeKey = 'lighttable.peopleReviewNudgeDismissed';
+  let nudgeDismissed = false;
+  try { nudgeDismissed = localStorage.getItem(nudgeKey) === '1'; } catch { /* Storage may be unavailable. */ }
   const openNow = () => dialog.classList.contains('on');
   const groupNow = () => groups.find(g => g.id === groupId);
   async function get(path) {
@@ -159,6 +162,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
       return;
     }
     if (groupId) {
+      if (!selecting && mergeTarget === null) renderReviewNudge();
       renderGroup();
       if (restoreNameFocus) {
         const input = find('.person-name-form input'); input.focus(); input.setSelectionRange(...caret);
@@ -166,12 +170,15 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
       return;
     }
     if (view === 'review') return renderReview();
+    if (view !== 'hidden') renderReviewNudge();
     const filtered = visiblePeople(groups, view, find('.people-search').value);
-    const heading = el('div', null, 'people-section-heading');
-    heading.append(el('h2', view === 'hidden' ? t('Hidden people') : view === 'unnamed' ? t('Add a name') : t('Your people')),
-      el('p', view === 'hidden' ? t('Hidden groups stay out of people search. You can bring them back.')
-        : view === 'unnamed' ? t('Open a group to name it or combine it with someone you know.') : t('Choose a face to see their photos.')));
-    content.append(heading);
+    if (view === 'hidden' || view === 'unnamed') {
+      const heading = el('div', null, 'people-section-heading');
+      heading.append(el('h2', view === 'hidden' ? t('Hidden people') : t('Add a name')),
+        el('p', view === 'hidden' ? t('Hidden groups stay out of people search. You can bring them back.')
+          : t('Open a group to name it or combine it with someone you know.')));
+      content.append(heading);
+    }
     if (!filtered.length) return empty(t('No people here'), find('.people-search').value ? t('Try another name.') : t('Other groups are in Everyone.'));
     const grid = el('div', null, 'people-grid');
     for (const group of filtered) {
@@ -263,14 +270,31 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     }, 'accent-btn'); confirm.disabled = !target;
     panel.append(confirm, btn(t('Cancel'), () => { mergeTarget = null; render(); })); content.append(panel);
   }
+  function renderReviewNudge() {
+    if (nudgeDismissed || !matches.length) return;
+    const bar = el('aside', null, 'people-review-nudge');
+    const copy = el('p', t('Some people may appear in separate groups. Review possible matches to combine them.'));
+    const review = btn(t('Review matches'), () => {
+      if (busy) return;
+      view = 'review'; groupId = null; selected.clear(); clearError(); syncStatus(); render(); content.scrollTop = 0;
+      find('.people-review-actions button')?.focus();
+    });
+    const dismiss = btn('×', () => {
+      nudgeDismissed = true;
+      try { localStorage.setItem(nudgeKey, '1'); } catch { /* Keep dismissal for this session. */ }
+      bar.remove();
+      find('.people-back, .person-tile, .people-close')?.focus();
+    }, 'quiet people-nudge-dismiss');
+    dismiss.setAttribute('aria-label', t('Dismiss'));
+    bar.append(copy, review, dismiss); content.append(bar);
+  }
   function renderReview() {
     const pair = matches.find(p => !later.has(`${p.a}/${p.b}`));
     if (!pair) return empty(t('All caught up'), later.size ? t('Skipped matches will be here when you reopen People.') : t('New possible matches appear here after scanning more photos.'));
     const a = groups.find(g => g.id === pair.a), b = groups.find(g => g.id === pair.b);
     if (!a || !b) return;
     const section = el('section', null, 'people-review');
-    section.append(el('p', t('POSSIBLE MATCH'), 'people-eyebrow'), el('h2', t('Are these the same person?')),
-      el('p', t('Compare the faces before combining their photos.'), 'people-review-intro'));
+    section.append(el('p', t('POSSIBLE MATCH'), 'people-eyebrow'), el('h2', t('Are these the same person?')));
     const comparison = el('div', null, 'people-comparison');
     for (const group of [a, b]) {
       const side = el('div', null, 'people-comparison-side');

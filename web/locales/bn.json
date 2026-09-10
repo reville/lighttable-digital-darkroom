@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "একটি destination layout বেছে নিন এবং filename ইতিমধ্যেই থাকলে কী হবে তা ঠিক করুন।",
     "Choose a different person group": "অন্য একটি ব্যক্তি গ্রুপ বেছে নিন",
     "Choose a face from this group": "এই গ্রুপ থেকে একটি মুখ বেছে নিন",
-    "Choose a face to see their photos.": "তাদের ফটো দেখতে একটি মুখ বেছে নিন।",
     "Choose a few…": "কয়েকটি নির্বাচন করুন…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "কর্মক্ষমতা বা সমস্যা সমাধানের প্রয়োজনে থাকলেই কেবল একটি স্থির Preview resolution override বেছে নিন।",
     "Choose a folder": "একটি ফোল্ডার বেছে নিন",
@@ -715,7 +714,6 @@
     "Compare Before & After": "আগে ও পরে তুলনা করুন",
     "Compare several photos in Survey": "Survey-এ একাধিক ফটো তুলনা করুন",
     "Compare similar photos": "সদৃশ ফটোগুলি তুলনা করুন",
-    "Compare the faces before combining their photos.": "ফটো একত্র করার আগে মুখগুলো তুলনা করুন।",
     "Compare while zoomed in": "জুম করা অবস্থায় তুলনা করুন",
     "Compare with a reference image": "একটি রেফারেন্স ইমেজের সঙ্গে তুলনা করুন",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "before control ব্যবহার করে, বা ফটো সক্রিয় থাকাকালীন B ধরে রেখে আপনার ফলাফলটি মূলের সঙ্গে তুলনা করুন।",
@@ -3354,7 +3352,6 @@
     "Your language choice could not be saved": "আপনার ভাষা পছন্দ সংরক্ষণ করা যায়নি",
     "Your language preference could not be read. The preferences file was left unchanged.": "আপনার ভাষা পছন্দ পড়া যায়নি। preferences ফাইলটি অপরিবর্তিত রাখা হয়েছে।",
     "Your library in Photos stays unchanged.": "আপনার Photos-এর library অপরিবর্তিত থাকবে।",
-    "Your people": "আপনার মানুষ",
     "Your photo originals are ready in LightTable.": "আপনার ফটো মূলগুলো LightTable-এ প্রস্তুত।",
     "Your photos are ready": "আপনার ফটোগুলি প্রস্তুত",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "আপনার ফটোগুলি তাদের বর্তমান ফোল্ডারেই থাকে। LightTable এগুলি ডুপ্লিকেট না করেই রেফারেন্স করে। আমদানিতে আপনার Lightroom সেটআপ ও ক্যাটালগ অপরিবর্তিত থাকে।",
@@ -4257,7 +4254,9 @@
     "← People": "← মানুষ",
     "☆ Favorites": "☆ পছন্দের",
     "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।",
-    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।"
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "একই ব্যক্তি আলাদা আলাদা দলে দেখা যেতে পারেন। দলগুলো একত্র করতে সম্ভাব্য মিলগুলো পর্যালোচনা করুন।",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -643,6 +643,7 @@
         {
           "title": "Eşleşmeleri inceleyip düzeltin",
           "paragraphs": [
+            "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır.",
             "Eşleşmeleri incele, yüz örnekleriyle birlikte iki olası grubu gösterir. Aynı kişi bunları birleştirir. Farklı kişiler, eşleştirmenin yeniden önerilmemesi için bir düzeltme kaydeder. Şimdilik atla, eşleşmeyi daha sonra yeniden görmeniz için bırakır.",
             "Bir grup içinde, … ile birleştir başka bir grup seçmenize ve onaylamadan önce birleşimi incelemenize olanak tanır. Geçerli grubun adı korunur; adı yoksa diğer grubun adı kullanılır. İki grupta aynı adı kaydetmek, bunları otomatik olarak birleştirmez.",
             "Yüzleri seç’i seçin, bazı yüzleri seçin, ardından bunları yeni, adsız bir gruba ayırmak için Ayrı bir kişiye taşı’yı seçin. İki grup yeniden eşleşme olarak önerilmeyecektir. Bir yüz seçin ve galeri görselini değiştirmek için Kapak olarak kullan’ı seçin.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

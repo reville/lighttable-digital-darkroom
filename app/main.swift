@@ -2966,6 +2966,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                         }
                     }
             }
+        case "openExternalUrl":
+            if let urlString = body["url"] as? String,
+               let url = URL(string: urlString),
+               ["https", "http"].contains(url.scheme?.lowercased()) {
+                NSWorkspace.shared.open(url)
+            }
+        case "showUpdateModal":
+            let options = body["options"] as? [String: Any] ?? body
+            sendEvent(["type": "showUpdateModal", "options": options])
         case "trashFiles":
             // Deletion always goes to the Trash through the platform, never an
             // unlink: a mistaken cull has to be recoverable in the Finder.

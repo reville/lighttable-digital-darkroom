@@ -643,6 +643,7 @@
         {
           "title": "Übereinstimmungen überprüfen und korrigieren",
           "paragraphs": [
+            "Wenn mögliche Übereinstimmungen vorliegen, öffnet eine ausblendbare Leiste in Personen die Ansicht zum Prüfen von Übereinstimmungen. Das Ausblenden wird auf diesem Gerät gespeichert.",
             "Übereinstimmungen überprüfen zeigt zwei mögliche Gruppen mit Gesichtsbeispielen an. Dieselbe Person führt sie zusammen. Verschiedene Personen speichert eine Korrektur, damit die Paarung nicht erneut vorgeschlagen wird. Vorerst überspringen belässt die Übereinstimmung für einen späteren Besuch.",
             "Innerhalb einer Gruppe können Sie mit Zusammenführen mit… eine andere Gruppe auswählen und die Kombination vor dem Bestätigen überprüfen. Der Name der aktuellen Gruppe bleibt erhalten; wenn sie unbenannt ist, wird der Name der anderen Gruppe verwendet. Das Speichern desselben Namens in zwei Gruppen führt nicht automatisch zu einer Zusammenführung.",
             "Wählen Sie Gesichter auswählen, markieren Sie einige Gesichter und wählen Sie dann Zu einer separaten Person verschieben, um sie in eine neue unbenannte Gruppe aufzuteilen. Die beiden Gruppen werden nicht erneut als Übereinstimmung vorgeschlagen. Wählen Sie ein Gesicht aus und wählen Sie Als Titelbild verwenden, um das Bild in der Galerie zu ändern.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

@@ -643,6 +643,7 @@
         {
           "title": "Xem lại và sửa các kết quả khớp",
           "paragraphs": [
+            "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh.",
             "Xem lại các kết quả khớp sẽ hiển thị hai nhóm có thể có cùng các mẫu khuôn mặt. Cùng một người sẽ hợp nhất chúng. Những người khác nhau ghi lại một chỉnh sửa để cặp đó sẽ không được đề xuất lại. Bỏ qua lúc này sẽ để lại kết quả khớp cho lần xem sau.",
             "Trong một nhóm, Hợp nhất với… cho phép bạn chọn một nhóm khác và xem lại sự kết hợp trước khi xác nhận. Tên của nhóm hiện tại sẽ được giữ nguyên; nếu nhóm đó chưa đặt tên, tên của nhóm kia sẽ được dùng. Lưu cùng một tên trên hai nhóm không tự động hợp nhất chúng.",
             "Chọn Chọn khuôn mặt, chọn một số khuôn mặt, rồi chọn Di chuyển sang một người riêng để tách chúng thành một nhóm mới chưa đặt tên. Hai nhóm sẽ không còn được đề xuất là một kết quả khớp nữa. Chọn một khuôn mặt và chọn Dùng làm ảnh bìa để thay đổi ảnh thư viện ảnh.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

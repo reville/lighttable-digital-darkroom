@@ -643,6 +643,7 @@
         {
           "title": "Tinjau dan koreksi kecocokan",
           "paragraphs": [
+            "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini.",
             "Tinjau kecocokan menampilkan dua grup yang mungkin beserta sampel wajah. Orang yang sama menggabungkannya. Orang berbeda mencatat koreksi sehingga pemasangan tidak akan disarankan lagi. Lewati untuk sekarang akan meninggalkan kecocokan itu untuk nanti.",
             "Di dalam sebuah grup, Gabungkan dengan… memungkinkan Anda memilih grup lain dan meninjau penggabungan sebelum mengonfirmasinya. Nama grup saat ini dipertahankan; jika grup itu tanpa nama, nama grup lainnya digunakan. Menyimpan nama yang sama pada dua grup tidak akan secara otomatis menggabungkannya.",
             "Pilih Pilih wajah, pilih beberapa wajah, lalu Pindahkan ke orang terpisah untuk memisahkannya menjadi grup baru tanpa nama. Kedua grup tidak akan disarankan sebagai kecocokan lagi. Pilih satu wajah lalu pilih Gunakan sebagai sampul untuk mengubah gambar galeri.",
@@ -3269,5 +3270,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }
