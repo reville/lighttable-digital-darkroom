@@ -375,11 +375,11 @@
       "sources": {
         "film_lab_ai/face_models.py": "d98d2848681d56e440a0fdb9ff8d451ced8ab257dda59747131fad8381cf85d7",
         "film_lab_ai/face_service.py": "e88e557e10bf9f64cf6d366e6fb11d3e6a1011e8e9163740921a35d115daadca",
-        "film_lab_ai/face_store.py": "ef02b7fc5ab5a8301c4ebbd585b82aca60995464b2b3524d79c55f6ca69ed172",
+        "film_lab_ai/face_store.py": "518e0350c753b9271e8549347bcf047c91674ce44b836ef095999bc4268ad085",
         "server.py": "b10add085e32ed7096909861587fbfc6ab0be52d4556dc4464986641d8306e9d",
         "web/library.js": "224f647c4d20a2c6efd65711391be3792ba01f4140ff392cd72b9032c059e4a8",
         "web/people.css": "410bf0c174ef306e03f8301a257864524061f9d9f1a189ef68a9a79112709e9e",
-        "web/people.js": "c9c2267df1352f0e80f1da01aaa8dc2a7d4ea92b61d978a9be967e84d85508d2"
+        "web/people.js": "ea1568be48d78bb97fa8e36de05d23321774ef1b4d3802f3c7aba887e3f1fb80"
       }
     },
     "performance-previews": {
