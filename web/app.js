@@ -702,6 +702,34 @@ function normalizeFilmParams(raw = {}) {
       : (S.filmDefaults.grain_amount ?? 1);
   }
   delete params.grain_um2;
+  const film = (S.profiles || []).find((p) => p.id === params.stock);
+  if (film) {
+    const times = film.developmentTimes || [];
+    if (times.length) {
+      const current = +params.development_time;
+      params.development_time = times.includes(current)
+        ? current
+        : (film.defaultDevelopmentTime ?? times[0]);
+    } else if (Object.hasOwn(params, 'development_time')) {
+      params.development_time = 0;
+    }
+  }
+  const paper = (S.profiles || []).find((p) => p.id === params.paper);
+  if (film?.type === 'positive') {
+    if (Object.hasOwn(params, 'print_development_time')) {
+      params.print_development_time = 0;
+    }
+  } else if (paper) {
+    const paperTimes = paper.developmentTimes || [];
+    if (paperTimes.length) {
+      const currentPrint = +params.print_development_time;
+      params.print_development_time = paperTimes.includes(currentPrint)
+        ? currentPrint
+        : (paper.defaultDevelopmentTime ?? paperTimes[0]);
+    } else if (Object.hasOwn(params, 'print_development_time')) {
+      params.print_development_time = 0;
+    }
+  }
   return params;
 }
 
