@@ -57,36 +57,60 @@
     "macos-arm64": {
       "artifacts": [
         {
-          "bytes": 349428501,
-          "name": "LightTable-0.6.0-beta.1-macos-arm64.dmg",
-          "sha256": "cd1beafccfe2f455e91a5377d6ba4ca61394094bf34acb2521dda9627eb31b20",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.0-beta.1/LightTable-0.6.0-beta.1-macos-arm64.dmg"
+          "bytes": 597,
+          "name": "LightTable-0.6.1-beta.1-macos-arm64-SHA256SUMS",
+          "sha256": "7ad2751123cce5ad474fc5a732e5ed6eb6b70338a6cf9560ab57126dbcea7378",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64-SHA256SUMS"
+        },
+        {
+          "bytes": 460,
+          "name": "LightTable-0.6.1-beta.1-macos-arm64-installers.tar.gz",
+          "sha256": "ec32351466a331a47094a4082b9fb749304d132e7a95650a06d7bc994c6f3500",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64-installers.tar.gz"
+        },
+        {
+          "bytes": 18525,
+          "name": "LightTable-0.6.1-beta.1-macos-arm64-macos-native-acceptance.json",
+          "sha256": "c762d20d0686c8e322cdf87f37727052179140650c63b92e23f88a4836089ada",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64-macos-native-acceptance.json"
+        },
+        {
+          "bytes": 20536,
+          "name": "LightTable-0.6.1-beta.1-macos-arm64-macos-release-proof.json",
+          "sha256": "f27f5698ec12d56eaf67b45c5dc05d11260c54cd50dab8bbb95fb8ad3ad8f751",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64-macos-release-proof.json"
+        },
+        {
+          "bytes": 350648916,
+          "name": "LightTable-0.6.1-beta.1-macos-arm64.dmg",
+          "sha256": "bd974aaa9cae1744e28f08809bddf8794bb20c7c53e0203fa5c3c2b960a8c0db",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64.dmg"
         },
         {
           "bytes": 106,
-          "name": "LightTable-0.6.0-beta.1-macos-arm64.dmg.sha256",
-          "sha256": "e33333701e501afd902b3f08e235eb5a69e69e34f37b5e0487826a8aca525dbd",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.0-beta.1/LightTable-0.6.0-beta.1-macos-arm64.dmg.sha256"
+          "name": "LightTable-0.6.1-beta.1-macos-arm64.dmg.sha256",
+          "sha256": "9ccb7df4f454e0173a3800563a6de50a892e3cc80adb5aab16c3a1ce3d700b4d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.6.1-beta.1/LightTable-0.6.1-beta.1-macos-arm64.dmg.sha256"
         }
       ],
-      "build_source_revision": "438bb12693a1d117cc3c5cbce56ec05252b243ee",
+      "build_run_id": "34517994374",
+      "build_workflow_revision": "212b0bb8b44b7767a643a3268398d0adcc50d13b",
       "channel": "beta",
       "gates": [],
-      "minimum_os": "macOS 14+",
-      "published_at": "2026-09-10T03:46:23Z",
+      "minimum_os": "macOS 14 Sonoma or later",
+      "published_at": "2026-09-10T19:28:49Z",
       "signing": "ad-hoc",
-      "source_revision": "0ae5e9aaf90b3554ad1d027d5b6b10667cd61ae2",
-      "source_tree": "a8b776446890dd88ca3fc44aab0a1cad7544633e",
+      "source_revision": "2382de7ccb6a2e81c304a6c9116bf578b95aee69",
       "state": "published",
-      "tag": "macos-v0.6.0-beta.1",
+      "tag": "macos-v0.6.1-beta.1",
       "update_owner": "manual",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/releases/tag/macos-v0.6.0-beta.1"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34517994374"
         ],
         "status": "passed"
       },
-      "version": "0.6.0-beta.1"
+      "version": "0.6.1-beta.1"
     },
     "windows-x64": {
       "artifacts": [

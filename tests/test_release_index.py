@@ -44,7 +44,8 @@ class ReleaseIndexTests(unittest.TestCase):
         self.assertEqual(out['version'], '0.7.0')
         self.assertEqual(out['platforms']['macos-arm64']['source_revision'],
                          self.index['platforms']['macos-arm64'].get('source_revision', self.index['source_revision']))
-        self.assertEqual(out['platforms']['macos-arm64']['version'], '0.6.0-beta.1')
+        self.assertEqual(out['platforms']['macos-arm64']['version'],
+                         self.index['platforms']['macos-arm64']['version'])
 
     def test_unpublished_unverified_or_changed_assets_are_rejected(self):
         for flag in ('applied', 'public_bytes_verified', 'published_release', 'receipts_verified'):
