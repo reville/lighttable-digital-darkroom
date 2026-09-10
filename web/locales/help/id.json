@@ -643,6 +643,7 @@
         {
           "title": "Tinjau dan koreksi kecocokan",
           "paragraphs": [
+            "Saat kemungkinan kecocokan tersedia, bilah yang dapat ditutup di Orang membuka tinjauan kecocokan. Penutupan bilah diingat di perangkat ini.",
             "Tinjau kecocokan menampilkan dua grup yang mungkin beserta sampel wajah. Orang yang sama menggabungkannya. Orang berbeda mencatat koreksi sehingga pemasangan tidak akan disarankan lagi. Lewati untuk sekarang akan meninggalkan kecocokan itu untuk nanti.",
             "Di dalam sebuah grup, Gabungkan dengan… memungkinkan Anda memilih grup lain dan meninjau penggabungan sebelum mengonfirmasinya. Nama grup saat ini dipertahankan; jika grup itu tanpa nama, nama grup lainnya digunakan. Menyimpan nama yang sama pada dua grup tidak akan secara otomatis menggabungkannya.",
             "Pilih Pilih wajah, pilih beberapa wajah, lalu Pindahkan ke orang terpisah untuk memisahkannya menjadi grup baru tanpa nama. Kedua grup tidak akan disarankan sebagai kecocokan lagi. Pilih satu wajah lalu pilih Gunakan sebagai sampul untuk mengubah gambar galeri.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Menyalin foto",
           "paragraphs": [
+            "Di Mac, klik kanan pratinjau foto dan pilih Salin.",
             "Command-C menyalin pratinjau foto yang telah diedit (hingga lebar 2048 piksel) untuk ditempelkan ke aplikasi lain. Kolom teks tetap menggunakan penyalinan biasa; Command-Shift-C menyalin pengaturan pengeditan."
           ]
         },
@@ -1652,6 +1654,7 @@
             "Di Edit Bentuk, seret handle tengah untuk memindahkan masker, handle sumbu mana pun untuk mengubah ukurannya, atau handle luar untuk memutarnya. Tahan Shift saat menggambar atau mengubah ukuran agar gradien menjadi bulat."
           ],
           "tips": [
+            "Arahkan penunjuk ke pegangan untuk melihat fungsinya. Pin tersembunyi tidak dapat diseret.",
             "Bentuk juga menyediakan kontrol Lebar, Tinggi, Rotasi, dan Bulu.",
             "Menyeret menjauh dari handle-nya akan menggambar ulang masker radial terpilih."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

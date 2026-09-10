@@ -643,6 +643,7 @@
         {
           "title": "Vérifier et corriger les correspondances",
           "paragraphs": [
+            "Lorsque des correspondances sont disponibles, une barre pouvant être fermée dans Personnes ouvre Examiner les correspondances. Sa fermeture est mémorisée sur cet appareil.",
             "Vérifier les correspondances présente deux groupes possibles avec des échantillons de visages. Même personne les combine. Personnes différentes enregistre une correction afin que l’association ne soit plus suggérée. Ignorer pour l’instant laisse la correspondance pour une visite ultérieure.",
             "Dans un groupe, Fusionner avec… vous permet de choisir un autre groupe et de vérifier la combinaison avant de la confirmer. Le nom du groupe actuel est conservé ; s’il est sans nom, le nom de l’autre groupe est utilisé. Enregistrer le même nom sur deux groupes ne les fusionne pas automatiquement.",
             "Choisissez Sélectionner des visages, sélectionnez certains visages, puis Déplacer vers une personne distincte pour les séparer dans un nouveau groupe sans nom. Les deux groupes ne seront plus à nouveau proposés comme correspondance. Sélectionnez un visage et choisissez Utiliser comme couverture pour changer l’image de la galerie.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Copier une photo",
           "paragraphs": [
+            "Sur Mac, faites un clic droit sur l’aperçu de la photo et choisissez Copier.",
             "Command-C copie l’aperçu de la photo retouchée (jusqu’à 2048 pixels de large) pour le coller dans d’autres apps. Les champs de texte conservent la copie habituelle ; Command-Shift-C copie les réglages de retouche."
           ]
         },
@@ -1652,6 +1654,7 @@
             "Dans Modifier la forme, faites glisser la poignée centrale pour déplacer le masque, l’une des poignées d’axe pour le redimensionner, ou la poignée extérieure pour le faire pivoter. Maintenez Maj en dessinant ou en redimensionnant pour rendre le dégradé circulaire."
           ],
           "tips": [
+            "Survolez une poignée pour voir son action. Les repères masqués ne peuvent pas être déplacés.",
             "Forme propose aussi les réglages Largeur, Hauteur, Rotation et Contour progressif.",
             "Le fait de le faire glisser loin de ses poignées redessine le masque radial sélectionné."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

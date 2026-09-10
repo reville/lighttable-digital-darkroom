@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Kies een bestemmingsindeling en bepaal wat er gebeurt wanneer een bestandsnaam al bestaat.",
     "Choose a different person group": "Kies een andere persoonsgroep",
     "Choose a face from this group": "Kies een gezicht uit deze groep",
-    "Choose a face to see their photos.": "Kies een gezicht om hun foto's te bekijken.",
     "Choose a few…": "Kies er een paar…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Kies alleen indien nodig een vaste overschrijving voor de Voorbeeldresolutie voor prestaties of probleemoplossing.",
     "Choose a folder": "Kies een map",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Voor en na vergelijken",
     "Compare several photos in Survey": "Meerdere foto's vergelijken in Overzicht",
     "Compare similar photos": "Vergelijk vergelijkbare foto's",
-    "Compare the faces before combining their photos.": "Vergelijk de gezichten voordat u hun foto's samenvoegt.",
     "Compare while zoomed in": "Vergelijken terwijl ingezoomd",
     "Compare with a reference image": "Vergelijken met een referentieafbeelding",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Vergelijk je resultaat met het origineel met behulp van de voor-optie, of houd B ingedrukt terwijl de foto actief is.",
@@ -1709,7 +1707,6 @@
     "Look · keep photo corrections": "Look · fotocorrecties behouden",
     "Looking for duplicate files…": "Zoeken naar dubbele bestanden…",
     "Looking for lines…": "Zoeken naar lijnen…",
-    "Looks for your photographs": "Zoekt naar je foto's",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Looks behouden belichting, witbalans, bijsnijden, maskers, Verwijderen, camera- en lenscorrecties.",
     "Loupe information overlay": "Overlay met informatie in de Loupe",
     "Loupe view": "Loepweergave",
@@ -3355,7 +3352,6 @@
     "Your language choice could not be saved": "Uw taalkeuze kon niet worden opgeslagen",
     "Your language preference could not be read. The preferences file was left unchanged.": "Uw taalvoorkeur kon niet worden gelezen. Het voorkeurenbestand is ongewijzigd gelaten.",
     "Your library in Photos stays unchanged.": "Je bibliotheek in Foto's blijft ongewijzigd.",
-    "Your people": "Uw personen",
     "Your photo originals are ready in LightTable.": "Je fotobestanden zijn klaar in LightTable.",
     "Your photos are ready": "Je foto's zijn gereed",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Je foto's blijven in hun huidige mappen. LightTable verwijst ernaar zonder duplicaten te maken. Bij het importeren blijven je Lightroom-configuratie en catalogus ongewijzigd.",
@@ -4256,7 +4252,11 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten"
+    "☆ Favorites": "☆ Favorieten",
+    "On Mac, right-click the photo preview and choose Copy.": "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren.",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Beweeg de aanwijzer over een greep om de functie te zien. Verborgen pinnen kunnen niet worden versleept.",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "Dezelfde persoon kan in afzonderlijke groepen verschijnen. Bekijk mogelijke overeenkomsten om ze samen te voegen.",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Wanneer er mogelijke overeenkomsten zijn, opent een sluitbare balk in Personen de beoordeling van overeenkomsten. Het sluiten van de balk wordt op dit apparaat onthouden."
   },
   "plurals": {
     " · {count} paired file linked": {

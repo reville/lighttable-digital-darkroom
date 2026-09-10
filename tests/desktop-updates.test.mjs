@@ -10,7 +10,11 @@ const settle = () => new Promise(resolve => setImmediate(resolve));
 function harness({platform = 'linux', bridge = true, save = true, post, status} = {}) {
   const nodes = new Map(), calls = [], native = [], errors = [], timers = [];
   let blocked = false;
-  const window = {__LIGHTTABLE_PLATFORM__: platform};
+  const modalCalls = [];
+  const window = {
+    __LIGHTTABLE_PLATFORM__: platform,
+    lightTableShowUpdateModal: opts => modalCalls.push(opts)
+  };
   const document = {getElementById(id) {
     if (!nodes.has(id)) nodes.set(id, {hidden: false, disabled: false, textContent: '', handlers: {},
       addEventListener(name, fn) { this.handlers[name] = fn; }});
@@ -28,7 +32,7 @@ function harness({platform = 'linux', bridge = true, save = true, post, status} 
     prepare: async () => { blocked = true; if (!save) blocked = false; return save; },
     cancel: () => { blocked = false; }, onError: message => errors.push(message),
   });
-  return {window, ui, calls, native, errors, timers, el: id => document.getElementById(id),
+  return {window, ui, calls, native, errors, timers, modalCalls, el: id => document.getElementById(id),
     blocked: () => blocked, click: id => document.getElementById(id).handlers.click()};
 }
 
@@ -107,3 +111,22 @@ test('Later dismisses an available update for the rest of the session', async ()
   await h.click('checkForUpdates');
   assert.equal(h.el('desktopUpdateNotice').hidden, true);
 });
+
+test('native showUpdateModal event opens the guidance modal', () => {
+  const h = harness();
+  h.ui.nativeEvent({type: 'showUpdateModal', version: '0.6.0', platform: 'macos'});
+  assert.equal(h.modalCalls.length, 1);
+  assert.equal(h.modalCalls[0].version, '0.6.0');
+});
+
+test('available update notice on managed installs triggers the guidance modal', async () => {
+  const h = harness({status: {supported: false, state: 'available', available_version: '0.6.0', owner: 'arch'}});
+  await settle();
+  await h.timers.find(timer => timer.delay === 20000).fn();
+  assert.equal(h.el('desktopUpdateNotice').hidden, false);
+  await h.click('desktopUpdateNoticeAction');
+  assert.equal(h.modalCalls.length, 1);
+  assert.equal(h.modalCalls[0].version, '0.6.0');
+  assert.equal(h.modalCalls[0].owner, 'arch');
+});
+

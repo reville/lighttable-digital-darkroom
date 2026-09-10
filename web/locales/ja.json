@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "保存先レイアウトを選び、ファイル名が既に存在する場合の処理を決めます。",
     "Choose a different person group": "別の人物グループを選択してください",
     "Choose a face from this group": "このグループから顔を選択してください",
-    "Choose a face to see their photos.": "顔を選択すると、その写真を表示できます。",
     "Choose a few…": "いくつか選択…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "パフォーマンスやトラブルシューティングのために必要な場合のみ、固定の Preview 解像度上書きを選択してください。",
     "Choose a folder": "フォルダーを選択",
@@ -715,7 +714,6 @@
     "Compare Before & After": "編集前後を比較",
     "Compare several photos in Survey": "サーベイで複数の写真を比較",
     "Compare similar photos": "類似写真を比較",
-    "Compare the faces before combining their photos.": "写真を統合する前に顔を比較してください。",
     "Compare while zoomed in": "ズームしたまま比較",
     "Compare with a reference image": "参照画像と比較",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "before コントロールを使って結果を元画像と比較するか、写真がアクティブな状態で B を押し続けます。",
@@ -1709,7 +1707,6 @@
     "Look · keep photo corrections": "見た目 · 写真補正を保持",
     "Looking for duplicate files…": "複製ファイルを検索しています…",
     "Looking for lines…": "線を検索中…",
-    "Looks for your photographs": "写真を探します",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "ルックには、露出、ホワイトバランス、トリミング、マスク、Remove、カメラ補正、レンズ補正が保持されます。",
     "Loupe information overlay": "ルーペ情報オーバーレイ",
     "Loupe view": "ルーペ表示",
@@ -3355,7 +3352,6 @@
     "Your language choice could not be saved": "言語の選択を保存できませんでした",
     "Your language preference could not be read. The preferences file was left unchanged.": "言語設定を読み取れませんでした。preferences ファイルは変更されていません。",
     "Your library in Photos stays unchanged.": "Photos 内のライブラリは変更されません。",
-    "Your people": "あなたの人物",
     "Your photo originals are ready in LightTable.": "あなたの写真オリジナルがLightTableで使用できるようになりました。",
     "Your photos are ready": "写真の準備ができました",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "写真は現在のフォルダーに残ります。LightTable はそれらを重複作成せずに参照します。読み込みによって Lightroom のセットアップとカタログは変更されません。",
@@ -4256,7 +4252,11 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り"
+    "☆ Favorites": "☆ お気に入り",
+    "On Mac, right-click the photo preview and choose Copy.": "Macでは、写真のプレビューを右クリックして「コピー」を選択します。",
+    "Hover over a handle to see its action. Hidden pins cannot be dragged.": "ハンドルにポインターを合わせると、その操作がわかります。非表示のピンはドラッグできません。",
+    "Some people may appear in separate groups. Review possible matches to combine them.": "同じ人物が別々のグループに表示されることがあります。一致候補を確認してグループをまとめましょう。",
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "一致候補がある場合、「人物」に閉じることのできる案内バーが表示され、一致候補の確認を開けます。バーを閉じたことはこのデバイスに記憶されます。"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -643,6 +643,7 @@
         {
           "title": "Przejrzyj i popraw dopasowania",
           "paragraphs": [
+            "Gdy dostępne są możliwe dopasowania, zamykany pasek w widoku Osoby otwiera przegląd dopasowań. Zamknięcie paska jest zapamiętywane na tym urządzeniu.",
             "Przejrzyj dopasowania pokazuje dwie możliwe grupy z próbkami twarzy. Ta sama osoba łączy je. Różne osoby zapisuje poprawkę, aby sparowanie nie było proponowane ponownie. Pomiń na razie pozostawia dopasowanie do późniejszego przeglądu.",
             "W obrębie grupy Scal z… pozwala wybrać inną grupę i przejrzeć połączenie przed jego zatwierdzeniem. Zachowana zostaje nazwa bieżącej grupy; jeśli nie ma nazwy, używana jest nazwa drugiej grupy. Zapisanie tej samej nazwy w dwóch grupach nie powoduje ich automatycznego scalenia.",
             "Wybierz Wybierz twarze, zaznacz kilka twarzy, a następnie wybierz Przenieś do osobnej osoby, aby podzielić je na nową grupę bez nazwy. Te dwie grupy nie będą ponownie sugerowane jako dopasowanie. Zaznacz jedną twarz i wybierz Użyj jako okładki, aby zmienić obraz w galerii.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Kopiowanie zdjęcia",
           "paragraphs": [
+            "Na Macu kliknij podgląd zdjęcia prawym przyciskiem myszy i wybierz Kopiuj.",
             "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
           ]
         },
@@ -1652,6 +1654,7 @@
             "W Edytuj kształt przeciągnij uchwyt środkowy, aby przesunąć maskę, uchwyt osi, aby zmienić jej rozmiar, lub uchwyt zewnętrzny, aby ją obrócić. Przytrzymaj Shift podczas rysowania lub zmiany rozmiaru, aby gradient był okrągły."
           ],
           "tips": [
+            "Najedź na uchwyt, aby zobaczyć jego działanie. Ukrytych punktów nie można przeciągać.",
             "Kształt udostępnia też kontrolki Szerokość, Wysokość, Obrót i Wtapianie.",
             "Przeciągnięcie z dala od uchwytów powoduje przerysowanie wybranej maski promieniowej."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

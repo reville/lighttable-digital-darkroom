@@ -1717,7 +1717,7 @@
         "workflow_mode": "authentic",
         "paper_locked": false,
         "output_recipe": "neutral_print_scan",
-        "development_time": 0.0,
+        "development_time": 1.0,
         "print_development_time": 0.0,
         "exposure_ev": -1.5,
         "print_exposure": 1.0,
@@ -1832,25 +1832,28 @@
       "filmMode": "on",
       "includeFilm": true,
       "grade": {
-        "contrast": 0.25,
-        "blacks": -0.16,
-        "highlights": -0.12,
-        "saturation": -0.08,
+        "contrast": 0.3,
+        "blacks": -0.18,
+        "shadows": -0.02,
+        "highlights": -0.02,
+        "whites": 0.06,
+        "saturation": 0.08,
+        "vibrance": 0.12,
         "colorGrading": {
           "shadows": {
-            "hue": 192,
-            "saturation": 0.32,
-            "luminance": 0.0
+            "hue": 196,
+            "saturation": 0.36,
+            "luminance": -0.04
           },
           "midtones": {
-            "hue": 0,
-            "saturation": 0,
+            "hue": 38,
+            "saturation": 0.06,
             "luminance": 0.0
           },
           "highlights": {
-            "hue": 38,
-            "saturation": 0.22,
-            "luminance": 0.0
+            "hue": 42,
+            "saturation": 0.28,
+            "luminance": 0.02
           },
           "global": {
             "hue": 0,
@@ -1867,8 +1870,11 @@
       "includedGrade": [
         "contrast",
         "blacks",
+        "shadows",
         "highlights",
+        "whites",
         "saturation",
+        "vibrance",
         "colorGrading",
         "vignette",
         "vignetteSize",
@@ -1890,13 +1896,13 @@
         "couplers_on": true,
         "couplers_amount": 1.0,
         "halation_on": true,
-        "halation_amount": 1.1,
+        "halation_amount": 1.0,
         "grain_on": true,
         "grain_amount": 0.65,
         "glare_on": true,
-        "glare_amount": 0.3,
+        "glare_amount": 0.15,
         "camera_diffusion_family": "black_pro_mist",
-        "camera_diffusion_strength": 0.125,
+        "camera_diffusion_strength": 0.0,
         "print_preflash": 0.0,
         "print_y_filter_shift": 0.0,
         "print_m_filter_shift": 0.0,
@@ -1936,7 +1942,7 @@
         "film_tuning",
         "film_tuning_version"
       ],
-      "description": "VISION3 250D and a 2383 print with teal shadows, amber highlights, deep blacks, and a soft halo.",
+      "description": "VISION3 250D and a 2383 print with punchy teal shadows, warm amber highlights, and rich cinema contrast.",
       "tags": [
         "Film Simulation Drama",
         "Film",
@@ -1961,25 +1967,29 @@
       "filmMode": "on",
       "includeFilm": true,
       "grade": {
-        "contrast": 0.2,
-        "blacks": -0.12,
-        "highlights": -0.18,
-        "vibrance": 0.14,
+        "contrast": 0.34,
+        "blacks": -0.2,
+        "shadows": -0.04,
+        "highlights": -0.04,
+        "whites": 0.08,
+        "clarity": 0.08,
+        "vibrance": 0.16,
+        "saturation": 0.06,
         "colorGrading": {
           "shadows": {
-            "hue": 205,
-            "saturation": 0.32,
-            "luminance": 0.0
+            "hue": 208,
+            "saturation": 0.38,
+            "luminance": -0.04
           },
           "midtones": {
-            "hue": 0,
-            "saturation": 0,
+            "hue": 220,
+            "saturation": 0.05,
             "luminance": 0.0
           },
           "highlights": {
-            "hue": 325,
-            "saturation": 0.22,
-            "luminance": 0.0
+            "hue": 330,
+            "saturation": 0.28,
+            "luminance": 0.04
           },
           "global": {
             "hue": 0,
@@ -1989,15 +1999,19 @@
           "balance": 0,
           "blending": 0.5
         },
-        "vignette": 0.24,
+        "vignette": 0.22,
         "vignetteSize": 0.5,
         "vignetteFeather": 1.0
       },
       "includedGrade": [
         "contrast",
         "blacks",
+        "shadows",
         "highlights",
+        "whites",
+        "clarity",
         "vibrance",
+        "saturation",
         "colorGrading",
         "vignette",
         "vignetteSize",
@@ -2019,13 +2033,13 @@
         "couplers_on": true,
         "couplers_amount": 1.0,
         "halation_on": true,
-        "halation_amount": 1.8,
+        "halation_amount": 1.1,
         "grain_on": true,
-        "grain_amount": 1.2,
+        "grain_amount": 1.0,
         "glare_on": true,
-        "glare_amount": 0.35,
+        "glare_amount": 0.15,
         "camera_diffusion_family": "black_pro_mist",
-        "camera_diffusion_strength": 0.25,
+        "camera_diffusion_strength": 0.0,
         "print_preflash": 0.0,
         "print_y_filter_shift": 0.0,
         "print_m_filter_shift": 0.0,
@@ -2065,7 +2079,7 @@
         "film_tuning",
         "film_tuning_version"
       ],
-      "description": "VISION3 500T with cool cyan shadows, magenta lights, pronounced halation, and textured grain.",
+      "description": "VISION3 500T with deep midnight cyan shadows, electric magenta lights, rich contrast, and textured grain.",
       "tags": [
         "Film Simulation Drama",
         "Film",
@@ -2090,26 +2104,29 @@
       "filmMode": "on",
       "includeFilm": true,
       "grade": {
-        "contrast": 0.14,
-        "highlights": -0.2,
-        "shadows": 0.06,
-        "saturation": -0.1,
-        "clarity": -0.1,
+        "contrast": 0.26,
+        "blacks": -0.16,
+        "shadows": 0.0,
+        "highlights": -0.02,
+        "whites": 0.06,
+        "clarity": 0.04,
+        "saturation": 0.08,
+        "vibrance": 0.14,
         "colorGrading": {
           "shadows": {
-            "hue": 275,
-            "saturation": 0.18,
-            "luminance": 0.0
+            "hue": 280,
+            "saturation": 0.2,
+            "luminance": -0.02
           },
           "midtones": {
-            "hue": 0,
-            "saturation": 0,
+            "hue": 36,
+            "saturation": 0.08,
             "luminance": 0.0
           },
           "highlights": {
-            "hue": 28,
-            "saturation": 0.3,
-            "luminance": 0.0
+            "hue": 30,
+            "saturation": 0.32,
+            "luminance": 0.02
           },
           "global": {
             "hue": 0,
@@ -2125,10 +2142,13 @@
       },
       "includedGrade": [
         "contrast",
-        "highlights",
+        "blacks",
         "shadows",
-        "saturation",
+        "highlights",
+        "whites",
         "clarity",
+        "saturation",
+        "vibrance",
         "colorGrading",
         "vignette",
         "vignetteSize",
@@ -2150,13 +2170,13 @@
         "couplers_on": true,
         "couplers_amount": 1.0,
         "halation_on": true,
-        "halation_amount": 1.3,
+        "halation_amount": 1.0,
         "grain_on": true,
-        "grain_amount": 0.85,
+        "grain_amount": 0.75,
         "glare_on": true,
-        "glare_amount": 0.4,
+        "glare_amount": 0.15,
         "camera_diffusion_family": "black_pro_mist",
-        "camera_diffusion_strength": 0.25,
+        "camera_diffusion_strength": 0.0,
         "print_preflash": 0.0,
         "print_y_filter_shift": 0.0,
         "print_m_filter_shift": 0.0,
@@ -2196,7 +2216,7 @@
         "film_tuning",
         "film_tuning_version"
       ],
-      "description": "Portra 800 with copper highlights, plum shadows, softened detail, and a glowing diffusion finish.",
+      "description": "Portra 800 with glowing copper highlights, rich plum shadows, warm golden skin tones, and lively contrast.",
       "tags": [
         "Film Simulation Drama",
         "Film",
@@ -2647,8 +2667,8 @@
         "workflow_mode": "authentic",
         "paper_locked": false,
         "output_recipe": "neutral_print_scan",
-        "development_time": 0.0,
-        "print_development_time": 0.0,
+        "development_time": 6.5,
+        "print_development_time": 5.0,
         "exposure_ev": 0.0,
         "print_exposure": 1.0,
         "gamma": 1.0,

@@ -643,6 +643,7 @@
         {
           "title": "Rivedi e correggi gli abbinamenti",
           "paragraphs": [
+            "Quando sono disponibili possibili corrispondenze, una barra chiudibile in Persone apre la revisione delle corrispondenze. La chiusura viene ricordata su questo dispositivo.",
             "Rivedi gli abbinamenti presenta due possibili gruppi con campioni di volti. Stessa persona li unisce. Persone diverse registra una correzione in modo che l'accoppiamento non venga suggerito di nuovo. Salta per ora lascia la corrispondenza per una visita successiva.",
             "All'interno di un gruppo, Unisci con… ti consente di scegliere un altro gruppo e rivedere la combinazione prima di confermarla. Il nome del gruppo corrente viene mantenuto; se è senza nome, viene usato il nome dell'altro gruppo. Salvare lo stesso nome su due gruppi non li unisce automaticamente.",
             "Scegli Seleziona i volti, seleziona alcuni volti, quindi Sposta in una persona separata per dividerli in un nuovo gruppo senza nome. I due gruppi non verranno più suggeriti come corrispondenza. Seleziona un volto e scegli Usa come copertina per cambiare l'immagine della galleria.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Copiare una foto",
           "paragraphs": [
+            "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
             "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica."
           ]
         },
@@ -1652,6 +1654,7 @@
             "In Modifica forma, trascina la maniglia centrale per spostare la maschera, una delle maniglie degli assi per ridimensionarla o la maniglia esterna per ruotarla. Tieni premuto Maiusc durante il disegno o il ridimensionamento per rendere il gradiente circolare."
           ],
           "tips": [
+            "Passa il puntatore su una maniglia per vederne la funzione. I punti nascosti non possono essere trascinati.",
             "Forma offre anche i controlli Larghezza, Altezza, Rotazione e Sfumatura.",
             "Trascinando lontano dalle sue maniglie si ridisegna la maschera radiale selezionata."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

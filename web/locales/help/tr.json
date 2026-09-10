@@ -643,6 +643,7 @@
         {
           "title": "Eşleşmeleri inceleyip düzeltin",
           "paragraphs": [
+            "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır.",
             "Eşleşmeleri incele, yüz örnekleriyle birlikte iki olası grubu gösterir. Aynı kişi bunları birleştirir. Farklı kişiler, eşleştirmenin yeniden önerilmemesi için bir düzeltme kaydeder. Şimdilik atla, eşleşmeyi daha sonra yeniden görmeniz için bırakır.",
             "Bir grup içinde, … ile birleştir başka bir grup seçmenize ve onaylamadan önce birleşimi incelemenize olanak tanır. Geçerli grubun adı korunur; adı yoksa diğer grubun adı kullanılır. İki grupta aynı adı kaydetmek, bunları otomatik olarak birleştirmez.",
             "Yüzleri seç’i seçin, bazı yüzleri seçin, ardından bunları yeni, adsız bir gruba ayırmak için Ayrı bir kişiye taşı’yı seçin. İki grup yeniden eşleşme olarak önerilmeyecektir. Bir yüz seçin ve galeri görselini değiştirmek için Kapak olarak kullan’ı seçin.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Fotoğraf kopyalama",
           "paragraphs": [
+            "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin.",
             "Command-C, düzenlenmiş fotoğraf önizlemesini (en fazla 2048 piksel genişliğinde) diğer uygulamalara yapıştırmak için kopyalar. Metin alanlarında normal kopyalama korunur; Command-Shift-C düzenleme ayarlarını kopyalar."
           ]
         },
@@ -1652,6 +1654,7 @@
             "Şekli Düzenle’de maskeyi taşımak için merkez tutamacını, yeniden boyutlandırmak için eksen tutamaçlarından birini, döndürmek için de dış tutamacı sürükleyin. Gradyanı daire biçimli yapmak için çizerken veya yeniden boyutlandırırken Shift tuşunu basılı tutun."
           ],
           "tips": [
+            "İşlevini görmek için işaretçiyi bir tutamacın üzerine getirin. Gizli iğneler sürüklenemez.",
             "Şekil ayrıca Genişlik, Yükseklik, Döndürme ve Yumuşatma kontrolleri sunar.",
             "Tutamaçlarından uzağa sürüklemek seçili radyal maskeyi yeniden çizer."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

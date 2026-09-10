@@ -643,6 +643,7 @@
         {
           "title": "Übereinstimmungen überprüfen und korrigieren",
           "paragraphs": [
+            "Wenn mögliche Übereinstimmungen vorliegen, öffnet eine ausblendbare Leiste in Personen die Ansicht zum Prüfen von Übereinstimmungen. Das Ausblenden wird auf diesem Gerät gespeichert.",
             "Übereinstimmungen überprüfen zeigt zwei mögliche Gruppen mit Gesichtsbeispielen an. Dieselbe Person führt sie zusammen. Verschiedene Personen speichert eine Korrektur, damit die Paarung nicht erneut vorgeschlagen wird. Vorerst überspringen belässt die Übereinstimmung für einen späteren Besuch.",
             "Innerhalb einer Gruppe können Sie mit Zusammenführen mit… eine andere Gruppe auswählen und die Kombination vor dem Bestätigen überprüfen. Der Name der aktuellen Gruppe bleibt erhalten; wenn sie unbenannt ist, wird der Name der anderen Gruppe verwendet. Das Speichern desselben Namens in zwei Gruppen führt nicht automatisch zu einer Zusammenführung.",
             "Wählen Sie Gesichter auswählen, markieren Sie einige Gesichter und wählen Sie dann Zu einer separaten Person verschieben, um sie in eine neue unbenannte Gruppe aufzuteilen. Die beiden Gruppen werden nicht erneut als Übereinstimmung vorgeschlagen. Wählen Sie ein Gesicht aus und wählen Sie Als Titelbild verwenden, um das Bild in der Galerie zu ändern.",
@@ -1446,6 +1447,7 @@
         {
           "title": "Ein Foto kopieren",
           "paragraphs": [
+            "Klicke auf dem Mac mit der rechten Maustaste auf die Fotovorschau und wähle Kopieren.",
             "Command-C kopiert die bearbeitete Fotovorschau (bis zu 2048 Pixel breit) zum Einfügen in andere Apps. In Textfeldern bleibt das normale Kopieren erhalten; Command-Shift-C kopiert die Bearbeitungseinstellungen."
           ]
         },
@@ -1652,6 +1654,7 @@
             "Ziehe in Form bearbeiten den mittleren Griff, um die Maske zu verschieben, einen der Achsgriffe, um ihre Größe zu ändern, oder den äußeren Griff, um sie zu drehen. Halte beim Zeichnen oder Ändern der Größe die Umschalttaste gedrückt, um den Verlauf rund zu machen."
           ],
           "tips": [
+            "Bewege den Zeiger über einen Griff, um seine Funktion zu sehen. Ausgeblendete Pins lassen sich nicht ziehen.",
             "Form bietet außerdem die Regler Breite, Höhe, Drehung und Weiche Kante.",
             "Wenn du vom Griff wegziehst, wird die ausgewählte radiale Maske neu gezeichnet."
           ]
@@ -3267,5 +3270,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
 }

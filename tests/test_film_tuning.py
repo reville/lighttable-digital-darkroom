@@ -16,6 +16,13 @@ class FilmTuningTests(unittest.TestCase):
             self.assertEqual(clean['film_tuning'], 'original')
             self.assertEqual(fp.rust_tuning_request(params), {})
 
+    def test_default_film_tuning_is_lighttable_portra_400(self):
+        for params in ({}, {'profile_enabled': True}, {'profile_enabled': False}):
+            clean = fp.clean_params(params)
+            self.assertEqual(clean['stock'], 'kodak_portra_400')
+            self.assertEqual(clean['film_tuning'], 'lighttable')
+            self.assertEqual(clean['film_tuning_version'], '1')
+
     def test_three_separate_versioned_variants_keep_stock_and_profile_data(self):
         for stock in ft.TUNINGS:
             clean = fp.clean_params({'stock':stock,'film_tuning':'lighttable','linear_input':True})

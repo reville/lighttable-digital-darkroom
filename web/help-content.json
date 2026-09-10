@@ -632,6 +632,7 @@
         {
           "title": "Review and correct matches",
           "paragraphs": [
+            "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.",
             "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.",
             "Within a group, Merge with… lets you choose another group and review the combination before confirming it. The current group’s name is kept; if it is unnamed, the other group’s name is used. Saving the same name on two groups does not automatically merge them.",
             "Choose Select faces, select some faces, then Move to a separate person to split them into a new unnamed group. The two groups will not be suggested as a match again. Select one face and choose Use as cover to change the gallery image.",
@@ -1420,6 +1421,7 @@
         {
           "title": "Copy a photo",
           "paragraphs": [
+            "On Mac, right-click the photo preview and choose Copy.",
             "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."
           ]
         },
@@ -1624,6 +1626,7 @@
             "In Edit Shape, drag the center handle to move the mask, either axis handle to resize it, or the outer handle to rotate it. Hold Shift while drawing or resizing to make the gradient round."
           ],
           "tips": [
+            "Hover over a handle to see its action. Hidden pins cannot be dragged.",
             "Shape also provides Width, Height, Rotation, and Feather controls.",
             "Dragging away from its handles redraws the selected radial mask."
           ]

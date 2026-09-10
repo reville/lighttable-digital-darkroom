@@ -646,7 +646,8 @@ export function createPresetBrowser({
         choose.append(frame, copy);
         const favorite = button('', () => toggleFavorite(preset), 'preset-browser-favorite');
         updateFavoriteButton(favorite, preset);
-        const info = button('…', () => showDetail(preset), 'preset-browser-info');
+        const info = button('', () => showDetail(preset), 'preset-browser-info');
+        info.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="2.5" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="13.5" cy="8" r="1.5"/></svg>';
         info.setAttribute('aria-label', tr('Preset details: {name}', {name: preset.name}));
         article.append(choose, favorite, info, createAmountRow(preset, snapshot, adjustment));
         contents.append(article); cards.set(presetKey(preset), choose);
