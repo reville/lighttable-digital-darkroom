@@ -11,7 +11,7 @@ import { createFilmBrowser, filmParamsForStock, filmChoiceValue, filmSelectionFo
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
-import { createPhotoClipboard } from '/web/photo-clipboard.js';
+import { createPhotoClipboard, installPhotoCopyContextMenu } from '/web/photo-clipboard.js';
 import { createCloseBarrier } from '/web/close-barrier.js';
 import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
@@ -242,6 +242,13 @@ const PHOTO_CLIPBOARD = createPhotoClipboard({
   },
   nativeBridge: () => window.webkit?.messageHandlers?.lightTable,
   notify: message => toast(message),
+});
+
+installPhotoCopyContextMenu($('zoomwrap'), {
+  available: () => !!window.webkit?.messageHandlers?.lightTable &&
+    !!cur() && !isVideo(cur()) && !!S.params && S.editingName === cur().name &&
+    !document.querySelector('.modal-backdrop.on'),
+  openMenu: point => postNative('showPhotoCopyMenu', point, true),
 });
 
 function isLibraryVisible() {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "照片已複製到剪貼簿",
     "Could not copy photo to clipboard": "無法將照片複製到剪貼簿",
     "Copy a photo": "複製照片",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C 可複製編輯後的照片預覽（寬度最高 2048 像素），以便貼到其他應用程式中。文字欄位保留正常的複製操作；Command-Shift-C 用於複製編輯設定。"
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C 可複製編輯後的照片預覽（寬度最高 2048 像素），以便貼到其他應用程式中。文字欄位保留正常的複製操作；Command-Shift-C 用於複製編輯設定。",
+    "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，以右鍵按一下照片預覽並選擇「複製」。"
   },
   "plurals": {
     " · {count} paired file linked": {

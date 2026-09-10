@@ -1425,6 +1425,7 @@
         {
           "title": "Kopiowanie zdjęcia",
           "paragraphs": [
+            "Na Macu kliknij podgląd zdjęcia prawym przyciskiem myszy i wybierz Kopiuj.",
             "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

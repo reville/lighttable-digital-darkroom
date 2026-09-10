@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "Foto copiada al portapapeles",
     "Could not copy photo to clipboard": "No se pudo copiar la foto al portapapeles",
     "Copy a photo": "Copiar una foto",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copia la vista previa de la foto editada (hasta 2048 píxeles de ancho) para pegarla en otras apps. Los campos de texto conservan la copia normal; Command-Shift-C copia los ajustes de edición."
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copia la vista previa de la foto editada (hasta 2048 píxeles de ancho) para pegarla en otras apps. Los campos de texto conservan la copia normal; Command-Shift-C copia los ajustes de edición.",
+    "On Mac, right-click the photo preview and choose Copy.": "En Mac, haz clic derecho en la vista previa de la foto y elige Copiar."
   },
   "plurals": {
     " · {count} paired file linked": {

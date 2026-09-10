@@ -1425,6 +1425,7 @@
         {
           "title": "Sao chép ảnh",
           "paragraphs": [
+            "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép.",
             "Command-C sao chép bản xem trước của ảnh đã chỉnh sửa (rộng tối đa 2048 pixel) để dán vào ứng dụng khác. Các ô văn bản vẫn sao chép như bình thường; Command-Shift-C sao chép cài đặt chỉnh sửa."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

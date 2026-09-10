@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "คัดลอกรูปภาพไปยังคลิปบอร์ดแล้ว",
     "Could not copy photo to clipboard": "ไม่สามารถคัดลอกรูปภาพไปยังคลิปบอร์ดได้",
     "Copy a photo": "คัดลอกรูปภาพ",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C คัดลอกภาพตัวอย่างที่แก้ไขแล้ว (กว้างสูงสุด 2048 พิกเซล) เพื่อนำไปวางในแอปอื่น ช่องข้อความยังคงคัดลอกตามปกติ ส่วน Command-Shift-C คัดลอกการตั้งค่าการแก้ไข"
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C คัดลอกภาพตัวอย่างที่แก้ไขแล้ว (กว้างสูงสุด 2048 พิกเซล) เพื่อนำไปวางในแอปอื่น ช่องข้อความยังคงคัดลอกตามปกติ ส่วน Command-Shift-C คัดลอกการตั้งค่าการแก้ไข",
+    "On Mac, right-click the photo preview and choose Copy.": "บน Mac ให้คลิกขวาที่ภาพตัวอย่างแล้วเลือกคัดลอก"
   },
   "plurals": {
     " · {count} paired file linked": {

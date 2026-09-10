@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "Foto naar klembord gekopieerd",
     "Could not copy photo to clipboard": "Kan foto niet naar klembord kopiëren",
     "Copy a photo": "Een foto kopiëren",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen."
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen.",
+    "On Mac, right-click the photo preview and choose Copy.": "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren."
   },
   "plurals": {
     " · {count} paired file linked": {

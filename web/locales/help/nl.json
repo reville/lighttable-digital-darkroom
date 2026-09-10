@@ -1425,6 +1425,7 @@
         {
           "title": "Een foto kopiëren",
           "paragraphs": [
+            "Klik op de Mac met de rechtermuisknop op het fotovoorbeeld en kies Kopiëren.",
             "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

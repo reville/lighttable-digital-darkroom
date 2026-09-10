@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "Фото скопировано в буфер обмена",
     "Could not copy photo to clipboard": "Не удалось скопировать фото в буфер обмена",
     "Copy a photo": "Копирование фото",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C копирует предпросмотр отредактированного фото (шириной до 2048 пикселей) для вставки в другие приложения. В текстовых полях сохраняется обычное копирование; Command-Shift-C копирует настройки редактирования."
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C копирует предпросмотр отредактированного фото (шириной до 2048 пикселей) для вставки в другие приложения. В текстовых полях сохраняется обычное копирование; Command-Shift-C копирует настройки редактирования.",
+    "On Mac, right-click the photo preview and choose Copy.": "На Mac нажмите правой кнопкой мыши на предпросмотр фото и выберите «Копировать»."
   },
   "plurals": {
     " · {count} paired file linked": {

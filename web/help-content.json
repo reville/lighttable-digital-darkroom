@@ -1399,6 +1399,7 @@
         {
           "title": "Copy a photo",
           "paragraphs": [
+            "On Mac, right-click the photo preview and choose Copy.",
             "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."
           ]
         },

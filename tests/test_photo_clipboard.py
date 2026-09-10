@@ -16,6 +16,24 @@ class PhotoClipboardTests(unittest.TestCase):
             root = Path(directory)
             main = root / 'main.swift'
             main.write_text('import AppKit\n' + source + r'''
+let app = NSApplication.shared
+app.setActivationPolicy(.prohibited)
+final class CopyTarget: NSObject {
+    var copied = false
+    @objc func copyPhoto(_ sender: NSMenuItem) { copied = true }
+}
+let target = CopyTarget()
+let menu = photoClipboardMenu(title: "Copy", target: target, action: #selector(CopyTarget.copyPhoto(_:)))
+precondition(menu.items.count == 1 && menu.items[0].title == "Copy")
+precondition(menu.items[0].isEnabled && menu.items[0].submenu == nil)
+menu.performActionForItem(at: 0)
+precondition(target.copied)
+let bounds = NSRect(x: 0, y: 0, width: 800, height: 600)
+precondition(photoClipboardMenuPoint(["x": 200.0, "y": 150.0], bounds: bounds, flipped: true) == NSPoint(x: 200, y: 150))
+precondition(photoClipboardMenuPoint(["x": 200.0, "y": 150.0], bounds: bounds, flipped: false) == NSPoint(x: 200, y: 450))
+for invalid: [String: Any] in [["x": -1.0, "y": 20.0], ["x": 800.0, "y": 20.0], ["x": Double.nan, "y": 20.0], [:]] {
+    precondition(photoClipboardMenuPoint(invalid, bounds: bounds, flipped: true) == nil)
+}
 let board = NSPasteboard.withUniqueName()
 defer { board.releaseGlobally() }
 let png = Data(base64Encoded: "iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAIAAAASFvFNAAAAEElEQVR4nGP8zwAFTDAGAwATKQED8NgHhAAAAABJRU5ErkJggg==")!

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "ছবি ক্লিপবোর্ডে কপি হয়েছে",
     "Could not copy photo to clipboard": "ছবি ক্লিপবোর্ডে কপি করা যায়নি",
     "Copy a photo": "ছবি কপি করুন",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C সম্পাদিত ছবির প্রিভিউ (সর্বোচ্চ 2048 পিক্সেল চওড়া) কপি করে, যাতে অন্য অ্যাপে পেস্ট করা যায়। টেক্সট ফিল্ডে স্বাভাবিক কপি কাজ করে; Command-Shift-C সম্পাদনার সেটিংস কপি করে।"
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C সম্পাদিত ছবির প্রিভিউ (সর্বোচ্চ 2048 পিক্সেল চওড়া) কপি করে, যাতে অন্য অ্যাপে পেস্ট করা যায়। টেক্সট ফিল্ডে স্বাভাবিক কপি কাজ করে; Command-Shift-C সম্পাদনার সেটিংস কপি করে।",
+    "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।"
   },
   "plurals": {
     " · {count} paired file linked": {

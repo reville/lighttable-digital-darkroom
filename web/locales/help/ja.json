@@ -1425,6 +1425,7 @@
         {
           "title": "写真をコピー",
           "paragraphs": [
+            "Macでは、写真のプレビューを右クリックして「コピー」を選択します。",
             "Command-Cで編集済み写真のプレビュー（幅最大2048ピクセル）をコピーし、他のアプリに貼り付けられます。テキスト欄では通常のコピーが維持され、Command-Shift-Cで編集設定をコピーします。"
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "ja",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

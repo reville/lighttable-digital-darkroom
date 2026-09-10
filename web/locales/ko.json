@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4190,7 +4190,8 @@
     "Photo copied to clipboard": "사진을 클립보드에 복사했습니다",
     "Could not copy photo to clipboard": "사진을 클립보드에 복사할 수 없습니다",
     "Copy a photo": "사진 복사",
-    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C는 편집된 사진의 미리보기(최대 너비 2048픽셀)를 복사하여 다른 앱에 붙여넣을 수 있게 합니다. 텍스트 필드에서는 일반 복사가 유지되며, Command-Shift-C는 편집 설정을 복사합니다."
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C는 편집된 사진의 미리보기(최대 너비 2048픽셀)를 복사하여 다른 앱에 붙여넣을 수 있게 합니다. 텍스트 필드에서는 일반 복사가 유지되며, Command-Shift-C는 편집 설정을 복사합니다.",
+    "On Mac, right-click the photo preview and choose Copy.": "Mac에서 사진 미리보기를 마우스 오른쪽 버튼으로 클릭하고 복사를 선택하세요."
   },
   "plurals": {
     " · {count} paired file linked": {

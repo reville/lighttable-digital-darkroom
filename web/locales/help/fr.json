@@ -1425,6 +1425,7 @@
         {
           "title": "Copier une photo",
           "paragraphs": [
+            "Sur Mac, faites un clic droit sur l’aperçu de la photo et choisissez Copier.",
             "Command-C copie l’aperçu de la photo retouchée (jusqu’à 2048 pixels de large) pour le coller dans d’autres apps. Les champs de texte conservent la copie habituelle ; Command-Shift-C copie les réglages de retouche."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

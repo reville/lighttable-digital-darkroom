@@ -1425,6 +1425,7 @@
         {
           "title": "Fotoğraf kopyalama",
           "paragraphs": [
+            "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin.",
             "Command-C, düzenlenmiş fotoğraf önizlemesini (en fazla 2048 piksel genişliğinde) diğer uygulamalara yapıştırmak için kopyalar. Metin alanlarında normal kopyalama korunur; Command-Shift-C düzenleme ayarlarını kopyalar."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

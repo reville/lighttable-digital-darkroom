@@ -1425,6 +1425,7 @@
         {
           "title": "Copiare una foto",
           "paragraphs": [
+            "Su Mac, fai clic con il pulsante destro sull’anteprima della foto e scegli Copia.",
             "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

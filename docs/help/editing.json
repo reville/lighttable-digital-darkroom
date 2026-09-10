@@ -781,7 +781,7 @@
     "sections": [
       {
         "title": "Copy a photo",
-        "paragraphs": ["Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."]
+        "paragraphs": ["On Mac, right-click the photo preview and choose Copy.", "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."]
       },
       {
         "title": "Transfer selected settings",
@@ -806,6 +806,7 @@
       {"path": "web/index.html", "anchor": "detail-transfer-actions"},
       {"path": "web/edit-transfer.js", "anchor": "Edit transfer plans preserve every unselected destination setting."},
       {"path": "web/photo-clipboard.js", "anchor": "export function createPhotoClipboard"},
+      {"path": "app/main.swift", "anchor": "func photoClipboardMenu(title: String"},
       {"path": "web/edit-transfer.js", "anchor": "const defaults = ['film', 'raw', 'tone', 'color', 'detail', 'optics'];"},
       {"path": "web/edit-transfer.js", "anchor": "Copy spot positions; use only with matching framing"},
       {"path": "web/edit-transfer.js", "anchor": "needs a new object selection. Exclude masks to paste other edits."},

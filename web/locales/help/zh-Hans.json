@@ -1425,6 +1425,7 @@
         {
           "title": "复制照片",
           "paragraphs": [
+            "在 Mac 上，右键点击照片预览并选择“复制”。",
             "Command-C 可复制编辑后的照片预览（宽度最高 2048 像素），以便粘贴到其他应用中。文本框保留正常的复制操作；Command-Shift-C 用于复制编辑设置。"
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }

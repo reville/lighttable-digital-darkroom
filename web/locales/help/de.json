@@ -1425,6 +1425,7 @@
         {
           "title": "Ein Foto kopieren",
           "paragraphs": [
+            "Klicke auf dem Mac mit der rechten Maustaste auf die Fotovorschau und wähle Kopieren.",
             "Command-C kopiert die bearbeitete Fotovorschau (bis zu 2048 Pixel breit) zum Einfügen in andere Apps. In Textfeldern bleibt das normale Kopieren erhalten; Command-Shift-C kopiert die Bearbeitungseinstellungen."
           ]
         },
@@ -3214,5 +3215,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
+  "sourceDigest": "b9306ff43a59d7027698c9becc0eba51848a413259edfc1908b4750c06f52392"
 }
