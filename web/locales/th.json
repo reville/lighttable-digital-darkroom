@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "เลือกเค้าโครงปลายทางและตัดสินใจว่าจะเกิดอะไรขึ้นเมื่อมีชื่อไฟล์นั้นอยู่แล้ว",
     "Choose a different person group": "เลือกกลุ่มบุคคลอื่น",
     "Choose a face from this group": "เลือกใบหน้าจากกลุ่มนี้",
-    "Choose a face to see their photos.": "เลือกใบหน้าเพื่อดูรูปภาพของบุคคลนั้น",
     "Choose a few…": "เลือกบางรายการ…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "เลือกการแทนที่ความละเอียดของพรีวิวแบบคงที่เฉพาะเมื่อจำเป็นต่อประสิทธิภาพหรือการแก้ปัญหา",
     "Choose a folder": "เลือกโฟลเดอร์",
@@ -715,7 +714,6 @@
     "Compare Before & After": "เปรียบเทียบก่อนและหลัง",
     "Compare several photos in Survey": "เปรียบเทียบภาพถ่ายหลายภาพใน มุมมองภาพรวม",
     "Compare similar photos": "เปรียบเทียบภาพถ่ายที่คล้ายกัน",
-    "Compare the faces before combining their photos.": "เปรียบเทียบใบหน้าก่อนรวมรูปภาพของพวกเขา",
     "Compare while zoomed in": "เปรียบเทียบขณะซูมเข้า",
     "Compare with a reference image": "เปรียบเทียบกับภาพอ้างอิง",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "เปรียบเทียบผลลัพธ์ของคุณกับต้นฉบับโดยใช้ตัวควบคุม before หรือกด B ขณะภาพถ่ายกำลังใช้งานอยู่",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "ไม่สามารถบันทึกภาษาที่คุณเลือกได้",
     "Your language preference could not be read. The preferences file was left unchanged.": "ไม่สามารถอ่านค่ากำหนดภาษาของคุณได้ ไฟล์ค่ากำหนดจึงไม่ถูกเปลี่ยนแปลง",
     "Your library in Photos stays unchanged.": "คลังของคุณใน Photos จะไม่เปลี่ยนแปลง",
-    "Your people": "ผู้คนของคุณ",
     "Your photo originals are ready in LightTable.": "ภาพต้นฉบับของคุณพร้อมแล้วใน LightTable.",
     "Your photos are ready": "ภาพถ่ายของคุณพร้อมแล้ว",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "ภาพถ่ายของคุณจะยังอยู่ในโฟลเดอร์ปัจจุบัน LightTable อ้างอิงภาพถ่ายเหล่านั้นโดยไม่ทำสำเนา การนำเข้าจะไม่เปลี่ยนแปลงการตั้งค่าและแค็ตตาล็อก Lightroom ของคุณ",

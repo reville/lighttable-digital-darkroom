@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Kies een bestemmingsindeling en bepaal wat er gebeurt wanneer een bestandsnaam al bestaat.",
     "Choose a different person group": "Kies een andere persoonsgroep",
     "Choose a face from this group": "Kies een gezicht uit deze groep",
-    "Choose a face to see their photos.": "Kies een gezicht om hun foto's te bekijken.",
     "Choose a few…": "Kies er een paar…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Kies alleen indien nodig een vaste overschrijving voor de Voorbeeldresolutie voor prestaties of probleemoplossing.",
     "Choose a folder": "Kies een map",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Voor en na vergelijken",
     "Compare several photos in Survey": "Meerdere foto's vergelijken in Overzicht",
     "Compare similar photos": "Vergelijk vergelijkbare foto's",
-    "Compare the faces before combining their photos.": "Vergelijk de gezichten voordat u hun foto's samenvoegt.",
     "Compare while zoomed in": "Vergelijken terwijl ingezoomd",
     "Compare with a reference image": "Vergelijken met een referentieafbeelding",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Vergelijk je resultaat met het origineel met behulp van de voor-optie, of houd B ingedrukt terwijl de foto actief is.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Uw taalkeuze kon niet worden opgeslagen",
     "Your language preference could not be read. The preferences file was left unchanged.": "Uw taalvoorkeur kon niet worden gelezen. Het voorkeurenbestand is ongewijzigd gelaten.",
     "Your library in Photos stays unchanged.": "Je bibliotheek in Foto's blijft ongewijzigd.",
-    "Your people": "Uw personen",
     "Your photo originals are ready in LightTable.": "Je fotobestanden zijn klaar in LightTable.",
     "Your photos are ready": "Je foto's zijn gereed",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Je foto's blijven in hun huidige mappen. LightTable verwijst ernaar zonder duplicaten te maken. Bij het importeren blijven je Lightroom-configuratie en catalogus ongewijzigd.",

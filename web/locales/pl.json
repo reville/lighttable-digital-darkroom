@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Wybierz układ docelowy i zdecyduj, co się stanie, gdy nazwa pliku już istnieje.",
     "Choose a different person group": "Wybierz inną grupę osób",
     "Choose a face from this group": "Wybierz twarz z tej grupy",
-    "Choose a face to see their photos.": "Wybierz twarz, aby zobaczyć jej zdjęcia.",
     "Choose a few…": "Wybierz kilka…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Wybierz stałe zastąpienie rozdzielczości podglądu tylko wtedy, gdy jest to potrzebne dla wydajności lub rozwiązywania problemów.",
     "Choose a folder": "Wybierz folder",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Porównaj przed i po",
     "Compare several photos in Survey": "Porównaj kilka zdjęć w Przegląd",
     "Compare similar photos": "Porównaj podobne zdjęcia",
-    "Compare the faces before combining their photos.": "Porównaj twarze przed połączeniem ich zdjęć.",
     "Compare while zoomed in": "Porównuj przy powiększeniu",
     "Compare with a reference image": "Porównaj z obrazem odniesienia",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Porównaj wynik z oryginałem, używając kontrolki przed, albo przytrzymaj B, gdy zdjęcie jest aktywne.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Nie udało się zapisać wyboru języka",
     "Your language preference could not be read. The preferences file was left unchanged.": "Nie udało się odczytać preferencji językowych. Plik preferencji pozostawiono bez zmian.",
     "Your library in Photos stays unchanged.": "Twoja biblioteka w Zdjęciach pozostaje bez zmian.",
-    "Your people": "Twoje osoby",
     "Your photo originals are ready in LightTable.": "Twoje oryginały zdjęć są gotowe w LightTable.",
     "Your photos are ready": "Twoje zdjęcia są gotowe",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Twoje zdjęcia pozostają w swoich bieżących folderach. LightTable odwołuje się do nich bez ich duplikowania. Import nie zmienia Twojej konfiguracji Lightroom ani katalogu.",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "اختر تخطيط الوجهة وقرّر ما يحدث عندما يكون اسم الملف موجودًا بالفعل.",
     "Choose a different person group": "اختر مجموعة شخص مختلفة",
     "Choose a face from this group": "اختر وجهًا من هذه المجموعة",
-    "Choose a face to see their photos.": "اختر وجهًا لعرض صوره.",
     "Choose a few…": "اختر بعضًا…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "اختر تجاوزًا ثابتًا لدقة Preview فقط إذا لزم الأمر للأداء أو استكشاف الأخطاء.",
     "Choose a folder": "اختر مجلدًا",
@@ -715,7 +714,6 @@
     "Compare Before & After": "مقارنة قبل وبعد",
     "Compare several photos in Survey": "قارن عدة صور في الاستعراض",
     "Compare similar photos": "مقارنة الصور المتشابهة",
-    "Compare the faces before combining their photos.": "قارن الوجوه قبل دمج صورها.",
     "Compare while zoomed in": "قارن أثناء التكبير",
     "Compare with a reference image": "قارن مع صورة مرجعية",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "قارن نتيجتك بالأصل باستخدام عنصر التحكم before، أو اضغط مع الاستمرار على B أثناء نشاط الصورة.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "تعذر حفظ اختيار اللغة الخاص بك",
     "Your language preference could not be read. The preferences file was left unchanged.": "تعذر قراءة تفضيل اللغة لديك. تُرك ملف التفضيلات دون تغيير.",
     "Your library in Photos stays unchanged.": "تظل مكتبتك في Photos دون تغيير.",
-    "Your people": "أشخاصك",
     "Your photo originals are ready in LightTable.": "صورك الأصلية جاهزة في LightTable.",
     "Your photos are ready": "صورك جاهزة",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "تبقى صورك في مجلداتها الحالية. يشير إليها LightTable دون تكرارها. لا يغيّر الاستيراد إعداد Lightroom أو الكتالوج.",

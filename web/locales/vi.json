@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Chọn bố cục đích và quyết định điều gì xảy ra khi tên tệp đã tồn tại.",
     "Choose a different person group": "Chọn một nhóm người khác",
     "Choose a face from this group": "Chọn một khuôn mặt từ nhóm này",
-    "Choose a face to see their photos.": "Chọn một khuôn mặt để xem ảnh của họ.",
     "Choose a few…": "Chọn vài mục…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Chỉ chọn ghi đè Độ phân giải bản xem trước cố định nếu cần cho hiệu năng hoặc khắc phục sự cố.",
     "Choose a folder": "Chọn một thư mục",
@@ -715,7 +714,6 @@
     "Compare Before & After": "So sánh Trước & Sau",
     "Compare several photos in Survey": "So sánh nhiều ảnh trong Xem nhanh",
     "Compare similar photos": "So sánh các ảnh tương tự",
-    "Compare the faces before combining their photos.": "So sánh các khuôn mặt trước khi kết hợp ảnh của chúng.",
     "Compare while zoomed in": "So sánh khi đã phóng to",
     "Compare with a reference image": "So sánh với một ảnh tham chiếu",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "So sánh kết quả của bạn với bản gốc bằng điều khiển before, hoặc giữ B khi ảnh đang hoạt động.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Không thể lưu lựa chọn ngôn ngữ của bạn",
     "Your language preference could not be read. The preferences file was left unchanged.": "Không thể đọc tùy chọn ngôn ngữ của bạn. Tệp tùy chọn đã được để nguyên.",
     "Your library in Photos stays unchanged.": "Thư viện của bạn trong Ảnh vẫn không thay đổi.",
-    "Your people": "Những người của bạn",
     "Your photo originals are ready in LightTable.": "Ảnh gốc của bạn đã sẵn sàng trong LightTable.",
     "Your photos are ready": "Ảnh của bạn đã sẵn sàng",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Ảnh của bạn vẫn ở trong các thư mục hiện tại. LightTable tham chiếu đến chúng mà không tạo bản sao. Việc nhập không thay đổi thiết lập Lightroom hoặc danh mục của bạn.",

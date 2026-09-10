@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "选择目标布局，并决定当文件名已存在时会发生什么。",
     "Choose a different person group": "选择另一个个人组",
     "Choose a face from this group": "从此组中选择一个面部",
-    "Choose a face to see their photos.": "选择一个面部以查看其照片。",
     "Choose a few…": "选择几个…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "仅在性能或故障排查需要时，才选择固定的“预览分辨率”覆盖值。",
     "Choose a folder": "选择文件夹",
@@ -715,7 +714,6 @@
     "Compare Before & After": "比较前后",
     "Compare several photos in Survey": "在概览中比较多张照片",
     "Compare similar photos": "比较相似照片",
-    "Compare the faces before combining their photos.": "在合并照片之前比较这些面部。",
     "Compare while zoomed in": "放大查看时比较",
     "Compare with a reference image": "与参考图像比较",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "使用之前控制与原图比较结果，或在照片处于活动状态时按住 B。",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "您的语言选择无法保存",
     "Your language preference could not be read. The preferences file was left unchanged.": "无法读取你的语言偏好设置。偏好设置文件保持未更改。",
     "Your library in Photos stays unchanged.": "你在 Photos 中的资料库保持不变。",
-    "Your people": "你的人物",
     "Your photo originals are ready in LightTable.": "你的照片原始文件已在 LightTable 中准备就绪。",
     "Your photos are ready": "你的照片已准备就绪",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "您的照片会保留在当前文件夹中。LightTable 只会引用它们，不会重复复制。导入不会更改您的 Lightroom 设置或目录。",

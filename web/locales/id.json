@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Pilih tata letak tujuan dan tentukan apa yang terjadi saat nama file sudah ada.",
     "Choose a different person group": "Pilih grup orang yang berbeda",
     "Choose a face from this group": "Pilih wajah dari grup ini",
-    "Choose a face to see their photos.": "Pilih sebuah wajah untuk melihat fotonya.",
     "Choose a few…": "Pilih beberapa…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Pilih penggantian tetap Resolusi Pratinjau hanya jika diperlukan untuk performa atau pemecahan masalah.",
     "Choose a folder": "Pilih folder",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Bandingkan Sebelum & Sesudah",
     "Compare several photos in Survey": "Bandingkan beberapa foto di Survey",
     "Compare similar photos": "Bandingkan foto serupa",
-    "Compare the faces before combining their photos.": "Bandingkan wajah sebelum menggabungkan fotonya.",
     "Compare while zoomed in": "Bandingkan saat zoom masuk",
     "Compare with a reference image": "Bandingkan dengan gambar referensi",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "Bandingkan hasil Anda dengan original menggunakan kontrol before, atau tahan B saat foto aktif.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Pilihan bahasa Anda tidak dapat disimpan",
     "Your language preference could not be read. The preferences file was left unchanged.": "Preferensi bahasa Anda tidak dapat dibaca. File preferensi dibiarkan tidak berubah.",
     "Your library in Photos stays unchanged.": "Pustaka Anda di Photos tetap tidak berubah.",
-    "Your people": "Orang Anda",
     "Your photo originals are ready in LightTable.": "Orisinal foto Anda sudah siap di LightTable.",
     "Your photos are ready": "Foto Anda siap",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Foto Anda tetap berada di folder saat ini. LightTable mereferensikannya tanpa menduplikasinya. Impor tidak mengubah penyiapan dan katalog Lightroom Anda.",

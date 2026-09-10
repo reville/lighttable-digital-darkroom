@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "Bir hedef yerleşim seçin ve bir dosya adı zaten mevcut olduğunda ne olacağına karar verin.",
     "Choose a different person group": "Farklı bir kişi grubu seçin",
     "Choose a face from this group": "Bu gruptan bir yüz seçin",
-    "Choose a face to see their photos.": "Fotoğraflarını görmek için bir yüz seçin.",
     "Choose a few…": "Birkaç tane seç…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "Yalnızca performans veya sorun giderme için gerekirse sabit bir Önizleme çözünürlüğü geçersiz kılma seçin.",
     "Choose a folder": "Bir klasör seçin",
@@ -715,7 +714,6 @@
     "Compare Before & After": "Önce ve Sonra Karşılaştır",
     "Compare several photos in Survey": "Survey'de birkaç fotoğrafı karşılaştır",
     "Compare similar photos": "Benzer fotoğrafları karşılaştır",
-    "Compare the faces before combining their photos.": "Fotoğraflarını birleştirmeden önce yüzleri karşılaştırın.",
     "Compare while zoomed in": "Yakınlaştırılmışken karşılaştır",
     "Compare with a reference image": "Bir referans görüntüyle karşılaştır",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "before kontrolünü kullanarak sonucu özgünle karşılaştırın ya da fotoğraf etkin durumdayken B’ye basılı tutun.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "Dil tercihiniz kaydedilemedi",
     "Your language preference could not be read. The preferences file was left unchanged.": "Dil tercihiniz okunamadı. Tercihler dosyası değiştirilmeden bırakıldı.",
     "Your library in Photos stays unchanged.": "Photos'taki kitaplığınız değişmeden kalır.",
-    "Your people": "Kişileriniz",
     "Your photo originals are ready in LightTable.": "Fotoğraf orijinalleriniz LightTable içinde hazır.",
     "Your photos are ready": "Fotoğraflarınız hazır",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "Fotoğraflarınız geçerli klasörlerinde kalır. LightTable onları çoğaltmadan referans alır. İçe aktarma, Lightroom kurulumunuzu ve kataloğunuzu hiçbir şekilde değiştirmez.",

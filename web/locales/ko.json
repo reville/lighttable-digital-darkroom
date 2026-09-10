@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "대상 레이아웃을 선택하고, 같은 파일 이름이 이미 있을 때 어떻게 할지 결정하세요.",
     "Choose a different person group": "다른 사람 그룹 선택",
     "Choose a face from this group": "이 그룹에서 얼굴 선택",
-    "Choose a face to see their photos.": "얼굴을 선택하면 해당 사진을 볼 수 있습니다.",
     "Choose a few…": "몇 개 선택…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "성능이나 문제 해결에 필요할 때만 고정된 미리보기 해상도 재정의를 선택하세요.",
     "Choose a folder": "폴더를 선택하세요",
@@ -715,7 +714,6 @@
     "Compare Before & After": "비교 전후",
     "Compare several photos in Survey": "Survey에서 여러 사진 비교",
     "Compare similar photos": "유사한 사진 비교",
-    "Compare the faces before combining their photos.": "사진을 병합하기 전에 얼굴을 비교하세요.",
     "Compare while zoomed in": "확대 상태에서 비교",
     "Compare with a reference image": "참조 이미지와 비교",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "이전 컨트롤을 사용해 결과를 원본과 비교하거나, 사진이 활성 상태일 때 B를 누르세요.",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "언어 선택을 저장할 수 없었습니다",
     "Your language preference could not be read. The preferences file was left unchanged.": "언어 기본 설정을 읽을 수 없습니다. 환경 설정 파일은 변경하지 않았습니다.",
     "Your library in Photos stays unchanged.": "Photos의 보관함은 변경되지 않습니다.",
-    "Your people": "내 사람들",
     "Your photo originals are ready in LightTable.": "원본 사진이 LightTable에 준비되었습니다.",
     "Your photos are ready": "사진이 준비되었습니다",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "사진은 현재 폴더에 그대로 유지됩니다. LightTable은 사진을 복제하지 않고 참조합니다. 가져오기를 해도 Lightroom 설정과 카탈로그는 변경되지 않습니다.",

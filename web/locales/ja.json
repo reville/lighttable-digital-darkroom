@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "保存先レイアウトを選び、ファイル名が既に存在する場合の処理を決めます。",
     "Choose a different person group": "別の人物グループを選択してください",
     "Choose a face from this group": "このグループから顔を選択してください",
-    "Choose a face to see their photos.": "顔を選択すると、その写真を表示できます。",
     "Choose a few…": "いくつか選択…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "パフォーマンスやトラブルシューティングのために必要な場合のみ、固定の Preview 解像度上書きを選択してください。",
     "Choose a folder": "フォルダーを選択",
@@ -715,7 +714,6 @@
     "Compare Before & After": "編集前後を比較",
     "Compare several photos in Survey": "サーベイで複数の写真を比較",
     "Compare similar photos": "類似写真を比較",
-    "Compare the faces before combining their photos.": "写真を統合する前に顔を比較してください。",
     "Compare while zoomed in": "ズームしたまま比較",
     "Compare with a reference image": "参照画像と比較",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "before コントロールを使って結果を元画像と比較するか、写真がアクティブな状態で B を押し続けます。",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "言語の選択を保存できませんでした",
     "Your language preference could not be read. The preferences file was left unchanged.": "言語設定を読み取れませんでした。preferences ファイルは変更されていません。",
     "Your library in Photos stays unchanged.": "Photos 内のライブラリは変更されません。",
-    "Your people": "あなたの人物",
     "Your photo originals are ready in LightTable.": "あなたの写真オリジナルがLightTableで使用できるようになりました。",
     "Your photos are ready": "写真の準備ができました",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "写真は現在のフォルダーに残ります。LightTable はそれらを重複作成せずに参照します。読み込みによって Lightroom のセットアップとカタログは変更されません。",

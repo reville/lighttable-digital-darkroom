@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "11d3dea303069ae7f90b61c9c6f6bb2033454e25405948fe051d1de93e261688",
+  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -481,7 +481,6 @@
     "Choose a destination layout and decide what happens when a filename already exists.": "একটি destination layout বেছে নিন এবং filename ইতিমধ্যেই থাকলে কী হবে তা ঠিক করুন।",
     "Choose a different person group": "অন্য একটি ব্যক্তি গ্রুপ বেছে নিন",
     "Choose a face from this group": "এই গ্রুপ থেকে একটি মুখ বেছে নিন",
-    "Choose a face to see their photos.": "তাদের ফটো দেখতে একটি মুখ বেছে নিন।",
     "Choose a few…": "কয়েকটি নির্বাচন করুন…",
     "Choose a fixed Preview resolution override only if needed for performance or troubleshooting.": "কর্মক্ষমতা বা সমস্যা সমাধানের প্রয়োজনে থাকলেই কেবল একটি স্থির Preview resolution override বেছে নিন।",
     "Choose a folder": "একটি ফোল্ডার বেছে নিন",
@@ -715,7 +714,6 @@
     "Compare Before & After": "আগে ও পরে তুলনা করুন",
     "Compare several photos in Survey": "Survey-এ একাধিক ফটো তুলনা করুন",
     "Compare similar photos": "সদৃশ ফটোগুলি তুলনা করুন",
-    "Compare the faces before combining their photos.": "ফটো একত্র করার আগে মুখগুলো তুলনা করুন।",
     "Compare while zoomed in": "জুম করা অবস্থায় তুলনা করুন",
     "Compare with a reference image": "একটি রেফারেন্স ইমেজের সঙ্গে তুলনা করুন",
     "Compare your result with the original using the before control, or hold B while the photo is active.": "before control ব্যবহার করে, বা ফটো সক্রিয় থাকাকালীন B ধরে রেখে আপনার ফলাফলটি মূলের সঙ্গে তুলনা করুন।",
@@ -3355,7 +3353,6 @@
     "Your language choice could not be saved": "আপনার ভাষা পছন্দ সংরক্ষণ করা যায়নি",
     "Your language preference could not be read. The preferences file was left unchanged.": "আপনার ভাষা পছন্দ পড়া যায়নি। preferences ফাইলটি অপরিবর্তিত রাখা হয়েছে।",
     "Your library in Photos stays unchanged.": "আপনার Photos-এর library অপরিবর্তিত থাকবে।",
-    "Your people": "আপনার মানুষ",
     "Your photo originals are ready in LightTable.": "আপনার ফটো মূলগুলো LightTable-এ প্রস্তুত।",
     "Your photos are ready": "আপনার ফটোগুলি প্রস্তুত",
     "Your photos stay in their current folders. LightTable references them without duplicating them. The import leaves your Lightroom setup and catalog unchanged.": "আপনার ফটোগুলি তাদের বর্তমান ফোল্ডারেই থাকে। LightTable এগুলি ডুপ্লিকেট না করেই রেফারেন্স করে। আমদানিতে আপনার Lightroom সেটআপ ও ক্যাটালগ অপরিবর্তিত থাকে।",
