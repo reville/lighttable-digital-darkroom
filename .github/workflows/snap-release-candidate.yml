@@ -40,6 +40,16 @@ jobs:
           sudo apt-get install -y --no-install-recommends xvfb xauth openbox imagemagick dbus-x11
           # Snap needs the runner's systemd user bus to create its application scope.
           timeout 300s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-desktop-acceptance.sh
+      - name: Real RAW film editing and persistence across a Snap revision update
+        run: |
+          timeout 300s python3 scripts/fetch-demo-raws.py --file 01-canon-eos-80d-city-tree.CR2 --file 03-fujifilm-xq2-harbor-ferry.RAF
+          readlink /snap/lighttable/current > evidence/revision-before.txt
+          timeout 1020s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-desktop-acceptance.sh before
+          # Reinstalling a local snap performs its refresh to a new local revision.
+          sudo snap install --dangerous dist/LightTable-0.5.0-linux-x86_64.snap
+          readlink /snap/lighttable/current > evidence/revision-after.txt
+          if cmp -s evidence/revision-before.txt evidence/revision-after.txt; then echo 'Snap revision did not advance' >&2; exit 1; fi
+          timeout 1020s xvfb-run -a --server-args="-screen 0 1440x1000x24" bash scripts/linux/snap-desktop-acceptance.sh after
       - name: Collect diagnostics and remove ephemeral installation
         if: always()
         run: |

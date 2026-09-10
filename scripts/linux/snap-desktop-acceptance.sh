@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 # This runs only on an ephemeral runner, inside Xvfb with its systemd user bus.
 set -euo pipefail
+mode="${1:-precision}"
+case "$mode" in precision|before|after) ;; *) echo 'Use precision, before, or after' >&2; exit 2;; esac
+# Keep the real systemd user bus reachable after the tests isolate XDG state.
+export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}"
 common="$HOME/snap/lighttable/common"
 mkdir -p "$common/acceptance" "$common/acceptance-evidence"
 cp scripts/linux/{desktop-acceptance,snap-desktop-acceptance}.py "$common/acceptance/"
+if [[ "$mode" != precision ]]; then
+  cp scripts/linux/snap-raw-acceptance.py "$common/acceptance/"
+  if [[ "$mode" == before ]]; then
+    mkdir -p "$common/acceptance/fixtures"
+    cp demo-assets/cc0-raw/files/{01-canon-eos-80d-city-tree.CR2,03-fujifilm-xq2-harbor-ferry.RAF} "$common/acceptance/fixtures/"
+  fi
+fi
 cp "$XAUTHORITY" "$common/acceptance/Xauthority"
 export XAUTHORITY="$common/acceptance/Xauthority"
 children=()
@@ -11,10 +22,14 @@ cleanup() { for child in "${children[@]}"; do kill "$child" 2>/dev/null || true;
 trap cleanup EXIT
 openbox > "$common/acceptance-evidence/openbox.log" 2>&1 & children+=("$!")
 (
-  for attempt in $(seq 1 300); do
-    for number in 1 2; do
-      checkpoint="$common/acceptance-evidence/capture-$number"
-      if [[ -f "$checkpoint.request" && ! -f "$checkpoint.done" ]]; then
+  shopt -s nullglob
+  for attempt in $(seq 1 1020); do
+    if [[ "$attempt" == 30 ]]; then
+      import -window root "$common/acceptance-evidence/$mode-startup.png"
+    fi
+    for request in "$common/acceptance-evidence/"*.request; do
+      checkpoint="${request%.request}"
+      if [[ ! -f "$checkpoint.done" ]]; then
         import -window root "$checkpoint.png"
         touch "$checkpoint.done"
       fi
@@ -22,5 +37,11 @@ openbox > "$common/acceptance-evidence/openbox.log" 2>&1 & children+=("$!")
     sleep 1
   done
 ) & children+=("$!")
-timeout 270s snap run --shell lighttable -c \
-  'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-desktop-acceptance.py"'
+if [[ "$mode" == precision ]]; then
+  timeout 270s snap run --shell lighttable -c \
+    'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-desktop-acceptance.py"'
+else
+  export LIGHTTABLE_SNAP_TEST_PHASE="$mode"
+  timeout 1000s snap run --shell lighttable -c \
+    'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-raw-acceptance.py" --phase "$LIGHTTABLE_SNAP_TEST_PHASE"'
+fi

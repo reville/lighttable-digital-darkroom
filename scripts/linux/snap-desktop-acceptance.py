@@ -20,6 +20,18 @@ output.mkdir(exist_ok=True)
 bundle = Path(os.environ['SNAP']) / 'LightTable'
 assert os.environ['SNAP_NAME'] == 'lighttable'
 assert json.loads((bundle/'installation-owner.json').read_text())['owner'] == 'snap'
+original_environment = a.isolated_environment
+
+def snap_environment(root):
+    environment = original_environment(root)
+    # The GNOME content snap supplies schemas through these system search paths.
+    # Isolate writable user state without discarding its runtime configuration.
+    for key in ('XDG_DATA_DIRS', 'XDG_CONFIG_DIRS', 'XDG_CURRENT_DESKTOP', 'XDG_SESSION_TYPE'):
+        if key in os.environ:
+            environment[key] = os.environ[key]
+    return environment
+
+a.isolated_environment = snap_environment
 original_close = a.normal_close
 captures = 0
 
