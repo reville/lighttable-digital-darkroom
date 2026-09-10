@@ -108,15 +108,18 @@ def main():
         config.mkdir(parents=True)
         (config / "prefs.json").write_text(json.dumps({
             "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"},
+            "locale": "en", "localeChosen": True,
             "allowAutomation": True, "viewMode": "detail", "activePane": "filmPane",
             "pw": "3000", "engine": "rs", "sort": "capture",
         }))
         (config / "desktop-settings.json").write_text(json.dumps({
             "window": {"width": 1660, "height": 1000, "maximized": False}}))
+        (temporary / "runtime").mkdir(mode=0o700)
         environment = {key: value for key, value in os.environ.items() if not key.startswith("LIGHTTABLE_")}
         environment.update({
             "XDG_CONFIG_HOME": str(temporary / "config"), "XDG_DATA_HOME": str(temporary / "data"),
             "XDG_CACHE_HOME": str(temporary / "cache"), "XDG_STATE_HOME": str(temporary / "state"),
+            "XDG_RUNTIME_DIR": str(temporary / "runtime"),
             "LIGHTTABLE_DIR": str(photos), "LIGHTTABLE_INSTANCE_DIR": str(temporary / "instances"),
             "LIGHTTABLE_CATALOG_FILE": str(temporary / "catalog.sqlite3"), "LIGHTTABLE_CATALOG_MIRROR": "0",
             "LIGHTTABLE_WATCH": "0", "PYTHONDONTWRITEBYTECODE": "1",
@@ -275,6 +278,17 @@ def main():
                         "architecture": platform.machine()}
                     (output / f"{shot['id']}.json").write_text(json.dumps(record, indent=2) + "\n")
                     print(f"Captured {shot['id']}: {width}x{height}, {record['backend']}", flush=True)
+            except Exception:
+                # Keep actual native failure evidence; never encode it as a scene.
+                for log_file in (temporary / "state").rglob("*.log"):
+                    shutil.copy2(log_file, output / ("failure-" + log_file.name))
+                try:
+                    windows = run("xdotool", "search", "--onlyvisible", "--pid", process.pid).splitlines()
+                    if len(windows) == 1:
+                        run("import", "-window", windows[0], output / "failure-window.png")
+                except (OSError, subprocess.SubprocessError):
+                    pass
+                raise
             finally:
                 stop(process)
 
