@@ -794,6 +794,47 @@ class PayloadAndCacheTests(CatalogServerTestCase):
         self.assertTrue(all(row["kind"] != "video" for row in rows))
         self.assertEqual(video_query["total"], 0)
 
+    def test_query_names_only_and_ids_only(self):
+        page = server.browser_catalog_query({"namesOnly": True})
+        self.assertEqual(page["total"], 2)
+        self.assertEqual(page["items"], [])
+        self.assertEqual(sorted(page["names"]),
+                         sorted([self.qualified("a.jpg"), self.qualified("sub/b.jpg")]))
+
+        ids_page = self.catalog.query({"idsOnly": True})
+        self.assertEqual(ids_page["total"], 2)
+        self.assertEqual(len(ids_page["ids"]), 2)
+
+    def test_query_predicates_and_sort_date(self):
+        server.save_image_state(self.qualified("a.jpg"), {"rating": 2, "status": "approved"})
+        server.save_image_state(self.qualified("sub/b.jpg"), {"rating": 4, "status": "pending"})
+
+        # unflagged maps to pending
+        unflagged = server.browser_catalog_query({"filter": {"status": "unflagged"}})
+        self.assertEqual(unflagged["total"], 1)
+        self.assertEqual(unflagged["items"][0]["name"], self.qualified("sub/b.jpg"))
+
+        # ratingMax
+        capped = server.browser_catalog_query({"filter": {"ratingMax": 3}})
+        self.assertEqual(capped["total"], 1)
+        self.assertEqual(capped["items"][0]["name"], self.qualified("a.jpg"))
+
+        # sort by date alias
+        sorted_page = server.browser_catalog_query({"sort": {"field": "date", "dir": "asc"}})
+        self.assertEqual(sorted_page["total"], 2)
+
+    def test_prepare_export_with_query_spec(self):
+        server.save_image_state(self.qualified("a.jpg"), {"rating": 5, "status": "approved"})
+        server.save_image_state(self.qualified("sub/b.jpg"), {"rating": 1, "status": "approved"})
+        items, dest = server.prepare_export({
+            "query": {"filter": {"ratingMin": 4}},
+            "which": "all",
+            "format": "jpg",
+            "destination": "exports",
+        })
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0][0], self.qualified("a.jpg"))
+
     def test_raw_thumbnail_uses_embedded_preview_without_display_decode(self):
         raw = self.root / "raw.dng"
         raw.write_bytes(b"not-a-real-raw")

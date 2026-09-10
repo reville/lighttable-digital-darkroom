@@ -5362,6 +5362,12 @@ function renderGrid() {
     d.querySelector('.idx').textContent = S.msel?.has(im.name) ? '✓' : '';
     paintLabelDot(d, im);
   });
+  if (S.catalogEnabled && S.images.length < S.catalogTotal && positions.length) {
+    const lastVisible = positions[positions.length - 1].index;
+    if (lastVisible + LIBRARY_CHUNK_SIZE >= S.images.length) {
+      loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
+    }
+  }
   $('emptyState').classList.toggle('show', list.length === 0);
   applyGridStyle();
   syncUndisplayableLink();
@@ -7396,6 +7402,65 @@ function catalogIdleTurn() {
   });
 }
 
+const LIBRARY_CHUNK_SIZE = 600;
+
+function buildCatalogQuerySpec(extra = {}) {
+  const f = $('filter')?.value || 'all';
+  const rf = $('ratingFilter')?.value || 'all';
+  const kind = $('kindFilter')?.value || 'all';
+  const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
+  const editState = $('editFilter')?.value || 'all';
+  const fileTypes = typeof LIBRARY_FILTERS?.types === 'function' ? LIBRARY_FILTERS.types() : [];
+  const metadata = typeof LIBRARY_FILTERS?.metadata === 'function' ? LIBRARY_FILTERS.metadata() : {};
+  const search = $('search')?.value?.trim() || '';
+  const s = $('sort')?.value || 'capture';
+
+  const filter = { ...metadata };
+  if (f === 'rated') filter.ratingMin = 1;
+  else if (f === 'unrated') filter.unrated = true;
+  else if (f === 'edited') filter.editState = 'edited';
+  else if (f === 'unedited') filter.editState = 'unedited';
+  else if (f === 'virtual') filter.kind = 'virtual';
+  else if (f === 'approved' || f === 'skipped' || f === 'pending') filter.status = f;
+
+  if (rf === 'unrated') filter.unrated = true;
+  else if (rf !== 'all' && rf !== '0' && !isNaN(+rf)) filter.ratingMin = +rf;
+
+  if (labelFilter !== 'all') filter.label = labelFilter;
+  if (kind !== 'all') filter.kind = kind;
+  if (editState !== 'all') filter.editState = editState;
+  if (fileTypes.length) filter.fileTypes = fileTypes;
+  if (search) filter.query = search;
+
+  let scope = 'all';
+  let folderId, collectionId;
+  const collection = typeof activeCollection === 'function' ? activeCollection() : null;
+  if (collection) {
+    scope = 'collection';
+    collectionId = collection.id;
+  } else if (S.activeFolder) {
+    scope = 'folder';
+    folderId = S.activeFolder;
+  }
+
+  const spec = {
+    scope,
+    filter,
+    sort: {
+      field: s === 'date' ? 'capture' : s,
+      dir: 'desc',
+    },
+    ...extra,
+  };
+  if (folderId) {
+    spec.folderId = folderId;
+    spec.includeSubfolders = S.includeSubfolders !== false;
+  }
+  if (collectionId) spec.collectionId = collectionId;
+
+  return spec;
+}
+
 let catalogPageTask = null;
 function loadRemainingCatalogRows(total) {
   if (catalogPageTask?.images === S.images) return catalogPageTask.promise;
@@ -7407,7 +7472,7 @@ function loadRemainingCatalogRows(total) {
     const known = new Set(images.map(image => image.name));
     while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
       await catalogIdleTurn();
-      const page = await api('/api/catalog/query', {limit: 2000, offset, sort: {field: 'capture', dir: 'desc'}});
+      const page = await api('/api/catalog/query', {limit: LIBRARY_CHUNK_SIZE, offset, sort: {field: 'capture', dir: 'desc'}});
       if (generation !== catalogPageGeneration || images !== S.images) throw new Error(tr('The library changed; select photos again'));
       if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
       total = Number.isFinite(+page.total) ? +page.total : total;
@@ -8616,7 +8681,11 @@ async function runExport(customOpts = {}) {
     collision: customOpts.collision || $('exCollision').value,
     engine: $('engine').value,
   };
-  if (names !== undefined) payload.names = names;
+  if (names !== undefined) {
+    payload.names = names;
+  } else if (typeof S !== 'undefined' && S?.catalogEnabled && typeof buildCatalogQuerySpec === 'function') {
+    payload.query = buildCatalogQuerySpec();
+  }
 
   const r = await api('/api/export', payload);
   if (r.error) return toast(r.error);
@@ -12010,6 +12079,12 @@ if ($('allowAutomation')) {
 SELECTION_REQUEST = createSelectionRequest({
   load: () => S.catalogEnabled && S.images.length < S.catalogTotal
     ? loadRemainingCatalogRows(S.catalogTotal) : Promise.resolve(),
+  queryNames: async () => {
+    if (!S.catalogEnabled) return null;
+    const spec = buildCatalogQuerySpec({ namesOnly: true, limit: 100000 });
+    const res = await api('/api/catalog/query', spec);
+    return res?.names || null;
+  },
   scope: selectionScope, visible, selection: () => S.msel,
   changed: () => refreshLists(), onError: error => toast(error.message),
 });

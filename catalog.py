@@ -62,6 +62,7 @@ RELINK_CANDIDATE_LIMIT = 24
 # Filters accept these sort fields; anything else falls back to capture time.
 SORT_FIELDS = {
     "capture": "julianday(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso))",
+    "date": "julianday(COALESCE(ct.capture_time, f.capture_time, f.mtime_iso))",
     "name": "f.filename COLLATE NOCASE",
     "rating": "s.rating",
     "status": "s.status",
@@ -2174,6 +2175,8 @@ class Catalog:
         for flt in (collection_rules, spec.get("filter") or {}):
             flt = flt if isinstance(flt, dict) else {}
             status = str(flt.get("status", "all"))
+            if status == "unflagged":
+                status = "pending"
             if status in STATUS_VALUES:
                 where.append("s.status=?")
                 params.append(status)
@@ -2184,6 +2187,20 @@ class Catalog:
             if rating_min > 0:
                 where.append("s.rating>=?")
                 params.append(rating_min)
+            try:
+                rating_max = int(flt.get("ratingMax", 0) or 0)
+            except (TypeError, ValueError):
+                rating_max = 0
+            if rating_max > 0:
+                where.append("s.rating<=?")
+                params.append(rating_max)
+            if "rating" in flt and rating_min == 0 and rating_max == 0:
+                try:
+                    exact_rating = int(flt["rating"])
+                    where.append("COALESCE(s.rating,0)=?")
+                    params.append(exact_rating)
+                except (TypeError, ValueError):
+                    pass
             label = str(flt.get("label", "all"))
             if label in LABEL_VALUES:
                 where.append("s.label=?")
@@ -2313,6 +2330,32 @@ class Catalog:
         # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
         # through SQLite's temporary sort made the last page grow with the library.
         ordering = f"{field} {direction}, f.filename COLLATE NOCASE, i.id"
+        if spec.get("namesOnly"):
+            try:
+                limit = max(1, min(100000, int(spec.get("limit", 100000))))
+            except (TypeError, ValueError):
+                limit = 100000
+            rows = self.connection.execute(
+                f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+                "SELECT i.id, i.copy_ident, f.relpath, f.source_id "
+                f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
+                (*params, limit, offset)).fetchall()
+            names = [
+                qualified_name(row["source_id"], row["relpath"], row["copy_ident"])
+                for row in rows
+            ]
+            return {"total": int(total), "offset": offset, "limit": limit,
+                    "names": names, "items": []}
+        if spec.get("idsOnly"):
+            try:
+                limit = max(1, min(100000, int(spec.get("limit", 100000))))
+            except (TypeError, ValueError):
+                limit = 100000
+            rows = self.connection.execute(
+                f"SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?",
+                (*params, limit, offset)).fetchall()
+            return {"total": int(total), "offset": offset, "limit": limit,
+                    "ids": [row["id"] for row in rows], "items": []}
         rows = self.connection.execute(
             f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"

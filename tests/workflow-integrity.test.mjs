@@ -21,6 +21,25 @@ test('Select All publishes the full filtered result after later pages arrive', a
   assert.equal(request.pending, false);
 });
 
+test('Select All uses fast queryNames path when provided without full row load', async () => {
+  let loadCalled = false;
+  const selected = new Set();
+  const request = createSelectionRequest({
+    load: async () => { loadCalled = true; },
+    queryNames: async () => ['photo-1', 'photo-2', 'photo-3'],
+    scope: () => 'catalog',
+    visible: () => [],
+    selection: () => selected,
+    changed() {},
+    onError(error) { throw error; },
+  });
+  const result = await request.selectAll();
+  assert.equal(result, true);
+  assert.equal(loadCalled, false);
+  assert.deepEqual([...selected], ['photo-1', 'photo-2', 'photo-3']);
+  assert.equal(request.pending, false);
+});
+
 test('new selection or changed folder cancels a pending Select All', async () => {
   for (const action of ['cancel', 'folder']) {
     let release, folder = 'before';
