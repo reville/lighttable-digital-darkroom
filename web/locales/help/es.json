@@ -235,7 +235,8 @@
             "Ajustar puede ampliar las fotos pequeñas. 1:1 muestra los píxeles reales incluso cuando la foto queda más pequeña que con Ajustar, y mantiene la misma escala de píxeles al cambiar el tamaño de la ventana.",
             "Pasa el cursor sobre el contador de fotos de la barra superior para ver qué significan sus números.",
             "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
-            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas."
+            "Mientras la ventana esté abierta, LightTable recuerda la posición de desplazamiento de cada foto y mantiene el nivel de zoom actual al cambiar de foto. Las fotos nuevas aparecen centradas.",
+            "En Mac, pellizca en el trackpad sobre la foto en Detalle para hacer zoom alrededor del puntero. Mueve el puntero sobre el área que quieras inspeccionar antes de pellizcar."
           ],
           "steps": [
             "Usa los tres botones de vista Foto en la parte superior. En el esquema de atajos de LightTable, G abre Cuadrícula de fotos, Shift+G abre Cuadrícula de descarte y D abre Detalle.",
@@ -1426,7 +1427,8 @@
           "title": "Transferir los ajustes seleccionados",
           "paragraphs": [
             "Copiar y Pegar están debajo de la foto en la vista Detalle.",
-            "Copiar y Pegar transfieren los grupos que usted selecciona explícitamente. Los ajustes en grupos no marcados permanecen como están en cada destino. Este es un flujo de trabajo explícito de copiar y pegar: las ediciones posteriores en el origen no se sincronizan automáticamente con los destinos."
+            "Copiar y Pegar transfieren los grupos que usted selecciona explícitamente. Los ajustes en grupos no marcados permanecen como están en cada destino. Este es un flujo de trabajo explícito de copiar y pegar: las ediciones posteriores en el origen no se sincronizan automáticamente con los destinos.",
+            "Pegar se aplica a las fotos seleccionadas que siguen mostradas por la carpeta, colección y filtros actuales. Si ninguna de la selección sigue visible, se aplica a la foto activa. Comprueba tu selección de destino antes de pegar."
           ],
           "steps": [
             "Abra la foto de origen y haga clic en Copiar ajustes de edición, o presione Command-Shift-C en Mac o Ctrl-Shift-C en Linux y Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Verificar que su trabajo esté guardado",
           "paragraphs": [
-            "Los controles de edición no están disponibles hasta que se carga una foto. Los ajustes se guardan como configuración de edición de la foto. El editor guarda los cambios automáticamente cuando terminas las interacciones; no necesitas un comando Guardar separado para cada ajuste."
+            "Los controles de edición no están disponibles hasta que se carga una foto. Los ajustes se guardan como configuración de edición de la foto. El editor guarda los cambios automáticamente cuando terminas las interacciones; no necesitas un comando Guardar separado para cada ajuste.",
+            "Al cambiar de foto, también se ponen en cola los ajustes actuales del deslizador para guardarlos. Espera a que aparezca Guardado antes de cerrar la ventana; si falla un guardado, deja la ventana abierta y usa Reintentar guardar."
           ],
           "steps": [
             "Haz tu ajuste y luego comprueba el estado de guardado en la aplicación.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Verificar el alcance y el resultado",
           "paragraphs": [
+            "Fotos seleccionadas usa las fotos seleccionadas que siguen mostradas por la carpeta, colección y filtros actuales. Si ninguna de la selección sigue visible, usa la foto activa. Comprueba el recuento de fotos y el nombre en Exportar antes de iniciar.",
             "Seleccionadas solo, Calificadas 1+ y Todas excepto rechazadas seleccionan fotos fijas coincidentes del catálogo activo, y pueden incluir fotos fuera de la colección o filtro mostrado. Fotos seleccionadas proporciona control explícito sobre el conjunto.",
             "Si un lote escribe en varias carpetas, Mostrar en Finder revela la primera foto exportada correctamente. El vínculo no aparece cuando no se exportó ninguna foto. Use Cancelar exportación para solicitar la detención. Detalles de exportación informa los recuentos de completadas, omitidas y canceladas, además de advertencias y errores; puede producirse una advertencia después de que una foto se haya escrito correctamente. Los clips de video no se renderizan mediante el flujo de trabajo de exportación de fotos fijas. Si un original cambia mientras su exportación está en cola o se está renderizando, esa foto falla con un error; vuelva a ponerla en cola después de comprobar el original."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

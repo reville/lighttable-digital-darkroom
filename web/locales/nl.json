@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd.",
     "Previews are already being built; finish or cancel that first": "Voorvertoningen worden al gemaakt; rond dat eerst af of annuleer het",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Een bulkactie bereikt alleen de geselecteerde foto’s die het huidige filter, de map en de zoekopdracht nog tonen. Een filter wijzigen beperkt dus wat de volgende actie raakt, en de markeringsbalk telt wat ze zou bereiken."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Een bulkactie bereikt alleen de geselecteerde foto’s die het huidige filter, de map en de zoekopdracht nog tonen. Een filter wijzigen beperkt dus wat de volgende actie raakt, en de markeringsbalk telt wat ze zou bereiken.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Op een Mac kunt u in Details op het trackpad knijpen boven de foto om rond de aanwijzer te zoomen. Beweeg de aanwijzer over het gebied dat u wilt inspecteren voordat u knijpt.",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "Plakken wordt toegepast op geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, wordt het toegepast op de actieve foto. Controleer uw bestemmingsselectie voordat u plakt.",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "Geselecteerde foto’s gebruikt geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, gebruikt het de actieve foto. Controleer het aantal foto’s en de naam in Exporteren voordat u start. ",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "Bij het wisselen van foto’s worden ook de huidige schuifregelaaraanpassingen in de wachtrij gezet om op te slaan. Wacht tot Opgeslagen voordat u het venster sluit; als het opslaan mislukt, laat het venster dan open en gebruik Opslaan opnieuw proberen."
   },
   "plurals": {
     " · {count} paired file linked": {

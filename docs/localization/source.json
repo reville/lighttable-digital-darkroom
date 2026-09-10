@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -2174,6 +2174,7 @@
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.",
     "On Windows, checking whether originals have changed reads each local file in full. Rescanning, opening photos, and export checks can take longer with large originals. These checks do not download files stored only in the cloud.",
     "On a new library, setup offers a local folder or Lightroom migration. The macOS app also offers Apple Photos. You can skip setup and add photos later.",
     "On disk",
@@ -2293,6 +2294,7 @@
     "Paper",
     "Paste",
     "Paste Edit Settings",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.",
     "Paste edit settings",
     "Paste edit settings ({primaryKey}+Shift+V)",
     "Paste edit settings to {targetsLength} selected photos ({primaryKey}+Shift+V)",
@@ -2893,6 +2895,7 @@
     "Selected photo ({value})",
     "Selected photo(s)",
     "Selected photos ({targetsLength})",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.",
     "Selected point color",
     "Selected preset",
     "Selected: {count}",
@@ -3095,6 +3098,7 @@
     "Swap A and B",
     "Swap crop orientation",
     "Switch views and select photos",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.",
     "Switching preset rows uses the edit from before the first preset so looks do not accumulate. Manual changes outside the preset, such as exposure for a Look, are kept. Manually changing a setting controlled by the preset ends its Amount adjustment; the current edit then becomes the baseline for the next preset.",
     "Synchronize Folder",
     "TIFF",

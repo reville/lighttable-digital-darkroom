@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "দুটি বিন্দু একটির উপর আরেকটি টেনে আনলে গ্রেডিয়েন্টের কোনো দিক থাকে না, তাই আপনি সেগুলি আবার আলাদা না করা পর্যন্ত এটি কিছুই নির্বাচন করে না। খুব ছোট একটি গ্রেডিয়েন্ট একটি বৈধ শক্ত প্রান্ত এবং প্রিভিউ ও রপ্তানি করা ফাইলে একইভাবে প্রয়োগ হয়।",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "যে ছবিতে শুরু হয়েছিল সেখান থেকেই নির্বাচনটি কাটা হয়। শেষ হওয়ার আগে অন্য ছবিতে গেলে এটি বাতিল হয়, তাই মাস্ক না আসা পর্যন্ত ছবিটিতেই থাকুন। নির্বাচন সম্পূর্ণ করা না গেলে মাস্ক প্যানেল তা জানায় এবং কিছুই যোগ হয় না।",
     "Previews are already being built; finish or cancel that first": "প্রিভিউ ইতিমধ্যেই তৈরি হচ্ছে; আগে সেটি শেষ করুন বা বাতিল করুন",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "একটি ব্যাচ অ্যাকশন কেবল সেই নির্বাচিত ছবিগুলিতেই পৌঁছায় যেগুলি বর্তমান ফিল্টার, ফোল্ডার ও অনুসন্ধান এখনও দেখায়। তাই ফিল্টার বদলালে পরবর্তী অ্যাকশন কম ছবিতে পৌঁছায়, এবং চিহ্নিতকরণ টুলবার যতগুলিতে পৌঁছাবে ততগুলিই গোনে।"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "একটি ব্যাচ অ্যাকশন কেবল সেই নির্বাচিত ছবিগুলিতেই পৌঁছায় যেগুলি বর্তমান ফিল্টার, ফোল্ডার ও অনুসন্ধান এখনও দেখায়। তাই ফিল্টার বদলালে পরবর্তী অ্যাকশন কম ছবিতে পৌঁছায়, এবং চিহ্নিতকরণ টুলবার যতগুলিতে পৌঁছাবে ততগুলিই গোনে।",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Mac-এ, পয়েন্টারের চারপাশে জুম করতে ফটোতে Detail-এ ট্র্যাকপ্যাডে পিঞ্চ করুন। পিঞ্চ করার আগে আপনি যে অংশটি পরীক্ষা করতে চান, তার উপর পয়েন্টারটি নিয়ে যান।",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "Paste বর্তমান folder, collection, এবং ফিল্টারগুলিতে এখনও দেখানো selected photo-গুলিতে প্রয়োগ হয়। যদি selection-এর কিছুই দৃশ্যে না থাকে, তাহলে এটি active photo-তে প্রয়োগ হয়। Paste করার আগে আপনার destination নির্বাচন পরীক্ষা করুন।",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "Selected photos বর্তমান folder, collection, এবং ফিল্টারগুলিতে এখনও দেখানো selected photo-গুলি ব্যবহার করে। যদি selection-এর কিছুই দৃশ্যে না থাকে, তাহলে এটি active photo ব্যবহার করে। শুরু করার আগে Export-এ photo count এবং name পরীক্ষা করুন।",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "ফটো বদলালেও বর্তমান স্লাইডার সমন্বয়গুলো সংরক্ষণের জন্য সারিতে যোগ হয়। উইন্ডো বন্ধ করার আগে Saved-এর জন্য অপেক্ষা করুন; যদি কোনো save ব্যর্থ হয়, উইন্ডো খোলা রাখুন এবং Retry save ব্যবহার করুন।"
   },
   "plurals": {
     " · {count} paired file linked": {

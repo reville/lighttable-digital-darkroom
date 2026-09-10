@@ -235,7 +235,8 @@
             "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
             "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
             "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente.",
-            "Enquanto a janela estiver aberta, o LightTable lembra a posição de visualização de cada foto e mantém o nível de zoom atual ao trocar de foto. As novas fotos aparecem centralizadas."
+            "Enquanto a janela estiver aberta, o LightTable lembra a posição de visualização de cada foto e mantém o nível de zoom atual ao trocar de foto. As novas fotos aparecem centralizadas.",
+            "No Mac, faça o gesto de pinça no trackpad sobre a foto em Detalhe para aplicar zoom ao redor do ponteiro. Mova o ponteiro para a área que você quer inspecionar antes de fazer a pinça."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -1426,7 +1427,8 @@
           "title": "Transferir configurações selecionadas",
           "paragraphs": [
             "Copiar e Colar ficam abaixo da foto na visualização Detalhe.",
-            "Copiar e Colar transferem os grupos que você seleciona explicitamente. As configurações em grupos desmarcados permanecem como estão em cada destino. Este é um fluxo explícito de copiar/colar: edições posteriores na origem não sincronizam automaticamente com os destinos."
+            "Copiar e Colar transferem os grupos que você seleciona explicitamente. As configurações em grupos desmarcados permanecem como estão em cada destino. Este é um fluxo explícito de copiar/colar: edições posteriores na origem não sincronizam automaticamente com os destinos.",
+            "Colar se aplica às fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele se aplica à foto ativa. Verifique sua seleção de destino antes de colar."
           ],
           "steps": [
             "Abra a foto de origem e clique em Copiar configurações de edição, ou pressione Command-Shift-C no Mac ou Ctrl-Shift-C no Linux e Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Verificar se o seu trabalho foi salvo",
           "paragraphs": [
-            "Os controles de edição ficam indisponíveis até que uma foto seja carregada. Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente conforme você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste."
+            "Os controles de edição ficam indisponíveis até que uma foto seja carregada. Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente conforme você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste.",
+            "Ao trocar de fotos, os ajustes atuais do deslizador também entram na fila para salvar. Aguarde até aparecer Salvo antes de fechar a janela; se o salvamento falhar, mantenha a janela aberta e use Tentar salvar novamente."
           ],
           "steps": [
             "Faça seu ajuste e depois verifique o status de salvamento no aplicativo.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Verificar o escopo e o resultado",
           "paragraphs": [
+            "Fotos selecionadas usa as fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele usa a foto ativa. Verifique a contagem de fotos e o nome em Exportar antes de iniciar.",
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
             "Se um lote gravar em várias pastas, Mostrar no Finder revela a primeira foto exportada com sucesso. O link não está presente quando nenhuma foto foi exportada. Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original for alterado enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falha com um erro; coloque-a na fila novamente depois de verificar o original."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

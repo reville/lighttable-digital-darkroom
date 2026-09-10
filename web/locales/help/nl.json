@@ -235,7 +235,8 @@
             "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
             "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen.",
             "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
-            "Zolang het venster open is, onthoudt LightTable de verschoven positie van elke foto en behoudt het huidige zoomniveau wanneer je van foto wisselt. Nieuwe foto’s worden gecentreerd weergegeven."
+            "Zolang het venster open is, onthoudt LightTable de verschoven positie van elke foto en behoudt het huidige zoomniveau wanneer je van foto wisselt. Nieuwe foto’s worden gecentreerd weergegeven.",
+            "Op een Mac kunt u in Details op het trackpad knijpen boven de foto om rond de aanwijzer te zoomen. Beweeg de aanwijzer over het gebied dat u wilt inspecteren voordat u knijpt."
           ],
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
@@ -1426,7 +1427,8 @@
           "title": "Geselecteerde instellingen overbrengen",
           "paragraphs": [
             "Kopiëren en Plakken staan onder de foto in de detailweergave.",
-            "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen."
+            "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen.",
+            "Plakken wordt toegepast op geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, wordt het toegepast op de actieve foto. Controleer uw bestemmingsselectie voordat u plakt."
           ],
           "steps": [
             "Open de bronfoto en klik op Bewerkingsinstellingen kopiëren, of druk op Command-Shift-C op Mac of Ctrl-Shift-C op Linux en Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Controleer of uw werk is opgeslagen",
           "paragraphs": [
-            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing."
+            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing.",
+            "Bij het wisselen van foto’s worden ook de huidige schuifregelaaraanpassingen in de wachtrij gezet om op te slaan. Wacht tot Opgeslagen voordat u het venster sluit; als het opslaan mislukt, laat het venster dan open en gebruik Opslaan opnieuw proberen."
           ],
           "steps": [
             "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Controleer de scope en het resultaat",
           "paragraphs": [
+            "Geselecteerde foto’s gebruikt geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, gebruikt het de actieve foto. Controleer het aantal foto’s en de naam in Exporteren voordat u start. ",
             "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
             "Als een batch naar meerdere mappen schrijft, toont Weergeven in Finder de eerst succesvol geëxporteerde foto. De koppeling ontbreekt wanneer er geen foto’s zijn geëxporteerd. Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert de aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s. Als een origineel verandert terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet hem opnieuw in de wachtrij nadat je het origineel hebt gecontroleerd."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

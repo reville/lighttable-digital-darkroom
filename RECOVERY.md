@@ -1,6 +1,6 @@
 # Library Health and Recovery
 
-LightTable keeps one SQLite catalog for every source folder, a few JSON
+LightTable keeps source folders together in a SQLite catalog, alongside JSON
 documents (preferences, presets, the optional per-folder state mirror), and
 several generated caches. This document lists the ways that data and the app
 around it can fail, what the app does about each one on its own, and where a
@@ -17,6 +17,12 @@ copies into a new catalog. Reopening an existing catalog keeps its committed
 edits, even if the folder mirror is older or could not be written. Initial
 portable-state adoption is transactional and can retry unavailable originals
 without replacing edits already saved in the catalog.
+
+Slider adjustments are queued for saving when you switch photos, including
+changes from an unfinished gesture. Check for **Saved** before closing. If
+saving fails, keep the window open and choose **Retry save**. Recovery drafts
+for unavailable or changed originals are kept instead of applied to a different
+photo; partial-identity drafts need your review before restoring.
 
 Move Rejected Photos to Trash excludes virtual copies and leaves shared XMP
 beside an unselected paired original. To remove only a virtual copy, use

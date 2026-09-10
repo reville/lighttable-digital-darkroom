@@ -235,7 +235,8 @@
             "Anpassen kann kleine Fotos vergrößern. 1:1 zeigt die tatsächlichen Pixel, auch wenn das Foto dadurch kleiner als bei Anpassen wird, und behält beim Ändern der Fenstergröße denselben Pixelmaßstab bei.",
             "Bewege den Mauszeiger über den Fotozähler in der oberen Leiste, um zu sehen, was die Zahlen bedeuten.",
             "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
-            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt."
+            "Solange das Fenster geöffnet ist, merkt sich LightTable die Ansichtsposition jedes Fotos und behält beim Wechseln den aktuellen Zoom bei. Neue Fotos werden zentriert angezeigt.",
+            "Bewegen Sie auf dem Mac den Zeiger in Details über den Bereich des Fotos, den Sie untersuchen möchten. Ziehen Sie dann zwei Finger auf dem Trackpad zusammen oder auseinander, um um den Zeiger herum zu zoomen."
           ],
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
@@ -1426,7 +1427,8 @@
           "title": "Ausgewählte Einstellungen übertragen",
           "paragraphs": [
             "Kopieren und Einfügen befinden sich in der Detailansicht unter dem Foto.",
-            "Kopieren und Einfügen übertragen die Gruppen, die Sie ausdrücklich auswählen. Einstellungen in nicht aktivierten Gruppen bleiben auf jedem Ziel unverändert. Dies ist ein expliziter Kopieren/Einfügen-Workflow: Spätere Änderungen an der Quelle werden nicht automatisch auf die Ziele synchronisiert."
+            "Kopieren und Einfügen übertragen die Gruppen, die Sie ausdrücklich auswählen. Einstellungen in nicht aktivierten Gruppen bleiben auf jedem Ziel unverändert. Dies ist ein expliziter Kopieren/Einfügen-Workflow: Spätere Änderungen an der Quelle werden nicht automatisch auf die Ziele synchronisiert.",
+            "Einfügen wird auf ausgewählte Fotos angewendet, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird es auf das aktive Foto angewendet. Überprüfen Sie vor dem Einfügen Ihre Zielauswahl."
           ],
           "steps": [
             "Öffnen Sie das Quellfoto und klicken Sie auf Bearbeitungseinstellungen kopieren, oder drücken Sie Command-Shift-C auf dem Mac bzw. Ctrl-Shift-C unter Linux und Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Prüfen, dass Ihre Arbeit gespeichert ist",
           "paragraphs": [
-            "Bearbeitungssteuerungen sind nicht verfügbar, bis ein Foto geladen ist. Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, sobald Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Befehl Speichern."
+            "Bearbeitungssteuerungen sind nicht verfügbar, bis ein Foto geladen ist. Anpassungen werden als Bearbeitungseinstellungen für das Foto gespeichert. Der Editor speichert Änderungen automatisch, sobald Sie Interaktionen beenden; Sie benötigen für jede Anpassung keinen separaten Befehl Speichern.",
+            "Beim Wechseln von Fotos werden auch die aktuellen Schieberegler-Anpassungen zum Speichern in die Warteschlange gestellt. Warten Sie vor dem Schließen des Fensters auf Gespeichert; wenn das Speichern fehlschlägt, lassen Sie das Fenster geöffnet und verwenden Sie Speichern erneut versuchen."
           ],
           "steps": [
             "Nehmen Sie Ihre Anpassung vor und prüfen Sie dann den Speicherstatus in der App.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Bereich und Ergebnis prüfen",
           "paragraphs": [
+            "Ausgewählte Fotos verwendet ausgewählte Fotos, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird das aktive Foto verwendet. Überprüfen Sie vor dem Start in Export die Fotoanzahl und den Namen.",
             "Nur Ausgewählt, Bewertet 1+ und Alle außer abgelehnt wählen passende Standfotos aus dem aktiven Katalog aus und können Fotos außerhalb der angezeigten Sammlung oder des Filters einschließen. Ausgewählte Fotos bietet eine explizite Kontrolle über die Auswahl.",
             "Wenn ein Stapel in mehrere Ordner schreibt, zeigt Im Finder anzeigen das zuerst erfolgreich exportierte Foto an. Der Link ist nicht vorhanden, wenn keine Fotos exportiert wurden. Verwenden Sie Export abbrechen, um das Stoppen anzufordern. Exportdetails meldet die Anzahl der abgeschlossenen, übersprungenen und abgebrochenen Vorgänge sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standbilder nicht gerendert. Wenn sich ein Original ändert, während sein Export in der Warteschlange steht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; stellen Sie es nach der Überprüfung des Originals erneut in die Warteschlange."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

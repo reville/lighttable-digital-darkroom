@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "2つの点を重ねるとグラデーションの方向がなくなり、離すまで何も選択されません。ごく短いグラデーションは有効なハードエッジで、プレビューと書き出したファイルで同じように適用されます。",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選択は開始した写真から切り出されます。完了前に別の写真へ移動すると取り消されるので、マスクが現れるまでその写真にとどまってください。選択を完了できない場合は、マスクパネルがそれを知らせ、何も追加されません。",
     "Previews are already being built; finish or cancel that first": "プレビューはすでに作成中です。先に完了するかキャンセルしてください",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "一括操作は、現在のフィルター、フォルダ、検索がまだ表示している選択中の写真にのみ及びます。フィルターを変えると次の操作が及ぶ範囲は狭まり、マーキングバーは実際に及ぶ枚数を表示します。"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "一括操作は、現在のフィルター、フォルダ、検索がまだ表示している選択中の写真にのみ及びます。フィルターを変えると次の操作が及ぶ範囲は狭まり、マーキングバーは実際に及ぶ枚数を表示します。",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Macでは、Detailで写真上のトラックパッドをピンチして、ポインターの周囲をズームします。ピンチする前に、確認したい領域にポインターを移動してください。",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "Pasteは、現在のフォルダー、コレクション、フィルターでまだ表示されている選択済みの写真に適用されます。選択範囲の写真が1枚も表示されていない場合は、アクティブな写真に適用されます。貼り付ける前にdestinationの選択を確認してください。",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "Selected photosは、現在のフォルダー、コレクション、フィルターでまだ表示されている選択済みの写真を使用します。選択範囲の写真が1枚も表示されていない場合は、アクティブな写真を使用します。開始する前に、Exportで写真の枚数と名前を確認してください。",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "写真を切り替えると、現在のスライダー調整も保存待ちになります。ウィンドウを閉じる前にSavedになるまで待ってください。保存に失敗した場合は、ウィンドウを開いたままにしてRetry saveを使用してください。"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -235,7 +235,8 @@
             "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
             "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
             "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
-            "Pencere açıkken LightTable her fotoğrafın kaydırma konumunu hatırlar ve fotoğraflar arasında geçiş yaparken mevcut yakınlaştırma düzeyini korur. Yeni fotoğraflar ortalanmış olarak gösterilir."
+            "Pencere açıkken LightTable her fotoğrafın kaydırma konumunu hatırlar ve fotoğraflar arasında geçiş yaparken mevcut yakınlaştırma düzeyini korur. Yeni fotoğraflar ortalanmış olarak gösterilir.",
+            "Mac’te, Ayrıntı içinde fotoğrafın üzerinde trackpad’de sıkıştırarak imlecin etrafında yakınlaştırın. Sıkıştırmadan önce incelemek istediğiniz alanın üzerine imleci getirin."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -1426,7 +1427,8 @@
           "title": "Seçili ayarları aktar",
           "paragraphs": [
             "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır.",
-            "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez."
+            "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez.",
+            "Yapıştır, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğraflara uygulanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafa uygulanır. Yapıştırmadan önce hedef seçiminizi kontrol edin."
           ],
           "steps": [
             "Kaynak fotoğrafı açın ve Düzenleme ayarlarını kopyala'ya tıklayın ya da Mac'te Command-Shift-C, Linux ve Windows'ta Ctrl-Shift-C tuşlarına basın.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Çalışmanızın kaydedildiğini kontrol edin",
           "paragraphs": [
-            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur."
+            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur.",
+            "Fotoğraflar arasında geçiş yapmak, geçerli kaydırıcı ayarlarını da kaydetme için sıraya alır. Pencereyi kapatmadan önce Kaydedildi yazısını bekleyin; bir kaydetme başarısız olursa pencereyi açık tutun ve Kaydetmeyi yeniden dene'yi kullanın."
           ],
           "steps": [
             "Ayarlamanızı yapın, ardından uygulamadaki kaydetme durumunu kontrol edin.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Kapsamı ve sonucu kontrol edin",
           "paragraphs": [
+            "Seçili fotoğraflar, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğrafları kullanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafı kullanır. Başlamadan önce Dışa Aktar bölümündeki fotoğraf sayısını ve adı kontrol edin.",
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
             "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

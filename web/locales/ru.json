@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Если перетащить точки одна на другую, у градиента не остаётся направления, и он ничего не выделяет, пока вы их не разведёте. Очень короткий градиент — это допустимая жёсткая граница, и он применяется одинаково в предпросмотре и в экспортированном файле.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Выделение вырезается из той фотографии, на которой оно начато. Переход к другой фотографии до его завершения отменяет его, поэтому оставайтесь на фотографии, пока не появится маска. Если выделение не удаётся завершить, панель маски сообщает об этом и ничего не добавляется.",
     "Previews are already being built; finish or cancel that first": "Предпросмотры уже создаются; сначала завершите или отмените это",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Групповое действие затрагивает только выбранные фотографии, которые текущий фильтр, папка и поиск всё ещё показывают. Смена фильтра поэтому сужает охват следующего действия, а панель отметок показывает, скольких оно коснётся."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Групповое действие затрагивает только выбранные фотографии, которые текущий фильтр, папка и поиск всё ещё показывают. Смена фильтра поэтому сужает охват следующего действия, а панель отметок показывает, скольких оно коснётся.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "На Mac сведите пальцы на трекпаде над фото в «Детали», чтобы масштабировать вокруг указателя. Перед сведением переместите указатель на область, которую хотите рассмотреть.",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "«Вставить» применяется к выбранным фото, которые по-прежнему показаны текущей папкой, коллекцией и фильтрами. Если ни один элемент из выделения не остался в области просмотра, оно применяется к активному фото. Перед вставкой проверьте выбранное назначение.",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "«Выбранные фото» использует выбранные фото, которые по-прежнему показаны текущей папкой, коллекцией и фильтрами. Если ни один элемент из выделения не остался в области просмотра, используется активное фото. Перед началом проверьте количество фото и имя в «Экспорт».",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "При переключении фото текущие изменения ползунков также ставятся в очередь на сохранение. Дождитесь «Сохранено» перед закрытием окна; если сохранение не удалось, не закрывайте окно и используйте «Повторить сохранение»."
   },
   "plurals": {
     " · {count} paired file linked": {

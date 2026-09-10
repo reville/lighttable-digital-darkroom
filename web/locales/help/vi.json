@@ -235,7 +235,8 @@
             "Vừa khung có thể phóng lớn ảnh nhỏ. 1:1 hiển thị các điểm ảnh thực ngay cả khi ảnh nhỏ hơn chế độ Vừa khung, đồng thời giữ nguyên tỷ lệ điểm ảnh khi bạn đổi kích thước cửa sổ.",
             "Di chuột lên bộ đếm ảnh ở thanh trên cùng để xem ý nghĩa của các con số.",
             "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
-            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa."
+            "Khi cửa sổ đang mở, LightTable ghi nhớ vị trí dịch chuyển của từng ảnh và giữ nguyên mức thu phóng hiện tại khi bạn chuyển ảnh. Ảnh mới được hiển thị ở giữa.",
+            "Trên máy Mac, chụm hai ngón trên trackpad khi trỏ vào ảnh trong Chi tiết để thu phóng quanh con trỏ. Di chuyển con trỏ đến vùng bạn muốn kiểm tra trước khi chụm."
           ],
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
@@ -1426,7 +1427,8 @@
           "title": "Chuyển các cài đặt đã chọn",
           "paragraphs": [
             "Sao chép và Dán nằm bên dưới ảnh trong chế độ xem Chi tiết.",
-            "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích."
+            "Copy và Paste chuyển các nhóm mà bạn chọn rõ ràng. Các thiết lập trong nhóm không được đánh dấu giữ nguyên như trên từng đích. Đây là một quy trình copy/paste rõ ràng: các chỉnh sửa sau này ở nguồn không tự động đồng bộ sang các đích.",
+            "Dán áp dụng cho các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ áp dụng cho ảnh đang hoạt động. Kiểm tra vùng chọn đích đến trước khi dán."
           ],
           "steps": [
             "Mở ảnh nguồn và nhấp Sao chép cài đặt chỉnh sửa, hoặc nhấn Command-Shift-C trên Mac hoặc Ctrl-Shift-C trên Linux và Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Kiểm tra công việc của bạn đã được lưu",
           "paragraphs": [
-            "Các điều khiển Chỉnh sửa không khả dụng cho đến khi ảnh được tải. Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu các thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh."
+            "Các điều khiển Chỉnh sửa không khả dụng cho đến khi ảnh được tải. Các điều chỉnh được lưu dưới dạng cài đặt chỉnh sửa cho ảnh. Trình chỉnh sửa tự động lưu các thay đổi khi bạn hoàn tất tương tác; bạn không cần một lệnh Lưu riêng cho từng điều chỉnh.",
+            "Chuyển sang ảnh khác cũng sẽ xếp các điều chỉnh thanh trượt hiện tại vào hàng đợi để lưu. Hãy đợi đến khi Đã lưu rồi mới đóng cửa sổ; nếu lưu thất bại, hãy để cửa sổ mở và dùng Thử lưu lại."
           ],
           "steps": [
             "Thực hiện điều chỉnh của bạn, rồi kiểm tra trạng thái lưu trong ứng dụng.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Kiểm tra biểu đồ và kết quả",
           "paragraphs": [
+            "Ảnh đã chọn sử dụng các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ sử dụng ảnh đang hoạt động. Kiểm tra số lượng ảnh và tên trong Xuất trước khi bắt đầu.",
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
             "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

@@ -3,7 +3,7 @@
     "about-lighttable": {
       "content": "f176c760d71f2141d024f089715f371828dcb3916a9a86bdfbea36dbae67ce87",
       "sources": {
-        "README.md": "8845cf7aae9588235579722ffec17aeb47a5e45703bf689abcd3c19e693c2ea3",
+        "README.md": "69aa6e9afefea404a90d419f0c05ef8fe8a36bdb9b98f5c942588e69036b5530",
         "app/main.swift": "a2ab1ba64049c5c8d4d9c9e5d2559ae3a768add56bef8acb8868cf8ac5919764"
       }
     },
@@ -90,7 +90,7 @@
       }
     },
     "editing-copy-paste-match-exposure": {
-      "content": "6ad6b7b568ad9a1f3ae86662e7e835b617eb23a6bfb8d415cabb15e1418c00d5",
+      "content": "fe0446744485a254a7320c344f2ad12eb2eab0b33187beb0061ef76fec4eb75f",
       "sources": {
         "app/main.swift": "a2ab1ba64049c5c8d4d9c9e5d2559ae3a768add56bef8acb8868cf8ac5919764",
         "server.py": "cfaa6688ea4524d0c665f979c31e7caac0b4f876576202770de300a34867097a",
@@ -215,7 +215,7 @@
       }
     },
     "editing-save-recovery": {
-      "content": "5ea77476828b252a78757b30d827464a516994d3c1cf84a3a6041bec601e2b2d",
+      "content": "1e5d980b0c67d756d66ea9be589794195b72228907810eb0959857d09e386ef1",
       "sources": {
         "web/app.js": "fcb478febfafa12b9fed3aedbd36540d62f041dc0345409b3093acfb966062c8",
         "web/edit-save-queue.js": "f93aa9eb304dea08f65e05c9b7a3e36b645e42bf7b34499469e51cf446372859"
@@ -259,7 +259,7 @@
       }
     },
     "export-photos": {
-      "content": "dbb37c4fdeb501f59294843e33d6aea92727bd952e76e11978a4a14af5535086",
+      "content": "eee4673a39ad76c0d276d7ab4790509d55aaa0c7fbadd8f403f44d22372cc4da",
       "sources": {
         "server.py": "cfaa6688ea4524d0c665f979c31e7caac0b4f876576202770de300a34867097a",
         "web/app.js": "fcb478febfafa12b9fed3aedbd36540d62f041dc0345409b3093acfb966062c8",
@@ -508,7 +508,7 @@
       }
     },
     "views-and-selection": {
-      "content": "975a9835dec5975f6ab32385f01a8236fc962cdb8e94825a690a31adb8432c32",
+      "content": "9cb4de79912e85f08f5de3c325cdc53a56908e2acc23e2773c962234da23e343",
       "sources": {
         "app/main.swift": "a2ab1ba64049c5c8d4d9c9e5d2559ae3a768add56bef8acb8868cf8ac5919764",
         "web/app.js": "fcb478febfafa12b9fed3aedbd36540d62f041dc0345409b3093acfb966062c8",

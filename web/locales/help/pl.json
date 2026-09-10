@@ -235,7 +235,8 @@
             "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
             "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby.",
             "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio.",
-            "Dopóki okno jest otwarte, LightTable zapamiętuje pozycję przesunięcia każdego zdjęcia i zachowuje bieżący poziom powiększenia przy zmianie zdjęć. Nowe zdjęcia są wyświetlane na środku."
+            "Dopóki okno jest otwarte, LightTable zapamiętuje pozycję przesunięcia każdego zdjęcia i zachowuje bieżący poziom powiększenia przy zmianie zdjęć. Nowe zdjęcia są wyświetlane na środku.",
+            "Na Macu zsuń palce na gładziku nad zdjęciem w Szczegóły, aby powiększać wokół wskaźnika. Przesuń wskaźnik nad obszar, który chcesz obejrzeć, zanim zsuniesz palce."
           ],
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
@@ -1426,7 +1427,8 @@
           "title": "Przenieś wybrane ustawienia",
           "paragraphs": [
             "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym.",
-            "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami."
+            "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami.",
+            "Wklej dotyczy wybranych zdjęć nadal widocznych w bieżącym folderze, kolekcji i filtrach. Jeśli żaden z elementów zaznaczenia nie jest już widoczny, dotyczy aktywnego zdjęcia. Sprawdź zaznaczenie miejsca docelowego przed wklejeniem."
           ],
           "steps": [
             "Otwórz zdjęcie źródłowe i kliknij Kopiuj ustawienia edycji albo naciśnij Command-Shift-C na Macu lub Ctrl-Shift-C w systemach Linux i Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Sprawdź, czy Twoja praca została zapisana",
           "paragraphs": [
-            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty."
+            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty.",
+            "Przełączanie zdjęć również dodaje bieżące zmiany suwaka do kolejki zapisu. Poczekaj na Zapisane przed zamknięciem okna; jeśli zapis się nie powiedzie, pozostaw okno otwarte i użyj Ponów zapis."
           ],
           "steps": [
             "Wykonaj korektę, a następnie sprawdź stan zapisu w aplikacji.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Sprawdź zakres i wynik",
           "paragraphs": [
+            "Wybrane zdjęcia używa wybranych zdjęć nadal widocznych w bieżącym folderze, kolekcji i filtrach. Jeśli żaden z elementów zaznaczenia nie jest już widoczny, używa aktywnego zdjęcia. Sprawdź liczbę zdjęć i nazwę w Eksportuj przed rozpoczęciem.",
             "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
             "Jeśli wsadowy eksport zapisuje do wielu folderów, Pokaż w Finderze pokazuje pierwsze zdjęcie wyeksportowane pomyślnie. Łącze jest nieobecne, gdy nie wyeksportowano żadnych zdjęć. Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu podają liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć nieruchomych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub jest renderowany, to zdjęcie zakończy się błędem; dodaj je ponownie do kolejki po sprawdzeniu oryginału."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

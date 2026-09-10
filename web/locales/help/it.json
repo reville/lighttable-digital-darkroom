@@ -235,7 +235,8 @@
             "Adatta può ingrandire le foto piccole. 1:1 mostra i pixel reali anche quando la foto diventa più piccola rispetto ad Adatta e mantiene la stessa scala dei pixel quando ridimensioni la finestra.",
             "Passa il puntatore sul contatore delle foto nella barra superiore per vedere cosa significano i numeri.",
             "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
-            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro."
+            "Finché la finestra rimane aperta, LightTable ricorda la posizione di visualizzazione di ogni foto e mantiene il livello di zoom attuale quando cambi foto. Le nuove foto vengono mostrate al centro.",
+            "Su Mac, pizzica sul trackpad sopra la foto in Dettagli per eseguire lo zoom attorno al puntatore. Sposta il puntatore sull'area che vuoi ispezionare prima di pizzicare."
           ],
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
@@ -1426,7 +1427,8 @@
           "title": "Trasferisci le impostazioni selezionate",
           "paragraphs": [
             "Copia e Incolla si trovano sotto la foto nella vista Dettaglio.",
-            "Copia e Incolla trasferiscono i gruppi che selezioni esplicitamente. Le impostazioni nei gruppi non selezionati restano come sono su ogni destinazione. Questo è un flusso di lavoro esplicito di copia/incolla: le modifiche successive all’origine non si sincronizzano automaticamente con le destinazioni."
+            "Copia e Incolla trasferiscono i gruppi che selezioni esplicitamente. Le impostazioni nei gruppi non selezionati restano come sono su ogni destinazione. Questo è un flusso di lavoro esplicito di copia/incolla: le modifiche successive all’origine non si sincronizzano automaticamente con le destinazioni.",
+            "Incolla si applica alle foto selezionate ancora mostrate dalla cartella, collezione e dai filtri correnti. Se nessuna parte della selezione rimane visibile, si applica alla foto attiva. Controlla la selezione di destinazione prima di incollare."
           ],
           "steps": [
             "Apri la foto sorgente e fai clic su Copia impostazioni di modifica, oppure premi Command-Shift-C su Mac o Ctrl-Shift-C su Linux e Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Verifica che il tuo lavoro sia salvato",
           "paragraphs": [
-            "I controlli di modifica non sono disponibili finché non viene caricata una foto. Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche quando completi le interazioni; non serve un comando Salva separato per ogni regolazione."
+            "I controlli di modifica non sono disponibili finché non viene caricata una foto. Le regolazioni vengono memorizzate come impostazioni di modifica per la foto. L'editor salva automaticamente le modifiche quando completi le interazioni; non serve un comando Salva separato per ogni regolazione.",
+            "Passare da una foto all'altra mette in coda anche le regolazioni correnti dei cursori per il salvataggio. Attendi Salvato prima di chiudere la finestra; se un salvataggio non riesce, lascia aperta la finestra e usa Riprova salvataggio."
           ],
           "steps": [
             "Apporta la tua regolazione, quindi controlla lo stato di salvataggio nell'app.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Controlla l'ambito e il risultato",
           "paragraphs": [
+            "Foto selezionate usa le foto selezionate ancora mostrate dalla cartella, collezione e dai filtri correnti. Se nessuna parte della selezione rimane visibile, usa la foto attiva. Controlla il numero di foto e il nome in Esporta prima di avviare.",
             "Solo selezionati, Classificate 1+ e Tutti eccetto rifiutati selezionano le foto fisse corrispondenti dal catalogo attivo e possono includere foto al di fuori della raccolta o del filtro visualizzati. Foto selezionate offre un controllo esplicito sull’insieme.",
             "Se un lotto scrive in più cartelle, Mostra nel Finder mostra la prima foto esportata correttamente. Il collegamento è assente quando non è stata esportata alcuna foto. Usa Annulla esportazione per richiedere l’interruzione. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre a avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta correttamente. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in fase di rendering, quella foto non riesce con un errore; inseriscila di nuovo in coda dopo aver verificato l’originale."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

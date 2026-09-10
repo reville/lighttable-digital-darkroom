@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Zieht man die beiden Punkte aufeinander, hat der Verlauf keine Richtung mehr und wählt nichts aus, bis Sie sie wieder trennen. Ein sehr kurzer Verlauf ist eine gültige harte Kante und wirkt in der Vorschau genauso wie in der exportierten Datei.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Eine Auswahl wird aus dem Foto erstellt, auf dem sie begonnen wurde. Ein Wechsel zu einem anderen Foto bricht sie ab, bleiben Sie also bei dem Foto, bis die Maske erscheint. Lässt sich die Auswahl nicht abschließen, meldet das Maskenfeld dies und es wird nichts hinzugefügt.",
     "Previews are already being built; finish or cancel that first": "Vorschauen werden bereits erstellt; beenden oder brechen Sie das zuerst ab",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Bewegen Sie auf dem Mac den Zeiger in Details über den Bereich des Fotos, den Sie untersuchen möchten. Ziehen Sie dann zwei Finger auf dem Trackpad zusammen oder auseinander, um um den Zeiger herum zu zoomen.",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "Einfügen wird auf ausgewählte Fotos angewendet, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird es auf das aktive Foto angewendet. Überprüfen Sie vor dem Einfügen Ihre Zielauswahl.",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "Ausgewählte Fotos verwendet ausgewählte Fotos, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird das aktive Foto verwendet. Überprüfen Sie vor dem Start in Export die Fotoanzahl und den Namen.",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "Beim Wechseln von Fotos werden auch die aktuellen Schieberegler-Anpassungen zum Speichern in die Warteschlange gestellt. Warten Sie vor dem Schließen des Fensters auf Gespeichert; wenn das Speichern fehlschlägt, lassen Sie das Fenster geöffnet und verwenden Sie Speichern erneut versuchen."
   },
   "plurals": {
     " · {count} paired file linked": {

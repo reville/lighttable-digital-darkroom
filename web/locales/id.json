@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Menyeret kedua titik hingga bertemu membuat gradien tidak memiliki arah, sehingga tidak memilih apa pun sampai Anda memisahkannya lagi. Gradien yang sangat pendek adalah tepi keras yang sah dan diterapkan sama di pratinjau maupun di berkas hasil ekspor.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Pemilihan diambil dari foto tempat pemilihan itu dimulai. Berpindah ke foto lain sebelum selesai akan membatalkannya, jadi tetaplah pada foto tersebut sampai masker muncul. Jika pemilihan tidak dapat diselesaikan, panel masker melaporkannya dan tidak ada yang ditambahkan.",
     "Previews are already being built; finish or cancel that first": "Pratinjau sedang dibuat; selesaikan atau batalkan dulu",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Tindakan massal hanya menjangkau foto terpilih yang masih ditampilkan oleh filter, folder, dan pencarian saat ini. Mengubah filter karena itu mempersempit apa yang disentuh tindakan berikutnya, dan bilah penandaan menghitung apa yang akan dijangkaunya."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Tindakan massal hanya menjangkau foto terpilih yang masih ditampilkan oleh filter, folder, dan pencarian saat ini. Mengubah filter karena itu mempersempit apa yang disentuh tindakan berikutnya, dan bilah penandaan menghitung apa yang akan dijangkaunya.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Di Mac, cubit pada trackpad di atas foto di Detail untuk zoom di sekitar penunjuk. Pindahkan penunjuk ke area yang ingin Anda periksa sebelum mencubit.",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "Tempel diterapkan ke foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka diterapkan ke foto aktif. Periksa pilihan tujuan Anda sebelum menempel.",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "Foto terpilih menggunakan foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka menggunakan foto aktif. Periksa jumlah foto dan nama di Ekspor sebelum mulai.",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "Beralih foto juga menambahkan penyesuaian penggeser saat ini ke antrean untuk disimpan. Tunggu hingga Disimpan sebelum menutup jendela; jika penyimpanan gagal, biarkan jendela tetap terbuka dan gunakan Coba simpan lagi."
   },
   "plurals": {
     " · {count} paired file linked": {

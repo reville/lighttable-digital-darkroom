@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "두 점을 서로 겹치게 끌면 그레이디언트에 방향이 없어져 다시 떨어뜨릴 때까지 아무것도 선택하지 않습니다. 아주 짧은 그레이디언트는 유효한 단단한 경계이며 미리보기와 내보낸 파일에 동일하게 적용됩니다.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "선택 영역은 시작한 사진에서 잘라냅니다. 완료되기 전에 다른 사진으로 이동하면 취소되므로 마스크가 나타날 때까지 해당 사진에 머무르십시오. 선택을 완료할 수 없으면 마스크 패널이 이를 알리고 아무것도 추가되지 않습니다.",
     "Previews are already being built; finish or cancel that first": "미리보기를 이미 만들고 있습니다. 먼저 완료하거나 취소하십시오",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "일괄 작업은 현재 필터, 폴더, 검색이 여전히 표시하는 선택된 사진에만 적용됩니다. 따라서 필터를 바꾸면 다음 작업의 범위가 좁아지며, 표시 도구 막대는 실제로 적용될 수를 보여 줍니다."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "일괄 작업은 현재 필터, 폴더, 검색이 여전히 표시하는 선택된 사진에만 적용됩니다. 따라서 필터를 바꾸면 다음 작업의 범위가 좁아지며, 표시 도구 막대는 실제로 적용될 수를 보여 줍니다.",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "Mac에서는 디테일에서 사진 위의 트랙패드를 핀치하여 포인터 주변을 확대할 수 있습니다. 핀치하기 전에 검사할 영역 위로 포인터를 이동하세요.",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "붙여넣기는 현재 폴더, 컬렉션, 필터에서 계속 표시되는 선택된 사진에 적용됩니다. 선택 항목이 화면에 남아 있는 것이 없으면 활성 사진에 적용됩니다. 붙여넣기 전에 대상 선택을 확인하세요.",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "선택된 사진은 현재 폴더, 컬렉션, 필터에서 계속 표시되는 선택된 사진을 사용합니다. 선택 항목이 화면에 남아 있는 것이 없으면 활성 사진을 사용합니다. 시작하기 전에 내보내기에서 사진 수와 이름을 확인하세요.",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "사진을 전환하면 현재 슬라이더 조정도 저장 대기열에 추가됩니다. 창을 닫기 전에 저장됨을 기다리세요. 저장에 실패하면 창을 열어 둔 상태에서 저장 다시 시도를 사용하세요."
   },
   "plurals": {
     " · {count} paired file linked": {

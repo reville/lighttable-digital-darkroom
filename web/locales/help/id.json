@@ -235,7 +235,8 @@
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
             "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
             "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
-            "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah."
+            "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah.",
+            "Di Mac, cubit pada trackpad di atas foto di Detail untuk zoom di sekitar penunjuk. Pindahkan penunjuk ke area yang ingin Anda periksa sebelum mencubit."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -1426,7 +1427,8 @@
           "title": "Transfer pengaturan terpilih",
           "paragraphs": [
             "Salin dan Tempel berada di bawah foto dalam tampilan Detail.",
-            "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan."
+            "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan.",
+            "Tempel diterapkan ke foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka diterapkan ke foto aktif. Periksa pilihan tujuan Anda sebelum menempel."
           ],
           "steps": [
             "Buka foto sumber dan klik Salin pengaturan edit, atau tekan Command-Shift-C di Mac atau Ctrl-Shift-C di Linux dan Windows.",
@@ -1847,7 +1849,8 @@
         {
           "title": "Periksa apakah pekerjaan Anda sudah disimpan",
           "paragraphs": [
-            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian."
+            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian.",
+            "Beralih foto juga menambahkan penyesuaian penggeser saat ini ke antrean untuk disimpan. Tunggu hingga Disimpan sebelum menutup jendela; jika penyimpanan gagal, biarkan jendela tetap terbuka dan gunakan Coba simpan lagi."
           ],
           "steps": [
             "Lakukan penyesuaian Anda, lalu periksa status simpan di aplikasi.",
@@ -2618,6 +2621,7 @@
         {
           "title": "Periksa scope dan hasil",
           "paragraphs": [
+            "Foto terpilih menggunakan foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka menggunakan foto aktif. Periksa jumlah foto dan nama di Ekspor sebelum mulai.",
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
             "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
           ]
@@ -3208,5 +3212,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190"
 }

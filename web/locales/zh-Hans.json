@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "547df22d99a0d6c25b294cef6c4a15a42e2024b81dd556bfbdc6f9df7a85d190",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "把两个圆点拖到一起会让渐变失去方向，因此在你再次分开它们之前不会选中任何内容。非常短的渐变是有效的硬边缘，在预览和导出文件中的效果相同。",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "选择是从开始时所在的照片上截取的。在完成之前切换到另一张照片会取消它，因此请停留在该照片上直到蒙版出现。如果选择无法完成，蒙版面板会予以说明，并且不会添加任何内容。",
     "Previews are already being built; finish or cancel that first": "预览已在生成中，请先完成或取消",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "批量操作只会作用于当前筛选、文件夹和搜索仍然显示的已选照片。因此更改筛选会缩小下一次操作的范围，标记栏统计的正是它将作用到的数量。"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "批量操作只会作用于当前筛选、文件夹和搜索仍然显示的已选照片。因此更改筛选会缩小下一次操作的范围，标记栏统计的正是它将作用到的数量。",
+    "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching.": "在 Mac 上，在“细节”中将手指在照片上方的触控板上捏合，即可围绕指针进行缩放。在捏合之前，请先将指针移到要检查的区域上方。",
+    "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting.": "“粘贴”会应用到当前文件夹、集合和筛选器仍显示的已选择照片。如果视图中已没有任何已选择照片，则会应用到当前激活照片。粘贴前请检查所选的目标照片。",
+    "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.": "“已选择照片”会使用当前文件夹、集合和筛选器仍显示的已选择照片。如果视图中已没有任何已选择照片，则会使用当前激活照片。开始前请在“导出”中检查照片数量和名称。",
+    "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save.": "切换照片时，也会将当前滑块调整排入保存队列。关闭窗口前请等待“已保存”；如果保存失败，请保持窗口打开并使用“重试保存”。"
   },
   "plurals": {
     " · {count} paired file linked": {
