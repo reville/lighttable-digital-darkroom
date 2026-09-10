@@ -1,0 +1,384 @@
+{
+  "schema": 1,
+  "capture": {
+    "count": 10,
+    "platform": "macOS",
+    "width": 3320,
+    "viewportWidth": 1660,
+    "viewportHeight": 1000,
+    "deviceScaleFactor": 2,
+    "previewWidth": 3000,
+    "responsiveWidths": [
+      750,
+      1500,
+      3000
+    ],
+    "settleSeconds": 1.25
+  },
+  "shots": [
+    {
+      "id": "film-controls",
+      "asset": "film-controls.webp",
+      "source": "pexels-auspiciousajay-19848350.jpg",
+      "subject": "lantern-lit restaurant alley",
+      "title": "Film workspace",
+      "caption": "Stock response, film format, output, and print exposure",
+      "alt": "LightTable Film workspace showing a lantern-lit restaurant alley",
+      "pane": "film",
+      "patch": {
+        "params": {
+          "profile_enabled": true,
+          "stock": "kodak_portra_400",
+          "paper": "kodak_portra_endura",
+          "film_format": "35mm",
+          "output_recipe": "neutral_print_scan",
+          "print_exposure": 1.08
+        },
+        "grade": {
+          "exposure": 0.08,
+          "contrast": 0.08
+        }
+      }
+    },
+    {
+      "id": "editor",
+      "asset": "editor.webp",
+      "source": "pexels-harry-cooke-6805929.jpg",
+      "subject": "green fields beneath a pastel sky",
+      "title": "Editing workspace",
+      "caption": "Fast, local, non-destructive light and color controls",
+      "alt": "LightTable Editing workspace showing a green fields beneath a pastel sky",
+      "pane": "edit",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "grade": {
+          "exposure": 0.08,
+          "contrast": 0.14,
+          "highlights": -0.22,
+          "shadows": 0.18,
+          "temp": 0.05,
+          "vibrance": 0.12
+        }
+      }
+    },
+    {
+      "id": "crop-and-rotate",
+      "asset": "crop-and-rotate.webp",
+      "source": "pexels-travel-with-lenses-734723610-30596980.jpg",
+      "subject": "Eiffel Tower and Paris skyline",
+      "title": "Crop & rotate",
+      "caption": "On-image crop handles, aspect ratios, rotation, and reversible framing",
+      "alt": "LightTable Crop & rotate showing a Eiffel Tower and Paris skyline",
+      "pane": "crop",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "crop": {
+          "x": 0.08,
+          "y": 0.06,
+          "w": 0.78,
+          "h": 0.86
+        }
+      },
+      "expect": {
+        "activeTool": "crop"
+      }
+    },
+    {
+      "id": "local-masks",
+      "asset": "local-masks.webp",
+      "source": "pexels-reuben-hayfron-771751751-18868387.jpg",
+      "subject": "elephant surrounded by green foliage",
+      "title": "Local masks",
+      "caption": "Geometric, brush, subject, sky, object, depth, and people-aware selections",
+      "alt": "LightTable Local masks showing a elephant surrounded by green foliage",
+      "pane": "mask",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "masks": [
+          {
+            "id": "gallery-radial",
+            "name": "Elephant",
+            "type": "radial",
+            "center": [
+              0.49,
+              0.52
+            ],
+            "radius": 0.32,
+            "feather": 0.62,
+            "grade": {
+              "exposure": 0.35,
+              "texture": 0.2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "remove",
+      "asset": "remove.webp",
+      "source": "pexels-alessandro-kelvin-1248577-2376272.jpg",
+      "subject": "sunlit rolling hills",
+      "title": "Remove distractions",
+      "caption": "Remove, heal, and clone corrections stay editable on the photograph",
+      "alt": "LightTable Remove distractions showing a sunlit rolling hills",
+      "pane": "heal",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "heals": [
+          {
+            "id": "gallery-heal",
+            "mode": "heal",
+            "target": [
+              0.73,
+              0.59
+            ],
+            "source": [
+              0.65,
+              0.56
+            ],
+            "radius": 0.025,
+            "feather": 0.7,
+            "opacity": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "lens-and-geometry",
+      "fitGeometry": true,
+      "asset": "lens-and-geometry.webp",
+      "source": "pexels-cristian-ortega-1063310314-39026284.jpg",
+      "subject": "layered cliffs and open countryside",
+      "title": "Lens corrections",
+      "caption": "Lens profiles, distortion, shading, and chromatic aberration controls",
+      "alt": "LightTable Lens corrections showing a layered cliffs and open countryside",
+      "pane": "lens",
+      "expect": {
+        "pane": "edit"
+      },
+      "focusSection": "lensPane",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "optics": {
+          "distortion": 0.08,
+          "vignette": 0.12,
+          "vertical": -0.06,
+          "rotate": 0.35
+        }
+      }
+    },
+    {
+      "id": "before-after",
+      "asset": "before-after.webp",
+      "source": "pexels-magda-ehlers-pexels-9775521.jpg",
+      "subject": "backlit antelope portrait",
+      "title": "Original vs. edited",
+      "caption": "A draggable split compares the source with the complete edit",
+      "alt": "LightTable Original vs. edited showing a backlit antelope portrait",
+      "pane": "edit",
+      "commands": [
+        "compare"
+      ],
+      "patch": {
+        "params": {
+          "profile_enabled": true,
+          "stock": "kodak_ektar_100",
+          "paper": "kodak_portra_endura"
+        },
+        "grade": {
+          "exposure": 0.08,
+          "contrast": 0.18,
+          "vibrance": 0.16
+        }
+      },
+      "expect": {
+        "compare": true
+      }
+    },
+    {
+      "id": "photo-info",
+      "asset": "photo-info.webp",
+      "source": "pexels-weavehall-collective-746895245-18888497.jpg",
+      "subject": "painter in a colorful studio",
+      "title": "Photo info & keywords",
+      "caption": "Ratings, flags, keywords, EXIF, and render provenance in one place",
+      "alt": "LightTable Photo info & keywords showing a painter in a colorful studio",
+      "pane": "info",
+      "patch": {
+        "params": {
+          "profile_enabled": false
+        },
+        "status": "approved",
+        "rating": 5,
+        "label": "green",
+        "keywords": [
+          "portrait",
+          "artist",
+          "studio"
+        ]
+      }
+    },
+    {
+      "id": "history",
+      "asset": "history.webp",
+      "source": "pexels-roman-odintsov-10158002.jpg",
+      "subject": "smiling portrait",
+      "title": "Non-destructive history",
+      "caption": "Every adjustment is recorded with the photograph and remains reversible",
+      "alt": "LightTable Non-destructive history showing a smiling portrait",
+      "pane": "history",
+      "historySteps": [
+        {
+          "label": "Lift exposure",
+          "patch": {
+            "params": {
+              "profile_enabled": false
+            },
+            "grade": {
+              "exposure": 0.18
+            }
+          }
+        },
+        {
+          "label": "Open shadows",
+          "patch": {
+            "grade": {
+              "shadows": 0.24
+            }
+          }
+        },
+        {
+          "label": "Add clarity",
+          "patch": {
+            "grade": {
+              "clarity": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "export-workflow",
+      "asset": "export-workflow.webp",
+      "source": "pexels-ekrulila-20488730.jpg",
+      "subject": "warmly lit meal at a table",
+      "title": "Full-resolution export",
+      "caption": "Reusable recipes, color spaces, sizing, file naming, and collision handling",
+      "alt": "LightTable Full-resolution export showing a warmly lit meal at a table",
+      "pane": "edit",
+      "dialog": "export",
+      "patch": {
+        "params": {
+          "profile_enabled": true,
+          "stock": "kodak_portra_400",
+          "paper": "kodak_portra_endura"
+        },
+        "grade": {
+          "exposure": 0.08,
+          "shadows": 0.3
+        }
+      }
+    }
+  ],
+  "homepage": {
+    "hero": {
+      "id": "hero-film",
+      "sourceShot": "film-controls",
+      "asset": "hero-film.webp",
+      "crop": [
+        0,
+        0,
+        830,
+        1000
+      ],
+      "responsiveWidths": [
+        750,
+        1500
+      ],
+      "alt": "The left half of LightTable\u2019s Film workspace, with the library sidebar beside a colorful lantern-lit alley photograph"
+    },
+    "details": [
+      {
+        "id": "detail-film",
+        "sourceShot": "film-controls",
+        "asset": "detail-film.webp",
+        "crop": [
+          1288,
+          112,
+          316,
+          418
+        ],
+        "label": "Ultra realistic film simulation",
+        "alt": "Closeup of Film controls for Kodak Portra 400 stock, 35 mm format, output, camera exposure, and print exposure"
+      },
+      {
+        "id": "detail-masks",
+        "sourceShot": "local-masks",
+        "asset": "detail-masks.webp",
+        "crop": [
+          1288,
+          152,
+          316,
+          548
+        ],
+        "label": "Local masking",
+        "alt": "Closeup of a radial mask\u2019s selection, overlay, exposure, and texture controls"
+      },
+      {
+        "id": "detail-export",
+        "sourceShot": "export-workflow",
+        "asset": "detail-export.webp",
+        "crop": [
+          554,
+          139,
+          552,
+          722
+        ],
+        "label": "Export",
+        "alt": "Closeup of the Export dialog with presets, file type, dimensions, color space, quality, destination, and filename preview"
+      },
+      {
+        "id": "detail-editor",
+        "sourceShot": "editor",
+        "asset": "detail-editor.webp",
+        "crop": [
+          1288,
+          112,
+          316,
+          498
+        ],
+        "label": "Light and color editing",
+        "alt": "Closeup of the histogram, exposure, contrast, highlights, shadows, and color editing controls"
+      },
+      {
+        "id": "detail-photo-info",
+        "sourceShot": "photo-info",
+        "asset": "detail-photo-info.webp",
+        "crop": [
+          1288,
+          112,
+          316,
+          362
+        ],
+        "label": "Ratings and keywords",
+        "alt": "Closeup of star ratings, pick and reject flags, color labels, and photo keywords"
+      }
+    ]
+  },
+  "sourceCollection": {
+    "name": "Pexels screenshot collection",
+    "license": "https://www.pexels.com/license/",
+    "root": "scripts/screenshots/photos/pexels",
+    "manifest": "scripts/screenshots/photos/manifest.tsv"
+  }
+}
