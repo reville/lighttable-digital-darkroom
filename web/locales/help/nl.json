@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Een foto kopiëren",
+          "paragraphs": [
+            "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen."
+          ]
+        },
+        {
           "title": "Geselecteerde instellingen overbrengen",
           "paragraphs": [
             "Kopiëren en Plakken staan onder de foto in de detailweergave.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

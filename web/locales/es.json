@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada.",
     "Previews are already being built; finish or cancel that first": "Ya se están creando previsualizaciones; termina o cancela esa tarea primero",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Una acción por lotes alcanza solo las fotos seleccionadas que el filtro, la carpeta y la búsqueda actuales siguen mostrando. Cambiar un filtro reduce por tanto lo que tocará la siguiente acción, y la barra de marcado cuenta lo que alcanzaría.",
+    "Photo copied to clipboard": "Foto copiada al portapapeles",
+    "Could not copy photo to clipboard": "No se pudo copiar la foto al portapapeles",
+    "Copy a photo": "Copiar una foto",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copia la vista previa de la foto editada (hasta 2048 píxeles de ancho) para pegarla en otras apps. Los campos de texto conservan la copia normal; Command-Shift-C copia los ajustes de edición."
   },
   "plurals": {
     " · {count} paired file linked": {

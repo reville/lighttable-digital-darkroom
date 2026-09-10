@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "复制照片",
+          "paragraphs": [
+            "Command-C 可复制编辑后的照片预览（宽度最高 2048 像素），以便粘贴到其他应用中。文本框保留正常的复制操作；Command-Shift-C 用于复制编辑设置。"
+          ]
+        },
+        {
           "title": "传输已选择的设置",
           "paragraphs": [
             "在详细视图中，复制和粘贴位于照片下方。",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "사진 복사",
+          "paragraphs": [
+            "Command-C는 편집된 사진의 미리보기(최대 너비 2048픽셀)를 복사하여 다른 앱에 붙여넣을 수 있게 합니다. 텍스트 필드에서는 일반 복사가 유지되며, Command-Shift-C는 편집 설정을 복사합니다."
+          ]
+        },
+        {
           "title": "선택한 설정 전달",
           "paragraphs": [
             "상세 보기에서는 사진 아래에 복사와 붙여넣기가 있습니다.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "ko",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

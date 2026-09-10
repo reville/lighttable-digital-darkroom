@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "2つの点を重ねるとグラデーションの方向がなくなり、離すまで何も選択されません。ごく短いグラデーションは有効なハードエッジで、プレビューと書き出したファイルで同じように適用されます。",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選択は開始した写真から切り出されます。完了前に別の写真へ移動すると取り消されるので、マスクが現れるまでその写真にとどまってください。選択を完了できない場合は、マスクパネルがそれを知らせ、何も追加されません。",
     "Previews are already being built; finish or cancel that first": "プレビューはすでに作成中です。先に完了するかキャンセルしてください",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "一括操作は、現在のフィルター、フォルダ、検索がまだ表示している選択中の写真にのみ及びます。フィルターを変えると次の操作が及ぶ範囲は狭まり、マーキングバーは実際に及ぶ枚数を表示します。"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "一括操作は、現在のフィルター、フォルダ、検索がまだ表示している選択中の写真にのみ及びます。フィルターを変えると次の操作が及ぶ範囲は狭まり、マーキングバーは実際に及ぶ枚数を表示します。",
+    "Photo copied to clipboard": "写真をクリップボードにコピーしました",
+    "Could not copy photo to clipboard": "写真をクリップボードにコピーできませんでした",
+    "Copy a photo": "写真をコピー",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-Cで編集済み写真のプレビュー（幅最大2048ピクセル）をコピーし、他のアプリに貼り付けられます。テキスト欄では通常のコピーが維持され、Command-Shift-Cで編集設定をコピーします。"
   },
   "plurals": {
     " · {count} paired file linked": {

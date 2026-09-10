@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Trascinando i due punti l’uno sull’altro il gradiente resta senza direzione e non seleziona nulla finché non li separi di nuovo. Un gradiente molto corto è un bordo netto valido e si applica allo stesso modo nell’anteprima e nel file esportato.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Una selezione viene ritagliata dalla foto su cui è stata avviata. Passare a un’altra foto prima che finisca la annulla, quindi resta sulla foto finché non compare la maschera. Se la selezione non può essere completata, il pannello della maschera lo segnala e non viene aggiunto nulla.",
     "Previews are already being built; finish or cancel that first": "Le anteprime sono già in creazione; termina o annulla prima quell’operazione",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Un’azione in blocco raggiunge solo le foto selezionate che il filtro, la cartella e la ricerca attuali mostrano ancora. Cambiare un filtro restringe quindi ciò che l’azione successiva tocca, e la barra di contrassegno conta ciò che raggiungerebbe."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Un’azione in blocco raggiunge solo le foto selezionate che il filtro, la cartella e la ricerca attuali mostrano ancora. Cambiare un filtro restringe quindi ciò che l’azione successiva tocca, e la barra di contrassegno conta ciò che raggiungerebbe.",
+    "Photo copied to clipboard": "Foto copiata negli appunti",
+    "Could not copy photo to clipboard": "Impossibile copiare la foto negli appunti",
+    "Copy a photo": "Copiare una foto",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica."
   },
   "plurals": {
     " · {count} paired file linked": {

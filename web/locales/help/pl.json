@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Kopiowanie zdjęcia",
+          "paragraphs": [
+            "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
+          ]
+        },
+        {
           "title": "Przenieś wybrane ustawienia",
           "paragraphs": [
             "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

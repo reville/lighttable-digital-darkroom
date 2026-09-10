@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "把兩個圓點拖到一起會讓漸層失去方向，因此在你再次分開它們之前不會選取任何內容。非常短的漸層是有效的硬邊緣，在預覽和匯出檔案中的效果相同。",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "選取是從開始時所在的照片上擷取的。在完成之前切換到另一張照片會取消它，因此請停留在該照片上直到遮罩出現。如果選取無法完成，遮罩面板會加以說明，並且不會加入任何內容。",
     "Previews are already being built; finish or cancel that first": "預覽已在產生中，請先完成或取消",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "批次操作只會作用於目前篩選、資料夾和搜尋仍然顯示的已選照片。因此變更篩選會縮小下一次操作的範圍，標記列統計的正是它將作用到的數量。"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "批次操作只會作用於目前篩選、資料夾和搜尋仍然顯示的已選照片。因此變更篩選會縮小下一次操作的範圍，標記列統計的正是它將作用到的數量。",
+    "Photo copied to clipboard": "照片已複製到剪貼簿",
+    "Could not copy photo to clipboard": "無法將照片複製到剪貼簿",
+    "Copy a photo": "複製照片",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C 可複製編輯後的照片預覽（寬度最高 2048 像素），以便貼到其他應用程式中。文字欄位保留正常的複製操作；Command-Shift-C 用於複製編輯設定。"
   },
   "plurals": {
     " · {count} paired file linked": {

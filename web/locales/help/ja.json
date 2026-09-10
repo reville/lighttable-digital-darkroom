@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "写真をコピー",
+          "paragraphs": [
+            "Command-Cで編集済み写真のプレビュー（幅最大2048ピクセル）をコピーし、他のアプリに貼り付けられます。テキスト欄では通常のコピーが維持され、Command-Shift-Cで編集設定をコピーします。"
+          ]
+        },
+        {
           "title": "選択した設定を転送",
           "paragraphs": [
             "詳細表示では、写真の下にコピーと貼り付けがあります。",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "ja",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

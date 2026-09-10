@@ -780,6 +780,10 @@
     "keywords": ["copy settings", "paste settings", "batch edit", "sync", "auto sync", "synchronize", "multiple photos", "match total exposure", "selection", "clipboard"],
     "sections": [
       {
+        "title": "Copy a photo",
+        "paragraphs": ["Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."]
+      },
+      {
         "title": "Transfer selected settings",
         "paragraphs": ["Copy and Paste are below the photo in Detail view.", "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."],
         "steps": ["Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Linux and Windows.", "Check the groups you want to transfer, then click Copy settings.", "Select the destination photo or photos in the library and click Paste edit settings, or use Command-Shift-V / Ctrl-Shift-V.", "Read the completion message. For a batch, Stop ends processing after the current photo; completed photos retain the pasted edits."],
@@ -801,6 +805,7 @@
     "sources": [
       {"path": "web/index.html", "anchor": "detail-transfer-actions"},
       {"path": "web/edit-transfer.js", "anchor": "Edit transfer plans preserve every unselected destination setting."},
+      {"path": "web/photo-clipboard.js", "anchor": "export function createPhotoClipboard"},
       {"path": "web/edit-transfer.js", "anchor": "const defaults = ['film', 'raw', 'tone', 'color', 'detail', 'optics'];"},
       {"path": "web/edit-transfer.js", "anchor": "Copy spot positions; use only with matching framing"},
       {"path": "web/edit-transfer.js", "anchor": "needs a new object selection. Exclude masks to paste other edits."},

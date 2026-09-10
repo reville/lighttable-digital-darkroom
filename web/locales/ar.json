@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "سحب النقطتين إحداهما فوق الأخرى يترك التدرج بلا اتجاه، فلا يحدد شيئًا حتى تفصل بينهما مرة أخرى. والتدرج القصير جدًا حافة حادة صحيحة ويُطبَّق بالطريقة نفسها في المعاينة وفي الملف المصدَّر.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "يُقتطع التحديد من الصورة التي بدأ عليها. والانتقال إلى صورة أخرى قبل انتهائه يلغيه، لذا ابقَ على الصورة حتى يظهر القناع. وإذا تعذّر إكمال التحديد، تُبلغ لوحة القناع بذلك ولا يُضاف شيء.",
     "Previews are already being built; finish or cancel that first": "تجري بالفعل عملية إنشاء المعاينات؛ أنهِها أو ألغِها أولاً",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "لا يطال الإجراء الجماعي إلا الصور المحددة التي ما زال المرشح والمجلد والبحث الحالي يعرضها. لذا فإن تغيير المرشح يضيّق ما سيطاله الإجراء التالي، ويعرض شريط التمييز عدد ما سيطاله."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "لا يطال الإجراء الجماعي إلا الصور المحددة التي ما زال المرشح والمجلد والبحث الحالي يعرضها. لذا فإن تغيير المرشح يضيّق ما سيطاله الإجراء التالي، ويعرض شريط التمييز عدد ما سيطاله.",
+    "Photo copied to clipboard": "تم نسخ الصورة إلى الحافظة",
+    "Could not copy photo to clipboard": "تعذر نسخ الصورة إلى الحافظة",
+    "Copy a photo": "نسخ صورة",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "ينسخ Command-C معاينة الصورة المعدّلة (بعرض يصل إلى 2048 بكسل) للصقها في تطبيقات أخرى. تحتفظ الحقول النصية بالنسخ المعتاد؛ وينسخ Command-Shift-C إعدادات التحرير."
   },
   "plurals": {
     " · {count} paired file linked": {

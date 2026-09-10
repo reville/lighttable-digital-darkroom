@@ -11,6 +11,7 @@ import { createFilmBrowser, filmParamsForStock, filmChoiceValue, filmSelectionFo
 import { GradeRenderer, GRADE_DEFAULTS, HSL_BANDS } from '/web/gl.js';
 import { api } from '/web/api.js';
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
+import { createPhotoClipboard } from '/web/photo-clipboard.js';
 import { createCloseBarrier } from '/web/close-barrier.js';
 import { installDesktopUpdates } from '/web/desktop-updates.js';
 import { createEditRecovery, recoveryPayloadMatches, recoveryAcknowledged } from '/web/edit-recovery.js';
@@ -231,6 +232,18 @@ function menuTextEditing() {
     ['INPUT', 'TEXTAREA'].includes(active.tagName));
 }
 
+const PHOTO_CLIPBOARD = createPhotoClipboard({
+  getPayload() {
+    const image = cur();
+    if (menuTextEditing() || document.querySelector('.modal-backdrop.on') ||
+        !image || isVideo(image) || !S.params || S.editingName !== image.name) return null;
+    readControls();
+    return { name: image.name, engine: $('engine').value, state: JSON.parse(snapshot()) };
+  },
+  nativeBridge: () => window.webkit?.messageHandlers?.lightTable,
+  notify: message => toast(message),
+});
+
 function isLibraryVisible() {
   return window.innerWidth <= 800
     ? $('appShell').classList.contains('left-expanded')
@@ -249,6 +262,8 @@ function nativeMenuState() {
     hasImages: S.images.length > 0,
     hasPhoto: !!image,
     editablePhoto: !!image && !isVideo(image),
+    canCopyPhoto: !!image && !isVideo(image) && !!S.params && S.editingName === image.name &&
+      !document.querySelector('.modal-backdrop.on'),
     selectedCount: targets.length,
     hasMultiSelection: S.msel.size > 0,
     currentVirtual: !!image?.virtual,
@@ -398,6 +413,7 @@ function performNativeMenuCommand(command) {
       case 'editExternal': $('editExternalOpen').click(); break;
       case 'deleteRejected': result = trashRejected(); break;
       case 'copySettings': $('copyBtn').click(); break;
+      case 'copyPhoto': result = PHOTO_CLIPBOARD.copy(); break;
       case 'pasteSettings': $('pasteBtn').click(); break;
       case 'pasteAllVisible': $('pasteAllBtn').click(); break;
       case 'matchExposure': $('matchExposureBtn').click(); break;
@@ -437,6 +453,7 @@ function performNativeMenuCommand(command) {
 }
 
 window.lightTableNativeEvent = (event) => {
+  if (event?.type === 'photoClipboardReply') { PHOTO_CLIPBOARD.complete(event); return; }
   if (event?.type === 'closeCancelled') { window.lightTableCancelClose?.(); return; }
   if (event?.type === 'editJournalReply') {
     window.dispatchEvent(new CustomEvent('lighttable-edit-journal', {detail: event}));
@@ -9636,6 +9653,7 @@ document.addEventListener('keydown', (e) => {
     return;
   }
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  if (e.target.isContentEditable) return;
   const meta = e.metaKey || e.ctrlKey;
   if (meta && e.key.toLowerCase() === 'a') {
     e.preventDefault(); void setAllPhotoSelection(!e.shiftKey); return;
@@ -9646,6 +9664,9 @@ document.addEventListener('keydown', (e) => {
   }
   if (meta && e.shiftKey && e.key.toLowerCase() === 'c') {
     e.preventDefault(); $('copyBtn').click(); return;
+  }
+  if (meta && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'c') {
+    e.preventDefault(); void PHOTO_CLIPBOARD.copy(); return;
   }
   if (meta && e.shiftKey && e.key.toLowerCase() === 'v') {
     e.preventDefault(); $('pasteBtn').click(); return;

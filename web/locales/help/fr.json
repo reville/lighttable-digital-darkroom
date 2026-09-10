@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Copier une photo",
+          "paragraphs": [
+            "Command-C copie l’aperçu de la photo retouchée (jusqu’à 2048 pixels de large) pour le coller dans d’autres apps. Les champs de texte conservent la copie habituelle ; Command-Shift-C copie les réglages de retouche."
+          ]
+        },
+        {
           "title": "Transférer les réglages sélectionnés",
           "paragraphs": [
             "Copier et Coller se trouvent sous la photo dans la vue Détail.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

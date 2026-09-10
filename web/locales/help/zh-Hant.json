@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "複製照片",
+          "paragraphs": [
+            "Command-C 可複製編輯後的照片預覽（寬度最高 2048 像素），以便貼到其他應用程式中。文字欄位保留正常的複製操作；Command-Shift-C 用於複製編輯設定。"
+          ]
+        },
+        {
           "title": "傳送已選取的設定",
           "paragraphs": [
             "在詳細檢視中，拷貝與貼上位於照片下方。",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }
