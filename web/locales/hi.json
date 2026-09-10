@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1709,7 +1709,6 @@
     "Look · keep photo corrections": "लुक · फ़ोटो सुधार सुरक्षित रखें",
     "Looking for duplicate files…": "प्रतिलिपि फ़ाइलें खोजी जा रही हैं…",
     "Looking for lines…": "रेखाएँ खोज रहे हैं…",
-    "Looks for your photographs": "आपकी फ़ोटोग्राफ़ खोजता है",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "लुक एक्सपोज़र, श्वेत संतुलन, क्रॉप, मास्क, Remove, कैमरा और लेंस सुधार बनाए रखते हैं।",
     "Loupe information overlay": "Loupe सूचना ओवरले",
     "Loupe view": "लूप दृश्य",

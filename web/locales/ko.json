@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1709,7 +1709,6 @@
     "Look · keep photo corrections": "룩 · 사진 보정 유지",
     "Looking for duplicate files…": "중복 파일을 찾는 중…",
     "Looking for lines…": "선을 찾는 중…",
-    "Looks for your photographs": "사진을 찾습니다",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "룩은 노출, 화이트 밸런스, 자르기, 마스크, 복구, 카메라 및 렌즈 보정을 유지합니다.",
     "Loupe information overlay": "Loupe 정보 오버레이",
     "Loupe view": "돋보기 보기",

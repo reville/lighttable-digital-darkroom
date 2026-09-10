@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1709,7 +1709,6 @@
     "Look · keep photo corrections": "Tampilan · pertahankan koreksi foto",
     "Looking for duplicate files…": "Mencari file duplikat…",
     "Looking for lines…": "Mencari garis…",
-    "Looks for your photographs": "Mencari foto Anda",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Tampilan mempertahankan eksposur, keseimbangan putih, pangkas, masker, Hapus, serta koreksi kamera dan lensa.",
     "Loupe information overlay": "Lapisan informasi Loupe",
     "Loupe view": "Tampilan Loupe",

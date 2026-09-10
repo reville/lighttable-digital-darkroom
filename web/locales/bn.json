@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8ab55437dc1381a7bcc87ac9b46df268dc4630baada384b650190dd29c75c34a",
+  "sourceDigest": "e9896fe0697df5f3ce1a67c670d4f1faf8265302172fd848696e717dc256b744",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1709,7 +1709,6 @@
     "Look · keep photo corrections": "লুক · ফটো সংশোধন ধরে রাখুন",
     "Looking for duplicate files…": "ডুপ্লিকেট ফাইল খোঁজা হচ্ছে…",
     "Looking for lines…": "লাইন খোঁজা হচ্ছে…",
-    "Looks for your photographs": "আপনার ফটোগ্রাফগুলো খোঁজে",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "লুকস এক্সপোজার, হোয়াইট ব্যালান্স, ক্রপ, মাস্ক, Remove, ক্যামেরা এবং লেন্স সংশোধন ধরে রাখে।",
     "Loupe information overlay": "লুপ তথ্য ওভারলে",
     "Loupe view": "লুপ ভিউ",
