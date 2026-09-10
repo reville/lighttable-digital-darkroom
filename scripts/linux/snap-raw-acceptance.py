@@ -149,6 +149,8 @@ def main():
 
                 def launch():
                     environment = a.isolated_environment(root)
+                    # Keep Python/native crash stacks in the retained server log.
+                    environment['PYTHONFAULTHANDLER'] = '1'
                     for key in ('XDG_DATA_DIRS', 'XDG_CONFIG_DIRS', 'XDG_CURRENT_DESKTOP', 'XDG_SESSION_TYPE'):
                         if key in os.environ:
                             environment[key] = os.environ[key]
