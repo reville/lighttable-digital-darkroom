@@ -2139,3 +2139,19 @@ body { display:flex; flex-direction:column; }
 .cull-similar-navigation { padding:12px; border-bottom:1px solid var(--line); }
 .cull-similar-navigation p { margin:0 0 8px; overflow-wrap:anywhere; }
 .cull-similar-navigation button { white-space:normal; }
+
+/* Manual update guidance modal */
+.manual-update-modal { width:min(480px, calc(100vw - 32px)); padding:22px; max-width:100%; box-sizing:border-box; }
+.manual-update-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; gap:8px; }
+.manual-update-header strong { margin:0; font-size:15px; font-weight:600; color:var(--ink); }
+.manual-update-version-badge { display:inline-block; font-size:11px; color:var(--muted); margin-top:2px; font-family:"Geist Mono", monospace; }
+.manual-update-close-x { font-size:18px; line-height:1; width:24px; height:24px; padding:0; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.manual-update-explanation { font-size:13px; line-height:1.5; color:var(--muted); margin:0 0 16px 0; }
+.manual-update-command-card { margin-bottom:16px; padding:10px 12px; border:1px solid var(--line-strong); border-radius:var(--radius-m); background:var(--surface); }
+.manual-update-command-label { display:block; font-size:10px; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em; }
+.manual-update-command-row { display:flex; align-items:center; gap:8px; justify-content:space-between; }
+.manual-update-command-code { font:12px/1.4 "Geist Mono", monospace; color:var(--ink); background:transparent; overflow-x:auto; white-space:nowrap; padding:2px 0; flex:1; min-width:0; }
+.manual-update-copy-btn { flex-shrink:0; font-size:11px; padding:3px 8px; cursor:pointer; }
+.manual-update-actions { display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:18px; }
+.manual-update-actions .button, .manual-update-actions button { font-size:12px; }
+
