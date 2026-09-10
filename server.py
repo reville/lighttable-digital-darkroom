@@ -9023,8 +9023,14 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
         return rows, visible_snapshot
 
     limit = max(1, min(20000, int(limit or LIBRARY_PAGE_LIMIT)))
+    # The catalog holds every source that has ever been opened, but the window
+    # only ever shows one of them: the folder tree, its counts, and the title
+    # all describe the open source. Querying the whole catalog here put photos
+    # from the other sources in the grid and made the header total disagree
+    # with the folder counts beside it.
     page = browser_catalog_query({
         "limit": limit, "sort": {"field": "capture", "dir": "desc"},
+        "scope": "source", "sourceId": PRIMARY_SOURCE_ID,
     })
     rows = []
     for item in page["items"]:

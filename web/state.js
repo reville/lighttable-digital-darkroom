@@ -23,7 +23,7 @@ export function createAppState(gradeDefaults, opticsDefaults) {
     activePane: 'editPane',
     healBrush: { radius: 0.04, feather: 0.65, opacity: 1 },
     rootFolder: '', folders: [], sources: [], activeFolder: '',
-    catalogEnabled: false, catalogTotal: 0,
+    catalogEnabled: false, catalogTotal: 0, primarySourceId: null,
     activeFolders: {}, favoriteFolders: [],
     includeSubfolders: false, folderMode: 'browse',
     library: { collections: [], stacks: [], virtualCopies: [] },
