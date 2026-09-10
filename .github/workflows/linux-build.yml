@@ -54,15 +54,14 @@ jobs:
       - name: Fetch the exact checksummed Pexels inputs
         run: |
           python3 - <<'PYCODE'
-          import csv, hashlib, pathlib, re, urllib.request
+          import csv, hashlib, pathlib, re, subprocess
           root = pathlib.Path('scripts/screenshots/photos/pexels')
           root.mkdir()
           with open('scripts/screenshots/photos/manifest.tsv') as stream:
               for item in csv.DictReader(stream, delimiter='\t'):
                   photo_id = re.search(r'(\d+)\.jpg$', item['filename'])[1]
                   url = f'https://images.pexels.com/photos/{photo_id}/pexels-photo-{photo_id}.jpeg'
-                  with urllib.request.urlopen(url, timeout=60) as response:
-                      data = response.read()
+                  data = subprocess.check_output(['curl', '--fail', '--location', '--retry', '3', '--max-time', '60', '--silent', '--show-error', url], timeout=240)
                   assert hashlib.sha256(data).hexdigest() == item['sha256'], item['filename']
                   (root / item['filename']).write_bytes(data)
           PYCODE
