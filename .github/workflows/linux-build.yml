@@ -70,6 +70,10 @@ jobs:
           echo 'eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01  /tmp/lighttable.tar.gz' | sha256sum --check
           mkdir /tmp/lighttable-capture-bundle
           tar -xzf /tmp/lighttable.tar.gz -C /tmp/lighttable-capture-bundle
+      - name: Check the packaged render worker
+        run: |
+          ldd /tmp/lighttable-capture-bundle/LightTable/Resources/LightTable/engine/lighttable-engine
+          printf '%s\n' '{"command":"probe_input","input_cache_key":"capture-preflight","id":1}' | SPEKTRAFILM_BACKEND=cpu /tmp/lighttable-capture-bundle/LightTable/Resources/LightTable/engine/lighttable-engine
       - name: Capture the actual GTK desktop in an isolated 2x display
         run: |
           timeout --signal=TERM --kill-after=20s 35m xvfb-run --auto-servernum --server-args='-screen 0 4000x2400x24 -dpi 96 -nolisten tcp' dbus-run-session -- bash -c '
