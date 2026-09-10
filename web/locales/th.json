@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "การลากจุดทั้งสองมาทับกันทำให้ไล่ระดับไม่มีทิศทาง จึงไม่เลือกสิ่งใดจนกว่าคุณจะแยกจุดออกจากกันอีกครั้ง ไล่ระดับที่สั้นมากถือเป็นขอบคมที่ใช้ได้ และให้ผลเหมือนกันทั้งในตัวอย่างและในไฟล์ที่ส่งออก",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "การเลือกถูกตัดจากรูปภาพที่เริ่มไว้ การย้ายไปรูปภาพอื่นก่อนเสร็จจะยกเลิกการเลือก จึงควรอยู่ที่รูปภาพนั้นจนกว่ามาสก์จะปรากฏ หากทำการเลือกไม่สำเร็จ แผงมาสก์จะแจ้งให้ทราบและจะไม่มีการเพิ่มสิ่งใด",
     "Previews are already being built; finish or cancel that first": "กำลังสร้างตัวอย่างอยู่แล้ว โปรดทำให้เสร็จหรือยกเลิกก่อน",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "การดำเนินการเป็นชุดจะมีผลเฉพาะกับรูปภาพที่เลือกไว้ซึ่งตัวกรอง โฟลเดอร์ และการค้นหาปัจจุบันยังแสดงอยู่ การเปลี่ยนตัวกรองจึงลดขอบเขตของการดำเนินการถัดไป และแถบทำเครื่องหมายจะนับจำนวนที่จะมีผลจริง"
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "การดำเนินการเป็นชุดจะมีผลเฉพาะกับรูปภาพที่เลือกไว้ซึ่งตัวกรอง โฟลเดอร์ และการค้นหาปัจจุบันยังแสดงอยู่ การเปลี่ยนตัวกรองจึงลดขอบเขตของการดำเนินการถัดไป และแถบทำเครื่องหมายจะนับจำนวนที่จะมีผลจริง",
+    "Photo copied to clipboard": "คัดลอกรูปภาพไปยังคลิปบอร์ดแล้ว",
+    "Could not copy photo to clipboard": "ไม่สามารถคัดลอกรูปภาพไปยังคลิปบอร์ดได้",
+    "Copy a photo": "คัดลอกรูปภาพ",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C คัดลอกภาพตัวอย่างที่แก้ไขแล้ว (กว้างสูงสุด 2048 พิกเซล) เพื่อนำไปวางในแอปอื่น ช่องข้อความยังคงคัดลอกตามปกติ ส่วน Command-Shift-C คัดลอกการตั้งค่าการแก้ไข"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Zaznaczenie jest wycinane ze zdjęcia, na którym je rozpoczęto. Przejście do innego zdjęcia przed jego ukończeniem anuluje je, więc pozostań na zdjęciu, aż pojawi się maska. Jeśli zaznaczenia nie da się ukończyć, panel maski zgłasza to i nic nie zostaje dodane.",
     "Previews are already being built; finish or cancel that first": "Podglądy są już tworzone; najpierw zakończ lub anuluj to zadanie",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Działanie zbiorcze obejmuje tylko wybrane zdjęcia, które bieżący filtr, folder i wyszukiwanie nadal pokazują. Zmiana filtra zawęża więc zakres następnego działania, a pasek oznaczania liczy to, co zostanie objęte."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Działanie zbiorcze obejmuje tylko wybrane zdjęcia, które bieżący filtr, folder i wyszukiwanie nadal pokazują. Zmiana filtra zawęża więc zakres następnego działania, a pasek oznaczania liczy to, co zostanie objęte.",
+    "Photo copied to clipboard": "Zdjęcie skopiowane do schowka",
+    "Could not copy photo to clipboard": "Nie udało się skopiować zdjęcia do schowka",
+    "Copy a photo": "Kopiowanie zdjęcia",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Ein Foto kopieren",
+          "paragraphs": [
+            "Command-C kopiert die bearbeitete Fotovorschau (bis zu 2048 Pixel breit) zum Einfügen in andere Apps. In Textfeldern bleibt das normale Kopieren erhalten; Command-Shift-C kopiert die Bearbeitungseinstellungen."
+          ]
+        },
+        {
           "title": "Ausgewählte Einstellungen übertragen",
           "paragraphs": [
             "Kopieren und Einfügen befinden sich in der Detailansicht unter dem Foto.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

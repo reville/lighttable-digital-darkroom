@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Copiare una foto",
+          "paragraphs": [
+            "Command-C copia l’anteprima della foto modificata (fino a 2048 pixel di larghezza) per incollarla in altre app. Nei campi di testo la copia rimane normale; Command-Shift-C copia le impostazioni di modifica."
+          ]
+        },
+        {
           "title": "Trasferisci le impostazioni selezionate",
           "paragraphs": [
             "Copia e Incolla si trovano sotto la foto nella vista Dettaglio.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

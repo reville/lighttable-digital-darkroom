@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4186,7 +4186,11 @@
     "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.": "Zieht man die beiden Punkte aufeinander, hat der Verlauf keine Richtung mehr und wählt nichts aus, bis Sie sie wieder trennen. Ein sehr kurzer Verlauf ist eine gültige harte Kante und wirkt in der Vorschau genauso wie in der exportierten Datei.",
     "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added.": "Eine Auswahl wird aus dem Foto erstellt, auf dem sie begonnen wurde. Ein Wechsel zu einem anderen Foto bricht sie ab, bleiben Sie also bei dem Foto, bis die Maske erscheint. Lässt sich die Auswahl nicht abschließen, meldet das Maskenfeld dies und es wird nichts hinzugefügt.",
     "Previews are already being built; finish or cancel that first": "Vorschauen werden bereits erstellt; beenden oder brechen Sie das zuerst ab",
-    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde."
+    "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.": "Eine Sammelaktion erreicht nur die ausgewählten Fotos, die der aktuelle Filter, Ordner und die Suche noch zeigen. Ein Filterwechsel schränkt daher ein, was die nächste Aktion erfasst, und die Markierungsleiste zählt, was sie erreichen würde.",
+    "Photo copied to clipboard": "Foto in die Zwischenablage kopiert",
+    "Could not copy photo to clipboard": "Foto konnte nicht in die Zwischenablage kopiert werden",
+    "Copy a photo": "Ein Foto kopieren",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.": "Command-C kopiert die bearbeitete Fotovorschau (bis zu 2048 Pixel breit) zum Einfügen in andere Apps. In Textfeldern bleibt das normale Kopieren erhalten; Command-Shift-C kopiert die Bearbeitungseinstellungen."
   },
   "plurals": {
     " · {count} paired file linked": {

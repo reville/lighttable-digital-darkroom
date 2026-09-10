@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Menyalin foto",
+          "paragraphs": [
+            "Command-C menyalin pratinjau foto yang telah diedit (hingga lebar 2048 piksel) untuk ditempelkan ke aplikasi lain. Kolom teks tetap menggunakan penyalinan biasa; Command-Shift-C menyalin pengaturan pengeditan."
+          ]
+        },
+        {
           "title": "Transfer pengaturan terpilih",
           "paragraphs": [
             "Salin dan Tempel berada di bawah foto dalam tampilan Detail.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

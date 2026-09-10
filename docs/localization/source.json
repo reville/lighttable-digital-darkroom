@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1",
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -967,6 +967,7 @@
     "Combining keeps the name “{name}”. You can change it afterward.",
     "Comma",
     "Comma or semicolon",
+    "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings.",
     "Command/Ctrl+Shift+E opens Export; Command/Ctrl+E opens external editing. Text fields keep ordinary typing behavior, so leave a text field before using unmodified editing shortcuts.",
     "Community",
     "Community is offline. Built-in and saved presets remain available.",
@@ -1010,6 +1011,7 @@
     "Copy",
     "Copy Edit Settings",
     "Copy Settings...",
+    "Copy a photo",
     "Copy and Paste are below the photo in Detail view.",
     "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.",
     "Copy and verify it into the library",
@@ -1045,6 +1047,7 @@
     "Could not check for updates.",
     "Could not choose an edit filename",
     "Could not clear photo history",
+    "Could not copy photo to clipboard",
     "Could not create backup",
     "Could not create the Photos import folder: {error}",
     "Could not delete watched folder",
@@ -2339,6 +2342,7 @@
     "Photo changed. Open film previews again.",
     "Photo compatibility report",
     "Photo contents index",
+    "Photo copied to clipboard",
     "Photo details and metadata",
     "Photo editing and realistic film simulation. Explore the source, report an issue, or contribute on GitHub.",
     "Photo exported, but its recipe sidecar could not be saved: {error}",

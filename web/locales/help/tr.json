@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Fotoğraf kopyalama",
+          "paragraphs": [
+            "Command-C, düzenlenmiş fotoğraf önizlemesini (en fazla 2048 piksel genişliğinde) diğer uygulamalara yapıştırmak için kopyalar. Metin alanlarında normal kopyalama korunur; Command-Shift-C düzenleme ayarlarını kopyalar."
+          ]
+        },
+        {
           "title": "Seçili ayarları aktar",
           "paragraphs": [
             "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }

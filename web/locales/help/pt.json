@@ -1423,6 +1423,12 @@
       ],
       "sections": [
         {
+          "title": "Copiar uma foto",
+          "paragraphs": [
+            "Command-C copia a prévia da foto editada (até 2048 pixels de largura) para colar em outros apps. Os campos de texto mantêm a cópia normal; Command-Shift-C copia os ajustes de edição."
+          ]
+        },
+        {
           "title": "Transferir configurações selecionadas",
           "paragraphs": [
             "Copiar e Colar ficam abaixo da foto na visualização Detalhe.",
@@ -3208,5 +3214,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "b0bfbc886db872de05e776fd0fdcd5e816edc9534c94294c4f553112ab7cca84"
 }
