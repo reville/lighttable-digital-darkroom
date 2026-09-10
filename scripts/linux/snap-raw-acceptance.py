@@ -46,12 +46,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--phase', choices=('before', 'after'), default=os.environ.get('LIGHTTABLE_ACCEPTANCE_PHASE'))
     parser.add_argument('--expected-source', default=DEFAULT_SOURCE)
+    parser.add_argument('--reopen-count', type=int, default=1, help='Bounded normal reopen repetitions (1–10)')
     parser.add_argument('--timeout', type=int, default=480, help='Per-case total budget, including cleanup (60–480 seconds)')
     args = parser.parse_args()
     if args.phase is None:
         parser.error('--phase=before or --phase=after is required')
     if not 60 <= args.timeout <= 480:
         parser.error('--timeout must be between 60 and 480 seconds')
+    if not 1 <= args.reopen_count <= 10:
+        parser.error('--reopen-count must be between 1 and 10')
     if sys.platform != 'linux' or not os.environ.get('DISPLAY') or not os.environ.get('DBUS_SESSION_BUS_ADDRESS'):
         parser.error('Run inside Snap confinement with private Xvfb and the systemd user bus')
     if os.environ.get('SNAP_NAME') != 'lighttable' or not os.environ.get('SNAP_USER_COMMON'):
@@ -116,6 +119,7 @@ def main():
             case = {'fixture': filename, 'ok': False}
             report['cases'].append(case)
             children = []
+            fault_logs = []
             # Reserve thirty seconds for the bounded owned-process cleanup.
             deadline = time.monotonic() + args.timeout - 30
             signal.setitimer(signal.ITIMER_REAL, args.timeout - 30)
@@ -151,6 +155,9 @@ def main():
                     environment = a.isolated_environment(root)
                     # Keep Python/native crash stacks in the retained server log.
                     environment['PYTHONFAULTHANDLER'] = '1'
+                    fault = root / f'fault-{args.phase}-{len(fault_logs)}.log'
+                    fault_logs.append(fault)
+                    environment['LIGHTTABLE_FAULT_LOG'] = str(fault)
                     for key in ('XDG_DATA_DIRS', 'XDG_CONFIG_DIRS', 'XDG_CURRENT_DESKTOP', 'XDG_SESSION_TYPE'):
                         if key in os.environ:
                             environment[key] = os.environ[key]
@@ -204,14 +211,21 @@ def main():
                           'Film export did not preserve full decoded RAW dimensions')
                 case['export'] = a.verify_export(paths[0])
                 case['first_close'] = close(process, health['pid'])
-                process, api, reopened, reopened_name = launch()
-                a.require(reopened['pid'] != health['pid'] and reopened_name == name,
-                          'Normal reopen failed to preserve the photo in a new server')
-                a.wait_for(process, deadline, 'film/edit persistence after normal reopen',
-                           lambda: saved_film(api.request(route)))
-                updates(api)
-                case['screenshot_checkpoint'] = screenshot(fixture, process, deadline)
-                case['final_close'] = close(process, reopened['pid'])
+                previous_pid = health['pid']
+                case['reopens'] = []
+                for repeat in range(args.reopen_count):
+                    process, api, reopened, reopened_name = launch()
+                    a.require(reopened['pid'] != previous_pid and reopened_name == name,
+                              'Normal reopen failed to preserve the photo in a new server')
+                    a.wait_for(process, deadline, 'film/edit persistence after normal reopen',
+                               lambda: saved_film(api.request(route)))
+                    updates(api)
+                    if repeat == args.reopen_count - 1:
+                        case['screenshot_checkpoint'] = screenshot(fixture, process, deadline)
+                    receipt = close(process, reopened['pid'])
+                    case['reopens'].append({'server_pid': reopened['pid'], 'close': receipt})
+                    previous_pid = reopened['pid']
+                case['final_close'] = receipt
                 a.require(sha256(source) == digest and sha256(fixture) == digest, 'Source RAW bytes changed')
                 case.update(ok=True, source_sha256=digest, photo_name=name, saved_exposure=.5,
                             saved_rating=4, film_enabled=True, source_preserved=True,
@@ -238,7 +252,7 @@ def main():
                                 tokens.add(token)
                         except (OSError, ValueError, TypeError):
                             pass
-                    for path in (root / 'desktop.log', root / 'state/lighttable/logs/server.log'):
+                    for path in (root / 'desktop.log', root / 'state/lighttable/logs/server.log', *fault_logs):
                         if path.exists():
                             (evidence / f'raw-{fixture.stem}-{args.phase}-{path.name}').write_text(
                                 a.redact(path.read_text(errors='replace')[-24000:], tokens))

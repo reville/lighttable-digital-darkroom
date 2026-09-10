@@ -42,6 +42,8 @@ if [[ "$mode" == precision ]]; then
     'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-desktop-acceptance.py"'
 else
   export LIGHTTABLE_SNAP_TEST_PHASE="$mode"
+  export LIGHTTABLE_SNAP_REOPEN_COUNT=1
+  if [[ "$mode" == after ]]; then export LIGHTTABLE_SNAP_REOPEN_COUNT=8; fi
   timeout 1000s snap run --shell lighttable -c \
-    'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-raw-acceptance.py" --phase "$LIGHTTABLE_SNAP_TEST_PHASE"'
+    'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP_USER_COMMON/acceptance/snap-raw-acceptance.py" --phase "$LIGHTTABLE_SNAP_TEST_PHASE" --reopen-count "$LIGHTTABLE_SNAP_REOPEN_COUNT"'
 fi
