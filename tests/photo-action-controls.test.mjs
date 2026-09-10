@@ -119,3 +119,34 @@ test('a second overflow trigger click closes its menu while a context click can 
   assert.equal(element('libraryMenu').attrs['aria-hidden'], 'false');
   assert.equal(element('libraryMenu').style.top, '250px');
 });
+
+test('pressing J triggers clipping warning when not disabled', () => {
+  const s = source;
+  const start = s.indexOf("document.addEventListener('keydown', (e) => {");
+  const registration = s.slice(start, s.indexOf("document.addEventListener('keyup'", start));
+  let handler;
+  let clicked = 0;
+  const clipBtn = { disabled: false, click() { clicked++; } };
+  const context = vm.createContext({
+    document: { querySelector: () => null, addEventListener(_type, fn) { handler = fn; } },
+    cur: () => ({ name: 'test.raw' }),
+    S: { editingName: 'test.raw', viewMode: 'detail' },
+    KEYS: { speed: {}, pick: [], reject: [], unflag: [] },
+    LABEL_KEYS: {},
+    PHOTO_TOOL_PANES: [],
+    $: (id) => id === 'clipBtn' ? clipBtn : null,
+  });
+  vm.runInContext(registration, context);
+  let prevented = false;
+  handler({ key: 'j', target: { tagName: 'DIV' }, preventDefault() { prevented = true; } });
+  assert.equal(clicked, 1);
+  assert.equal(prevented, true);
+
+  // When clipBtn is disabled, J does nothing
+  clipBtn.disabled = true;
+  prevented = false;
+  handler({ key: 'j', target: { tagName: 'DIV' }, preventDefault() { prevented = true; } });
+  assert.equal(clicked, 1);
+  assert.equal(prevented, false);
+});
+

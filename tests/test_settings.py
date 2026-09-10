@@ -178,6 +178,11 @@ class SettingsTests(unittest.TestCase):
         self.assertNotIn('class="shortcut-details"', before_settings)
         self.assertIn('class="shortcut-details"', html)
 
+    def test_raw_develop_defaults_shipped(self):
+        root = Path(__file__).resolve().parents[1]
+        app = (root / "web" / "app.js").read_text()
+        self.assertIn("sharpness: 0.25, colorNoise: 0.25", app)
+
 
 if __name__ == "__main__":
     unittest.main()

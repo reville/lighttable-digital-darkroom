@@ -978,7 +978,14 @@ a.reset:hover { color:#fff; }
 .segmented button { flex:1; min-height:28px; border:0; border-radius:0; padding:2px; background:transparent; color:var(--muted); font-size:11px; font-weight:600; box-shadow:none; }
 .segmented button:hover:not(:disabled) { background:transparent; color:var(--ink); }
 .segmented button.on { background:transparent; color:var(--slider-accent); box-shadow:inset 0 -2px 0 var(--slider-accent); }
+.treatment-wrap { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; margin-bottom:4px; border-bottom:1px solid var(--line-soft); }
+.treatment-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+.treatment-tabs { display:flex; gap:2px; background:var(--inset); padding:2px; border-radius:var(--radius-s); }
+.treatment-tab { min-height:22px; padding:2px 10px; border:0; border-radius:3px; background:transparent; color:var(--muted); font-size:11px; font-weight:600; cursor:pointer; }
+.treatment-tab:hover { color:var(--ink); }
+.treatment-tab.on { background:var(--field); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,0.2); }
 #curve { display:block; width:100%; height:220px; margin-top:8px; border:1px solid var(--line-strong); border-radius:var(--radius-s); background:var(--inset); cursor:crosshair; }
+#paramCurveCanvas { display:block; width:100%; height:140px; margin-top:8px; margin-bottom:8px; border:1px solid var(--line-strong); border-radius:var(--radius-s); background:var(--inset); }
 .hsl-dots { display:flex; justify-content:space-between; margin:8px 0; }
 .hsl-dots button { width:24px; min-width:24px; height:24px; min-height:24px; padding:0; border:2px solid transparent; border-radius:50%; color:transparent; font-size:0; }
 .hsl-dots button:nth-child(1){background:#d84a4a}.hsl-dots button:nth-child(2){background:#d9783f}.hsl-dots button:nth-child(3){background:#cfb942}.hsl-dots button:nth-child(4){background:#55a45a}.hsl-dots button:nth-child(5){background:#45a6a7}.hsl-dots button:nth-child(6){background:#4c75c7}.hsl-dots button:nth-child(7){background:#805bb4}.hsl-dots button:nth-child(8){background:#b95190}

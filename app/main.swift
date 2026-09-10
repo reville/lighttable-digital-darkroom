@@ -3733,6 +3733,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             return editablePhoto
         case "pasteSettings":
             return menuBool("canPaste")
+        case "previousSettings":
+            return menuBool("canPrevious")
         case "pasteAllVisible":
             return menuBool("canPaste") && menuBool("hasImages")
         case "resetCrop":
@@ -3967,6 +3969,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         addEditorItem(developMenu, title: L("Paste Edit Settings"),
                       command: "pasteSettings", key: "v",
                       modifiers: [.command, .shift])
+        addEditorItem(developMenu, title: L("Paste from Previous Photo"),
+                      command: "previousSettings", key: "v",
+                      modifiers: [.command, .option])
         addEditorItem(developMenu, title: L("Paste to All Visible Photos"),
                       command: "pasteAllVisible")
         developMenu.addItem(.separator())

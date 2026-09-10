@@ -202,6 +202,25 @@ class GradeEffectsTests(unittest.TestCase):
         self.assertEqual(cleaned["pointColor"][0]["range"], 90)
         self.assertEqual(cleaned["colorGrading"]["shadows"]["saturation"], 1)
 
+    def test_monochrome_produces_equal_rgb_channels(self):
+        out = grade.apply(self.image, {"monochrome": 1.0})
+        np.testing.assert_allclose(out[..., 0], out[..., 1], rtol=0, atol=1e-6)
+        np.testing.assert_allclose(out[..., 1], out[..., 2], rtol=0, atol=1e-6)
+
+    def test_monochrome_with_mixer_shifts_color_luminance(self):
+        blue_pixel = np.array([[[0.1, 0.2, 0.9]]], dtype=np.float32)
+        base = grade.apply(blue_pixel, {"monochrome": 1.0})
+        boosted = grade.apply(blue_pixel, {
+            "monochrome": 1.0,
+            "hsl": {"blue": {"h": 0, "s": 0, "l": 0.8}},
+        })
+        darkened = grade.apply(blue_pixel, {
+            "monochrome": 1.0,
+            "hsl": {"blue": {"h": 0, "s": 0, "l": -0.8}},
+        })
+        self.assertGreater(float(boosted[0, 0, 0]), float(base[0, 0, 0]))
+        self.assertLess(float(darkened[0, 0, 0]), float(base[0, 0, 0]))
+
 
 class ParallelKernelSafetyTests(unittest.TestCase):
     def test_concurrent_grade_calls_do_not_abort_the_process(self):

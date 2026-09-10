@@ -35,6 +35,7 @@ WHEELS = dict(colorGrading={
     'midtones': dict(hue=25, saturation=.25, luminance=.1),
     'highlights': dict(hue=55, saturation=.2, luminance=-.1),
     'global': dict(hue=90, saturation=.1, luminance=.03), 'balance': .2, 'blending': .4})
+MONOCHROME = dict(monochrome=1.0, hsl={c: dict(h=0, s=0, l=.2) for c in ('red', 'green', 'blue')})
 SENSITIVE = dict(DETAIL, **COLOR, **TONES, **WHEELS)
 SENSITIVE['pointColor'] = [dict(COLOR['pointColor'][0], uniformLuminance=.2), COLOR['pointColor'][1]]
 
@@ -137,7 +138,7 @@ class GpuGradeDeviceTests(unittest.TestCase):
 
     def test_every_grade_stage_and_combination(self):
         image = fixture()
-        for settings in [DETAIL, COLOR, TONES, WHEELS,
+        for settings in [DETAIL, COLOR, TONES, WHEELS, MONOCHROME,
                          dict(DETAIL, **COLOR, **TONES, **WHEELS)]:
             with self.subTest(settings=list(settings)):
                 self.compare(image, settings)

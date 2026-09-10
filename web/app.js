@@ -77,7 +77,7 @@ let EXTERNAL_EDITORS = [];
 let EXTERNAL_PREFS = {};
 import { afterVisiblePaint, createFrameScheduler, debounce } from '/web/render-scheduler.js';
 import {
-  monotoneLUT, isIdentityPoints, rgbHue,
+  monotoneLUT, isIdentityPoints, evalParametricLUT, rgbHue,
   emptyColorGrading as makeEmptyColorGrading,
 } from '/web/color-tools.js';
 import { bytesToBase64, hasApplicablePresetSettings, composePresetState } from '/web/presets.js';
@@ -122,13 +122,14 @@ const RESET_GROUPS = {
            'print_y_filter_shift', 'print_m_filter_shift',
            'scan_softness', 'scan_sharpness'],
   tone: ['exposure', 'contrast', 'highlights', 'shadows', 'whites', 'blacks'],
-  colour: ['temp', 'tint', 'vibrance', 'saturation'],
+  colour: ['temp', 'tint', 'vibrance', 'saturation', 'monochrome'],
   effects: ['texture', 'clarity', 'dehaze', 'vignette', 'vignetteSize', 'vignetteFeather'],
   detail: ['sharpness', 'sharpenRadius', 'sharpenDetail', 'sharpenMasking',
            'luminanceNoise', 'colorNoise'],
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],
 };
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
+S.priorPhotoSettings = null;
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
 const PHOTO_DISPLAY_STATUS = createPhotoDisplayStatus();
@@ -261,6 +262,7 @@ function nativeMenuState() {
     canUndo: S.undo.length > 0,
     canRedo: S.redo.length > 0,
     canPaste: !!S.clipboard && targets.length > 0,
+    canPrevious: Boolean(S.priorPhotoSettings && image && S.priorPhotoSettings.sourceName !== image.name),
     hasCrop: !!S.crop || !!(S.params?.rotate % 360) ||
       ['rotate', 'vertical', 'horizontal', 'scale', 'flipHorizontal', 'flipVertical']
         .some((key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
@@ -399,6 +401,7 @@ function performNativeMenuCommand(command) {
       case 'deleteRejected': result = trashRejected(); break;
       case 'copySettings': $('copyBtn').click(); break;
       case 'pasteSettings': $('pasteBtn').click(); break;
+      case 'previousSettings': $('previousBtn')?.click(); break;
       case 'pasteAllVisible': $('pasteAllBtn').click(); break;
       case 'matchExposure': $('matchExposureBtn').click(); break;
       case 'buildPreviews': $('pregenPreviewsBtn').click(); break;
@@ -857,11 +860,11 @@ function syncControls() {
   if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
   $('wbProcessedNote').hidden = rawInput;
   $('wbCustom').hidden = !rawInput || S.params.wb_mode !== 'custom';
-  $('wb_mode').disabled = !profileEnabled || !rawInput;
+  $('wb_mode').disabled = !rawInput;
   $('browseFilmStocks').disabled = !cur();
   $('stock').disabled = !cur();
-  $('wb_temperature').disabled = !profileEnabled || !rawInput;
-  $('wb_tint').disabled = !profileEnabled || !rawInput;
+  $('wb_temperature').disabled = !rawInput;
+  $('wb_tint').disabled = !rawInput;
   $('paper').disabled = !profileEnabled || positive;
   $('development_time').disabled = !profileEnabled ||
     (selectedFilmProfile()?.developmentTimes?.length || 0) <= 1;
@@ -2074,6 +2077,7 @@ function spotVisualization() {
   return {
     enabled: S.activePane === 'healPane' && $('healVisualize').checked,
     threshold: +$('healVisualizeThreshold').value,
+    clipping: Boolean(S.clip),
   };
 }
 
@@ -4466,7 +4470,7 @@ $('startReferenceMatch').onclick = () => {
   if (raw) {
     S.params.wb_mode = 'custom';
     S.params.wb_temperature = clamp((+S.params.wb_temperature || 5500) *
-      Math.exp(Math.log(targetWarmth / currentWarmth) * 0.35), 2000, 12000);
+      Math.exp(Math.log(targetWarmth / currentWarmth) * 0.35), 2000, 50000);
     S.params.wb_tint = clamp((+S.params.wb_tint || 0) +
       Math.log(targetMagenta / currentMagenta) * 0.35, -1, 1);
   } else {
@@ -5443,6 +5447,12 @@ function renderGrid() {
     d.querySelector('.idx').textContent = S.msel?.has(im.name) ? '✓' : '';
     paintLabelDot(d, im);
   });
+  if (S.catalogEnabled && S.images.length < S.catalogTotal && positions.length) {
+    const lastVisible = positions[positions.length - 1].index;
+    if (lastVisible + LIBRARY_CHUNK_SIZE >= S.images.length) {
+      loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
+    }
+  }
   $('emptyState').classList.toggle('show', list.length === 0);
   applyGridStyle();
   syncUndisplayableLink();
@@ -6769,7 +6779,9 @@ function showCurrentImage(im) {
   if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
-  S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...(im.grade || {}) };
+  const isRaw = im.raw === true || isRawInput();
+  const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...rawDefaults, ...(im.grade || {}) };
   S.crop = im.crop || null;
   S.preset = cloneValue(im.preset || null);
   presetAmountGesture = null;
@@ -6882,6 +6894,11 @@ async function go(i) {
       saveState();
     }
     const outgoing = cur().name;
+    if (isStateLoaded(cur())) {
+      try {
+        S.priorPhotoSettings = { ...JSON.parse(snapshot()), sourceName: outgoing };
+      } catch (_) {}
+    }
     void editSaveQueue.flush(outgoing).then(() => HISTORY?.flush(outgoing)).catch(() => {});
   }
   lastNavigationDirection = i >= S.idx ? 1 : -1;
@@ -6975,7 +6992,12 @@ const _lensProfileCache = new Map();
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
-      S.lensProfile = _lensProfileCache.get(name).profile;
+      const cached = _lensProfileCache.get(name);
+      S.lensProfile = cached.profile;
+      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
+          cached.found && cached.reason === "Exact camera and lens metadata match.") {
+        S.optics.profileEnabled = true;
+      }
       syncOpticsPanel();
     }
     return;
@@ -6986,6 +7008,10 @@ async function loadLensProfile(name) {
     _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
+      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
+          result.found && result.reason === "Exact camera and lens metadata match.") {
+        S.optics.profileEnabled = true;
+      }
       syncOpticsPanel();
     }
   } catch (_) {
@@ -7509,6 +7535,65 @@ function catalogIdleTurn() {
   });
 }
 
+const LIBRARY_CHUNK_SIZE = 600;
+
+function buildCatalogQuerySpec(extra = {}) {
+  const f = $('filter')?.value || 'all';
+  const rf = $('ratingFilter')?.value || 'all';
+  const kind = $('kindFilter')?.value || 'all';
+  const labelFilter = $('labelFilter') ? $('labelFilter').value : 'all';
+  const editState = $('editFilter')?.value || 'all';
+  const fileTypes = typeof LIBRARY_FILTERS?.types === 'function' ? LIBRARY_FILTERS.types() : [];
+  const metadata = typeof LIBRARY_FILTERS?.metadata === 'function' ? LIBRARY_FILTERS.metadata() : {};
+  const search = $('search')?.value?.trim() || '';
+  const s = $('sort')?.value || 'capture';
+
+  const filter = { ...metadata };
+  if (f === 'rated') filter.ratingMin = 1;
+  else if (f === 'unrated') filter.unrated = true;
+  else if (f === 'edited') filter.editState = 'edited';
+  else if (f === 'unedited') filter.editState = 'unedited';
+  else if (f === 'virtual') filter.kind = 'virtual';
+  else if (f === 'approved' || f === 'skipped' || f === 'pending') filter.status = f;
+
+  if (rf === 'unrated') filter.unrated = true;
+  else if (rf !== 'all' && rf !== '0' && !isNaN(+rf)) filter.ratingMin = +rf;
+
+  if (labelFilter !== 'all') filter.label = labelFilter;
+  if (kind !== 'all') filter.kind = kind;
+  if (editState !== 'all') filter.editState = editState;
+  if (fileTypes.length) filter.fileTypes = fileTypes;
+  if (search) filter.query = search;
+
+  let scope = 'all';
+  let folderId, collectionId;
+  const collection = typeof activeCollection === 'function' ? activeCollection() : null;
+  if (collection) {
+    scope = 'collection';
+    collectionId = collection.id;
+  } else if (S.activeFolder) {
+    scope = 'folder';
+    folderId = S.activeFolder;
+  }
+
+  const spec = {
+    scope,
+    filter,
+    sort: {
+      field: s === 'date' ? 'capture' : s,
+      dir: 'desc',
+    },
+    ...extra,
+  };
+  if (folderId) {
+    spec.folderId = folderId;
+    spec.includeSubfolders = S.includeSubfolders !== false;
+  }
+  if (collectionId) spec.collectionId = collectionId;
+
+  return spec;
+}
+
 let catalogPageTask = null;
 function loadRemainingCatalogRows(total) {
   if (catalogPageTask?.images === S.images) return catalogPageTask.promise;
@@ -7520,7 +7605,7 @@ function loadRemainingCatalogRows(total) {
     const known = new Set(images.map(image => image.name));
     while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
       await catalogIdleTurn();
-      const page = await api('/api/catalog/query', {limit: 2000, offset, sort: {field: 'capture', dir: 'desc'}});
+      const page = await api('/api/catalog/query', {limit: LIBRARY_CHUNK_SIZE, offset, sort: {field: 'capture', dir: 'desc'}});
       if (generation !== catalogPageGeneration || images !== S.images) throw new Error(tr('The library changed; select photos again'));
       if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
       total = Number.isFinite(+page.total) ? +page.total : total;
@@ -7859,6 +7944,19 @@ FILM_SELECTS.forEach((id) => {
         !S.params.paper_locked && selectedFilmProfile()?.targetPrint) {
       S.params.paper = selectedFilmProfile().targetPrint;
     }
+    if (id === 'wb_mode') {
+      const presets = {
+        daylight: [5500, 0.1],
+        cloudy: [6500, 0.1],
+        shade: [7500, 0.1],
+        tungsten: [2850, 0],
+        fluorescent: [3800, 0.1],
+        flash: [5500, 0],
+      };
+      if (presets[S.params.wb_mode]) {
+        [S.params.wb_temperature, S.params.wb_tint] = presets[S.params.wb_mode];
+      }
+    }
     syncControls(); saveState(); renderFilm(0);
   });
 });
@@ -8131,7 +8229,8 @@ $('filmstripResize').addEventListener('keydown', (event) => {
 $('resetEdit').onclick = () => {
   if (!cur()) return;
   pushUndo();
-  S.grade = { ...GRADE_DEFAULTS };
+  const rawDefaults = isRawInput() ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  S.grade = { ...GRADE_DEFAULTS, ...rawDefaults };
   syncGrade(); syncCurveFromGrade(); syncHsl();
   drawGrade(); saveState(true);
   toast(tr("Edit adjustments reset"));
@@ -8377,6 +8476,14 @@ function updateTransferActions() {
     !targets.length;
   $('copyBtn').title = cur() ? tr("Choose edit settings to copy ({primaryKey}+Shift+C)", {primaryKey: primaryKey}) : tr("Select a photo to copy its settings");
   $('pasteBtn').title = !S.clipboard ? tr("Copy settings first") : targets.length > 1 ? tr("Paste edit settings to {targetsLength} selected photos ({primaryKey}+Shift+V)", {targetsLength: targets.length, primaryKey: primaryKey}) : tr("Paste edit settings ({primaryKey}+Shift+V)", {primaryKey: primaryKey});
+  if ($('previousBtn')) {
+    const hasPrior = Boolean(S.priorPhotoSettings && cur() && S.priorPhotoSettings.sourceName !== cur()?.name);
+    const altKey = ['windows', 'linux'].includes(window.__LIGHTTABLE_PLATFORM__) ? 'Ctrl+Alt' : '⌘⌥';
+    $('previousBtn').disabled = !hasPrior;
+    $('previousBtn').title = hasPrior
+      ? tr("Apply settings from previous photo ({key}+V)", {key: altKey})
+      : tr("Apply settings from previous photo");
+  }
   scheduleNativeMenuState();
 }
 let transferReturnFocus = null, transferSource = null, transferRunning = false, transferCancelled = false;
@@ -8514,6 +8621,41 @@ async function pasteSettingsTo(targets) {
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
 $('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
+async function applyPreviousSettings() {
+  if (!S.priorPhotoSettings || !cur()) return toast(tr("No previous photo settings to apply"));
+  const image = cur();
+  if (image.name === S.priorPhotoSettings.sourceName) return toast(tr("Already on the source photo"));
+  await prefetchState(image);
+  if (!isStateLoaded(image)) return toast(tr("Existing settings could not be loaded; this photo was left unchanged"));
+
+  const pending = editSaveQueue.getPending(image.name)?.state || {};
+  const currentEdits = { ...image, ...pending };
+  const destination = {
+    ...currentEdits,
+    params: normalizeFilmParams(currentEdits.params),
+    grade: { ...GRADE_DEFAULTS, ...(currentEdits.grade || {}) },
+    optics: normalizeOptics(currentEdits.optics),
+  };
+
+  const choices = APP_PREFS.copySettings || transferChoices();
+  const patch = transferPatch(S.priorPhotoSettings, destination, choices);
+  const { cropChoices, ...entry } = patch;
+  if (image === cur() && S.editingName === image.name) pushUndo();
+  enqueuePhotoPatch(image, entry, { historyLabel: tr("Previous settings") });
+  image.cropChoices = cropChoices ?? image.cropChoices;
+  image.stateLoaded = true;
+  invalidateEditedThumbnail(image);
+  if (image === cur() && S.editingName === image.name) {
+    restore(JSON.stringify({ ...JSON.parse(snapshot()), ...patch }), null, false);
+    _lastHistorySnapshot = editHistorySnapshot();
+  }
+  await editSaveQueue.flush(image.name);
+  refreshLists();
+  if ($('previousBtn')) confirmTransfer('previousBtn');
+  updateTransferActions();
+  toast(tr("Applied previous settings"));
+}
+if ($('previousBtn')) $('previousBtn').onclick = () => applyPreviousSettings();
 $('undoBtn').onclick = undo;
 $('redoBtn').onclick = redo;
 
@@ -8674,7 +8816,11 @@ async function runExport(customOpts = {}) {
     collision: customOpts.collision || $('exCollision').value,
     engine: $('engine').value,
   };
-  if (names !== undefined) payload.names = names;
+  if (names !== undefined) {
+    payload.names = names;
+  } else if (typeof S !== 'undefined' && S?.catalogEnabled && typeof buildCatalogQuerySpec === 'function') {
+    payload.query = buildCatalogQuerySpec();
+  }
 
   const r = await api('/api/export', payload);
   if (r.error) return toast(r.error);
@@ -9660,6 +9806,9 @@ document.addEventListener('keydown', (e) => {
   if (meta && e.shiftKey && e.key.toLowerCase() === 'v') {
     e.preventDefault(); $('pasteBtn').click(); return;
   }
+  if (meta && e.altKey && e.key.toLowerCase() === 'v') {
+    e.preventDefault(); $('previousBtn')?.click(); return;
+  }
   if (meta && e.shiftKey && e.key.toLowerCase() === 'e') {
     e.preventDefault(); $('exportBtn').click(); return;
   }
@@ -9694,6 +9843,11 @@ document.addEventListener('keydown', (e) => {
   }
 
   const k = e.key.toLowerCase();
+  if (k === 'j' && !e.shiftKey && !e.altKey && !$('clipBtn')?.disabled) {
+    e.preventDefault();
+    $('clipBtn')?.click();
+    return;
+  }
   if (S.speed && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
     adjustSpeed(e.key === 'ArrowRight' ? 1 : -1, e);
     e.preventDefault();
@@ -10468,11 +10622,78 @@ $('presetExport').onclick = async () => {
 // what both the shader and the exporter consume.
 S.curve = { L: [[0, 0], [1, 1]], R: [[0, 0], [1, 1]], G: [[0, 0], [1, 1]], B: [[0, 0], [1, 1]] };
 S.curveCh = 'L';
+S.curveMode = 'point';
+S.paramCurve = { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+
+function readParamCurveControls() {
+  S.paramCurve = {
+    highlights: +$('paramCurveHighlights')?.value || 0,
+    lights: +$('paramCurveLights')?.value || 0,
+    darks: +$('paramCurveDarks')?.value || 0,
+    shadows: +$('paramCurveShadows')?.value || 0,
+    splitSD: (+$('paramCurveSplitSD')?.value || 25) / 100,
+    splitDL: (+$('paramCurveSplitDL')?.value || 50) / 100,
+    splitLH: (+$('paramCurveSplitLH')?.value || 75) / 100,
+  };
+  if ($('paramCurveHighlightsV')) $('paramCurveHighlightsV').textContent = String(S.paramCurve.highlights);
+  if ($('paramCurveLightsV')) $('paramCurveLightsV').textContent = String(S.paramCurve.lights);
+  if ($('paramCurveDarksV')) $('paramCurveDarksV').textContent = String(S.paramCurve.darks);
+  if ($('paramCurveShadowsV')) $('paramCurveShadowsV').textContent = String(S.paramCurve.shadows);
+  if ($('paramCurveSplitSDV')) $('paramCurveSplitSDV').textContent = Math.round(S.paramCurve.splitSD * 100) + '%';
+  if ($('paramCurveSplitDLV')) $('paramCurveSplitDLV').textContent = Math.round(S.paramCurve.splitDL * 100) + '%';
+  if ($('paramCurveSplitLHV')) $('paramCurveSplitLHV').textContent = Math.round(S.paramCurve.splitLH * 100) + '%';
+}
+
+function syncParamCurveControls() {
+  const p = S.paramCurve || { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+  if ($('paramCurveHighlights')) $('paramCurveHighlights').value = String(p.highlights || 0);
+  if ($('paramCurveLights')) $('paramCurveLights').value = String(p.lights || 0);
+  if ($('paramCurveDarks')) $('paramCurveDarks').value = String(p.darks || 0);
+  if ($('paramCurveShadows')) $('paramCurveShadows').value = String(p.shadows || 0);
+  if ($('paramCurveSplitSD')) $('paramCurveSplitSD').value = String(Math.round((p.splitSD ?? 0.25) * 100));
+  if ($('paramCurveSplitDL')) $('paramCurveSplitDL').value = String(Math.round((p.splitDL ?? 0.50) * 100));
+  if ($('paramCurveSplitLH')) $('paramCurveSplitLH').value = String(Math.round((p.splitLH ?? 0.75) * 100));
+  readParamCurveControls();
+}
+
+function drawParamCurve() {
+  const cv = $('paramCurveCanvas');
+  if (!cv) return;
+  const x = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  x.clearRect(0, 0, W, H);
+  x.strokeStyle = '#2e2e2e'; x.lineWidth = 1;
+  for (let i = 1; i < 4; i++) {
+    x.beginPath(); x.moveTo(W * i / 4, 0); x.lineTo(W * i / 4, H); x.stroke();
+    x.beginPath(); x.moveTo(0, H * i / 4); x.lineTo(W, H * i / 4); x.stroke();
+  }
+  x.strokeStyle = '#444'; x.lineWidth = 1; x.setLineDash([2, 2]);
+  for (const split of [S.paramCurve.splitSD, S.paramCurve.splitDL, S.paramCurve.splitLH]) {
+    x.beginPath(); x.moveTo(W * split, 0); x.lineTo(W * split, H); x.stroke();
+  }
+  x.setLineDash([]);
+  const lut = evalParametricLUT(S.paramCurve) || Array.from({length: 256}, (_, i) => i / 255);
+  x.strokeStyle = '#e9e9e7';
+  x.lineWidth = 1.5; x.beginPath();
+  for (let i = 0; i < 256; i++) {
+    const px = (i / 255) * W, py = H - lut[i] * H;
+    i ? x.lineTo(px, py) : x.moveTo(px, py);
+  }
+  x.stroke();
+}
 
 function commitCurves() {
-  for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
-    if (isIdentityPoints(S.curve[ch])) delete S.grade[key];
-    else S.grade[key] = monotoneLUT(S.curve[ch]);
+  if (S.curveMode === 'parametric') {
+    const lut = evalParametricLUT(S.paramCurve);
+    if (lut) S.grade.curveL = lut;
+    else delete S.grade.curveL;
+    drawParamCurve();
+  } else {
+    for (const [ch, key] of [['L', 'curveL'], ['R', 'curveR'], ['G', 'curveG'], ['B', 'curveB']]) {
+      if (isIdentityPoints(S.curve[ch])) delete S.grade[key];
+      else S.grade[key] = monotoneLUT(S.curve[ch]);
+    }
+    drawCurve();
   }
   drawGrade();
 }
@@ -10487,6 +10708,7 @@ function syncCurveFromGrade() {
       : [[0, 0], [1, 1]];
   }
   drawCurve();
+  drawParamCurve();
 }
 function drawCurve() {
   const cv = $('curve'), x = cv.getContext('2d');
@@ -10559,6 +10781,47 @@ function drawCurve() {
   });
 }());
 
+(function paramCurveEvents() {
+  $('curveModePoint')?.addEventListener('click', () => {
+    S.curveMode = 'point';
+    $('curveModePoint').classList.add('on');
+    $('curveModeParametric').classList.remove('on');
+    $('pointCurveWrap').hidden = false;
+    $('parametricCurveWrap').hidden = true;
+    drawCurve();
+  });
+  $('curveModeParametric')?.addEventListener('click', () => {
+    S.curveMode = 'parametric';
+    $('curveModePoint').classList.remove('on');
+    $('curveModeParametric').classList.add('on');
+    $('pointCurveWrap').hidden = true;
+    $('parametricCurveWrap').hidden = false;
+    syncParamCurveControls();
+    drawParamCurve();
+  });
+  ['paramCurveHighlights', 'paramCurveLights', 'paramCurveDarks', 'paramCurveShadows',
+   'paramCurveSplitSD', 'paramCurveSplitDL', 'paramCurveSplitLH'].forEach((id) => {
+    const el = $(id);
+    if (!el) return;
+    el.addEventListener('pointerdown', pushUndo);
+    el.addEventListener('input', () => {
+      readParamCurveControls();
+      commitCurves();
+    });
+    el.addEventListener('change', () => saveState());
+    el.addEventListener('dblclick', () => {
+      pushUndo();
+      if (id === 'paramCurveSplitSD') el.value = '25';
+      else if (id === 'paramCurveSplitDL') el.value = '50';
+      else if (id === 'paramCurveSplitLH') el.value = '75';
+      else el.value = '0';
+      readParamCurveControls();
+      commitCurves();
+      saveState();
+    });
+  });
+}());
+
 /* --------------------------------------------------------- colour mixer */
 S.hslBand = 'red';
 (function hslInit() {
@@ -10606,7 +10869,81 @@ function syncHsl() {
     el.value = e[el.dataset.hsl] || 0;
     document.querySelector(`[data-hslv="${el.dataset.hsl}"]`).textContent = fmtG(el.value);
   });
+  syncTreatmentControls();
 }
+
+function syncTreatmentControls() {
+  const isBw = Boolean(S.grade?.monochrome);
+  $('treatmentColor')?.classList.toggle('on', !isBw);
+  $('treatmentColor')?.setAttribute('aria-selected', !isBw);
+  $('treatmentBw')?.classList.toggle('on', isBw);
+  $('treatmentBw')?.setAttribute('aria-selected', isBw);
+  if ($('colorSectionLabel')) $('colorSectionLabel').textContent = isBw ? tr('B&W') : tr('Color');
+  if ($('colorVibranceRow')) $('colorVibranceRow').hidden = isBw;
+  if ($('colorSaturationRow')) $('colorSaturationRow').hidden = isBw;
+  if ($('pointColorWrap')) $('pointColorWrap').hidden = isBw;
+  if ($('colorMixerWrap')) $('colorMixerWrap').hidden = isBw;
+  if ($('bwMixerWrap')) $('bwMixerWrap').hidden = !isBw;
+  if (isBw) syncBwMixer();
+}
+
+function syncBwMixer() {
+  HSL_BANDS.forEach((band) => {
+    const val = S.grade.hsl?.[band]?.l ?? 0;
+    const input = document.querySelector(`[data-bw-band="${band}"]`);
+    if (input) input.value = val;
+    const label = document.querySelector(`[data-bw-val="${band}"]`);
+    if (label) label.textContent = fmtG(val);
+  });
+}
+
+(function bwMixerInit() {
+  $('treatmentColor')?.addEventListener('click', () => {
+    if (!S.grade?.monochrome) return;
+    pushUndo();
+    S.grade.monochrome = 0;
+    syncTreatmentControls();
+    drawGrade();
+    saveState();
+  });
+  $('treatmentBw')?.addEventListener('click', () => {
+    if (S.grade?.monochrome) return;
+    pushUndo();
+    S.grade.monochrome = 1;
+    syncTreatmentControls();
+    drawGrade();
+    saveState();
+  });
+  document.querySelectorAll('[data-bw-band]').forEach((el) => {
+    const band = el.dataset.bwBand;
+    el.addEventListener('pointerdown', pushUndo);
+    el.addEventListener('input', () => {
+      S.grade.hsl = S.grade.hsl || {};
+      const e2 = S.grade.hsl[band] || { h: 0, s: 0, l: 0 };
+      e2.l = +el.value;
+      S.grade.hsl[band] = e2;
+      const label = document.querySelector(`[data-bw-val="${band}"]`);
+      if (label) label.textContent = fmtG(el.value);
+      drawGrade();
+    });
+    el.addEventListener('change', () => saveState());
+    const resetBw = () => {
+      pushUndo();
+      S.grade.hsl = S.grade.hsl || {};
+      const e2 = S.grade.hsl[band] || { h: 0, s: 0, l: 0 };
+      e2.l = 0;
+      S.grade.hsl[band] = e2;
+      el.value = '0';
+      const label = document.querySelector(`[data-bw-val="${band}"]`);
+      if (label) label.textContent = fmtG(0);
+      drawGrade();
+      saveState();
+    };
+    el.addEventListener('dblclick', resetBw);
+    const row = el.closest('.row, .slider-row');
+    row?.querySelector('.name')?.addEventListener('dblclick', resetBw);
+  });
+}());
 
 /* ---------------------------------------------------------- point color */
 function syncPointColor() {
@@ -10788,7 +11125,11 @@ document.querySelectorAll('a.reset').forEach((a) => {
     e.preventDefault(); e.stopPropagation(); pushUndo();
     if (a.dataset.reset === 'curve') {
       for (const ch of ['L', 'R', 'G', 'B']) S.curve[ch] = [[0, 0], [1, 1]];
-      drawCurve(); commitCurves();
+      S.paramCurve = { highlights: 0, lights: 0, darks: 0, shadows: 0, splitSD: 0.25, splitDL: 0.50, splitLH: 0.75 };
+      syncParamCurveControls();
+      drawCurve();
+      drawParamCurve();
+      commitCurves();
     } else if (a.dataset.reset === 'hsl') {
       delete S.grade.hsl; syncHsl(); drawGrade();
     } else if (a.dataset.reset === 'pointColor') {
@@ -10808,6 +11149,7 @@ $('clipBtn').onclick = () => {
   S.clip = !S.clip;
   $('clipBtn').classList.toggle('on', S.clip);
   syncPreviewBackend();
+  refreshSpotVisualization();
   drawGrade();
   drawHistogram();
   toast(S.clip ? tr("Clipping warning active") : tr("Clipping warning off"));
@@ -11875,6 +12217,12 @@ if ($('allowAutomation')) {
 SELECTION_REQUEST = createSelectionRequest({
   load: () => S.catalogEnabled && S.images.length < S.catalogTotal
     ? loadRemainingCatalogRows(S.catalogTotal) : Promise.resolve(),
+  queryNames: async () => {
+    if (!S.catalogEnabled) return null;
+    const spec = buildCatalogQuerySpec({ namesOnly: true, limit: 100000 });
+    const res = await api('/api/catalog/query', spec);
+    return res?.names || null;
+  },
   scope: selectionScope, visible, selection: () => S.msel,
   changed: () => refreshLists(), onError: error => toast(error.message),
 });

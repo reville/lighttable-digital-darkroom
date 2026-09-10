@@ -223,7 +223,7 @@ OUTPUT_RECIPES = {
 NUMERIC_RANGES = {
     "development_time": (0.0, 60.0),
     "print_development_time": (0.0, 60.0),
-    "wb_temperature": (2000.0, 12000.0),
+    "wb_temperature": (2000.0, 50000.0),
     "wb_tint": (-1.0, 1.0),
     "rotate": (-360.0, 360.0),
     "exposure_ev": (-3.0, 3.0),
@@ -513,7 +513,7 @@ def clean_params(p: dict) -> dict:
         out["film_format"] = "35mm"
     if out["output_recipe"] not in OUTPUT_RECIPES:
         out["output_recipe"] = "neutral_print_scan"
-    if out["wb_mode"] not in ("as_shot", "daylight", "tungsten", "custom"):
+    if out["wb_mode"] not in ("as_shot", "auto", "daylight", "cloudy", "shade", "tungsten", "fluorescent", "flash", "custom"):
         out["wb_mode"] = "as_shot"
     if out["raw_profile"] not in ("camera", "detail", "smooth"):
         out["raw_profile"] = "camera"

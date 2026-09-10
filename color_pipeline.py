@@ -56,7 +56,17 @@ def srgb_limited_export_warning() -> str:
              "Develop images do not yet retain colors outside sRGB. "
              "The requested output profile is embedded.")
 
-RAW_WB_MODES = {"as_shot", "daylight", "tungsten", "custom"}
+RAW_WB_MODES = {
+    "as_shot", "auto", "daylight", "cloudy", "shade", "tungsten", "fluorescent", "flash", "custom"
+}
+RAW_WB_PRESETS = {
+    "daylight": (5500.0, 0.10),
+    "cloudy": (6500.0, 0.10),
+    "shade": (7500.0, 0.10),
+    "tungsten": (2850.0, 0.0),
+    "fluorescent": (3800.0, 0.10),
+    "flash": (5500.0, 0.0),
+}
 RAW_PROFILES = {"camera", "detail", "smooth"}
 RAW_HIGHLIGHT_MODES = {"off", "blend", "reconstruct"}
 RAW_DENOISE_MODES = {"off", "light", "full"}
@@ -291,11 +301,14 @@ def raw_postprocess_options(params: dict | None = None,
 
 
 def _temperature_xy(temperature: float) -> np.ndarray:
-    """Return a daylight/Planckian chromaticity for 2000..12000 K."""
+    """Return a daylight/Planckian chromaticity for 2000..50000 K."""
+    import warnings
     import colour
-    temperature = float(np.clip(temperature, 2000.0, 12000.0))
-    return np.asarray(colour.CCT_to_xy(temperature, method="Kang 2002"),
-                      dtype=np.float64)
+    temperature = float(np.clip(temperature, 2000.0, 50000.0))
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=colour.utilities.ColourUsageWarning)
+        return np.asarray(colour.CCT_to_xy(temperature, method="Kang 2002"),
+                          dtype=np.float64)
 
 
 def apply_custom_raw_white_balance(image: np.ndarray, temperature: float,
@@ -356,6 +369,8 @@ def decode_raw(path: Path | str, params: dict | None = None,
             params, half_size=half_size or preview_half_size), decoder)
         if mode == "as_shot":
             kwargs["use_camera_wb"] = True
+        elif mode == "auto":
+            kwargs["use_auto_wb"] = True
         else:
             kwargs["user_wb"] = list(raw.daylight_whitebalance)
         # Key only the actual LibRaw decisions. Custom temperature/tint,
@@ -381,10 +396,14 @@ def decode_raw(path: Path | str, params: dict | None = None,
 
         rgb = RAW_DEMOSAIC_CACHE.get_or_build(
             key, demosaic, raw_decode_runtime.check_cancel)
-    if mode in ("tungsten", "custom"):
-        temperature = 3200.0 if mode == "tungsten" else float(
-            params.get("wb_temperature", 5500.0))
-        tint = 0.0 if mode == "tungsten" else float(params.get("wb_tint", 0.0))
+    if mode in RAW_WB_PRESETS and mode != "daylight":
+        temperature, tint = RAW_WB_PRESETS[mode]
+        balanced = apply_custom_raw_white_balance(
+            rgb.astype(np.float32) / 65535.0, temperature, tint)
+        rgb = (balanced * 65535.0 + 0.5).astype(np.uint16)
+    elif mode == "custom":
+        temperature = float(params.get("wb_temperature", 5500.0))
+        tint = float(params.get("wb_tint", 0.0))
         balanced = apply_custom_raw_white_balance(
             rgb.astype(np.float32) / 65535.0, temperature, tint)
         rgb = (balanced * 65535.0 + 0.5).astype(np.uint16)
@@ -564,11 +583,12 @@ def decode_raw_draft(path: Path | str, params: dict | None,
     )
     prophoto = np.clip(linear @ _LINEAR_SRGB_TO_PROPHOTO.T, 0.0, 1.0)
     mode = str((params or {}).get("wb_mode", "as_shot"))
-    if mode in ("tungsten", "custom"):
-        temperature = 3200.0 if mode == "tungsten" else float(
-            (params or {}).get("wb_temperature", 5500.0))
-        tint = 0.0 if mode == "tungsten" else float(
-            (params or {}).get("wb_tint", 0.0))
+    if mode in RAW_WB_PRESETS and mode != "daylight":
+        temperature, tint = RAW_WB_PRESETS[mode]
+        prophoto = apply_custom_raw_white_balance(prophoto, temperature, tint)
+    elif mode == "custom":
+        temperature = float((params or {}).get("wb_temperature", 5500.0))
+        tint = float((params or {}).get("wb_tint", 0.0))
         prophoto = apply_custom_raw_white_balance(prophoto, temperature, tint)
     return (prophoto * 65535.0 + 0.5).astype(np.uint16)
 

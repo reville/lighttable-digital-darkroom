@@ -593,9 +593,11 @@ final class NativePreviewRenderer {
 
     func updateSpotVisualization(_ payload: [String: Any]) {
         let threshold = (payload["threshold"] as? NSNumber)?.doubleValue ?? 0
+        let clipping = (payload["clipping"] as? Bool ?? false) ? 1 : 0
         spotVisualization = SIMD4<Float>(
             (payload["enabled"] as? Bool ?? false) ? 1 : 0,
-            Float(threshold.isFinite ? max(0, min(1, threshold)) : 0), 0, 0)
+            Float(threshold.isFinite ? max(0, min(1, threshold)) : 0),
+            Float(clipping), 0)
         scheduleRender()
     }
 
@@ -980,7 +982,8 @@ final class NativePreviewRenderer {
             value("dehaze"), value("vignette"),
             imageRegion.x / Float(width), imageRegion.y / Float(height))
         output.vignetteShape = SIMD4<Float>(
-            value("vignetteSize", 0.5), value("vignetteFeather", 1), 0, 0)
+            value("vignetteSize", 0.5), value("vignetteFeather", 1),
+            value("monochrome"), 0)
         output.detail0 = SIMD4<Float>(
             value("sharpness"), value("sharpenRadius", 1),
             value("sharpenDetail", 0.25), value("sharpenMasking"))

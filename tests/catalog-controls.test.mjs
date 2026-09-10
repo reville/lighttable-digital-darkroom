@@ -37,6 +37,9 @@ function harness(kind, {post: send, get: fetch} = {}) {
     ? ['watchDialog', 'watchOpen', 'watchDestRow', 'watchMode', 'watchSave', 'watchPath', 'watchDest',
       'watchDelete', 'watchPreset', 'watchId', 'watchExisting', 'watchExistingRow', 'watchName',
       'watchRecursive', 'watchFollow', 'watchStatus', 'watchPill', 'watchCancel', 'watchChoose', 'watchChooseDest']
+    : kind === 'sidecar-dialog'
+    ? ['importSidecarsBtn', 'sidecarDialog', 'sidecarOptMetadata', 'sidecarOptDevelop', 'sidecarOptCrop',
+      'sidecarConflict', 'sidecarCancel', 'sidecarRun', 'catalogResultDialog', 'catalogResultTitle', 'catalogResultBody', 'catalogResultClose']
     : ['catalogBackup', 'catalogDuplicates', 'importSidecarsBtn', 'catalogResultDialog',
       'catalogResultTitle', 'catalogResultBody', 'catalogResultClose', 'localLibraryMenuBtn'];
   for (const id of ids) nodes.set(id, new Element(id));
@@ -199,4 +202,30 @@ test('every watch is reachable and the watching pill edits the enabled watch it 
   assert.equal(h.el('watchPath').value, '/studio');
   await h.click('watchDelete'); assert.equal(h.calls.at(-1).body.id, 'third');
   await h.click('watchPill'); assert.equal(h.el('watchId').value, 'second');
+});
+
+test('sidecar dialog allows selecting develop and crop settings and conflict strategy', async () => {
+  const h = harness('sidecar-dialog', {
+    post: async (path, body) => ({ ok: true, read: 5, applied: 5, missing: 0 })
+  });
+  h.el('sidecarOptMetadata').checked = true;
+  h.el('sidecarOptDevelop').checked = false;
+  h.el('sidecarOptCrop').checked = false;
+  h.el('sidecarConflict').value = 'skip-existing';
+
+  await h.click('importSidecarsBtn');
+  assert.equal(h.el('sidecarDialog').classList.contains('on'), true);
+
+  h.el('sidecarOptDevelop').checked = true;
+  h.el('sidecarOptCrop').checked = true;
+  h.el('sidecarConflict').value = 'overwrite';
+
+  await h.click('sidecarRun');
+  assert.equal(h.el('sidecarDialog').classList.contains('on'), false);
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.calls[0].path, '/api/import/sidecars');
+  assert.deepEqual(h.calls[0].body, {
+    apply: { metadata: true, develop: true, crop: true },
+    conflict: 'overwrite'
+  });
 });

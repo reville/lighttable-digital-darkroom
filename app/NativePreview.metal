@@ -603,7 +603,18 @@ fragment float4 nativePreviewFragment(
     for (int index = 0; index < 8; index++) {
         hslEnabled = hslEnabled || any(abs(hslValue(grade, index)) > 1e-6);
     }
-    if (hslEnabled) {
+    if (grade.vignetteShape.z > 0.5) {
+        float3 hsv = rgbToHsv(color);
+        float dl = 0.0;
+        for (int index = 0; index < 8; index++) {
+            float difference = abs(fmod(hsv.x - hslCentre(index) + 540.0, 360.0) - 180.0);
+            float weight = clamp(1.0 - difference / 45.0, 0.0, 1.0);
+            weight = weight * weight * (3.0 - 2.0 * weight) * hsv.y;
+            dl += weight * hslValue(grade, index).z * 0.5;
+        }
+        float luma = dot(color, LUMA) + dl;
+        color = clamp(float3(luma), 0.0, 1.0);
+    } else if (hslEnabled) {
         float3 hsv = rgbToHsv(color);
         float hueShift = 0.0;
         float saturationShift = 0.0;
@@ -712,6 +723,13 @@ fragment float4 nativePreviewFragment(
         float threshold = grade.spotVisualization.y;
         float value = (0.5 - dot(color, LUMA)) * (2.0 + threshold * 7.0) + 0.5;
         color = float3(clamp(clamp(value, 0.0, 1.0) * (0.72 + threshold * 0.35), 0.0, 1.0));
+    }
+    if (grade.spotVisualization.z > 0.5) {
+        if (color.r <= 0.005 && color.g <= 0.005 && color.b <= 0.005) {
+            color = float3(0.0, 0.2, 1.0);
+        } else if (color.r >= 0.995 || color.g >= 0.995 || color.b >= 0.995) {
+            color = float3(1.0, 0.0, 0.0);
+        }
     }
     if (grade.reference0.x > 0.5) {
         float2 referenceUv = (uv - 0.5 - grade.reference1.xy)

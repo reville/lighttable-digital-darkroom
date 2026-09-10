@@ -23,6 +23,34 @@ export function isIdentityPoints(points) {
     points[1][0] === 1 && points[1][1] === 1;
 }
 
+export function evalParametricLUT(params) {
+  const { highlights = 0, lights = 0, darks = 0, shadows = 0,
+          splitSD = 0.25, splitDL = 0.50, splitLH = 0.75 } = params || {};
+  if (highlights === 0 && lights === 0 && darks === 0 && shadows === 0) return null;
+  const nodes = [
+    { x: 0, delta: 0 },
+    { x: splitSD * 0.5, delta: (shadows / 100) * 0.25 },
+    { x: (splitSD + splitDL) * 0.5, delta: (darks / 100) * 0.25 },
+    { x: (splitDL + splitLH) * 0.5, delta: (lights / 100) * 0.25 },
+    { x: (splitLH + 1.0) * 0.5, delta: (highlights / 100) * 0.25 },
+    { x: 1.0, delta: 0 },
+  ];
+  const output = new Array(256);
+  for (let i = 0; i < 256; i++) {
+    const x = i / 255;
+    let seg = 0;
+    for (let s = 0; s < nodes.length - 1; s++) {
+      if (x >= nodes[s].x && x <= nodes[s + 1].x) { seg = s; break; }
+    }
+    const n0 = nodes[seg], n1 = nodes[seg + 1];
+    const t = (x - n0.x) / Math.max(n1.x - n0.x, 1e-6);
+    const smooth = t * t * (3 - 2 * t);
+    const delta = n0.delta + (n1.delta - n0.delta) * smooth;
+    output[i] = Math.max(0, Math.min(1, x + delta));
+  }
+  return output;
+}
+
 export function rgbHue(red, green, blue) {
   const maximum = Math.max(red, green, blue);
   const minimum = Math.min(red, green, blue);

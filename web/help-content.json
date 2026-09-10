@@ -688,6 +688,13 @@
           "paragraphs": [
             "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
           ]
+        },
+        {
+          "title": "Folders and collections",
+          "paragraphs": [
+            "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
+            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+          ]
         }
       ],
       "related": [
@@ -1076,7 +1083,7 @@
           "steps": [
             "Set Exposure for the main subject.",
             "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.",
-            "Use the Clipping warning button beside the histogram to inspect clipping.",
+            "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).",
             "Compare your result with the original using the before control, or hold B while the photo is active."
           ],
           "tips": [
@@ -1329,6 +1336,19 @@
             "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.",
             "Point Color’s Reset clears the sampled points without requiring a full Color reset."
           ]
+        },
+        {
+          "title": "Black and white treatment and mixer",
+          "paragraphs": [
+            "The Treatment switcher at the top of the Color panel toggles between Color and B&W. In B&W mode, the image converts to monochrome while preserving full tonal control across 8 color bands.",
+            "The B&W Mixer sliders adjust how strongly each original color contributes to the grayscale luminance."
+          ],
+          "steps": [
+            "In Edit → Color, click B&W on the Treatment switcher.",
+            "The Color Mixer becomes the B&W Mixer, showing Red, Orange, Yellow, Green, Aqua, Blue, Purple, and Magenta sliders.",
+            "Drag a slider right to lighten that color in the black-and-white conversion, or left to darken it (e.g. darkening Blue to deepen a sky).",
+            "Click Color on the Treatment switcher to return to full color."
+          ]
         }
       ],
       "related": [
@@ -1438,6 +1458,22 @@
           ],
           "tips": [
             "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing."
+          ]
+        },
+        {
+          "title": "Apply previous settings",
+          "paragraphs": [
+            "Previous applies the edits from the immediately preceding photo directly to the active photo, letting you rapidly grade a sequence without opening the Copy Settings dialog."
+          ],
+          "steps": [
+            "Select a photo you have already edited.",
+            "Navigate to the next photo in your sequence.",
+            "Choose Photo → Previous Settings, or press Option-Command-V on Mac (Alt-Ctrl-V on Windows and Linux).",
+            "The prior photo’s develop settings, film look, curves, color grading, and lens corrections are applied immediately."
+          ],
+          "tips": [
+            "Previous settings works without needing an explicit Copy command first.",
+            "Crop, geometry, and spot healing are excluded by default to protect individual photo framing."
           ]
         }
       ],
@@ -1982,6 +2018,19 @@
           "tips": [
             "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.",
             "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."
+          ]
+        },
+        {
+          "title": "Use the Parametric curve",
+          "paragraphs": [
+            "The Parametric tab provides four region sliders — Highlights, Lights, Darks, and Shadows — along with split point controls that define the threshold boundaries between tonal regions.",
+            "This lets you smoothly sculpt tonal contrast and midtones without placing manual anchor points on the graph."
+          ],
+          "steps": [
+            "Switch to the Parametric tab in Edit → Curve.",
+            "Drag Highlights or Lights to shape upper tonal values, and Darks or Shadows for lower values.",
+            "Adjust the split markers between the bands to shift where each region transitions.",
+            "Double-click any slider to reset it to zero."
           ]
         }
       ],
