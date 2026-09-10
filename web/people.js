@@ -294,8 +294,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     const a = groups.find(g => g.id === pair.a), b = groups.find(g => g.id === pair.b);
     if (!a || !b) return;
     const section = el('section', null, 'people-review');
-    section.append(el('p', t('POSSIBLE MATCH'), 'people-eyebrow'), el('h2', t('Are these the same person?')),
-      el('p', t('Compare the faces before combining their photos.'), 'people-review-intro'));
+    section.append(el('p', t('POSSIBLE MATCH'), 'people-eyebrow'), el('h2', t('Are these the same person?')));
     const comparison = el('div', null, 'people-comparison');
     for (const group of [a, b]) {
       const side = el('div', null, 'people-comparison-side');
