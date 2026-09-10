@@ -43,8 +43,10 @@ jobs:
             .flatpak-builder/cache
             .flatpak-builder/downloads
             .flatpak-builder/git
-          key: flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/source-*.json', 'scripts/flatpak/source-*.py') }}
-          restore-keys: flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-
+          key: flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/source-*.json', 'scripts/flatpak/source-*.py') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-${{ hashFiles('packaging/flatpak/source-*.json', 'scripts/flatpak/source-*.py') }}-
+            flatpak-source-${{ steps.runtime.outputs.sdk_commit }}-
       - name: Fetch pinned sources, then compile offline
         run: |
           flatpak-builder --user --download-only --disable-rofiles-fuse .build/source-flatpak/build .build/source-flatpak/manifest.json

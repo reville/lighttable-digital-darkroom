@@ -55,8 +55,7 @@
       "build-commands": [
         "./configure --prefix=/app/LightTable/Python --enable-shared --with-ensurepip=no",
         "make -j${FLATPAK_BUILDER_N_JOBS}",
-        "make install",
-        "install -Dm644 source-wheel.py /app/share/lighttable/build/source-wheel.py"
+        "make install"
       ],
       "sources": [
         {
@@ -64,11 +63,6 @@
           "url": "https://github.com/python/cpython.git",
           "tag": "v3.13.12",
           "commit": "1cbe481834751b0125e006042ffbd8cd5eaec8a8"
-        },
-        {
-          "type": "file",
-          "path": "../../scripts/flatpak/source-wheel.py",
-          "sha256": "b3add6bd6fcb3b9356f11d00fef024c0a9454bdbc0837c961603672143f699d5"
         }
       ],
       "build-options": {
@@ -76,6 +70,20 @@
           "LDFLAGS": "-Wl,-rpath,/app/LightTable/Python/lib"
         }
       }
+    },
+    {
+      "name": "source-build-helpers",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm644 source-wheel.py /app/share/lighttable/build/source-wheel.py"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../scripts/flatpak/source-wheel.py",
+          "sha256": "4f1687ce9660207f18d6b141fb4d559cb0ee4bdc86cd4ed34e8b63ddacb7a11e"
+        }
+      ]
     },
     {
       "name": "python-flit-core",

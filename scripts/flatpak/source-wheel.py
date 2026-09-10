@@ -10,6 +10,7 @@ import argparse
 import importlib
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -59,7 +60,8 @@ def main() -> None:
         if len(wheels) != 1:
             raise RuntimeError(f'Expected one source-built wheel, found {wheels}')
         wheel = WHEELS / wheels[0].name
-        wheels[0].replace(wheel)
+        # Flatpak mounts /tmp and /app on different filesystems.
+        shutil.copy2(wheels[0], wheel)
         if not args.build_only:
             run(sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',
                 '--force-reinstall', str(wheel))

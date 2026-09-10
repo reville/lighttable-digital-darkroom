@@ -106,9 +106,11 @@ def generate(revision: str, version: str, output: Path, *, allow_incomplete=Fals
     simple('cpython', [
         './configure --prefix=/app/LightTable/Python --enable-shared --with-ensurepip=no',
         'make -j${FLATPAK_BUILDER_N_JOBS}', 'make install',
-        'install -Dm644 source-wheel.py /app/share/lighttable/build/source-wheel.py',
-    ], [native['cpython'], pinned_file(ROOT / 'scripts/flatpak/source-wheel.py', output)],
+    ], [native['cpython']],
        **{'build-options': {'env': {'LDFLAGS': '-Wl,-rpath,/app/LightTable/Python/lib'}}})
+    simple('source-build-helpers', [
+        'install -Dm644 source-wheel.py /app/share/lighttable/build/source-wheel.py',
+    ], [pinned_file(ROOT / 'scripts/flatpak/source-wheel.py', output)])
     simple('python-flit-core', [
         PYTHON + ' -m flit_core.wheel',
         PYTHON + ' bootstrap_install.py dist/flit_core-*.whl --installdir /app/LightTable/Python/lib/python3.13/site-packages',
