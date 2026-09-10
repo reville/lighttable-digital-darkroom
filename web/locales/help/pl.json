@@ -235,7 +235,8 @@
             "Dopasuj może powiększać małe zdjęcia. 1:1 wyświetla rzeczywiste piksele, nawet gdy zdjęcie staje się mniejsze niż w trybie Dopasuj, i zachowuje tę samą skalę pikseli przy zmianie rozmiaru okna.",
             "Najedź kursorem na licznik zdjęć na górnym pasku, aby zobaczyć, co oznaczają jego liczby.",
             "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio.",
-            "Dopóki okno jest otwarte, LightTable zapamiętuje pozycję przesunięcia każdego zdjęcia i zachowuje bieżący poziom powiększenia przy zmianie zdjęć. Nowe zdjęcia są wyświetlane na środku."
+            "Dopóki okno jest otwarte, LightTable zapamiętuje pozycję przesunięcia każdego zdjęcia i zachowuje bieżący poziom powiększenia przy zmianie zdjęć. Nowe zdjęcia są wyświetlane na środku.",
+            "Na Macu zsuń palce na gładziku nad zdjęciem w Szczegóły, aby powiększać wokół wskaźnika. Przesuń wskaźnik nad obszar, który chcesz obejrzeć, zanim zsuniesz palce."
           ],
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
@@ -700,6 +701,13 @@
           "paragraphs": [
             "Menu ••• obok kolekcji usuwa kolekcję. Usuwa to grupowanie, a nie przenosi oryginalne pliki do Kosza. Wyszukiwanie i filtry mogą dodatkowo zawęzić zdjęcia wyświetlane w kolekcji."
           ]
+        },
+        {
+          "title": "Foldery i kolekcje",
+          "paragraphs": [
+            "Foldery reprezentują fizyczną hierarchię dysku, w której znajdują się pliki. Kolekcje to elastyczne, lekkie grupy w LightTable, które mogą gromadzić zdjęcia z wielu folderów bez przenoszenia ani duplikowania jakichkolwiek plików na dysku.",
+            "Podczas importowania katalogu lub dodawania folderu źródłowego włączenie opcji Utwórz kolekcję dla każdego folderu najwyższego poziomu automatycznie tworzy pasujące kolekcje dla każdego folderu najwyższego poziomu, dzięki czemu istniejąca struktura jest natychmiast dostępna w Kolekcje."
+          ]
         }
       ],
       "related": [
@@ -1097,7 +1105,7 @@
           "steps": [
             "Ustaw Ekspozycję dla głównego obiektu.",
             "Dostosuj Światła i Cienie, aby zrównoważyć jasne i ciemne obszary, a następnie doprecyzuj Biele, Cienie i Kontrast.",
-            "Użyj przycisku ostrzeżenia o przycięciu obok histogramu, aby sprawdzić przycięcie.",
+            "Użyj przycisku Ostrzeżenie o obcięciu obok histogramu lub naciśnij J, aby przełączać wskaźniki obcięcia świateł i cieni bezpośrednio na obrazie (czerwony dla obciętych świateł, niebieski dla obciętych cieni).",
             "Porównaj wynik z oryginałem, używając kontrolki przed, albo przytrzymaj B, gdy zdjęcie jest aktywne."
           ],
           "tips": [
@@ -1353,6 +1361,19 @@
             "Kolor punktowy przechowuje do ośmiu próbkowanych punktów. Jeśli próbkujesz ponownie, gdy istnieje już osiem, ósmy punkt zostaje zastąpiony.",
             "Resetuj w Kolor punktowy czyści próbki punktów bez potrzeby pełnego resetu Koloru."
           ]
+        },
+        {
+          "title": "Obróbka i mieszacz czerni i bieli",
+          "paragraphs": [
+            "Przełącznik Tryb u góry panelu Kolor przełącza między Kolor i B&W. W trybie B&W obraz jest konwertowany do monochromatycznego, przy zachowaniu pełnej kontroli tonalnej w 8 pasmach kolorów.",
+            "Suwaki Mieszacza B&W regulują, jak silnie każdy oryginalny kolor wpływa na luminancję w skali szarości."
+          ],
+          "steps": [
+            "W Edytuj → Kolor kliknij B&W w przełączniku Tryb.",
+            "Mieszacz kolorów staje się Mieszaczem B&W, pokazując suwaki Czerwony, Pomarańczowy, Żółty, Zielony, Aqua, Niebieski, Purpurowy i Magenta.",
+            "Przeciągnij suwak w prawo, aby rozjaśnić ten kolor w konwersji czarno-białej, lub w lewo, aby go przyciemnić (np. przyciemnienie Niebieskiego, aby pogłębić niebo).",
+            "Kliknij Kolor w przełączniku Tryb, aby wrócić do pełnego koloru."
+          ]
         }
       ],
       "related": [
@@ -1423,10 +1444,17 @@
       ],
       "sections": [
         {
+          "title": "Kopiowanie zdjęcia",
+          "paragraphs": [
+            "Command-C kopiuje podgląd edytowanego zdjęcia (do 2048 pikseli szerokości), aby wkleić go w innych aplikacjach. W polach tekstowych działa zwykłe kopiowanie; Command-Shift-C kopiuje ustawienia edycji."
+          ]
+        },
+        {
           "title": "Przenieś wybrane ustawienia",
           "paragraphs": [
             "Przyciski Kopiuj i Wklej znajdują się pod zdjęciem w widoku szczegółowym.",
-            "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami."
+            "Kopiuj i Wklej przenoszą grupy, które jawnie zaznaczysz. Ustawienia w niezaznaczonych grupach pozostają takie, jakie są na każdym celu. To jawny przepływ pracy kopiuj/wklej: późniejsze edycje źródła nie synchronizują się automatycznie z celami.",
+            "Wklej dotyczy wybranych zdjęć nadal widocznych w bieżącym folderze, kolekcji i filtrach. Jeśli żaden z elementów zaznaczenia nie jest już widoczny, dotyczy aktywnego zdjęcia. Sprawdź zaznaczenie miejsca docelowego przed wklejeniem."
           ],
           "steps": [
             "Otwórz zdjęcie źródłowe i kliknij Kopiuj ustawienia edycji albo naciśnij Command-Shift-C na Macu lub Ctrl-Shift-C w systemach Linux i Windows.",
@@ -1464,6 +1492,22 @@
           ],
           "tips": [
             "Zdjęcie referencyjne jest wyłączone z aktualizacji celu. Dopasowanie jest punktem wyjścia, zwłaszcza gdy zdjęcia zawierają różne obiekty lub kadrowanie."
+          ]
+        },
+        {
+          "title": "Zastosuj poprzednie ustawienia",
+          "paragraphs": [
+            "Previous stosuje edycje z bezpośrednio poprzedniego zdjęcia do aktywnego zdjęcia, umożliwiając szybkie stopniowanie sekwencji bez otwierania okna dialogowego Kopiuj ustawienia."
+          ],
+          "steps": [
+            "Wybierz zdjęcie, które już edytowałeś.",
+            "Nawiguj do następnego zdjęcia w sekwencji.",
+            "Wybierz Zdjęcie → Poprzednie ustawienia lub naciśnij Option-Command-V na Macu (Alt-Ctrl-V w Windows i Linux).",
+            "Ustawienia wywoływania, wygląd filmu, krzywe, korekcja kolorów i korekcje obiektywu z poprzedniego zdjęcia są stosowane natychmiast."
+          ],
+          "tips": [
+            "Poprzednie ustawienia działają bez potrzeby wcześniejszego użycia jawnej komendy Kopiuj.",
+            "Kadrowanie, geometria i naprawa punktowa są domyślnie wykluczone, aby chronić indywidualne kadrowanie zdjęcia."
           ]
         }
       ],
@@ -1847,7 +1891,8 @@
         {
           "title": "Sprawdź, czy Twoja praca została zapisana",
           "paragraphs": [
-            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty."
+            "Kontrolki edycji są niedostępne, dopóki nie zostanie wczytane zdjęcie. Korekty są przechowywane jako ustawienia edycji zdjęcia. Edytor zapisuje zmiany automatycznie po zakończeniu interakcji; nie potrzebujesz osobnego polecenia Zapisz dla każdej korekty.",
+            "Przełączanie zdjęć również dodaje bieżące zmiany suwaka do kolejki zapisu. Poczekaj na Zapisane przed zamknięciem okna; jeśli zapis się nie powiedzie, pozostaw okno otwarte i użyj Ponów zapis."
           ],
           "steps": [
             "Wykonaj korektę, a następnie sprawdź stan zapisu w aplikacji.",
@@ -2017,6 +2062,19 @@
           "tips": [
             "Użyj kilku punktów i porównuj zdjęcie podczas pracy; krzywe kanałów mogą wprowadzać silne zafarbienia.",
             "Zapisana lub zaimportowana krzywa zachowuje dokładnie zapisaną tabelę do momentu jej edycji. Aplikacja przebudowuje reprezentatywne uchwyty do edycji, więc pierwsza regulacja może przekształcić zaimportowaną krzywą poza punkt, który przesuniesz."
+          ]
+        },
+        {
+          "title": "Użyj krzywej Parametryczna",
+          "paragraphs": [
+            "Karta Parametryczna udostępnia cztery suwaki regionów — Światła, Jasne, Ciemne i Cienie — wraz z kontrolkami punktów podziału, które definiują granice progowe między regionami tonalnymi.",
+            "Umożliwia to płynne modelowanie kontrastu tonalnego i tonów średnich bez umieszczania ręcznych punktów kontrolnych na wykresie."
+          ],
+          "steps": [
+            "Przełącz na kartę Parametryczna w Edytuj → Krzywa.",
+            "Przeciągnij Światła lub Jasne, aby kształtować wyższe wartości tonalne, oraz Ciemne lub Cienie dla niższych wartości.",
+            "Dopasuj znaczniki podziału między pasmami, aby przesunąć miejsce przejścia każdego regionu.",
+            "Kliknij dwukrotnie dowolny suwak, aby zresetować go do zera."
           ]
         }
       ],
@@ -2618,6 +2676,7 @@
         {
           "title": "Sprawdź zakres i wynik",
           "paragraphs": [
+            "Wybrane zdjęcia używa wybranych zdjęć nadal widocznych w bieżącym folderze, kolekcji i filtrach. Jeśli żaden z elementów zaznaczenia nie jest już widoczny, używa aktywnego zdjęcia. Sprawdź liczbę zdjęć i nazwę w Eksportuj przed rozpoczęciem.",
             "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
             "Jeśli wsadowy eksport zapisuje do wielu folderów, Pokaż w Finderze pokazuje pierwsze zdjęcie wyeksportowane pomyślnie. Łącze jest nieobecne, gdy nie wyeksportowano żadnych zdjęć. Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu podają liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć nieruchomych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub jest renderowany, to zdjęcie zakończy się błędem; dodaj je ponownie do kolejki po sprawdzeniu oryginału."
           ]
@@ -3208,5 +3267,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

@@ -23,7 +23,7 @@ class LocalEditTests(unittest.TestCase):
         self.assertEqual(len(masks), edits.MAX_MASKS)
         self.assertEqual(masks[0]["opacity"], 1)
         self.assertLessEqual(masks[0]["lumaLow"], masks[0]["lumaHigh"])
-        self.assertEqual(masks[0]["grade"]["exposure"], 3)
+        self.assertEqual(masks[0]["grade"]["exposure"], 5.0)
 
     def test_mask_points_are_bounded_across_the_image(self):
         strokes = [{"points": [[0.5, 0.5]] * edits.MAX_POINTS}

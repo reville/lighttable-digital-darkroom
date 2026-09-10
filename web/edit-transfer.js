@@ -4,7 +4,7 @@ import { localToolLabel } from './editor-panels.js';
 const copy = value => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
 export const TRANSFER_GROUPS = [
   ['film', tr("Film look"), tr("Stock, paper and film effects")],
-  ['raw', tr("RAW development"), tr("Camera profile, capture white balance and denoise")],
+  ['raw', tr("RAW development"), tr("Demosaic, capture white balance and denoise")],
   ['tone', tr("Tone"), tr("Exposure, contrast, highlights, shadows and master curve")],
   ['color', tr("Color"), tr("White balance, HSL, color curves and grading")],
   ['detail', tr("Detail and effects"), tr("Sharpening, noise, clarity, texture and vignette")],

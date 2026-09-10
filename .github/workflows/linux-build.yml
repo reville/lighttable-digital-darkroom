@@ -6,6 +6,10 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      capture_screenshots:
+        description: Capture native screenshots from the published Linux release
+        type: boolean
+        default: false
       version:
         description: Package version (leave blank for a CI build)
         required: false
@@ -33,7 +37,63 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  capture-linux:
+    name: Capture native Linux screenshots
+    if: github.event_name == 'workflow_dispatch' && inputs.capture_screenshots
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Install native desktop capture dependencies
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libgtk-3-0t64 libwebkit2gtk-4.1-0 libxdo3 libvulkan1 mesa-vulkan-drivers libgl1-mesa-dri libgomp1 libopenblas0-pthread xvfb xauth dbus-x11 openbox xdotool x11-utils imagemagick tesseract-ocr python3-pil fonts-dejavu-core
+      - name: Fetch the exact checksummed Pexels inputs
+        run: |
+          python3 - <<'PYCODE'
+          import csv, hashlib, pathlib, re, subprocess
+          root = pathlib.Path('scripts/screenshots/photos/pexels')
+          root.mkdir()
+          with open('scripts/screenshots/photos/manifest.tsv') as stream:
+              for item in csv.DictReader(stream, delimiter='\t'):
+                  url = item['download_url']
+                  data = subprocess.check_output(['curl', '--fail', '--location', '--retry', '3', '--max-time', '60', '--silent', '--show-error', url], timeout=240)
+                  assert hashlib.sha256(data).hexdigest() == item['sha256'], item['filename']
+                  (root / item['filename']).write_bytes(data)
+          PYCODE
+      - name: Download and verify the published Linux application
+        run: |
+          curl --fail --location --retry 3 -o /tmp/lighttable.tar.gz https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.5.0/LightTable-0.5.0-linux-x86_64.tar.gz
+          echo 'eaf1fb58d038d7260473343ab3bb64a3101ab5d180c09020af80b08929343f01  /tmp/lighttable.tar.gz' | sha256sum --check
+          mkdir /tmp/lighttable-capture-bundle
+          tar -xzf /tmp/lighttable.tar.gz -C /tmp/lighttable-capture-bundle
+      - name: Check the packaged render worker
+        run: |
+          ldd /tmp/lighttable-capture-bundle/LightTable/Resources/LightTable/engine/lighttable-engine
+          printf '%s\n' '{"command":"probe_input","input_cache_key":"capture-preflight","id":1}' | SPEKTRAFILM_BACKEND=cpu /tmp/lighttable-capture-bundle/LightTable/Resources/LightTable/engine/lighttable-engine
+      - name: Capture the actual GTK desktop in an isolated 2x display
+        run: |
+          timeout --signal=TERM --kill-after=20s 35m xvfb-run --auto-servernum --server-args='-screen 0 4000x2400x24 -dpi 96 -nolisten tcp' dbus-run-session -- bash -c '
+            openbox >/tmp/capture-openbox.log 2>&1 &
+            manager_pid=$!
+            trap "kill $manager_pid 2>/dev/null || true" EXIT
+            export GDK_SCALE=2 GDK_DPI_SCALE=1 GTK_CSD=1 GTK_THEME=Adwaita:dark
+            python3 scripts/screenshots/linux_capture.py --bundle /tmp/lighttable-capture-bundle/LightTable --output-dir /tmp/pexels-linux-captures --only export-workflow
+          '
+      - name: Retain native masters and provenance for local review
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-linux-screenshots
+          path: /tmp/pexels-linux-captures/
+          retention-days: 14
+          if-no-files-found: warn
+
   package:
+    if: ${{ !inputs.capture_screenshots }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:

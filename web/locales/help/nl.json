@@ -235,7 +235,8 @@
             "Passend maken kan kleine foto’s vergroten. 1:1 toont de werkelijke pixels, ook wanneer de foto daardoor kleiner wordt dan bij Passend maken, en behoudt dezelfde pixelschaal wanneer je het vensterformaat wijzigt.",
             "Beweeg de aanwijzer over de fototeller in de bovenste balk om te zien wat de getallen betekenen.",
             "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
-            "Zolang het venster open is, onthoudt LightTable de verschoven positie van elke foto en behoudt het huidige zoomniveau wanneer je van foto wisselt. Nieuwe foto’s worden gecentreerd weergegeven."
+            "Zolang het venster open is, onthoudt LightTable de verschoven positie van elke foto en behoudt het huidige zoomniveau wanneer je van foto wisselt. Nieuwe foto’s worden gecentreerd weergegeven.",
+            "Op een Mac kunt u in Details op het trackpad knijpen boven de foto om rond de aanwijzer te zoomen. Beweeg de aanwijzer over het gebied dat u wilt inspecteren voordat u knijpt."
           ],
           "steps": [
             "Gebruik de drie knoppen Foto-weergave bovenaan. In het LightTable-snelkopschema opent G Foto-raster, Shift+G opent Selectieraster en D opent Details.",
@@ -700,6 +701,13 @@
           "paragraphs": [
             "Het ×-teken naast een verzameling verwijdert de verzameling. Hiermee wordt de groepering verwijderd in plaats van de originele bestanden naar de Prullenbak te verplaatsen. Zoeken en filters kunnen de foto’s die binnen een verzameling worden getoond verder beperken."
           ]
+        },
+        {
+          "title": "Mappen en collecties",
+          "paragraphs": [
+            "Mappen stellen de fysieke schijphiërarchie voor waarin bestanden zich bevinden. Collecties zijn flexibele, lichte groepen binnen LightTable die foto's uit meerdere mappen kunnen verzamelen zonder bestanden op schijf te verplaatsen of te dupliceren.",
+            "Bij het importeren van een catalogus of het toevoegen van een bronmap worden met Collectie maken voor elke map op het hoogste niveau automatisch overeenkomende collecties gemaakt voor elke topniveau-map, zodat uw bestaande structuur direct beschikbaar is in Collecties."
+          ]
         }
       ],
       "related": [
@@ -1097,7 +1105,7 @@
           "steps": [
             "Stel Belichting in voor het hoofdonderwerp.",
             "Pas Hooglichten en Schaduwen aan om lichte en donkere gebieden in balans te brengen en verfijn daarna Witten, Zwartwaarden en Contrast.",
-            "Gebruik de knop voor clippingwaarschuwing naast het histogram om clipping te inspecteren.",
+            "Gebruik de knop Clippingwaarschuwing naast het histogram of druk op J om clippingindicatoren voor hooglichten en schaduwen rechtstreeks op de afbeelding in of uit te schakelen (rood voor geclipte hooglichten, blauw voor geclipte schaduwen).",
             "Vergelijk je resultaat met het origineel met behulp van de voor-optie, of houd B ingedrukt terwijl de foto actief is."
           ],
           "tips": [
@@ -1353,6 +1361,19 @@
             "Puntkleur bewaart maximaal acht gesamplede punten. Als u nogmaals samplet terwijl er al acht zijn, wordt het achtste punt vervangen.",
             "Opnieuw instellen van Puntkleur wist de bemonsterde punten zonder dat een volledige Kleur-reset nodig is."
           ]
+        },
+        {
+          "title": "Zwart-witbehandeling en -mixer",
+          "paragraphs": [
+            "Met de Behandeling-schakelaar bovenaan het paneel Kleur schakelt u tussen Kleur en B&W. In B&W-modus wordt de afbeelding omgezet naar monochroom terwijl volledige toonregeling over 8 kleurbanden behouden blijft.",
+            "Met de B&W Mixer-schuifregelaars bepaalt u hoe sterk elke oorspronkelijke kleur bijdraagt aan de grijswaardeluminantie."
+          ],
+          "steps": [
+            "Klik in Bewerken → Kleur op B&W in de Behandeling-schakelaar.",
+            "De Kleurenmixer wordt de B&W Mixer en toont schuifregelaars voor Rood, Oranje, Geel, Groen, Aqua, Blauw, Paars en Magenta.",
+            "Sleep een schuifregelaar naar rechts om die kleur in de zwart-witconversie lichter te maken, of naar links om deze donkerder te maken (bijv. Blauw donkerder maken om een lucht dieper te maken).",
+            "Klik op Kleur in de Behandeling-schakelaar om terug te keren naar volledige kleur."
+          ]
         }
       ],
       "related": [
@@ -1423,10 +1444,17 @@
       ],
       "sections": [
         {
+          "title": "Een foto kopiëren",
+          "paragraphs": [
+            "Command-C kopieert het bewerkte fotovoorbeeld (tot 2048 pixels breed) om in andere apps te plakken. Tekstvelden behouden normaal kopiëren; Command-Shift-C kopieert de bewerkingsinstellingen."
+          ]
+        },
+        {
           "title": "Geselecteerde instellingen overbrengen",
           "paragraphs": [
             "Kopiëren en Plakken staan onder de foto in de detailweergave.",
-            "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen."
+            "Kopiëren en Plakken dragen de groepen over die u expliciet selecteert. Instellingen in niet-aangevinkte groepen blijven op elke bestemming zoals ze zijn. Dit is een expliciete kopieer/plak-workflow: latere bewerkingen aan de bron worden niet automatisch gesynchroniseerd naar de bestemmingen.",
+            "Plakken wordt toegepast op geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, wordt het toegepast op de actieve foto. Controleer uw bestemmingsselectie voordat u plakt."
           ],
           "steps": [
             "Open de bronfoto en klik op Bewerkingsinstellingen kopiëren, of druk op Command-Shift-C op Mac of Ctrl-Shift-C op Linux en Windows.",
@@ -1464,6 +1492,22 @@
           ],
           "tips": [
             "De referentiefoto wordt uitgesloten van de doelupdates. Afstemmen is een startpunt, vooral wanneer de foto's verschillende onderwerpen of kadrering bevatten."
+          ]
+        },
+        {
+          "title": "Vorige instellingen toepassen",
+          "paragraphs": [
+            "Vorige past de bewerkingen van de direct voorafgaande foto rechtstreeks toe op de actieve foto, zodat u snel een reeks kunt bewerken zonder het dialoogvenster Kopieerinstellingen te openen."
+          ],
+          "steps": [
+            "Selecteer een foto die u al hebt bewerkt.",
+            "Navigeer naar de volgende foto in uw reeks.",
+            "Kies Foto → Vorige instellingen, of druk op Option-Command-V op Mac (Alt-Ctrl-V op Windows en Linux).",
+            "De ontwikkelinstellingen, filmlook, krommen, kleurbewerking en lenscorrecties van de vorige foto worden onmiddellijk toegepast."
+          ],
+          "tips": [
+            "Vorige instellingen werken zonder dat eerst een expliciete Kopiëren-opdracht nodig is.",
+            "Bijsnijden, geometrie en lokale retouche zijn standaard uitgesloten om de afzonderlijke kadrering van foto's te beschermen."
           ]
         }
       ],
@@ -1847,7 +1891,8 @@
         {
           "title": "Controleer of uw werk is opgeslagen",
           "paragraphs": [
-            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing."
+            "Bewerkingsopties zijn niet beschikbaar totdat een foto is geladen. Aanpassingen worden opgeslagen als bewerkingsinstellingen voor de foto. De editor slaat wijzigingen automatisch op wanneer u interacties afrondt; u hebt geen apart Opslaan-commando nodig voor elke aanpassing.",
+            "Bij het wisselen van foto’s worden ook de huidige schuifregelaaraanpassingen in de wachtrij gezet om op te slaan. Wacht tot Opgeslagen voordat u het venster sluit; als het opslaan mislukt, laat het venster dan open en gebruik Opslaan opnieuw proberen."
           ],
           "steps": [
             "Voer je aanpassing uit en controleer daarna de opslagstatus in de app.",
@@ -2017,6 +2062,19 @@
           "tips": [
             "Gebruik een paar punten en vergelijk de foto terwijl je werkt; kanaalkrommen kunnen sterke kleurzweem veroorzaken.",
             "Een opgeslagen of geïmporteerde kromme behoudt zijn exact opgeslagen tabel totdat u deze bewerkt. De app bouwt representatieve handgrepen opnieuw op voor bewerking, zodat de eerste aanpassing een geïmporteerde kromme kan hervormen voorbij het punt dat u verplaatst."
+          ]
+        },
+        {
+          "title": "Gebruik de Parametrische kromme",
+          "paragraphs": [
+            "Het tabblad Parametrisch biedt vier regiogschuifregelaars — Hooglichten, Lichten, Donkers en Schaduwen — samen met splitsmarkeringen die de drempelgrenzen tussen toonregio's definiëren.",
+            "Hiermee kunt u tooncontrast en middentonen vloeiend vormgeven zonder handmatige ankerpunten op de grafiek te plaatsen."
+          ],
+          "steps": [
+            "Schakel over naar het tabblad Parametrisch in Bewerken → Kromme.",
+            "Sleep Hooglichten of Lichten om de hogere toonwaarden vorm te geven, en Donkers of Schaduwen voor lagere waarden.",
+            "Pas de splitsmarkeringen tussen de banden aan om te verschuiven waar elke regio overgaat.",
+            "Dubbelklik op een schuifregelaar om deze op nul terug te zetten."
           ]
         }
       ],
@@ -2618,6 +2676,7 @@
         {
           "title": "Controleer de scope en het resultaat",
           "paragraphs": [
+            "Geselecteerde foto’s gebruikt geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, gebruikt het de actieve foto. Controleer het aantal foto’s en de naam in Exporteren voordat u start. ",
             "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
             "Als een batch naar meerdere mappen schrijft, toont Weergeven in Finder de eerst succesvol geëxporteerde foto. De koppeling ontbreekt wanneer er geen foto’s zijn geëxporteerd. Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert de aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s. Als een origineel verandert terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet hem opnieuw in de wachtrij nadat je het origineel hebt gecontroleerd."
           ]
@@ -3208,5 +3267,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

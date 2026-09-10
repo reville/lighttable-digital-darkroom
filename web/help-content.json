@@ -231,7 +231,8 @@
             "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.",
             "Hover over the photo counter in the top bar to see what its numbers mean.",
             "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
-            "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered."
+            "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.",
+            "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching."
           ],
           "steps": [
             "Use the three Photo view buttons at the top. In the LightTable shortcut scheme, G opens Photo Grid, Shift+G opens Culling Grid, and D opens Detail.",
@@ -688,6 +689,13 @@
           "paragraphs": [
             "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
           ]
+        },
+        {
+          "title": "Folders and collections",
+          "paragraphs": [
+            "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
+            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+          ]
         }
       ],
       "related": [
@@ -1076,7 +1084,7 @@
           "steps": [
             "Set Exposure for the main subject.",
             "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.",
-            "Use the Clipping warning button beside the histogram to inspect clipping.",
+            "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).",
             "Compare your result with the original using the before control, or hold B while the photo is active."
           ],
           "tips": [
@@ -1329,6 +1337,19 @@
             "Point Color keeps up to eight sampled points. If you sample again when eight already exist, the eighth point is replaced.",
             "Point Color’s Reset clears the sampled points without requiring a full Color reset."
           ]
+        },
+        {
+          "title": "Black and white treatment and mixer",
+          "paragraphs": [
+            "The Treatment switcher at the top of the Color panel toggles between Color and B&W. In B&W mode, the image converts to monochrome while preserving full tonal control across 8 color bands.",
+            "The B&W Mixer sliders adjust how strongly each original color contributes to the grayscale luminance."
+          ],
+          "steps": [
+            "In Edit → Color, click B&W on the Treatment switcher.",
+            "The Color Mixer becomes the B&W Mixer, showing Red, Orange, Yellow, Green, Aqua, Blue, Purple, and Magenta sliders.",
+            "Drag a slider right to lighten that color in the black-and-white conversion, or left to darken it (e.g. darkening Blue to deepen a sky).",
+            "Click Color on the Treatment switcher to return to full color."
+          ]
         }
       ],
       "related": [
@@ -1397,10 +1418,17 @@
       ],
       "sections": [
         {
+          "title": "Copy a photo",
+          "paragraphs": [
+            "Command-C copies the edited photo preview (up to 2,048 pixels wide) for pasting into other apps. Text fields keep normal copying; Command-Shift-C copies edit settings."
+          ]
+        },
+        {
           "title": "Transfer selected settings",
           "paragraphs": [
             "Copy and Paste are below the photo in Detail view.",
-            "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations."
+            "Copy and Paste transfer the groups you explicitly select. Settings in unchecked groups stay as they are on each destination. This is an explicit copy/paste workflow: later edits to the source do not automatically synchronize to the destinations.",
+            "Paste applies to selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it applies to the active photo. Check your destination selection before pasting."
           ],
           "steps": [
             "Open the source photo and click Copy edit settings, or press Command-Shift-C on Mac or Ctrl-Shift-C on Linux and Windows.",
@@ -1438,6 +1466,22 @@
           ],
           "tips": [
             "The reference photo is excluded from the target updates. Matching is a starting point, especially when the photos contain different subjects or framing."
+          ]
+        },
+        {
+          "title": "Apply previous settings",
+          "paragraphs": [
+            "Previous applies the edits from the immediately preceding photo directly to the active photo, letting you rapidly grade a sequence without opening the Copy Settings dialog."
+          ],
+          "steps": [
+            "Select a photo you have already edited.",
+            "Navigate to the next photo in your sequence.",
+            "Choose Photo → Previous Settings, or press Option-Command-V on Mac (Alt-Ctrl-V on Windows and Linux).",
+            "The prior photo’s develop settings, film look, curves, color grading, and lens corrections are applied immediately."
+          ],
+          "tips": [
+            "Previous settings works without needing an explicit Copy command first.",
+            "Crop, geometry, and spot healing are excluded by default to protect individual photo framing."
           ]
         }
       ],
@@ -1815,7 +1859,8 @@
         {
           "title": "Check that your work is saved",
           "paragraphs": [
-            "Editing controls are unavailable until a photo is loaded. Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment."
+            "Editing controls are unavailable until a photo is loaded. Adjustments are stored as edit settings for the photo. The editor saves changes automatically as you finish interactions; you do not need a separate Save command for each adjustment.",
+            "Switching photos also queues the current slider adjustments for saving. Wait for Saved before closing the window; if a save fails, keep the window open and use Retry save."
           ],
           "steps": [
             "Make your adjustment, then check the save status in the app.",
@@ -1982,6 +2027,19 @@
           "tips": [
             "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.",
             "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."
+          ]
+        },
+        {
+          "title": "Use the Parametric curve",
+          "paragraphs": [
+            "The Parametric tab provides four region sliders — Highlights, Lights, Darks, and Shadows — along with split point controls that define the threshold boundaries between tonal regions.",
+            "This lets you smoothly sculpt tonal contrast and midtones without placing manual anchor points on the graph."
+          ],
+          "steps": [
+            "Switch to the Parametric tab in Edit → Curve.",
+            "Drag Highlights or Lights to shape upper tonal values, and Darks or Shadows for lower values.",
+            "Adjust the split markers between the bands to shift where each region transitions.",
+            "Double-click any slider to reset it to zero."
           ]
         }
       ],
@@ -2571,6 +2629,7 @@
         {
           "title": "Check the scope and result",
           "paragraphs": [
+            "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.",
             "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.",
             "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."
           ]

@@ -520,7 +520,7 @@ def _options(options) -> dict:
     given = dict(options or {})
     out = dict(DEFAULT_OPTIONS)
     for key in ("metadata", "keywords", "collections", "stacks", "develop",
-                "history", "filmOff", "trial"):
+                "history", "filmOff", "trial", "foldersToCollections"):
         if key in given:
             out[key] = bool(given[key])
     conflict = str(given.get("conflict", out["conflict"]))
@@ -1381,6 +1381,19 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
             result["trialCollectionId"] = collection
         if opts["collections"] and not opts["trial"] and not result["cancelled"]:
             _import_collections(conn, cat, targets, result, progress)
+        if opts.get("foldersToCollections") and not opts["trial"] and not result["cancelled"] and targets:
+            folder_groups: dict[str, list[int]] = {}
+            for rec in files.values():
+                img_id = targets.get(rec["originalId"])
+                if img_id is not None:
+                    relpath = rec.get("relpath", "")
+                    parts = Path(relpath).parts
+                    folder_name = parts[0] if len(parts) > 1 else (rec.get("sourceName") or "Photos")
+                    folder_groups.setdefault(folder_name, []).append(img_id)
+            for folder_name, img_ids in folder_groups.items():
+                cid = cat.add_collection(folder_name)
+                cat.add_to_collection(cid, img_ids)
+                result["collections"] = result.get("collections", 0) + 1
         if opts["stacks"] and not opts["trial"] and not result["cancelled"]:
             _import_stacks(conn, cat, targets, result, progress)
     result.pop("_report_photo", None)

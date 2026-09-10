@@ -13,7 +13,8 @@ fn number(value: &Value, key: &str, default: f32) -> f32 {
 }
 
 pub(crate) fn parameters(width: u32, height: u32, grade: &Value) -> Vec<f32> {
-    let mut p = vec![0.0; 1204];
+    let mut p = vec![0.0; 1205];
+    p[1204] = number(grade, "monochrome", 0.0);
     p[0] = width as f32;
     p[1] = height as f32;
     for (i, (key, default)) in [
@@ -192,7 +193,7 @@ mod tests {
     #[test]
     fn vignette_shape_parameters_preserve_existing_offsets() {
         let defaults = parameters(13, 17, &serde_json::json!({"vignette": 0.4}));
-        assert_eq!(defaults.len(), 1204);
+        assert_eq!(defaults.len(), 1205);
         assert_eq!(defaults[15], 0.4);
         assert_eq!(&defaults[178..180], &[0.5, 1.0]);
         let curve = vec![0.25; 256];

@@ -1409,6 +1409,20 @@ func presetExportData(content: String, encoding: String = "utf8") throws -> Data
     }
 }
 
+// MARK: - Photo clipboard
+
+func writePhotoClipboard(_ base64: String, to pasteboard: NSPasteboard = .general) -> Bool {
+    guard base64.utf8.count <= 64 * 1024 * 1024,
+          let data = Data(base64Encoded: base64),
+          data.starts(with: [137, 80, 78, 71, 13, 10, 26, 10]),
+          let image = NSBitmapImageRep(data: data),
+          let tiff = image.tiffRepresentation else { return false }
+    let item = NSPasteboardItem()
+    guard item.setData(data, forType: .png), item.setData(tiff, forType: .tiff) else { return false }
+    pasteboard.clearContents()
+    return pasteboard.writeObjects([item])
+}
+
 // MARK: - About
 
 private final class AboutWindowController: NSWindowController {
@@ -2785,6 +2799,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               let body = message.body as? [String: Any],
               let action = body["action"] as? String else { return }
         switch action {
+        case "copyPhotoImage":
+            guard message.frameInfo.isMainFrame,
+                  isLocalEditorPage(message.frameInfo.request.url, port: Int(server.port)),
+                  let id = body["id"] as? String else { return }
+            let copied = (body["png"] as? String).map { writePhotoClipboard($0) } ?? false
+            sendEvent(["type": "photoClipboardReply", "id": id, "ok": copied])
         case "requestPresetLinks":
             guard message.frameInfo.isMainFrame,
                   message.frameInfo.request.url?.host == "127.0.0.1",
@@ -3548,6 +3568,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     @objc func performEditorCommand(_ sender: NSMenuItem) {
         guard let command = sender.representedObject as? String else { return }
+        if command == "copyPhoto", menuBool("textEditing") {
+            NSApp.sendAction(#selector(NSText.copy(_:)), to: nil, from: sender)
+            return
+        }
         if command == "undo", menuBool("textEditing") {
             webView.undoManager?.undo()
             return
@@ -3686,6 +3710,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
         if schemeCommandItems[command] != nil, textEditing { return false }
         switch command {
+        case "copyPhoto":
+            return textEditing || menuBool("canCopyPhoto")
         case "undo":
             return textEditing ? (webView?.undoManager?.canUndo ?? false)
                 : menuBool("canUndo")
@@ -3733,6 +3759,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             return editablePhoto
         case "pasteSettings":
             return menuBool("canPaste")
+        case "previousSettings":
+            return menuBool("canPrevious")
         case "pasteAllVisible":
             return menuBool("canPaste") && menuBool("hasImages")
         case "resetCrop":
@@ -3855,8 +3883,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         editMenu.addItem(.separator())
         addSystemItem(editMenu, title: L("Cut"),
                       action: #selector(NSText.cut(_:)), key: "x")
-        addSystemItem(editMenu, title: L("Copy"),
-                      action: #selector(NSText.copy(_:)), key: "c")
+        addEditorItem(editMenu, title: L("Copy"), command: "copyPhoto", key: "c")
         addSystemItem(editMenu, title: L("Paste"),
                       action: #selector(NSText.paste(_:)), key: "v")
         editMenu.addItem(.separator())
@@ -3967,6 +3994,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         addEditorItem(developMenu, title: L("Paste Edit Settings"),
                       command: "pasteSettings", key: "v",
                       modifiers: [.command, .shift])
+        addEditorItem(developMenu, title: L("Paste from Previous Photo"),
+                      command: "previousSettings", key: "v",
+                      modifiers: [.command, .option])
         addEditorItem(developMenu, title: L("Paste to All Visible Photos"),
                       command: "pasteAllVisible")
         developMenu.addItem(.separator())

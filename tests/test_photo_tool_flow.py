@@ -444,6 +444,18 @@ console.log(JSON.stringify({before,configured,savesBefore,spot:S.heals[0],undo:c
             self.assertEqual(result['spot'][key], value)
         self.assertEqual(result['undo'], 1)
 
+    def test_raw_develop_defaults_applied_to_unedited_raw(self):
+        result = self.run_js("""
+const isRaw = true;
+const uneditedRaw = { raw: true, hasEdits: false, grade: null };
+const rawDefaults = (uneditedRaw.raw && !uneditedRaw.hasEdits && !uneditedRaw.grade)
+  ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+const grade = { exposure: 0, sharpness: 0, colorNoise: 0, ...rawDefaults, ...(uneditedRaw.grade || {}) };
+console.log(JSON.stringify(grade));
+""")
+        self.assertEqual(result['sharpness'], 0.25)
+        self.assertEqual(result['colorNoise'], 0.25)
+
 
 if __name__ == '__main__':
     unittest.main()

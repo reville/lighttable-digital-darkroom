@@ -3269,7 +3269,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 10  # versioned film tuning after the cumulative-mask update
+RENDER_CACHE_VERSION = 11  # versioned film tuning after monochrome treatment update
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
@@ -5407,6 +5407,24 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
     target_names = None
     if "names" in opts:
         target_names = {str(x) for x in (opts.get("names") or [])}
+    elif "query" in opts and isinstance(opts["query"], dict):
+        cat = catalog_handle()
+        if cat is not None:
+            spec = dict(opts["query"], namesOnly=True, limit=100000)
+            spec_flt = dict(spec.get("filter") or {})
+            if which == "approved" and "status" not in spec_flt:
+                spec_flt["status"] = "approved"
+            elif which == "rated" and "ratingMin" not in spec_flt and "rating" not in spec_flt:
+                spec_flt["ratingMin"] = 1
+            spec["filter"] = spec_flt
+            res = cat.query(spec)
+            target_names = set(res.get("names", []))
+            total = res["total"]
+            for offset in range(len(target_names), total, 100000):
+                page = cat.query(dict(spec, offset=offset))
+                if page["total"] != total or not page.get("names"):
+                    raise ValueError("Catalog changed while preparing export; try again")
+                target_names.update(page["names"])
     elif which == "selected":
         target_names = {str(x) for x in (opts.get("selected") or [])}
 
@@ -8211,8 +8229,21 @@ def catalog_sources_action(body: dict) -> dict:
             imported = catalog_scan.import_state_file(cat, source_id)
         elif SCANNER is not None:
             SCANNER.request(source_id)
+        if body.get("foldersToCollections"):
+            if not body.get("importState", True):
+                catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
+            cat.create_collections_for_source_folders(source_id)
+        has_sidecars = False
+        try:
+            with os.scandir(path) as it:
+                for entry in it:
+                    if entry.is_file() and entry.name.lower().endswith(".xmp"):
+                        has_sidecars = True
+                        break
+        except OSError:
+            pass
         return {"ok": True, "sourceId": source_id, "imported": imported,
-                "sources": cat.sources()}
+                "hasSidecars": has_sidecars, "sources": cat.sources()}
     if action == "remove":
         cat.remove_source(int(body["id"]))
     elif action == "favorite":
@@ -8339,6 +8370,7 @@ def import_sidecars(body: dict) -> dict:
     want_develop = apply.get("develop", False)
     want_crop = apply.get("crop", False)
     conflict = str(body.get("conflict", "skip-existing"))
+    inspect_only = bool(body.get("inspectOnly"))
 
     names = body.get("names")
     if names is None:
@@ -8377,6 +8409,8 @@ def import_sidecars(body: dict) -> dict:
             report["missing"] += 1
             continue
         report["read"] += 1
+        if inspect_only:
+            continue
         image_id = catalog_image_id(name)
         if image_id is None:
             report["skipped"] += 1
@@ -8924,7 +8958,7 @@ def browser_catalog_query(spec: dict | None = None, *,
         excluded.append("video")
     query["excludeKinds"] = excluded
     page = require_catalog().query(query, include_state=include_state)
-    if FACE_INDEX:
+    if FACE_INDEX and page.get("items"):
         labels = FACE_INDEX.labels([item["name"].split(catalog_module.VIRTUAL_MARKER)[0]
                                     for item in page["items"]])
         for item in page["items"]:

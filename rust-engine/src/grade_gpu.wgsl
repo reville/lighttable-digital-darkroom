@@ -114,7 +114,18 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
             c = bounded(l + (c - l) * (1.0 + p[10] * (1.0 - saturation)));
         }
     }
-    if p[25] != 0.0 {
+    if p[1204] > 0.5 {
+        let hsv = rgb_to_hsv(c);
+        var delta = 0.0;
+        for (var i = 0u; i < 8u; i++) {
+            let at = 32u + i * 4u;
+            let difference = abs(modulo(hsv.x - p[at] + 180.0, 360.0) - 180.0);
+            var weight = clamp(1.0 - difference / 45.0, 0.0, 1.0);
+            weight = weight * weight * (3.0 - 2.0 * weight) * hsv.y;
+            delta += weight * p[at + 3u] * 0.5;
+        }
+        c = bounded(vec3<f32>(dot(c, LUMA) + delta));
+    } else if p[25] != 0.0 {
         var hsv = rgb_to_hsv(c); var delta = vec3<f32>(0.0);
         for (var i = 0u; i < 8u; i++) {
             let at = 32u + i * 4u;

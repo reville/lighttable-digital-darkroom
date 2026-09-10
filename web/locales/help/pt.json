@@ -235,7 +235,8 @@
             "Ajustar pode ampliar fotos pequenas. 1:1 mostra os pixels reais mesmo quando a foto fica menor do que em Ajustar e mantém a mesma escala de pixels ao redimensionar a janela.",
             "Passe o cursor sobre o contador de fotos na barra superior para ver o significado dos números.",
             "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente.",
-            "Enquanto a janela estiver aberta, o LightTable lembra a posição de visualização de cada foto e mantém o nível de zoom atual ao trocar de foto. As novas fotos aparecem centralizadas."
+            "Enquanto a janela estiver aberta, o LightTable lembra a posição de visualização de cada foto e mantém o nível de zoom atual ao trocar de foto. As novas fotos aparecem centralizadas.",
+            "No Mac, faça o gesto de pinça no trackpad sobre a foto em Detalhe para aplicar zoom ao redor do ponteiro. Mova o ponteiro para a área que você quer inspecionar antes de fazer a pinça."
           ],
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
@@ -700,6 +701,13 @@
           "paragraphs": [
             "O menu ••• de uma coleção exclui a coleção. Isso remove o agrupamento, em vez de mover os arquivos originais para a Lixeira. A pesquisa e os filtros podem refinar ainda mais as fotos mostradas dentro de uma coleção."
           ]
+        },
+        {
+          "title": "Pastas e coleções",
+          "paragraphs": [
+            "Pastas representam a hierarquia física do disco onde os arquivos residem. Coleções são grupos flexíveis e leves dentro do LightTable que podem reunir fotos de várias pastas sem mover nem duplicar nenhum arquivo no disco.",
+            "Ao importar um catálogo ou adicionar uma pasta de origem, ativar Criar coleção para cada pasta de nível superior cria automaticamente coleções correspondentes para cada pasta de nível superior, de modo que sua estrutura existente fique imediatamente acessível em Coleções."
+          ]
         }
       ],
       "related": [
@@ -1097,7 +1105,7 @@
           "steps": [
             "Defina a Exposição para o assunto principal.",
             "Ajuste Highlights e Shadows para equilibrar regiões claras e escuras e, depois, refine Whites, Blacks e Contrast.",
-            "Use o botão de aviso de recorte ao lado do histograma para inspecionar o recorte.",
+            "Use o botão Aviso de recorte ao lado do histograma ou pressione J para alternar diretamente na imagem os indicadores de recorte de realces e sombras (vermelho para realces recortados, azul para sombras recortadas).",
             "Compare o resultado com o original usando o controle de antes ou segure B enquanto a foto estiver ativa."
           ],
           "tips": [
@@ -1353,6 +1361,19 @@
             "Cor pontual mantém até oito pontos amostrados. Se você amostrar novamente quando já existirem oito, o oitavo ponto será substituído.",
             "Redefinir de Cor do ponto limpa os pontos amostrados sem exigir uma redefinição completa de Cor."
           ]
+        },
+        {
+          "title": "Tratamento P&B e misturador",
+          "paragraphs": [
+            "O seletor de Tratamento no topo do painel Cor alterna entre Cor e P&B. No modo P&B, a imagem é convertida para monocromático enquanto preserva controle tonal total em 8 faixas de cor.",
+            "Os deslizadores do Misturador P&B ajustam o quanto cada cor original contribui para a luminância em tons de cinza."
+          ],
+          "steps": [
+            "Em Editar → Cor, clique em P&B no seletor de Tratamento.",
+            "O Misturador de Cores se torna o Misturador P&B, mostrando os deslizadores Vermelho, Laranja, Amarelo, Verde, Ciano, Azul, Roxo e Magenta.",
+            "Arraste um deslizador para a direita para clarear essa cor na conversão preto e branco, ou para a esquerda para escurecê-la (por exemplo, escurecer Azul para aprofundar um céu).",
+            "Clique em Cor no seletor de Tratamento para voltar à cor total."
+          ]
         }
       ],
       "related": [
@@ -1423,10 +1444,17 @@
       ],
       "sections": [
         {
+          "title": "Copiar uma foto",
+          "paragraphs": [
+            "Command-C copia a prévia da foto editada (até 2048 pixels de largura) para colar em outros apps. Os campos de texto mantêm a cópia normal; Command-Shift-C copia os ajustes de edição."
+          ]
+        },
+        {
           "title": "Transferir configurações selecionadas",
           "paragraphs": [
             "Copiar e Colar ficam abaixo da foto na visualização Detalhe.",
-            "Copiar e Colar transferem os grupos que você seleciona explicitamente. As configurações em grupos desmarcados permanecem como estão em cada destino. Este é um fluxo explícito de copiar/colar: edições posteriores na origem não sincronizam automaticamente com os destinos."
+            "Copiar e Colar transferem os grupos que você seleciona explicitamente. As configurações em grupos desmarcados permanecem como estão em cada destino. Este é um fluxo explícito de copiar/colar: edições posteriores na origem não sincronizam automaticamente com os destinos.",
+            "Colar se aplica às fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele se aplica à foto ativa. Verifique sua seleção de destino antes de colar."
           ],
           "steps": [
             "Abra a foto de origem e clique em Copiar configurações de edição, ou pressione Command-Shift-C no Mac ou Ctrl-Shift-C no Linux e Windows.",
@@ -1464,6 +1492,22 @@
           ],
           "tips": [
             "A foto de referência é excluída das atualizações do destino. A correspondência é um ponto de partida, especialmente quando as fotos contêm assuntos ou enquadramentos diferentes."
+          ]
+        },
+        {
+          "title": "Aplicar configurações anteriores",
+          "paragraphs": [
+            "Anterior aplica diretamente à foto ativa as edições da foto imediatamente anterior, permitindo processar rapidamente uma sequência sem abrir a caixa de diálogo Copiar Configurações."
+          ],
+          "steps": [
+            "Selecione uma foto que você já tenha editado.",
+            "Navegue para a próxima foto na sua sequência.",
+            "Escolha Foto → Configurações anteriores, ou pressione Option-Command-V no Mac (Alt-Ctrl-V no Windows e Linux).",
+            "As configurações de desenvolvimento, o visual do filme, as curvas, a graduação de cor e as correções de lente da foto anterior são aplicadas imediatamente."
+          ],
+          "tips": [
+            "Configurações anteriores funcionam sem precisar primeiro de um comando Copiar explícito.",
+            "Cortar, geometria e correção de manchas são excluídos por padrão para proteger o enquadramento individual da foto."
           ]
         }
       ],
@@ -1847,7 +1891,8 @@
         {
           "title": "Verificar se o seu trabalho foi salvo",
           "paragraphs": [
-            "Os controles de edição ficam indisponíveis até que uma foto seja carregada. Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente conforme você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste."
+            "Os controles de edição ficam indisponíveis até que uma foto seja carregada. Os ajustes são armazenados como configurações de edição da foto. O editor salva as alterações automaticamente conforme você conclui as interações; você não precisa de um comando Salvar separado para cada ajuste.",
+            "Ao trocar de fotos, os ajustes atuais do deslizador também entram na fila para salvar. Aguarde até aparecer Salvo antes de fechar a janela; se o salvamento falhar, mantenha a janela aberta e use Tentar salvar novamente."
           ],
           "steps": [
             "Faça seu ajuste e depois verifique o status de salvamento no aplicativo.",
@@ -2017,6 +2062,19 @@
           "tips": [
             "Use alguns pontos e compare a foto enquanto trabalha; curvas de canal podem introduzir fortes dominantes de cor.",
             "Uma curva armazenada ou importada mantém sua tabela salva exata até que você a edite. O app reconstrói alças representativas para edição, então o primeiro ajuste pode remodelar uma curva importada além do ponto que você mover."
+          ]
+        },
+        {
+          "title": "Use a curva Paramétrica",
+          "paragraphs": [
+            "A aba Paramétrico oferece quatro deslizadores de região — Realces, Luzes, Escuros e Sombras — junto com controles de ponto de divisão que definem os limites de limiar entre as regiões tonais.",
+            "Isso permite esculpir suavemente o contraste tonal e os meios-tons sem colocar pontos de ancoragem manuais no gráfico."
+          ],
+          "steps": [
+            "Mude para a aba Paramétrico em Editar → Curva.",
+            "Arraste Realces ou Luzes para moldar os valores tonais superiores, e Escuros ou Sombras para os valores inferiores.",
+            "Ajuste os marcadores de divisão entre as faixas para alterar onde cada região faz a transição.",
+            "Clique duas vezes em qualquer deslizador para redefini-lo para zero."
           ]
         }
       ],
@@ -2618,6 +2676,7 @@
         {
           "title": "Verificar o escopo e o resultado",
           "paragraphs": [
+            "Fotos selecionadas usa as fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele usa a foto ativa. Verifique a contagem de fotos e o nome em Exportar antes de iniciar.",
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
             "Se um lote gravar em várias pastas, Mostrar no Finder revela a primeira foto exportada com sucesso. O link não está presente quando nenhuma foto foi exportada. Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original for alterado enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falha com um erro; coloque-a na fila novamente depois de verificar o original."
           ]
@@ -3208,5 +3267,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

@@ -691,6 +691,12 @@ class QueryTests(unittest.TestCase):
                                  "collectionId": collection})
         self.assertEqual(result["total"], 2)
 
+    def test_create_collections_for_source_folders(self):
+        cids = self.cat.create_collections_for_source_folders(self.source)
+        self.assertTrue(len(cids) >= 1)
+        cols = self.cat.collections()
+        self.assertTrue(any(c["name"] == "sub" for c in cols) or len(cols) >= 1)
+
     def test_virtual_copy_has_independent_state(self):
         base = self.items["f0.jpg"]
         self.cat.save_state(base, {"rating": 1, "keywords": ["Places > Rome"]})

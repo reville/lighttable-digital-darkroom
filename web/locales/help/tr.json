@@ -235,7 +235,8 @@
             "Sığdır, küçük fotoğrafları büyütebilir. 1:1, fotoğraf Sığdır görünümünden daha küçük hale gelse bile gerçek pikselleri gösterir ve pencereyi yeniden boyutlandırdığınızda aynı piksel ölçeğini korur.",
             "Sayıların ne anlama geldiğini görmek için üst çubuktaki fotoğraf sayacının üzerine gelin.",
             "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
-            "Pencere açıkken LightTable her fotoğrafın kaydırma konumunu hatırlar ve fotoğraflar arasında geçiş yaparken mevcut yakınlaştırma düzeyini korur. Yeni fotoğraflar ortalanmış olarak gösterilir."
+            "Pencere açıkken LightTable her fotoğrafın kaydırma konumunu hatırlar ve fotoğraflar arasında geçiş yaparken mevcut yakınlaştırma düzeyini korur. Yeni fotoğraflar ortalanmış olarak gösterilir.",
+            "Mac’te, Ayrıntı içinde fotoğrafın üzerinde trackpad’de sıkıştırarak imlecin etrafında yakınlaştırın. Sıkıştırmadan önce incelemek istediğiniz alanın üzerine imleci getirin."
           ],
           "steps": [
             "Üstteki üç Fotoğraf görünümü düğmesini kullanın. LightTable kısayol şemasında G Fotoğraf Izgarası’nı açar, Shift+G Ayıklama Izgarası’nı açar ve D Ayrıntı’yı açar.",
@@ -700,6 +701,13 @@
           "paragraphs": [
             "Bir koleksiyonun yanındaki × işareti koleksiyonu siler. Bu, orijinal dosyaları Çöp Kutusuna taşımak yerine gruplamayı kaldırır. Arama ve filtreler, bir koleksiyon içinde gösterilen fotoğrafları daha da daraltabilir."
           ]
+        },
+        {
+          "title": "Klasörler ve koleksiyonlar",
+          "paragraphs": [
+            "Klasörler, dosyaların bulunduğu fiziksel disk hiyerarşisini temsil eder. Koleksiyonlar ise LightTable içindeki esnek, hafif gruplardır; diskteki hiçbir dosyayı taşımadan ya da çoğaltmadan birden çok klasörden fotoğrafları bir araya getirebilir.",
+            "Bir katalog içe aktarırken veya bir kaynak klasör eklerken, Her üst düzey klasör için koleksiyon oluştur seçeneğini etkinleştirmek, her üst düzey klasör için eşleşen koleksiyonları otomatik olarak oluşturur; böylece mevcut yapınız Koleksiyonlar içinde hemen erişilebilir olur."
+          ]
         }
       ],
       "related": [
@@ -1097,7 +1105,7 @@
           "steps": [
             "Ana konu için Pozlama’yı ayarlayın.",
             "Parlak ve karanlık bölgeleri dengelemek için Highlights ve Shadows’u ayarlayın, ardından Whites, Blacks ve Contrast’ı ince ayar yapın.",
-            "Kırpma uyarısını incelemek için histogramın yanındaki Kırpma uyarısı düğmesini kullanın.",
+            "Aşağıdaki Kırpma uyarısı düğmesini kullanın ya da J'ye basarak vurgu ve gölge kırpılma göstergelerini doğrudan görüntü üzerinde açıp kapatın (kırpılan vurgular için kırmızı, kırpılan gölgeler için mavi).",
             "before kontrolünü kullanarak sonucu özgünle karşılaştırın ya da fotoğraf etkin durumdayken B’ye basılı tutun."
           ],
           "tips": [
@@ -1353,6 +1361,19 @@
             "Nokta Rengi en fazla sekiz örneklenmiş nokta tutar. Sekiz nokta zaten varken yeniden örnekleme yaparsanız, sekizinci nokta değiştirilir.",
             "Nokta Rengi’nin Sıfırla’sı, tam bir Renk sıfırlaması gerektirmeden örneklenen noktaları temizler."
           ]
+        },
+        {
+          "title": "Siyah beyaz işleme ve karıştırıcı",
+          "paragraphs": [
+            "Renk panelinin üst kısmındaki İşleme anahtarı, Renk ve Siyah Beyaz arasında geçiş yapar. Siyah Beyaz modunda, görüntü 8 renk bandı boyunca tam ton kontrolünü koruyarak tek renge dönüştürülür.",
+            "Siyah Beyaz Karıştırıcı kaydırıcıları, her bir orijinal rengin gri tonlamalı parlaklığa ne kadar katkıda bulunduğunu ayarlar."
+          ],
+          "steps": [
+            "Düzenle → Renk içinde, İşleme anahtarında Siyah Beyaz'a tıklayın.",
+            "Renk Karıştırıcı, Siyah Beyaz Karıştırıcı olur ve Kırmızı, Turuncu, Sarı, Yeşil, Camgöbeği, Mavi, Mor ve Macenta kaydırıcılarını gösterir.",
+            "Bir kaydırıcıyı sağa sürükleyerek o rengi siyah beyaz dönüştürmede açabilirsiniz; sola sürükleyerek koyulaştırabilirsiniz (ör. gökyüzünü derinleştirmek için Mavi'yi koyulaştırma).",
+            "Tam renge dönmek için İşleme anahtarında Renk'e tıklayın."
+          ]
         }
       ],
       "related": [
@@ -1423,10 +1444,17 @@
       ],
       "sections": [
         {
+          "title": "Fotoğraf kopyalama",
+          "paragraphs": [
+            "Command-C, düzenlenmiş fotoğraf önizlemesini (en fazla 2048 piksel genişliğinde) diğer uygulamalara yapıştırmak için kopyalar. Metin alanlarında normal kopyalama korunur; Command-Shift-C düzenleme ayarlarını kopyalar."
+          ]
+        },
+        {
           "title": "Seçili ayarları aktar",
           "paragraphs": [
             "Kopyala ve Yapıştır, Ayrıntı görünümünde fotoğrafın altındadır.",
-            "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez."
+            "Kopyala ve Yapıştır, açıkça seçtiğiniz grupları aktarır. İşaretlenmemiş gruplardaki ayarlar, her hedefte oldukları gibi kalır. Bu, açık bir kopyala/yapıştır iş akışıdır: kaynak üzerindeki sonraki düzenlemeler hedeflerle otomatik olarak eşitlenmez.",
+            "Yapıştır, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğraflara uygulanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafa uygulanır. Yapıştırmadan önce hedef seçiminizi kontrol edin."
           ],
           "steps": [
             "Kaynak fotoğrafı açın ve Düzenleme ayarlarını kopyala'ya tıklayın ya da Mac'te Command-Shift-C, Linux ve Windows'ta Ctrl-Shift-C tuşlarına basın.",
@@ -1464,6 +1492,22 @@
           ],
           "tips": [
             "Referans fotoğraf hedef güncellemelerinin dışında bırakılır. Eşleştirme bir başlangıç noktasıdır; özellikle fotoğraflar farklı konular veya kadrajlar içeriyorsa."
+          ]
+        },
+        {
+          "title": "Önceki ayarları uygula",
+          "paragraphs": [
+            "Önceki, hemen önceki fotoğrafın düzenlemelerini doğrudan etkin fotoğrafa uygular; böylece Kopyala Ayarları iletişim kutusunu açmadan bir diziyi hızla derecelendirebilirsiniz."
+          ],
+          "steps": [
+            "Daha önce düzenlediğiniz bir fotoğrafı seçin.",
+            "Dizinizdeki bir sonraki fotoğrafa gidin.",
+            "Fotoğraf → Önceki Ayarlar'ı seçin veya Mac'te Option-Command-V'ye, Windows ve Linux'ta Alt-Ctrl-V'ye basın.",
+            "Önceki fotoğrafın geliştirme ayarları, film görünümü, eğrileri, renk derecelendirmesi ve objektif düzeltmeleri hemen uygulanır."
+          ],
+          "tips": [
+            "Önceki ayarlar, önce açık bir Kopyala komutu gerektirmeden çalışır.",
+            "Tek tek fotoğraf kadrajını korumak için varsayılan olarak kırpma, geometri ve nokta iyileştirme hariç tutulur."
           ]
         }
       ],
@@ -1847,7 +1891,8 @@
         {
           "title": "Çalışmanızın kaydedildiğini kontrol edin",
           "paragraphs": [
-            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur."
+            "Bir fotoğraf yüklenene kadar düzenleme kontrolleri kullanılamaz. Ayarlamalar, fotoğraf için düzenleme ayarları olarak saklanır. Düzenleyici, etkileşimleri bitirdiğinizde değişiklikleri otomatik olarak kaydeder; her ayar için ayrı bir Kaydet komutuna gerek yoktur.",
+            "Fotoğraflar arasında geçiş yapmak, geçerli kaydırıcı ayarlarını da kaydetme için sıraya alır. Pencereyi kapatmadan önce Kaydedildi yazısını bekleyin; bir kaydetme başarısız olursa pencereyi açık tutun ve Kaydetmeyi yeniden dene'yi kullanın."
           ],
           "steps": [
             "Ayarlamanızı yapın, ardından uygulamadaki kaydetme durumunu kontrol edin.",
@@ -2017,6 +2062,19 @@
           "tips": [
             "Birkaç nokta kullanın ve çalışırken fotoğrafı karşılaştırın; kanal eğrileri güçlü renk kaymaları oluşturabilir.",
             "Saklanan veya içe aktarılan bir eğri, siz onu düzenleyene kadar tam kaydedilmiş tablosunu korur. Uygulama, düzenleme için temsilî tutamaçları yeniden oluşturur; bu nedenle ilk ayarlama, içe aktarılan bir eğriyi taşıdığınız noktadan öteye yeniden şekillendirebilir."
+          ]
+        },
+        {
+          "title": "Parametrik eğriyi kullan",
+          "paragraphs": [
+            "Parametrik sekmesi, Vurgular, Açıklar, Karanlıklar ve Gölgeler olmak üzere dört bölge kaydırıcısının yanı sıra, ton bölgeleri arasındaki eşik sınırlarını tanımlayan böl ayraç kontrolleri sunar.",
+            "Bu, grafikte manuel sabitleme noktaları yerleştirmeden ton kontrastını ve orta tonları yumuşakça şekillendirmenizi sağlar."
+          ],
+          "steps": [
+            "Düzenle → Eğri içinde Parametrik sekmesine geçin.",
+            "Üst ton değerlerini şekillendirmek için Vurgular veya Açıklar'ı, alt ton değerleri için Karanlıklar veya Gölgeler'i sürükleyin.",
+            "Her bölgenin geçiş yaptığı yeri kaydırmak için, bantlar arasındaki böl ayraçlarını ayarlayın.",
+            "Sıfırlamak için herhangi bir kaydırıcıya çift tıklayın."
           ]
         }
       ],
@@ -2618,6 +2676,7 @@
         {
           "title": "Kapsamı ve sonucu kontrol edin",
           "paragraphs": [
+            "Seçili fotoğraflar, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğrafları kullanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafı kullanır. Başlamadan önce Dışa Aktar bölümündeki fotoğraf sayısını ve adı kontrol edin.",
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
             "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
           ]
@@ -3208,5 +3267,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

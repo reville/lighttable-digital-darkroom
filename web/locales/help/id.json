@@ -235,7 +235,8 @@
             "Pas dapat memperbesar foto kecil. 1:1 menampilkan piksel sebenarnya meskipun foto menjadi lebih kecil daripada Pas, dan mempertahankan skala piksel yang sama saat Anda mengubah ukuran jendela.",
             "Arahkan penunjuk ke penghitung foto di bilah atas untuk melihat arti angkanya.",
             "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
-            "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah."
+            "Selama jendela terbuka, LightTable mengingat posisi geser setiap foto dan mempertahankan tingkat zoom saat ini ketika Anda beralih foto. Foto baru ditampilkan di tengah.",
+            "Di Mac, cubit pada trackpad di atas foto di Detail untuk zoom di sekitar penunjuk. Pindahkan penunjuk ke area yang ingin Anda periksa sebelum mencubit."
           ],
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
@@ -700,6 +701,13 @@
           "paragraphs": [
             "Menu ••• di sebelah koleksi menghapus koleksi. Ini menghapus pengelompokan, bukan memindahkan file asli ke Tempat Sampah. Cari dan filter dapat mempersempit foto yang ditampilkan di dalam koleksi."
           ]
+        },
+        {
+          "title": "Folder dan koleksi",
+          "paragraphs": [
+            "Folder mewakili hierarki disk fisik tempat file berada. Koleksi adalah grup fleksibel dan ringan di dalam LightTable yang dapat mengumpulkan foto dari beberapa folder tanpa memindahkan atau menggandakan file apa pun di disk.",
+            "Saat mengimpor katalog atau menambahkan folder sumber, mengaktifkan Buat koleksi untuk setiap folder tingkat teratas secara otomatis membuat koleksi yang cocok untuk setiap folder tingkat teratas sehingga struktur yang sudah ada langsung dapat diakses di Koleksi."
+          ]
         }
       ],
       "related": [
@@ -1097,7 +1105,7 @@
           "steps": [
             "Atur Eksposur untuk subjek utama.",
             "Sesuaikan Highlights dan Shadows untuk menyeimbangkan area terang dan gelap, lalu perhalus Whites, Blacks, dan Contrast.",
-            "Gunakan tombol peringatan clipping di samping histogram untuk memeriksa clipping.",
+            "Gunakan tombol Peringatan clipping di samping histogram atau tekan J untuk mengaktifkan indikator clipping highlight dan bayangan langsung pada gambar (merah untuk highlight yang ter-clipping, biru untuk bayangan yang ter-clipping).",
             "Bandingkan hasil Anda dengan original menggunakan kontrol before, atau tahan B saat foto aktif."
           ],
           "tips": [
@@ -1353,6 +1361,19 @@
             "Point Color menyimpan hingga delapan titik sampel. Jika Anda mengambil sampel lagi saat sudah ada delapan, titik kedelapan akan diganti.",
             "Reset Point Color membersihkan titik yang disampel tanpa memerlukan reset Color penuh."
           ]
+        },
+        {
+          "title": "Perlakuan hitam putih dan pencampur",
+          "paragraphs": [
+            "Pengalih Perlakuan di bagian atas panel Warna beralih antara Warna dan B&W. Dalam mode B&W, gambar dikonversi menjadi monokrom sambil mempertahankan kontrol tonal penuh di seluruh 8 pita warna.",
+            "Penggeser Pencampur Hitam & Putih menyesuaikan seberapa kuat setiap warna asli berkontribusi pada luminansi skala abu-abu."
+          ],
+          "steps": [
+            "Di Edit → Warna, klik B&W pada pengalih Perlakuan.",
+            "Pencampur Warna menjadi Pencampur Hitam & Putih, menampilkan penggeser Merah, Oranye, Kuning, Hijau, Aqua, Biru, Ungu, dan Magenta.",
+            "Seret penggeser ke kanan untuk mencerahkan warna itu dalam konversi hitam-putih, atau ke kiri untuk menggelapkannya (misalnya menggelapkan Biru untuk memperdalam langit).",
+            "Klik Warna pada pengalih Perlakuan untuk kembali ke warna penuh."
+          ]
         }
       ],
       "related": [
@@ -1423,10 +1444,17 @@
       ],
       "sections": [
         {
+          "title": "Menyalin foto",
+          "paragraphs": [
+            "Command-C menyalin pratinjau foto yang telah diedit (hingga lebar 2048 piksel) untuk ditempelkan ke aplikasi lain. Kolom teks tetap menggunakan penyalinan biasa; Command-Shift-C menyalin pengaturan pengeditan."
+          ]
+        },
+        {
           "title": "Transfer pengaturan terpilih",
           "paragraphs": [
             "Salin dan Tempel berada di bawah foto dalam tampilan Detail.",
-            "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan."
+            "Copy dan Paste mentransfer grup yang Anda pilih secara eksplisit. Pengaturan dalam grup yang tidak dicentang tetap seperti adanya pada setiap tujuan. Ini adalah alur kerja salin/tempel eksplisit: edit berikutnya pada sumber tidak secara otomatis sinkron ke tujuan.",
+            "Tempel diterapkan ke foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka diterapkan ke foto aktif. Periksa pilihan tujuan Anda sebelum menempel."
           ],
           "steps": [
             "Buka foto sumber dan klik Salin pengaturan edit, atau tekan Command-Shift-C di Mac atau Ctrl-Shift-C di Linux dan Windows.",
@@ -1464,6 +1492,22 @@
           ],
           "tips": [
             "Foto referensi dikecualikan dari pembaruan target. Pencocokan adalah titik awal, terutama ketika foto berisi subjek atau framing yang berbeda."
+          ]
+        },
+        {
+          "title": "Terapkan pengaturan sebelumnya",
+          "paragraphs": [
+            "Previous menerapkan edit dari foto yang langsung sebelumnya ke foto aktif secara langsung, memungkinkan Anda menilai urutan dengan cepat tanpa membuka dialog Salin Pengaturan."
+          ],
+          "steps": [
+            "Pilih foto yang sudah Anda edit.",
+            "Navigasi ke foto berikutnya dalam urutan Anda.",
+            "Pilih Foto → Pengaturan Sebelumnya, atau tekan Option-Command-V di Mac (Alt-Ctrl-V di Windows dan Linux).",
+            "Pengaturan pengembangan, tampilan film, kurva, penilaian warna, dan koreksi lensa foto sebelumnya diterapkan segera."
+          ],
+          "tips": [
+            "Pengaturan sebelumnya berfungsi tanpa perlu perintah Salin yang eksplisit terlebih dahulu.",
+            "Pangkas, geometri, dan perbaikan titik dikeluarkan secara default untuk melindungi framing foto individual."
           ]
         }
       ],
@@ -1847,7 +1891,8 @@
         {
           "title": "Periksa apakah pekerjaan Anda sudah disimpan",
           "paragraphs": [
-            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian."
+            "Kontrol pengeditan tidak tersedia sampai foto dimuat. Penyesuaian disimpan sebagai pengaturan edit untuk foto. Penyunting menyimpan perubahan secara otomatis saat Anda menyelesaikan interaksi; Anda tidak perlu perintah Simpan terpisah untuk setiap penyesuaian.",
+            "Beralih foto juga menambahkan penyesuaian penggeser saat ini ke antrean untuk disimpan. Tunggu hingga Disimpan sebelum menutup jendela; jika penyimpanan gagal, biarkan jendela tetap terbuka dan gunakan Coba simpan lagi."
           ],
           "steps": [
             "Lakukan penyesuaian Anda, lalu periksa status simpan di aplikasi.",
@@ -2017,6 +2062,19 @@
           "tips": [
             "Gunakan beberapa titik dan bandingkan foto saat Anda bekerja; kurva kanal dapat menimbulkan cast warna yang kuat.",
             "Kurva yang disimpan atau diimpor mempertahankan tabel tersimpan persisnya sampai Anda mengeditnya. Aplikasi membangun ulang pegangan representatif untuk pengeditan, jadi penyesuaian pertama dapat membentuk ulang kurva yang diimpor melampaui titik yang Anda geser."
+          ]
+        },
+        {
+          "title": "Gunakan kurva Parametrik",
+          "paragraphs": [
+            "Tab Parametrik menyediakan empat penggeser wilayah — Sorotan, Cahaya, Gelap, dan Bayangan — bersama kontrol titik pisah yang menentukan batas ambang di antara wilayah tonal.",
+            "Ini memungkinkan Anda membentuk kontras tonal dan nada tengah dengan mulus tanpa menempatkan titik jangkar manual pada grafik."
+          ],
+          "steps": [
+            "Beralih ke tab Parametrik di Edit → Kurva.",
+            "Seret Sorotan atau Cahaya untuk membentuk nilai tonal atas, dan Gelap atau Bayangan untuk nilai yang lebih rendah.",
+            "Sesuaikan penanda pisah di antara pita untuk menggeser tempat peralihan tiap wilayah.",
+            "Klik dua kali penggeser mana pun untuk mengatur ulang ke nol."
           ]
         }
       ],
@@ -2618,6 +2676,7 @@
         {
           "title": "Periksa scope dan hasil",
           "paragraphs": [
+            "Foto terpilih menggunakan foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka menggunakan foto aktif. Periksa jumlah foto dan nama di Ekspor sebelum mulai.",
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
             "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
           ]
@@ -3208,5 +3267,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "3c4759aaab64e8e501b3927b47cd360e475007ceaf82e3de0b7e31c5b105b0a1"
+  "sourceDigest": "8cdb3f273cf97623c29e673d768bacf71ea141cc63f0a9d5621e7ee15683a05c"
 }

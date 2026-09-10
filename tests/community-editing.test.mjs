@@ -182,3 +182,106 @@ test('preview status distinguishes refining, incomplete detail and true 100% rea
   assert.equal(previewDetailLabel({state:'ready',delivered:1400,requested:1400,source:6000,actual:false}),'');
   assert.equal(previewDetailLabel({state:'error',actual:true}),'');
 });
+
+test('previous settings applies prior photo edits to active photo', async () => {
+  const start = app.indexOf('async function applyPreviousSettings(');
+  const end = app.lastIndexOf('}', app.indexOf("$('previousBtn').onclick", start)) + 1;
+  const previousSource = app.slice(start, end);
+  const target = { name: 'target.raw', ...structuredClone(destination), stateLoaded: true };
+  const calls = [], notices = [], nodes = new Map();
+  const context = {
+    CULL_BATCH: { noteFlagChange() {} },
+    cloneValue: structuredClone,
+    tr, trn, localToolLabel,
+    S: { images: [target], priorPhotoSettings: { ...source, sourceName: 'prior.raw' }, editingName: '' },
+    APP_PREFS: { copySettings: only('tone') },
+    transferChoices, transferPatch,
+    $: id => { if (!nodes.has(id)) nodes.set(id, { focus() {} }); return nodes.get(id); },
+    prefetchState: async image => { image.stateLoaded = true; },
+    isStateLoaded: image => image.stateLoaded,
+    normalizeFilmParams: p => ({ ...p }),
+    normalizeOptics: p => ({ ...p }),
+    GRADE_DEFAULTS: {},
+    api: async (path, body) => { calls.push({ path, body }); return { ok: true }; },
+    cur: () => target,
+    pushUndo() {},
+    invalidateEditedThumbnail() {},
+    refreshLists() {},
+    confirmTransfer() {},
+    updateTransferActions() {},
+    toast: t => notices.push(t),
+  };
+  context.editSaveQueue = createEditSaveQueue({ send: async (name, payload) => { await context.api('/api/state', payload.state); }, setTimeout: () => 0, clearTimeout() {} });
+  vm.createContext(context);
+  vm.runInContext(enqueueSource + '\n' + previousSource + '\nthis.run = applyPreviousSettings;', context);
+  await context.run();
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].body.grade.exposure, 2);
+  assert.equal(calls[0].body.grade.temp, -.2);
+  assert.equal(notices.includes('Applied previous settings'), true);
+});
+
+test('evalParametricLUT returns smooth 256-entry table and null when all zero', async () => {
+  const { evalParametricLUT } = await import('../web/color-tools.js');
+  assert.equal(evalParametricLUT({ highlights: 0, lights: 0, darks: 0, shadows: 0 }), null);
+  const lut = evalParametricLUT({ highlights: 50, lights: 20, darks: -20, shadows: -50 });
+  assert.equal(lut.length, 256);
+  assert.equal(lut[0], 0);
+  assert.equal(lut[255], 1);
+  assert.ok(lut[64] < 64 / 255);
+  assert.ok(lut[192] > 192 / 255);
+  for (let i = 0; i < 256; i++) {
+    assert.ok(lut[i] >= 0 && lut[i] <= 1);
+  }
+});
+
+test('treatment switcher toggles monochrome and synchronizes B&W mixer', () => {
+  const start = app.indexOf('function syncTreatmentControls()');
+  const end = app.indexOf('/* ---------------------------------------------------------- point color */', start);
+  const treatmentSource = app.slice(start, end);
+  const elements = new Map();
+  const element = (id) => {
+    if (!elements.has(id)) {
+      const classes = new Set();
+      elements.set(id, {
+        id,
+        classList: { toggle: (c, val) => val ? classes.add(c) : classes.delete(c), contains: (c) => classes.has(c) },
+        setAttribute: () => {},
+        addEventListener: () => {},
+        textContent: '',
+        hidden: false,
+      });
+    }
+    return elements.get(id);
+  };
+  const HSL_BANDS = ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'purple', 'magenta'];
+  const S = { grade: { monochrome: 1, hsl: { red: { l: 0.5 } } } };
+  const context = {
+    $: element,
+    S,
+    tr: (s) => s,
+    fmtG: (v) => String(v),
+    HSL_BANDS,
+    document: {
+      querySelectorAll: () => [],
+      querySelector: () => null,
+    },
+  };
+  vm.createContext(context);
+  vm.runInContext(treatmentSource, context);
+  context.syncTreatmentControls();
+  assert.equal(elements.get('treatmentBw').classList.contains('on'), true);
+  assert.equal(elements.get('treatmentColor').classList.contains('on'), false);
+  assert.equal(elements.get('colorSectionLabel').textContent, 'B&W');
+  assert.equal(elements.get('colorMixerWrap').hidden, true);
+  assert.equal(elements.get('bwMixerWrap').hidden, false);
+
+  S.grade.monochrome = 0;
+  context.syncTreatmentControls();
+  assert.equal(elements.get('treatmentBw').classList.contains('on'), false);
+  assert.equal(elements.get('treatmentColor').classList.contains('on'), true);
+  assert.equal(elements.get('colorSectionLabel').textContent, 'Color');
+  assert.equal(elements.get('colorMixerWrap').hidden, false);
+  assert.equal(elements.get('bwMixerWrap').hidden, true);
+});
+

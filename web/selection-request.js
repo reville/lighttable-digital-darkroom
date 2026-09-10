@@ -1,5 +1,5 @@
 /* Resolve the full view before publishing a selection; never publish a subset. */
-export function createSelectionRequest({load, scope, visible, selection, changed, onError}) {
+export function createSelectionRequest({load, queryNames, scope, visible, selection, changed, onError}) {
   let generation = 0;
   let pending = false;
   return {
@@ -12,6 +12,14 @@ export function createSelectionRequest({load, scope, visible, selection, changed
       pending = true;
       changed();
       try {
+        if (typeof queryNames === 'function') {
+          const names = await queryNames();
+          if (ticket !== generation || intendedScope !== scope()) return false;
+          if (Array.isArray(names)) {
+            for (const name of names) selection().add(name);
+            return true;
+          }
+        }
         await load();
         if (ticket !== generation || intendedScope !== scope()) return false;
         for (const image of visible()) selection().add(image.name);
