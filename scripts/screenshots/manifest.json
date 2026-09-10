@@ -314,9 +314,9 @@
         "asset": "detail-film.webp",
         "crop": [
           1288,
-          112,
+          94,
           316,
-          418
+          414
         ],
         "label": "Ultra realistic film simulation",
         "alt": "Closeup of Film controls for Kodak Portra 400 stock, 35 mm format, output, camera exposure, and print exposure"
@@ -329,7 +329,7 @@
           1288,
           152,
           316,
-          548
+          650
         ],
         "label": "Local masking",
         "alt": "Closeup of a radial mask\u2019s selection, overlay, exposure, and texture controls"
@@ -353,9 +353,9 @@
         "asset": "detail-editor.webp",
         "crop": [
           1288,
-          112,
+          94,
           316,
-          498
+          420
         ],
         "label": "Light and color editing",
         "alt": "Closeup of the histogram, exposure, contrast, highlights, shadows, and color editing controls"
@@ -368,7 +368,7 @@
           1288,
           112,
           316,
-          362
+          420
         ],
         "label": "Ratings and keywords",
         "alt": "Closeup of star ratings, pick and reject flags, color labels, and photo keywords"

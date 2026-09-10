@@ -59,8 +59,7 @@ jobs:
           root.mkdir()
           with open('scripts/screenshots/photos/manifest.tsv') as stream:
               for item in csv.DictReader(stream, delimiter='\t'):
-                  photo_id = re.search(r'(\d+)\.jpg$', item['filename'])[1]
-                  url = f'https://images.pexels.com/photos/{photo_id}/pexels-photo-{photo_id}.jpeg'
+                  url = item['download_url']
                   data = subprocess.check_output(['curl', '--fail', '--location', '--retry', '3', '--max-time', '60', '--silent', '--show-error', url], timeout=240)
                   assert hashlib.sha256(data).hexdigest() == item['sha256'], item['filename']
                   (root / item['filename']).write_bytes(data)
