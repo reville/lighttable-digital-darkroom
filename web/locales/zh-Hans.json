@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1707,7 +1707,6 @@
     "Look · keep photo corrections": "外观 · 保留照片校正",
     "Looking for duplicate files…": "正在查找重复文件…",
     "Looking for lines…": "正在寻找线条…",
-    "Looks for your photographs": "查找你的照片",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "外观会保留曝光、白平衡、裁剪、蒙版、修复、相机和镜头校正。",
     "Loupe information overlay": "放大镜信息叠加",
     "Loupe view": "放大镜视图",

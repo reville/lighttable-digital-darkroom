@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1707,7 +1707,6 @@
     "Look · keep photo corrections": "Look · Fotokorrekturen beibehalten",
     "Looking for duplicate files…": "Nach doppelten Dateien wird gesucht…",
     "Looking for lines…": "Linien werden gesucht…",
-    "Looks for your photographs": "Sucht nach deinen Fotos",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Looks behalten Belichtung, Weißabgleich, Zuschnitt, Masken, Entfernen sowie Kamera- und Objektivkorrekturen bei.",
     "Loupe information overlay": "Überlagerung mit Lupe-Informationen",
     "Loupe view": "Lupe-Ansicht",

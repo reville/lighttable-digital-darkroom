@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1707,7 +1707,6 @@
     "Look · keep photo corrections": "Görünüm · fotoğraf düzeltmelerini koru",
     "Looking for duplicate files…": "Çift dosyalar aranıyor…",
     "Looking for lines…": "Çizgiler aranıyor…",
-    "Looks for your photographs": "Fotoğraflarınızı arar",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Görünümler, pozlamayı, beyaz dengesini, kırpmayı, maskeleri, Remove'u, kamera ve lens düzeltmelerini korur.",
     "Loupe information overlay": "Büyüteç bilgi bindirmesi",
     "Loupe view": "Büyüteç görünümü",

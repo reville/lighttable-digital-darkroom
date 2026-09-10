@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1707,7 +1707,6 @@
     "Look · keep photo corrections": "見た目 · 写真補正を保持",
     "Looking for duplicate files…": "複製ファイルを検索しています…",
     "Looking for lines…": "線を検索中…",
-    "Looks for your photographs": "写真を探します",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "ルックには、露出、ホワイトバランス、トリミング、マスク、Remove、カメラ補正、レンズ補正が保持されます。",
     "Loupe information overlay": "ルーペ情報オーバーレイ",
     "Loupe view": "ルーペ表示",

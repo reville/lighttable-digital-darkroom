@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "3e45e912c28fcdf0ef37023ed8b5a14d7eb4648ffb2eb43bb7a15b822d87c9eb",
+  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -1987,7 +1987,6 @@
     "Look · keep photo corrections": "Look · keep photo corrections",
     "Looking for duplicate files…": "Looking for duplicate files…",
     "Looking for lines…": "Looking for lines…",
-    "Looks for your photographs": "Looks for your photographs",
     "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.": "Looks keep exposure, white balance, crop, masks, Remove, camera and lens corrections.",
     "Loupe information overlay": "Loupe information overlay",
     "Loupe view": "Loupe view",
