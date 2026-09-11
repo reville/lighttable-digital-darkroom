@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {applyAppearance, createAppearanceSettings, isAppearanceColor} from './appearance-tester.js';
 
 const picker = document.getElementById('appearanceTestColor');

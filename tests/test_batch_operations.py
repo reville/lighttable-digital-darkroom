@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Tests for Preview Pre-generation and Batch Semantic Mask queues and endpoints."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Non-destructive local corrections, healing, and optical geometry.
 
 The schema in this module is shared by saved state, preview requests, presets,

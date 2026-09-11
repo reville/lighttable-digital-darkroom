@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 // A photo's identity and complete JSON edit state travel together. Never read
 // mutable editor state from a timer or after a request has started.

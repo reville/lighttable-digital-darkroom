@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The photo catalog: one SQLite database spanning every source folder.
 
 The library used to be one folder tree chosen at launch, with edit state in a

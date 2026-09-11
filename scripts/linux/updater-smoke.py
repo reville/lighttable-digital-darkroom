@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise signed Linux upgrades with the actual packaged GTK/WebKit runtime.
 
 Run with the bundled Python under Xvfb and a private D-Bus session. Only temporary

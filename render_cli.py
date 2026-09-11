@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: GPL-3.0-only
 """Full-resolution export worker: render one image through the pipeline,
 then apply the same grade and crop the preview showed.
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* One resilient Server-Sent Events connection for the LightTable window. */
 export function connectServerEvents(client, handlers = {}) {
   if (typeof EventSource === 'undefined') return { close() {} };

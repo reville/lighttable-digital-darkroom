@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export function nativeBridge() {
   return window.lightTableNativeBridge ||
     window.webkit?.messageHandlers?.lightTable || null;

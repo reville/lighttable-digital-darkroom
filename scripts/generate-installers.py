@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate installer manifests from completed release files, using only stdlib."""
 
 from __future__ import annotations

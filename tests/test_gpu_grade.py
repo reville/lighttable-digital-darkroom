@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reference parity, fallback and float export integration for GPU finishing.
 
 Set LIGHTTABLE_TEST_GPU=1 on a host with the bundled engine for device checks.

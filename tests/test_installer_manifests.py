@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Release channel contracts, exercised through the public generator command."""
 
 import hashlib

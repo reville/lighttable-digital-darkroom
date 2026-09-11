@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Gate on the film-stage audit. Skipped where the engine is not built.
 
 Same contract as `test_control_semantics`, for the physical simulation. Each

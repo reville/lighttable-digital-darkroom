@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run behavioral JavaScript regressions through the standard test entrypoint."""
 from pathlib import Path
 import shutil

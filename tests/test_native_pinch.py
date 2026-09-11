@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Check the production native pinch bridge without displaying a window."""
 import shutil
 import subprocess

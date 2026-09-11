@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bounded, disposable source-thumbnail work; never joins the catalog scan."""
 
 from __future__ import annotations

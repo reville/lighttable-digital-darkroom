@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise viewport geometry and bounded work, rather than implementation strings."""
 import shutil
 import subprocess

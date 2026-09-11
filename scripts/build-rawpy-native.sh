@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Pinned source builds: Homebrew bottles can require a newer OS than our app.
 set -euo pipefail
 WORK="$1"

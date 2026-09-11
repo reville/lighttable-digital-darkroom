@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Disposable full-system VM; its SSH port listens only on runner loopback.
 set -euo pipefail
 mkdir -p evidence baseline/dist /tmp/lighttable-vm

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the browser save queue's behavioral regressions in the Python CI suite."""
 import shutil
 import subprocess

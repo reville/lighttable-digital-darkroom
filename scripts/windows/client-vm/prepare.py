@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Stage only the verified candidate and test scripts for an ephemeral Windows VM."""
 from pathlib import Path
 import argparse

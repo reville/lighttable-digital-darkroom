@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Opt-in input-to-presentation measurements. Production keeps this inert.
 export function createInteractionRecorder(enabled = false, clock = () => performance.now()) {
   let nextId = 0;

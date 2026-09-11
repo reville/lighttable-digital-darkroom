@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The server's catalog wiring: name resolution, state routing, and exports."""
 from __future__ import annotations
 

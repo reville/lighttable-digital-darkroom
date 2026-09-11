@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 . (Join-Path $PSScriptRoot '..\scripts\windows\ensure-webview2.ps1')

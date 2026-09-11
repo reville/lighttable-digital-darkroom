@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t } from './i18n.js';
 
 // Only failed <img> requests need a JSON read. Share that read between the

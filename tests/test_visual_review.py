@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Evidence-integrity tests for the opt-in review runner."""
 import importlib.util
 import json

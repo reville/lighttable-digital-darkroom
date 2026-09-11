@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Auto-advance during a cull. Marking a photo can remove it from the visible
  * list, and the old code then advanced from index -1 and landed on the first
  * photo in the library, so the next keystroke marked a photo nobody had judged. */

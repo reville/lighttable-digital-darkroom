@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Up and down in a grid. The keys used to fall through to the browser, which
  * scrolled the library and left the selection on whatever photo was already
  * active — the wrong answer while culling, where every press should judge a

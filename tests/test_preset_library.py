@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real catalog fixtures exercise offline durability and untrusted recipe boundaries."""
 import copy
 import hashlib

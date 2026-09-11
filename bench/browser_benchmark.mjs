@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: GPL-3.0-only
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
 

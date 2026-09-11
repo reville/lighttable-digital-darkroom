@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Importing a Lightroom Classic catalog.
 
 Every case runs against a synthetic `.lrcat` built here with sqlite3, carrying

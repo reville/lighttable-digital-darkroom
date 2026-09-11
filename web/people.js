@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t, tn, formatNumber } from '/web/i18n.js';
 const html = text => String(text).replace(/[&<>"']/g, ch => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[ch]));
 const el = (tag, text, className) => {

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Record bounded native journeys and retain honest, reviewable evidence."""
 from __future__ import annotations
 import argparse

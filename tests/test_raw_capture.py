@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The capture stage: white balance, highlight recovery, demosaic, denoise.
 
 These controls run in the RAW decoder, before the film model and before any
@@ -7,7 +8,7 @@ processing gates leave them completely untested. `film_semantics` marks them
 
 The fixtures are synthetic DNGs built by `make_raw_fixtures.py`, so the suite
 runs anywhere without shipping a camera original. Coverage of real camera
-formats stays with the RAW journey layers in JOURNEY-TESTING.md; what is
+formats stays with the RAW journey layers in docs/journey-testing.md; what is
 checked here is that each capture control does what its name says.
 """
 from __future__ import annotations

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* The browser's flat refinement strokes must combine exactly as edits.py does,
  * because the preview is drawn from these values and the delivered file is not.
  * Intersect takes the smaller of the two weights; it does not multiply. */

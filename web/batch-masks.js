@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from './i18n.js';
 /* Batch progress follows the immutable job ID. State changes arrive over SSE. */
 export function mergeMaskDelta(masks, delta) {

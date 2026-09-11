@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Filesystem scanning, content hashing, and migration into the catalog.
 
 Scanning is separated from `catalog.py` so the store stays a pure data layer.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Uniform records for LightTable background work."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Check the populated Photos browser's real WebKit layout without activation."""
 from pathlib import Path
 import base64
@@ -19,7 +20,11 @@ class ApplePhotosLayoutTests(unittest.TestCase):
         styles = '\n'.join((ROOT / path.lstrip('/')).read_text()
                            for path in re.findall(r'<link rel="stylesheet" href="([^"]+)"', index))
         dialog = index[index.index('<div class="modal-backdrop apple-photos-backdrop"'):].split('</body>')[0]
-        controller = (ROOT / 'web/apple-photos.js').read_text().split('\n', 1)[1].replace('export function ', 'function ')
+        # The controller is inlined into a classic <script>, so its module
+        # import and exports are stripped rather than resolved.
+        controller = re.sub(r'^import\b[^\n]*\n', '',
+                            (ROOT / 'web/apple-photos.js').read_text(),
+                            flags=re.MULTILINE).replace('export function ', 'function ')
         dropdown = (ROOT / 'web/dropdown.js').read_text().replace('export { enhance, close };', '')
         photo = base64.b64encode((ROOT / 'tests/fixtures/photos/field.jpg').read_bytes()).decode()
         script = r'''

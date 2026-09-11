@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Learned denoise and optional Enhance (super-resolution) inference.
 
 WHAT IS REAL HERE AND WHAT IS NOT

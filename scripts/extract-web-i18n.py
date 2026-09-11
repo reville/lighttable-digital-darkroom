@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Extract explicit web translation calls without evaluating application code.
 
 Run with --write to refresh the two source inventories, or --check in CI.

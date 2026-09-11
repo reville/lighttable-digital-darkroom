@@ -99,8 +99,8 @@ Native smoke requires macOS GUI and local loopback access; RAW runs require the
 repository's real fixture collection. Each harness closes its test app and server.
 The interaction recorder is opt-in and inactive during normal use.
 
-Evidence: [native interactions](bench/responsiveness/native-interactions.json),
-[RAW journey](bench/responsiveness/raw-journey.json),
-[3,000-photo browser grid](bench/responsiveness/grid-3000.json), and
-[resident engine results and reproduction](rust-engine/bench-results/README.md).
+Evidence: [native interactions](../bench/responsiveness/native-interactions.json),
+[RAW journey](../bench/responsiveness/raw-journey.json),
+[3,000-photo browser grid](../bench/responsiveness/grid-3000.json), and
+[resident engine results and reproduction](../rust-engine/bench-results/README.md).
 Full native per-input samples and screenshots remain under `build/` locally.

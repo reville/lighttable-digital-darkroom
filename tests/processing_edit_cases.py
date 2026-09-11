@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Regression recipes for ordered edits, with flat-field and real-photo controls."""
 import base64
 import io

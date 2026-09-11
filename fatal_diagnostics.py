@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Write fatal Python/native stacks directly to disk, outside the log pipe.
 
 The pipe's drain thread dies with the server on a segfault, so stderr alone

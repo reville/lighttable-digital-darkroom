@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* Reading direction follows language; photographic coordinates do not. */
 body.locale-loading > :not(.language-dialog):not(.language-boot-error):not(script) { visibility: hidden; }
 .language-dialog { width: min(460px, calc(100vw - 40px)); box-sizing: border-box; border: 1px solid #484848; border-radius: 12px; padding: 30px; color: #eee; background: #202020; box-shadow: 0 18px 70px #0009; }

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 .people-backdrop { z-index: 160; padding: 28px; }
 .people-panel { width: min(1120px, 100%); height: min(850px, calc(100dvh - 56px)); display: flex; flex-direction: column; background: #1c1d1f; color: #eeeeef; border: 1px solid #3a3b3e; border-radius: 18px; box-shadow: 0 24px 100px #0009; overflow: hidden; text-align: start; animation: people-enter 160ms ease-out; }
 .people-header { display: flex; align-items: center; justify-content: space-between; padding: 25px 34px 20px; flex: 0 0 auto; }

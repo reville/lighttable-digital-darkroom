@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the native disk writer across process exits, independently of Python."""
 import json
 import os

@@ -1,4 +1,5 @@
 #![cfg_attr(target_os = "windows", windows_subsystem = "windows")]
+// SPDX-License-Identifier: GPL-3.0-only
 
 use lighttable_desktop_shell::{
     CloseAttempts,

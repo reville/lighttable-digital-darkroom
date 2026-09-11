@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Translate shell-friendly photo selectors to the catalog query contract."""
 from __future__ import annotations
 

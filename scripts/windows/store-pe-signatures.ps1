@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param(
     [Parameter(Mandatory)][string]$Payload,
     [switch]$SignMissing,

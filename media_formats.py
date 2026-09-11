@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """One source of truth for media suffixes shared by every application shell."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param(
     [string]$Manifest = (Join-Path $PSScriptRoot '..\..\packaging\webview2-store-input.json'),
     [Parameter(Mandatory)][string]$OutputDirectory

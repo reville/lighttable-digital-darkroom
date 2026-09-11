@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Fit screenshot geometry with the captured app's own optics solver."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Keep the Linux wheel codec set; never silently use imagecodecs' default lite build.
 
 The omissions match customize_build_cibuildwheel in imagecodecs 2026.8.16.

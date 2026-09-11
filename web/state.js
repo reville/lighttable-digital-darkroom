@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export const cloneValue = (value) => value == null
   ? value : JSON.parse(JSON.stringify(value));
 

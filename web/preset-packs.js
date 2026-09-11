@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 
 /** Organization is a preference; it never changes or duplicates a recipe. */

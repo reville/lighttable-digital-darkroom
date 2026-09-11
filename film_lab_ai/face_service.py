@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Optional local face matching with a finite, cancellable background scan."""
 
 from __future__ import annotations

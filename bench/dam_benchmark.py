@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Benchmark 50k/100k metadata-only catalogs without reading anyone's photos.
 
 Each size runs in a separate bounded subprocess and temporary directory. The

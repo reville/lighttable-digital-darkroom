@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Complete, stable file identities for decisions that must not use a prefix."""
 from __future__ import annotations
 

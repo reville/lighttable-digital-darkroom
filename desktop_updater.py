@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Signed, per-user Linux portable updates. Package managers own other installs.
 
 The catalog stays exclusively owned by the server. The caller must finish work,

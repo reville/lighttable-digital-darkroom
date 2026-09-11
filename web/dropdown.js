@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Custom dropdowns.
  *
  * Every <select> stays in the DOM as the single source of truth: the rest of

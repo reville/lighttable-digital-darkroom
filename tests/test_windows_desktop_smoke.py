@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Safety and evidence checks for the Windows native acceptance runner."""
 from __future__ import annotations
 

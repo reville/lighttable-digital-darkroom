@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real file delivery and cancellation across queue, rendering and publication."""
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import ExitStack

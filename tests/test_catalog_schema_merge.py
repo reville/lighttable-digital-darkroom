@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Independently developed catalog layouts converge without losing photo state."""
 from contextlib import closing
 from pathlib import Path

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* Culling Grid keeps each complete photograph and its marking information in
    a predictable cell. Photo Grid retains its original masonry presentation. */
 .grid.square-grid {

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* A calm introduction, using the same surfaces and accent as the editor. */
 .setup-backdrop { z-index:1200; padding:24px; background:rgba(12,12,12,.88); backdrop-filter:blur(12px); }
 .setup-window { width:600px; max-width:100%; max-height:calc(100dvh - 48px); overflow:auto; border:1px solid var(--line-strong); border-radius:16px; background:#222; box-shadow:0 24px 90px #0006; padding:38px 40px 22px; color:var(--ink); font:14px/1.55 var(--ui); }

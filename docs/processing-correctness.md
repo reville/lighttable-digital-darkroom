@@ -100,7 +100,7 @@ decodes synthetic DNGs written by `tests/make_raw_fixtures.py`: a few
 kilobytes each, valid uncompressed mosaics carrying a known colour matrix,
 a known as-shot neutral, clipped highlights and a noisy flat field. They test
 the decoder, not a sensor; real camera formats stay with the RAW journey
-layers in JOURNEY-TESTING.md.
+layers in docs/journey-testing.md.
 
 The audits and the goldens drive the resident `lighttable-engine` built from
 `rust-engine/`, the same implementation the film gate tests, never the

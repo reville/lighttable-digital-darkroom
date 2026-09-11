@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Preview and export must apply the same mask mathematics.
 
 The browser rasterises masks for the on-screen grade and edits.py rasterises

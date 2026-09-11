@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Keep user input out of the interval between the final save and native quit.
 // Cancelling a timed-out attempt invalidates its eventual asynchronous reply.
 export function createCloseBarrier({capture, flush, setBlocked}) {

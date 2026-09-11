@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { createHash } from 'node:crypto';
 import { createWriteStream } from 'node:fs';
 import { rm } from 'node:fs/promises';

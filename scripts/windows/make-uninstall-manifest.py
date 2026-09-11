@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate NSIS removal commands for shipped files, preserving other files."""
 
 from __future__ import annotations

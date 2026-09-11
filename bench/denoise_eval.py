@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Evaluate the bundled denoiser on synthetic and real RAW crops.
 
 The report separates measured scores from the required human contact-sheet

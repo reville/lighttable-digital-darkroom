@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Card ingest: scan a card, plan a verified copy, and run it file by file."""
 from __future__ import annotations
 

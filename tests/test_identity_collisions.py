@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Valid images whose first 64 KiB match must retain separate identities."""
 from pathlib import Path
 import os

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Reject a source imagecodecs build that silently drops a Linux wheel extension.
 
 The extension inventory is from imagecodecs v2026.8.16 setup.py, applying its

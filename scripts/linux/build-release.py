@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Build a Linux bundle on the oldest supported Linux distribution."""
 
 from __future__ import annotations
@@ -62,8 +63,9 @@ def stage_resources(project: Path, python_source: Path, rust_source: Path, bundl
     (resources / "vendor/spektrafilm/VERSION.txt").write_text(PINS["python_source_revision"] + "\n")
     licenses = resources / "licenses"
     licenses.mkdir()
-    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "LINUX.md", "CLI.md"):
+    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md"):
         shutil.copy2(project / name, bundle)
+    # docs/ carries the CLI reference and the Linux guide into the bundle.
     copy_tree(project / "docs", bundle / "docs")
     (bundle / "packaging/linux/arch").mkdir(parents=True)
     shutil.copy2(project / "packaging/linux/arch/README.md", bundle / "packaging/linux/arch/README.md")
@@ -102,7 +104,7 @@ def main() -> None:
         parser.error("--experimental-aarch64 requires a native ARM64 Linux build host")
     for tool in ("cargo", "git", "rustup", "uv", "pkg-config"):
         if not shutil.which(tool):
-            parser.error(f"{tool} is required; see LINUX.md")
+            parser.error(f"{tool} is required; see docs/platforms/linux.md")
     if run("uv", "--version").split()[1] != PINS["uv_version"]:
         parser.error(f"Install uv=={PINS['uv_version']} for the pinned Python download metadata")
     run("pkg-config", "--exists", "gtk+-3.0", "webkit2gtk-4.1", "openssl", "openblas")

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Stable stdout formatting for people and programs."""
 from __future__ import annotations
 

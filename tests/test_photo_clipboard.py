@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise actual macOS image pasteboard representations without changing the user's clipboard."""
 from pathlib import Path
 import shutil

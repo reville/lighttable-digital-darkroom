@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Run layered real-product photo journeys against a built LightTable.app."""
 
 from __future__ import annotations

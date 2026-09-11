@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Verify full-precision shared exports and benchmark removal of float TIFF I/O.
 
 Uses synthetic pixels, the actual resident engine, and the existing Python

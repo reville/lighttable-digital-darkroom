@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Replay local-slider messages through Metal without opening a native window."""
 import json
 import plistlib

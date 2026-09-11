@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Verify and install native Rust notices for the immutable Linux 0.5.0 release.
 
 No network, Cargo invocation, or source substitution occurs during packaging.

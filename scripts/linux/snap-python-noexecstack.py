@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Clear the upstream CPython 3.13.12 GNU_STACK flag in the Snap staging tree.
 
 This changes only PF_X in one ELF program header of the exact published library.

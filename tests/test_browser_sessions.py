@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Browser cookies shared by localhost ports must keep both instances writable."""
 import json
 import os

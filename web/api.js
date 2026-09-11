@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export function api(path, body) {
   const headers = { 'Content-Type': 'application/json' };
   if (window.__LIGHTTABLE_CLIENT_ID__) {

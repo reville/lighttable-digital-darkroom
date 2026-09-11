@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: GPL-3.0-only
 """LightTable: local photo library and spektrafilm render server.
 
 Serves one local source root (LIGHTTABLE_DIR), including its folder hierarchy.

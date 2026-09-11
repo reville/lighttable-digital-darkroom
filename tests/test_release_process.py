@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Offline proof of immutable, independently resumable platform publication."""
 import copy
 import importlib.util

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bound native-server stdout/stderr, including writes from native libraries.
 
 Desktop launchers opt in with LIGHTTABLE_LOG_FILE. A single drain thread owns

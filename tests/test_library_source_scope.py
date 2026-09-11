@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The window shows one source; the browser's scope filter has to agree."""
 import json
 from pathlib import Path

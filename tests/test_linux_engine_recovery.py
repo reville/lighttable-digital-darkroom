@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """A failed transport retries once on CPU; rejected edits keep their worker."""
 import io
 import json

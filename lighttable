@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
 set -eu
 SCRIPT=$0
 LINKS=0

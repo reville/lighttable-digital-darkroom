@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run setup lifecycle regression tests with the standard Python test suite."""
 import shutil
 import subprocess

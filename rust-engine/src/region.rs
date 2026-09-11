@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Exact viewport planning for the finite-support WGPU film chain.
 //!
 //! Input and metering remain full frame. Only the image sent through the pixel

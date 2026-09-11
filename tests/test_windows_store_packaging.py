@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Store preparation checks; native certificate and runtime proof still needs Windows."""
 import json
 import hashlib

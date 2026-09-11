@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Source pixel geometry from decoder headers, without decoding image pixels."""
 from pathlib import Path
 

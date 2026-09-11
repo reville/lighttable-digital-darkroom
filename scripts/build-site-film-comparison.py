@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Build the website's reproducible RAW/XMP/film comparison.
 
 The default run uses a tracked CC0 RAW. The XMP result is intentionally

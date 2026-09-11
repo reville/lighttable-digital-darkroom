@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { availableLocales, currentLocale, initializeLanguage, loadLocale, saveLanguage,
   t, translateStatic, useCatalog } from './i18n.js';
 import { sendNative } from './native-bridge.js';

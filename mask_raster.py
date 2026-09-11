@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Analytic brush coverage, mirrored in web/mask-raster.js.
 
 Each stroke contributes once at each pixel, independent of pointer sampling.

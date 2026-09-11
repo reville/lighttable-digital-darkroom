@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 /** Describe delivered detail, rather than treating a 100% zoom as pixel proof. */
 export function previewDetailLabel({state, refining=false, delivered=0, renderedWidth=delivered, requested=0,

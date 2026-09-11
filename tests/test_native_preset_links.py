@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run native link validation and startup queue behavior without opening an app."""
 import json
 from pathlib import Path

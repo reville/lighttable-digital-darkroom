@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
 export function linearHandleAt(mask, point, rect) {

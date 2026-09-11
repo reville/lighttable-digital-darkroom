@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Verify an actual public Linux upgrade, native persistence and recovery.
 
 Run with the old public bundle's Python under Xvfb and a private D-Bus session.

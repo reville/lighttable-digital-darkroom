@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';

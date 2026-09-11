@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Numerical film-processing checks against independent Python and NumPy oracles.
 
 The Python spectral implementation is an independent implementation of the same

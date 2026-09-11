@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Optional lifecycle hook. It is deliberately not enabled in package.json.
 import { readFile } from 'node:fs/promises';
 import { context, install } from '../lib/installer.mjs';

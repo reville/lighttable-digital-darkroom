@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bundled looks and a bounded, static community catalog. Presets are data only."""
 from __future__ import annotations
 

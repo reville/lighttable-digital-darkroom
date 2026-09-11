@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Preset preview scheduling stays bounded and cannot display an old photo."""
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Synthetic DOM tests validate the oracles only; never presented as LightTable visual proof.
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';

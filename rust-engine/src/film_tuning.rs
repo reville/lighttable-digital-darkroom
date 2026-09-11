@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Versioned LightTable interpretation of the source before spectral filming.
 //! Keep this operation in sync with `film_tuning.prepare_input`. It works on
 //! linear ProPhoto input, preserves its luminance, and leaves colors outside

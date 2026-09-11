@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the real workflow's version/platform selection against an isolated Git repo."""
 import os
 from pathlib import Path

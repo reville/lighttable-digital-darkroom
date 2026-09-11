@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Check native web UI trust boundaries and one-shot confirmation replies."""
 from pathlib import Path
 import shutil

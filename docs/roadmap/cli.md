@@ -1,9 +1,9 @@
 # CLI and agent control milestone
 
 Status: **built**, 2026-09-04. Companion to
-[WORKFLOW-ROADMAP.md](WORKFLOW-ROADMAP.md) (catalog, migration, culling: built),
-[DEVELOP-ROADMAP.md](DEVELOP-ROADMAP.md) (develop-tool parity: built), and
-[GAPS-ROADMAP.md](GAPS-ROADMAP.md) (remaining field gaps: built).
+[docs/roadmap/workflow.md](workflow.md) (catalog, migration, culling: built),
+[docs/roadmap/develop.md](develop.md) (develop-tool parity: built), and
+[docs/roadmap/gaps.md](gaps.md) (remaining field gaps: built).
 
 Implementation landed as a standard-library HTTP client and MCP surface,
 strict and structured server requests, protected per-instance discovery,
@@ -460,8 +460,8 @@ job's `errors`.
 route(s), `mutating`, `destructive`, `needs_window`, and examples. The
 argument parser is built from it, `lighttable schema` emits it as JSON Schema
 (draft 2020-12) alongside the object schemas, `lighttable mcp` publishes it
-as tools, and `scripts/gen-cli-docs.py` writes `CLI.md` from it. A test fails
-when the generated `CLI.md` is stale, the way the camera list is checked.
+as tools, and `scripts/gen-cli-docs.py` writes `docs/cli.md` from it. A test fails
+when the generated `docs/cli.md` is stale, the way the camera list is checked.
 
 ### 2.2 Object schemas
 
@@ -485,7 +485,7 @@ subset the protocol needs (`initialize`, `tools/list`, `tools/call`,
 unless called with `confirm: true`. `render` and `compare` return `image`
 content so the agent sees the photo; `analyze` returns numbers. Resources
 expose the schema, `AGENTS.md`, and the current UI state. One-line setup for
-Claude Code, Claude Desktop, Codex, and Cursor is documented in `CLI.md`.
+Claude Code, Claude Desktop, Codex, and Cursor is documented in `docs/cli.md`.
 
 ### 2.4 Teaching the vocabulary
 
@@ -495,7 +495,7 @@ Claude Code, Claude Desktop, Codex, and Cursor is documented in `CLI.md`.
   at `lighttable --help` and `lighttable schema` rather than repeating them.
 - `.claude/skills/lighttable/SKILL.md` carries the same guidance for Claude
   Code with the trigger phrases (cull, rate, export, preset, render, catalog).
-- `CLI.md`, generated, is the reference.
+- `docs/cli.md`, generated, is the reference.
 
 ### 2.5 The cookbook
 
@@ -576,7 +576,7 @@ contract tests (`tests/test_personal_build.py`, the bundle test in
 
 ### 4.3 Documentation
 
-README gains "Command line and agents"; `CLI.md` is generated; the docs site
+README gains "Command line and agents"; `docs/cli.md` is generated; the docs site
 gets a page when the command ships in a release.
 
 ### 4.4 Performance proof

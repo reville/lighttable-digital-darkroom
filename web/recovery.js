@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr, tn as trn } from './i18n.js';
 /* Library Health: what the window shows about integrity, and the choices it
  * offers when something has gone wrong.

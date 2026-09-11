@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Trash plans must protect retained originals and their shared metadata."""
 import shutil
 import subprocess

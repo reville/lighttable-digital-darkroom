@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Immutable native preview transport. The server adopts each successful name
 //! and unlinks it on LRU eviction; mmap users retain their pixels after unlink.
 use std::sync::atomic::{AtomicU64, Ordering};

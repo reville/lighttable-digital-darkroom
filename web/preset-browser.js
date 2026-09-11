@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { normalizePresetPacks, defaultPresetPack, groupPresetPacks, movePresetToPack } from './preset-packs.js';
 import { t as tr, tn as trn, currentLocale, formatNumber } from './i18n.js';
 

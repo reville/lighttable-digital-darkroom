@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The shared command, route, schema, and agent-tool manifest.
 
 Keep this module standard-library-only: `lighttable --help`, schema discovery,

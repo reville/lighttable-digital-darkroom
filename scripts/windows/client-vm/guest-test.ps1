@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param([string]$Root = 'C:\OEM')
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest

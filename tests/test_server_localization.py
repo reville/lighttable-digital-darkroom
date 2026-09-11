@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Server-owned messages localize without modifying data or error protocols."""
 import ast
 from concurrent.futures import ThreadPoolExecutor

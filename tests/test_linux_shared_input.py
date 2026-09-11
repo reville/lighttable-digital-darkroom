@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """A full Linux /dev/shm must fall back to TIFF before any mapped page is touched."""
 from __future__ import annotations
 

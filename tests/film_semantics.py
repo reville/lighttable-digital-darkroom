@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Does each film control do what its name says?
 
 The companion to `control_semantics`, for the physical-simulation stage. The

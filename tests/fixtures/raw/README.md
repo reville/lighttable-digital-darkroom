@@ -5,7 +5,7 @@ They are valid uncompressed DNGs carrying a known colour matrix, a
 known as-shot neutral, clipped highlights and a noisy flat field, so
 the capture stage can be checked without shipping a camera original
 or tracking its licence. Real-format coverage lives in the RAW
-journey layers described in JOURNEY-TESTING.md.
+journey layers described in docs/journey-testing.md.
 
 Rebuild with:
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Decoder headers define preview geometry, independently of EXIF thumbnails."""
 import tempfile
 import unittest

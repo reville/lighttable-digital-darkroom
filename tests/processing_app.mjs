@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // End-to-end: real server, real app UI, presented WebGL frame, CLI render API.
 import fs from 'node:fs';
 import {pathToFileURL} from 'node:url';

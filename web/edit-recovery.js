@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr, tn as trn } from './i18n.js';
 // Pending edits are kept outside the render server, scoped to one catalog.
 // Native hosts persist files; a normal browser uses its own origin storage.

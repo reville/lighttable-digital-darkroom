@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reading a Lightroom Classic catalog into ours.
 
 A `.lrcat` file is a SQLite database, which makes this an import by query

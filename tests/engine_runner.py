@@ -1,8 +1,9 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """One way to reach the film engine, shared by the audit and the goldens.
 
 Both use the resident `lighttable-engine` built from `rust-engine/`, the same
 implementation the film gate puts under test, rather than the prebuilt
-`engine/spektrafilm-rs` binary. PROCESSING-CORRECTNESS.md is explicit that the
+`engine/spektrafilm-rs` binary. docs/processing-correctness.md is explicit that the
 legacy binary is not the implementation under test, and pinning goldens to a
 binary that is not built from this repository would freeze pixels nobody can
 reproduce from source.

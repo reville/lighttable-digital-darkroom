@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Kill a real state-API process at commit boundaries and reopen its catalog."""
 from concurrent.futures import ThreadPoolExecutor
 import hashlib

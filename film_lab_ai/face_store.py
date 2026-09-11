@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Face groups, user names and durable corrections, separate from generated tags."""
 
 from __future__ import annotations

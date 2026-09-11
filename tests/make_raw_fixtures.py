@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Build the synthetic DNG fixtures the RAW capture suite decodes.
 
 The repository deliberately ships no camera originals: the smallest real RAW
@@ -8,7 +9,7 @@ few kilobytes each, reproducible from this script, and free of any provenance
 question.
 
 They exercise the decoder, not a particular sensor. Format coverage for real
-camera files stays with the RAW journey layers in JOURNEY-TESTING.md.
+camera files stays with the RAW journey layers in docs/journey-testing.md.
 
     python tests/make_raw_fixtures.py
 """
@@ -108,7 +109,7 @@ def build() -> list[Path]:
         "known as-shot neutral, clipped highlights and a noisy flat field, so\n"
         "the capture stage can be checked without shipping a camera original\n"
         "or tracking its licence. Real-format coverage lives in the RAW\n"
-        "journey layers described in JOURNEY-TESTING.md.\n\n"
+        "journey layers described in docs/journey-testing.md.\n\n"
         "Rebuild with:\n\n```sh\npython tests/make_raw_fixtures.py\n```\n")
     return written
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Update-feed contracts: exact signed payload identity and release-only URLs."""
 import base64
 import importlib.util

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the native desktop smoke on a private headless Weston compositor."""
 
 from __future__ import annotations

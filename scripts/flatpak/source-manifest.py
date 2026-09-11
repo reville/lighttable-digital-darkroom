@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate the experimental source-only build graph from immutable source pins.
 
 Generation is offline. Fetching sources belongs to flatpak-builder --download-only.

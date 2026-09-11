@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Actual delivery pixels, accepted assets, and complete rename preflight."""
 import base64
 import concurrent.futures

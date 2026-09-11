@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Remove build-machine paths from a bundled standalone Python runtime."""
 
 from __future__ import annotations

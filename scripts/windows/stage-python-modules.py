@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Stage the application's root Python modules for the Windows runtime.
 
 The repository root contains runtime modules; development scripts and tests

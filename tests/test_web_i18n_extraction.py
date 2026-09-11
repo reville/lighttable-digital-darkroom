@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """English message declarations stay extractable without running the app."""
 import importlib.util
 from pathlib import Path

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Range inputs round programmatic values to their step (and clamp to bounds).
 // Keep the model's precision when merely reading back an unchanged control.
 const displayedValues = new WeakMap();

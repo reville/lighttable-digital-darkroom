@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Build LightTable.app — a native shell around the local Python render server.
 # The Python venv stays in this project directory; the bundle points at it.
 set -euo pipefail

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 import unittest
 from unittest import mock
 import base64

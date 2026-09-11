@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Optional, bounded headless UI audits. Never imported by the normal test gate."""
 from __future__ import annotations
 import argparse

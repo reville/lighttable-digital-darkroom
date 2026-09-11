@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Auto-straighten and guided upright for the lens pane.
 
 Finds straight lines in a neutral preview and solves the *parametric* optics

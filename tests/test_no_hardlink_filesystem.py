@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise native no-replace operations when a volume rejects hard links."""
 import errno
 import tempfile

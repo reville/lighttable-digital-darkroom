@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Verify RAW output identity across fresh processes and OpenMP thread counts.
 
 Pass real X-Trans and Bayer files. An optional stock-wheel interpreter adds

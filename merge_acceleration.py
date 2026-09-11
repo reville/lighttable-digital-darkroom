@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bounded GPU stages for merging, with the CPU workflow as reference fallback.
 
 Registration is deliberately unchanged. Only numeric image stages run here;

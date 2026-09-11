@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # LightTable: review a photo folder through the spektrafilm pipeline.
 # Usage: run.sh [photo-folder] [port]
 set -euo pipefail

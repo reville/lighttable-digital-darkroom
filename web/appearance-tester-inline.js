@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Preserve the existing tester in desktop shells without managed utility windows.
 import {isAppearanceColor, normalizeAppearance} from './appearance-tester.js';
 const STORAGE_KEY = 'lighttable.appearance-test.v1';

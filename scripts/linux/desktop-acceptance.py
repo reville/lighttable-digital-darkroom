@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Require a packaged X11 edit/export/normal-close/reopen journey in private data.
 
 Run with the bundle's Python under Xvfb and a private D-Bus session. This uses

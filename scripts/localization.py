@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Extract and validate the versioned UI/help translation catalogs."""
 import argparse
 from collections import Counter

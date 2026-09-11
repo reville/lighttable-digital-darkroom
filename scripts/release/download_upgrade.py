@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Download exact public Linux packages, pinned to GitHub's published SHA-256."""
 import argparse
 import hashlib

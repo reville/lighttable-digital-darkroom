@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Lifecycle and background worker for the optional local AI index."""
 
 from __future__ import annotations

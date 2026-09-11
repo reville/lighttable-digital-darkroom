@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { HELP_CATEGORIES, helpSearch } from './help-search.js';
 import { t, tn, currentLocale } from './i18n.js';
 

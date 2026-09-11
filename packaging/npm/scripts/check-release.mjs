@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { readFile } from 'node:fs/promises';
 import { PLATFORMS, releaseAsset } from '../lib/release.mjs';
 

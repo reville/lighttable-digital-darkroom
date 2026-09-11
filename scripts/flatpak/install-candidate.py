@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Install the validated archive inside flatpak-builder's private /app prefix."""
 import os
 from pathlib import Path

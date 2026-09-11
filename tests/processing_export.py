@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real export files, checked against analytical and separate-code references.
 
 The no-film CLI checks use only NumPy equations for sRGB, exposure and geometry.

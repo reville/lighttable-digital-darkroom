@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /** Per-window inspection positions, independent of zoom and photo edits. */
 export function createPhotoPanMemory() {
   const positions = new Map();

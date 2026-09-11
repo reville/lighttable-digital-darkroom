@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
 set -eu
 
 collection_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)

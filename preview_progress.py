@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Report completed preview stages without estimating time or pixel throughput."""
 from contextlib import contextmanager
 from contextvars import ContextVar

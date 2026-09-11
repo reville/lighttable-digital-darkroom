@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Fail packaging if OpenMP is missing or a dylib still needs the build host."""
 from pathlib import Path
 import re

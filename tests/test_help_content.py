@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Source drift must require article review, even when the bundle still builds."""
 import contextlib
 import copy

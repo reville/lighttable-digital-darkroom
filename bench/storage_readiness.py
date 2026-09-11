@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Measured synthetic catalog/slow-I/O benchmark; never reads a real library.
 
 Run: .venv/bin/python bench/storage_readiness.py --output /tmp/storage.json

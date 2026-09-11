@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from './i18n.js';
 /* Selection-wide additive tagging; each photo keeps its independent keywords. */
 export function installKeywordBatch(ctx) {

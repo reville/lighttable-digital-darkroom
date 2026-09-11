@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Prepare a verified upstream Flatpak candidate; not a Flathub source build."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Tests for camera_profile, exercising the real reader on real .dcp bytes.
 
 Every profile used here is synthesised in the test by hand-assembling a TIFF

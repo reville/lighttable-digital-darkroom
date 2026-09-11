@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Deterministic colour, tone, and edge target for LightTable calibration."""
 from __future__ import annotations
 

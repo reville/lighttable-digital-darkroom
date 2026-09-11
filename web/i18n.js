@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Explicit gettext templates keep translations separate from file names, edit
 // values, identifiers and user content. This module has no import-time effects.
 let locale = 'en';

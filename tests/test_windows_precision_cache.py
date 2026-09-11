@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Existing installations must not reuse old low-precision export inputs."""
 
 from contextlib import ExitStack

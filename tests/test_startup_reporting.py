@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Keep the launcher's final startup record readable under Windows file sharing."""
 import ctypes
 import json

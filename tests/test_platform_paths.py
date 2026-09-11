@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Platform storage contracts without reading or writing a user's catalog."""
 from __future__ import annotations
 

@@ -6,7 +6,7 @@ Public releases are published at
 [reville/lighttable-digital-darkroom](https://github.com/reville/lighttable-digital-darkroom/releases).
 The Windows x64 artifacts are `LightTable-VERSION-windows-x64-setup.exe` and
 `LightTable-VERSION-windows-x64.zip`. See the [Windows installation guide](https://lighttable.app/windows.html)
-and [exact-binary acceptance record](docs/windows-client-acceptance.md) for the current release.
+and [exact-binary acceptance record](../windows-client-acceptance.md) for the current release.
 
 The installer runs without administrator rights and defaults to
 `%LOCALAPPDATA%\Programs\LightTable`. It adds a dedicated `bin` directory to
@@ -78,7 +78,7 @@ GitHub release. Its signed enclosures point to immutable versioned installers.
 WinSparkle verifies the Ed25519 signature before handing off the download.
 The release build signs and verifies the installer's Authenticode signature
 before publication. The helper waits for shutdown and runs that installer. See
-[release setup](release/README.md) for signing and feed publication.
+[release setup](../../release/README.md) for signing and feed publication.
 This source integration still requires a signed upgrade on an actual Windows
 desktop before release.
 
@@ -322,7 +322,7 @@ require another application rewrite or a forked Windows pipeline.
    reference. Check ICC profiles, orientation, and smooth gradients using the
    exported files, not only the remote desktop stream.
 
-The [Windows client acceptance record](docs/windows-client-acceptance.md) records
+The [Windows client acceptance record](../windows-client-acceptance.md) records
 the current Windows 10/11 and Windows 11 ARM emulation checks, exact
 release identity, and physical hardware coverage limits.
 
@@ -394,7 +394,7 @@ it is not an MSIX package.
 
 ### Evidence still required before initial submission
 
-The [current acceptance record](docs/windows-client-acceptance.md) binds the
+The [current acceptance record](../windows-client-acceptance.md) binds the
 selected installer to its source, hash, signatures and native edit/export/restart
 checks. Windows 10 covers offline installation with WebView2 absent; Windows 11
 covers offline installation with its preinstalled runtime. Keep those cases
@@ -443,6 +443,6 @@ edit/export/restart still gates the job and uploads separate
 offline acceptance unconfirmed until that independent Windows test is done.
 
 Select the current permanent installer URL and checksum from the
-[canonical release manifest](release/manifest.json), after verifying that the
+[canonical release manifest](../../release/manifest.json), after verifying that the
 Windows entry is published. Store account approval, listing preparation and
 certification remain separate gates. Never replace bytes at a submitted URL.

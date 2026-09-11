@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param([string]$Python = "python")
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest

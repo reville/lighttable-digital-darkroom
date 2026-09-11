@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 .apple-photos-backdrop { z-index: 160; padding: 24px; }
 .apple-photos-panel { width: min(1060px, 100%); height: min(800px, calc(100dvh - 48px)); display: flex; flex-direction: column; text-align: start; background: var(--panel-raised); color: var(--ink); border: 1px solid var(--line-strong); border-radius: var(--radius-l); overflow: hidden; box-shadow: 0 20px 80px #0008; }
 .apple-photos-header, .apple-photos-toolbar, .apple-photos-footer { display: flex; align-items: center; gap: 12px; padding: 16px 22px; flex-wrap: wrap; flex: 0 0 auto; }

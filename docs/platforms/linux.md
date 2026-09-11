@@ -98,7 +98,7 @@ use the same option and XDG settings during uninstall.
 Arch/AUR, Flatpak, and Snap installations use their package manager or desktop
 software manager for updates. LightTable does not replace package-owned files.
 Flatpak updates require a configured repository; a standalone bundle download
-does not establish an ongoing update channel. See [release setup](release/README.md)
+does not establish an ongoing update channel. See [release setup](../../release/README.md)
 for portable signing configuration and the native upgrade checks still required.
 
 ## Install with pacman on Arch or Omarchy
@@ -129,7 +129,7 @@ per-user launcher does not take precedence over the system launcher.
 
 The Omarchy package target is x86-64. `--experimental-aarch64` can create a
 separately labelled ARM64 recipe for native ARM validation; it does not make
-an ARM bundle usable on x86-64. See [the packaging notes](packaging/linux/arch/README.md)
+an ARM bundle usable on x86-64. See [the packaging notes](../../packaging/linux/arch/README.md)
 for the package layout and validation boundary.
 
 For an AUR release recipe, use `scripts/linux/make-aur-package.py` with the
@@ -138,7 +138,7 @@ It generates `PKGBUILD`, `.SRCINFO`, and the desktop entry, with the official
 `v0.5.0` release asset URL and exact SHA-256 checksum. It rejects CI snapshots,
 dirty builds, mismatched source identities, and ARM archives. It does not
 download files, create a release, or submit anything to the AUR. See the
-[release recipe instructions](packaging/linux/arch/README.md#release-backed-aur-recipe).
+[release recipe instructions](../../packaging/linux/arch/README.md#release-backed-aur-recipe).
 The matching official asset must be published before that recipe is distributed
 through the AUR; generating it alone does not make LightTable available there.
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Translated help must be complete, current, and keep working IDs and tokens."""
 import contextlib
 import copy

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reversible capture-clock corrections; original files and filesystem dates stay intact."""
 from datetime import datetime, timedelta, timezone
 import math

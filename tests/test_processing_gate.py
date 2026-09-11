@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The scorer must catch realistic silent failures, not just average drift."""
 import importlib.util
 from pathlib import Path

@@ -1,8 +1,8 @@
 # Contributing to LightTable
 
 We welcome bug reports, photo and camera compatibility testing, documentation,
-and code contributions. We are looking for Windows, macOS, and Linux maintainers,
-including a maintainer focused on Omarchy. [Open an issue](https://github.com/reville/lighttable-digital-darkroom/issues/new)
+and code contributions. We are also looking for Windows, macOS, and Linux
+platform maintainers. [Open an issue](https://github.com/reville/lighttable-digital-darkroom/issues/new)
 with the platform or area you would like to work on.
 
 For a bug report, include your operating system, LightTable version or commit,
@@ -139,7 +139,7 @@ For occasional layout and visual bug hunts, use the [on-demand UI audit](scripts
 It provides headless snapshots, DOM invariants, and seeded exploration; it is not
 part of commit checks, CI triggers, or `mnb`.
 
-See [product journey testing](JOURNEY-TESTING.md) for package and RAW-image
+See [product journey testing](docs/journey-testing.md) for package and RAW-image
 journeys. The optional RAW fixtures require a separate download; routine unit
 tests and the JPEG journey do not require the full RAW collection. Passing unit
 tests does not establish that a native window or a rendered photo looks right.
@@ -149,12 +149,12 @@ consistent and check both preview and export.
 ## Windows and Linux
 
 Windows has a Rust desktop shell and packaging workflow. Follow
-[WINDOWS.md](WINDOWS.md) for the Windows x64 prerequisites, build command,
+[the Windows guide](docs/platforms/windows.md) for the Windows x64 prerequisites, build command,
 runtime checks, and native GUI checks. The macOS setup commands above are not a
 Windows packaging recipe.
 
 Linux has an experimental GTK/WebKitGTK desktop port and portable-bundle build
-tooling. Follow [LINUX.md](LINUX.md) for Ubuntu and Arch/Omarchy dependencies,
+tooling. Follow [the Linux guide](docs/platforms/linux.md) for Ubuntu and Arch/Omarchy dependencies,
 build instructions, XDG storage locations, and the platform validation checklist.
 The initial target is x86-64; public packages and physical GPU validation are
 still needed. An ARM64 virtual-machine build does not establish x86-64 support
@@ -167,6 +167,23 @@ Wayland or X11 session, GPU, and driver with results. Apple Vision/CoreML
 features and HEIF export remain unavailable on Linux. There is no supported
 Linux desktop release yet.
 
+## Licensing your contribution
+
+LightTable is GPL-3.0-only. Every first-party source file starts with an SPDX
+identifier, so a file still states its license once separated from this tree:
+
+```
+# SPDX-License-Identifier: GPL-3.0-only
+```
+
+New files need one. `scripts/add-license-headers.py` adds any that are missing,
+and `tests/test_license_headers.py` fails when a source file lacks one.
+
+Authorship is not repeated in each file. LICENSE covers the work and git records
+who wrote what. Vendored upstream code keeps its own notices and is excluded;
+see the provenance note beside each vendored tree. You keep the copyright in
+your contribution and license it under GPL-3.0-only by submitting it.
+
 ## Send a contribution
 
 Keep pull requests focused, explain the behavior being changed, and report the
@@ -174,8 +191,8 @@ tests and platforms you checked. Screenshots or exported samples are useful for
 interface and image-quality changes.
 
 The [README](README.md) describes the architecture.
-[CLI.md](CLI.md) documents the local control interface, and
-[FILM-PROFILES.md](FILM-PROFILES.md) and [calibration](calibration/README.md)
+[The CLI reference](docs/cli.md) documents the local control interface, and
+[Film profiles](docs/film-profiles.md) and [calibration](calibration/README.md)
 explain profile provenance and image comparisons. The
-[development roadmap](DEVELOP-ROADMAP.md) and
-[workflow roadmap](WORKFLOW-ROADMAP.md) record implementation plans and status; check Releases for shipped versions.
+[development roadmap](docs/roadmap/develop.md) and
+[workflow roadmap](docs/roadmap/workflow.md) record implementation plans and status; check Releases for shipped versions.

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Float32 counterpart of grade.apply. The detail taps always read the
 // post-chromatic-aberration source, not an already sharpened neighbor.
 // Chromatic-aberration geometry is completed by the precise CPU path first.

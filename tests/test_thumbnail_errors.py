@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Thumbnail failures remain actionable JSON and recover after file repair."""
 import io
 import json

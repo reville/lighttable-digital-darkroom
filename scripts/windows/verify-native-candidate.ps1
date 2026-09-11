@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param(
     [Parameter(Mandatory)][string]$Directory,
     [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$SourceRevision,

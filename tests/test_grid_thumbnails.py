@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real cache tiers and bounded import backfill for the library grid."""
 import io
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Checks that the correctness gate rejects invalid output and wrong physics."""
 import json
 from pathlib import Path

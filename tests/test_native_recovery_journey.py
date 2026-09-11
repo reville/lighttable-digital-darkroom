@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the actual recovery journey against the real state API and catalog."""
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 #[cfg(target_os = "windows")]
 fn main() {
     println!("cargo:rerun-if-env-changed=LIGHTTABLE_ICON_ICO");

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 from enum import Enum
 from types import SimpleNamespace
 import unittest

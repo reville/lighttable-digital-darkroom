@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise native Photos browsing without permission prompts or personal data."""
 from pathlib import Path
 import shutil

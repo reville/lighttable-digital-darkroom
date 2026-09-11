@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Production WebGL renderer, synchronous framebuffer readback, and composited
 // canvas screenshots. The interactive canvas keeps preserveDrawingBuffer=false.
 import fs from 'node:fs';

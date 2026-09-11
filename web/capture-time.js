@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr, tn as trn } from './i18n.js';
 /** Catalog date sorting treats known offsets as instants; unzoned camera times
  * remain unzoned and sort on the same neutral clock basis as SQLite. */

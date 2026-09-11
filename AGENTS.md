@@ -32,7 +32,7 @@ lighttable export run @selection --destination ~/Pictures/Exports
 lighttable history list @current --json
 ```
 
-See `lighttable --help`, `lighttable schema`, and `CLI.md` for the generated
+See `lighttable --help`, `lighttable schema`, and `docs/cli.md` for the generated
 command and route reference.
 
 ## Recorded journey review

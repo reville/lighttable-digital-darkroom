@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Execute native import IO and first-run persistence without accessing Photos."""
 
 import json

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Versioned LightTable interpretations; separate from measured film profiles.
 
 V1 gently contracts the source yellow-green hue interval toward green before

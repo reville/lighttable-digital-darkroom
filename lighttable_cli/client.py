@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Small urllib client for the local LightTable server."""
 from __future__ import annotations
 

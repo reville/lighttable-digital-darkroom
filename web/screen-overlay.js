@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Photo geometry uses displayed CSS pixels; only the visible overlay is
 // rasterized, at the display's density. Its bitmap never inherits photo zoom.
 export function screenOverlayGeometry(image, frame, viewport, pixelRatio = 1) {

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {tn as trn} from './i18n.js';
 
 export function aiSearchTerms(metadata) {

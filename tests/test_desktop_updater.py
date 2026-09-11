@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real signed archives, filesystem upgrades and process/HTTP restart fixtures.
 
 The worker suite runs on Linux and macOS. macOS overrides only the platform gate

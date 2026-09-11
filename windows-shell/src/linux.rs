@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Linux desktop conventions, separate from the Windows and macOS hosts.
 use anyhow::{Result, bail};
 use crate::localization::tr;

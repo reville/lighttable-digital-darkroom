@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Preset amounts preserve a baseline and survive real state serialization."""
 import json
 import shutil

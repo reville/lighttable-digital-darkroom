@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
 # This runs only on an ephemeral runner, inside Xvfb with its systemd user bus.
 set -euo pipefail
 mode="${1:-precision}"

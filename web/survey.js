@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 
 const i18nHTML = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;");
 import { t as tr } from './i18n.js';

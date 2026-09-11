@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Toolbar filters retain their semantics in the browser and saved collections."""
 from pathlib import Path
 import shutil

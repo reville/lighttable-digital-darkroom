@@ -15,4 +15,4 @@ description: Use the LightTable photo catalog and editor CLI for culling, rating
 6. Require a dry-run or explicit confirmation before destructive work.
 
 The server is the only writer. External state changes are attributed, streamed
-to the live window, and undoable. See `CLI.md` for recipes and route coverage.
+to the live window, and undoable. See `docs/cli.md` for recipes and route coverage.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Check an extracted Windows bundle in an interactive Windows desktop.
 
 Run with the bundle's Python. A private Windows job contains only this test's

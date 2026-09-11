@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Native UI shares the web manifest, catalogs, and saved preference object.
 use serde::Deserialize;
 use serde_json::Value;

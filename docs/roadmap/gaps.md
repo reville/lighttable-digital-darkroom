@@ -1,8 +1,8 @@
 # Remaining gaps milestone
 
 Status: **implemented locally; not released**, 2026-09-03. Companion to
-[WORKFLOW-ROADMAP.md](WORKFLOW-ROADMAP.md) (migration, catalog, culling: built)
-and [DEVELOP-ROADMAP.md](DEVELOP-ROADMAP.md) (develop-tool parity: built).
+[docs/roadmap/workflow.md](workflow.md) (migration, catalog, culling: built)
+and [docs/roadmap/develop.md](develop.md) (develop-tool parity: built).
 
 All eight numbered phases are now in the working tree. The accepted Windows
 denoise/person-part follow-ons and optional local-mask preset conversion remain

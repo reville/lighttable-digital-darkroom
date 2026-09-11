@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Size output mappings before touching them. Linux tmpfs can accept ftruncate
 //! without backing the pages: reserve them so a full /dev/shm returns ENOSPC
 //! here instead of raising SIGBUS during the later pixel copy.

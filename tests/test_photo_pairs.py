@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real catalog and API-route coverage for explicit RAW+JPEG metadata linking."""
 import unittest
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Assisted culling: the measurements, the verdicts, and how they are stored.
 
 Synthetic frames are used deliberately. A threshold that only holds on one

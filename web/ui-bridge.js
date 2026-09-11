@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { connectServerEvents } from '/web/events.js';
 
 export function installUIBridge({ client, post, report, execute, handlers }) {

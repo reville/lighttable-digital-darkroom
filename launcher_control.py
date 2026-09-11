@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Keep the Windows launcher's lifetime pipe out of helper-process stdin."""
 from __future__ import annotations
 

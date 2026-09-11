@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Post-film grade: the adjustments applied on top of the film render.
 
 The maths here is mirrored exactly in web/gl.js so the WebGL preview and the

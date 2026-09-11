@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """A window that is listening can be driven, even if its heartbeat is late.
 
 The window reports its state on a timer, and browsers throttle timers in a

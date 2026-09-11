@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise real RAW/film catalogs before and after a host-owned Snap refresh.
 
 Run with the installed Snap's Python, private Xvfb, and its systemd user bus. Helpers

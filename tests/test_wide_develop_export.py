@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Synthetic color/geometry fixtures; never opens a photographer's originals."""
 from contextlib import ExitStack, redirect_stdout
 from io import StringIO

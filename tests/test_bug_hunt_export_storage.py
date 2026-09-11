@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Boundary and interruption probes found by the September bug hunt."""
 import json
 import os

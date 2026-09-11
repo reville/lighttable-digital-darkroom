@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Analytic coverage contract mirrored in mask_raster.py; no Canvas blending.
 const clamp = (x, low, high) => Math.max(low, Math.min(high, x));
 export function strokeCoverage(stroke, width, height) {

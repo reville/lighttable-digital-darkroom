@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from './i18n.js';
 import { OPTICS_DEFAULTS } from './editor-panels.js';
 export const FILE_TYPES = { raw: 'RAW', jpeg: 'JPEG', heic: 'HEIC / HEIF', tiff: 'TIFF', png: 'PNG' };

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the selected Photos transfer with disposable, ephemeral provider files."""
 import shutil
 import subprocess

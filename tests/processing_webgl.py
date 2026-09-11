@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run production browser shaders against independently executed CPU grading."""
 from __future__ import annotations
 

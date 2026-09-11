@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr, tn as trn, currentLocale, availableLocales } from './i18n.js';
 import { changeLanguage } from './locale-bootstrap.js';
 import { api } from '/web/api.js';

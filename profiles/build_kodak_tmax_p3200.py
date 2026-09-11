@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Build LightTable's measured Kodak T-MAX P3200 Rust profile.
 
 The published graphs are necessarily digitized at finite resolution. The

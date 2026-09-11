@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Compiled by test_photos_library_import.py with production Swift inserted.
 // Fake PhotoKit only supplies assets/chunks; file IO, locking, counters, and
 // cancellation use the production importer unchanged. No Photos access occurs.

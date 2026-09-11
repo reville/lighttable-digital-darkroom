@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare must use accurate pixels at the edited preview's resolution."""
 import http.client
 import io

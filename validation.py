@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Strict request validation layered over LightTable's lenient cleaners."""
 from __future__ import annotations
 

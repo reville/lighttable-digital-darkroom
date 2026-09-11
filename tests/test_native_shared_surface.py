@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the real mmap-backed Metal texture and immutable lifetime contract."""
 import os
 from pathlib import Path

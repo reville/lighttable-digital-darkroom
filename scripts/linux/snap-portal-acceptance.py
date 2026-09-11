@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the real initial native folder portal in a strict Snap on private Xvfb."""
 import hashlib
 import importlib.util

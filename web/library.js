@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { matchesLibraryFilters, normalizeFileTypes } from '/web/library-filters.js';
 import { aiSearchTerms } from '/web/local-ai.js';
 

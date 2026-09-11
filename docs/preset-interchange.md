@@ -252,8 +252,8 @@ first sidecar backup, and checks for conflicting external changes since the
 last read or sync. Offline or failed writes remain queued. Representative
 Photo Mechanic and digiKam fixtures exercise these conventions; live round
 trips through those applications remain unverified. See the
-[XMP workflow](DIGITAL-ASSET-MANAGEMENT.md#exchange-metadata-through-xmp) and
-[fixture provenance](tests/fixtures/xmp/README.md).
+[XMP workflow](digital-asset-management.md#exchange-metadata-through-xmp) and
+[fixture provenance](../tests/fixtures/xmp/README.md).
 
 **Lightroom Classic catalogs.** A `.lrcat` is copied and opened read-only, so
 it can be imported while Lightroom is running, and every table and column is

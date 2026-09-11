@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the app's actual tool handlers with a small deterministic DOM."""
 import json
 from pathlib import Path

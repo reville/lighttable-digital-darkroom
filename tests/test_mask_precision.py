@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 import base64
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Discover and safely clean LightTable instance registrations."""
 from __future__ import annotations
 

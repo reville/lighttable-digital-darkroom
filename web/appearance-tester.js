@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Hidden, local UI experiment. Deliberately absent from menus and public Help.
 const STORAGE_KEY = 'lighttable.appearance-test.v1';
 const CHANNEL_NAME = 'lighttable-appearance-test';
