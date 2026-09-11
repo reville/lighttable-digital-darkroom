@@ -22,6 +22,7 @@ export const photoCount = group => tn('{count} photo', '{count} photos', group.p
 export const visiblePeople = (groups, view, query = '') => groups.filter(g =>
   (view === 'hidden' ? g.hidden : !g.hidden) && (view !== 'unnamed' || !g.name) &&
   (!query.trim() || personName(g).toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())));
+export const pendingMatches = (matches, skipped) => matches.filter(pair => !skipped.has(`${pair.a}/${pair.b}`));
 
 export function createPeoplePanel({ api, onLabels, onPhoto }) {
   const dialog = el('div', null, 'modal-backdrop people-backdrop');
@@ -79,10 +80,11 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     document.getElementById('peopleSettingsStatus').textContent = status.faces || running ? text
       : t('Optional · compact model · 10.1 MB download. Photos stay on this device.');
     find('.people-nav').hidden = !groups.length;
+    const pending = pendingMatches(matches, later).length;
     for (const tab of dialog.querySelectorAll('[data-people-view]')) {
       tab.setAttribute('aria-current', String(tab.dataset.peopleView === view && !groupId));
       if (tab.dataset.peopleView === 'unnamed') tab.textContent = groups.length ? t('Unnamed ({count})', {count: formatNumber(groups.filter(g => !g.hidden && !g.name).length)}) : t('Unnamed');
-      if (tab.dataset.peopleView === 'review') tab.textContent = matches.length ? t('Review matches ({count})', {count: formatNumber(matches.length)}) : t('Review matches');
+      if (tab.dataset.peopleView === 'review') tab.textContent = pending ? t('Review matches ({count})', {count: formatNumber(pending)}) : t('Review matches');
     }
   }
   function schedule() {
@@ -271,7 +273,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     panel.append(confirm, btn(t('Cancel'), () => { mergeTarget = null; render(); })); content.append(panel);
   }
   function renderReviewNudge() {
-    if (nudgeDismissed || !matches.length) return;
+    if (nudgeDismissed || !pendingMatches(matches, later).length) return;
     const bar = el('aside', null, 'people-review-nudge');
     const copy = el('p', t('Some people may appear in separate groups. Review possible matches to combine them.'));
     const review = btn(t('Review matches'), () => {
@@ -289,7 +291,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     bar.append(copy, review, dismiss); content.append(bar);
   }
   function renderReview() {
-    const pair = matches.find(p => !later.has(`${p.a}/${p.b}`));
+    const pair = pendingMatches(matches, later)[0];
     if (!pair) return empty(t('All caught up'), later.size ? t('Skipped matches will be here when you reopen People.') : t('New possible matches appear here after scanning more photos.'));
     const a = groups.find(g => g.id === pair.a), b = groups.find(g => g.id === pair.b);
     if (!a || !b) return;
@@ -313,7 +315,7 @@ export function createPeoplePanel({ api, onLabels, onPhoto }) {
     const actions = el('div', null, 'people-review-actions');
     actions.append(btn(t('Different people'), () => act('reject', { group: a.id, other: b.id })),
       btn(t('Same person'), () => act('merge', { group: keep.id, other: other.id }), 'accent-btn'),
-      btn(t('Skip for now'), () => { later.add(`${pair.a}/${pair.b}`); render(); }, 'quiet'));
+      btn(t('Skip for now'), () => { later.add(`${pair.a}/${pair.b}`); syncStatus(); render(); }, 'quiet'));
     section.append(actions, el('small', t('Your corrections are remembered. You can undo the last change.')));
     content.append(section);
   }

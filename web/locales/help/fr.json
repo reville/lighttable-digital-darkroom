@@ -241,7 +241,7 @@
           "steps": [
             "Utilisez les trois boutons de vue Photo en haut. Dans le schéma de raccourcis LightTable, G ouvre la grille Photo, Shift+G ouvre la grille de tri, et D ouvre Détails.",
             "Dans une grille, utilisez le curseur Taille pour modifier la taille des vignettes.",
-            "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus."
+            "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans l’une ou l’autre grille, les flèches haut et bas passent à la photo du dessus ou du dessous au lieu de faire défiler. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Sélectionnez des candidats dans une grille et appuyez sur N, ou ouvrez Infos → Vue d'ensemble de la sélection.",
-            "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre.",
+            "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre, et les flèches haut et bas pour passer d’une ligne à l’autre.",
             "Utilisez la barre d’outils de marquage ou les raccourcis de drapeau, de note et d’étiquette sur la cellule active.",
             "Cliquez sur × dans une cellule pour la retirer de la vue d’ensemble sans la supprimer ni la rejeter. Double-cliquez sur une cellule pour ouvrir cette photo dans Détails.",
             "Cliquez sur Fermer ou appuyez sur Échap pour quitter Vue d’ensemble."
@@ -660,7 +660,7 @@
         {
           "title": "À quoi s’attendre",
           "paragraphs": [
-            "Le modèle compact SFace INT8 compare les visages humains alignés. Le regroupement automatique utilise des règles de similarité conservatrices ; les correspondances possibles restent séparées pour vérification. Les nouveaux visages correspondant à une personne nommée sont proposés pour confirmation.",
+            "Le modèle compact SFace INT8 compare des visages humains alignés. Les nouveaux visages peuvent rejoindre des groupes sans nom ou, avec des indices plus solides, des groupes nommés. Les correspondances ambiguës restent séparées pour examen. Les analyses conservent les groupes, noms et corrections existants ; modifier les règles de correspondance ne fusionne pas automatiquement les groupes déjà présents dans votre bibliothèque.",
             "Les visages petits, flous, masqués, de profil et nettement séparés par l’âge peuvent être manqués ou répartis dans plusieurs groupes. Le modèle peut également faire des correspondances incorrectes. Les visages apparaissant ensemble sur une même photo ne sont pas automatiquement mis en correspondance ; une fusion manuelle reste possible pour les miroirs et les collages. Cette fonctionnalité ne regroupe pas les animaux de compagnie et ne fournit pas de précision d’identité garantie."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

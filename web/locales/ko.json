@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "중립 영역을 클릭하여 화이트 밸런스 설정",
     "Click a neutral grey area": "중립 회색 영역을 클릭하세요",
     "Click a new position in the photo for the selected correction’s target": "선택된 보정의 대상에 대해 사진의 새 위치를 클릭하세요",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "사진을 클릭해 해당 서베이 셀을 활성화하세요. 셀 사이를 이동하려면 왼쪽 및 오른쪽 화살표를 사용하세요.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "사전 설정 행을 클릭하면 즉시 적용됩니다. 행 아래에 양 슬라이더가 나타납니다. 같은 행을 다시 클릭하면 사전 설정이 비활성화되고 슬라이더가 숨겨집니다. 사진은 이 컴퓨터에 유지됩니다.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "사전 설정을 클릭하여 적용하고, 양을 조정한 다음, 자신만의 룩을 저장하거나 공유하세요.",
     "Click a spot or drag over a distraction in the photo.": "사진에서 얼룩을 클릭하거나 방해 요소 위로 드래그합니다.",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "카탈로그가 {catalogSyncService} 안에 있습니다. 동기화 중인 폴더 안의 데이터베이스는 손상의 흔한 원인입니다.",
     "The catalog was left unchanged.": "카탈로그는 변경되지 않았습니다.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "검증된 백업에서 카탈로그를 복원했습니다. 손상된 복사본은 Recovery 폴더에 있습니다.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "컴팩트 SFace INT8 모델은 정렬된 사람 얼굴을 비교합니다. 자동 그룹화는 보수적인 유사도 규칙을 사용하며, 가능한 일치는 검토를 위해 별도로 유지됩니다. 이름이 지정된 사람과 일치하는 새 얼굴은 확인을 위해 제안됩니다.",
     "The current catalog is backed up first, then replaced by this one.": "현재 카탈로그를 먼저 백업한 다음 이 카탈로그로 바꿉니다.",
     "The desktop Trash service (gio) is unavailable": "데스크톱 휴지통 서비스(gio)를 사용할 수 없습니다",
     "The desktop app checks its signed update feed.": "데스크톱 앱이 서명된 업데이트 피드를 확인합니다.",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "매개변수 곡선을 사용하세요",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "미리보기를 끄려면 뷰어 도구막대의 소프트 프루프 켬 버튼을 사용하세요.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "그리드로 세트를 선택하고 디테일로 개별 사진을 확인합니다.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "왼쪽 및 오른쪽 화살표 키로 사진 사이를 이동하세요. 세부 정보에서는 사진 영역에 포커스가 있을 때 Space로 맞춤과 1:1을 전환합니다.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "라이브러리 검색 필드를 사용해 파일 이름과 키워드와 함께 사진 내용, 보이는 텍스트, 또는 얼굴을 검색하세요.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "활성 셀에서 마킹 도구막대 또는 플래그, 평점, 레이블 단축키를 사용하세요.",
     "Use the name “{name}”.": "“{name}” 이름을 사용하세요.",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac에서 사진 미리보기를 마우스 오른쪽 버튼으로 클릭하고 복사를 선택하세요.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "핸들 위에 포인터를 올리면 해당 동작을 확인할 수 있습니다. 숨겨진 핀은 드래그할 수 없습니다.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "같은 사람이 여러 그룹에 나뉘어 표시될 수 있습니다. 일치 후보를 검토하여 그룹을 합치세요.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "일치 후보가 있으면 사람 화면에 닫을 수 있는 안내 표시줄이 나타나 일치 검토 화면을 열 수 있습니다. 표시줄을 닫은 상태는 이 기기에 저장됩니다."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "일치 후보가 있으면 사람 화면에 닫을 수 있는 안내 표시줄이 나타나 일치 검토 화면을 열 수 있습니다. 표시줄을 닫은 상태는 이 기기에 저장됩니다.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "경량 SFace INT8 모델은 정렬된 사람 얼굴을 비교합니다. 새 얼굴은 이름 없는 그룹에 추가될 수 있으며, 더 확실한 일치 근거가 있으면 이름 있는 그룹에도 추가될 수 있습니다. 모호한 일치는 검토를 위해 별도로 유지됩니다. 스캔은 기존 그룹, 이름, 수정 사항을 유지하며, 일치 규칙을 변경해도 라이브러리에 있는 기존 그룹이 자동으로 합쳐지지 않습니다.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "왼쪽 및 오른쪽 화살표 키로 사진 사이를 이동하세요. 두 그리드 모두에서 위쪽 및 아래쪽 화살표 키는 스크롤하는 대신 위나 아래의 사진으로 이동합니다. 세부 정보에서는 사진 영역에 포커스가 있을 때 Space로 맞춤과 1:1을 전환합니다.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "사진을 클릭해 해당 서베이 셀을 활성화하세요. 셀 사이를 이동하려면 왼쪽 및 오른쪽 화살표를, 행 사이를 이동하려면 위쪽 및 아래쪽 화살표를 사용하세요."
   },
   "plurals": {
     " · {count} paired file linked": {

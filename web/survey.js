@@ -18,11 +18,29 @@ import { t as tr } from './i18n.js';
 
 import { labelSwatch } from '/web/labels.js';
 
+/* Up and down cross rows rather than scrolling the grid. A short final row
+ * keeps the column, so the last cell in that column takes the press, and the
+ * ends wrap the way the left and right keys already do. */
+export function surveyRowNeighbour(index, count, columns, direction) {
+  if (count < 1 || columns < 1) return -1;
+  const next = index + direction * columns;
+  if (next >= 0 && next < count) return next;
+  const column = index % columns;
+  if (direction > 0) return column < count ? column : column - columns;
+  const last = Math.floor((count - 1) / columns) * columns + column;
+  return last < count ? last : last - columns;
+}
+
 export function createSurvey(ctx) {
   const { el, onActivate, onOpen } = ctx;
   let names = [];
   let activeName = null;
   let mode = 'survey';
+
+  function columnCount(count) {
+    if (mode === 'compare') return 2;
+    return Math.min(4, Math.max(1, Math.ceil(Math.sqrt(count))));
+  }
 
   const container = el('survey');
   const grid = el('surveyGrid');
@@ -98,8 +116,7 @@ export function createSurvey(ctx) {
       title.textContent = mode === 'compare' ? tr("Compare {rowsLength} photos", {rowsLength: rows.length}) : tr("Survey {rowsLength} photos", {rowsLength: rows.length});
     }
     grid.className = `survey-grid ${mode === 'compare' ? 'compare-two' : ''}`;
-    grid.style.setProperty('--survey-columns',
-      String(Math.min(4, Math.max(1, Math.ceil(Math.sqrt(rows.length))))));
+    grid.style.setProperty('--survey-columns', String(columnCount(rows.length)));
     const existing = new Map([...grid.children].map((cell) =>
       [decodeURIComponent(cell.dataset.name || ''), cell]));
     const ordered = rows.map((image) => {
@@ -114,6 +131,8 @@ export function createSurvey(ctx) {
   function setActive(name) {
     activeName = name;
     render();
+    const cell = grid?.querySelector('.survey-cell.active');
+    cell?.scrollIntoView({ block: 'nearest' });
     if (onActivate) onActivate(name);
   }
 
@@ -121,6 +140,14 @@ export function createSurvey(ctx) {
     if (!names.length) return;
     const index = Math.max(0, names.indexOf(activeName));
     setActive(names[(index + direction + names.length) % names.length]);
+  }
+
+  function stepRow(direction) {
+    if (!names.length) return;
+    const index = Math.max(0, names.indexOf(activeName));
+    const next = surveyRowNeighbour(index, names.length,
+      columnCount(names.length), direction);
+    if (next >= 0) setActive(names[next]);
   }
 
   function open(list, nextMode = 'survey') {
@@ -180,6 +207,7 @@ export function createSurvey(ctx) {
     render,
     swap,
     step,
+    stepRow,
     remove,
     get isOpen() { return container && !container.hidden; },
     get active() { return activeName; },

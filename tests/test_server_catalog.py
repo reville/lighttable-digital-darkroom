@@ -777,6 +777,22 @@ class PayloadAndCacheTests(CatalogServerTestCase):
         for blob in ("params", "grade", "crop", "masks", "heals", "optics"):
             self.assertNotIn(blob, rows[0])
 
+    def test_boot_payload_carries_only_the_open_source(self):
+        """The sidebar counts one source, so the grid must not show them all."""
+        elsewhere = Path(self._dir.name) / "elsewhere"
+        make_photo(elsewhere / "c.jpg", (200, 60, 40))
+        make_photo(elsewhere / "d.jpg", (40, 200, 60))
+        second = self.catalog.add_source(elsewhere)
+        catalog_scan.scan_source(self.catalog, second,
+                                 read_metadata_for_new=False)
+
+        rows, snapshot = server.library_payload(limit=20)
+
+        self.assertEqual({row["sourceId"] for row in rows}, {self.source})
+        self.assertEqual(snapshot["total"], 2)
+        root = next(row for row in snapshot["folders"] if row["path"] == "")
+        self.assertEqual(root["totalCount"], snapshot["total"])
+
     def test_browser_payload_and_queries_hide_catalogued_videos(self):
         (self.root / "clip.mov").write_bytes(b"catalogued for later")
         catalog_scan.scan_source(self.catalog, self.source,

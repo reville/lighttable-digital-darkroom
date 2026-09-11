@@ -241,7 +241,7 @@
           "steps": [
             "Dùng ba nút xem Ảnh ở phía trên. Trong sơ đồ phím tắt LightTable, G mở Lưới ảnh, Shift+G mở Lưới lọc, và D mở Chi tiết.",
             "Trong lưới, dùng thanh trượt Kích thước để thay đổi kích thước hình thu nhỏ.",
-            "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm."
+            "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Ở cả hai lưới, phím mũi tên lên và xuống chuyển tới ảnh phía trên hoặc phía dưới thay vì cuộn. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Chọn các ảnh ứng viên trong lưới và nhấn N, hoặc mở Thông tin → Xem nhanh lựa chọn.",
-            "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô.",
+            "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô, và phím mũi tên lên và xuống để di chuyển giữa các hàng.",
             "Dùng thanh công cụ đánh dấu hoặc các phím tắt cờ, xếp hạng và nhãn trên ô đang hoạt động.",
             "Nhấp × trên một ô để xóa nó khỏi survey mà không xóa hoặc từ chối nó. Nhấp đúp một ô để mở ảnh đó trong Detail.",
             "Nhấp Đóng hoặc nhấn Escape để rời khỏi Xem nhanh."
@@ -660,7 +660,7 @@
         {
           "title": "Điều cần mong đợi",
           "paragraphs": [
-            "Mô hình SFace INT8 gọn so sánh các khuôn mặt người đã căn chỉnh. Ghép tự động dùng các quy tắc tương đồng thận trọng; các kết quả khớp có thể có sẽ vẫn tách riêng để xem lại. Các khuôn mặt mới khớp với một người đã đặt tên sẽ được đề xuất để xác nhận.",
+            "Mô hình SFace INT8 gọn nhẹ so sánh các khuôn mặt người đã được căn chỉnh. Khuôn mặt mới có thể được thêm vào nhóm chưa đặt tên hoặc, khi có bằng chứng mạnh hơn, nhóm đã đặt tên. Những kết quả khớp chưa rõ ràng vẫn được tách riêng để xem xét. Quá trình quét giữ nguyên các nhóm, tên và chỉnh sửa hiện có; việc thay đổi quy tắc đối sánh không tự động gộp các nhóm đã có trong thư viện.",
             "Khuôn mặt nhỏ, mờ nhòe, bị che khuất, nghiêng nghiêng và khác biệt đáng kể về độ tuổi có thể bị bỏ sót hoặc bị tách ra thành các nhóm khác nhau. Mô hình cũng có thể nhận dạng sai. Các khuôn mặt xuất hiện cùng nhau trong một ảnh sẽ không tự động được ghép; vẫn có thể hợp nhất thủ công cho ảnh gương và ảnh ghép. Tính năng này không nhóm thú cưng và không đảm bảo độ chính xác về danh tính."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

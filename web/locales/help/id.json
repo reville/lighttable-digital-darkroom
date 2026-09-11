@@ -241,7 +241,7 @@
           "steps": [
             "Gunakan tiga tombol tampilan Foto di bagian atas. Dalam skema pintasan LightTable, G membuka Kisi Foto, Shift+G membuka Kisi Seleksi, dan D membuka Detail.",
             "Di kisi, gunakan penggeser Ukuran untuk mengubah ukuran thumbnail.",
-            "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus."
+            "Gunakan tombol panah kiri dan kanan untuk berpindah antar foto. Di kedua grid, tombol panah atas dan bawah berpindah ke foto di atas atau di bawah alih-alih menggulir. Di Detail, Space men-toggle Pas dan 1:1 saat area foto memiliki fokus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Pilih kandidat dalam kisi dan tekan N, atau buka Info → Survey selection.",
-            "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel.",
+            "Klik foto untuk menjadikan sel survei itu aktif. Gunakan panah kiri dan kanan untuk berpindah antar sel, dan panah atas dan bawah untuk berpindah antar baris.",
             "Gunakan toolbar penandaan atau shortcut flag, rating, dan label pada sel aktif.",
             "Klik × pada sel untuk menghapusnya dari survei tanpa menghapus atau menolaknya. Klik dua kali sel untuk membuka foto tersebut di Detail.",
             "Klik Tutup atau tekan Escape untuk keluar dari Survey."
@@ -660,7 +660,7 @@
         {
           "title": "Yang perlu diharapkan",
           "paragraphs": [
-            "Model SFace INT8 yang compact membandingkan wajah manusia yang sejajar. Pengelompokan otomatis menggunakan aturan kemiripan yang konservatif; kemungkinan kecocokan tetap terpisah untuk ditinjau. Wajah baru yang cocok dengan orang bernama akan disarankan untuk konfirmasi.",
+            "Model ringkas SFace INT8 membandingkan wajah manusia yang disejajarkan. Wajah baru dapat bergabung dengan grup tanpa nama atau, dengan bukti yang lebih kuat, grup bernama. Kecocokan ambigu tetap terpisah untuk ditinjau. Pemindaian mempertahankan grup, nama, dan koreksi yang ada; mengubah aturan pencocokan tidak otomatis menggabungkan grup yang sudah ada di pustaka Anda.",
             "Wajah yang kecil, buram, terhalang, profil, dan yang berbeda usia secara signifikan dapat terlewat atau terpisah ke beberapa grup. Model juga dapat membuat kecocokan yang salah. Wajah yang muncul bersama dalam satu foto tidak dicocokkan secara otomatis; penggabungan manual tetap dimungkinkan untuk cermin dan kolase. Fitur ini tidak mengelompokkan hewan peliharaan atau memberikan akurasi identitas yang dijamin."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

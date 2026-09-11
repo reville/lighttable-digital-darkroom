@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Beyaz dengesini ayarlamak için nötr bir alana tıklayın",
     "Click a neutral grey area": "Nötr gri bir alana tıklayın",
     "Click a new position in the photo for the selected correction’s target": "Seçili düzeltmenin hedefi için fotoğrafta yeni bir konuma tıklayın",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları kullanın.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Hemen uygulamak için bir hazır ayar satırına tıklayın. Miktar kaydırıcısı satırın altında görünür. Hazır ayarı devre dışı bırakıp kaydırıcıyı gizlemek için aynı satıra tekrar tıklayın. Fotoğrafınız bu bilgisayarda kalır.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Bir hazır ayara tıklayarak uygulayın, Miktar'ı ayarlayın ve kendi görünümlerinizi kaydedin veya paylaşın.",
     "Click a spot or drag over a distraction in the photo.": "Fotoğraftaki dikkat dağıtıcı bir noktaya tıklayın veya sürükleyin.",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Katalog {catalogSyncService} içinde yer alıyor. Eşzamanlanan bir klasör içindeki veritabanları bozulmanın yaygın bir nedenidir.",
     "The catalog was left unchanged.": "Katalog değişmeden kaldı.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Katalog doğrulanmış bir yedekten geri yüklendi; hasarlı kopya Kurtarma klasöründe.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Kompakt SFace INT8 modeli, hizalanmış insan yüzlerini karşılaştırır. Otomatik gruplama, temkinli benzerlik kuralları kullanır; olası eşleşmeler inceleme için ayrı tutulur. Adlandırılmış bir kişiyle eşleşen yeni yüzler doğrulama için önerilir.",
     "The current catalog is backed up first, then replaced by this one.": "Önce geçerli katalog yedeklenir, sonra bununla değiştirilir.",
     "The desktop Trash service (gio) is unavailable": "Masaüstü Çöp Sepeti hizmeti (gio) kullanılamıyor",
     "The desktop app checks its signed update feed.": "Masaüstü uygulaması, imzalı güncelleme beslemesini denetler.",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "Parametrik eğriyi kullan",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Önizlemeyi kapatmak için görüntüleyici araç çubuğundaki Soft Proof açık düğmesini kullanın.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Bir set seçmek için ızgaraları ve tek bir fotoğrafı incelemek için Ayrıntı’yı kullanın.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Fotoğraflar arasında geçmek için sol ve sağ ok tuşlarını kullanın. Ayrıntı'da, fotoğraf alanında odak varken Boşluk Fit ile 1:1 arasında geçiş yapar.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Dosya adları ve anahtar sözcüklerle birlikte fotoğraf içeriklerini, görünen metni veya yüzleri aramak için kütüphane arama alanını kullanın.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Etkin hücredeki işaretleme araç çubuğunu veya bayrak, derecelendirme ve etiket kısayollarını kullanın.",
     "Use the name “{name}”.": "“{name}” adını kullanın.",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac’te fotoğraf önizlemesine sağ tıklayın ve Kopyala’yı seçin.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "İşlevini görmek için işaretçiyi bir tutamacın üzerine getirin. Gizli iğneler sürüklenemez.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Aynı kişi ayrı gruplarda görünebilir. Bunları birleştirmek için olası eşleşmeleri inceleyin.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Olası eşleşmeler olduğunda, Kişiler bölümünde kapatılabilir bir çubuk eşleşme incelemesini açar. Çubuğun kapatıldığı bu cihazda hatırlanır.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Kompakt SFace INT8 modeli hizalanmış insan yüzlerini karşılaştırır. Yeni yüzler adsız gruplara veya daha güçlü kanıtlarla adlandırılmış gruplara katılabilir. Belirsiz eşleşmeler inceleme için ayrı kalır. Taramalar mevcut grupları, adları ve düzeltmeleri korur; eşleştirme kurallarını değiştirmek kitaplığınızdaki mevcut grupları otomatik olarak birleştirmez.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Fotoğraflar arasında geçmek için sol ve sağ ok tuşlarını kullanın. Her iki ızgarada da yukarı ve aşağı ok tuşları kaydırmak yerine üstteki veya alttaki fotoğrafa geçer. Ayrıntı'da, fotoğraf alanında odak varken Boşluk Fit ile 1:1 arasında geçiş yapar.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları, satırlar arasında geçmek için yukarı ve aşağı okları kullanın."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -30,9 +30,13 @@ The OpenCV CPU runtime is packaged separately from these downloadable weights.
 Both files are pinned to an immutable revision, size, and SHA-256. Downloads
 are atomic; photos are never sent to a network service.
 
-Automatic unnamed grouping requires conservative exemplar similarity, agreement
-across reference faces, and a margin over the runner-up. Named matches remain
-suggestions. Two detected faces in one photograph are not automatically matched;
+Automatic grouping uses a 0.50 similarity threshold for unnamed groups and a
+stricter 0.60 threshold for named groups. Both require agreement across reference
+faces and a 0.08 margin over the runner-up. Named and unnamed candidates compete
+in the same ranking, including candidates below their own acceptance threshold.
+Weaker or ambiguous matches remain suggestions. Existing groups are not merged
+retroactively; scans preserve saved assignments, names, and corrections.
+Two detected faces in one photograph are not automatically matched;
 manual merging can handle mirrors/collages. Suggestions use a lower threshold
 and never display uncalibrated probability percentages.
 

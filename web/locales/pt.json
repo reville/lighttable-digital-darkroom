@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Clique em uma área neutra para definir o balanço de branco",
     "Click a neutral grey area": "Clique em uma área cinza neutra",
     "Click a new position in the photo for the selected correction’s target": "Clique em uma nova posição na foto para o destino da correção selecionada",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Clique na linha de uma predefinição para aplicá-la imediatamente. O controle deslizante Quantidade aparece abaixo da linha. Clique novamente na mesma linha para desativá-la e ocultar o controle. Sua foto permanece neste computador.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Clique em uma predefinição para aplicá-la, ajuste a Quantidade e salve ou compartilhe suas próprias aparências.",
     "Click a spot or drag over a distraction in the photo.": "Clique em uma mancha ou arraste sobre uma distração na foto.",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "O catálogo fica dentro de {catalogSyncService}. Bancos de dados dentro de uma pasta sincronizada são uma causa comum de corrupção.",
     "The catalog was left unchanged.": "O catálogo foi deixado inalterado.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "O catálogo foi restaurado a partir de um backup verificado; a cópia danificada está na pasta Recovery.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "O modelo compacto SFace INT8 compara rostos humanos alinhados. O agrupamento automático usa regras de similaridade conservadoras; possíveis correspondências permanecem separadas para revisão. Novos rostos correspondentes a uma pessoa com nome são sugeridos para confirmação.",
     "The current catalog is backed up first, then replaced by this one.": "O catálogo atual é primeiro salvo em backup e depois substituído por este.",
     "The desktop Trash service (gio) is unavailable": "O serviço de Lixo da área de trabalho (gio) não está disponível",
     "The desktop app checks its signed update feed.": "O aplicativo de desktop verifica seu feed de atualização assinado.",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "Use a curva Paramétrica",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Use o botão Soft Proof ativado na barra de ferramentas do visualizador para desligar a pré-visualização.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Use as grades para escolher um conjunto e Detalhe para inspecionar uma foto individual.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Use as setas esquerda e direita para mover entre fotos. Em Detalhe, Espaço alterna entre Ajustar e 1:1 quando a área da foto está em foco.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Use o campo de pesquisa da biblioteca para pesquisar conteúdos da foto, texto visível ou rostos junto com nomes de arquivo e palavras-chave.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Use a barra de ferramentas de marcação ou os atalhos de bandeira, avaliação e rótulo na célula ativa.",
     "Use the name “{name}”.": "Use o nome “{name}”.",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "No Mac, clique com o botão direito na prévia da foto e escolha Copiar.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Passe o cursor sobre uma alça para ver sua função. Os pontos ocultos não podem ser arrastados.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Algumas pessoas podem aparecer em grupos separados. Revise as possíveis correspondências para combiná-los.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando há possíveis correspondências, uma barra que pode ser fechada em Pessoas abre a revisão de correspondências. Este dispositivo lembra se você a fechou."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando há possíveis correspondências, uma barra que pode ser fechada em Pessoas abre a revisão de correspondências. Este dispositivo lembra se você a fechou.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "O modelo compacto SFace INT8 compara rostos humanos alinhados. Novos rostos podem entrar em grupos sem nome ou, com evidências mais fortes, em grupos com nome. Correspondências ambíguas permanecem separadas para revisão. As varreduras mantêm os grupos, nomes e correções existentes; alterar as regras de correspondência não combina automaticamente os grupos que já estão na biblioteca.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Use as setas esquerda e direita para mover entre fotos. Em qualquer uma das grades, as setas para cima e para baixo vão para a foto acima ou abaixo em vez de rolar. Em Detalhe, Espaço alterna entre Ajustar e 1:1 quando a área da foto está em foco.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células e as setas para cima e para baixo para mover entre as linhas."
   },
   "plurals": {
     " · {count} paired file linked": {

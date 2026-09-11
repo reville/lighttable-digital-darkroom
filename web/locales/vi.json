@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Nhấp vào một vùng trung tính để đặt cân bằng trắng",
     "Click a neutral grey area": "Nhấp vào một vùng xám trung tính",
     "Click a new position in the photo for the selected correction’s target": "Bấm một vị trí mới trong ảnh cho mục tiêu của hiệu chỉnh đã chọn",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Nhấp vào một hàng thiết lập sẵn để áp dụng ngay. Thanh trượt Lượng xuất hiện bên dưới hàng. Nhấp lại vào cùng hàng để tắt thiết lập sẵn và ẩn thanh trượt. Ảnh của bạn vẫn ở trên máy tính này.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Nhấp vào một thiết lập sẵn để áp dụng, điều chỉnh Lượng, và lưu hoặc chia sẻ giao diện của riêng bạn.",
     "Click a spot or drag over a distraction in the photo.": "Nhấp vào một vết hoặc kéo qua một chi tiết gây phân tâm trong ảnh.",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Danh mục nằm bên trong {catalogSyncService}. Cơ sở dữ liệu nằm trong thư mục đang đồng bộ là một nguyên nhân thường gặp của hỏng dữ liệu.",
     "The catalog was left unchanged.": "Danh mục không thay đổi.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Danh mục đã được khôi phục từ bản sao lưu đã xác minh; bản sao bị hỏng nằm trong thư mục Khôi phục.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Mô hình SFace INT8 gọn so sánh các khuôn mặt người đã căn chỉnh. Ghép tự động dùng các quy tắc tương đồng thận trọng; các kết quả khớp có thể có sẽ vẫn tách riêng để xem lại. Các khuôn mặt mới khớp với một người đã đặt tên sẽ được đề xuất để xác nhận.",
     "The current catalog is backed up first, then replaced by this one.": "Danh mục hiện tại sẽ được sao lưu trước, rồi được thay thế bằng danh mục này.",
     "The desktop Trash service (gio) is unavailable": "Dịch vụ Thùng rác của desktop (gio) không khả dụng",
     "The desktop app checks its signed update feed.": "Ứng dụng desktop kiểm tra nguồn cập nhật đã ký của nó.",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "Sử dụng đường cong Thông số",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Dùng nút Bật Soft Proof trên thanh công cụ trình xem để tắt bản xem trước.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Dùng các lưới để chọn một tập và Chi tiết để kiểm tra một ảnh riêng lẻ.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Dùng trường tìm kiếm của thư viện để tìm nội dung ảnh, văn bản hiển thị hoặc khuôn mặt bên cạnh tên tệp và từ khóa.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Dùng thanh công cụ đánh dấu hoặc các phím tắt cờ, xếp hạng và nhãn trên ô đang hoạt động.",
     "Use the name “{name}”.": "Dùng tên “{name}”.",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "Trên Mac, nhấp chuột phải vào bản xem trước của ảnh và chọn Sao chép.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Di con trỏ lên một tay nắm để xem thao tác của nó. Không thể kéo các điểm neo bị ẩn.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Cùng một người có thể xuất hiện trong các nhóm riêng biệt. Hãy xem xét các kết quả có thể trùng khớp để gộp nhóm.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Khi có kết quả có thể trùng khớp, một thanh có thể đóng trong mục Mọi người sẽ mở phần xem xét kết quả trùng khớp. Thiết bị này ghi nhớ việc đóng thanh.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Mô hình SFace INT8 gọn nhẹ so sánh các khuôn mặt người đã được căn chỉnh. Khuôn mặt mới có thể được thêm vào nhóm chưa đặt tên hoặc, khi có bằng chứng mạnh hơn, nhóm đã đặt tên. Những kết quả khớp chưa rõ ràng vẫn được tách riêng để xem xét. Quá trình quét giữ nguyên các nhóm, tên và chỉnh sửa hiện có; việc thay đổi quy tắc đối sánh không tự động gộp các nhóm đã có trong thư viện.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Dùng phím mũi tên trái và phải để di chuyển giữa các ảnh. Ở cả hai lưới, phím mũi tên lên và xuống chuyển tới ảnh phía trên hoặc phía dưới thay vì cuộn. Trong Detail, Space chuyển đổi giữa Vừa khung và 1:1 khi vùng ảnh đang có tiêu điểm.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô, và phím mũi tên lên và xuống để di chuyển giữa các hàng."
   },
   "plurals": {
     " · {count} paired file linked": {

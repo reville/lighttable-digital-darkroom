@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "点击中性区域以设置白平衡",
     "Click a neutral grey area": "点击照片中的中性灰区域",
     "Click a new position in the photo for the selected correction’s target": "在照片上点击一个新位置，作为所选校正的目标位置",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "单击一张照片使该概览单元格处于活动状态。使用左箭头和右箭头在单元格之间移动。",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "点击预设行即可立即应用。其“数量”滑块会出现在该行下方。再次点击同一行可停用该预设并隐藏滑块。照片始终保留在此电脑上。",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "点击一个预设以应用，调整数量，并保存或分享你自己的外观。",
     "Click a spot or drag over a distraction in the photo.": "点击照片中的一个污点，或拖动以覆盖干扰物。",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "目录位于 {catalogSyncService} 内。位于同步文件夹中的数据库是损坏的常见原因。",
     "The catalog was left unchanged.": "目录未更改。",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "目录已从已验证的备份中恢复；损坏的副本位于 Recovery 文件夹中。",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "紧凑的 SFace INT8 模型会比较对齐的人脸。自动分组使用保守的相似度规则；可能的匹配项会保持分开以供审阅。与已命名人物匹配的新面部会被建议确认。",
     "The current catalog is backed up first, then replaced by this one.": "当前目录会先备份，然后替换为此目录。",
     "The desktop Trash service (gio) is unavailable": "桌面废纸篓服务（gio）不可用",
     "The desktop app checks its signed update feed.": "桌面应用会检查其已签名的更新源。",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "使用参数式曲线",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "使用查看器工具栏中的软打样开按钮来关闭预览。",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "使用网格选择一组，并使用 细节 检查单张照片。",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "使用左、右箭头键在照片之间移动。在“细节”中，当照片区域获得焦点时，空格会在“适合”和“1:1”之间切换。",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "使用资料库搜索字段搜索照片内容、可见文本或面部，同时也可搜索文件名和关键字。",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "使用当前单元上的标记工具栏或标记、评分和标签快捷键。",
     "Use the name “{name}”.": "使用名称“{name}”。",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "在 Mac 上，右键点击照片预览并选择“复制”。",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "将指针悬停在控制柄上可查看其操作。隐藏的控制点无法拖动。",
     "Some people may appear in separate groups. Review possible matches to combine them.": "同一个人可能出现在不同的分组中。查看可能的匹配以合并这些分组。",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。"
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "紧凑的 SFace INT8 模型比较对齐后的人脸。新的人脸可以加入未命名的分组，匹配证据更充分时也可以加入已命名的分组。不明确的匹配仍会保持分开，等待审核。扫描会保留现有的分组、名称和更正；更改匹配规则不会自动合并图库中已有的分组。",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "使用左、右箭头键在照片之间移动。在两种网格中，上下箭头键会移到上方或下方的照片，而不是滚动页面。在“细节”中，当照片区域获得焦点时，空格会在“适合”和“1:1”之间切换。",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "单击一张照片使该概览单元格处于活动状态。使用左箭头和右箭头在单元格之间移动，使用上箭头和下箭头在行之间移动。"
   },
   "plurals": {
     " · {count} paired file linked": {

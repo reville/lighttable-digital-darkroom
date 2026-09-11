@@ -241,7 +241,7 @@
           "steps": [
             "Usa i tre pulsanti della vista Foto in alto. Nello schema di scorciatoie di LightTable, G apre la Griglia foto, Shift+G apre la Griglia di culling e D apre Dettagli.",
             "In una griglia, usa il cursore Dimensione per cambiare la dimensione delle miniature.",
-            "Usa i tasti freccia sinistra e destra per spostarti tra le foto. In Dettagli, Spazio alterna Adatta e 1:1 quando l'area foto ha il focus."
+            "Usa i tasti freccia sinistra e destra per spostarti tra le foto. In entrambe le griglie, le frecce su e giù passano alla foto sopra o sotto invece di scorrere. In Dettagli, Spazio alterna Adatta e 1:1 quando l'area foto ha il focus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Seleziona i candidati in una griglia e premi N, oppure apri Info → Panoramica selezione.",
-            "Fai clic su una foto per rendere attiva quella cella della panoramica. Usa le frecce sinistra e destra per spostarti tra le celle.",
+            "Fai clic su una foto per rendere attiva quella cella della panoramica. Usa le frecce sinistra e destra per spostarti tra le celle e le frecce su e giù per spostarti tra le righe.",
             "Usa la barra strumenti di marcatura oppure le scorciatoie per contrassegno, valutazione ed etichetta sulla cella attiva.",
             "Fai clic su × su una cella per rimuoverla dalla panoramica senza eliminarla o rifiutarla. Fai doppio clic su una cella per aprire quella foto in Dettagli.",
             "Fai clic su Chiudi o premi Esc per uscire da Panoramica."
@@ -660,7 +660,7 @@
         {
           "title": "Cosa aspettarsi",
           "paragraphs": [
-            "Il modello compatto SFace INT8 confronta volti umani allineati. Il raggruppamento automatico usa regole di somiglianza conservative; le possibili corrispondenze restano separate per la revisione. I nuovi volti che corrispondono a una persona con nome vengono suggeriti per la conferma.",
+            "Il modello compatto SFace INT8 confronta volti umani allineati. I nuovi volti possono unirsi a gruppi senza nome o, con riscontri più solidi, a gruppi con nome. Le corrispondenze ambigue restano separate per la revisione. Le scansioni mantengono gruppi, nomi e correzioni esistenti; modificare le regole di corrispondenza non unisce automaticamente i gruppi già presenti nella libreria.",
             "Volti piccoli, sfocati, oscurati, di profilo e notevolmente separati per età possono non essere rilevati o possono essere divisi tra gruppi. Il modello può anche effettuare abbinamenti errati. I volti che compaiono insieme in una sola foto non vengono abbinati automaticamente; resta possibile un'unione manuale per specchi e collage. Questa funzione non raggruppa gli animali domestici né fornisce un'accuratezza garantita dell'identità."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

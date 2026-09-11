@@ -241,7 +241,7 @@
           "steps": [
             "Use os três botões de visualização de Fotos na parte superior. No esquema de atalhos do LightTable, G abre a Grade de fotos, Shift+G abre a Grade de seleção, e D abre o Detalhe.",
             "Em uma grade, use o controle deslizante Tamanho para alterar o tamanho das miniaturas.",
-            "Use as setas esquerda e direita para mover entre fotos. Em Detalhe, Espaço alterna entre Ajustar e 1:1 quando a área da foto está em foco."
+            "Use as setas esquerda e direita para mover entre fotos. Em qualquer uma das grades, as setas para cima e para baixo vão para a foto acima ou abaixo em vez de rolar. Em Detalhe, Espaço alterna entre Ajustar e 1:1 quando a área da foto está em foco."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Selecione candidatos em uma grade e pressione N, ou abra Informações → Varredura da seleção.",
-            "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células.",
+            "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células e as setas para cima e para baixo para mover entre as linhas.",
             "Use a barra de ferramentas de marcação ou os atalhos de bandeira, avaliação e rótulo na célula ativa.",
             "Clique em × em uma célula para removê-la da varredura sem excluí-la ou rejeitá-la. Dê um duplo clique em uma célula para abrir essa foto em Detalhe.",
             "Clique em Fechar ou pressione Escape para sair de Varredura."
@@ -660,7 +660,7 @@
         {
           "title": "O que esperar",
           "paragraphs": [
-            "O modelo compacto SFace INT8 compara rostos humanos alinhados. O agrupamento automático usa regras de similaridade conservadoras; possíveis correspondências permanecem separadas para revisão. Novos rostos correspondentes a uma pessoa com nome são sugeridos para confirmação.",
+            "O modelo compacto SFace INT8 compara rostos humanos alinhados. Novos rostos podem entrar em grupos sem nome ou, com evidências mais fortes, em grupos com nome. Correspondências ambíguas permanecem separadas para revisão. As varreduras mantêm os grupos, nomes e correções existentes; alterar as regras de correspondência não combina automaticamente os grupos que já estão na biblioteca.",
             "Rostos pequenos, borrados, obstruídos, de perfil e com diferença de idade substancial podem ser ignorados ou divididos entre grupos. O modelo também pode fazer correspondências incorretas. Rostos que aparecem juntos em uma mesma foto não são correspondidos automaticamente; uma mesclagem manual continua possível para espelhos e colagens. Este recurso não agrupa animais de estimação nem fornece precisão de identidade garantida."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

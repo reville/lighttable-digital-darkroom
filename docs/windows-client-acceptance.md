@@ -1,50 +1,46 @@
 # Windows client acceptance
 
-Verified September 10, 2026. The Windows 11 ARM **x64-emulation test work is complete** for the signed 0.6.0 candidate. The ARM workflow, installer checks, native editing checks and updated x64 VM harness are already integrated through [PR #122](https://github.com/reville/lighttable-digital-darkroom/pull/122). Draft [PR #114](https://github.com/reville/lighttable-digital-darkroom/pull/114) is superseded; its old failed 0.5.1 VM run is not the current acceptance result.
+Verified September 10, 2026. **Windows 0.6.1 passed native Windows 10/11 x64 acceptance and Windows 11 ARM x64-emulation acceptance.** The signed installer and portable ZIP are published on [v0.6.1](https://github.com/reville/lighttable-digital-darkroom/releases/tag/v0.6.1); the [installation guide](https://lighttable.app/windows.html) explains processor selection and signature/checksum verification.
 
-## Exact candidate
+## Exact release
 
-- Application source: `0ae5e9aaf90b3554ad1d027d5b6b10667cd61ae2`.
-- Signed Windows build: [34434174967](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34434174967).
-- Installer: `LightTable-0.6.0-windows-x64-setup.exe`.
-- Installer SHA-256: `e49f246e848069598849e4919cbf2be28015115524e33dbb156a03e7bbfc4aea`.
-- Portable ZIP SHA-256: `a4cbba3bfe8ffc367acb5bf9da334462b504b32fe1f47b2f427dcd59f14bbf5c`.
+- Application source and immutable `v0.6.1` tag: `2382de7ccb6a2e81c304a6c9116bf578b95aee69`.
+- Signed build: [34506394820](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34506394820).
+- Installer: `LightTable-0.6.1-windows-x64-setup.exe`, 439,153,216 bytes.
+- Installer SHA-256: `d5a4a0e3ba069b93cb9f0157814a50a5eece32478b3aa69ed1a935e7b07bb951`.
+- Portable ZIP: 292,263,647 bytes; SHA-256 `4916b83ed786752d84666c5c4c44cebdab23a43c75665e775eccb44eedef2356`.
+- Embedded source, version, Windows/x64 identity and `source_dirty: false` were independently verified. The original build's artifact sizes/hashes and all 420 packaged native-file hashes match the downloaded bytes. Windows reports 421 valid installed PE signatures, including the uninstaller. The certificate identifies Nicholas Reville; installer metadata is Chonkers LLC.
 
-No binary was rebuilt or published for this closeout. This is an x64 application; no native Windows ARM64 package exists.
+The package source is separate from the tested acceptance/promotion tooling revision `b4bd228708f663c8499534122ea025afc8baaf52` ([PR #131](https://github.com/reville/lighttable-digital-darkroom/pull/131)). Native tests select the original build and require its exact installer hash; no rebuild is substituted.
 
-## Windows 11 ARM: passed
+## Passed client matrix
 
-[Run 34436651354](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34436651354) passed on Windows 11 Enterprise ARM64 build 26200, hosted image `20260906.161.1`, using tester revision `fe9bebbd343d39d607c898d876c28cce17207961`.
+| Target | Runtime case | Offline, unelevated install | Native edit, RGB16 export and reopen |
+| --- | --- | --- | --- |
+| Windows 10 x64, build 19045 | WebView2 genuinely absent | Passed | Passed |
+| Windows 11 x64, build 26200 | Normal preinstalled WebView2 preserved | Passed | Passed |
+| Windows 11 ARM64, build 26200 | Hosted runtime; x64 application under emulation | Install/repair/removal passed; offline absence not claimed | Passed |
 
-The signed installer passed installation, same-version repair, CLI registration and data-preserving removal. All 421 installed PE signatures were valid. The extracted x64 application passed native rendering, saved exposure/rating, server restart and RGB16 TIFF export under Windows x64 emulation. Its downloaded TIFF independently matched SHA-256 `dfadcf6a657eadb64bd7060652b3d4af2f39e62bc0a43104ded75d1523b333cf`.
+[Windows 10/11 run 34510352623](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34510352623) passed both jobs in disposable native AMD64 client VMs. Both guest receipts confirm networking disabled, installation without elevation, the exact installer digest, valid installed signatures, and successful native rendering/edit/export/restart. Windows 10 reports the `absent` case and actual runtime absence; Windows 11 reports `preinstalled`, initial presence, and no fabricated absence. Microsoft [documents WebView2 as preinstalled on Windows 11](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution).
 
-The hosted image does not prove a native ARM64 build, offline installation with WebView2 absent, physical Snapdragon GPU/display behavior, or an old-to-new updater journey. The workflow explicitly records those boundaries. Use `.github/workflows/windows-native.yml` with `runner=windows-11-arm` for future candidates, keeping tester revision separate from package source and binding the installer digest to the original build.
+[ARM run 34510354937](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34510354937) passed on Windows 11 Enterprise ARM64, image `20260906.161.1`. The same signed installer passed installation, same-version repair, CLI registration and data-preserving removal. All 421 installed PE signatures were valid. The extracted x64 app passed rendering, saved exposure/rating, server restart and RGB16 TIFF export under Windows x64 emulation.
 
-## Windows 10/11 x64: newer results
+All downloaded native TIFF exports independently match SHA-256 `dfadcf6a657eadb64bd7060652b3d4af2f39e62bc0a43104ded75d1523b333cf`. The reports describe a 128 × 1024 RGB uint16 export with an embedded ICC profile.
 
-[Run 34481336232](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34481336232) tested that same installer in disposable native AMD64 client VMs with networking disabled and installation running without elevation.
+## Publication and updates
 
-| Check | Windows 10 build 19045 | Windows 11 build 26200 |
-| --- | --- | --- |
-| Offline install, repair, CLI and removal | Passed | Passed |
-| Installed executable signatures | 421 valid | 421 valid |
-| Native editing, TIFF export and reopen | Passed | Passed |
-| WebView2 absent before offline install | Passed | Not established; runtime preinstalled |
-| Overall job | Passed | Failed the runtime-absence gate |
+[Preparation 34510377102](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34510377102) retained the original binaries and generated versioned checksums and installer recipes. [Promotion 34513680232](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34513680232) independently verifies the public download bytes and the appcast Ed25519 signature against the key embedded in the actual executable before advancing the Windows feed. The [canonical release manifest](../release/manifest.json) records the published platform and receipts. macOS and Linux keep their own versions and artifacts.
 
-The Windows 11 host and installer receipts report success; the overall job correctly failed the additional prerequisite-absence condition. Microsoft [documents WebView2 as preinstalled on Windows 11](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution). The vendor uninstaller did not establish absence on this image. No detection keys were removed to imitate it. Certificate trust was checked online before disconnecting; this is not cold-cache certificate verification. The VMs use a virtual display adapter, so they do not establish physical GPU or color/display quality.
+Direct installer installations use the signed Windows feed on the `desktop-updates` release; portable ZIP installations update manually. This is the first public Windows binary release, so an old-to-new public Windows updater journey is not claimed. Prepared Scoop, WinGet and Chocolatey recipes are not published package-manager listings. Microsoft Store certification is separate.
 
-## Remaining release gates and test choices
+## Coverage limits and next hardware checks
 
-Windows remains blocked in the [canonical release manifest](../release/manifest.json). Two issues remain:
+Windows support remains experimental. These VMs use a virtual display adapter; they do not establish physical GPU, display scaling, color management, performance or large-RAW behavior. Certificate trust was checked online before disconnecting, so this is not cold-cache certificate verification. ARM testing does not establish a native ARM64 package or an ARM missing-runtime offline case.
 
-1. The currently declared gate requires Windows 11 offline installation with WebView2 genuinely absent. Keep that case open unless a deliberate release-policy decision accepts Windows 10 absence coverage plus normal Windows 11 runtime-present coverage. Do not relabel the failed run as passing.
-2. The older 0.6.0 ZIP lacks the clean-source and platform fields required by the newer preparation verifier. It cannot pass automated promotion as-is. A future versioned candidate should include the required embedded metadata and repeat acceptance; never change existing versioned binary bytes or invent a clean-source receipt.
+The next useful checks are physical Intel/AMD Windows PCs and a Snapdragon Windows 11 device, including real GPU drivers, color/display behavior, representative large RAWs and update/recovery. The existing disposable VM workflow remains available for repeatable installer regression tests. Alternative appropriately licensed client VMs can provide additional OS-image coverage; Windows Server results cannot replace Windows client evidence.
 
-For further testing:
+## Superseded candidates
 
-- **Existing disposable VMs:** retain the successful Windows 10 case, report Windows 11 runtime-present compatibility separately, and find a supported image/setup where prerequisite absence is real if that case remains mandatory. No new cloud account is needed for this route.
-- **Physical Windows PCs:** test an Intel/AMD Windows 10 and Windows 11 machine, including actual GPU drivers, display scaling, color management, large RAWs and update/recovery behavior. This fills hardware gaps that the VMs cannot cover. Windows 11 may still include WebView2, so hardware alone does not solve the absence case.
-- **Azure client VMs:** an alternative repeatable environment if appropriately licensed client images and an Azure subscription are available. [Microsoft's dev/test requirements](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/client-images) apply. A Windows Server VM cannot substitute for Windows 10/11 client evidence, and a different provider does not by itself remove the preinstalled runtime.
+The 0.6.0 staging draft remains historical. Its [Windows 11 ARM run 34436651354](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34436651354) passed, and [client run 34481336232](https://github.com/reville/lighttable-digital-darkroom/actions/runs/34481336232) passed Windows 10. The old Windows 11 job failed a runtime-absence gate despite successful runtime-present installation/native checks; it is not relabeled as passing. The old ZIP also lacks the newer required clean-source/platform metadata. Fresh 0.6.1 bytes and receipts supersede those publication blockers without modifying the old artifacts.
 
-The current manual workflow is `.github/workflows/windows-client-vm.yml`, with explicit candidate version/source/build/hash inputs, bounded jobs, real guest receipts and automatic VM cleanup. Do not restart the superseded pinned 0.5.1 workflow or its expired monitor. See [release/process.md](../release/process.md) for preparation and immutable publication.
+Draft [PR #114](https://github.com/reville/lighttable-digital-darkroom/pull/114) is closed as superseded; its ARM workflow and updated VM harness were already integrated through [PR #122](https://github.com/reville/lighttable-digital-darkroom/pull/122). Use the current manual workflows and [release process](../release/process.md) for future candidates, not the old pinned 0.5.1 harness or expired monitor.

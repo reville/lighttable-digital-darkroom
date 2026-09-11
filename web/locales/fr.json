@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "Cliquer sur une zone neutre pour définir la balance des blancs",
     "Click a neutral grey area": "Cliquez sur une zone gris neutre",
     "Click a new position in the photo for the selected correction’s target": "Cliquez sur une nouvelle position dans la photo pour la cible de la correction sélectionnée",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre.",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "Cliquez sur la ligne d’un préréglage pour l’appliquer immédiatement. Son curseur Quantité apparaît sous la ligne. Cliquez à nouveau sur la même ligne pour le désactiver et masquer le curseur. Votre photo reste sur cet ordinateur.",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "Cliquez sur un préréglage pour l’appliquer, ajustez la Quantité, puis enregistrez ou partagez vos propres rendus.",
     "Click a spot or drag over a distraction in the photo.": "Cliquez sur une tache ou faites glisser sur une distraction dans la photo.",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "Le catalogue se trouve dans {catalogSyncService}. Les bases de données situées dans un dossier synchronisé sont une cause fréquente de corruption.",
     "The catalog was left unchanged.": "Le catalogue est resté inchangé.",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "Le catalogue a été restauré à partir d’une sauvegarde vérifiée ; la copie endommagée se trouve dans le dossier Récupération.",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "Le modèle compact SFace INT8 compare les visages humains alignés. Le regroupement automatique utilise des règles de similarité conservatrices ; les correspondances possibles restent séparées pour vérification. Les nouveaux visages correspondant à une personne nommée sont proposés pour confirmation.",
     "The current catalog is backed up first, then replaced by this one.": "Le catalogue actuel est d’abord sauvegardé, puis remplacé par celui-ci.",
     "The desktop Trash service (gio) is unavailable": "Le service Corbeille du bureau (gio) est indisponible",
     "The desktop app checks its signed update feed.": "L’application de bureau vérifie son flux de mise à jour signé.",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "Utilisez la courbe Paramétrique",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "Utilisez le bouton Soft Proof activé dans la barre d’outils du visualiseur pour désactiver l’aperçu.",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "Utilisez les grilles pour choisir un ensemble et Détails pour inspecter une photo individuelle.",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus.",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "Utilisez le champ de recherche de la bibliothèque pour rechercher dans le contenu des photos, le texte visible ou les visages, en plus des noms de fichiers et des mots-clés.",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "Utilisez la barre d’outils de marquage ou les raccourcis de drapeau, de note et d’étiquette sur la cellule active.",
     "Use the name “{name}”.": "Utilisez le nom « {name} ».",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "Sur Mac, faites un clic droit sur l’aperçu de la photo et choisissez Copier.",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "Survolez une poignée pour voir son action. Les repères masqués ne peuvent pas être déplacés.",
     "Some people may appear in separate groups. Review possible matches to combine them.": "Certaines personnes peuvent apparaître dans des groupes distincts. Examinez les correspondances possibles pour les regrouper.",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Lorsque des correspondances sont disponibles, une barre pouvant être fermée dans Personnes ouvre Examiner les correspondances. Sa fermeture est mémorisée sur cet appareil."
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Lorsque des correspondances sont disponibles, une barre pouvant être fermée dans Personnes ouvre Examiner les correspondances. Sa fermeture est mémorisée sur cet appareil.",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "Le modèle compact SFace INT8 compare des visages humains alignés. Les nouveaux visages peuvent rejoindre des groupes sans nom ou, avec des indices plus solides, des groupes nommés. Les correspondances ambiguës restent séparées pour examen. Les analyses conservent les groupes, noms et corrections existants ; modifier les règles de correspondance ne fusionne pas automatiquement les groupes déjà présents dans votre bibliothèque.",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Utilisez les touches fléchées gauche et droite pour passer d’une photo à l’autre. Dans l’une ou l’autre grille, les flèches haut et bas passent à la photo du dessus ou du dessous au lieu de faire défiler. Dans Détails, Espace bascule entre Ajuster et 1:1 lorsque la zone photo a le focus.",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Cliquez sur une photo pour activer cette cellule de vue d’ensemble. Utilisez les flèches gauche et droite pour passer d’une cellule à l’autre, et les flèches haut et bas pour passer d’une ligne à l’autre."
   },
   "plurals": {
     " · {count} paired file linked": {

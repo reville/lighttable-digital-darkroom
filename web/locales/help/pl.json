@@ -241,7 +241,7 @@
           "steps": [
             "Użyj trzech przycisków widoku Zdjęcie u góry. W schemacie skrótów LightTable G otwiera Siatkę zdjęć, Shift+G otwiera Siatkę selekcji, a D otwiera Szczegóły.",
             "W siatce użyj suwaka Rozmiar, aby zmienić rozmiar miniatur.",
-            "Użyj klawiszy strzałek w lewo i w prawo, aby przechodzić między zdjęciami. W Szczegóły Spacja przełącza Dopasuj i 1:1, gdy obszar zdjęcia ma fokus."
+            "Użyj klawiszy strzałek w lewo i w prawo, aby przechodzić między zdjęciami. W obu siatkach strzałki w górę i w dół przechodzą do zdjęcia powyżej lub poniżej zamiast przewijać widok. W Szczegóły Spacja przełącza Dopasuj i 1:1, gdy obszar zdjęcia ma fokus."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Zaznacz kandydatów w siatce i naciśnij N albo otwórz Informacje → Przegląd zaznaczenia.",
-            "Kliknij zdjęcie, aby aktywować tę komórkę przeglądu. Użyj strzałek w lewo i w prawo, aby przechodzić między komórkami.",
+            "Kliknij zdjęcie, aby aktywować tę komórkę przeglądu. Użyj strzałek w lewo i w prawo, aby przechodzić między komórkami, oraz strzałek w górę i w dół, aby przechodzić między wierszami.",
             "Użyj paska narzędzi oznaczania lub skrótów klawiszowych dla flag, oceny i etykiety na aktywnej komórce.",
             "Kliknij × na komórce, aby usunąć ją z przeglądu bez usuwania jej lub odrzucania. Kliknij dwukrotnie komórkę, aby otworzyć to zdjęcie w Szczegóły.",
             "Kliknij Zamknij lub naciśnij Escape, aby opuścić Przegląd."
@@ -660,7 +660,7 @@
         {
           "title": "Czego się spodziewać",
           "paragraphs": [
-            "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Automatyczne grupowanie używa zachowawczych reguł podobieństwa; możliwe dopasowania pozostają osobno do przeglądu. Nowe twarze pasujące do nazwanej osoby są sugerowane do potwierdzenia.",
+            "Kompaktowy model SFace INT8 porównuje wyrównane ludzkie twarze. Nowe twarze mogą trafiać do grup bez nazwy lub, przy mocniejszych dowodach, do grup nazwanych. Niejednoznaczne dopasowania pozostają oddzielne do przeglądu. Skanowanie zachowuje istniejące grupy, nazwy i poprawki; zmiana reguł dopasowania nie łączy automatycznie grup już obecnych w bibliotece.",
             "Małe, nieostre, zasłonięte, z profilu oraz wyraźnie różniące się wiekiem twarze mogą zostać pominięte lub podzielone między grupy. Model może też błędnie dopasowywać twarze. Twarze występujące razem na jednym zdjęciu nie są automatycznie dopasowywane; ręczne scalenie pozostaje możliwe w przypadku luster i kolaży. Ta funkcja nie grupuje zwierząt domowych ani nie zapewnia gwarantowanej dokładności identyfikacji."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }

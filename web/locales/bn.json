@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1",
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -621,7 +621,6 @@
     "Click a neutral area to set white balance": "হোয়াইট ব্যালান্স সেট করতে একটি নিরপেক্ষ এলাকার ওপর ক্লিক করুন",
     "Click a neutral grey area": "একটি নিরপেক্ষ ধূসর এলাকা ক্লিক করুন",
     "Click a new position in the photo for the selected correction’s target": "নির্বাচিত সংশোধনের লক্ষ্যস্থানের জন্য ফটোতে নতুন অবস্থানে ক্লিক করুন",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells.": "সেই survey cell সক্রিয় করতে একটি ফটোতে ক্লিক করুন। সেলগুলোর মধ্যে যেতে বাম ও ডান তীর ব্যবহার করুন।",
     "Click a preset row to apply it immediately. Its Amount slider appears below the row. Click the same row again to disable it and hide the slider. Your photo stays on this computer.": "একটি প্রিসেট সঙ্গে সঙ্গে প্রয়োগ করতে তার সারিতে ক্লিক করুন। সারিটির নিচে পরিমাণ স্লাইডার দেখা যাবে। প্রিসেটটি নিষ্ক্রিয় করতে ও স্লাইডার লুকাতে একই সারিতে আবার ক্লিক করুন। আপনার ছবি এই কম্পিউটারেই থাকে।",
     "Click a preset to apply it, adjust Amount, and save or share your own looks.": "একটি প্রিসেট প্রয়োগ করতে সেটিতে ক্লিক করুন, Amount সমন্বয় করুন, এবং আপনার নিজের লুক সংরক্ষণ বা শেয়ার করুন।",
     "Click a spot or drag over a distraction in the photo.": "ফটোতে একটি স্পটের উপর ক্লিক করুন বা কোনো বিভ্রান্তিকর অংশের ওপর টেনে নিন।",
@@ -2929,7 +2928,6 @@
     "The catalog sits inside {catalogSyncService}. Databases inside a syncing folder are a common cause of corruption.": "ক্যাটালগটি {catalogSyncService}-এর ভিতরে রয়েছে। সিঙ্ক করা ফোল্ডারের ভিতরে থাকা ডেটাবেস দুর্নীতির একটি সাধারণ কারণ।",
     "The catalog was left unchanged.": "ক্যাটালগটি অপরিবর্তিত রাখা হয়েছে।",
     "The catalog was restored from a verified backup; the damaged copy is in the Recovery folder.": "ক্যাটালগটি একটি যাচাইকৃত ব্যাকআপ থেকে পুনঃস্থাপন করা হয়েছে; ক্ষতিগ্রস্ত কপি Recovery ফোল্ডারে আছে।",
-    "The compact SFace INT8 model compares aligned human faces. Automatic grouping uses conservative similarity rules; possible matches remain separate for review. New faces matching a named person are suggested for confirmation.": "কম্প্যাক্ট SFace INT8 model সারিবদ্ধ human faces তুলনা করে। Automatic grouping সংযত similarity rules ব্যবহার করে; possible matches পর্যালোচনার জন্য আলাদা থাকে। নামকরণ করা কোনো ব্যক্তির সঙ্গে মেলা নতুন মুখসমূহ নিশ্চিতকরণের জন্য প্রস্তাব করা হয়।",
     "The current catalog is backed up first, then replaced by this one.": "বর্তমান ক্যাটালগটি আগে ব্যাকআপ করা হয়, তারপর এটির দ্বারা প্রতিস্থাপিত হয়।",
     "The desktop Trash service (gio) is unavailable": "ডেস্কটপ ট্র্যাশ সার্ভিস (gio) অনুপলব্ধ",
     "The desktop app checks its signed update feed.": "ডেস্কটপ অ্যাপটি তার স্বাক্ষরিত আপডেট ফিড পরীক্ষা করে।",
@@ -3206,7 +3204,6 @@
     "Use the Parametric curve": "প্যারামেট্রিক কার্ভ ব্যবহার করুন",
     "Use the Soft Proof on button in the viewer toolbar to turn the preview off.": "পূর্বরূপ বন্ধ করতে viewer toolbar-এর Soft Proof on বোতামটি ব্যবহার করুন।",
     "Use the grids to choose a set and Detail to inspect an individual photo.": "একটি সেট বেছে নিতে grids ব্যবহার করুন এবং একটি পৃথক ফটো পরীক্ষা করতে Detail ব্যবহার করুন।",
-    "Use the left and right arrow keys to move between photos. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "ফটোগুলোর মধ্যে যেতে বাম ও ডান তীর কী ব্যবহার করুন। Detail-এ, ফটো এলাকায় ফোকাস থাকলে Space Fit এবং ১:১-এর মধ্যে টগল করে।",
     "Use the library search field to search photo contents, visible text, or faces alongside filenames and keywords.": "ফাইল নাম এবং keyword-এর পাশাপাশি ফটো বিষয়বস্তু, দৃশ্যমান text, বা face অনুসন্ধান করতে library search field ব্যবহার করুন।",
     "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.": "সক্রিয় cell-এ marking toolbar বা flag, rating, এবং label shortcut ব্যবহার করুন।",
     "Use the name “{name}”.": "“{name}” নামটি ব্যবহার করুন।",
@@ -4256,7 +4253,10 @@
     "On Mac, right-click the photo preview and choose Copy.": "Mac-এ ছবির প্রিভিউতে ডান-ক্লিক করে কপি বেছে নিন।",
     "Hover over a handle to see its action. Hidden pins cannot be dragged.": "কোনো হ্যান্ডেলের কাজ দেখতে সেটির ওপর পয়েন্টার রাখুন। লুকানো পিন টেনে সরানো যায় না।",
     "Some people may appear in separate groups. Review possible matches to combine them.": "একই ব্যক্তি আলাদা আলাদা দলে দেখা যেতে পারেন। দলগুলো একত্র করতে সম্ভাব্য মিলগুলো পর্যালোচনা করুন।",
-    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।"
+    "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।",
+    "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "কমপ্যাক্ট SFace INT8 মডেল সারিবদ্ধ মানুষের মুখ তুলনা করে। নতুন মুখ নামহীন দলে যোগ হতে পারে, অথবা আরও জোরালো প্রমাণ থাকলে নাম দেওয়া দলে যোগ হতে পারে। অস্পষ্ট মিলগুলো পর্যালোচনার জন্য আলাদা থাকে। স্ক্যান বিদ্যমান দল, নাম এবং সংশোধন বজায় রাখে; মিল খোঁজার নিয়ম বদলালে লাইব্রেরিতে আগে থেকে থাকা দলগুলো স্বয়ংক্রিয়ভাবে একত্র হয় না।",
+    "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "ফটোগুলোর মধ্যে যেতে বাম ও ডান তীর কী ব্যবহার করুন। যেকোনো গ্রিডে, উপরে ও নিচের তীর কী স্ক্রল করার বদলে উপরের বা নিচের ফটোতে নিয়ে যায়। Detail-এ, ফটো এলাকায় ফোকাস থাকলে Space Fit এবং ১:১-এর মধ্যে টগল করে।",
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "সেই survey cell সক্রিয় করতে একটি ফটোতে ক্লিক করুন। সেলগুলোর মধ্যে যেতে বাম ও ডান তীর, এবং সারিগুলোর মধ্যে যেতে উপরে ও নিচের তীর ব্যবহার করুন।"
   },
   "plurals": {
     " · {count} paired file linked": {

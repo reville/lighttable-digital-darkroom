@@ -241,7 +241,7 @@
           "steps": [
             "Verwenden Sie die drei Foto-Ansichtsbuttons oben. Im LightTable-Schema öffnet G Foto-Raster, Shift+G öffnet Aussortier-Raster, und D öffnet Details.",
             "Verwenden Sie im Raster den Größen-Schieberegler, um die Miniaturgröße zu ändern.",
-            "Verwenden Sie die Pfeiltasten links und rechts, um zwischen Fotos zu wechseln. In Details schaltet die Leertaste zwischen Anpassen und 1:1 um, wenn der Foto-Bereich den Fokus hat."
+            "Verwenden Sie die Pfeiltasten links und rechts, um zwischen Fotos zu wechseln. In beiden Rastern wechseln die Pfeiltasten nach oben und unten zum Foto darüber oder darunter, statt zu scrollen. In Details schaltet die Leertaste zwischen Anpassen und 1:1 um, wenn der Foto-Bereich den Fokus hat."
           ]
         },
         {
@@ -410,7 +410,7 @@
           ],
           "steps": [
             "Wählen Sie Kandidaten in einem Raster aus und drücken Sie N, oder öffnen Sie Info → Übersicht der Auswahl.",
-            "Klicken Sie auf ein Foto, um diese Übersichtszelle aktiv zu machen. Verwenden Sie die Pfeile links und rechts, um zwischen Zellen zu wechseln.",
+            "Klicken Sie auf ein Foto, um diese Übersichtszelle aktiv zu machen. Verwenden Sie die Pfeile links und rechts, um zwischen Zellen zu wechseln, und die Pfeile nach oben und unten, um zwischen Zeilen zu wechseln.",
             "Verwenden Sie die Markierungsleiste oder die Shortcuts für Markieren, Bewertung und Beschriftung auf der aktiven Kachel.",
             "Klicken Sie in einer Zelle auf ×, um sie aus der Übersicht zu entfernen, ohne sie zu löschen oder abzulehnen. Doppelklicken Sie auf eine Zelle, um dieses Foto in Details zu öffnen.",
             "Auf Schließen klicken oder Escape drücken, um Übersicht zu verlassen."
@@ -660,7 +660,7 @@
         {
           "title": "Was Sie erwartet",
           "paragraphs": [
-            "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Die automatische Gruppierung verwendet konservative Ähnlichkeitsregeln; mögliche Übereinstimmungen bleiben zur Überprüfung getrennt. Neue Gesichter, die zu einer benannten Person passen, werden zur Bestätigung vorgeschlagen.",
+            "Das kompakte SFace-INT8-Modell vergleicht ausgerichtete menschliche Gesichter. Neue Gesichter können unbenannten Gruppen oder bei stärkeren Übereinstimmungen benannten Gruppen zugeordnet werden. Mehrdeutige Treffer bleiben zur Überprüfung getrennt. Scans behalten vorhandene Gruppen, Namen und Korrekturen bei; geänderte Abgleichregeln führen bereits vorhandene Gruppen in Ihrer Bibliothek nicht automatisch zusammen.",
             "Kleine, unscharfe, verdeckte, im Profil aufgenommene und deutlich altersabweichende Gesichter können übersehen oder auf Gruppen aufgeteilt werden. Das Modell kann auch falsche Übereinstimmungen erzeugen. Gesichter, die zusammen in einem Foto erscheinen, werden nicht automatisch abgeglichen; für Spiegelungen und Collagen bleibt eine manuelle Zusammenführung möglich. Diese Funktion gruppiert keine Haustiere und bietet keine garantierte Identitätsgenauigkeit."
           ]
         }
@@ -3270,5 +3270,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "8434fa333e3d2c38980b87f6513ec8be7857f7e27990fb70e7f6cc5f2c275ae1"
+  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b"
 }
