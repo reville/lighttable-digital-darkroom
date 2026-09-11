@@ -144,6 +144,61 @@ class ScanIntegrityTests(unittest.TestCase):
         self.assertFalse(result["complete"])
         self.assertEqual(self.cat.query()["total"], 1)
 
+    def test_changed_file_keeps_metadata_when_reading_fails(self):
+        photo = self.photo("photo.jpg")
+        self.scan()
+        with self.cat.write() as conn:
+            conn.execute(
+                "UPDATE files SET capture_time=?, camera_make=?, camera_model=?,"
+                " lens=?, width=?, height=?, orientation=?, metadata_version=?"
+                " WHERE source_id=? AND relpath=?",
+                ("2024-05-01T12:00:00", "Canon", "EOS R", "RF 50mm", 6000,
+                 4000, 1, catalog_scan.METADATA_VERSION, self.source,
+                 photo.name))
+        photo.write_bytes(b"changed bytes" * 40)
+
+        with mock.patch.object(catalog_scan, "read_metadata", return_value={}):
+            result = catalog_scan.scan_source(self.cat, self.source)
+
+        self.assertEqual(result["updated"], 1)
+        row = self.cat.connection.execute(
+            "SELECT capture_time, camera_make, camera_model, lens, width,"
+            " height, orientation, metadata_version FROM files"
+            " WHERE source_id=? AND relpath=?",
+            (self.source, photo.name)).fetchone()
+        self.assertEqual(row["capture_time"], "2024-05-01T12:00:00")
+        self.assertEqual(row["camera_make"], "Canon")
+        self.assertEqual(row["camera_model"], "EOS R")
+        self.assertEqual(row["lens"], "RF 50mm")
+        self.assertEqual(row["width"], 6000)
+        self.assertEqual(row["height"], 4000)
+        self.assertEqual(row["orientation"], 1)
+        self.assertEqual(row["metadata_version"], catalog_scan.METADATA_VERSION)
+
+    def test_case_only_rename_reattaches_the_same_row(self):
+        probe = self.root / "CaseProbe"
+        probe.write_bytes(b"case")
+        if not (self.root / "caseprobe").exists():
+            probe.unlink()
+            self.skipTest("case-insensitive filesystem required")
+        probe.unlink()
+
+        photo = self.photo("IMG.JPG")
+        self.scan()
+        image = self.cat.image_id_for(self.source, "IMG.JPG")
+        self.cat.save_state(image, {"rating": 4})
+        photo.rename(self.root / "img.jpg")
+
+        self.scan()
+
+        self.assertEqual(self.cat.query()["total"], 1)
+        row = self.cat.connection.execute(
+            "SELECT relpath FROM files WHERE source_id=?",
+            (self.source,)).fetchone()
+        self.assertEqual(row["relpath"], "img.jpg")
+        self.assertEqual(self.cat.image_id_for(self.source, "img.jpg"), image)
+        self.assertEqual(self.cat.state_for(image)["rating"], 4)
+
     def test_invalid_scan_limit_leaves_the_catalog_alone(self):
         self.photo("a.jpg")
         self.scan()

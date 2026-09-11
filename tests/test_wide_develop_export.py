@@ -214,5 +214,35 @@ class WideDevelopColorTests(unittest.TestCase):
             self.assertEqual(destination.read_bytes(), b'good rendered pixels')
 
 
+    def test_external_worker_marks_raw_film_input_as_linear(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'raw-linear.tif'
+            source.write_bytes(b'linear master')
+            destination = root / 'edit.tif'
+            job = base_job()
+            job['params']['profile_enabled'] = True
+            seen = {}
+
+            def render_source(name, worker_job):
+                seen['linear_input'] = worker_job['params']['linear_input']
+                return source
+
+            def run(command, **options):
+                Path(command[-2]).write_bytes(b'good rendered pixels')
+                return mock.Mock(returncode=0, stderr='', stdout=json.dumps({
+                    'ok': True, 'warnings': []}))
+
+            with mock.patch.object(server, 'CACHE', root), \
+                    mock.patch.object(server, 'RUST_WORKER_BIN', None), \
+                    mock.patch.object(server, 'is_raw', return_value=True), \
+                    mock.patch.object(server, 'export_render_source',
+                                      side_effect=render_source), \
+                    mock.patch.object(server.subprocess, 'run', side_effect=run):
+                server._render_external_job('capture.dng', destination, job)
+
+            self.assertTrue(seen['linear_input'])
+
+
 if __name__ == '__main__':
     unittest.main()

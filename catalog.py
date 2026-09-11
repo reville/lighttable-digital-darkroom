@@ -1457,6 +1457,16 @@ class Catalog:
                 except OSError:
                     # Permission and device errors are not evidence of absence.
                     continue
+                else:
+                    # A case-insensitive filesystem resolves the old spelling
+                    # to the renamed file. Reattach that row instead of
+                    # inserting a second one and stranding its edits.
+                    try:
+                        if os.path.samefile(old, record["path"]):
+                            row = candidate
+                            break
+                    except OSError:
+                        continue
             if row is not None:
                 break
         if not row:
@@ -1465,9 +1475,10 @@ class Catalog:
         parent = relpath.rsplit("/", 1)[0] if "/" in relpath else ""
         conn.execute(
             "UPDATE files SET source_id=?, folder_id=?, relpath=?, filename=?,"
-            " ext=?, size=?, mtime_ns=?, mtime_iso=?, content_signature=?, missing=0 WHERE id=?",
+            " ext=?, kind=?, size=?, mtime_ns=?, mtime_iso=?, content_signature=?, missing=0 WHERE id=?",
             (source_id, self.folder_id(conn, source_id, parent), relpath,
-             record["filename"], record["ext"], record.get("size", 0),
+             record["filename"], record["ext"],
+             record.get("kind", "processed"), record.get("size", 0),
              record.get("mtime_ns", 0), record.get("mtime_iso"), record.get("content_signature"),
              int(row["id"])))
         self._refresh_file_images(conn, int(row["id"]), record["filename"])
@@ -2176,14 +2187,26 @@ class Catalog:
         collection_rules = {}
 
         scope = str(spec.get("scope", "all"))
-        if scope == "source" and spec.get("sourceId"):
+        # A source filter can travel with any scope: the window shows one
+        # source, so collection and folder queries stay inside it too.
+        source_scope = spec.get("sourceId")
+        if source_scope is not None:
             where.append("f.source_id=?")
-            params.append(int(spec["sourceId"]))
-        elif scope == "folder" and spec.get("folderId"):
-            if spec.get("includeSubfolders", True):
+            params.append(int(source_scope))
+        if scope == "source":
+            # A source-scoped query without a source id must match nothing
+            # rather than silently widening to every source in the catalog.
+            if source_scope is None:
+                where.append("0")
+        elif scope == "folder":
+            folder_scope = spec.get("folderId")
+            if folder_scope is None:
+                # A scoped query with no folder must never broaden either.
+                where.append("0")
+            elif spec.get("includeSubfolders", True):
                 row = self.connection.execute(
                     "SELECT source_id, relpath FROM folders WHERE id=?",
-                    (int(spec["folderId"]),)).fetchone()
+                    (int(folder_scope),)).fetchone()
                 if row:
                     prefix = row["relpath"]
                     if prefix:
@@ -2203,7 +2226,7 @@ class Catalog:
                     where.append("0")
             else:
                 where.append("f.folder_id=?")
-                params.append(int(spec["folderId"]))
+                params.append(int(folder_scope))
         elif scope == "collection" and spec.get("collectionId"):
             collection = self.collection(int(spec["collectionId"]))
             if collection and collection["type"] == "smart":
@@ -2503,11 +2526,15 @@ class Catalog:
         with self.write() as conn:
             conn.execute("DELETE FROM collection_images WHERE collection_id=?",
                          (collection_id,))
-            conn.executemany(
-                "INSERT OR IGNORE INTO collection_images(collection_id,"
-                " image_id, position) VALUES(?,?,?)",
-                [(collection_id, int(i), n)
-                 for n, i in enumerate(image_ids[:10000])])
+            rows = [(collection_id, int(i), n)
+                    for n, i in enumerate(image_ids)]
+            # Write in bounded chunks so a large collection is not silently
+            # truncated at an arbitrary member count.
+            for start in range(0, len(rows), 10000):
+                conn.executemany(
+                    "INSERT OR IGNORE INTO collection_images(collection_id,"
+                    " image_id, position) VALUES(?,?,?)",
+                    rows[start:start + 10000])
 
     def add_to_collection(self, collection_id: int,
                           image_ids: Sequence[int]) -> None:
@@ -2530,18 +2557,20 @@ class Catalog:
             (int(source_id),)).fetchall()
         for folder in top_folders:
             folder_name = folder["name"]
-            prefix = folder["relpath"] + "/%"
+            prefix = folder["relpath"] + "/"
             rows = self.connection.execute(
                 "SELECT i.id FROM images i JOIN files f ON f.id=i.file_id"
-                " WHERE f.source_id=? AND (f.folder_id=? OR f.relpath = ? OR f.relpath LIKE ?)",
-                (int(source_id), folder["id"], folder["relpath"], prefix)).fetchall()
+                " WHERE f.source_id=? AND (f.folder_id=? OR f.relpath = ?"
+                " OR substr(f.relpath,1,?)=?)",
+                (int(source_id), folder["id"], folder["relpath"],
+                 len(prefix), prefix)).fetchall()
             image_ids = [row["id"] for row in rows]
             if image_ids:
                 cid = self.add_collection(folder_name)
                 self.add_to_collection(cid, image_ids)
                 created.append(cid)
         if not top_folders:
-            source = self.source(source_id)
+            source = self.source_by_id(source_id)
             if source:
                 rows = self.connection.execute(
                     "SELECT i.id FROM images i JOIN files f ON f.id=i.file_id WHERE f.source_id=?",

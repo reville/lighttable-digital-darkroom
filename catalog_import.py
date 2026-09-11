@@ -1384,7 +1384,7 @@ def import_catalog(cat: catalog_module.Catalog, path: Path | str, *,
         if opts.get("foldersToCollections") and not opts["trial"] and not result["cancelled"] and targets:
             folder_groups: dict[str, list[int]] = {}
             for rec in files.values():
-                img_id = targets.get(rec["originalId"])
+                img_id = rec.get("imageId")
                 if img_id is not None:
                     relpath = rec.get("relpath", "")
                     parts = Path(relpath).parts

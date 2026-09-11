@@ -196,9 +196,19 @@ class SourceActionTests(CatalogServerTestCase):
         server.catalog_sources_action({"action": "rename", "id": self.source,
                                        "name": "Travel"})
         self.assertEqual(self.catalog.sources()[0]["name"], "Travel")
+        other = Path(self._dir.name) / "second"
+        make_photo(other / "c.jpg")
+        added = server.catalog_sources_action({"action": "add",
+                                               "path": str(other)})
         result = server.catalog_sources_action({"action": "remove",
-                                                "id": self.source})
-        self.assertEqual(result["sources"], [])
+                                                "id": added["sourceId"]})
+        self.assertEqual([row["id"] for row in result["sources"]],
+                         [self.source])
+
+    def test_open_source_cannot_be_removed(self):
+        with self.assertRaisesRegex(ValueError, "shown in this window"):
+            server.catalog_sources_action({"action": "remove",
+                                           "id": self.source})
 
     def test_unknown_action_is_refused(self):
         with self.assertRaises(ValueError):

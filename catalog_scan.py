@@ -18,6 +18,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import sqlite3
 import threading
 import time
 from datetime import datetime, timezone
@@ -210,6 +211,28 @@ def read_metadata(path: Path) -> dict:
     if out:
         out["metadata_version"] = METADATA_VERSION
     return out
+
+
+# The columns a metadata refresh owns. When the reader is unavailable these
+# must keep their stored values instead of being replaced with nulls.
+_RETAINED_METADATA_COLUMNS = (
+    "capture_time", "camera_make", "camera_model", "lens", "iso",
+    "focal_length", "aperture", "shutter_seconds", "width", "height",
+    "orientation", "metadata_version",
+)
+
+
+def _retain_stored_metadata(conn: sqlite3.Connection, record: dict,
+                            file_id: int) -> None:
+    """Keep already-read fields when a refresh returns no metadata."""
+    stored = conn.execute(
+        "SELECT " + ", ".join(_RETAINED_METADATA_COLUMNS) +
+        " FROM files WHERE id=?", (file_id,)).fetchone()
+    if not stored:
+        return
+    for column in _RETAINED_METADATA_COLUMNS:
+        if record.get(column) is None and stored[column] is not None:
+            record[column] = stored[column]
 
 
 def _read_exif_metadata(path: Path) -> dict:
@@ -423,15 +446,19 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
                         record["header_hash"] = record.get("header_hash") or previous["header_hash"]
                         if read_metadata_for_new:
                             metadata = read_metadata(Path(record["path"]))
-                            # A version-only refresh is opportunistic. If the
-                            # metadata binding is unavailable, retain the existing
-                            # row and retry on a later scan instead of replacing
-                            # useful fields with nulls.
-                            if unchanged and not metadata.get("metadata_version"):
-                                conn.execute("UPDATE files SET content_hash=?, content_signature=? WHERE id=?",
-                                             (record["content_hash"], record.get("content_signature"), previous["id"]))
-                                continue
-                            record.update(metadata)
+                            # A metadata read is opportunistic. If the binding
+                            # is unavailable, retain the fields the catalog
+                            # already has and retry on a later scan instead of
+                            # replacing useful values with nulls. A changed file
+                            # still refreshes size, hashes, and identity.
+                            if not metadata.get("metadata_version"):
+                                if unchanged:
+                                    conn.execute("UPDATE files SET content_hash=?, content_signature=? WHERE id=?",
+                                                 (record["content_hash"], record.get("content_signature"), previous["id"]))
+                                    continue
+                                _retain_stored_metadata(conn, record, previous["id"])
+                            else:
+                                record.update(metadata)
                         cat.upsert_file(conn, source_id, record)
                         if not was_missing:
                             updated += 1
