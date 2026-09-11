@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
+  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,10 @@
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "Quando há possíveis correspondências, uma barra que pode ser fechada em Pessoas abre a revisão de correspondências. Este dispositivo lembra se você a fechou.",
     "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "O modelo compacto SFace INT8 compara rostos humanos alinhados. Novos rostos podem entrar em grupos sem nome ou, com evidências mais fortes, em grupos com nome. Correspondências ambíguas permanecem separadas para revisão. As varreduras mantêm os grupos, nomes e correções existentes; alterar as regras de correspondência não combina automaticamente os grupos que já estão na biblioteca.",
     "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "Use as setas esquerda e direita para mover entre fotos. Em qualquer uma das grades, as setas para cima e para baixo vão para a foto acima ou abaixo em vez de rolar. Em Detalhe, Espaço alterna entre Ajustar e 1:1 quando a área da foto está em foco.",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células e as setas para cima e para baixo para mover entre as linhas."
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Clique em uma foto para tornar essa célula da varredura ativa. Use as setas esquerda e direita para mover entre as células e as setas para cima e para baixo para mover entre as linhas.",
+    "invalid Content-Length": "Content-Length inválido",
+    "request body is too large": "o corpo da solicitação é muito grande",
+    "the folder shown in this window cannot be removed from the catalog": "a pasta mostrada nesta janela não pode ser removida do catálogo"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import io
+import tempfile
 import unittest
 from contextlib import redirect_stderr
+from pathlib import Path
 from unittest import mock
 
 import server
@@ -83,6 +85,67 @@ class QuietDisconnectTests(unittest.TestCase):
         output = self._handle(ValueError("unexpected request state"))
         self.assertIn("ValueError", output)
         self.assertIn("unexpected request state", output)
+
+
+class EventStreamHandshakeTests(unittest.TestCase):
+    def test_failed_handshake_releases_the_subscriber(self):
+        broker = EventBroker(maximum_subscribers=1)
+        handler = server.Handler.__new__(server.Handler)
+        handler.send_response = mock.Mock(
+            side_effect=BrokenPipeError(32, "Broken pipe"))
+
+        with mock.patch.object(server, "EVENTS", broker):
+            handler._send_events("window")
+
+        self.assertEqual(broker.subscriber_count, 0)
+
+
+class RequestBodyLimitTests(unittest.TestCase):
+    def _handler(self, length):
+        handler = server.Handler.__new__(server.Handler)
+        handler.headers = {"Content-Type": "application/json",
+                           "Content-Length": str(length)}
+        handler.rfile = io.BytesIO(b"{}")
+        return handler
+
+    def test_negative_length_is_rejected(self):
+        with self.assertRaises(server.APIError) as caught:
+            self._handler(-1)._body()
+        self.assertEqual(caught.exception.status, 400)
+
+    def test_unparsable_length_is_rejected(self):
+        with self.assertRaises(server.APIError) as caught:
+            self._handler("nonsense")._body()
+        self.assertEqual(caught.exception.status, 400)
+
+    def test_oversized_body_is_rejected(self):
+        with self.assertRaises(server.APIError) as caught:
+            self._handler(server.MAX_JSON_BODY_BYTES + 1)._body()
+        self.assertEqual(caught.exception.status, 413)
+
+    def test_valid_body_still_parses(self):
+        self.assertEqual(self._handler(2)._body(), {})
+
+
+class ZeroByteVideoTests(unittest.TestCase):
+    def test_range_request_on_an_empty_clip_is_a_clean_empty_response(self):
+        with tempfile.TemporaryDirectory() as directory:
+            clip = Path(directory) / "clip.mov"
+            clip.write_bytes(b"")
+            handler = server.Handler.__new__(server.Handler)
+            handler.headers = {"Range": "bytes=0-"}
+            handler.send_response = mock.Mock()
+            handler.send_header = mock.Mock()
+            handler.end_headers = mock.Mock()
+            handler.wfile = mock.Mock()
+
+            with mock.patch.object(server, "src_path", return_value=clip):
+                handler._send_video("clip.mov")
+
+        handler.send_response.assert_called_once_with(200)
+        header = dict(call.args for call in handler.send_header.call_args_list)
+        self.assertEqual(header["Content-Length"], "0")
+        handler.wfile.write.assert_not_called()
 
 
 if __name__ == "__main__":

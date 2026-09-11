@@ -94,6 +94,22 @@ class PortableImageTests(unittest.TestCase):
                 self.assertEqual(converted.size, (48, 32))
                 self.assertEqual(converted.mode, "RGB")
 
+    def test_linux_conversion_preserves_16_bit_levels(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._profile_root(root)
+            source = root / "source.png"
+            output = root / "output.tif"
+            levels = np.linspace(0, 65535, 4096, dtype=np.uint16)
+            Image.fromarray(np.tile(levels[None, :], (2, 1))).save(source)
+
+            with mock.patch.object(platform_image.sys, "platform", "linux"):
+                platform_image.convert_processed_to_tiff(
+                    source, output, app_root=root, output_space="srgb")
+
+            pixels = tifffile.imread(output)
+            self.assertGreater(len(np.unique(pixels)), 256)
+
     def test_windows_conversion_uses_bundled_profile(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
