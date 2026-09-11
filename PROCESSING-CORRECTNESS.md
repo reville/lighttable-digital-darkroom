@@ -77,8 +77,12 @@ believes any more.
 **Frozen renders.** If the grade and the shader are edited together, or a
 profile's measured data is replaced, both sides agree and every parity gate
 stays green while the picture people already saved quietly changes. Fourteen
-complete recipes are stored in `tests/goldens/` at 160x112 and compared at
-zero tolerance. Re-blessing is deliberate:
+complete recipes are stored in `tests/goldens/` at 160x112. Their film
+interpretations are explicit, so changing the new-photo default does not
+change a frozen recipe. Stored reference bytes are checked against SHA-256
+digests. Live CPU renders allow at most one 8-bit code value in 0.01% of
+channels for cross-platform rounding at half-code boundaries; larger changes
+or systematic offsets fail. Re-blessing is deliberate:
 
 ```sh
 python tests/processing_goldens.py --bless

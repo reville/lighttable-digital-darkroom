@@ -7,7 +7,8 @@ green while the picture people already saved quietly changes.
 
 These goldens are the opposite kind of test. They pin what the current code
 actually produces for a handful of complete recipes, at a size small enough
-to keep in the repository, and fail on any difference at all. That makes an
+to keep in the repository, and fail on changes beyond sparse one-code CPU
+rounding (at most 0.01% of channels). That makes an
 intended change visible in review as an image diff, and an unintended one
 impossible to miss.
 
