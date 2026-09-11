@@ -87,6 +87,12 @@ class ProcessingGoldens(unittest.TestCase):
 
 
 class GoldenBlessing(unittest.TestCase):
+    def test_default_recipe_matches_the_explicit_tuned_reference(self):
+        import film_pipeline as fp
+        tuned = next(case for case in goldens.cases()
+                     if case["name"] == "portra-400-lighttable-tuned")
+        self.assertEqual(fp.clean_params({}), fp.clean_params(tuned["params"]))
+
     def test_cache_version_is_readable(self):
         version = goldens.cache_version()
         self.assertTrue(version.isdigit(), f"unparsable cache version {version!r}")

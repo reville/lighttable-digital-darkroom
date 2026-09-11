@@ -135,7 +135,13 @@ def cases() -> list[dict]:
          "optics": {"rotate": 4.0, "scale": 1.1, "distortion": 0.25,
                     "vertical": 0.2, "vignette": -0.3}},
     ]
-    return chosen + graded + edited
+    recipes = chosen + graded + edited
+    # These are frozen recipes, including their film interpretation. The app
+    # now defaults to tuned Portra; that must not silently turn the original
+    # Portra/grade references into a different recipe during CI.
+    for case in recipes:
+        case.setdefault("params", {}).setdefault("film_tuning", "original")
+    return recipes
 
 
 def render(case: dict, root: Path, source: Path, engine=None) -> np.ndarray:
