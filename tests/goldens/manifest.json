@@ -1,0 +1,25 @@
+{
+  "size": [
+    160,
+    112
+  ],
+  "renderCacheVersion": "11",
+  "profileCatalogDigest": "a36ab6bb19264a8c1386094a4ccb4f08edab8ee0468de168047426b138536d1f",
+  "engine": "lighttable-engine",
+  "digests": {
+    "doublex-bw-print": "2961d71a58efd54d52f613ccf52fc5d2d8afb3d44bf67eb35a61f07d76c4d5c7",
+    "edit-mask-and-heal": "df6a6c61f4f9d267dfa881fca5732e134d81963ff30aef03f1e459264e88d4fc",
+    "edit-optics": "bee85e5e178d4e35b5751ab3dd70e2261c5a9f970c2d2e592bac89741cbb95ce",
+    "film-off": "8fdaa761dd0b101457ca1b63068315ab1f37f9a1004dd60f75a8ad34311b81ff",
+    "grade-advanced": "9603df832d5c014a831bdaebcbe28db62070ca8bba011a004fdac96268b838b5",
+    "grade-colour": "f3b58ace529900bba8e1d18ec25bb25e5ee2cd54fc282433b41314af758da4db",
+    "grade-detail": "9c0ad4d3bef4dee052f36bdeb4eb907c7a410eb56cf1c3dc1189d87f87c2fe36",
+    "grade-tone": "2a2be8f862c2552759933782fd86fa6fe4dd1b197ab36a657fcd4b7190538b49",
+    "grade-vignette": "aa0146d32365a531372e4ff88010df238ce2955c62561579114f0e31ac878d6c",
+    "physical-stages": "1cdf02943734a5d613722a79f4f510792b841b33420f9cabc9a824a271873ea6",
+    "portra-400-lighttable-tuned": "ba5b90fb4ea3fd7f505085e4dbe86989c94b0d680b6d48fb222207b3b1b54bff",
+    "portra-400-print": "67a884b55f5f47286f5f828c4d85a5a6370d6862bcd88b4e78f33881077d2078",
+    "velvia-100-reversal": "ed03e1e088e7e707790e6f9bfc57a4a6618ce78e2ce4b284103b3578a3275a1f",
+    "vision3-500t-print": "d74c605358cae27de821fd2e2900e67d71f9a67a1f91b7af604b9f8e3010e95d"
+  }
+}
