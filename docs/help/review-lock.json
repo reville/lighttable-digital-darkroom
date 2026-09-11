@@ -4,17 +4,17 @@
       "content": "f176c760d71f2141d024f089715f371828dcb3916a9a86bdfbea36dbae67ce87",
       "sources": {
         "README.md": "1c6449a2e31c68e10f144ccccba94db63814a6d0276aeaca35fe82bea240dd79",
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee"
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735"
       }
     },
     "add-photos": {
       "content": "5a6ed92eb1316a35dcb959111881b1aa3a399d155f10f4b3970cef7d9dcd2c35",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "web/apple-photos.js": "7f4e7d866c9606bb2ecd375e1539e82be16b2dea7b36e24fd3100682ae3a837a",
         "web/first-run.js": "535667d03919e6b1cf284d6ef2c35fd4e70f236b0996a2b7b8afc90a5f0d81b7",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
-        "windows-shell/src/main.rs": "9789e24c14f3c47b5b171f23d758e4afac2c2d3784a4c0f199588666a48ecae1"
+        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
       }
     },
     "assisted-culling": {
@@ -22,7 +22,7 @@
       "sources": {
         "film_lab_ai/culling.py": "525f152f426b870aea03ffcdade0976e6c37bd4464f845775a6b2eb2d544ceee",
         "film_lab_ai/providers.py": "2981e13c8e7af16cc532da64eb1c712b395e4b22a89552284449d9d9c23bd2fe",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/cull-batch.js": "ec41adf08d342246d6756eac38909ca653af16f21d214b76ab09b1d3146d0304",
         "web/cull-similarity.js": "dc9b2135d2b547ce09416c7d8325a28c0da5f0644aa7b318a54970a0b7b4b1e7",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
@@ -32,9 +32,9 @@
     "browse-folders": {
       "content": "adad5fd0f7d571ac3e11bd2ec2005da6630e2096c0ea6a75d9f3ed1d6be82b0e",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -50,12 +50,12 @@
       "content": "9d038069d2f8b7e6981a8f486ac775bc1b00c3e671d1047a12bd2218cf4895eb",
       "sources": {
         "app/DiagnosticReports.swift": "51761d6c278bbf391efad4495ebbad51c9581c6633427c8f6c64a6eae671b2ae",
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "catalog_scan.py": "a7798d85a3b802768bf39004ae11509e9f30fb8ea609da3f75df2fa3c8db628f",
         "fatal_diagnostics.py": "314dad62d3b0096b2bcbd59502b529b12f4ea96b5fc1f3fd7d9261b2dfe4486d",
         "file_identity.py": "22ef5596a7a096f3b79039957aabd07250b96b8422b0c03e3345f1a7a92501bb",
         "platform_paths.py": "d98508dd1e8af44df97a9652a8ae8525c0e73d705f6befa8170620ad83e0439c",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/recovery.js": "b83110b5e2cd5a397a4c424ee765b52048d60da823e63946167759f8cf877eff",
         "web/settings.js": "c51bea8111e35a8f7cddfa382ce9c713495e17a794f4fc9c2bac8b24901d3b65"
@@ -64,14 +64,14 @@
     "collections": {
       "content": "a6dafa73e5cd5457fed03f0737e71b18006f95f634a835567340e91647f2ef41",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "colour-labels": {
       "content": "37ab0eedcaafc31195b889c3e9f9f05d1478b3045e0b5c91f540eedb45a4e083",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/labels.js": "43834de24e811058438da653bfbbd599f86a6d6e79ca8e2b1268dfaf961eb85e"
       }
     },
@@ -85,16 +85,16 @@
     "editing-color-mixer-point-color": {
       "content": "36afda39dada655c612c4a86b28e943863ca1d77bb30959ffb0969d0bf37268c",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "editing-copy-paste-match-exposure": {
       "content": "a94cf3edb0403756d16cc7e0b65d24374451e2322e6de012d1ed2232c5db591e",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/edit-transfer.js": "768afe5a493987fc44e20cc50a71a0c45da3464827f32792983e0ca1796034a0",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/photo-clipboard.js": "e0a31be5394410687f53ba97b6299509ae86b094ef2094d59ad361dda683f5dd"
@@ -110,16 +110,16 @@
     "editing-curves": {
       "content": "270e850689ca5956fb7f0e2c8c0519486474baa46351b6dfd3a8fe6443552770",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "editing-detail-effects-enhance": {
       "content": "49911d9d38fd2ceaf03c72fb033100ed2b6683610df8c2d67b8139dce6bd03e8",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "enhance_workflow.py": "c850d24fa997a40f464f4aed40c6bb7e78ddd8d271e605f3cef4d3b7a0b58982",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/enhance-panel.js": "62928471d5879d995e1a62f854c8be11c75402459c4fe76cc0cca30f39c74a4f",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
@@ -127,15 +127,15 @@
     "editing-effects": {
       "content": "e65c38833c6557b83b0e471394ed3d4fda54c7e44a5a7f4cba7a7e25fd04df71",
       "sources": {
-        "grade.py": "e107e205dd1d7782439cb19f5852f83b9c16597fa36416a5c0c7bd6aef304213",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "grade.py": "a85f069c327e2d8c0fa1392cb9f0626627c3958b673e381cc85be35541895e66",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "editing-history-snapshots": {
       "content": "86dc3f8196fa62cc452db8d0cf86e40f2fe2450a1c8166cfe812177272853273",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/history-panel.js": "5b6e71444a30e49357b4e76592d2fcd6e589e6590a895577308dc50435d2c0fb",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
@@ -143,7 +143,7 @@
     "editing-lens-corrections": {
       "content": "f762cdbf87f331ba924707d70b72ad271cc9bed2ab8403bbcc1b6df99276af31",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -151,7 +151,7 @@
       "content": "56f05787225ee65832eb9b7efbbc8305e4ef20a984c3b80b750523758095945c",
       "sources": {
         "semantic_masks.py": "23c277ce649c3973ad5c86c169e21bf65210af15911013aa8b311f30d71e1099",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -159,7 +159,7 @@
       "content": "f81bc90ff1a10bee0f5bd4908e7e974538f853bc34c7f0df0d7c895e8498152f",
       "sources": {
         "edits.py": "0c505b372ad95dfcdd7878648a59fbf26e3db6669864d50961b3c321510a19b1",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/edit-cursor.js": "8a6f3fdcac831c86607bc98e794588a669cc6dce8db68c067e858448b0b34cd8",
         "web/editor-panels.js": "e0f20f90fdc1b3eaae4631a2f22d8b1c0e8cca7b7f18551514046849aba79442",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
@@ -172,7 +172,7 @@
     "editing-masks-ranges-refinements": {
       "content": "69559a947ccd17ddcf891ab7791585d708eaa3b452ac32e1fe6fee456fe90167",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/mask-raster.js": "7cc4e08caaf2dc23e29cd6a54318e1ec3dee73f86b4a67f2d9dc9ae15d7ff72c"
       }
@@ -180,23 +180,23 @@
     "editing-photo-merge": {
       "content": "5030e3092b04c12520f62d83ac0dd9b1f5b09b50e8af8cd1693f190bc63b47c1",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "merge_workflow.py": "1645759c959111d306622837f1a048973f7b1c1bcb877fa5e3c9c9e4d70dabd9",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "editing-presets": {
       "content": "e73db23e56788e4024037838474ad8d4ffebe1d188de09f93b88cdd4f1cdfb33",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "preset_io.py": "6b06d080b8119038a232881ab5067e1d63f8a542e87c86980255d661ff925785",
         "preset_library.py": "751779c9f3eb00a3ed02be4f69f9bb546a043c06d385832e228744ee3571fb8c",
         "preset_submission.py": "6f56eeb58611560e99ad9d8644388a1a8fe804e636c6181b2b8e9f2cd8d72995",
         "presets/builtin.json": "d82181ddb5d522736dcb626d29bd41da3b5478e9a7182a69798224bed844f713",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/numeric-controls.js": "2a636746cdc7ed8a6307edba404d0ad9102fd4d66662e09b72a56e1502a43f76",
         "web/preset-amount.js": "709b19373b820a48816ec2537d41c14ff65d315bf75f4459289755ad8bfb9607",
@@ -210,7 +210,7 @@
       "content": "3d70eb73feed29823cf507dacaaefa5e836efbeda3815657693341cdb79c297d",
       "sources": {
         "app/NativePreview.metal": "855e67da96433aa52a61626025b1e7da779e1339d8a295ba05508e4041466eb1",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/gl.js": "71a9356c296b968466e6073fa9172a2b4cf949f6579086c3f55f1ae2ae9b9ecb",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/screen-overlay.js": "50db637641be24c0013f4812b59fc82d9e371f41836f718bbf6f1b2ee62d5da8"
@@ -219,21 +219,21 @@
     "editing-save-recovery": {
       "content": "1e5d980b0c67d756d66ea9be589794195b72228907810eb0959857d09e386ef1",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/edit-save-queue.js": "cedb3d2bc95c18d23994ead54ece46aba22485ac8ae39de2cd01a25242d39a81"
       }
     },
     "editing-tone": {
       "content": "8b4b50d934d11de697045d2f1745c4dcb22565d69bcb17513388a1fdae7fb01f",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "editing-white-balance": {
       "content": "f6b3b37c291e9d60356355f3668f15990e40995bedc9062c9a67a3da9425e271",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -241,7 +241,7 @@
       "content": "007309327e1d2aa65e1c38fea9ce0347ee5b343c9a12b881419000c5ccd44999",
       "sources": {
         "export_workflow.py": "f3f34a27ac699e92122a2e8681ec0b0a71a9dd616b08e41cf2b23841e23b83cf",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -249,7 +249,7 @@
       "content": "5945724f1f5a9ad80dabdbb9b1943978a77aa5a373366307f8acc38aabd165f0",
       "sources": {
         "export_workflow.py": "f3f34a27ac699e92122a2e8681ec0b0a71a9dd616b08e41cf2b23841e23b83cf",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -263,23 +263,23 @@
     "export-photos": {
       "content": "eee4673a39ad76c0d276d7ab4790509d55aaa0c7fbadd8f403f44d22372cc4da",
       "sources": {
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "external-editor": {
       "content": "905a7f2d9fc297adb88b6aa0c2f0f5bf7b21513ca1db891c3b7a3bf137aac2de",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
-        "windows-shell/src/main.rs": "9789e24c14f3c47b5b171f23d758e4afac2c2d3784a4c0f199588666a48ecae1"
+        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
       }
     },
     "film-exposure-and-processing": {
       "content": "7e395ef5e25bfefb2dd6fa21a8cd0be4cf096a07263f501b2d59fd321fa5cb46",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/film-browser.js": "32aa70a3e562e39928020a280b04716f1dd7f93b27c4cf541cb4fa1f6e0b2c6e",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
@@ -288,7 +288,7 @@
       "content": "2ea19e843ce9c9a59afd0e8d2e0a3dd7927a6e7a413dc92a9b64c23f328516b6",
       "sources": {
         "film_tuning.py": "5c84925c35d7b59fa15e5228c58b546502ea2278b19327c4b5c22968a71f8109",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/film-browser.js": "32aa70a3e562e39928020a280b04716f1dd7f93b27c4cf541cb4fa1f6e0b2c6e",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/style.css": "96ccdf40c477330322d5bd310f2bd5cb37dec3f0caa088c4912a9972500ec505"
@@ -305,7 +305,7 @@
       "content": "78653d9b4be06ab3ad3357a96ba37a5691ec354181728c00953b54f21bf8fe4c",
       "sources": {
         "film_pipeline.py": "403524976142a37bd65752f411c33ae64f08607933f299fda4dd3716b8ffb017",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -313,7 +313,7 @@
       "content": "54fd041aeb76d0acaf7428a3b9abea93e0382e8edc33effe895f0760dea943e0",
       "sources": {
         "film_pipeline.py": "403524976142a37bd65752f411c33ae64f08607933f299fda4dd3716b8ffb017",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/film-browser.js": "32aa70a3e562e39928020a280b04716f1dd7f93b27c4cf541cb4fa1f6e0b2c6e",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
@@ -321,24 +321,24 @@
     "film-reference-match": {
       "content": "8437ebbf70a45113536776e64be01fe91134024b82ba03807b1c0453a2a2719f",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "flags-and-ratings": {
       "content": "ce54b73eb484c64611a90f2203be69d11519bbcc23622c992284d11ef6d64b36",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/labels.js": "43834de24e811058438da653bfbbd599f86a6d6e79ca8e2b1268dfaf961eb85e"
       }
     },
     "import-from-card": {
       "content": "d45669bf8741625df83df638a9356b3b5c49253393f2aef782ad95ef086a07ba",
       "sources": {
-        "catalog.py": "8c08675e944e90d3e65fb0a21e78f99154b893fc8274b4fdf5324f759d0332e3",
+        "catalog.py": "a799aef6e2a2cae67f12cfc77bef8a2635e7976218ee8b49d5b844be3ecb70b4",
         "ingest_workflow.py": "b1b7ed3c79a7491a5c3e6a15cef15e08ec3964dd7b2e4ff112b33fc836254079",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
@@ -346,16 +346,16 @@
       "content": "2ae84dc8451d88564bff7704fd70ef29b90f1b6561548b6c5e571750da593a2b",
       "sources": {
         "catalog_import.py": "f1f0e6b3c85c69d7d7e38ffe30c6e2bbb0b757838f0bd9c1be54e8e6a5488b25",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "keyboard-midi": {
       "content": "afa81f9e0bf349d0df5d83bf5a2b09497fd62c2c0ecc69fa629d2fa04382fdf0",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/midi.js": "7c0315da023dd3a962814a1a73db4be4e4cf27790bf6f7fe94f95bd63da7bd8d"
       }
@@ -363,11 +363,11 @@
     "metadata-and-keywords": {
       "content": "4070dd0015da08ec42ca3dbf872e0d0e24c046eb2f938cf594101846244587ec",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "keyword_workflow.py": "d845402146156babf4faf3cbf2b1af45dc6dc2c19d830d944071ef3dff44d8cc",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/keyword-batch.js": "0d8792a4f9843a58e2d1fa8ed8ea7ca58303e3c25a09a883b501ce982fb1993f",
-        "web/metadata-panel.js": "678d5d26091d2d8caa6a346dcc0c416e5cb0d7b26d973849108bfef848071203"
+        "web/metadata-panel.js": "e50e9a57892b3482c4c7e3b14725b1128918eacf669645a9d073915561b0455e"
       }
     },
     "people-face-matching": {
@@ -376,7 +376,7 @@
         "film_lab_ai/face_models.py": "5057b36c1d3439589bd93355e9f22fde3a51de7ff06928feef38021b9f724b70",
         "film_lab_ai/face_service.py": "ebb535423089602bfeb73360c6d297b01b5a3dc87ea5b395c12f4b783a313c02",
         "film_lab_ai/face_store.py": "7c47381bf4917abca8f36628d8fed175ade496305f8594f69e815d59b61ce9b5",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
         "web/library.js": "8a821cb08fdc1bdf8d25cbeb0ce3d84a596e56dce3b557c84b07ab390ce6d584",
         "web/people.css": "34134f69e1d5e2afbd015776f76c4dea211333fba413ab0181ee157908f5a00f",
         "web/people.js": "82bf9f2310f2950f7b45d4e8c5fa371eb066f10229257ec4b6ac5f904afc8b81"
@@ -387,11 +387,11 @@
       "sources": {
         "app/NativePreview.swift": "4c22d0bad05427865d57cbe0259d3fd22c91351a5515fb9a2e898712d478d3aa",
         "gpu_compute.py": "0153c60572b2c71611d3812eac2785fab37e3e93c1e5d82998a8208b0e7093ba",
-        "grade.py": "e107e205dd1d7782439cb19f5852f83b9c16597fa36416a5c0c7bd6aef304213",
+        "grade.py": "a85f069c327e2d8c0fa1392cb9f0626627c3958b673e381cc85be35541895e66",
         "media_availability.py": "d95a52401f51850d6291b24cb400c9094a78524983592cdf576933f7fbfa7dc1",
         "merge_acceleration.py": "01eabeadffe67c97a12d3887dfbc3e0107f7e84383d4fab947f2aa7ad8345baf",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/gl.js": "71a9356c296b968466e6073fa9172a2b4cf949f6579086c3f55f1ae2ae9b9ecb",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/preview-detail.js": "dd83a1dbe3efc4de85f4079af38660f165e5165dc70a4e50b4bfa0ee37eaa86b",
@@ -407,9 +407,9 @@
       "content": "ad82b0a8ce4a6e38bc6e3330cb02e39a0b67881d6d782388dcd422bfdea05aa0",
       "sources": {
         "film_lab_ai/providers.py": "2981e13c8e7af16cc532da64eb1c712b395e4b22a89552284449d9d9c23bd2fe",
-        "film_lab_ai/service.py": "1c980f5e78201b918b1e87fed77d4d5db3e4f007e8195c233175637ab24731be",
+        "film_lab_ai/service.py": "5671454f4a1b84ef0e283387ad7e333bcb079d98dd3775df43418239553f52e5",
         "media_availability.py": "d95a52401f51850d6291b24cb400c9094a78524983592cdf576933f7fbfa7dc1",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/local-ai.js": "22d727600923337e24a5b8261c4b1051257663d80f2200ddaad7b9e5a00c6678",
         "web/style.css": "96ccdf40c477330322d5bd310f2bd5cb37dec3f0caa088c4912a9972500ec505"
@@ -418,7 +418,7 @@
     "raw-jpeg-pairs": {
       "content": "63ef5d08a8d6515e2677eb9344c41edafd7d2b2266703648040f4080033691b2",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/photo-pairs.js": "c3d0f88b7990ff2e90c367c6406702ffdc82b877ec2512baf27e11bfe19c7d2a"
       }
@@ -427,8 +427,8 @@
       "content": "daaceff084a4ad855923488dee5cc8d576d8ea63730c5ff3f89c071a3045cffb",
       "sources": {
         "ingest_workflow.py": "b1b7ed3c79a7491a5c3e6a15cef15e08ec3964dd7b2e4ff112b33fc836254079",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931"
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817"
       }
     },
     "search-filter-sort": {
@@ -436,7 +436,7 @@
       "sources": {
         "catalog_scan.py": "a7798d85a3b802768bf39004ae11509e9f30fb8ea609da3f75df2fa3c8db628f",
         "dam_filters.py": "ebc638ba6c44fb1b38f1ea48bbf7a5b3c2a4073a60a4e6b9d0928578a79ca08f",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/library-filters.js": "85e76e50fb85691583ca6da5d8bdd3434842e454e876f051af8d58d2fc200e47",
         "web/library.js": "8a821cb08fdc1bdf8d25cbeb0ce3d84a596e56dce3b557c84b07ab390ce6d584",
@@ -454,14 +454,14 @@
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/linux-layout.css": "6d0c86847693a770a18d32835675ec3167e84726ac8d4b58e8fcf6b654148341",
         "web/settings.js": "c51bea8111e35a8f7cddfa382ce9c713495e17a794f4fc9c2bac8b24901d3b65",
-        "windows-shell/src/main.rs": "9789e24c14f3c47b5b171f23d758e4afac2c2d3784a4c0f199588666a48ecae1",
+        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80",
         "windows-shell/src/windows_update.rs": "c42eaa940fc54f7914b61c43adbbef543c3856dc4d815f1be0907f60fc59f755"
       }
     },
     "settings-language": {
       "content": "94778fce4730a2170969e2c8021322069e60563dc48890e749ff36fbfbc55f6f",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "web/i18n.js": "30b36f5b1565b4a9225186cb74863be3d063b2cb92206c835b7e16b4b743b480",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/locale-bootstrap.js": "1ec75456d5992b2ad9a5004bb5c49ad77024d9079337b26b05559aba7c78e4fb",
@@ -472,7 +472,7 @@
     "shortcut-schemes": {
       "content": "e6cf59f5fde950bf351b74084189c3d6fb585b9ef8f86c78a01c82db94da584d",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/labels.js": "43834de24e811058438da653bfbbd599f86a6d6e79ca8e2b1268dfaf961eb85e"
       }
@@ -480,8 +480,8 @@
     "smart-collections": {
       "content": "9b7e47fe1ac1a2ae85a54070f12b51d8876a2d4497b5f3dc3c0857cca2e1da6b",
       "sources": {
-        "catalog.py": "8c08675e944e90d3e65fb0a21e78f99154b893fc8274b4fdf5324f759d0332e3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "catalog.py": "a799aef6e2a2cae67f12cfc77bef8a2635e7976218ee8b49d5b844be3ecb70b4",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/library.js": "8a821cb08fdc1bdf8d25cbeb0ce3d84a596e56dce3b557c84b07ab390ce6d584"
       }
     },
@@ -489,31 +489,31 @@
       "content": "667d42680ff9d3d60918660cb348f4d0add54a7577d29d9db4a20a48495425f0",
       "sources": {
         "soft_proof.py": "3c076d8c274b9880844350110cb9ce90148555e5489cdc7a93a03e1dbe6bfef2",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228"
       }
     },
     "survey-photos": {
       "content": "3477e1ed17b7a03c6517a4833a7096db2729fa20bae58456b05232aabbf4d838",
       "sources": {
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
-        "web/survey.js": "92a1752d79bdccba6d45517d3a0508986c014633e5a420f8c3a53b085c4aabe7"
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
+        "web/survey.js": "d08352e3758c19eff2865438774124a6e7d288964c793722fdb717cb3093ac91"
       }
     },
     "trash-rejected": {
       "content": "235dbc5ee95d42c2cacb56cc92dc960469fd67f917bba02c123b13ff5a1b6e9f",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
-        "windows-shell/src/main.rs": "9789e24c14f3c47b5b171f23d758e4afac2c2d3784a4c0f199588666a48ecae1"
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
+        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
       }
     },
     "views-and-selection": {
       "content": "0e3ecabd9c80d9f4ea77d8bf3a74ad0865ed59e9a1b0b1ddab9453680f621e9b",
       "sources": {
-        "app/main.swift": "b985c585815bafaca31747b59287d240a3520225df2965f0372cae84e613f4ee",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300",
+        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/compare-view.js": "a2d746f703ba4096a2882fdeabeb5f9af8efb6f355a391c57febca21ab8d74e2",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/photo-pan.js": "1174bf15c7e8a0fcec8f78943d7933f9dd4525ed71ad62080f73e6e7b058b1c3",
@@ -524,15 +524,15 @@
     "virtual-copies-and-stacks": {
       "content": "de9620831ddcd8ecee7ce1f29fa1442122cfe5fa8183c0650ee8b3b34210d498",
       "sources": {
-        "library_workflow.py": "78f636d65341b13a5eec100b55b498fa0e777f988727dc6fa3e7120b2a94c546",
-        "web/app.js": "942dffdec5f6f32ec163c9a5555dfe29a7170140befc50665fe00ea78335f300"
+        "library_workflow.py": "78c7d59780b752b2676cce4451d0ddf18b203893bf37db534a868a133ecbb4f7",
+        "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225"
       }
     },
     "xmp-interchange": {
       "content": "f261c55f26a9b517649449b3fd8834ee8ac9c868c80507867bb0d5e1118d2c49",
       "sources": {
-        "server.py": "364ee76855d3dc3a655f55f974d46c841c4aeeffb6bbf517296b72c4cd1e46c3",
-        "web/catalog-ui.js": "37e5ea3ce31ad5424d117dffb1ebb5e446753442b40f7aecde0dbe08e9a9e931",
+        "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
+        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "xmp_sidecar.py": "037302972759023a01eb59439473f24c334b86517b6df9c6a6a9f724665981dc"
       }
     }

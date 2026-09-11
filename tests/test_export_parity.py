@@ -39,6 +39,28 @@ class ExportParityTests(unittest.TestCase):
         self.assertFalse(server.rust_direct_export_supported(dict(
             basic, masks=[{"type": "brush", "strokes": [{
                 "points": [[0.5, 0.5]]}], "grade": {"exposure": 1}}])))
+        # Rust has no elliptical/rotated radial, no collapsed-linear guard,
+        # and no depth-interval ramp; those recipes must use the Python path.
+        self.assertTrue(server.rust_direct_export_supported(dict(
+            basic, masks=[{"type": "radial", "radius": 0.3}])))
+        for mask in (
+            {"type": "radial", "radius": 0.3, "radiusX": 0.5},
+            {"type": "radial", "radius": 0.3, "radiusY": 0.1},
+            {"type": "radial", "radius": 0.3, "angle": 45},
+            {"type": "linear", "start": [0.5, 0.5], "end": [0.50001, 0.5]},
+            {"type": "depth", "bitmap": {
+                "width": 1, "height": 1, "data": "AA=="},
+             "depthLow": 0.2, "depthHigh": 0.8},
+        ):
+            with self.subTest(mask=mask.get("type"), extra=mask):
+                self.assertFalse(server.rust_direct_export_supported(
+                    dict(basic, masks=[mask])))
+        self.assertTrue(server.rust_direct_export_supported(dict(
+            basic, masks=[{"type": "linear", "start": [0.1, 0.5],
+                           "end": [0.9, 0.5]}])))
+        self.assertTrue(server.rust_direct_export_supported(dict(
+            basic, masks=[{"type": "subject", "bitmap": {
+                "width": 1, "height": 1, "data": "AA=="}}])))
 
     @unittest.skipUnless(os.name == "posix", "POSIX shared memory transport")
     def test_resident_raw_render_uses_shared_input_without_building_tiff(self):

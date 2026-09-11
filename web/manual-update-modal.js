@@ -13,6 +13,10 @@ const escapeHTML = (value) => String(value ?? '')
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 
+// The dialog element is reused across shows; bind its own listeners once so
+// repeated opens cannot stack duplicate Escape/backdrop handlers.
+const boundDialogs = new WeakSet();
+
 export function getPlatformUpdateInstructions(options = {}) {
   const platform = options.platform || (typeof window !== 'undefined' ? window.__LIGHTTABLE_PLATFORM__ : null) || 'macos';
   const owner = String(options.owner || options.managedBy || '');
@@ -164,6 +168,20 @@ export function showManualUpdateModal(options = {}) {
   `;
 
   activeDialog = dialog;
+  if (!boundDialogs.has(dialog)) {
+    boundDialogs.add(dialog);
+    dialog.addEventListener('keydown', (e) => {
+      if (!dialog.classList.contains('on')) return;
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        e.preventDefault();
+        closeManualUpdateModal();
+      }
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closeManualUpdateModal();
+    });
+  }
 
   const openUrl = (url) => {
     if (!url) return;
@@ -210,20 +228,6 @@ export function showManualUpdateModal(options = {}) {
 
   dialog.querySelector('#manualUpdateNotesBtn')?.addEventListener('click', () => {
     openUrl(info.releaseNotesUrl);
-  });
-
-  const onKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      e.stopPropagation();
-      e.preventDefault();
-      closeManualUpdateModal();
-      dialog.removeEventListener('keydown', onKeyDown);
-    }
-  };
-  dialog.addEventListener('keydown', onKeyDown);
-
-  dialog.addEventListener('click', (e) => {
-    if (e.target === dialog) closeManualUpdateModal();
   });
 
   dialog.classList.add('on');

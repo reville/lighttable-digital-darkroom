@@ -150,5 +150,24 @@ class ResidentAdmissionTests(unittest.TestCase):
             queue.shutdown()
 
 
+class PreviewWidthTests(unittest.TestCase):
+    def test_requested_widths_are_bounded_and_canonical(self):
+        self.assertEqual(server.preview_width(40000), 8000)
+        self.assertEqual(server.preview_width(10), 64)
+        self.assertEqual(server.preview_width("nonsense"), 1100)
+        self.assertEqual(server.preview_width(None), 1100)
+        self.assertEqual(server.preview_width(1600), 1600)
+
+    def test_cache_paths_use_the_bounded_width(self):
+        with mock.patch.object(server, "file_key", return_value="key"), \
+                mock.patch.object(server, "is_raw", return_value=True):
+            paths = (
+                server.raw_preview_path("frame.dng", 40000, "full", {}),
+                server.neutral_preview_path("frame.dng", 40000, 0, {}),
+            )
+        for path in paths:
+            self.assertIn("_8000_", path.name)
+
+
 if __name__ == "__main__":
     unittest.main()

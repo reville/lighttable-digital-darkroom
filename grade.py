@@ -10,6 +10,7 @@ Input and output are float arrays in [0,1], display-referred sRGB.
 from __future__ import annotations
 
 import colorsys
+import math
 import threading
 import numpy as np
 
@@ -83,13 +84,26 @@ ADVANCED_KEYS = ("pointColor", "colorGrading")
 COLOR_GRADING_TONES = ("shadows", "midtones", "highlights", "global")
 
 
+def _finite_number(value, default):
+    """Coerce a JSON number, rejecting NaN/Infinity before they reach math."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return default
+    return number if math.isfinite(number) else default
+
+
 def _clean_curve(v):
     if not v or not isinstance(v, (list, tuple)) or len(v) != 256:
         return None
-    try:
-        out = [max(0.0, min(1.0, float(x))) for x in v]
-    except (TypeError, ValueError):
-        return None
+    out = []
+    for x in v:
+        number = _finite_number(x, None)
+        if number is None:
+            # A single non-finite sample would otherwise clamp to 1.0 and
+            # turn the whole curve into a white-out. Drop the curve instead.
+            return None
+        out.append(max(0.0, min(1.0, number)))
     # An identity ramp is the same as no curve at all.
     if all(abs(out[i] - i / 255.0) < 0.002 for i in range(256)):
         return None
@@ -107,8 +121,9 @@ def _clean_hsl(v):
         # the shader and this module multiply the value straight into a hue
         # rotation and a saturation gain, where an unbounded number produces
         # nonsense rather than a stronger effect.
-        trio = [round(max(-1.0, min(1.0, float(e.get(k, 0) or 0))), 4)
-                for k in ("h", "s", "l")]
+        trio = [round(max(-1.0, min(1.0, _finite_number(
+            e.get(k, 0) or 0, 0.0))), 4)
+            for k in ("h", "s", "l")]
         if any(abs(x) > 1e-6 for x in trio):
             out[b] = {"h": trio[0], "s": trio[1], "l": trio[2]}
     return out or None
@@ -119,32 +134,29 @@ def _clean_point_color(value):
     for raw in value[:8] if isinstance(value, list) else []:
         if not isinstance(raw, dict):
             continue
-        try:
-            item = {
-                "hue": round(float(raw.get("hue", 0)) % 360.0, 3),
-                "range": round(max(2.0, min(90.0, float(raw.get("range", 30)))), 3),
-                "hueShift": round(max(-180.0, min(180.0, float(
-                    raw.get("hueShift", 0)))), 3),
-                "saturation": round(max(-1.0, min(1.0, float(
-                    raw.get("saturation", 0)))), 4),
-                "luminance": round(max(-1.0, min(1.0, float(
-                    raw.get("luminance", 0)))), 4),
-                "uniformHue": round(max(0.0, min(1.0, float(
-                    raw.get("uniformHue", 0)))), 4),
-                "uniformSaturation": round(max(0.0, min(1.0, float(
-                    raw.get("uniformSaturation", 0)))), 4),
-                "uniformLuminance": round(max(0.0, min(1.0, float(
-                    raw.get("uniformLuminance", 0)))), 4),
-            }
-        except (TypeError, ValueError):
-            continue
+        item = {
+            "hue": round(_finite_number(raw.get("hue", 0), 0.0) % 360.0, 3),
+            "range": round(max(2.0, min(90.0, _finite_number(
+                raw.get("range", 30), 30.0))), 3),
+            "hueShift": round(max(-180.0, min(180.0, _finite_number(
+                raw.get("hueShift", 0), 0.0))), 3),
+            "saturation": round(max(-1.0, min(1.0, _finite_number(
+                raw.get("saturation", 0), 0.0))), 4),
+            "luminance": round(max(-1.0, min(1.0, _finite_number(
+                raw.get("luminance", 0), 0.0))), 4),
+            "uniformHue": round(max(0.0, min(1.0, _finite_number(
+                raw.get("uniformHue", 0), 0.0))), 4),
+            "uniformSaturation": round(max(0.0, min(1.0, _finite_number(
+                raw.get("uniformSaturation", 0), 0.0))), 4),
+            "uniformLuminance": round(max(0.0, min(1.0, _finite_number(
+                raw.get("uniformLuminance", 0), 0.0))), 4),
+        }
         for key in ("refSaturation", "refLuminance"):
             if raw.get(key) is None:
                 continue
-            try:
-                item[key] = round(max(0.0, min(1.0, float(raw[key]))), 4)
-            except (TypeError, ValueError):
-                pass
+            number = _finite_number(raw[key], None)
+            if number is not None:
+                item[key] = round(max(0.0, min(1.0, number)), 4)
         result.append(item)
     return result or None
 
@@ -156,25 +168,19 @@ def _clean_color_grading(value):
     active = False
     for tone in COLOR_GRADING_TONES:
         raw = value.get(tone) if isinstance(value.get(tone), dict) else {}
-        try:
-            item = {
-                "hue": round(float(raw.get("hue", 0)) % 360.0, 3),
-                "saturation": round(max(0.0, min(1.0, float(
-                    raw.get("saturation", 0)))), 4),
-                "luminance": round(max(-1.0, min(1.0, float(
-                    raw.get("luminance", 0)))), 4),
-            }
-        except (TypeError, ValueError):
-            item = {"hue": 0.0, "saturation": 0.0, "luminance": 0.0}
+        item = {
+            "hue": round(_finite_number(raw.get("hue", 0), 0.0) % 360.0, 3),
+            "saturation": round(max(0.0, min(1.0, _finite_number(
+                raw.get("saturation", 0), 0.0))), 4),
+            "luminance": round(max(-1.0, min(1.0, _finite_number(
+                raw.get("luminance", 0), 0.0))), 4),
+        }
         result[tone] = item
         active = active or item["saturation"] > 1e-6 or abs(item["luminance"]) > 1e-6
-    try:
-        result["balance"] = round(max(-1.0, min(1.0, float(
-            value.get("balance", 0)))), 4)
-        result["blending"] = round(max(0.0, min(1.0, float(
-            value.get("blending", 0.5)))), 4)
-    except (TypeError, ValueError):
-        result["balance"], result["blending"] = 0.0, 0.5
+    result["balance"] = round(max(-1.0, min(1.0, _finite_number(
+        value.get("balance", 0), 0.0))), 4)
+    result["blending"] = round(max(0.0, min(1.0, _finite_number(
+        value.get("blending", 0.5), 0.5))), 4)
     return result if active else None
 
 
@@ -182,12 +188,9 @@ def clean(g: dict | None) -> dict:
     g = g or {}
     out = {}
     for k, v in DEFAULTS.items():
-        try:
-            number = float(g.get(k, v))
-            minimum, maximum = RANGES.get(k, (-1.0, 1.0))
-            out[k] = round(max(minimum, min(maximum, number)), 4)
-        except (TypeError, ValueError):
-            out[k] = v
+        number = _finite_number(g.get(k, v), v)
+        minimum, maximum = RANGES.get(k, (-1.0, 1.0))
+        out[k] = round(max(minimum, min(maximum, number)), 4)
     for k in CURVE_KEYS:
         c = _clean_curve(g.get(k))
         if c:

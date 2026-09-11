@@ -37,6 +37,7 @@ import sqlite3
 import threading
 import tempfile
 import time
+import uuid
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -2692,13 +2693,28 @@ class Catalog:
     def save_versions(self, image_id: int, versions: Sequence[dict]) -> None:
         with self.write() as conn:
             conn.execute("DELETE FROM versions WHERE image_id=?", (image_id,))
-            for version in list(versions)[:50]:
+            used: set[str] = set()
+            for index, version in enumerate(list(versions)[:50]):
+                ident = str(version.get("id") or "")[:100]
+                owner = conn.execute(
+                    "SELECT image_id FROM versions WHERE id=?",
+                    (ident,)).fetchone() if ident else None
+                # Version ids are globally unique in the schema, but callers
+                # can send the same id for different photos (or none at all,
+                # or an id derived only from name and date). Replacing another
+                # photo's version would silently delete its checkpoint, so a
+                # collision gets a fresh per-image id.
+                if (not ident or ident in used
+                        or (owner is not None
+                            and int(owner["image_id"]) != int(image_id))):
+                    ident = f"{int(image_id)}-{index}-{uuid.uuid4().hex[:12]}"
+                used.add(ident)
                 payload = {k: v for k, v in version.items()
                            if k not in ("id", "name", "created")}
                 conn.execute(
                     "INSERT OR REPLACE INTO versions(id, image_id, name,"
                     " created, state_json) VALUES(?,?,?,?,?)",
-                    (str(version.get("id", ""))[:100], image_id,
+                    (ident, image_id,
                      str(version.get("name", ""))[:80],
                      str(version.get("created", "")), json.dumps(payload)))
             conn.execute("UPDATE image_state SET updated_at=? WHERE image_id=?",

@@ -26,6 +26,8 @@ for path in (str(APP), str(APP / "tests")):
 import engine_runner  # noqa: E402
 import processing_goldens as goldens  # noqa: E402
 
+from unittest import mock  # noqa: E402
+
 OUTPUT = Path(os.environ.get("LIGHTTABLE_GOLDEN_OUTPUT",
                              APP / "build/golden-diffs"))
 
@@ -135,6 +137,12 @@ class GoldenBlessing(unittest.TestCase):
                          "than the tree declares")
         self.assertEqual(goldens.bless(), 1,
                          "bless must refuse while RENDER_CACHE_VERSION is unchanged")
+
+    def test_blessing_refuses_without_a_manifest(self):
+        """A deleted manifest must not silently re-freeze at the current key."""
+        with tempfile.TemporaryDirectory() as directory:
+            with mock.patch.object(goldens, "GOLDENS", Path(directory)):
+                self.assertEqual(goldens.bless(), 1)
 
 
 if __name__ == "__main__":

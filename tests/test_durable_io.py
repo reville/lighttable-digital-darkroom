@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 import errno
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -39,6 +40,14 @@ class AtomicWriteTests(unittest.TestCase):
                 json.loads(durable_io.backup_path(target).read_text()),
                 {"rating": 4},
             )
+
+    def test_new_state_files_are_owner_only(self):
+        if os.name == "nt":
+            self.skipTest("POSIX permission bits are not meaningful on Windows")
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "instance.json"
+            durable_io.atomic_write_json(target, {"token": "secret"})
+            self.assertEqual(target.stat().st_mode & 0o777, 0o600)
 
     def test_backup_once_retains_the_pre_app_sidecar(self):
         with tempfile.TemporaryDirectory() as directory:

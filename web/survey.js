@@ -173,7 +173,12 @@ export function createSurvey(ctx) {
   function remove(name) {
     names = names.filter((entry) => entry !== name);
     if (!names.length) { close(); return; }
-    if (activeName === name) activeName = names[0];
+    if (activeName === name) {
+      // The host tracks its own current photo; switching the active cell must
+      // go through the same notification path as navigation.
+      setActive(names[0]);
+      return;
+    }
     render();
   }
 

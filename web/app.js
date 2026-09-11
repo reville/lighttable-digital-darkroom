@@ -2516,8 +2516,10 @@ function deleteMask(id = S.selectedMaskId) {
 $('maskDelete').onclick = () => deleteMask();
 $('maskRename').onclick = async () => {
   const mask = selectedMask(); if (!mask) return;
+  const photoName = cur()?.name;
   const name = await askName(tr("Rename mask"), mask.name);
   if (!name || name === mask.name) return;
+  if (cur()?.name !== photoName || !S.masks.includes(mask)) return;
   pushUndo(); mask.name = name.slice(0, 60); syncMaskPanel(); saveState();
 };
 $('maskRefineAdd').onclick = () => { S.maskRefineMode = 'add'; syncMaskPanel(); drawEditOverlay(); };
@@ -8902,9 +8904,14 @@ $('exRecipe').onchange = () => {
 $('exRecipeSave').onclick = async () => {
   const name = await askName(tr("Save export recipe"));
   if (!name) return;
-  const recipes = await api('/api/export-recipes', {
-    action: 'save', recipe: currentExportRecipe(name),
-  });
+  let recipes;
+  try {
+    recipes = await api('/api/export-recipes', {
+      action: 'save', recipe: currentExportRecipe(name),
+    });
+  } catch (error) {
+    return toast(String(error?.message || error));
+  }
   if (recipes.error) return toast(recipes.error);
   EXPORT_RECIPES = recipes;
   const saved = [...recipes].reverse().find((recipe) => recipe.name === name && !recipe.builtin);
@@ -10315,9 +10322,11 @@ function renderVersions() {
 $('versionCreate').onclick = async () => {
   const im = cur();
   if (!im) return;
+  const photoName = im.name;
   const proposed = tr("Version {value}", {value: (im.versions || []).length + 1});
   const name = await askName(tr("Create version"), proposed);
   if (!name || !name.trim()) return;
+  if (cur()?.name !== photoName) return;
   readControls();
   const version = {
     id: (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random()}`,
@@ -10652,9 +10661,11 @@ $('presetSaveScope').onchange = () => { $('presetSaveOptions').hidden = $('prese
 $('presetSaveScope').onchange();
 
 $('presetSave').onclick = async () => {
-  if (!cur()) return toast(tr("Select a photo first"));
+  const photoName = cur()?.name;
+  if (!photoName) return toast(tr("Select a photo first"));
   const name = await askName(tr("Save preset"));
   if (!name) return;
+  if (cur()?.name !== photoName) return;
   readControls();
   const result = await api('/api/presets', {
     action: 'save', name, params: S.params, grade: S.grade,
@@ -11243,7 +11254,9 @@ document.querySelectorAll('[data-cg-tone]').forEach((button) => {
     pushUndo(); dragging = true; wheel.setPointerCapture(event.pointerId); update(event);
   });
   wheel.addEventListener('pointermove', (event) => { if (dragging) update(event); });
-  wheel.addEventListener('pointerup', () => { if (dragging) saveState(); dragging = false; });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    wheel.addEventListener(type, () => { if (dragging) saveState(); dragging = false; });
+  }
 });
 document.querySelectorAll('[data-color-grade]').forEach((input) => {
   input.addEventListener('pointerdown', pushUndo);
@@ -12261,8 +12274,10 @@ async function applyServerStateEvent(event) {
   const hasPatches = names.some(name => patchFor(name) && typeof patchFor(name) === 'object');
   if (!hasPatches) {
     // IPTC updates do not change the edit recipe. A GET here can read an older
-    // window save and wrongly restore it over newer local editor controls.
-    if (current && names.includes(current.name)) METADATA?.refresh(current.name);
+    // window save and wrongly restore it over newer local editor controls, so
+    // force the reload: the panel otherwise skips the already-open photo and
+    // the next field edit would save the stale values back over the change.
+    if (current && names.includes(current.name)) METADATA?.refresh(current.name, true);
     return;
   }
   const deferredNames = new Set();

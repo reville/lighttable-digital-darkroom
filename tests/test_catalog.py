@@ -869,6 +869,39 @@ class StateTests(unittest.TestCase):
         self.assertEqual(versions[0]["name"], "Warm")
         self.assertEqual(versions[0]["grade"], {"temp": 0.2})
 
+    def test_versions_without_ids_do_not_clobber_other_photos(self):
+        write_photo(Path(self._dir.name) / "photos", "b.jpg")
+        catalog_scan.scan_source(self.cat, self.source,
+                                 read_metadata_for_new=False)
+        other = self.cat.image_id_for(self.source, "b.jpg")
+
+        self.cat.save_versions(self.image_id, [
+            {"id": "v1", "name": "One", "created": "2026-01-01"}])
+        self.cat.save_versions(other, [
+            {"name": "Two", "created": "2026-01-02"}])
+
+        self.assertEqual(
+            [v["name"] for v in self.cat.versions_for(self.image_id)], ["One"])
+        self.assertEqual(
+            [v["name"] for v in self.cat.versions_for(other)], ["Two"])
+
+    def test_a_reused_version_id_stays_with_its_own_photo(self):
+        write_photo(Path(self._dir.name) / "photos", "b.jpg")
+        catalog_scan.scan_source(self.cat, self.source,
+                                 read_metadata_for_new=False)
+        other = self.cat.image_id_for(self.source, "b.jpg")
+
+        self.cat.save_versions(self.image_id, [
+            {"id": "shared", "name": "Mine", "created": "2026-01-01"}])
+        self.cat.save_versions(other, [
+            {"id": "shared", "name": "Theirs", "created": "2026-01-02"}])
+
+        self.assertEqual(
+            [v["name"] for v in self.cat.versions_for(self.image_id)],
+            ["Mine"])
+        self.assertEqual(
+            [v["name"] for v in self.cat.versions_for(other)], ["Theirs"])
+
     def test_logically_corrupt_edit_blobs_degrade_per_field_not_per_library(self):
         history = self.cat.add_history(self.image_id, "good", {"rating": 5})
         collection = self.cat.add_collection(

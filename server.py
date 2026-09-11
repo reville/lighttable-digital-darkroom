@@ -17,6 +17,7 @@ import faulthandler
 import hashlib
 import io
 import json
+import math
 import os
 import queue
 import secrets
@@ -1746,8 +1747,14 @@ def _photo_move_plan(source: Path, target: Path, *, index=None) -> dict:
         return {"source": source, "target": target, "sidecars": []}
     if not source.is_file():
         raise ValueError(T("source photo is missing: {name}", name=f'{source.name}'))
-    if target.exists():
+    if target.exists() and not same_existing_file(target, source):
         raise ValueError(T("{name} already exists in that folder", name=target.name))
+    if same_existing_file(target, source):
+        # Case-only rename on a case-insensitive volume: the bytes already
+        # live at the new spelling, and any sidecar resolves through it, so
+        # no sidecar pair moves.
+        return {"source": source, "target": target, "sidecars": [],
+                "case_only": True}
     pairs, shared = [], {}
     for item in photo_companion_inventory(source, target, index):
         if item["target"] is None:
@@ -1795,6 +1802,12 @@ def _stage_photo_move(plan: dict) -> None:
     source, target = plan["source"], plan["target"]
     if source == target:
         return
+    if plan.get("case_only"):
+        # rename(2) changes the stored spelling in place; the target already
+        # resolves to these bytes, so a no-clobber move would refuse it.
+        os.replace(source, target)
+        durable_io.flush_directory(source.parent)
+        return
     copied = []
     try:
         for sidecar, sidecar_target in plan["sidecars"]:
@@ -1812,6 +1825,10 @@ def _rollback_photo_moves(plans: list[dict]) -> list[str]:
     for plan in reversed(plans):
         source, target = plan["source"], plan["target"]
         try:
+            if plan.get("case_only"):
+                if target.exists() and not source.exists():
+                    os.replace(target, source)
+                continue
             if target.exists() and not source.exists():
                 durable_io.move_file_no_replace(target, source)
             if source.exists():
@@ -2424,6 +2441,15 @@ NEUTRAL_PREVIEW_CACHE_VERSION = 4
 NEUTRAL_DISPLAY_CACHE = DecodedRawCache(256 * 1024 * 1024)
 
 
+def preview_width(width, default: int = 1100) -> int:
+    """Bound a requested preview width; cache names and decodes must agree."""
+    try:
+        value = int(width)
+    except (TypeError, ValueError):
+        value = default
+    return max(64, min(8000, value))
+
+
 def neutral_preview_path(name: str, width: int, rotate: float = 0,
                          params: dict | None = None,
                          raw_key: str | None = None) -> Path:
@@ -2431,12 +2457,13 @@ def neutral_preview_path(name: str, width: int, rotate: float = 0,
         if is_raw(name) else "romm"
     return CACHE / "neutral" / (
         f"preview-v{NEUTRAL_PREVIEW_CACHE_VERSION}_{file_key(name)}_"
-        f"{capture_key}_{max(64, min(int(width), 8000))}_{rot90k(rotate)}.jpg")
+        f"{capture_key}_{preview_width(width)}_{rot90k(rotate)}.jpg")
 
 
 def build_neutral_preview(name: str, width: int, rotate: float = 0,
                           params: dict | None = None) -> Path:
     """Build the accurate Develop-mode base from the same neutral RAW as export."""
+    width = preview_width(width)
     output = neutral_preview_path(name, width, rotate, params)
     if output.exists():
         return output
@@ -3050,12 +3077,13 @@ def raw_preview_path(name: str, width: int, quality: str,
     wb_key = color_pipeline.raw_decode_fingerprint(params)
     return CACHE / "rust" / (
         f"v{RAW_PREVIEW_CACHE_VERSION}_{file_key(name)}_"
-        f"{wb_key}_{width}_{quality}.tif")
+        f"{wb_key}_{preview_width(width)}_{quality}.tif")
 
 
 def build_raw_preview(name: str, width: int, quality: str,
                       params: dict | None = None) -> Path:
     import tifffile as tf
+    width = preview_width(width)
     output = raw_preview_path(name, width, quality, params)
     if valid_tiff_cache(output):
         return output
@@ -4575,10 +4603,24 @@ def rust_direct_export_supported(job: dict) -> bool:
         return False
     # Rust reproduces geometric and bitmap masks. Brush rasterization still
     # uses Pillow's Gaussian stroke contract and therefore stays on Python.
+    # Radial ellipses/rotation, collapsed linear gradients, and the adjustable
+    # depth interval are also Python-only: Rust would silently deliver a
+    # different mask than the preview, so those recipes fall back.
     for mask in edits.clean_masks(job.get("masks")):
-        if any(component.get("type") == "brush"
-               for component in mask.get("components", [])):
-            return False
+        for component in mask.get("components", []):
+            kind = component.get("type")
+            if kind == "brush" or kind == "depth":
+                return False
+            if kind == "radial":
+                radius = component.get("radius", 0.25)
+                if (component.get("radiusX", radius) != radius
+                        or component.get("radiusY", radius) != radius
+                        or component.get("angle", 0.0) != 0.0):
+                    return False
+            elif kind == "linear":
+                (sx, sy), (ex, ey) = component["start"], component["end"]
+                if math.hypot(ex - sx, ey - sy) < edits.LINEAR_MIN_SPAN:
+                    return False
     return True
 
 
@@ -6162,7 +6204,7 @@ def library_health_summary() -> dict:
 
 def write_instance_file() -> Path:
     path = instance_path()
-    path.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     durable_io.atomic_write_json(path, health_payload(include_token=True),
                                   keep_backup=False)
     try:
@@ -6496,15 +6538,24 @@ class Handler(BaseHTTPRequestHandler):
 
     def _send_file(self, code: int, path: Path, ctype: str,
                    cache_control: str = "no-store") -> None:
+        # Open before the status line: a concurrent cache prune can remove the
+        # file after a stat, and an error after send_response would write a
+        # second response into the same connection.
+        source = path.open("rb")
+        try:
+            size = os.fstat(source.fileno()).st_size
+        except OSError:
+            source.close()
+            raise
         self._response_status = code
         if code >= 400:
             self.close_connection = True
-        self.send_response(code)
-        self.send_header("Content-Type", ctype)
-        self.send_header("Content-Length", str(path.stat().st_size))
-        self.send_header("Cache-Control", cache_control)
-        self.end_headers()
-        with path.open("rb") as source:
+        with source:
+            self.send_response(code)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(size))
+            self.send_header("Cache-Control", cache_control)
+            self.end_headers()
             shutil.copyfileobj(source, self.wfile, length=1024 * 1024)
 
     def _json(self, obj, code: int = 200) -> None:
@@ -7130,8 +7181,9 @@ class Handler(BaseHTTPRequestHandler):
                 if b.get("viewport") and (not edits.base_edits_are_identity(b.get("optics"), b.get("heals"))
                                            or preview_grade_requires_bake(b.get("masks"))):
                     raise ValueError(T("viewport rendering requires unwarped source geometry"))
+                width = preview_width(b.get("w", 1100))
                 result = render_preview(
-                    b["name"], b.get("params", {}), int(b.get("w", 1100)),
+                    b["name"], b.get("params", {}), width,
                     b.get("engine", "rs"), client,
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
@@ -7139,7 +7191,7 @@ class Handler(BaseHTTPRequestHandler):
                     allow_draft=b.get("allow_draft") is not False)
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
-                        result, b["name"], int(b.get("w", 1100)),
+                        result, b["name"], width,
                         b.get("params", {}), b.get("optics"), b.get("heals"),
                         native=True, grade_values=b.get("grade"), masks=b.get("masks"))
                     if not result.get("cancelled"):
@@ -7148,7 +7200,7 @@ class Handler(BaseHTTPRequestHandler):
                             edits.clean_optics(b.get("optics")).get("profileOverride")))
                 else:
                     result = apply_preview_edits(
-                        result, b["name"], int(b.get("w", 1100)),
+                        result, b["name"], width,
                         b.get("params", {}), b.get("optics"), b.get("heals"),
                         grade_values=b.get("grade"), masks=b.get("masks"))
                 if not result.get("cancelled") and not result.get("error"):
@@ -7163,7 +7215,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/refine":
                 b = self._body()
                 name = b["name"]
-                width = int(b.get("w", 1100))
+                width = preview_width(b.get("w", 1100))
                 params = b.get("params", {})
                 client = str(b.get("client", ""))[:80]
                 generation = b.get("generation")
@@ -8722,7 +8774,11 @@ def rename_photos(body: dict) -> dict:
         # ".jpg" would be a hidden file the library never shows again.
         target = path.with_name(f"{stem or path.stem}{path.suffix}")
         suffix = 2
-        while (target in taken or target.exists()) and target != path:
+        # A case-only rename still sees the target "existing" on a
+        # case-insensitive volume; ask the filesystem whether it is the same
+        # file instead of silently appending a suffix.
+        while target in taken or (target.exists()
+                                  and not same_existing_file(target, path)):
             target = path.with_name(f"{stem}-{suffix}{path.suffix}")
             suffix += 1
         taken.add(target)

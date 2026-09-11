@@ -154,10 +154,12 @@ def render(case: dict, root: Path, source: Path, engine=None) -> np.ndarray:
         image = edits.apply_manual_optics(image, edits.clean_optics(optics))
     if heals:
         image = edits.apply_heals(image, heals)
-    if case.get("masks"):
-        image = edits.apply_masks(image, case["masks"])
+    # Matches finish_export()/render_cli: the global grade precedes masks, so
+    # a mask's own grade sees the globally graded pixels.
     if case.get("grade"):
         image = grade.apply(image, case["grade"])
+    if case.get("masks"):
+        image = edits.apply_masks(image, case["masks"])
     return np.clip(image, 0, 1)
 
 
@@ -197,7 +199,12 @@ def bless() -> int:
     """Rewrite the goldens, refusing to hide a silent cache-key collision."""
     recorded = manifest().get("renderCacheVersion")
     current = cache_version()
-    if recorded is not None and recorded == current:
+    if recorded is None:
+        print("Refusing to bless: tests/goldens/manifest.json is missing or "
+              "has no renderCacheVersion, so the cache-key guard cannot run.",
+              file=sys.stderr)
+        return 1
+    if recorded == current:
         print("Refusing to bless: RENDER_CACHE_VERSION is unchanged at "
               f"{current}. A changed render that keeps its cache key serves "
               "the old pixels from every warm cache. Raise it first.",

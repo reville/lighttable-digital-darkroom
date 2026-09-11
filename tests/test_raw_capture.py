@@ -94,9 +94,10 @@ class RawCaptureControls(unittest.TestCase):
             return float(image[..., 1].mean()
                          / max((image[..., 0].mean() + image[..., 2].mean()) / 2, 1.0))
         readings = [green(value) for value in (-1.0, -0.5, 0.0, 0.5, 1.0)]
-        self.assertTrue(readings == sorted(readings)
-                        or readings == sorted(readings, reverse=True),
-                        f"tint is not monotonic across its travel: {readings}")
+        # Positive tint is magenta: the green ratio must fall, not merely
+        # change monotonically in either direction.
+        self.assertEqual(readings, sorted(readings, reverse=True),
+                         f"positive tint must lower the green ratio: {readings}")
 
     def test_as_shot_differs_from_auto_and_from_a_preset(self):
         """Each mode must be a real choice, not the same decode relabelled."""

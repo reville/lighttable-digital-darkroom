@@ -45,6 +45,13 @@ def _members(values) -> list[str]:
     return result
 
 
+def _rating(value, default: int = 0) -> int:
+    try:
+        return max(0, min(5, int(value)))
+    except (TypeError, ValueError):
+        return default
+
+
 def clean_collections(values) -> list[dict]:
     result = []
     seen = set()
@@ -65,7 +72,7 @@ def clean_collections(values) -> list[dict]:
                 "flag": str(rules.get("flag", "all"))
                 if str(rules.get("flag", "all")) in
                 ("all", "pending", "approved", "skipped") else "all",
-                "ratingMin": max(0, min(5, int(rules.get("ratingMin", 0) or 0))),
+                "ratingMin": _rating(rules.get("ratingMin", 0)),
                 "kind": str(rules.get("kind", "all"))
                 if str(rules.get("kind", "all")) in
                 ("all", "raw", "processed", "virtual") else "all",
