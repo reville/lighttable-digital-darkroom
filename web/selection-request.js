@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Resolve the full view before publishing a selection; never publish a subset. */
 export function createSelectionRequest({load, queryNames, scope, visible, selection, changed, onError}) {
   let generation = 0;

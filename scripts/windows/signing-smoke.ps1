@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 # Exercise the real signing identity before a long release build. The fixture
 # is never executed or shipped, and all temporary files are removed afterward.
 $ErrorActionPreference = "Stop"

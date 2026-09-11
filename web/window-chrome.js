@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { nativeBridge, sendNative } from '/web/native-bridge.js';
 
 const CONTROL_SELECTOR = [

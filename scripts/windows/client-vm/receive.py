@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bounded evidence receiver, listening inside a disposable VM container only."""
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path

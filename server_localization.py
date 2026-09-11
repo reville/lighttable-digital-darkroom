@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Explicit localization of server-owned UI prose; never walk response data.
 
 Use T('Photo {name} is unavailable', name=name) at a user-visible message site.

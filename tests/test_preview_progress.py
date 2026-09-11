@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the browser progress and RAW refinement orchestration regressions."""
 import shutil
 import subprocess

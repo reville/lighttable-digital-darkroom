@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Executable checks for release timings and exact candidate identity, without Windows UI."""
 import hashlib
 import json

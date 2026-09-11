@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Local spatial filters must see global grading and every preceding mask.
 // The server resolves these recipes using the same ordered operations as export.
 export function gradeBakeRequest(grade, masks, holdBefore = false) {

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Harness self-checks, run explicitly; these do not audit application visuals."""
 import json
 from pathlib import Path

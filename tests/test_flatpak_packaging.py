@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Offline validation of direct Flatpak generation and sandbox boundaries."""
 import hashlib
 import importlib.util

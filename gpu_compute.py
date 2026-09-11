@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Float32 application compute over the bundled resident Rust/GPU worker.
 
 This worker is separate from interactive film rendering: exports and merges

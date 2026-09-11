@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reviewed ingest selections and cooperative cancellation preserve source files."""
 from contextlib import ExitStack
 from pathlib import Path

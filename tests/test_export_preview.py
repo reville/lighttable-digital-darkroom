@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Delivery preview uses export selection/naming without starting a render."""
 import tempfile
 import unittest

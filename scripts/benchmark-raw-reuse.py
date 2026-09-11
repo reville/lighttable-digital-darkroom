@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare uncached and reused capture pixels through the app's actual decoder."""
 import argparse
 import hashlib

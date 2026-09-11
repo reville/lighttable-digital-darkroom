@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Validate, review, and bundle source-linked help using only the stdlib.
 
 Each article carries real source anchors. Per-article source and content hashes

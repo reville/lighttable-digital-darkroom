@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the actual editor save and navigation functions at their boundaries."""
 import shutil
 import subprocess

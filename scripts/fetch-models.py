@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Fetch the pinned denoising weights LightTable's Enhance feature can use.
 
 Nothing downloaded here is committed. The weights are fetched for release

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 .preset-browser { display:flex; flex-direction:column; gap:10px; }
 .preset-browser-search { display:flex; flex-direction:column; gap:5px; color:var(--ink-2); font-size:11px; }
 .preset-browser-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; }

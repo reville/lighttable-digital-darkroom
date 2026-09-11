@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Publish the bundled looks as static catalog sources with real LightTable renders.
 
 Run with the app's Python environment and --site /path/to/lighttable-site.

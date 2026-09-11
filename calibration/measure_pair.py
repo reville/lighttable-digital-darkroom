@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: GPL-3.0-only
 """Measure a rendered candidate against an aligned reference scan."""
 from __future__ import annotations
 

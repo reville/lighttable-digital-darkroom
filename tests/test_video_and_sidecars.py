@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Video cataloguing and XMP sidecar write-back."""
 from __future__ import annotations
 

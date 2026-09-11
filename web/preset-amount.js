@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { cloneValue } from './state.js';
 import { GRADE_DEFAULTS } from './gl.js';
 import { LOOK_GRADE_KEYS, CREATIVE_FILM_KEYS } from './presets.js';

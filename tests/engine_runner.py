@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """One way to reach the film engine, shared by the audit and the goldens.
 
 Both use the resident `lighttable-engine` built from `rust-engine/`, the same

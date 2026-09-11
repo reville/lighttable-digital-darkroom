@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export function monotoneLUT(points) {
   const sorted = [...points].sort((a, b) => a[0] - b[0]);
   const output = new Array(256);

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Record native/signing evidence for the final Mac candidate, without publishing."""
 import argparse
 import hashlib

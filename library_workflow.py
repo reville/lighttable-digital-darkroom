@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Validation and identity helpers for non-destructive library organization."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Float32 merge stages. Alignment stays on the established bounded CPU path.
 use anyhow::{Context, Result, bail};
 use spektrafilm_gpu::ComputeBackend;

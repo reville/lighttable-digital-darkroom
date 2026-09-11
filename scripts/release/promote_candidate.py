@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Promote one already-built platform; dry-run unless --apply is explicit.
 
 The preparation artifact contains the immutable platform release manifest and its

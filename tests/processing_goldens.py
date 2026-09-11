@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Frozen renders of complete recipes, as the last line of defence.
 
 Every other gate compares two implementations of the same idea. That cannot

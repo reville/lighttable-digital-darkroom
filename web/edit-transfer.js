@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 import { localToolLabel } from './editor-panels.js';
 /** Edit transfer plans preserve every unselected destination setting. */

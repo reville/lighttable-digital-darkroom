@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Sign a Linux update feed for an already-built immutable release archive.
 
 Uses an existing Ed25519 PEM private key file or the named environment variable

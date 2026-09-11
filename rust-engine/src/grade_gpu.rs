@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Full-precision display-referred finishing. No RGB8 surface is involved.
 use anyhow::{Context, Result, bail};
 use serde_json::Value;

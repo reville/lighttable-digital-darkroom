@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 set -euo pipefail
 
 if [[ $# -ne 2 ]]; then

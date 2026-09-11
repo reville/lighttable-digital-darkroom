@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The library shows a camera the way a photographer writes it.
 
 Cameras pad the EXIF make and model and many repeat the maker in both, so a

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Auto-straighten and guided upright.
 
 Every frame here is drawn with numpy so the suite carries no fixture files.

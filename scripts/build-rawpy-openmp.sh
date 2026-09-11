@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Build a relocatable macOS wheel, including LibRaw and its OpenMP runtime.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

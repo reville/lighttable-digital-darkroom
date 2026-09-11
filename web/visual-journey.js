@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Loaded only by the opt-in native visual-review journey. No normal startup work.
 export async function runVisualJourney(ctx) {
   const { S, $, cur, executeUICommand: command, uiStateReport: state,

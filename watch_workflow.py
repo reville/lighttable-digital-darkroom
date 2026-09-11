@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Settled-file watches for hot folders and camera-maker tether utilities.
 
 The watcher never moves or deletes from its source. Files must hold the same

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the production chrome class against AppKit/WebKit hit testing."""
 import shutil
 import subprocess

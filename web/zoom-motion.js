@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /** An explicit app preference takes precedence over the system default. */
 export function smoothZoomEnabled(prefs = {}, systemReducedMotion = () =>
   matchMedia('(prefers-reduced-motion: reduce)').matches) {

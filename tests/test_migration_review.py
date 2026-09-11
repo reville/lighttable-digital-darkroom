@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise review/trial migration against real SQLite catalogs and source files."""
 import copy
 import sqlite3

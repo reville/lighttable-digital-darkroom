@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Inventory exact runtime sources; this is not a completed offline build closure."""
 from __future__ import annotations
 

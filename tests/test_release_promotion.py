@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Promotion consumes immutable binaries and actual client receipts; no external writes."""
 from __future__ import annotations
 

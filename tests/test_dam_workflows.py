@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """DAM rules, migration, and additive tagging against real scratch catalogs."""
 import json
 import sqlite3

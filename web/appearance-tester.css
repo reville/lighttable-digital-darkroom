@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* Apply the default highlight color or a saved appearance experiment to both
    the base palette and Linux's scoped desktop palette. */
 :root[data-appearance-color],

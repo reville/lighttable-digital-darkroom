@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Platform image services with the existing macOS path kept as the fast path."""
 
 from __future__ import annotations

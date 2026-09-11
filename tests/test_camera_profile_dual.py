@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Tests for dual-illuminant camera profile interpolation."""
 from __future__ import annotations
 

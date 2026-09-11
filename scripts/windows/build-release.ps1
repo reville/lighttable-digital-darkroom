@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 param(
     [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$')]
     [string]$Version = "0.1.0",

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Portable preset import/export for LightTable.
 
 The supported editors do not share a colour engine, so this module converts

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Runs only inside a disposable CI container; package signatures stay required.
 set -euo pipefail
 cd /work

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Failures belong to a source revision, not permanently to a catalog name.
 // Unknown photos remain eligible until the normal lazy display path tries them.
 export function createPhotoDisplayStatus() {

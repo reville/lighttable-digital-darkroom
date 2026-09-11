@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare ImageIO with rawpy embedded thumbnails on real RAW containers.
 
 Usage: python scripts/benchmark-raw-thumbnails.py photo.dng photo.raf ...

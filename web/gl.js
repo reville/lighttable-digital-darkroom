@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 // WebGL grade preview. The fragment shader below mirrors grade.py exactly —
 // same order of operations, same constants. Change one, change the other.

@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* Leave room for the photo in a tiled Linux window. The library button opens
    the same sidebar as a drawer; expanding the window restores both columns. */
 .linux-shell .topbar { padding-inline:12px; }

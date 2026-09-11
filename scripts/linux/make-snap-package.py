@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Prepare a strict-confinement Snap candidate from a verified Linux release bundle.
 
 This generates a local Snapcraft project. It does not build, register or publish

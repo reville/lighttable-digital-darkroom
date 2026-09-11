@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run prerequisite behavior checks without installing anything on the test host."""
 
 from pathlib import Path

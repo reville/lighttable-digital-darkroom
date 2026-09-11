@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Colour-managed image helpers shared by preview input and export.
 
 The film simulation and interactive grade produce display-referred sRGB.

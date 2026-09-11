@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Checksummed screenshot photographs, separate from the app's RAW test fixtures."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Merge invariants for low-information frames and recoverable bad inputs."""
 import unittest
 

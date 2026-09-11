@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exhaustive test matrix for preset composition and Film Simulation interactions."""
 import json
 import shutil

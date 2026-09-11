@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Runs a Core ML denoise or super-resolution model over one image tile.
 //
 // `enhance_workflow.py` owns tiling, feathering, and the output master; this

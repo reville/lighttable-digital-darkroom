@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: GPL-3.0-only
 // Production viewport geometry only. This does not measure DOM/image paint or
 // end-to-end browser scrolling. A separate subprocess bounds memory per size.
 import assert from 'node:assert/strict';

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Linux desktop colors belong to the chrome, never to rendered photographs.
  * The corresponding CSS deliberately leaves the workspace and color scopes
  * neutral. No theme value is interpreted as CSS or executable content. */

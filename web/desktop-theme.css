@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
 /* Linux chrome follows the active desktop palette. Keep --canvas, --bg and
    rendering/semantic colors unchanged, and do not theme the photo workspace. */
 :root[data-desktop-theme-mode="dark"] { --desktop-color-scheme:dark; }

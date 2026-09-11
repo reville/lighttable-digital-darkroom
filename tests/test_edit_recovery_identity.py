@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Use real catalog rows, live source signatures, history and the state route."""
 from unittest import mock
 import os

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Capture the packaged GTK/WebKitGTK app on an isolated native 2x X11 display.
 
 Run under dbus-run-session and Xvfb with GDK_SCALE=2. This captures actual

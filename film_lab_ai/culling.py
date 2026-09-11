@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Assisted culling: turn one photo's pixels and Vision cues into verdicts.
 
 The index already runs Apple Vision over every photo. This module adds the

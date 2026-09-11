@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 import unittest
 from unittest import mock
 from urllib.parse import parse_qs, urlsplit

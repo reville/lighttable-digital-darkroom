@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export const REPOSITORY = 'reville/lighttable-digital-darkroom';
 export const VERSION_RE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$/;
 export const PLATFORMS = {

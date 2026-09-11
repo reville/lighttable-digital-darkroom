@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Local HDR, panorama, and focus-stack merging."""
 from __future__ import annotations
 

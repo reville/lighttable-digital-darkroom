@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Read-only float32 export transport and bounded reuse of unbaked film frames.
 
 The ndarray owns its mmap through ``array.base``. Unlinking immediately after

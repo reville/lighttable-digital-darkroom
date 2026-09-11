@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Keep the synthetic scale benchmark honest about filters and offline state."""
 import unittest
 import tempfile

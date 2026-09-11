@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Offline integrity checks for the generated source-build preparation."""
 import importlib.util
 import json

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Shared fixtures and fail-closed numerical scoring for processing gates.
 
 References must come from a separate implementation, never captured goldens.

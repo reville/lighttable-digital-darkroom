@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Verify every viewport float against the same full-frame GPU render.
 
 Covers panning, frame boundaries, every quarter rotation, film/grain pitch,

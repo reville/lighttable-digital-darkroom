@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Private, on-device semantic selections for local adjustment masks.
 
 Apple Vision supplies foreground instances and reads embedded capture depth

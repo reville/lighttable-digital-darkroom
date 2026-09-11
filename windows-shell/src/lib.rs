@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 pub mod linux;
 pub mod windows_update;
 pub mod preset_links;

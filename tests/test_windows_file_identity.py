@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Windows metadata contract simulations; these are not native Win32 proof."""
 from contextlib import ExitStack
 import ctypes

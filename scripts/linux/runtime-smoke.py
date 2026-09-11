@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Check a relocated Linux bundle using isolated data and a real CPU render.
 
 This checks dependencies, ICC conversion, both Rust engines, HTTP startup and

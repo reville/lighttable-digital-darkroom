@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Real catalog/validator regression tests for background mask interleavings."""
 import threading
 from unittest import mock

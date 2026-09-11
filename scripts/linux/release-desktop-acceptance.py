@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Temporary release tester; the downloaded application bytes remain unchanged."""
 import argparse
 import hashlib

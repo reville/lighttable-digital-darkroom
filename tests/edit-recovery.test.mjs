@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import assert from 'node:assert/strict';
 import test from 'node:test';
 const moduleFor = async file => import(new URL(`../web/${file}`, import.meta.url));

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Metadata failure reports and non-destructive cross-editor sidecar updates."""
 import contextlib
 import io

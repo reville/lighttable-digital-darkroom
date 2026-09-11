@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """One-pass camera-size merge checks with reloadable, disk-backed fixtures.
 
 Only one fixture family and one output is held at a time. This measures the

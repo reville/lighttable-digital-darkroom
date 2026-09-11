@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Launch the actual GTK/WebKit desktop and require its web UI to render a photo.
 
 Run with the packaged Python under dbus-run-session and Xvfb or Wayland. This checks

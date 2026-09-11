@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Shared bridge between LightTable UI params and the spektrafilm runtime.
 
 Used by both the preview server (in-process, warm caches) and the

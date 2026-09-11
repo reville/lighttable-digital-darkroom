@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise capture-time correction/reset through the real persistent outbox."""
 import server
 import xmp_sidecar

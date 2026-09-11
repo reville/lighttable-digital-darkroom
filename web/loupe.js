@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Secondary Monitor Loupe Controller for Film Lab / LightTable.
  * Synchronizes with the primary window via BroadcastChannel.
  */

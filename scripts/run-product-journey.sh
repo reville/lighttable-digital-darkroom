@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Build (when appropriate), run, screenshot, and measure one product journey.
 set -euo pipefail
 

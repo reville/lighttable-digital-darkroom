@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise nested signing with the packaged command wrapper present."""
 import platform
 import plistlib

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Register an extracted bundle; remove only integrations this installer owns."""
 
 from __future__ import annotations

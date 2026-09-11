@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* First-run orientation. Completion is durable; opening a picker is not. */
 import {t as tr, tn as trn} from './i18n.js';
 

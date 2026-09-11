@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Read the active Omarchy palette without running or modifying theme files.
 
 Omarchy 4 stages colors.toml under ~/.local/state/omarchy/current/theme;

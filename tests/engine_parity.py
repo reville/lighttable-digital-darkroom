@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: GPL-3.0-only
 """Deterministic Python/Rust parity gate for the spectral colour/tone path.
 
 Run from the app directory:

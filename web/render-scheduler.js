@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 export function afterVisiblePaint(maxWaitMs = 1000) {
   return new Promise((resolve) => {
     let settled = false;

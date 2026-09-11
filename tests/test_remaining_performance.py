@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Behavioral contracts for cold decoding, disposable writes and engine isolation."""
 import http.client
 from concurrent.futures import ThreadPoolExecutor

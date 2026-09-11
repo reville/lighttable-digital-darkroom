@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Windows update ownership and the WinSparkle 0.9.4 adapter.
 //!
 //! Only an explicitly marked, Authenticode-signed direct installation can

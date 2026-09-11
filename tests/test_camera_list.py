@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 import contextlib
 import datetime
 import importlib.util

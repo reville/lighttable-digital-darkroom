@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! A narrow, local handoff channel for preset links received while the app runs.
 //! Only catalog IDs cross this channel. No URL fetch or editing operation exists.
 use anyhow::{Result, anyhow};

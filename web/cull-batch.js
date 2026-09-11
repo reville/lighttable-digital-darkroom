@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /** Flag changes are separate from analysis and retain a session undo stack. */
 export function cullFlagTargets(images, status, replace = false) {
   return [...new Map(images.map(image => [image.name, image])).values()]

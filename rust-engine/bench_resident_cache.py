@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare uncached and cached resident film outputs and downstream-slider timings.
 
 Uses only Python's standard library. Build release first; provide the installed

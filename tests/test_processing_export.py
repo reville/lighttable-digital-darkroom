@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reference sanity checks; real worker cases run in the export gate."""
 from pathlib import Path
 import sys

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Different valid photographs must never share preview or recovery identities."""
 import io
 import os

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Tests for the Enhance plumbing that surrounds a model that is not present.
 
 No model, helper binary, or fixture file exists in this repository, so every

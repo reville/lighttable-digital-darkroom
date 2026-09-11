@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Compiled with the production NativePreview.swift by native_processing_preview.py.
 // Read back submitted MTKView drawables: snapshot() would silently rerender and
 // miss stale drawable, navigation, and compare restoration failures.

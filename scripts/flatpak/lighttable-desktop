@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
 set -eu
 # Flatpak supplies private XDG data/config/cache directories. XDG_STATE_HOME
 # is not supplied by all supported Flatpak versions, so anchor it explicitly.

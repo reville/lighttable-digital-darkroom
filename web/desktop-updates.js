@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { api } from './api.js';
 import { sendNative, nativeBridge } from './native-bridge.js';
 import { t as tr } from './i18n.js';

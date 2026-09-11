@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { installCanvasHandleCursor } from './edit-cursor.js';
 import { isIdentityPoints } from './color-tools.js';
 import { t as tr } from './i18n.js';

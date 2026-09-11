@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """A render must store its pixels under the key that describes them.
 
 `preview_variant` reads the shared input cache, which other threads prune by

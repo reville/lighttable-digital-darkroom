@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Prepare pinned Python and film fixtures for Linux source tests, without packaging."""
 
 from __future__ import annotations

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Quickly refresh the isolated personal app without rebuilding its 628 MB
 # Python environment or pinned third-party engines. A full release build remains
 # the source of truth whenever one of those runtime inputs changes.

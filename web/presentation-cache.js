@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
   if (value && typeof value === 'object') return Object.fromEntries(

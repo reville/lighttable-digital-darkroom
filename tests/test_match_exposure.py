@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Tests for Match Total Exposure calculation and endpoint."""
 from __future__ import annotations
 

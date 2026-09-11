@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
 set -eu
 : "${SNAP:?Run this launcher through snap run}"
 : "${SNAP_USER_COMMON:?Snap user storage is unavailable}"

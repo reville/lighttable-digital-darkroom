@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from '../web/i18n.js';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

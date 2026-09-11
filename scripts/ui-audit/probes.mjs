@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Browser-side candidate oracles. A hit requires screenshot inspection, not automatic bug classification.
 export function probe({state = {}, direction = 'ltr'} = {}) {
   const hits = [];

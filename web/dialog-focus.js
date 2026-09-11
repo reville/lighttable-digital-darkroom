@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Keep keyboard navigation in the open dialog; existing close handlers retain
    their operation-specific Escape/Cancel behavior. */
 export function installDialogFocus() {

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Extract/check native English templates; reject unwrapped native UI literals.
 
 Run with --write after intentional native copy changes, then regenerate catalogs.

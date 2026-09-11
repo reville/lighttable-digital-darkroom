@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the control audit behavior regressions in the regular CI suite."""
 from pathlib import Path
 import shutil

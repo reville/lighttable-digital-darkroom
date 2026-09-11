@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the bounded model-based save-queue campaign in ordinary CI."""
 from pathlib import Path
 import shutil

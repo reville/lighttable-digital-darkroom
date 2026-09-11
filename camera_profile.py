@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """DNG camera-profile (``.dcp``) reading and an explicitly approximate look.
 
 A ``.dcp`` file is a TIFF container whose first IFD holds only metadata: no

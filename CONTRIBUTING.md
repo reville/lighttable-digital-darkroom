@@ -167,6 +167,23 @@ Wayland or X11 session, GPU, and driver with results. Apple Vision/CoreML
 features and HEIF export remain unavailable on Linux. There is no supported
 Linux desktop release yet.
 
+## Licensing your contribution
+
+LightTable is GPL-3.0-only. Every first-party source file starts with an SPDX
+identifier, so a file still states its license once separated from this tree:
+
+```
+# SPDX-License-Identifier: GPL-3.0-only
+```
+
+New files need one. `scripts/add-license-headers.py` adds any that are missing,
+and `tests/test_license_headers.py` fails when a source file lacks one.
+
+Authorship is not repeated in each file. LICENSE covers the work and git records
+who wrote what. Vendored upstream code keeps its own notices and is excluded;
+see the provenance note beside each vendored tree. You keep the copyright in
+your contribution and license it under GPL-3.0-only by submitting it.
+
 ## Send a contribution
 
 Keep pull requests focused, explain the behavior being changed, and report the

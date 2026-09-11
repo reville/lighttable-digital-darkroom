@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Priority admission and bounded, replaceable work for interactive previews.
 
 Running image/GPU operations finish normally. Priority and cancellation apply

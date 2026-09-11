@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Behavioral history checks with deferred transport and a deterministic clock."""
 import json
 from pathlib import Path

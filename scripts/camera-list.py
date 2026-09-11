@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Publish the supported-camera page from the LibRaw the app actually links.
 
 LightTable decodes RAW files with LibRaw, through rawpy.  rawpy exposes no

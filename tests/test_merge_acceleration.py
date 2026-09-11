@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Numeric parity checks; opt-in GPU cases exercise the actual bundled worker."""
 import os
 import unittest

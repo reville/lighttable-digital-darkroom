@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Per-image XMP reading for LightTable.
 
 Lightroom, Camera Raw, Bridge, and the open-source raw editors record what

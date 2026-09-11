@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 # Pinned Microsoft NuGet packages. These tools never contain signing credentials.
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest

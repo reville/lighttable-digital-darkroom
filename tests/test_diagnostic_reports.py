@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the actual Swift report store across process deaths and clean launches."""
 import json
 import os

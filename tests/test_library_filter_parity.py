@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare real folder/catalog payloads through the browser's filter pipeline."""
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run conservative culling grouping checks in ordinary Python CI."""
 from pathlib import Path
 import shutil

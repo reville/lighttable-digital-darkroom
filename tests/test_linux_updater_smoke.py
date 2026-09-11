@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Focused guards against false native-updater proof and release mutation.
 
 These helper tests run without GTK. The actual native gate runs only against a

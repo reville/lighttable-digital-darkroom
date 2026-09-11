@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Moving a photo must carry every state key that belongs to it.
 
 Folder mode keys edits by path. A virtual copy's key is the photo's path plus

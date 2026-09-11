@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Safety, X11 protocol and real TIFF precision checks for native acceptance."""
 from __future__ import annotations
 

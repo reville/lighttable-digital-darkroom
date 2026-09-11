@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Does each control actually do what its name says?
 
 Parity gates compare two implementations of the same model. They pass happily

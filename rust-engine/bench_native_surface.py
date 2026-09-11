@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Prove GPU packing, rotated viewport crops, and shared transport against float RGB."""
 import argparse
 import ctypes

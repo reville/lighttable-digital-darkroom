@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Crash markers, startup reporting, photo quarantine, and damaged-file custody.
 
 Everything here is small and local on purpose.  The catalog's own integrity

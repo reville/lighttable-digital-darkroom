@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Small crash-safe filesystem primitives used by LightTable's durable data.
 
 The photo originals are deliberately outside this module.  These helpers are

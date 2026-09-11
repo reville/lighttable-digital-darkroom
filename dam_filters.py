@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Shared validation for catalog camera, exposure, keyword, and date rules."""
 from __future__ import annotations
 

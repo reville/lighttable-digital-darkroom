@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate a checksum-pinned local PKGBUILD from an existing Linux bundle."""
 
 from __future__ import annotations

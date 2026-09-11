@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Writable LightTable locations shared by the server and command-line client.
 
 Linux follows the XDG base-directory specification. XDG environment values

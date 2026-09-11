@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Reusable export recipes, destinations, and collision-safe filenames."""
 from __future__ import annotations
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /** Conservative local suggestions. Groups never change flags or catalog stacks. */
 const SELECT = ['subjectSharpness', 'eyeSharpness', 'eyesOpen'];
 const REJECT = ['exposure', 'misfire', 'document'];

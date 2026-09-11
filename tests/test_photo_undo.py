@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Behavioral checks for session undo across photo navigation and bounded memory."""
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise engine defaults and accurate-only requests through real dispatch."""
 import tempfile
 import unittest

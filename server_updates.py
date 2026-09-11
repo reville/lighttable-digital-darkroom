@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Coordinate desktop updates with the catalog's only writer.
 
 Network downloads run outside request handlers. Preparing an update freezes new

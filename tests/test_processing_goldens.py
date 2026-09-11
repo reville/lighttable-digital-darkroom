@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Gate on the frozen renders: the picture may not change by accident.
 
 A failure here is not automatically a bug. It means the rendered result of a

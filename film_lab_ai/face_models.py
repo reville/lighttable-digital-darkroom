@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Pinned, optional face models. Downloads contain weights, never photo data."""
 
 from __future__ import annotations

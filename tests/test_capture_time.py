@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Clock corrections preserve originals, scan identity, per-file history and export metadata."""
 from datetime import datetime
 import json

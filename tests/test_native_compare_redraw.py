@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise compare and zoom through real Metal drawables without taking focus."""
 
 import functools

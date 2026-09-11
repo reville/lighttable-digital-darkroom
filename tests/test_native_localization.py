@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Native locale behavior and persistence checks, independent of a user catalog."""
 import importlib.util
 import json

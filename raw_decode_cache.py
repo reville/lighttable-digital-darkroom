@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """A byte-bounded, process-wide cache of immutable demosaiced sensor pixels.
 
 Both resident engines enter through Python, so this cache shares captures

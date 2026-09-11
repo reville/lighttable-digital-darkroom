@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Build the synthetic DNG fixtures the RAW capture suite decodes.
 
 The repository deliberately ships no camera originals: the smallest real RAW

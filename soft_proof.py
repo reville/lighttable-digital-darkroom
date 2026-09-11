@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """LittleCMS and shader-reference soft proofing engine."""
 from __future__ import annotations
 

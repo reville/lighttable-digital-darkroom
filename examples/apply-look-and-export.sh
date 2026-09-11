@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
 set -eu
 if [ "$#" -lt 2 ]; then
   printf 'usage: %s PRESET DESTINATION [PHOTO...]\n' "$0" >&2

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Legacy mask inversion belongs to the whole mask, not its new first component."""
 from pathlib import Path
 import shutil

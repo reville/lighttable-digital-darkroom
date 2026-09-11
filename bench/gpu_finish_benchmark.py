@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Compare float32 GPU export finishing with the Python reference, including IPC.
 
 Run with the bundled Python and a built engine/lighttable-engine. Writes only

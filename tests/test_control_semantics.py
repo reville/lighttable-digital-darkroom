@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Gate on the control audit: no control may be inert, leaky or contradicted.
 
 `control_semantics` produces a verdict per control. This turns the verdicts

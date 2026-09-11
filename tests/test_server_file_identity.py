@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Identity reads stay bounded without weakening source-change guards."""
 import os
 from unittest import mock

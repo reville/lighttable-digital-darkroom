@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Crash detection, photo quarantine, catalog verify/repair/salvage, and the
 recovery decisions the server offers instead of making them on its own."""
 from __future__ import annotations

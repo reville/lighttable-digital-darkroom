@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Download optional RAW test inputs from their recorded public sources."""
 from __future__ import annotations
 

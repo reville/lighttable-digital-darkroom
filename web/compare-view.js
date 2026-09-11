@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Compare positions belong to the displayed photo; its controls use screen pixels.
 export function clampComparePosition(value) {
   const position = Number(value);

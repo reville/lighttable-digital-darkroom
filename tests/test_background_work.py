@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import unittest

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 // Search is shared by the help UI and its behavioral tests. No server or index
 // service is needed; all searchable text comes from the bundled articles.
 const STOP_WORDS = new Set(['a', 'an', 'and', 'are', 'can', 'do', 'does', 'how',

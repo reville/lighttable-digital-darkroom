@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from '../web/i18n.js';
 /* Behavioural cover for the scope panel and the sampling texture it reads.
  *

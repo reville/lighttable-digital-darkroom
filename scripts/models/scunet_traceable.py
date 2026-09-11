@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Make SCUNet traceable for Core ML without changing what it computes.
 
 Three things in the published network are fine in PyTorch but cannot survive

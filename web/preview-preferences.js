@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 const PREVIEW_RESOLUTIONS = new Set([
   'auto', '900', '1100', '1400', '1800', '2200', '2600', '3000',
   '3500', '4000', '4500', '5000',

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Record exact candidate artifacts after signature checks; no publishing or certification claims."""
 from __future__ import annotations
 

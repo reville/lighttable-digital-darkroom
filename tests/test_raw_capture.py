@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """The capture stage: white balance, highlight recovery, demosaic, denoise.
 
 These controls run in the RAW decoder, before the film model and before any

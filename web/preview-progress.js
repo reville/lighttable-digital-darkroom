@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import {t as tr, tn as trn} from './i18n.js';
 // Count completed work for the preview being presented. Background detail
 // renders never start this indicator, and presentation hides it immediately.

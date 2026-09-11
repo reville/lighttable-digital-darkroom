@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t as tr } from './i18n.js';
 /** Session undo stacks keyed by qualified catalog photo name.
  *

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Metadata-only availability checks; never hydrate a cloud file to inspect it."""
 import ctypes
 from functools import lru_cache

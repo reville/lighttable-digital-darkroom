@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Launcher lifetime control must not become a helper's blocking stdin."""
 from __future__ import annotations
 

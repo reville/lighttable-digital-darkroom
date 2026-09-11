@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Behavioral guardrails for the versioned interpretation, not film accuracy."""
 import unittest
 from unittest.mock import patch

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 //! Full-precision film output for the established Python export finisher.
 //!
 //! Unlike a display surface, this carries the exact native-endian f32 samples

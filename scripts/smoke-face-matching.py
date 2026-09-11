@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise real INT8 inference with a CC0 photo; downloads require --download."""
 from __future__ import annotations
 

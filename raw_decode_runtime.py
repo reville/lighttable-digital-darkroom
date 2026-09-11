@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Use the bundled parallel decoder without regressing X-Trans development."""
 from contextlib import contextmanager
 from contextvars import ContextVar

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Behavioral checks for display caching and input-to-presentation accounting."""
 import json
 from pathlib import Path

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { t, formatNumber } from './i18n.js';
 
 export function photosBrowserAvailable(capabilities, platform, bridge) {

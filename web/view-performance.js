@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /* Pure viewport math. Layout runs on membership/geometry changes; scrolling only
  * binary-searches each column and visits the cells that can actually be seen. */
 export function createGridLayout(images, { width, cell = 180, photo = false }) {

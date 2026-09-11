@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Semantic processing invariants outside the fixed renderer parity recipes."""
 import base64
 import unittest

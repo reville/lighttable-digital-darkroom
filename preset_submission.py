@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Prepare local submission examples from the three bundled, licensed scenes.
 
 Rendering runs in a bounded subprocess with a separate cache and no catalog.

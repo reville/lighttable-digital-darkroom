@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /** RAW+JPEG pairs share a source and folder. Virtual copies remain independent. */
 export function pairKey(image) {
   if (!image || image.virtual || (!image.raw && !/\.jpe?g$/i.test(image.sourceName || image.name || ''))) return null;

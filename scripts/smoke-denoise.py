@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Release smoke: load the bundled model and denoise one deterministic tile."""
 from __future__ import annotations
 

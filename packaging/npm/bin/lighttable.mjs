@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SPDX-License-Identifier: GPL-3.0-only
 import { main } from '../lib/cli.mjs';
 
 main(process.argv.slice(2)).catch(error => {

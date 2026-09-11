@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { linearHandleAt, radialHandleAt } from './mask-shape.js';
 
 const rotateIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 8a7 7 0 1 0 1 7M18 3v6h-6" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 8a7 7 0 1 0 1 7M18 3v6h-6" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';

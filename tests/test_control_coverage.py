@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Every control must be exercised somewhere, and the UI must not out-range it.
 
 The pixel gates in `scripts/check-processing.py` are driven by hand-written

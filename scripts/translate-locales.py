@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate missing translations in bounded, resumable batches (authoring only).
 
 Requires OPENAI_API_KEY in the environment and the openai Python SDK. Nothing in

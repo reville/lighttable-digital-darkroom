@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run compare viewport geometry checks with the standard Python suite."""
 from pathlib import Path
 import shutil

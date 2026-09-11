@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Bounded in-process event fanout for LightTable's local API.
 
 The browser consumes these records over Server-Sent Events.  Publishers never

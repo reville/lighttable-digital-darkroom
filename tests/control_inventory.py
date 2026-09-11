@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Derived inventory of every user-facing processing control.
 
 Nothing here restates a limit that the application already declares. Numeric

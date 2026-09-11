@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Linux processed TIFF imports retain sample precision before edits and export."""
 from __future__ import annotations
 

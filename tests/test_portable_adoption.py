@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Portable adoption protects catalog authority and survives interrupted scans."""
 import json
 import tempfile

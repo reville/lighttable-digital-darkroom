@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Produce a reviewable website/index update from a verified promotion result."""
 import argparse
 import copy

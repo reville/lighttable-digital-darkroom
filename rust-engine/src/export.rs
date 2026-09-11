@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 use anyhow::{Context, Result, bail};
 use image::{ImageBuffer, Rgb, imageops::FilterType};
 use rayon::prelude::*;

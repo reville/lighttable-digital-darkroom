@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Integration tests against real files rather than fabricated ones.
 
 Two things can only be checked with genuine data: that the scanner reads real

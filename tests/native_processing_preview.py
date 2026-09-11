@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Numerical proof of the production Metal renderer's submitted display frames.
 
 Requires macOS, swiftc, Metal and a graphical login. Missing prerequisites are a

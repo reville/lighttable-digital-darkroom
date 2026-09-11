@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Run MIDI permission and controller behavior regressions in the Python suite."""
 import shutil
 import subprocess

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 # Stage names and durations only: never record commands, environment, or errors.
 function New-BuildTiming {
     param([string]$Path, [string]$Version)

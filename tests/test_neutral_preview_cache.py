@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Develop conversion is shared across zoom sizes, with capture-safe identity."""
 import tempfile
 import unittest

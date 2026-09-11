@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-only
 import { cloneValue } from './state.js';
 import { GRADE_DEFAULTS } from './gl.js';
 import { normalizeMasks, normalizeHeals, normalizeOptics, OPTICS_DEFAULTS } from './editor-panels.js';

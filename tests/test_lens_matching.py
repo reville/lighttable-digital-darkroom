@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 from types import SimpleNamespace
 from unittest import TestCase, mock
 import edits

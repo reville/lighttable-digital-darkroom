@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Repeatable end-to-end LightTable performance benchmark.
 
 The benchmark starts the selected app tree against a real photo directory,
