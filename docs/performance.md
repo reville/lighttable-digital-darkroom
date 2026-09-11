@@ -41,7 +41,7 @@ Malformed generated TIFF/JPEG files are discarded and rebuilt.
 - macOS packaging adds a reproducible, relocatable OpenMP decoder for Bayer
   and X-Trans. X-Trans tiles run in dependency order to retain exact serial
 pixels; older wheels lacking that schedule retain stock decoding. See
-  [RAW runtime details](packaging/README-rawpy.md) for the source pins, macOS 13
+  [RAW runtime details](../packaging/README-rawpy.md) for the source pins, macOS 13
   dependency checks, compiler selection, and deterministic tile scheduling.
 
 ## Measured verification

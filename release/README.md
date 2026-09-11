@@ -84,7 +84,7 @@ listed as supported. Package-index submissions are separate from direct download
 2. Configure the platform credentials below.
 3. Create and push a new stable tag such as `v0.1.0`. The tag workflow uses the
    selected release platforms. Manual dispatch accepts an existing tag version
-   and can select one platform. See [Linux distribution](../LINUX-DISTRIBUTION.md)
+   and can select one platform. See [Linux distribution](../docs/platforms/linux-distribution.md)
    for platform selection. Published release files are immutable; use another
    version for changes.
 4. The workflow builds and tests the actual bundles, signs/notarizes Mac artifacts,
@@ -146,7 +146,7 @@ without release credentials. Public release builds set `require_signing: true`
 and fail before building if signing is not configured. Configure Azure Artifact
 Signing through the protected `windows-release` environment and a GitHub OIDC
 federated identity scoped to the Windows certificate profile; see
-[Windows signing setup](../WINDOWS.md). PFX signing remains supported through
+[Windows signing setup](../docs/platforms/windows.md). PFX signing remains supported through
 `WINDOWS_CERTIFICATE_BASE64` and `WINDOWS_CERTIFICATE_PASSWORD`, but the two
 backends cannot be configured together. The Windows SDK SignTool signs and timestamps
 the app and engine executables before packaging, then signs the final installer.

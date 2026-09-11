@@ -79,11 +79,11 @@ lines += ["", "Run `lighttable mcp` as a stdio MCP server. It supports `initiali
           "are rejected. Destructive generic route calls require `--yes`; photo trash",
           "remains a recoverable native-host operation.", ""]
 
-target = ROOT / "CLI.md"
+target = ROOT / "docs/cli.md"
 content = "\n".join(lines)
 if "--check" in sys.argv:
     if not target.exists() or target.read_text(encoding="utf-8") != content:
-        print("CLI.md is stale; run scripts/gen-cli-docs.py", file=sys.stderr)
+        print("docs/cli.md is stale; run scripts/gen-cli-docs.py", file=sys.stderr)
         raise SystemExit(1)
 else:
     target.write_text(content, encoding="utf-8")

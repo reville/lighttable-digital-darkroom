@@ -33,7 +33,7 @@ are portable: the conversion report names unsupported operations as skipped.
 
 The follow-ons above, together with the central catalog, catalog and sidecar
 import, card ingest, and metadata work, are planned in
-[WORKFLOW-ROADMAP.md](WORKFLOW-ROADMAP.md).
+[docs/roadmap/workflow.md](workflow.md).
 
 ## Wide-gamut export boundary
 

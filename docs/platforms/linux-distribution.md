@@ -1,9 +1,13 @@
-# LightTable 0.5 Linux distribution
+# Linux distribution
 
-The first planned release is **LightTable 0.5**, with package version **0.5.0**
-and tag **v0.5.0**. Packaging preparation does not create that tag or publish
-the release. Select the final source commit after the other intended work has
-finished; candidate artifacts built before that cutoff must be rebuilt.
+How a Linux release is built, validated, and published. Linux has no public
+release yet; macOS and Windows ship from the same tags. This page describes the
+process, not a schedule.
+
+Throughout, `X.Y.Z` stands for the version being released and `vX.Y.Z` for its
+tag. Packaging preparation neither creates that tag nor publishes the release.
+Select the final source commit after the other intended work has finished;
+candidate artifacts built before that cutoff must be rebuilt.
 
 ## Distribution routes
 
@@ -27,12 +31,12 @@ release, pointing to immutable versioned archives. Configure the public key in
 release bundles and keep the matching private signing key in release secrets.
 Unsigned or unconfigured builds leave in-app updates disabled. Arch/AUR, Flatpak,
 and Snap retain their own update ownership. A direct Flatpak release also needs
-a configured repository for continuing updates. See [release setup](release/README.md).
+a configured repository for continuing updates. See [release setup](../../release/README.md).
 
 ## Candidate validation before tagging
 
-Run **Linux sandbox candidates** from the intended preparation branch with version
-`0.5.0`. It builds the native archive once, then independently checks Arch,
+Run **Linux sandbox candidates** from the intended preparation branch with the
+release version `X.Y.Z`. It builds the native archive once, then independently checks Arch,
 Flatpak and Snap candidates. Its permissions are read-only and it uploads Actions
 artifacts only. It contains no release, store submission or AUR publication step.
 The workflow is manual. When fixing only the Flatpak recipe, its optional
@@ -50,21 +54,21 @@ import, film edit, export, close/reopen and upgrade with persistent edits. Inclu
 an external drive, paths with spaces, desktop launch and URI handling. Omarchy
 requires actual Hyprland/portal/theme testing; software-rendered VM screenshots
 do not certify that desktop or hardware GPU performance. Hardware benchmarks for
-AMD, Intel and NVIDIA remain a separate release acceptance item; see `LINUX.md`.
+AMD, Intel and NVIDIA remain a separate release acceptance item; see `docs/platforms/linux.md`.
 
 ## Publishing the chosen revision
 
 The **Release** workflow accepts `all`, `linux`, `macos`, `windows` and legacy
 `both` (macOS + Windows). Tag-triggered runs use the repository variable
 `LIGHTTABLE_RELEASE_PLATFORMS`, defaulting to `all` when unset. For a Linux-only
-first release, set that variable to `linux` before pushing the tag; this avoids
+release, set that variable to `linux` before pushing the tag; this avoids
 starting macOS and Windows signing jobs. Manual platform input takes precedence.
 Manual runs require an existing immutable tag; they never create a tag from a
 moving branch. The workflow serializes publication and refuses to overwrite an
 already-public release.
 
 Linux-only publishing does not require Apple/Windows signing or npm publishing.
-It publishes `LightTable-0.5.0-linux-x86_64.tar.gz`, its checksum, `SHA256SUMS`, and
+It publishes `LightTable-X.Y.Z-linux-x86_64.tar.gz`, its checksum, `SHA256SUMS`, and
 the generated installer archive containing the AUR recipe. The recipe pins the
 exact release bytes, version and full source revision. AUR submission must wait
 until its download URL is publicly available and its checksum matches.
@@ -74,7 +78,7 @@ The website must discover compatible Linux assets across public stable releases,
 not only `/releases/latest`, and select the exact architecture. Store installation
 links stay pending until a real listing exists and has been verified.
 
-For an all-platform first release, separately confirm the existing macOS and
+For an all-platform release, separately confirm the existing macOS and
 Windows signing prerequisites in their workflows. The Linux-only path is ready
 to operate independently; Linux changes do not provision those credentials.
 

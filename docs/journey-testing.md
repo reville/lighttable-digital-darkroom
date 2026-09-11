@@ -42,7 +42,7 @@ download is an explicit repository-cost decision.
 
 ## Occasional browser UI audits
 
-The [on-demand UI audit](scripts/ui-audit/README.md) checks layout and language
+The [on-demand UI audit](../scripts/ui-audit/README.md) checks layout and language
 states, captures candidate snapshots, and explores seeded command/pointer walks.
 Run it explicitly when useful. It is not part of commit checks or `mnb`, and it
 does not replace native recorded review for Metal or macOS behavior.

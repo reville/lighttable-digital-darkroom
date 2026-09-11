@@ -34,7 +34,7 @@ lighttable photos list --where 'rating>=4' --where focal-length=50 \
   --where from=2026-01-01 --where to=2026-12-31 --jsonl
 ```
 
-See [CLI.md](CLI.md) for server selection and command options.
+See [docs/cli.md](cli.md) for server selection and command options.
 
 ## Cull and tag in the grid
 
@@ -99,7 +99,7 @@ one naming convention per original: `photo.xmp` or `photo.RAW.xmp`. If both
 exist, inspect them and resolve the ambiguity before syncing.
 
 Photo Mechanic and digiKam conventions are covered by
-[representative fixtures](tests/fixtures/xmp/README.md). Live round trips through
+[representative fixtures](../tests/fixtures/xmp/README.md). Live round trips through
 those applications have not been verified. Metadata compatibility does not
 imply equivalent rendering or complete catalog interchange.
 
@@ -109,7 +109,7 @@ XMP is not a complete catalog backup. Back up the catalog for collections,
 history, and variants; back up originals separately. Portable LightTable edits
 use `.lighttable-state.json` when enabled.
 
-The [50,000- and 100,000-photo benchmark](bench/dam-performance.md) measures
+The [50,000- and 100,000-photo benchmark](../bench/dam-performance.md) measures
 catalog queries and state updates. It found faster deep pagination and rating
 transactions, but not a faster first-page query in every run. It does not
 measure RAW decoding or prove smooth scrolling. Face identity recognition and

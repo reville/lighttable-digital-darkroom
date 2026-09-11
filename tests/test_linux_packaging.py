@@ -260,7 +260,7 @@ class LinuxPackageResourcesTests(unittest.TestCase):
                          "lighttable_cli/__init__.py", "film_lab_ai/__init__.py", "web/index.html",
                          "film_lab_ai/licenses/SFace.txt", "film_lab_ai/licenses/YuNet.txt",
                          "profiles/stock.json", "presets/default.json", "LICENSE", "THIRD_PARTY_NOTICES.md",
-                         "LINUX.md", "CLI.md", "docs/help/editing.json", "packaging/linux/arch/README.md",
+                         "docs/platforms/linux.md", "docs/cli.md", "docs/help/editing.json", "packaging/linux/arch/README.md",
                          "requirements-runtime.lock", "packaging/runtime-linux.lock", "packaging/linux/runtime.json", "build/icon-1024.png"):
                 source = project / path
                 source.parent.mkdir(parents=True, exist_ok=True)
@@ -284,7 +284,8 @@ class LinuxPackageResourcesTests(unittest.TestCase):
             for license_name in ("SFace.txt", "YuNet.txt"):
                 self.assertEqual((resources / "film_lab_ai/licenses" / license_name).read_text(),
                                  "application content")
-            self.assertTrue((bundle / "CLI.md").is_file())
+            self.assertTrue((bundle / "docs/cli.md").is_file())
+            self.assertTrue((bundle / "docs/platforms/linux.md").is_file())
             self.assertTrue((bundle / "docs/help/editing.json").is_file())
             self.assertTrue((bundle / "packaging/linux/arch/README.md").is_file())
             self.assertEqual((resources / "engine/data/profiles/stock.json").read_text(), "application content")

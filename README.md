@@ -22,9 +22,11 @@ to keep articles and their implementation evidence current.
 
 ## Maintainers wanted
 
-We're looking for Windows, macOS, and Linux maintainers, including a maintainer
-focused specifically on Omarchy. If you'd like to help,
-[open an issue](https://github.com/reville/lighttable-digital-darkroom/issues/new)
+LightTable needs platform maintainers for Windows, macOS, and Linux. A
+maintainer builds and tests releases on real hardware, triages bugs specific to
+that platform, and keeps its packaging channels current. Linux help is welcome
+across the Debian/Ubuntu and Arch families and the common desktops.
+[Open an issue](https://github.com/reville/lighttable-digital-darkroom/issues/new)
 and tell us which platform you'd like to maintain.
 
 ## What makes LightTable great?
@@ -49,7 +51,7 @@ Optional XMP writing preserves unrelated sidecar metadata, detects conflicting
 external changes, and keeps failed writes queued for retry. Supported Photo
 Mechanic and digiKam metadata conventions have representative fixture coverage;
 this does not establish complete compatibility with either application. See
-[Digital asset management](DIGITAL-ASSET-MANAGEMENT.md) for the workflow and
+[Digital asset management](docs/digital-asset-management.md) for the workflow and
 [catalog measurements](bench/dam-performance.md) for the performance evidence.
 
 The interface and searchable Help support 20 languages. Choose a language in
@@ -71,7 +73,7 @@ scan, using published sensitivity and density data.
 
 The print and scan stages remain editable. Profile sources and the distinction
 between measured data and modeled assumptions are documented in
-[Film profiles](FILM-PROFILES.md) and the [calibration guide](calibration/README.md).
+[Film profiles](docs/film-profiles.md) and the [calibration guide](calibration/README.md).
 
 **LightTable tuned** versions of Portra 160, 400, and 800 appear first in the
 stock list. They reduce the yellowward shift of yellow-green foliage while
@@ -92,7 +94,7 @@ It also imports Lightroom / Camera Raw XMP, legacy `.lrtemplate` presets, and
 Capture One styles. A conversion report names what was mapped and what was
 skipped, and labels converted settings as approximate:
 different render engines produce different results. See
-[preset interchange](PRESET-INTERCHANGE.md) for compatibility details.
+[preset interchange](docs/preset-interchange.md) for compatibility details.
 
 In Detail, pinch on the trackpad over the photo to zoom around the pointer.
 Switching photos keeps the current zoom level and restores each
@@ -175,12 +177,12 @@ for published downloads; package-manager installers are not available yet.
 | --- | --- |
 | macOS 13+, Apple silicon | Native AppKit/WebKit app with a Metal preview. Source builds are available; signed public packages are being prepared. |
 | Windows 10/11, x64 | Windows shell and installer build tooling are present, using WGPU/DirectX 12. Public packages and broader platform validation are still needed. |
-| Linux, including Omarchy | Experimental GTK/WebKitGTK desktop port, Vulkan rendering, and portable-bundle build tooling. The initial targets are Ubuntu 24.04+ and Arch/Omarchy on x86-64. Hardware and desktop validation remain; no supported Linux release yet. |
+| Linux, x86-64 | Experimental GTK/WebKitGTK desktop port, Vulkan rendering, and portable-bundle build tooling. The initial targets are Ubuntu 24.04+ and current Arch. Hardware and desktop validation remain; no supported Linux release yet. |
 
 For development, follow the [source setup guide](CONTRIBUTING.md#source-setup-macos).
 A fresh clone needs the Python runtime dependencies and pinned film data before
 it can run. See [release setup](release/README.md) for bundled builds and
-[Windows](WINDOWS.md) and [Linux](LINUX.md) for their build instructions and platform boundaries.
+[Windows](docs/platforms/windows.md) and [Linux](docs/platforms/linux.md) for their build instructions and platform boundaries.
 
 Signed Windows installations and configured Linux portable bundles include
 in-app update checks. Package-manager installations use their manager for
@@ -222,7 +224,7 @@ That measures the film stage for that workload, not total application latency.
   operation order and grading behavior. Pixel changes need parity checks.
 - **Originals stay separate from edits.** Edits live in the catalog; exports
   produce new files. Catalog recovery and backups have an explicit
-  [recovery workflow](RECOVERY.md).
+  [recovery workflow](docs/recovery.md).
 - **No silent approximation.** Imports report unsupported controls. Automatic
   lens correction requires a confident profile match; manual controls remain
   available when profile data is missing.
@@ -244,7 +246,7 @@ source environment prepared and an app running:
 ```
 
 Use `./lighttable mcp` for the stdio MCP server. Programmatic edits appear in
-History and support Undo. See the [CLI reference](CLI.md) for commands,
+History and support Undo. See the [CLI reference](docs/cli.md) for commands,
 installation on your PATH, and isolated review profiles.
 
 ## Contributing
@@ -259,10 +261,10 @@ when the problem depends on a particular file.
 The [contributor guide](CONTRIBUTING.md) covers source setup, local builds,
 tests, and what to include in a pull request. The repository has Python unit
 and contract tests, Rust tests, renderer parity checks, and real macOS
-[product journeys](JOURNEY-TESTING.md). Run the checks that exercise your change
+[product journeys](docs/journey-testing.md). Run the checks that exercise your change
 and report what you verified.
 
-The [processing correctness pipeline](PROCESSING-CORRECTNESS.md) compares film
+The [processing correctness pipeline](docs/processing-correctness.md) compares film
 stages, exports, and displayed previews with independent numerical references,
 and saves per-case pixel differences and CI reports.
 
@@ -274,17 +276,13 @@ and saves per-case pixel differences and CI reports.
 
 ## Project documentation
 
-- [Film profiles and provenance](FILM-PROFILES.md)
-- [Preset import and export](PRESET-INTERCHANGE.md)
-- [CLI and automation](CLI.md)
-- [Responsiveness and benchmarking](RESPONSIVENESS.md)
-- [Catalog recovery](RECOVERY.md)
-- [Windows architecture](WINDOWS.md)
-- [Experimental Linux build and validation](LINUX.md)
-- [Release and installer setup](release/README.md)
-- Roadmap notes: [RAW development](DEVELOP-ROADMAP.md),
-  [catalog and workflow](WORKFLOW-ROADMAP.md), [remaining gaps](GAPS-ROADMAP.md).
-  Implementation notes are not release guarantees; check Releases for shipped versions.
+[docs/](docs/README.md) indexes everything: the CLI reference, catalog and film
+guides, per-platform build notes, engineering notes, and the roadmaps. Start
+there. [Release and installer setup](release/README.md) covers publishing.
+
+Roadmaps record implementation plans, not release guarantees; check
+[Releases](https://github.com/reville/lighttable-digital-darkroom/releases) for
+what has shipped.
 
 ## License and credits
 
