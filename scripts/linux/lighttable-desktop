@@ -4,4 +4,17 @@ set -eu
 SCRIPT=$(readlink -f -- "$0")
 ROOT=$(CDPATH= cd -- "$(dirname -- "$SCRIPT")/.." && pwd -P)
 export PYTHONNOUSERSITE=1
+
+# WebKitGTK 2.42+ DMA-BUF renderer fails on NVIDIA graphics drivers with
+# "Failed to create GBM buffer ...: Invalid argument", opening a black window.
+# Automatically disable DMA-BUF rendering when NVIDIA drivers are present,
+# while preserving any explicit user preference.
+if [ -z "${WEBKIT_DISABLE_DMABUF_RENDERER+x}" ]; then
+    if [ -d /proc/driver/nvidia ] || [ -d /sys/module/nvidia ] || \
+       [ -e /dev/nvidiactl ] || [ -e /dev/nvidia0 ] || [ -e /dev/nvidia-modeset ] || \
+       grep -q -E '^(nvidia|nvidia_[a-z0-9_]+|nouveau) ' /proc/modules 2>/dev/null; then
+        export WEBKIT_DISABLE_DMABUF_RENDERER=1
+    fi
+fi
+
 exec "$ROOT/bin/lighttable-desktop-shell" "$@"

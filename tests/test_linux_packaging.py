@@ -320,6 +320,39 @@ class LinuxPackageResourcesTests(unittest.TestCase):
             self.assertEqual(output["numba"], str(root / "cache/lighttable/compiled-runtime"))
             self.assertFalse((package / "__pycache__").exists())
 
+    def test_lighttable_desktop_wrapper_configures_dmabuf_workaround_for_nvidia(self):
+        script = ROOT / "scripts/linux/lighttable-desktop"
+        self.assertTrue(script.is_file())
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bin_dir = root / "bin"
+            bin_dir.mkdir(parents=True)
+            desktop_shell = bin_dir / "lighttable-desktop-shell"
+            desktop_shell.write_text(
+                "#!/bin/sh\n"
+                "printf '%s\\n' \"DMABUF=${WEBKIT_DISABLE_DMABUF_RENDERER:-unset}\"\n"
+            )
+            desktop_shell.chmod(0o755)
+
+            wrapper = bin_dir / "lighttable-desktop"
+            shutil.copy2(script, wrapper)
+            wrapper.chmod(0o755)
+
+            # Case 1: Baseline when no NVIDIA indicator exists -> WEBKIT_DISABLE_DMABUF_RENDERER is unset
+            clean_env = {k: v for k, v in os.environ.items() if k != "WEBKIT_DISABLE_DMABUF_RENDERER"}
+            completed = subprocess.run([str(wrapper)], capture_output=True, text=True, check=True, env=clean_env)
+            self.assertIn("DMABUF=unset", completed.stdout)
+
+            # Case 2: User explicitly set WEBKIT_DISABLE_DMABUF_RENDERER=0 -> preserved as 0
+            user_env = dict(clean_env, WEBKIT_DISABLE_DMABUF_RENDERER="0")
+            completed = subprocess.run([str(wrapper)], capture_output=True, text=True, check=True, env=user_env)
+            self.assertIn("DMABUF=0", completed.stdout)
+
+            # Case 3: User explicitly set WEBKIT_DISABLE_DMABUF_RENDERER=1 -> preserved as 1
+            user_env_1 = dict(clean_env, WEBKIT_DISABLE_DMABUF_RENDERER="1")
+            completed = subprocess.run([str(wrapper)], capture_output=True, text=True, check=True, env=user_env_1)
+            self.assertIn("DMABUF=1", completed.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

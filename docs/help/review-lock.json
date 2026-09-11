@@ -14,7 +14,7 @@
         "web/apple-photos.js": "7f4e7d866c9606bb2ecd375e1539e82be16b2dea7b36e24fd3100682ae3a837a",
         "web/first-run.js": "535667d03919e6b1cf284d6ef2c35fd4e70f236b0996a2b7b8afc90a5f0d81b7",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
-        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
+        "windows-shell/src/main.rs": "2cc138e76b35146e57043d56217709344b366234cc11ec46f7254c2ae68bd3e8"
       }
     },
     "assisted-culling": {
@@ -273,7 +273,7 @@
       "sources": {
         "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
-        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
+        "windows-shell/src/main.rs": "2cc138e76b35146e57043d56217709344b366234cc11ec46f7254c2ae68bd3e8"
       }
     },
     "film-exposure-and-processing": {
@@ -454,7 +454,7 @@
         "web/index.html": "e17d139ebdfd10fad415e8ef565c788685cb6c6d072107b18d40b179cadf0228",
         "web/linux-layout.css": "6d0c86847693a770a18d32835675ec3167e84726ac8d4b58e8fcf6b654148341",
         "web/settings.js": "c51bea8111e35a8f7cddfa382ce9c713495e17a794f4fc9c2bac8b24901d3b65",
-        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80",
+        "windows-shell/src/main.rs": "2cc138e76b35146e57043d56217709344b366234cc11ec46f7254c2ae68bd3e8",
         "windows-shell/src/windows_update.rs": "c42eaa940fc54f7914b61c43adbbef543c3856dc4d815f1be0907f60fc59f755"
       }
     },
@@ -506,7 +506,7 @@
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "server.py": "bdbfdc7cdf63b1dac838564ae764be657330c2a2f09f9a582b3011ae597ee439",
         "web/app.js": "dc2af2f626e1b2fef3b691b6f77f7208f3f69251588aeb09ec24c404380ae225",
-        "windows-shell/src/main.rs": "9594cb2436f02ebfcf16b3ecd23e8a6d33c517c962ca5ffd007d8be651a6ca80"
+        "windows-shell/src/main.rs": "2cc138e76b35146e57043d56217709344b366234cc11ec46f7254c2ae68bd3e8"
       }
     },
     "views-and-selection": {

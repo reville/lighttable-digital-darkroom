@@ -117,6 +117,72 @@ pub fn media_mounts(mountinfo: &str) -> Vec<PathBuf> {
         .collect()
 }
 
+/// WebKitGTK 2.42+ uses DMA-BUF rendering by default, which fails on NVIDIA
+/// graphics drivers with "Failed to create GBM buffer ...: Invalid argument",
+/// leaving the window blank or black.
+///
+/// Detect whether NVIDIA graphics drivers are active while preserving any
+/// explicit `WEBKIT_DISABLE_DMABUF_RENDERER` setting chosen by the user.
+pub fn should_disable_dmabuf_renderer(
+    get_env: impl Fn(&str) -> Option<OsString>,
+    modules: Option<&str>,
+    path_exists: impl Fn(&Path) -> bool,
+) -> bool {
+    if get_env("WEBKIT_DISABLE_DMABUF_RENDERER").is_some() {
+        return false;
+    }
+    is_nvidia_driver_active(get_env, modules, path_exists)
+}
+
+/// Check if NVIDIA drivers are loaded in the kernel, exposed via device nodes,
+/// or selected via environment variables.
+pub fn is_nvidia_driver_active(
+    get_env: impl Fn(&str) -> Option<OsString>,
+    modules: Option<&str>,
+    path_exists: impl Fn(&Path) -> bool,
+) -> bool {
+    if get_env("__NV_PRIME_RENDER_OFFLOAD").is_some_and(|v| v == "1")
+        || get_env("__GLX_VENDOR_LIBRARY_NAME")
+            .is_some_and(|v| v.to_string_lossy().eq_ignore_ascii_case("nvidia"))
+    {
+        return true;
+    }
+
+    if let Some(content) = modules {
+        if content.lines().any(|line| {
+            let name = line.split_whitespace().next().unwrap_or("");
+            name == "nvidia" || name == "nouveau" || name.starts_with("nvidia_")
+        }) {
+            return true;
+        }
+    }
+
+    let nvidia_paths = [
+        "/proc/driver/nvidia",
+        "/sys/module/nvidia",
+        "/sys/bus/pci/drivers/nvidia",
+        "/dev/nvidiactl",
+        "/dev/nvidia0",
+        "/dev/nvidia-modeset",
+    ];
+    nvidia_paths.iter().any(|p| path_exists(Path::new(p)))
+}
+
+/// Configure environment variables for Linux graphics before initializing GTK/Wry.
+#[cfg(target_os = "linux")]
+pub fn configure_graphics_environment() {
+    let modules = std::fs::read_to_string("/proc/modules").ok();
+    if should_disable_dmabuf_renderer(
+        |k| std::env::var_os(k),
+        modules.as_deref(),
+        |p| p.exists(),
+    ) {
+        unsafe {
+            std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+        }
+    }
+}
+
 #[cfg(all(test, unix))]
 mod tests {
     use super::*;
@@ -188,5 +254,67 @@ mod tests {
             mount_path(r"/mnt/literal\134040"),
             PathBuf::from(r"/mnt/literal\040")
         );
+    }
+
+    #[test]
+    fn dmabuf_renderer_disabled_when_nvidia_modules_present() {
+        let proprietary = "nvidia 61480960 180 nvidia_modeset,nvidia_uvm,nvidia_drm, Live 0x0 (OE)\n";
+        assert!(should_disable_dmabuf_renderer(|_| None, Some(proprietary), |_| false));
+
+        let submodule = "nvidia_drm 122880 8 - Live 0x0 (E)\n";
+        assert!(should_disable_dmabuf_renderer(|_| None, Some(submodule), |_| false));
+
+        let open_source = "nouveau 2785280 1 - Live 0x0\n";
+        assert!(should_disable_dmabuf_renderer(|_| None, Some(open_source), |_| false));
+
+        let amd_intel = "amdgpu 6148096 12 - Live 0x0\ni915 2048000 5 - Live 0x0\n";
+        assert!(!should_disable_dmabuf_renderer(|_| None, Some(amd_intel), |_| false));
+    }
+
+    #[test]
+    fn dmabuf_renderer_disabled_when_nvidia_device_or_sysfs_exists() {
+        for path in [
+            "/dev/nvidiactl",
+            "/dev/nvidia0",
+            "/proc/driver/nvidia",
+            "/sys/module/nvidia",
+        ] {
+            assert!(should_disable_dmabuf_renderer(
+                |_| None,
+                None,
+                |p| p == Path::new(path)
+            ));
+        }
+        assert!(!should_disable_dmabuf_renderer(
+            |_| None,
+            None,
+            |p| p == Path::new("/dev/dri/card0")
+        ));
+    }
+
+    #[test]
+    fn dmabuf_renderer_disabled_when_nvidia_env_vars_present() {
+        assert!(should_disable_dmabuf_renderer(
+            |k| (k == "__NV_PRIME_RENDER_OFFLOAD").then(|| "1".into()),
+            None,
+            |_| false
+        ));
+        assert!(should_disable_dmabuf_renderer(
+            |k| (k == "__GLX_VENDOR_LIBRARY_NAME").then(|| "nvidia".into()),
+            None,
+            |_| false
+        ));
+    }
+
+    #[test]
+    fn dmabuf_renderer_respects_explicit_user_setting() {
+        let nvidia = "nvidia 61480960 180 Live 0x0\n";
+        for val in ["0", "1"] {
+            assert!(!should_disable_dmabuf_renderer(
+                |k| (k == "WEBKIT_DISABLE_DMABUF_RENDERER").then(|| val.into()),
+                Some(nvidia),
+                |_| true
+            ));
+        }
     }
 }

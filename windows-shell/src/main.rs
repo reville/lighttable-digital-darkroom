@@ -1447,6 +1447,7 @@ fn run() -> Result<()> {
     let mut event_builder = EventLoopBuilder::<UserEvent>::with_user_event();
     #[cfg(target_os = "linux")]
     {
+        lighttable_desktop_shell::linux::configure_graphics_environment();
         // GTK derives its X11 WM_CLASS from the program name. Keep it aligned
         // with the Wayland app ID and installed desktop entry for launch/focus.
         gtk::glib::set_prgname(Some("app.lighttable.LightTable"));
@@ -1679,6 +1680,9 @@ fn run() -> Result<()> {
 }
 
 fn main() {
+    #[cfg(target_os = "linux")]
+    lighttable_desktop_shell::linux::configure_graphics_environment();
+
     // Reaching main proves that Windows resolved the shell's imported DLLs.
     // Packaging uses this path without creating a window or touching user data.
     #[cfg(target_os = "windows")]

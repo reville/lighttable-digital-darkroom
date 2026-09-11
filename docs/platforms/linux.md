@@ -42,6 +42,12 @@ The resident engine adapts its compute workgroups to the GPU. Linux one-shot
 fallback previews and exports use the upstream CLI's CPU backend, because that
 separate binary does not yet carry the portable GPU workgroups.
 
+On systems with NVIDIA graphics drivers, WebKitGTK (2.42+) can fail to allocate
+GBM buffers for DMA-BUF rendering (`Failed to create GBM buffer ...: Invalid argument`),
+leaving the window black. LightTable automatically sets `WEBKIT_DISABLE_DMABUF_RENDERER=1`
+when NVIDIA drivers are detected, while preserving any explicit user configuration
+of `WEBKIT_DISABLE_DMABUF_RENDERER`.
+
 Check the downloaded archive against its accompanying checksum:
 
 ```sh
