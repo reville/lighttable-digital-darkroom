@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Keyboard interaction with the real WebKit UI on an ephemeral CI display only.
 set -euo pipefail
 [[ "${GITHUB_ACTIONS:-}" == true ]] || { echo 'Use an ephemeral GitHub Actions runner'; exit 2; }

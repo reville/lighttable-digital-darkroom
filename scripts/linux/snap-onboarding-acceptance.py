@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Fresh native onboarding and backup restoration in an ephemeral strict Snap."""
 import hashlib
 import importlib.util

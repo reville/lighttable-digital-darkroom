@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
 # Only for the ephemeral CI desktop; never run this against a personal session.
 set -euo pipefail
 [[ "${GITHUB_ACTIONS:-}" == true ]] || { echo 'Use an ephemeral GitHub Actions runner'; exit 2; }

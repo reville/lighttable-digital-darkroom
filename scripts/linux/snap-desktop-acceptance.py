@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Run the existing precision/persistence journey inside Snap confinement.
 
 The host captures its private Xvfb display at explicit close checkpoints. Test
