@@ -42,13 +42,13 @@ jobs:
           [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
           work="$RUNNER_TEMP/npm-release"
           mkdir -p "$work"
-          gh release download "v$VERSION" --repo "$GITHUB_REPOSITORY" --pattern "lighttable-$VERSION.tgz" --pattern SHA256SUMS --dir "$work"
+          gh release download "v$VERSION" --repo "$GITHUB_REPOSITORY" --pattern "lighttable-digital-darkroom-$VERSION.tgz" --pattern SHA256SUMS --dir "$work"
           cd "$work"
-          awk -v file="lighttable-$VERSION.tgz" '$2 == file {print; found=1} END {if (!found) exit 1}' SHA256SUMS > npm.sha256
+          awk -v file="lighttable-digital-darkroom-$VERSION.tgz" '$2 == file {print; found=1} END {if (!found) exit 1}' SHA256SUMS > npm.sha256
           sha256sum --check npm.sha256
-          tar -xzf "lighttable-$VERSION.tgz"
+          tar -xzf "lighttable-digital-darkroom-$VERSION.tgz"
           node package/scripts/check-release.mjs
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish "$RUNNER_TEMP/npm-release/lighttable-$VERSION.tgz" --access public --provenance
+        run: npm publish "$RUNNER_TEMP/npm-release/lighttable-digital-darkroom-$VERSION.tgz" --access public --provenance
