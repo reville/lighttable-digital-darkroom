@@ -552,13 +552,15 @@ def _open_portable_full_precision(source: Path) -> tuple[np.ndarray, bytes | Non
     return np.ascontiguousarray(pixels[..., :3]), embedded
 
 
-def _open_linux_float(source: Path) -> tuple[np.ndarray, bytes | None]:
+def _open_linux_float(source: Path) -> tuple[np.ndarray, bytes | None, np.dtype | None]:
     """Decode any processed source at float precision for Linux cache TIFFs.
 
     The all-Pillow path collapsed 16-bit PNG and HEIC sources to RGB8, so a
     high-bit-depth export was built from an 8-bit intermediate. Prefer the
     full-precision decoder and keep Pillow as the broad-format fallback; the
-    samples are normalized to 0..1 for the LittleCMS float transform.
+    samples are normalized to 0..1 for the LittleCMS float transform. The
+    decoder's integer depth travels with the pixels so the cache TIFF returns
+    to an integer encoding that Pillow and the renderers can both read.
     """
     try:
         pixels, embedded = _open_portable_full_precision(source)
@@ -566,13 +568,25 @@ def _open_linux_float(source: Path) -> tuple[np.ndarray, bytes | None]:
         image, embedded = _open_portable(source)
         pixels = np.asarray(image)
     pixels = np.asarray(pixels)
-    if np.issubdtype(pixels.dtype, np.integer):
-        pixels = pixels.astype(np.float32) / float(np.iinfo(pixels.dtype).max)
+    integer_depth = pixels.dtype if np.issubdtype(pixels.dtype, np.integer) else None
+    if integer_depth is not None:
+        pixels = pixels.astype(np.float32) / float(np.iinfo(integer_depth).max)
     else:
         pixels = pixels.astype(np.float32, copy=False)
     if pixels.ndim == 2:
         pixels = pixels[..., None]
-    return pixels, embedded
+    return pixels, embedded, integer_depth
+
+
+def _restore_linux_depth(pixels: np.ndarray,
+                         integer_depth: np.dtype | None) -> np.ndarray:
+    """Encode a converted float image back to the source's integer depth."""
+    if integer_depth is None:
+        return np.asarray(pixels, dtype=np.float32)
+    info = np.iinfo(integer_depth)
+    scaled = np.clip(np.rint(np.asarray(pixels, dtype=np.float32) * info.max),
+                     0, info.max)
+    return scaled.astype(integer_depth)
 
 
 def _convert_profile_full_precision(
@@ -629,12 +643,14 @@ def convert_processed_to_tiff(
     if sys.platform.startswith("linux"):
         # Linux uses system LittleCMS float I/O for TIFFs and uncompressed
         # caches that remain readable without the optional imagecodecs wheel.
+        integer_depth = None
         if source.suffix.lower() in {".tif", ".tiff"}:
             pixels, embedded = _open_linux_tiff_float(source)
         else:
-            pixels, embedded = _open_linux_float(source)
+            pixels, embedded, integer_depth = _open_linux_float(source)
         pixels, profile = _convert_float_profile(pixels, embedded, app_root, output_space)
-        _write_linux_tiff(destination, pixels, profile)
+        _write_linux_tiff(destination, _restore_linux_depth(pixels, integer_depth),
+                          profile)
         return
 
     import tifffile

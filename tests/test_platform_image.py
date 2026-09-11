@@ -94,6 +94,22 @@ class PortableImageTests(unittest.TestCase):
                 self.assertEqual(converted.size, (48, 32))
                 self.assertEqual(converted.mode, "RGB")
 
+    def test_linux_conversion_keeps_pillow_readable_8_bit_tiff(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._profile_root(root)
+            source = root / "source.jpg"
+            output = root / "output.tif"
+            Image.new("RGB", (48, 32), (32, 64, 96)).save(source, "JPEG")
+
+            with mock.patch.object(platform_image.sys, "platform", "linux"):
+                platform_image.convert_processed_to_tiff(
+                    source, output, app_root=root, output_space="srgb")
+
+            with Image.open(output) as converted:
+                self.assertEqual(converted.size, (48, 32))
+                self.assertEqual(converted.mode, "RGB")
+
     def test_linux_conversion_preserves_16_bit_levels(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
