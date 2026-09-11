@@ -1,0 +1,884 @@
+{
+  "format": 1,
+  "upstream_codec_set": "https://github.com/cgohlke/imagecodecs/blob/v2026.8.16/setup.py",
+  "native_build_verified": false,
+  "modules": [
+    {
+      "name": "codec-jpeg",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DWITH_TESTS=OFF",
+        "-DENABLE_STATIC=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/libjpeg-turbo/libjpeg-turbo.git",
+          "commit": "c85e6b905bf237038faa936dab160ebfc5da0344",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-png",
+      "buildsystem": "simple",
+      "build-commands": [
+        "gzip -dc libpng-apng.patch.gz | patch -p1",
+        "cmake -S . -B build -G Ninja -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib -DPNG_TESTS=OFF -DPNG_TOOLS=OFF -DPNG_STATIC=OFF -DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "cmake --build build --parallel ${FLATPAK_BUILDER_N_JOBS}",
+        "cmake --install build"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/pnggroup/libpng.git",
+          "commit": "3061454d980de7d53608f594194cfac722721d2a",
+          "disable-submodules": true
+        },
+        {
+          "type": "file",
+          "url": "https://downloads.sourceforge.net/project/libpng-apng/libpng16/1.6.58/libpng-1.6.58-apng.patch.gz",
+          "sha256": "eee7dea22ed502868017971c86c63c4ed1e6085de0baebfdcc3d3322f00f3eb0",
+          "dest-filename": "libpng-apng.patch.gz"
+        }
+      ]
+    },
+    {
+      "name": "codec-brotli",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBROTLI_DISABLE_TESTS=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/brotli.git",
+          "commit": "028fb5a23661f123017c060daa546b55cf4bde29",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-zstd",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DZSTD_BUILD_PROGRAMS=OFF",
+        "-DZSTD_BUILD_STATIC=OFF",
+        "-DZSTD_BUILD_TESTS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/facebook/zstd.git",
+          "commit": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+          "disable-submodules": true
+        }
+      ],
+      "subdir": "build/cmake"
+    },
+    {
+      "name": "codec-lz4",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DLZ4_BUILD_CLI=OFF",
+        "-DLZ4_BUILD_LEGACY_LZ4C=OFF",
+        "-DBUILD_STATIC_LIBS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/lz4/lz4.git",
+          "commit": "ebb370ca83af193212df4dcbadcc5d87bc0de2f0",
+          "disable-submodules": true
+        }
+      ],
+      "subdir": "build/cmake"
+    },
+    {
+      "name": "codec-zlibng",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DZLIB_COMPAT=OFF",
+        "-DZLIB_ENABLE_TESTS=OFF",
+        "-DZLIBNG_ENABLE_TESTS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/zlib-ng/zlib-ng.git",
+          "commit": "12731092979c6d07f42da27da673a9f6c7b13586",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-zfp",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_UTILITIES=OFF",
+        "-DBUILD_EXAMPLES=OFF",
+        "-DZFP_WITH_OPENMP=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/LLNL/zfp.git",
+          "commit": "f40868a6a1c190c802e7d8b5987064f044bf7812",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-snappy",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DSNAPPY_BUILD_TESTS=OFF",
+        "-DSNAPPY_BUILD_BENCHMARKS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/snappy.git",
+          "commit": "6af9287fbdb913f0794d0148c6aa43b58e63c8e3",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-blosc",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTS=OFF",
+        "-DBUILD_BENCHMARKS=OFF",
+        "-DBUILD_STATIC=OFF",
+        "-DPREFER_EXTERNAL_LZ4=ON",
+        "-DPREFER_EXTERNAL_ZLIB=ON",
+        "-DPREFER_EXTERNAL_ZSTD=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/Blosc/c-blosc.git",
+          "commit": "616f4b7343a8479f7e71dd3d7025bd92c9a6bbd0",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-blosc2",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTS=OFF",
+        "-DBUILD_BENCHMARKS=OFF",
+        "-DBUILD_EXAMPLES=OFF",
+        "-DBUILD_STATIC=OFF",
+        "-DBLOSC_DEPENDENCY_MODE=EXTERNAL",
+        "-DBLOSC_ENABLE_ZFP=ON",
+        "-DWITH_ZLIB_OPTIM=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/Blosc/c-blosc2.git",
+          "commit": "d1905e9d7157e0f5317ca069c80dd5bacc0d9657",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-aec",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/Deutsches-Klimarechenzentrum/libaec.git",
+          "commit": "0c4c01463d2c64a112a61271d317b74efb660608",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-charls",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DCHARLS_BUILD_TESTS=OFF",
+        "-DCHARLS_BUILD_SAMPLES=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/team-charls/charls.git",
+          "commit": "9930a2a2fa75f516c4a08708180c9907fa501a97",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-lerc",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/Esri/lerc.git",
+          "commit": "e534980e11992cc5f11864b0dcff1af6a27cee0d",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-openjpeg",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_CODEC=OFF",
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_STATIC_LIBS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/uclouvain/openjpeg.git",
+          "commit": "6c4a29b00211eb0430fa0e5e890f1ce5c80f409f",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-webp",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DWEBP_BUILD_ANIM_UTILS=OFF",
+        "-DWEBP_BUILD_CWEBP=OFF",
+        "-DWEBP_BUILD_DWEBP=OFF",
+        "-DWEBP_BUILD_GIF2WEBP=OFF",
+        "-DWEBP_BUILD_IMG2WEBP=OFF",
+        "-DWEBP_BUILD_VWEBP=OFF",
+        "-DWEBP_BUILD_WEBPINFO=OFF",
+        "-DWEBP_BUILD_EXTRAS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/webmproject/libwebp.git",
+          "commit": "4fa21912338357f89e4fd51cf2368325b59e9bd9",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-giflib",
+      "buildsystem": "simple",
+      "build-commands": [
+        "make -j${FLATPAK_BUILDER_N_JOBS} shared-lib",
+        "make PREFIX=/app install-include install-shared-lib"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://downloads.sourceforge.net/project/giflib/giflib-6.x/giflib-6.1.3.tar.gz",
+          "sha256": "b65b66b99f0424b93525f987386f22fc5efb9da2bfc92ad4a532249aaffbab0e"
+        }
+      ]
+    },
+    {
+      "name": "codec-isal",
+      "buildsystem": "simple",
+      "build-commands": [
+        "./autogen.sh",
+        "./configure --prefix=/app --disable-static",
+        "make -j${FLATPAK_BUILDER_N_JOBS}",
+        "make install"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/intel/isa-l.git",
+          "commit": "7c3479e0a9dac17f448603ec1ad64c7c625f530c",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-wavpack",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DWAVPACK_BUILD_PROGRAMS=OFF",
+        "-DWAVPACK_BUILD_TESTS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/dbry/WavPack.git",
+          "commit": "5803634a030e2a11dba602ba057b89cc34486c67",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-jxr",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/cgohlke/jxrlib.git",
+          "commit": "db03992c27a34e8ebf2b89c4adf7c77a32864174",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-lzfse",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/lzfse/lzfse.git",
+          "commit": "e634ca58b4821d9f3d560cdc6df5dec02ffc93fd",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-lzham",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DCMAKE_INSTALL_PREFIX=/app/libexec/lighttable-lzham"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/richgel999/lzham_codec.git",
+          "commit": "d379b1f9121e2197881c61cfc4713c78848bdfe7",
+          "disable-submodules": true
+        }
+      ],
+      "post-install": [
+        "install -d /app/lib /app/include/lzham",
+        "cp -a /app/libexec/lighttable-lzham/lib/liblzham*.so* /app/lib/",
+        "cp -a /app/libexec/lighttable-lzham/include/. /app/include/lzham/",
+        "rm -rf /app/libexec/lighttable-lzham"
+      ]
+    },
+    {
+      "name": "codec-lzokay",
+      "buildsystem": "simple",
+      "build-commands": [
+        "cmake -S . -B build -G Ninja -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "cmake --build build --parallel ${FLATPAK_BUILDER_N_JOBS}",
+        "cmake --install build",
+        "install -Dm755 build/lzokay-c/liblzokay-c.so /app/lib/liblzokay-c.so",
+        "install -Dm644 lzokay-c/lzokay-c.h /app/include/lzokay-c/lzokay-c.h"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/AxioDL/lzokay.git",
+          "commit": "db2df1fcbebc2ed06c10f727f72567d40f06a2be",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-meshopt",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DMESHOPT_BUILD_DEMO=OFF",
+        "-DMESHOPT_BUILD_GLTFPACK=OFF",
+        "-DMESHOPT_BUILD_SHARED_LIBS=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/zeux/meshoptimizer.git",
+          "commit": "9d9890c73011d75920af614485296d1e03e95448",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-sperr",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_UNIT_TESTS=OFF",
+        "-DBUILD_CLI_UTILITIES=OFF",
+        "-DENABLE_AVX2=OFF",
+        "-DSPERR_PREFER_RPATH=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/NCAR/SPERR.git",
+          "commit": "9f930a3970f86c8e390e135c97162b79a40d165b",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-sz3",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
+        "-DBUILD_SZ3_BINARY=ON",
+        "-DSZ3_USE_BUNDLED_ZSTD=OFF",
+        "-DBUILD_H5Z_FILTER=OFF",
+        "-DBUILD_MDZ=OFF",
+        "-DBUILD_PARAVIEW_PLUGIN=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/szcompressor/SZ3.git",
+          "commit": "0ebe6fa26b0aa2e274d13b78df81a81e2db1b268",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-zopfli",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DZOPFLI_BUILD_SHARED=ON",
+        "-DZOPFLI_BUILD_INSTALL=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/zopfli.git",
+          "commit": "bd64b2f0553d4f1ef4e6627647c5d9fc8c71ffc0",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-highway",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DHWY_ENABLE_TESTS=OFF",
+        "-DHWY_ENABLE_EXAMPLES=OFF",
+        "-DHWY_ENABLE_CONTRIB=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/highway.git",
+          "commit": "457c891775a7397bdb0376bb1031e6e027af1c48",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-jxl",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
+        "-DJPEGXL_ENABLE_TOOLS=OFF",
+        "-DJPEGXL_ENABLE_DEVTOOLS=OFF",
+        "-DJPEGXL_ENABLE_DOXYGEN=OFF",
+        "-DJPEGXL_ENABLE_MANPAGES=OFF",
+        "-DJPEGXL_ENABLE_BENCHMARK=OFF",
+        "-DJPEGXL_ENABLE_EXAMPLES=OFF",
+        "-DJPEGXL_ENABLE_JNI=OFF",
+        "-DJPEGXL_ENABLE_SJPEG=OFF",
+        "-DJPEGXL_ENABLE_SKCMS=OFF",
+        "-DJPEGXL_FORCE_SYSTEM_HWY=ON",
+        "-DJPEGXL_FORCE_SYSTEM_BROTLI=ON",
+        "-DJPEGXL_FORCE_SYSTEM_LCMS2=ON",
+        "-DJPEGXL_BUNDLE_LIBPNG=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/libjxl/libjxl.git",
+          "commit": "a7a9c787341cf703dede03c2009fa460cae5e5df",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-tiff",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-Dtiff-tools=OFF",
+        "-Dtiff-tests=OFF",
+        "-Dtiff-contrib=OFF",
+        "-Dtiff-docs=OFF",
+        "-Dtiff-deprecated=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.com/libtiff/libtiff.git",
+          "commit": "d01a94be176f5f6a87f7ee1c0b32e65416aa2b4d",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-pcodec",
+      "buildsystem": "simple",
+      "build-commands": [
+        "mkdir -p cargo; printf '[source.crates-io]\\nreplace-with=\"vendored-sources\"\\n[source.vendored-sources]\\ndirectory=\"%s/cargo/vendor\"\\n[net]\\noffline=true\\n' \"$PWD\" > cargo/config.toml",
+        "cargo build --offline --locked --release -p cpcodec",
+        "install -Dm755 target/release/libcpcodec.so /app/lib/libcpcodec.so",
+        "install -d /app/include; install -m644 pco_c/include/*.h /app/include/"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/mwlon/pcodec.git",
+          "commit": "0491110a7356fa59e35e9f38e5bb631bf35fa05c",
+          "disable-submodules": true
+        }
+      ],
+      "x-cargo-lock": "source-pcodec-Cargo.lock",
+      "build-options": {
+        "env": {
+          "CARGO_HOME": "/run/build/codec-pcodec/cargo"
+        }
+      }
+    },
+    {
+      "name": "codec-cargo-c",
+      "buildsystem": "simple",
+      "build-commands": [
+        "mkdir -p cargo; printf '[source.crates-io]\\nreplace-with=\"vendored-sources\"\\n[source.vendored-sources]\\ndirectory=\"%s/cargo/vendor\"\\n[net]\\noffline=true\\n' \"$PWD\" > cargo/config.toml",
+        "cargo build --offline --locked --release --bins",
+        "install -d /app/bin; install -m755 target/release/cargo-capi target/release/cargo-cbuild target/release/cargo-cinstall target/release/cargo-ctest /app/bin/"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "archive-type": "tar-gzip",
+          "url": "https://static.crates.io/crates/cargo-c/cargo-c-0.10.13+cargo-0.88.0.crate",
+          "sha256": "bd11efb38aee5930cabfe8d41465f22859b2af9071fa04d3642814cf1cc2bc75"
+        }
+      ],
+      "x-cargo-lock": "source-cargo-c-Cargo.lock",
+      "build-options": {
+        "env": {
+          "CARGO_HOME": "/run/build/codec-cargo-c/cargo"
+        }
+      }
+    },
+    {
+      "name": "codec-rav1e",
+      "buildsystem": "simple",
+      "build-commands": [
+        "mkdir -p cargo; printf '[source.crates-io]\\nreplace-with=\"vendored-sources\"\\n[source.vendored-sources]\\ndirectory=\"%s/cargo/vendor\"\\n[net]\\noffline=true\\n' \"$PWD\" > cargo/config.toml",
+        "cargo cinstall --offline --locked --release --prefix=/app --libdir=/app/lib --library-type=cdylib --no-default-features --features=capi,asm,threading"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/xiph/rav1e.git",
+          "commit": "1fe82de02510767539e89b2ee6fa846920ae2686",
+          "disable-submodules": true
+        }
+      ],
+      "x-cargo-lock": "source-rav1e-Cargo.lock",
+      "build-options": {
+        "env": {
+          "CARGO_HOME": "/run/build/codec-rav1e/cargo"
+        }
+      }
+    },
+    {
+      "name": "codec-aom",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DENABLE_TESTS=OFF",
+        "-DENABLE_EXAMPLES=OFF",
+        "-DENABLE_TOOLS=OFF",
+        "-DENABLE_DOCS=OFF",
+        "-DCONFIG_PIC=1"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://aomedia.googlesource.com/aom",
+          "commit": "03087864cf4bea6abb0d28f95cf7843511413d8f",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-dav1d",
+      "buildsystem": "meson",
+      "config-opts": [
+        "--wrap-mode=nodownload",
+        "-Denable_tools=false",
+        "-Denable_tests=false"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/videolan/dav1d.git",
+          "commit": "54706fc6bc0cdecab7e9593974a4039cc038fca7",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-svt-av1",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_APPS=OFF",
+        "-DBUILD_TESTING=OFF",
+        "-DNATIVE=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.com/AOMediaCodec/SVT-AV1.git",
+          "commit": "9292ec8e32bce26f781f277ec8739b53426c4300",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-libyuv",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DUNIT_TEST=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://chromium.googlesource.com/libyuv/libyuv",
+          "commit": "3f3735e3f39c68d33104add994bfe5d055b32e17",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-avif",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DAVIF_CODEC_AOM=SYSTEM",
+        "-DAVIF_CODEC_DAV1D=SYSTEM",
+        "-DAVIF_CODEC_RAV1E=SYSTEM",
+        "-DAVIF_CODEC_SVT=SYSTEM",
+        "-DAVIF_LIBYUV=SYSTEM",
+        "-DAVIF_BUILD_APPS=OFF",
+        "-DAVIF_BUILD_TESTS=OFF",
+        "-DAVIF_BUILD_EXAMPLES=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/AOMediaCodec/libavif.git",
+          "commit": "c5240fc79fe5c2407e10afd35f5505ef6333ea49",
+          "disable-submodules": true
+        }
+      ]
+    },
+    {
+      "name": "codec-ultrahdr",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DFETCHCONTENT_FULLY_DISCONNECTED=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DUHDR_BUILD_EXAMPLES=OFF",
+        "-DUHDR_BUILD_TESTS=OFF",
+        "-DUHDR_BUILD_DEPS=OFF",
+        "-DUHDR_ENABLE_HEIF=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/libultrahdr.git",
+          "commit": "e5f5a022fe96fc4dc2ee35c19f733a50df807abe",
+          "disable-submodules": true
+        }
+      ]
+    }
+  ]
+}

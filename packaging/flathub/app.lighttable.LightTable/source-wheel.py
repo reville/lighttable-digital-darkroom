@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: GPL-3.0-only
 """Build a local sdist offline, optionally using source-built override wheels.
 
 Invoked inside flatpak-builder only. No wheel is downloaded: the wheel directory

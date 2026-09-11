@@ -39,7 +39,7 @@
       "sources": [
         {
           "type": "file",
-          "path": "../../scripts/flatpak/source-preflight.py",
+          "path": "source-preflight.py",
           "sha256": "d1e6a9353c78f11bb241fef6d2ad60c8de5936cb7e67121f84cddff9c16f6f2c"
         },
         {
@@ -80,7 +80,7 @@
       "sources": [
         {
           "type": "file",
-          "path": "../../scripts/flatpak/source-wheel.py",
+          "path": "source-wheel.py",
           "sha256": "4f1687ce9660207f18d6b141fb4d559cb0ee4bdc86cd4ed34e8b63ddacb7a11e"
         }
       ]
@@ -16317,13 +16317,13 @@
         },
         {
           "type": "file",
-          "path": "../../scripts/flatpak/source-imagecodecs.py",
+          "path": "source-imagecodecs.py",
           "sha256": "6af8a1dcff19350f9949ed2c8464b86093d3d7abd7ef15956164a28de5f414a5",
           "dest-filename": "imagecodecs_distributor_setup.py"
         },
         {
           "type": "file",
-          "path": "../../scripts/flatpak/source-codec-check.py",
+          "path": "source-codec-check.py",
           "sha256": "58223eabc63071fb62f42ac8a1529fe6bdc333d19e2d11a1b71bbdc5253c8cf1"
         }
       ]
@@ -26997,17 +26997,17 @@
         },
         {
           "type": "file",
-          "path": "../../scripts/flatpak/source-install.py",
+          "path": "source-install.py",
           "sha256": "7bb08d72d963f4fb733715895d5c7d41efc46c4fd1bd7e04e9885e1de304d672"
         },
         {
           "type": "file",
-          "path": "../../scripts/flatpak/lighttable-desktop",
+          "path": "lighttable-desktop",
           "sha256": "f03a9fc2c58b66d3cacfac9cf1a6f5d1f8f44d4aa4377734b3362cab575b7801"
         },
         {
           "type": "file",
-          "path": "../../scripts/flatpak/lighttable-cli",
+          "path": "lighttable-cli",
           "sha256": "ab56f606e27dce6e72f538a4de8b99409747430c4193ffcda21a84a299537069"
         },
         {

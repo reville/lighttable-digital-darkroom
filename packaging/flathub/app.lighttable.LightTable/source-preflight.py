@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: GPL-3.0-only
 """Fail before expensive source builds while recorded dependency gaps remain."""
 import argparse
 import json
