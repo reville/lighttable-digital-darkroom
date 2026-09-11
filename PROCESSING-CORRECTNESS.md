@@ -37,6 +37,83 @@ tolerance until it passes. Locate the first divergent stage. If a reference
 contract changes intentionally, explain the model change and derive a new
 tolerance before comparing results.
 
+## What the pixel gates cannot establish
+
+Every suite above compares two implementations of the same model. Three kinds
+of defect survive that by construction, and three further gates exist for
+them. All of them run in the ordinary unit suite.
+
+| Gate | Question it answers | Command |
+| --- | --- | --- |
+| `tests/test_control_coverage.py` | Is every control exercised by anything at all, and does any slider travel past the clamp the server applies? | `python -m unittest tests.test_control_coverage` |
+| `tests/test_control_semantics.py`, `tests/test_film_semantics.py` | Does each control do what its name says, across its whole travel? | `python -m unittest tests.test_control_semantics tests.test_film_semantics` |
+| `tests/test_processing_goldens.py` | Did the rendered result of a complete recipe change? | `python -m unittest tests.test_processing_goldens` |
+| `tests/test_raw_capture.py` | Do the capture-stage controls work, on a real mosaic? | `python -m unittest tests.test_raw_capture` |
+
+**Coverage.** The case lists are written by hand, so a control added to the
+schema or to the markup is checked by nothing until someone remembers it.
+`tests/control_inventory.py` derives the full set of controls by probing the
+production cleaning functions and parsing `web/index.html`, then the coverage
+test fails on any control no case list or audit reaches. A control a pixel
+gate genuinely cannot own needs an entry in `DELEGATED` naming the suite that
+does own it; an unexplained entry fails.
+
+**Semantics.** A parity gate passes happily when both implementations are
+wrong in the same way, and says nothing about a control that was never wired
+up. The audits sweep each control across its full travel and check that a
+named, physically meaningful measurement moves the way the label promises:
+Exposure raises mean luminance, Texture raises one-pixel local contrast,
+noise reduction lowers flat-field variance, a mask type selects part of the
+frame rather than all of it, `subtract` shrinks a selection. Every control
+earns a verdict, and `inert`, `leaky` and `contradicted` fail the build.
+`build/control-audit/audit.md` lists them all after a run.
+
+Known defects live in `TRACKED_DEFECTS` with a written explanation of what
+the control does today and why that is wrong. They do not fail the build,
+because they are already recorded. A tracked defect that starts behaving
+correctly *does* fail, so the table cannot rot into a list of things nobody
+believes any more.
+
+**Frozen renders.** If the grade and the shader are edited together, or a
+profile's measured data is replaced, both sides agree and every parity gate
+stays green while the picture people already saved quietly changes. Fourteen
+complete recipes are stored in `tests/goldens/` at 160x112. Their film
+interpretations are explicit, so changing the new-photo default does not
+change a frozen recipe. Stored reference bytes are checked against SHA-256
+digests. Live CPU renders allow at most one 8-bit code value in 0.01% of
+channels for cross-platform rounding at half-code boundaries; larger changes
+or systematic offsets fail. Re-blessing is deliberate:
+
+```sh
+python tests/processing_goldens.py --bless
+```
+
+which refuses while `RENDER_CACHE_VERSION` is unchanged, because a changed
+render that keeps its cache key serves the old pixels from every warm cache
+in the field. Failures write amplified difference images to
+`build/golden-diffs/`.
+
+**Capture stage.** White balance, highlight recovery, demosaic profile and
+sensor denoise run in the RAW decoder, before the film model and before any
+grade, so no rendered TIFF fixture reaches them. `tests/test_raw_capture.py`
+decodes synthetic DNGs written by `tests/make_raw_fixtures.py`: a few
+kilobytes each, valid uncompressed mosaics carrying a known colour matrix,
+a known as-shot neutral, clipped highlights and a noisy flat field. They test
+the decoder, not a sensor; real camera formats stay with the RAW journey
+layers in JOURNEY-TESTING.md.
+
+The audits and the goldens drive the resident `lighttable-engine` built from
+`rust-engine/`, the same implementation the film gate tests, never the
+prebuilt `engine/spektrafilm-rs`. Build it once:
+
+```sh
+CARGO_TARGET_DIR=build/processing-cargo cargo build --manifest-path rust-engine/Cargo.toml --locked
+```
+
+Both suites skip themselves without it, so CI builds it before the unit step
+and then asserts it is present, rather than staying green while checking
+nothing.
+
 ## What each suite establishes
 
 | Suite | Implementation under test | Independent reference and coverage |

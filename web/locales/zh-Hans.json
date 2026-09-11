@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
+  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,10 @@
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "有可能的匹配时，“人物”中会显示可关闭的提示栏，用于打开匹配审核。此设备会记住您已关闭提示栏。",
     "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "紧凑的 SFace INT8 模型比较对齐后的人脸。新的人脸可以加入未命名的分组，匹配证据更充分时也可以加入已命名的分组。不明确的匹配仍会保持分开，等待审核。扫描会保留现有的分组、名称和更正；更改匹配规则不会自动合并图库中已有的分组。",
     "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "使用左、右箭头键在照片之间移动。在两种网格中，上下箭头键会移到上方或下方的照片，而不是滚动页面。在“细节”中，当照片区域获得焦点时，空格会在“适合”和“1:1”之间切换。",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "单击一张照片使该概览单元格处于活动状态。使用左箭头和右箭头在单元格之间移动，使用上箭头和下箭头在行之间移动。"
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "单击一张照片使该概览单元格处于活动状态。使用左箭头和右箭头在单元格之间移动，使用上箭头和下箭头在行之间移动。",
+    "invalid Content-Length": "Content-Length 无效",
+    "request body is too large": "请求正文过大",
+    "the folder shown in this window cannot be removed from the catalog": "此窗口中显示的文件夹无法从目录中移除"
   },
   "plurals": {
     " · {count} paired file linked": {

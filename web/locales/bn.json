@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
+  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,10 @@
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "সম্ভাব্য মিল থাকলে, মানুষ বিভাগে বন্ধ করা যায় এমন একটি বার থেকে মিল পর্যালোচনা খোলা যায়। বারটি বন্ধ করার বিষয়টি এই ডিভাইসে মনে রাখা হয়।",
     "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "কমপ্যাক্ট SFace INT8 মডেল সারিবদ্ধ মানুষের মুখ তুলনা করে। নতুন মুখ নামহীন দলে যোগ হতে পারে, অথবা আরও জোরালো প্রমাণ থাকলে নাম দেওয়া দলে যোগ হতে পারে। অস্পষ্ট মিলগুলো পর্যালোচনার জন্য আলাদা থাকে। স্ক্যান বিদ্যমান দল, নাম এবং সংশোধন বজায় রাখে; মিল খোঁজার নিয়ম বদলালে লাইব্রেরিতে আগে থেকে থাকা দলগুলো স্বয়ংক্রিয়ভাবে একত্র হয় না।",
     "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "ফটোগুলোর মধ্যে যেতে বাম ও ডান তীর কী ব্যবহার করুন। যেকোনো গ্রিডে, উপরে ও নিচের তীর কী স্ক্রল করার বদলে উপরের বা নিচের ফটোতে নিয়ে যায়। Detail-এ, ফটো এলাকায় ফোকাস থাকলে Space Fit এবং ১:১-এর মধ্যে টগল করে।",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "সেই survey cell সক্রিয় করতে একটি ফটোতে ক্লিক করুন। সেলগুলোর মধ্যে যেতে বাম ও ডান তীর, এবং সারিগুলোর মধ্যে যেতে উপরে ও নিচের তীর ব্যবহার করুন।"
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "সেই survey cell সক্রিয় করতে একটি ফটোতে ক্লিক করুন। সেলগুলোর মধ্যে যেতে বাম ও ডান তীর, এবং সারিগুলোর মধ্যে যেতে উপরে ও নিচের তীর ব্যবহার করুন।",
+    "invalid Content-Length": "অবৈধ Content-Length",
+    "request body is too large": "রিকোয়েস্ট বডি অনেক বড়",
+    "the folder shown in this window cannot be removed from the catalog": "এই উইন্ডোতে দেখানো ফোল্ডারটি ক্যাটালগ থেকে সরানো যাবে না"
   },
   "plurals": {
     " · {count} paired file linked": {

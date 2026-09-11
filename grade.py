@@ -101,7 +101,13 @@ def _clean_hsl(v):
     out = {}
     for b in HSL_BANDS:
         e = v.get(b) or {}
-        trio = [round(float(e.get(k, 0) or 0), 4) for k in ("h", "s", "l")]
+        # Clamp to the documented -1..1 travel. The sliders cannot leave it,
+        # but a preset, an XMP sidecar, or a command-line edit can, and both
+        # the shader and this module multiply the value straight into a hue
+        # rotation and a saturation gain, where an unbounded number produces
+        # nonsense rather than a stronger effect.
+        trio = [round(max(-1.0, min(1.0, float(e.get(k, 0) or 0))), 4)
+                for k in ("h", "s", "l")]
         if any(abs(x) > 1e-6 for x in trio):
             out[b] = {"h": trio[0], "s": trio[1], "l": trio[2]}
     return out or None

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
+  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -3924,6 +3924,7 @@
     "ink": "ink",
     "interoperability": "interoperability",
     "intersect": "intersect",
+    "invalid Content-Length": "invalid Content-Length",
     "invalid JPEG header": "invalid JPEG header",
     "invalid desktop message": "invalid desktop message",
     "invalid folder name": "invalid folder name",
@@ -4113,6 +4114,7 @@
     "repair": "repair",
     "replace adjustments": "replace adjustments",
     "request Host is not this LightTable instance": "request Host is not this LightTable instance",
+    "request body is too large": "request body is too large",
     "request body must be a JSON object": "request body must be a JSON object",
     "requests must use application/json": "requests must use application/json",
     "rescan": "rescan",
@@ -4249,6 +4251,7 @@
     "the enhanced result is larger than the supported size": "the enhanced result is larger than the supported size",
     "the file browser could not open that location": "the file browser could not open that location",
     "the file has no parent folder": "the file has no parent folder",
+    "the folder shown in this window cannot be removed from the catalog": "the folder shown in this window cannot be removed from the catalog",
     "the local Vision analyzer has not been built": "the local Vision analyzer has not been built",
     "the local application-data folder is unavailable": "the local application-data folder is unavailable",
     "the path is not in the catalog": "the path is not in the catalog",

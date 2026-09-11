@@ -121,5 +121,18 @@ class MatchExposureEndpointTests(unittest.TestCase):
             self.assertAlmostEqual(adj, -1.0, places=2)
 
 
+class MatchExposureBrowserTests(unittest.TestCase):
+    def test_match_exposure_reloads_through_the_library_path(self):
+        source = (Path(__file__).resolve().parents[1]
+                  / "web" / "app.js").read_text()
+        handler = source.split("$('matchExposureBtn').onclick", 1)[1].split(
+            "$('pregenPreviewsBtn')", 1)[0]
+        # The endpoint changes edit state on the server; the window has to
+        # reload that state through an existing path and keep the photo.
+        self.assertIn("await reloadLibrary();", handler)
+        self.assertNotIn("loadState(", handler)
+        self.assertNotIn("selectPhoto(", handler)
+
+
 if __name__ == "__main__":
     unittest.main()

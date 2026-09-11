@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "624c4b80621dc438f6ec866a1a025a02d064a19d086f5330313b41855d96bc4b",
+  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4256,7 +4256,10 @@
     "When possible matches are available, a dismissible bar in People opens Review matches. Dismissing it is remembered on this device.": "संभावित मेल उपलब्ध होने पर, लोग में बंद की जा सकने वाली पट्टी से मेल की समीक्षा खुलती है। इस डिवाइस पर पट्टी को बंद करने की स्थिति याद रखी जाती है।",
     "The compact SFace INT8 model compares aligned human faces. New faces can join unnamed groups or, with stronger evidence, named groups. Ambiguous matches remain separate for review. Scans keep existing groups, names, and corrections; changing the matching rules does not automatically combine groups already in your library.": "छोटा SFace INT8 मॉडल संरेखित मानव चेहरों की तुलना करता है। नए चेहरे बिना नाम वाले समूहों में या अधिक ठोस प्रमाण होने पर नाम वाले समूहों में शामिल हो सकते हैं। अस्पष्ट मेल समीक्षा के लिए अलग रहते हैं। स्कैन मौजूदा समूहों, नामों और सुधारों को बनाए रखते हैं; मिलान के नियम बदलने से आपकी लाइब्रेरी में पहले से मौजूद समूह अपने-आप नहीं मिलते।",
     "Use the left and right arrow keys to move between photos. In either grid, the up and down arrow keys move to the photo above or below instead of scrolling. In Detail, Space toggles Fit and 1:1 when the photo area has focus.": "फ़ोटो के बीच जाने के लिए बाएँ और दाएँ तीर कुंजियों का उपयोग करें। किसी भी ग्रिड में, ऊपर और नीचे की तीर कुंजियाँ स्क्रॉल करने के बजाय ऊपर या नीचे की फ़ोटो पर ले जाती हैं। Detail में, जब फ़ोटो क्षेत्र फोकस में हो, तो Space Fit और 1:1 के बीच टॉगल करता है।",
-    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "उस survey cell को सक्रिय बनाने के लिए फ़ोटो पर क्लिक करें। cells के बीच जाने के लिए बाएँ और दाएँ तीरों का, और पंक्तियों के बीच जाने के लिए ऊपर और नीचे के तीरों का उपयोग करें।"
+    "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "उस survey cell को सक्रिय बनाने के लिए फ़ोटो पर क्लिक करें। cells के बीच जाने के लिए बाएँ और दाएँ तीरों का, और पंक्तियों के बीच जाने के लिए ऊपर और नीचे के तीरों का उपयोग करें।",
+    "invalid Content-Length": "अमान्य Content-Length",
+    "request body is too large": "अनुरोध बॉडी बहुत बड़ी है",
+    "the folder shown in this window cannot be removed from the catalog": "इस विंडो में दिखाया गया फ़ोल्डर कैटलॉग से हटाया नहीं जा सकता"
   },
   "plurals": {
     " · {count} paired file linked": {

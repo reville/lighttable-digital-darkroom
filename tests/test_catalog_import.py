@@ -429,6 +429,26 @@ class UnmatchedTests(ImportFixture):
             self.catalog.state_for(self.image("a.jpg"))["rating"], 4)
 
 
+class FolderCollectionTests(ImportFixture):
+    def test_folder_collections_include_every_matched_image(self):
+        before = {item["name"] for item in self.catalog.collections()}
+
+        catalog_import.import_catalog(
+            self.catalog, self.lrcat,
+            options={"foldersToCollections": True})
+
+        grouped = {}
+        for collection in self.catalog.collections():
+            if collection["name"] in before:
+                continue
+            page = self.catalog.query({"scope": "collection",
+                                       "collectionId": collection["id"]})
+            grouped[collection["name"]] = {item["relpath"]
+                                           for item in page["items"]}
+        self.assertEqual(grouped.get("sub"), {"sub/b.dng", "sub/c.jpg"})
+        self.assertEqual(grouped.get("Photos"), {"a.jpg"})
+
+
 class ConflictPolicyTests(ImportFixture):
     def setUp(self) -> None:
         super().setUp()
