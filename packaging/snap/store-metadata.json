@@ -1,0 +1,19 @@
+{
+  "title": "LightTable",
+  "summary": "RAW photo editing and film simulation",
+  "description": "LightTable is a digital darkroom for RAW photography. Edit exposure and color, simulate photographic film, organize your library, and export finished photographs while preserving your originals. Processing happens locally on your computer.\n\nFeatures include non-destructive editing, film simulation, ratings and collections, RAW development, and full-resolution 16-bit TIFF export with embedded color profiles.\n\nThis is the LightTable 0.5 beta for 64-bit Intel and AMD Linux systems. The strict Snap package has been exercised on Ubuntu 24.04 using software graphics. Physical AMD, Intel, and NVIDIA GPU testing is still pending.\n\nChoose photo folders through the desktop folder picker. Direct access to removable drives is optional and can be enabled with: sudo snap connect lighttable:removable-media\n\nSnap manages application updates. Keep a catalog backup before uninstalling or switching package formats. A catalog backup contains catalog data and edits; retain your original photo files separately.",
+  "license": "GPL-3.0-only",
+  "contact": "hello@lighttable.app",
+  "website": "https://lighttable.app",
+  "links": {
+    "source": [
+      "https://github.com/reville/lighttable-digital-darkroom"
+    ],
+    "issues": [
+      "https://github.com/reville/lighttable-digital-darkroom/issues"
+    ]
+  },
+  "categories": [
+    "photo-and-video"
+  ]
+}

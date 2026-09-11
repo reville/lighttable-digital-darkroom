@@ -18,7 +18,7 @@ package = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(package)
 
 
-def fixture(path: Path, architecture="x86_64", *, binary_architecture=None, extra=None, manifest=None):
+def fixture(path: Path, architecture="x86_64", *, binary_architecture=None, extra=None, manifest=None, extra_files=None):
     machine = {"x86_64": 62, "aarch64": 183}[binary_architecture or architecture]
     elf = b"\x7fELF\x02\x01" + bytes(12) + machine.to_bytes(2, "little")
     files = {
@@ -34,6 +34,7 @@ def fixture(path: Path, architecture="x86_64", *, binary_architecture=None, extr
         "THIRD_PARTY_NOTICES.md": b"notices", "install.sh": b"portable",
         "uninstall.sh": b"portable", "desktop-integration.py": b"portable",
     }
+    files.update(extra_files or {})
     with tarfile.open(path, "w:gz") as archive:
         for relative, data in files.items():
             item = tarfile.TarInfo("LightTable/" + relative)

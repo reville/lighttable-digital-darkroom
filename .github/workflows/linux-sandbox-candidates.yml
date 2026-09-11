@@ -208,56 +208,8 @@ jobs:
           if-no-files-found: error
 
   snap:
-    name: Build and test strict Snap candidate
-    needs: bundle
-    runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      PACKAGE_VERSION: ${{ inputs.version || '0.5.0' }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: LightTable-linux-x86_64
-          path: dist
-      - name: Prepare verified candidate
-        run: |
-          python3 -m unittest discover -s tests -p test_linux_snap_packaging.py -v
-          python3 scripts/linux/make-snap-package.py "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" \
-            --version "$PACKAGE_VERSION" --source-revision "$GITHUB_SHA" --output-dir .build/snap
-          sudo snap install snapcraft --classic
-      - name: Build on the matching Ubuntu baseline
-        working-directory: .build/snap
-        run: sudo snapcraft pack --destructive-mode --output "$GITHUB_WORKSPACE/dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap"
-      - name: Install candidate with strict confinement and exercise the runtime
-        run: |
-          sudo snap install --dangerous "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap"
-          mkdir -p .build/snap/evidence
-          snap connections lighttable > .build/snap/evidence/connections.txt
-          timeout 30s snap run lighttable.cli --help > .build/snap/evidence/cli-help.txt
-          timeout 30s snap run lighttable.cli instances --json > .build/snap/evidence/instances.json
-          python3 -c 'import json; assert json.load(open(".build/snap/evidence/instances.json")) == []'
-          # --shell preserves the confinement and command-chain environment.
-          # The existing runtime smoke owns an isolated server and cleans it up;
-          # it also renders through both native engines, catching missing libraries.
-          timeout 360s snap run --shell lighttable.cli -c \
-            'exec "$SNAP/LightTable/Python/bin/python3" -B "$SNAP/LightTable/runtime-smoke.py" "$SNAP/LightTable"' \
-            > .build/snap/evidence/runtime-smoke.txt
-          sha256sum "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap" \
-            > "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.snap.sha256"
-      - name: Upload candidate and limited validation evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: LightTable-snap-candidate-x86_64
-          path: |
-            dist/*.snap
-            dist/*.snap.sha256
-            .build/snap/candidate.json
-            .build/snap/snapcraft.yaml
-            .build/snap/evidence
-          include-hidden-files: true
-          if-no-files-found: error
-      - name: Remove ephemeral installed candidate
-        if: always()
-        run: |
-          if snap list lighttable >/dev/null 2>&1; then sudo snap remove --purge lighttable; fi
+    name: Validate the pinned released Snap candidate
+    uses: ./.github/workflows/snap-release-candidate.yml
+    permissions:
+      contents: read
+      actions: read
