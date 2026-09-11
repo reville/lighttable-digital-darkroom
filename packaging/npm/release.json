@@ -1,5 +1,9 @@
 {
   "schema": 1,
-  "version": null,
-  "platforms": {}
+  "version": "0.6.2",
+  "platforms": {
+    "win32-x64": {
+      "sha256": "32d8b8d32affba2c29c901a1a7b1c35ee072051ebb06a8fe70270a3be0590842"
+    }
+  }
 }
