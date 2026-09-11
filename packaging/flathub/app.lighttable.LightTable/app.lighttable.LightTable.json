@@ -40,7 +40,7 @@
         {
           "type": "file",
           "path": "source-preflight.py",
-          "sha256": "d1e6a9353c78f11bb241fef6d2ad60c8de5936cb7e67121f84cddff9c16f6f2c"
+          "sha256": "e075f43294398931501be06db7de4ef50d838075326c6954239d58a751bbe32f"
         },
         {
           "type": "file",
@@ -81,7 +81,7 @@
         {
           "type": "file",
           "path": "source-wheel.py",
-          "sha256": "4f1687ce9660207f18d6b141fb4d559cb0ee4bdc86cd4ed34e8b63ddacb7a11e"
+          "sha256": "d075296d2f0e5157bed3e0ceeffbdf7637d638527bf05284bb8187f5ac610c1f"
         }
       ]
     },
@@ -16318,13 +16318,13 @@
         {
           "type": "file",
           "path": "source-imagecodecs.py",
-          "sha256": "6af8a1dcff19350f9949ed2c8464b86093d3d7abd7ef15956164a28de5f414a5",
+          "sha256": "09cd21aa3be6c2b631e5ff67265a0a39756d77500f11ab3350f3537da8c2b950",
           "dest-filename": "imagecodecs_distributor_setup.py"
         },
         {
           "type": "file",
           "path": "source-codec-check.py",
-          "sha256": "58223eabc63071fb62f42ac8a1529fe6bdc333d19e2d11a1b71bbdc5253c8cf1"
+          "sha256": "8e888e5fc4fe1797a812e0e036c6eecd81375cb5718fc86b6573b74d9c2fb673"
         }
       ]
     },
@@ -26998,17 +26998,17 @@
         {
           "type": "file",
           "path": "source-install.py",
-          "sha256": "7bb08d72d963f4fb733715895d5c7d41efc46c4fd1bd7e04e9885e1de304d672"
+          "sha256": "9007441c6eb230a4df500688bd32f0dcd2f665907d921d191f39fb2dd799c788"
         },
         {
           "type": "file",
           "path": "lighttable-desktop",
-          "sha256": "f03a9fc2c58b66d3cacfac9cf1a6f5d1f8f44d4aa4377734b3362cab575b7801"
+          "sha256": "c17df70a90748537793b29717df697fbeddeb0864dab4c3caeba6d0286f97d3e"
         },
         {
           "type": "file",
           "path": "lighttable-cli",
-          "sha256": "ab56f606e27dce6e72f538a4de8b99409747430c4193ffcda21a84a299537069"
+          "sha256": "035f0395b24d08f8b900fbb40b8ad8eed86604c41c7aa3aa5b8280ee900e5e51"
         },
         {
           "type": "file",

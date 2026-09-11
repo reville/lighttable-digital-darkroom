@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Assemble the standalone Flathub submission package for app.lighttable.LightTable.
 
 This script copies all local files into the submission package directory,

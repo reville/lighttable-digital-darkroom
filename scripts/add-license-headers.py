@@ -24,9 +24,11 @@ ROOT = Path(__file__).resolve().parent.parent
 
 SPDX = "SPDX-License-Identifier: GPL-3.0-only"
 
-# Upstream code vendored into this repository. It carries its own copyright and
-# must not be relabeled; provenance is recorded next to each vendored tree.
-EXCLUDED_PREFIXES = ("rust-engine/vendor/",)
+# Upstream code vendored into this repository carries its own notices and must
+# not be relabeled; provenance is recorded next to each vendored tree. The
+# Flathub submission directory is assembled by scripts/flatpak/
+# make-flathub-submission.py, so its copies inherit their tag from the source.
+EXCLUDED_PREFIXES = ("rust-engine/vendor/", "packaging/flathub/")
 
 HASH_STYLE = {".py", ".sh", ".ps1"}
 SLASH_STYLE = {".rs", ".js", ".mjs", ".swift", ".wgsl", ".metal", ".cu"}
