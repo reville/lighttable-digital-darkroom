@@ -4830,9 +4830,21 @@ function activeCollection() {
   return (S.library.collections || []).find((item) => item.id === S.activeCollection) || null;
 }
 
+/* Preferences can arrive before the library payload. Keep the saved
+ * collection until the collections list exists to validate it against,
+ * instead of discarding it because the list still looks empty. */
+function applyPendingActiveCollection() {
+  if (S.pendingActiveCollection == null) return;
+  const pending = S.pendingActiveCollection;
+  S.pendingActiveCollection = null;
+  S.activeCollection = (S.library.collections || [])
+    .some((item) => item.id === pending) ? pending : '';
+}
+
 /* The catalog spans every source that has been opened; the window shows one.
- * These two keep that boundary in one place: which source is open, and the
- * query fragment that keeps a catalog request inside it. */
+ * These three keep that boundary in one place: which source is open, the
+ * query fragment that keeps a catalog request inside it, and the folder id
+ * the server expects for a folder-scoped query. */
 function catalogSourceId(payload) {
   const id = payload?.catalog?.primarySource;
   return Number.isInteger(id) ? id : null;
@@ -4840,7 +4852,12 @@ function catalogSourceId(payload) {
 
 function sourceScopeSpec() {
   if (!S.catalogEnabled || S.primarySourceId == null) return {};
-  return { scope: 'source', sourceId: S.primarySourceId };
+  return { sourceId: S.primarySourceId };
+}
+
+function activeFolderId() {
+  const id = (S.folderIds || {})[S.activeFolder || ''];
+  return Number.isInteger(id) ? id : null;
 }
 
 function collectionScope() {
@@ -5761,8 +5778,7 @@ $('matchExposureBtn').onclick = async () => {
     const data = await res.json();
     if (!data.ok) throw new Error(((data.error || tr("Failed to match exposure"))));
     toast(tr("Matched exposure on {dataCount} photos", {dataCount: data.count}));
-    await loadState();
-    if (S.images[S.idx]) selectPhoto(S.images[S.idx]);
+    await reloadLibrary();
   } catch (err) {
     toast(((err.message || tr("Error matching exposure"))));
   } finally {
@@ -7677,20 +7693,22 @@ function buildCatalogQuerySpec(extra = {}) {
     collectionId = collection.id;
   } else if (S.activeFolder) {
     scope = 'folder';
-    folderId = S.activeFolder;
+    // The server addresses folders by row id; the sidebar holds source-relative
+    // paths. A path with no catalog row fails closed as folder 0.
+    folderId = activeFolderId() ?? 0;
   }
 
   const spec = {
     scope,
     filter,
-    ...(scope === 'all' ? sourceScopeSpec() : {}),
+    ...sourceScopeSpec(),
     sort: {
       field: s === 'date' ? 'capture' : s,
       dir: 'desc',
     },
     ...extra,
   };
-  if (folderId) {
+  if (scope === 'folder') {
     spec.folderId = folderId;
     spec.includeSubfolders = S.includeSubfolders !== false;
   }
@@ -7880,6 +7898,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.catalogTotal = Number.isFinite(+d.total) ? +d.total : 0;
   S.primarySourceId = catalogSourceId(d);
   S.folders = Array.isArray(d.folders) ? d.folders : [];
+  S.folderIds = d.folderIds && typeof d.folderIds === 'object' ? d.folderIds : {};
   if (typeof S.activeFolders[S.rootFolder] === 'string') {
     S.activeFolder = S.activeFolders[S.rootFolder];
   }
@@ -7920,6 +7939,8 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   populatePaperOptions();
   syncEngineForProfile();
   S.library = d.library || { collections: [], stacks: [], virtualCopies: [] };
+  S.libraryLoaded = true;
+  applyPendingActiveCollection();
   S.images = d.images.map((im) => normalizeLibraryImage(
     im, !S.catalogEnabled));
   PHOTO_DISPLAY_STATUS.retain(S.images);
@@ -11590,9 +11611,14 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   S.favoriteFolders = Array.isArray(p.favoriteFolders) ? p.favoriteFolders : [];
   S.gridViewMode = ['photo', 'square'].includes(p.gridViewMode)
     ? p.gridViewMode : 'square';
-  S.activeCollection = typeof p.activeCollection === 'string' &&
-    (S.library.collections || []).some((item) => item.id === p.activeCollection)
-    ? p.activeCollection : '';
+  if (S.libraryLoaded) {
+    S.activeCollection = typeof p.activeCollection === 'string' &&
+      (S.library.collections || []).some((item) => item.id === p.activeCollection)
+      ? p.activeCollection : '';
+  } else {
+    S.pendingActiveCollection = typeof p.activeCollection === 'string'
+      ? p.activeCollection : null;
+  }
   S.activeFolder = typeof S.activeFolders[S.rootFolder] === 'string'
     ? S.activeFolders[S.rootFolder]
     : (typeof p.activeFolder === 'string' ? p.activeFolder : '');
@@ -11831,10 +11857,14 @@ async function reloadLibrary() {
     S.catalogTotal = Number.isFinite(+data.total) ? +data.total : data.images.length;
     S.primarySourceId = catalogSourceId(data);
     S.folders = Array.isArray(data.folders) ? data.folders : S.folders;
+    S.folderIds = data.folderIds && typeof data.folderIds === 'object'
+      ? data.folderIds : S.folderIds;
     S.images = data.images.map((image) => normalizeLibraryImage(
       image, !S.catalogEnabled));
     PHOTO_DISPLAY_STATUS.retain(S.images);
     if (data.library) S.library = data.library;
+    S.libraryLoaded = true;
+    applyPendingActiveCollection();
     _stripKey = _gridKey = '';
     const index = previous
       ? S.images.findIndex((image) => image.name === previous) : -1;

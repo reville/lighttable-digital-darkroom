@@ -331,6 +331,30 @@ class ScanTests(unittest.TestCase):
             state = cat.state_for(items[0]["id"])
             self.assertEqual(state["keywords"], ["holiday"])
 
+    def test_relink_refreshes_the_kind_when_the_extension_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "photos"
+            root.mkdir()
+            path = write_photo(root, "shot.dng", b"raw-content" * 100)
+            cat = make_catalog(Path(directory))
+            source = cat.add_source(root)
+            catalog_scan.scan_source(cat, source, read_metadata_for_new=False)
+            self.assertEqual(
+                cat.connection.execute(
+                    "SELECT kind FROM files WHERE relpath='shot.dng'"
+                ).fetchone()["kind"], "raw")
+
+            path.rename(root / "shot.tif")
+            result = catalog_scan.scan_source(cat, source,
+                                              read_metadata_for_new=False)
+
+            self.assertEqual(result["relinked"], 1)
+            row = cat.connection.execute(
+                "SELECT relpath, kind FROM files").fetchone()
+            self.assertEqual(row["relpath"], "shot.tif")
+            self.assertEqual(row["kind"], "processed")
+            cat.close()
+
     def test_header_hash_changes_with_content_and_survives_touch(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "a.bin"
@@ -437,6 +461,26 @@ class RelocationTransactionTests(unittest.TestCase):
 
             self.assertIsNotNone(cat.image_id_for(source, "Renamed/a.jpg"))
             self.assertIsNotNone(cat.image_id_for(source, "TripA1/b.jpg"))
+            cat.close()
+
+    def test_folder_collections_treat_sql_wildcards_as_literal_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "photos"
+            root.mkdir()
+            write_photo(root, "Trip_1/a.jpg")
+            write_photo(root, "TripA1/b.jpg")
+            cat = make_catalog(Path(directory))
+            source = cat.add_source(root)
+            catalog_scan.scan_source(cat, source, read_metadata_for_new=False)
+
+            cat.create_collections_for_source_folders(source)
+
+            collections = {item["name"]: item for item in cat.collections()}
+            self.assertIn("Trip_1", collections)
+            result = cat.query({"scope": "collection",
+                                "collectionId": collections["Trip_1"]["id"]})
+            self.assertEqual([item["relpath"] for item in result["items"]],
+                             ["Trip_1/a.jpg"])
             cat.close()
 
 
@@ -696,6 +740,13 @@ class QueryTests(unittest.TestCase):
         self.assertTrue(len(cids) >= 1)
         cols = self.cat.collections()
         self.assertTrue(any(c["name"] == "sub" for c in cols) or len(cols) >= 1)
+
+    def test_create_collections_for_an_empty_source_returns_none(self):
+        empty = Path(self._dir.name) / "empty-source"
+        empty.mkdir()
+        source = self.cat.add_source(empty)
+        self.assertEqual(
+            self.cat.create_collections_for_source_folders(source), [])
 
     def test_virtual_copy_has_independent_state(self):
         base = self.items["f0.jpg"]

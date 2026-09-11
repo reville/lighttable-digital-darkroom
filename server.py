@@ -91,6 +91,10 @@ STARTED_AT = time.time()
 INSTANCE_TOKEN = secrets.token_urlsafe(32)
 EXPORT_DIR_NAME = "film-exports"
 SESSION_EXPORT_DESTINATIONS: set[Path] = set()
+SESSION_EXPORT_DESTINATIONS_LOCK = threading.Lock()
+# Bounded so a stalled or hostile local request cannot pin a handler thread
+# waiting for an unbounded body.
+MAX_JSON_BODY_BYTES = 32 * 1024 * 1024
 
 EVENTS = EventBroker(maximum_subscribers=8)
 JOBS = JobRegistry(on_change=lambda record: EVENTS.publish("job", record))
@@ -1235,7 +1239,7 @@ def catalog_folder_rows(source_id: int | None = None) -> list[dict]:
         params.append(source_id)
     rows = cat.connection.execute(
         "SELECT fo.id, fo.source_id, fo.relpath, fo.name,"
-        " (SELECT COUNT(*) FROM files f"
+        " (SELECT COUNT(*) FROM images i JOIN files f ON f.id=i.file_id"
         "  WHERE f.folder_id=fo.id AND f.missing=0"
         "   AND f.kind!='video') AS count"
         f" FROM folders fo JOIN sources src ON src.id=fo.source_id{where}"
@@ -1528,8 +1532,9 @@ def library_snapshot() -> dict:
             return dict(LIBRARY_CACHE)
 
     folder_root = FOLDER.resolve()
-    excluded_roots = {(FOLDER / EXPORT_DIR_NAME).resolve(),
-                      *SESSION_EXPORT_DESTINATIONS}
+    with SESSION_EXPORT_DESTINATIONS_LOCK:
+        destinations = set(SESSION_EXPORT_DESTINATIONS)
+    excluded_roots = {(FOLDER / EXPORT_DIR_NAME).resolve(), *destinations}
     for recipe in load_export_recipes():
         try:
             excluded_roots.add(export_workflow.resolve_destination(
@@ -4829,6 +4834,12 @@ def _render_external_job(name: str, destination: Path, job: dict) -> None:
         else:
             job_file = durable_io.temporary_path(
                 CACHE / "external-edit-job.json", "job")
+            # Match the batch export path: the film render reads a scene-linear
+            # master for RAW inputs, so the worker must not decode a transfer
+            # function into pixels that are already linear.
+            job["params"] = fp.clean_params(dict(
+                job["params"],
+                linear_input=is_raw(name) if cp["profile_enabled"] else False))
             source = export_render_source(name, job)
             durable_io.atomic_write_text(job_file, json.dumps(job))
             completed = subprocess.run(
@@ -5603,7 +5614,9 @@ def start_export(opts: dict) -> dict:
         disk = recovery.disk_status(destination)
         if disk.get("low"):
             return {"error": "Low disk space on export destination. Free up space before exporting."}
-    SESSION_EXPORT_DESTINATIONS.update(Path(job["destination"]) for _, job in items)
+    with SESSION_EXPORT_DESTINATIONS_LOCK:
+        SESSION_EXPORT_DESTINATIONS.update(
+            Path(job["destination"]) for _, job in items)
     batch = ExportBatch(items, destination)
     with EXPORT_LOCK:
         if EXPORT["running"]:
@@ -6511,6 +6524,14 @@ class Handler(BaseHTTPRequestHandler):
             ".mov": "video/quicktime", ".mp4": "video/mp4",
             ".m4v": "video/mp4", ".avi": "video/x-msvideo",
         }.get(path.suffix.lower(), "application/octet-stream")
+        if size <= 0:
+            # A zero-byte placeholder must not be seeked with Range math.
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", "0")
+            self.send_header("Cache-Control", "public, max-age=3600")
+            self.end_headers()
+            return
         header = self.headers.get("Range", "")
         start, end = 0, size - 1
         partial = False
@@ -6550,7 +6571,16 @@ class Handler(BaseHTTPRequestHandler):
         if content_type.split(";", 1)[0].strip().lower() != "application/json":
             raise APIError(415, T("requests must use application/json"),
                            "unsupported-media-type")
-        n = int(self.headers.get("Content-Length", 0))
+        try:
+            n = int(self.headers.get("Content-Length", 0) or 0)
+        except (TypeError, ValueError):
+            raise APIError(400, T("invalid Content-Length"), "bad-request") \
+                from None
+        if n < 0:
+            raise APIError(400, T("invalid Content-Length"), "bad-request")
+        if n > MAX_JSON_BODY_BYTES:
+            raise APIError(413, T("request body is too large"),
+                           "payload-too-large")
         value = json.loads(self.rfile.read(n) or b"{}")
         if not isinstance(value, dict):
             raise ValueError(T("request body must be a JSON object"))
@@ -6656,13 +6686,13 @@ class Handler(BaseHTTPRequestHandler):
         except RuntimeError as error:
             raise APIError(503, str(error), "not-ready") from error
         self._response_status = 200
-        self.send_response(200)
-        self.send_header("Content-Type", "text/event-stream")
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("Connection", "close")
-        self.close_connection = True
-        self.end_headers()
         try:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Connection", "close")
+            self.close_connection = True
+            self.end_headers()
             self.wfile.write(encode_sse({
                 "id": 0, "type": "ready", "time": time.time(),
                 "client": client,
@@ -6744,6 +6774,7 @@ class Handler(BaseHTTPRequestHandler):
                 self._json({
                     "folder": str(FOLDER),
                     "folders": snapshot["folders"],
+                    "folderIds": snapshot.get("folderIds", {}),
                     "catalog": {
                         "path": str(cat.path.resolve()) if cat else None,
                         "enabled": cat is not None,
@@ -8245,7 +8276,13 @@ def catalog_sources_action(body: dict) -> dict:
         return {"ok": True, "sourceId": source_id, "imported": imported,
                 "hasSidecars": has_sidecars, "sources": cat.sources()}
     if action == "remove":
-        cat.remove_source(int(body["id"]))
+        source_id = int(body["id"])
+        if source_id == PRIMARY_SOURCE_ID:
+            # The window is bound to the launch folder: removing it would
+            # leave the catalog scoped to an inactive source with no way to
+            # switch, so an empty window. Refuse instead of doing that.
+            raise ValueError(T("the folder shown in this window cannot be removed from the catalog"))
+        cat.remove_source(source_id)
     elif action == "favorite":
         cat.set_source_favorite(int(body["id"]), bool(body.get("favorite")))
     elif action == "rename":
@@ -9023,6 +9060,11 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
         return rows, visible_snapshot
 
     limit = max(1, min(20000, int(limit or LIBRARY_PAGE_LIMIT)))
+    if PRIMARY_SOURCE_ID is None:
+        # The launch folder was not a directory, so no source is open. Show
+        # nothing rather than every source the catalog has ever seen.
+        return [], {"names": [], "folders": [], "mtimes": {}, "total": 0,
+                    "folderIds": {}}
     # The catalog holds every source that has ever been opened, but the window
     # only ever shows one of them: the folder tree, its counts, and the title
     # all describe the open source. Querying the whole catalog here put photos
@@ -9064,10 +9106,12 @@ def library_payload(limit: int = LIBRARY_PAGE_LIMIT) -> tuple[list[dict], dict]:
             "ai": None,
             "people": item.get("people", []),
         })
-    folder_counts = {row["relpath"]: row["count"]
-                     for row in catalog_folder_rows(PRIMARY_SOURCE_ID)}
+    folder_rows = catalog_folder_rows(PRIMARY_SOURCE_ID)
+    folder_counts = {row["relpath"]: row["count"] for row in folder_rows}
+    folder_ids = {row["relpath"]: row["id"] for row in folder_rows}
     folders = _library_folder_rows_from_counts(folder_counts, set())
     snapshot = {"names": [row["name"] for row in rows], "folders": folders,
+                "folderIds": folder_ids,
                 "mtimes": {row["name"]: row["mtime"] for row in rows},
                 "total": page["total"]}
     return rows, snapshot
