@@ -20,6 +20,12 @@ ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("lighttable_arch", ROOT / "scripts/linux/make-arch-package.py")
 ARCH = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ARCH)
+NOTICE_SPEC = importlib.util.spec_from_file_location("snap_native_licenses", ROOT / "scripts/linux/snap-native-licenses.py")
+NOTICES = importlib.util.module_from_spec(NOTICE_SPEC)
+NOTICE_SPEC.loader.exec_module(NOTICES)
+STACK_SPEC = importlib.util.spec_from_file_location("snap_python_noexecstack", ROOT / "scripts/linux/snap-python-noexecstack.py")
+STACK = importlib.util.module_from_spec(STACK_SPEC)
+STACK_SPEC.loader.exec_module(STACK)
 
 
 def generate(archive: Path, output: Path, *, version: str, source_revision: str) -> Path:
@@ -43,6 +49,8 @@ def generate(archive: Path, output: Path, *, version: str, source_revision: str)
         with tarfile.open(archive, "r:gz") as source:
             source.extractall(payload, filter="data")
         bundle = payload / "LightTable"
+        NOTICES.install(bundle, version=version, source_revision=source_revision)
+        runtime_adjustment = STACK.clear_execstack(bundle)
         (bundle / "installation-owner.json").write_text('{"owner":"snap"}\n')
         for name in ("install.sh", "uninstall.sh", "desktop-integration.py"):
             (bundle / name).unlink(missing_ok=True)
@@ -66,6 +74,7 @@ def generate(archive: Path, output: Path, *, version: str, source_revision: str)
             "version": version, "source_revision": source_revision,
             "archive": archive.name, "sha256": checksum,
             "architecture": manifest["architecture"], "store_published": False,
+            "runtime_adjustments": [runtime_adjustment],
             "validation": "Native strict-confinement import/edit/export/upgrade testing required",
         }, indent=2) + "\n")
         with archive.open("rb") as stream:
