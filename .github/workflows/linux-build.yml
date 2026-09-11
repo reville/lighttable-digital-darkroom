@@ -116,6 +116,14 @@ jobs:
           # The hosted image may retain Chrome's updater source. This WebKit
           # build does not use it, and stale Chrome metadata can break apt update.
           sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google-chrome.sources
+          # Azure's archive mirror can stall even tiny downloads for minutes.
+          # Keep Ubuntu's signed repositories, using its standard archive and
+          # bounded transport retries on the ephemeral hosted runner.
+          if [[ -f /etc/apt/apt-mirrors.txt ]]; then
+            sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|http://archive.ubuntu.com/ubuntu|g' /etc/apt/apt-mirrors.txt
+          fi
+          printf 'Acquire::http::Timeout "30";\nAcquire::https::Timeout "30";\nAcquire::Retries "3";\n' \
+            | sudo tee /etc/apt/apt.conf.d/80lighttable-downloads >/dev/null
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential pkg-config cmake gfortran libssl-dev libopenblas-dev \

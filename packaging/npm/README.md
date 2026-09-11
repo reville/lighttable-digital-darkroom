@@ -4,12 +4,13 @@ This package installs the LightTable desktop digital darkroom and exposes its
 bundled CLI. It requires Node.js 20+ and supports macOS on Apple silicon and
 Windows x64. It has no npm dependencies.
 
-**Not published yet.** The source package deliberately contains no desktop
-release URL/checksum claims until maintainers prepare it from actual assets.
-The commands below become available after publication:
+The registry package is
+[`lighttable-digital-darkroom`](https://www.npmjs.com/package/lighttable-digital-darkroom).
+The unscoped name `lighttable` is unavailable on npm. The installed command is
+still `lighttable`.
 
 ```sh
-npm install --global lighttable
+npm install --global lighttable-digital-darkroom
 lighttable install
 lighttable --help
 ```
@@ -17,8 +18,11 @@ lighttable --help
 For a one-off installation without a global npm command:
 
 ```sh
-npx lighttable install
+npx lighttable-digital-darkroom install
 ```
+
+The source package in this repository deliberately contains no desktop release
+URL or checksum claims until maintainers prepare it from actual assets.
 
 Installing the npm package itself does not download the desktop app. The
 explicit `lighttable install` command downloads the exact release recorded in

@@ -9,12 +9,13 @@ import tempfile
 import unittest
 
 from test_linux_arch_packaging import fixture
+from test_linux_snap_python_noexecstack import library_fixture, fixture_hashes
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("snap_package", ROOT / "scripts/linux/make-snap-package.py")
 package = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(package)
-REVISION = "a" * 40
+REVISION = "be537f2f3e2e431ae6b42af716c2a8b365f57bab"
 
 
 class SnapPackageTests(unittest.TestCase):
@@ -25,7 +26,12 @@ class SnapPackageTests(unittest.TestCase):
         self.archive = self.root / "LightTable-0.5.0-linux-x86_64.tar.gz"
         self.output = self.root / "snap project"
         fixture(self.archive, manifest={"version": "0.5.0", "source_revision": REVISION,
-                                        "source_dirty": False})
+                                        "source_dirty": False},
+                extra_files={package.STACK.LIBRARY: library_fixture()})
+        from unittest.mock import patch
+        stack_pins = patch.multiple(package.STACK, **fixture_hashes())
+        stack_pins.start()
+        self.addCleanup(stack_pins.stop)
 
     def generate(self, **changes):
         return package.generate(self.archive, self.output,
@@ -44,8 +50,17 @@ class SnapPackageTests(unittest.TestCase):
         self.assertTrue((bundle / "Resources/LightTable/engine/lighttable-engine").is_file())
         self.assertFalse((bundle / "install.sh").exists())
         self.assertFalse((bundle / "uninstall.sh").exists())
+        notices = bundle / "Resources/LightTable/licenses/native-rust"
+        provenance = json.loads((notices / "provenance.json").read_text())
+        self.assertEqual(provenance["source_revision"], REVISION)
+        self.assertTrue(any(row["path"].startswith("crates/rfd-0.17.2/") for row in provenance["files"]))
+        import hashlib
+        for row in provenance["files"]:
+            self.assertEqual(hashlib.sha256((notices / row["path"]).read_bytes()).hexdigest(), row["sha256"])
         self.assertTrue((bundle / "share/applications/app.lighttable.LightTable.desktop").is_file())
-        self.assertFalse(json.loads((self.output / "candidate.json").read_text())["store_published"])
+        candidate = json.loads((self.output / "candidate.json").read_text())
+        self.assertFalse(candidate["store_published"])
+        self.assertEqual(candidate["runtime_adjustments"], [package.STACK.verify(bundle)])
 
     def test_wrong_source_or_checksum_leaves_no_partial_project(self):
         with self.assertRaisesRegex(ValueError, "source revision"):
@@ -63,6 +78,24 @@ class SnapPackageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "new or empty"):
             self.generate()
         self.assertEqual(sentinel.read_text(), "preserve")
+
+    def test_corrupted_native_notice_rejects_package_without_partial_output(self):
+        from unittest.mock import patch
+        original = package.NOTICES.regular_bytes
+        def corrupted(path):
+            data = original(path)
+            return data + b"corrupted" if path.parent.name == "objects" else data
+        with patch.object(package.NOTICES, "regular_bytes", side_effect=corrupted):
+            with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+                self.generate()
+        self.assertFalse(self.output.exists())
+
+    def test_unrecognized_libpython_rejects_package_without_partial_output(self):
+        from unittest.mock import patch
+        with patch.object(package.STACK, "BEFORE_SHA256", "0" * 64):
+            with self.assertRaisesRegex(ValueError, "pinned upstream binary"):
+                self.generate()
+        self.assertFalse(self.output.exists())
 
     def test_environment_keeps_catalog_location_across_snap_revisions_and_quotes_arguments(self):
         self.generate()
