@@ -581,6 +581,22 @@ def load_preferences() -> dict:
         return dict(prefs) if isinstance(prefs, dict) else {}
 
 
+# A demosaiced RAW carries none of the capture sharpening and colour noise
+# reduction that a camera bakes into its own JPEG, so it looks soft and
+# speckled next to the same frame from any mainstream converter. Lightroom
+# starts every RAW with both switched on; so does LightTable, for a RAW with
+# no saved grade. Processed sources already carry their camera's finishing.
+# The browser applies the same values, which it reads from /api/config.
+RAW_GRADE_DEFAULTS = {"sharpness": 0.25, "colorNoise": 0.25}
+
+
+def default_grade_for(name: str, default_grade: dict) -> dict:
+    """The grade a photo with no saved grade starts from."""
+    if is_raw(name):
+        return {**default_grade, **RAW_GRADE_DEFAULTS}
+    return dict(default_grade)
+
+
 def effective_new_photo_defaults() -> tuple[dict, dict]:
     """Resolve the default edit assigned only when a photo has no saved state."""
     params = dict(fp.DEFAULT_PARAMS)
@@ -2683,8 +2699,10 @@ def edited_thumbnail_state(name: str) -> dict:
     if not saved_params and is_raw(name):
         params.update(raw_camera_default(name).get("settings") or {})
     params.update(saved_params)
-    current_grade = dict(default_grade)
-    current_grade.update(entry.get("grade") or {})
+    current_grade = default_grade_for(name, default_grade)
+    if entry.get("grade"):
+        current_grade = dict(default_grade)
+        current_grade.update(entry["grade"])
     return {
         "params": fp.clean_params(params),
         "grade": grade.clean(current_grade),
@@ -2943,6 +2961,120 @@ def image_mean_luminance(name: str) -> float:
         pass
     return 0.18
 
+
+
+# Camera profiles are read from the user's own Adobe Camera Raw or Lightroom
+# installation, never bundled: Adobe's profiles are Adobe's. The folder is a
+# preference; when it is empty the platform's standard location is used if
+# it exists. Files are found by bare name so an edit never stores a path.
+CAMERA_PROFILE_DEFAULT_FOLDERS = (
+    [Path("/Library/Application Support/Adobe/CameraRaw/CameraProfiles"),
+     Path.home() / "Library/Application Support/Adobe/CameraRaw/CameraProfiles"]
+    if sys.platform == "darwin" else
+    [Path(os.environ.get("ProgramData", r"C:\ProgramData")) / "Adobe/CameraRaw/CameraProfiles",
+     Path(os.environ.get("APPDATA", str(Path.home()))) / "Adobe/CameraRaw/CameraProfiles"]
+    if os.name == "nt" else [])
+_CAMERA_PROFILE_INDEX: dict = {}
+_CAMERA_PROFILE_INDEX_LOCK = threading.Lock()
+
+
+def camera_profile_folder() -> Path | None:
+    configured = " ".join(str(load_preferences().get(
+        "cameraProfileFolder", "")).split()).strip()
+    if configured:
+        folder = Path(configured).expanduser()
+        return folder if folder.is_dir() else None
+    for folder in CAMERA_PROFILE_DEFAULT_FOLDERS:
+        if folder.is_dir():
+            return folder
+    return None
+
+
+def camera_profile_index() -> dict[str, Path]:
+    """Bare file name to path for every .dcp within two levels of the folder.
+
+    Adobe ships thousands of profiles in "Adobe Standard/" and
+    "Camera/<Model>/" subfolders. The listing is cached per folder and
+    rebuilt when the folder or its subfolders change on disk; the files are
+    not parsed here, only when one is chosen.
+    """
+    folder = camera_profile_folder()
+    if folder is None:
+        return {}
+    try:
+        stamps = [folder.stat().st_mtime_ns]
+        subfolders = [entry for entry in folder.iterdir()
+                      if entry.is_dir() and not entry.name.startswith(".")]
+        for entry in subfolders:
+            stamps.append(entry.stat().st_mtime_ns)
+    except OSError:
+        return {}
+    signature = (str(folder), tuple(stamps))
+    with _CAMERA_PROFILE_INDEX_LOCK:
+        cached = _CAMERA_PROFILE_INDEX.get("index")
+        if cached and cached[0] == signature:
+            return cached[1]
+    index: dict[str, Path] = {}
+
+    def add(entry: Path) -> None:
+        if (entry.suffix.lower() == ".dcp" and not entry.name.startswith(".")
+                and entry.is_file() and entry.name not in index):
+            index[entry.name] = entry
+
+    try:
+        for entry in sorted(folder.iterdir(), key=lambda item: item.name.lower()):
+            if entry.is_dir():
+                if entry.name.startswith("."):
+                    continue
+                for child in sorted(entry.iterdir(), key=lambda item: item.name.lower()):
+                    if child.is_dir() and not child.name.startswith("."):
+                        for grandchild in sorted(child.iterdir(), key=lambda item: item.name.lower()):
+                            add(grandchild)
+                    else:
+                        add(child)
+            else:
+                add(entry)
+    except OSError:
+        return {}
+    with _CAMERA_PROFILE_INDEX_LOCK:
+        _CAMERA_PROFILE_INDEX["index"] = (signature, index)
+    return index
+
+
+def resolve_camera_profile(name: str) -> Path | None:
+    clean = fp.camera_profile_name(name)
+    return camera_profile_index().get(clean) if clean else None
+
+
+color_pipeline.CAMERA_PROFILE_RESOLVER = resolve_camera_profile
+
+
+def camera_profiles_for(name: str) -> dict:
+    """The profiles in the folder that name this photo's camera model."""
+    folder = camera_profile_folder()
+    result = {"folder": str(folder) if folder else "",
+              "available": folder is not None, "raw": is_raw(name),
+              "camera": "", "profiles": []}
+    if not is_raw(name) or folder is None:
+        return result
+    identity = raw_camera_identity(name)
+    result["camera"] = identity["label"]
+    make, _, model = identity["keys"]["model"].partition("|")
+    model = model.strip()
+    if not model:
+        return result
+    # "NIKON CORPORATION" / "NIKON D7100" ships as "Nikon D7100 Adobe Standard.dcp":
+    # the model string alone identifies the file, with or without the make.
+    matches = []
+    for file_name, path in camera_profile_index().items():
+        stem = file_name[:-4].casefold()
+        if model in stem:
+            look = stem[stem.index(model) + len(model):].strip(" -_")
+            matches.append({"file": file_name, "name": look.title() or file_name[:-4],
+                            "adobe": "adobe standard" in stem, "path": str(path)})
+    matches.sort(key=lambda item: (not item["adobe"], item["name"].lower()))
+    result["profiles"] = [{"file": item["file"], "name": item["name"]} for item in matches[:40]]
+    return result
 
 
 def raw_camera_identity(name: str) -> dict:
@@ -3303,7 +3435,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 11  # versioned film tuning after monochrome treatment update
+RENDER_CACHE_VERSION = 12  # scan levels correction and display-referred source expansion
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
@@ -5517,7 +5649,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             source_signature = None
         items.append((n, {
             "params": e["params"] or default_params,
-            "grade": e["grade"] or default_grade,
+            "grade": e["grade"] or default_grade_for(n, default_grade),
             "crop": e["crop"],
             "masks": e["masks"],
             "heals": e["heals"],
@@ -6849,6 +6981,8 @@ class Handler(BaseHTTPRequestHandler):
                     "library": current_library_state(),
                     "hasExif": True,
                     "gradeDefaults": default_grade,
+                    "rawGradeDefaults": RAW_GRADE_DEFAULTS,
+                    "cameraProfileFolder": str(camera_profile_folder() or ""),
                     "aiIndex": AI_INDEX.status() if AI_INDEX else None,
                     "platform": sys.platform,
                 })
@@ -6969,6 +7103,8 @@ class Handler(BaseHTTPRequestHandler):
                                 "key": ""})
                 else:
                     self._json(raw_camera_default(q["name"]))
+            elif u.path == "/api/camera-profiles":
+                self._json(camera_profiles_for(q["name"]))
             elif u.path == "/api/calibration/target.png":
                 self._send(200, calibration_target.target_png(
                     int(q.get("w", 1600)), int(q.get("h", 1000))),

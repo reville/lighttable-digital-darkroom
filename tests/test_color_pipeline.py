@@ -296,30 +296,33 @@ class StandardDevelopProfileTests(unittest.TestCase):
         self.assertGreaterEqual(float(curve.min()), 0.0)
         self.assertLessEqual(float(curve.max()), 1.0)
 
-    def test_standard_base_curve_holds_middle_grey_at_zone_v(self):
+    def test_standard_base_curve_lifts_middle_grey_by_the_documented_amount(self):
+        for curve in (color_pipeline.standard_base_curve(),
+                      color_pipeline.soft_base_curve()):
+            domain = color_pipeline.standard_base_curve_domain()
+            grey = float(np.interp(0.18, domain, curve))
+            display = _srgb_code_value(grey)
+            # Both profiles place a grey card at the same lifted code value,
+            # so switching between them changes contrast, not exposure.
+            self.assertAlmostEqual(display, color_pipeline.STANDARD_GREY_DISPLAY,
+                                   delta=0.01)
+            self.assertGreater(grey, 0.18 * 1.3)
+            self.assertLess(grey, 0.18 * 1.45)
+
+    def test_standard_curve_lifts_mid_tones_and_rolls_off_highlights(self):
         curve = color_pipeline.standard_base_curve()
         domain = color_pipeline.standard_base_curve_domain()
 
-        grey = float(np.interp(0.18, domain, curve))
-        display = _srgb_code_value(grey)
-
-        # 0.18 linear is a fixed point, so a grey card still reproduces at
-        # the code value that encodes it: 0.4614, or 117.6/255.
-        self.assertAlmostEqual(display, color_pipeline.MIDDLE_GREY_DISPLAY,
-                               delta=0.01)
-        self.assertAlmostEqual(grey, 0.18, delta=0.002)
-
-    def test_standard_curve_deepens_shadows_and_lifts_upper_mid_tones(self):
-        curve = color_pipeline.standard_base_curve()
-        domain = color_pipeline.standard_base_curve_domain()
-
-        below = domain < 0.17
-        above = (domain > 0.19) & (domain < 0.999)
-        self.assertTrue(np.all(curve[below] <= domain[below]))
-        self.assertTrue(np.all(curve[above] >= domain[above]))
+        useful = (domain > 0.03) & (domain < 0.95)
+        self.assertTrue(np.all(curve[useful] >= domain[useful]))
+        # Continuous through the pivot: no kink in the slope at middle grey.
+        slope = np.diff(curve) / np.diff(domain)
+        pivot = int(np.searchsorted(domain, 0.18))
+        self.assertLess(abs(float(slope[pivot + 1] / slope[pivot - 2]) - 1.0), 0.08)
         # A shoulder, not a clip: the last step into white stays a step.
         self.assertLess(float(curve[-1] - curve[-2]),
                         float(domain[-1] - domain[-2]))
+        self.assertGreater(float(curve[-1] - curve[-2]), 0.0)
 
     def test_standard_profile_adds_contrast_without_new_clipping(self):
         scene = self._patch_scene()
@@ -332,19 +335,32 @@ class StandardDevelopProfileTests(unittest.TestCase):
             return float(image[0, index * 8 + 4, 0])
 
         for index, value in enumerate(self.NEUTRAL_PATCHES):
-            if value < 0.18:
-                self.assertLess(patch(standard, index), patch(linear, index),
-                                msg=str(value))
-            elif value == 0.18:
-                self.assertAlmostEqual(patch(standard, index),
-                                       patch(linear, index), delta=0.002)
-            elif value < 1.0:
-                self.assertGreater(patch(standard, index),
-                                   patch(linear, index), msg=str(value))
+            # Every patch renders brighter than the plain encode, the grey
+            # card by a visible margin, and white still has headroom.
+            self.assertGreater(patch(standard, index), patch(linear, index),
+                               msg=str(value))
+            if value == 0.18:
+                self.assertGreater(patch(standard, index) - patch(linear, index), 0.05)
+        values = [patch(standard, index) for index in range(len(self.NEUTRAL_PATCHES))]
+        self.assertEqual(values, sorted(values))
         self.assertGreaterEqual(float(standard.min()), 0.0)
-        self.assertLessEqual(float(standard.max()), 1.0)
-        self.assertEqual(int((standard >= 1.0).sum()),
-                         int((linear >= 1.0).sum()))
+        self.assertLess(float(standard.max()), 1.0)
+
+    def test_standard_profile_no_longer_darkens_dim_scenes(self):
+        # A dim scene that lives below middle grey. The fixed-grey curve used
+        # to push all of it darker than the Linear render; the lifted curve
+        # must leave the Standard render brighter.
+        scene = (np.random.default_rng(3).random((24, 32, 3), dtype=np.float32) ** 3.0) * 0.4
+        linear = color_pipeline.linear_prophoto_to_display_srgb(
+            scene, {"developProfile": "linear"})
+        standard = color_pipeline.linear_prophoto_to_display_srgb(
+            scene, {"developProfile": "standard"})
+        self.assertGreater(float(np.median(standard)), float(np.median(linear)))
+        # Independent random channels make an adversarially saturated scene.
+        # The lift pushes a little more of it over the sRGB gamut edge than the
+        # plain encode does; on photographs the difference is a tenth of a
+        # percent, and even here it must stay small.
+        self.assertLess(float((standard >= 1.0).mean()), 0.03)
 
     def test_soft_base_curve_is_monotonic_and_holds_middle_grey(self):
         curve = color_pipeline.soft_base_curve()
@@ -357,8 +373,8 @@ class StandardDevelopProfileTests(unittest.TestCase):
 
         grey = float(np.interp(0.18, domain, curve))
         display = _srgb_code_value(grey)
-        self.assertAlmostEqual(display, color_pipeline.MIDDLE_GREY_DISPLAY, delta=0.01)
-        self.assertAlmostEqual(grey, 0.18, delta=0.002)
+        self.assertAlmostEqual(display, color_pipeline.STANDARD_GREY_DISPLAY, delta=0.01)
+        self.assertAlmostEqual(grey, 0.243, delta=0.004)
 
     def test_soft_profile_preserves_more_highlight_headroom_than_standard(self):
         std_curve = color_pipeline.standard_base_curve()
@@ -372,17 +388,23 @@ class StandardDevelopProfileTests(unittest.TestCase):
         # But still above linear domain
         self.assertTrue(np.all(soft_curve[upper] > domain[upper]))
 
-    def test_white_normalisation_is_unchanged_by_the_develop_profile(self):
+    def test_white_normalisation_is_shared_and_the_curves_shoulder_above_it(self):
         dim = np.repeat(
             np.linspace(0.0, 0.55, 240, dtype=np.float32)[None, :, None],
             3, axis=2)
 
-        for profile in ("linear", "standard", "soft"):
+        rendered = color_pipeline.linear_prophoto_to_display_srgb(
+            dim, {"developProfile": "linear"})
+        self.assertAlmostEqual(float(np.percentile(rendered, 99.5)), 0.96, delta=0.001)
+        # The curved profiles expose to the same 0.96 first and then let the
+        # shoulder place the brightest useful values just under white, so
+        # exposure is shared and the profiles differ only in tone.
+        for profile in ("standard", "soft"):
             rendered = color_pipeline.linear_prophoto_to_display_srgb(
                 dim, {"developProfile": profile})
-            self.assertAlmostEqual(
-                float(np.percentile(rendered, 99.5)), 0.96, delta=0.001,
-                msg=profile)
+            top = float(np.percentile(rendered, 99.5))
+            self.assertGreater(top, 0.96, msg=profile)
+            self.assertLess(top, 0.995, msg=profile)
 
 
 if __name__ == "__main__":

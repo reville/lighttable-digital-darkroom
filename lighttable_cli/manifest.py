@@ -53,7 +53,7 @@ ROUTE_COVERAGE = {
     "history": ["/api/history", "/api/history/state", "/api/history/clear"],
     "versions": ["/api/state"],
     "film / schema": ["/api/options"],
-    "raw-default": ["/api/raw-default"],
+    "raw-default": ["/api/raw-default", "/api/camera-profiles"],
     "presets": ["/api/presets", "/api/presets/import", "/api/presets/export",
                 "/api/presets/community", "/api/presets/community/recipe",
                 "/api/presets/community/install", "/api/presets/submission"],

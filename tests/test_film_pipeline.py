@@ -84,6 +84,16 @@ class FilmParamsTests(unittest.TestCase):
         self.assertTrue(params["io"]["scan_film"])
         self.assertFalse(params["print_render"]["glare"]["active"])
 
+    def test_every_recipe_scans_with_black_and_white_correction(self):
+        for recipe in fp.OUTPUT_RECIPES:
+            rust = fp.rust_params_json({"output_recipe": recipe})["scanner"]
+            python = fp.build_params({"output_recipe": recipe}).scanner
+            for engine in (rust, vars(python)):
+                self.assertTrue(engine["white_correction"], recipe)
+                self.assertTrue(engine["black_correction"], recipe)
+                self.assertEqual(engine["white_level"], 0.98, recipe)
+                self.assertEqual(engine["black_level"], 0.01, recipe)
+
     def test_film_format_and_output_recipe_reach_both_engines(self):
         source = {"film_format": "6x7", "output_recipe": "soft_optical_print"}
         rust = fp.rust_params_json(source)

@@ -2296,7 +2296,8 @@
           "title": "Controles de escaneo",
           "paragraphs": [
             "Scan softness agrega desenfoque de lente a la receta de salida seleccionada. Scan sharpness escala el enfoque de esa receta; Scan sharpening lo habilita o deshabilita.",
-            "Estos son ajustes a recetas de salida modeladas, no selecciones de marcas de escáner medidas. Evalúa la textura fina y la nitidez con el detalle de vista previa completado a 1:1."
+            "Estos son ajustes a recetas de salida modeladas, no selecciones de marcas de escáner medidas. Evalúa la textura fina y la nitidez con el detalle de vista previa completado a 1:1.",
+            "Cada receta de salida escanea con las densidades más oscura y más clara del propio papel niveladas a negro y blanco, como se calibra un escáner de laboratorio para su papel. Sin ese paso, los blancos de una copia se quedarían muy por debajo del blanco y sus negros flotarían, lo que se ve como un render lavado en lugar de como una copia."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Mantenga activado Medidor de escena automático para la medición automática de escena, o desactívelo para establecer usted mismo la exposición de captura.",
             "Expanda Capture & processing para elegir As shot, Daylight, Tungsten o Custom como balance de blancos de captura para una foto RAW.",
             "Para Personalizado, ajuste Temperatura y Tono de captura."
+          ],
+          "tips": [
+            "Un archivo JPEG, HEIF, TIFF u otro archivo procesado ya lleva una curva de tono, así que LightTable lo expande de vuelta hacia la luz de la escena alrededor del gris medio antes de aplicar la película: las altas luces recuperan su rango y las sombras caen donde las tenía la escena, mientras que la exposición en el gris medio no cambia. Los archivos RAW ya son luz de escena y no se expanden."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "serie",
         "iso",
+        "perfil de cámara",
+        "dcp",
+        "adobe standard",
         "fuente",
         "fondo",
         "modo oscuro",
@@ -2852,7 +2859,15 @@
             "Elige la película, flujo de trabajo, perfil y ajustes preestablecidos iniciales.",
             "Para establecer valores predeterminados RAW específicos de cámara, abre una foto RAW y ajusta sus parámetros RAW.",
             "Elige coincidencia por modelo de cámara, número de serie o cámara e ISO, y luego haz clic en Usar ajustes RAW actuales.",
-            "Usa Restablecer en el área Cámara actual para quitar ese valor predeterminado de cámara."
+            "Usa Restablecer en el área Cámara actual para quitar ese valor predeterminado de cámara.",
+            "Para revelar fotos RAW con un perfil de cámara, deje vacía la Carpeta de perfiles de cámara para usar los perfiles que Adobe Camera Raw o Lightroom instalaron en este equipo, o indique otra carpeta de archivos .dcp."
+          ]
+        },
+        {
+          "title": "Perfiles de cámara",
+          "paragraphs": [
+            "La sección Perfil de una foto RAW ofrece un menú Perfil de cámara con los archivos .dcp de la carpeta que nombran su cámara, como Adobe Standard o los estilos que imitan a la cámara. LightTable nunca incluye estos perfiles; pertenecen a su propia instalación de Adobe.",
+            "El perfil se aplica solo al revelado con la película desactivada, y de forma aproximada: sus tablas de tono y saturación y, cuando la incluye, su curva de tono, que entonces sustituye a la curva de revelado Estándar. No se aplican la mezcla de dos iluminantes ni las matrices directas, por lo que un perfil puede verse algo más cálido o más frío que el mismo archivo en Lightroom. El render de película siempre parte de los datos neutros de la escena."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

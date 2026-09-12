@@ -196,6 +196,7 @@ export function installSettings(context) {
       ...presets.map((item) => new Option(item.name, item.name)));
     byId('newPhotoPreset').value = defaults.preset || '';
     byId('rawDefaultMatch').value = pref('rawDefaultMatch', 'model');
+    byId('cameraProfileFolder').value = pref('cameraProfileFolder', '');
     byId('writeSidecars').checked = pref('writeSidecars', false);
     byId('catalogMirror').checked = pref('catalogMirror', true);
     byId('pairRawJPEG').checked = pref('pairRawJPEG', true);
@@ -335,6 +336,10 @@ export function installSettings(context) {
   }
   byId('backupDirectory').addEventListener('change', (event) =>
     savePatch({ backupDirectory: event.target.value.trim() }));
+  byId('cameraProfileFolder').addEventListener('change', async (event) => {
+    await savePatch({ cameraProfileFolder: event.target.value.trim() });
+    window.dispatchEvent(new CustomEvent('lighttable-camera-profiles-changed'));
+  });
   byId('chooseBackupDirectory').onclick = () =>
     sendNative('choosePreferenceFolder', { key: 'backupDirectory' });
   window.addEventListener('lighttable-preference-folder', (event) => {

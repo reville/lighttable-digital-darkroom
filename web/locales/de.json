@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Klicken Sie auf ein Foto, um diese Übersichtszelle aktiv zu machen. Verwenden Sie die Pfeile links und rechts, um zwischen Zellen zu wechseln, und die Pfeile nach oben und unten, um zwischen Zeilen zu wechseln.",
     "invalid Content-Length": "ungültige Content-Length",
     "request body is too large": "Der Anfragekörper ist zu groß",
-    "the folder shown in this window cannot be removed from the catalog": "Der in diesem Fenster gezeigte Ordner kann nicht aus dem Katalog entfernt werden"
+    "the folder shown in this window cannot be removed from the catalog": "Der in diesem Fenster gezeigte Ordner kann nicht aus dem Katalog entfernt werden",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "Eine JPEG-, HEIF-, TIFF- oder andere bearbeitete Datei trägt bereits eine Tonwertkurve. Deshalb dehnt LightTable sie vor der Filmsimulation um das Mittelgrau herum wieder auf Szenenlicht aus: Die Lichter erhalten ihren Umfang zurück, die Schatten fallen dorthin, wo die Szene sie hatte, und die Belichtung bei Mittelgrau bleibt unverändert. RAW-Dateien sind bereits Szenenlicht und werden nicht gedehnt.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "Der Abschnitt „Profil“ eines RAW-Fotos bietet ein Menü „Kameraprofil“ mit den .dcp-Dateien im Ordner, die seine Kamera nennen, etwa Adobe Standard oder die kameraspezifischen Looks. LightTable liefert diese Profile nie mit; sie gehören zu Ihrer eigenen Adobe-Installation.",
+    "Adobe Camera Raw profiles on this computer": "Adobe Camera Raw-Profile auf diesem Computer",
+    "Camera profile": "Kameraprofil",
+    "Camera profile folder": "Ordner für Kameraprofile",
+    "Camera profiles": "Kameraprofile",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "Jedes Ausgaberezept scannt mit den dunkelsten und hellsten Dichten des Papiers auf Schwarz und Weiß abgeglichen, so wie ein Laborscanner auf sein Papier kalibriert wird. Ohne diesen Schritt blieben die Weißtöne eines Abzugs deutlich unter Weiß und seine Schwarztöne würden aufschwimmen, was wie eine ausgewaschene Wiedergabe statt wie ein Abzug wirkt.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "Leer lassen, um die von Adobe Camera Raw oder Lightroom installierten Profile zu verwenden. Der Abschnitt „Profil“ eines RAW-Fotos listet die Profile auf, die seine Kamera nennen.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "Kein Ordner für Kameraprofile gefunden. Wählen Sie einen unter Einstellungen › Standardwerte der Entwicklung.",
+    "No profile in the folder names this camera.": "Kein Profil im Ordner nennt diese Kamera.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "Profile aus Adobe Camera Raw oder Lightroom auf diesem Computer. Werden näherungsweise angewendet, nur auf die Entwicklung mit Film aus.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "Das Profil wird nur auf die Entwicklung mit Film aus angewendet, und zwar näherungsweise: seine Farbton- und Sättigungstabellen sowie, falls vorhanden, seine Tonwertkurve, die dann die Standard-Entwicklungskurve ersetzt. Die Mischung zweier Lichtarten und Vorwärtsmatrizen werden nicht angewendet, sodass ein Profil etwas wärmer oder kühler wirken kann als dieselbe Datei in Lightroom. Die Filmwiedergabe geht immer von den neutralen Szenendaten aus.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "Um RAW-Fotos mit einem Kameraprofil zu entwickeln, lassen Sie „Ordner für Kameraprofile“ leer, um die von Adobe Camera Raw oder Lightroom auf diesem Computer installierten Profile zu verwenden, oder geben Sie einen anderen Ordner mit .dcp-Dateien an.",
+    "adobe standard": "adobe standard",
+    "camera profile": "kameraprofil",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (fehlt)"
   },
   "plurals": {
     " · {count} paired file linked": {

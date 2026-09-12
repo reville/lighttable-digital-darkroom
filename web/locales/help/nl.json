@@ -2296,7 +2296,8 @@
           "title": "Scanbediening",
           "paragraphs": [
             "Scanzachtheid voegt lensonscherpte toe aan het geselecteerde uitvoerrecept. Scan-scherpte schaalt de verscherping van dat recept; Scan-verscherping schakelt deze in of uit.",
-            "Dit zijn aanpassingen aan gemodelleerde uitvoerrecepten, geen selecties van gemeten scannermerken. Beoordeel fijne textuur en scherpte met voltooide 1:1-voorvertoningsdetails."
+            "Dit zijn aanpassingen aan gemodelleerde uitvoerrecepten, geen selecties van gemeten scannermerken. Beoordeel fijne textuur en scherpte met voltooide 1:1-voorvertoningsdetails.",
+            "Elk uitvoerrecept scant met de donkerste en lichtste dichtheden van het papier zelf op zwart en wit gezet, zoals een labscanner op zijn papier wordt gekalibreerd. Zonder die stap zouden de witten van een afdruk ver onder wit blijven en de zwarten gaan zweven, wat oogt als een flets resultaat in plaats van een afdruk."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Houd Scène automatisch meten ingeschakeld voor automatische scenemeting, of zet het uit om de opnamebelichting zelf in te stellen.",
             "Vouw Opname & verwerking uit om Voor opname, Daglicht, Kunstlicht of Aangepaste opname-witbalans te kiezen voor een RAW-foto.",
             "Pas bij Aangepast Temperatuur en Opname-tint aan."
+          ],
+          "tips": [
+            "Een JPEG-, HEIF-, TIFF- of ander verwerkt bestand bevat al een tooncurve, dus LightTable rekt het vóór de filmsimulatie rond middengrijs weer op naar scènelicht: hooglichten krijgen hun bereik terug en schaduwen vallen terug naar waar de scène ze had, terwijl de belichting bij middengrijs onveranderd blijft. RAW-bestanden zijn al scènelicht en worden niet opgerekt."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "serieel",
         "iso",
+        "cameraprofiel",
+        "dcp",
+        "adobe standard",
         "lettertype",
         "achtergrond",
         "lichten uit",
@@ -2852,7 +2859,15 @@
             "Kies de startinstellingen voor Film, workflow, profiel en voorinstelling.",
             "Om cameraspecifieke raw-standaarden in te stellen, open je een raw-foto en pas je de raw-instellingen aan.",
             "Kies afstemmen op cameramodel, serienummer of camera en ISO en klik daarna op Huidige RAW-instellingen gebruiken.",
-            "Gebruik Opnieuw instellen in het gebied Huidige camera om die camera-standaard te verwijderen."
+            "Gebruik Opnieuw instellen in het gebied Huidige camera om die camera-standaard te verwijderen.",
+            "Om RAW-foto’s met een cameraprofiel te ontwikkelen, laat je Map met cameraprofielen leeg om de profielen te gebruiken die Adobe Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of geef je een andere map met .dcp-bestanden op."
+          ]
+        },
+        {
+          "title": "Cameraprofielen",
+          "paragraphs": [
+            "Het gedeelte Profiel van een RAW-foto biedt een menu Cameraprofiel met de .dcp-bestanden in de map die de camera noemen, zoals Adobe Standard of de camera-imiterende looks. LightTable levert deze profielen nooit mee; ze horen bij je eigen Adobe-installatie.",
+            "Het profiel wordt alleen toegepast op de ontwikkeling met Film uit, en bij benadering: zijn tint- en verzadigingstabellen en, als het er een bevat, zijn tooncurve, die dan de Standaard-ontwikkelcurve vervangt. Menging van twee lichtbronnen en voorwaartse matrices worden niet toegepast, dus een profiel kan iets warmer of koeler ogen dan hetzelfde bestand in Lightroom. De filmweergave begint altijd bij de neutrale scènegegevens."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

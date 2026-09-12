@@ -2296,7 +2296,8 @@
           "title": "Contrôles de numérisation",
           "paragraphs": [
             "La douceur de numérisation ajoute un flou d’objectif à la recette de sortie sélectionnée. La netteté de numérisation ajuste la netteté de cette recette ; l’affûtage de numérisation l’active ou la désactive.",
-            "Il s’agit d’ajustements de recettes de sortie modélisées, et non de sélections de marques de scanners mesurées. Évaluez la texture fine et la netteté avec un aperçu 1:1 détaillé terminé."
+            "Il s’agit d’ajustements de recettes de sortie modélisées, et non de sélections de marques de scanners mesurées. Évaluez la texture fine et la netteté avec un aperçu 1:1 détaillé terminé.",
+            "Chaque recette de sortie numérise avec les densités la plus sombre et la plus claire du papier calées sur le noir et le blanc, comme un scanner de laboratoire est calibré pour son papier. Sans cette étape, les blancs d’un tirage resteraient bien en deçà du blanc et ses noirs flotteraient, ce qui donne un rendu délavé plutôt qu’un tirage."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Laissez Mètre scène activé automatiquement pour la mesure automatique de la scène, ou désactivez-le pour définir vous-même l’exposition de capture.",
             "Développez Capture & processing pour choisir As shot, Daylight, Tungsten ou Custom comme balance des blancs de capture pour une photo RAW.",
             "Pour Personnalisé, ajuster Température et Teinte de capture."
+          ],
+          "tips": [
+            "Un fichier JPEG, HEIF, TIFF ou un autre fichier traité porte déjà une courbe de tonalité ; LightTable le ramène donc vers la lumière de la scène autour du gris moyen avant la simulation du film : les hautes lumières retrouvent leur plage, les ombres retombent là où la scène les avait, et l’exposition au gris moyen reste inchangée. Les fichiers RAW sont déjà de la lumière de scène et ne sont pas étendus."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "RAW",
         "numéro de série",
         "iso",
+        "profil d’appareil photo",
+        "dcp",
+        "adobe standard",
         "police",
         "arrière-plan",
         "éclairage réduit",
@@ -2852,7 +2859,15 @@
             "Choisissez la pellicule de départ, le flux de travail, le profil et les réglages de préréglage.",
             "Pour définir des valeurs par défaut RAW spécifiques à l’appareil photo, ouvrez une photo RAW et ajustez ses réglages RAW.",
             "Choisissez la correspondance par modèle d’appareil photo, numéro de série, ou appareil photo et ISO, puis cliquez sur Utiliser les réglages RAW actuels.",
-            "Utilisez Réinitialiser dans la zone Appareil photo actuel pour supprimer ce réglage par défaut de l’appareil photo."
+            "Utilisez Réinitialiser dans la zone Appareil photo actuel pour supprimer ce réglage par défaut de l’appareil photo.",
+            "Pour développer des photos RAW avec un profil d’appareil photo, laissez le Dossier des profils d’appareil photo vide afin d’utiliser les profils installés par Adobe Camera Raw ou Lightroom sur cet ordinateur, ou indiquez un autre dossier de fichiers .dcp."
+          ]
+        },
+        {
+          "title": "Profils d’appareil photo",
+          "paragraphs": [
+            "La section Profil d’une photo RAW propose un menu Profil d’appareil photo avec les fichiers .dcp du dossier qui nomment son appareil, comme Adobe Standard ou les rendus imitant l’appareil. LightTable ne fournit jamais ces profils ; ils appartiennent à votre propre installation Adobe.",
+            "Le profil s’applique uniquement au développement avec Film désactivé, et de façon approximative : ses tables de teinte et de saturation et, lorsqu’il en contient une, sa courbe de tonalité, qui remplace alors la courbe de développement Standard. Le mélange à deux illuminants et les matrices directes ne sont pas appliqués, si bien qu’un profil peut donner un rendu légèrement plus chaud ou plus froid que le même fichier dans Lightroom. Le rendu film part toujours des données neutres de la scène."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

@@ -1690,6 +1690,7 @@ mod resident_cache_tests {
         };
         let spec = film_tuning::Specification {
             version: 1, green_amount: 0.9, input_cctf_decoding: false,
+            display_expansion: 0.0,
         };
         let first = input.prepare_tuned(spec, bytes * 2).unwrap();
         let second = input.prepare_tuned(spec, bytes * 2).unwrap();

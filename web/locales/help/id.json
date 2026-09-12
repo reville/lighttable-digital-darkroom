@@ -2296,7 +2296,8 @@
           "title": "Kontrol pindai",
           "paragraphs": [
             "Scan softness menambahkan blur lensa ke resep keluaran yang dipilih. Scan sharpness menskalakan penajaman resep tersebut; Scan sharpening mengaktifkan atau menonaktifkannya.",
-            "Ini adalah penyesuaian pada resep keluaran yang dimodelkan, bukan pemilihan merek pemindai yang diukur. Evaluasi tekstur halus dan ketajaman dengan detail pratinjau 1:1 yang selesai."
+            "Ini adalah penyesuaian pada resep keluaran yang dimodelkan, bukan pemilihan merek pemindai yang diukur. Evaluasi tekstur halus dan ketajaman dengan detail pratinjau 1:1 yang selesai.",
+            "Setiap resep keluaran memindai dengan kerapatan tergelap dan terterang kertas itu sendiri yang diratakan ke hitam dan putih, seperti pemindai laboratorium dikalibrasi ke kertasnya. Tanpa langkah itu, warna putih cetakan akan berhenti jauh di bawah putih dan warna hitamnya mengambang, yang terlihat seperti hasil pudar alih-alih cetakan."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Biarkan Meter scene otomatis tetap aktif untuk pengukuran scene otomatis, atau nonaktifkan untuk mengatur sendiri eksposur tangkapan.",
             "Perluas Capture & processing untuk memilih As shot, Daylight, Tungsten, atau Custom capture white balance untuk foto RAW.",
             "Untuk Kustom, sesuaikan Temperature dan tint Capture."
+          ],
+          "tips": [
+            "File JPEG, HEIF, TIFF, atau file terproses lainnya sudah membawa kurva tone, jadi LightTable memperluasnya kembali ke cahaya adegan di sekitar abu-abu tengah sebelum simulasi film: sorotan mendapatkan kembali rentangnya dan bayangan turun ke tempat adegan menempatkannya, sementara eksposur di abu-abu tengah tidak berubah. File RAW sudah berupa cahaya adegan dan tidak diperluas."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "serial",
         "iso",
+        "profil kamera",
+        "dcp",
+        "adobe standard",
         "font",
         "latar belakang",
         "mode redup",
@@ -2852,7 +2859,15 @@
             "Pilih Film awal, alur kerja, profil, dan pengaturan preset.",
             "Untuk mengatur default RAW khusus kamera, buka foto RAW dan sesuaikan pengaturan RAW-nya.",
             "Pilih pencocokan berdasarkan model kamera, nomor serial, atau kamera dan ISO, lalu klik Use current RAW settings.",
-            "Gunakan Atur Ulang di area Kamera Saat Ini untuk menghapus default kamera tersebut."
+            "Gunakan Atur Ulang di area Kamera Saat Ini untuk menghapus default kamera tersebut.",
+            "Untuk mengembangkan foto RAW dengan profil kamera, biarkan Folder profil kamera kosong agar menggunakan profil yang dipasang Adobe Camera Raw atau Lightroom di komputer ini, atau masukkan folder lain berisi file .dcp."
+          ]
+        },
+        {
+          "title": "Profil kamera",
+          "paragraphs": [
+            "Bagian Profil pada foto RAW menyediakan menu Profil kamera dengan file .dcp di folder yang menyebutkan nama kameranya, seperti Adobe Standard atau tampilan yang meniru kamera. LightTable tidak pernah menyertakan profil ini; profil tersebut milik instalasi Adobe Anda sendiri.",
+            "Profil hanya diterapkan pada pengembangan dengan Film mati, dan secara kira-kira: tabel hue dan saturasinya serta, jika ada, kurva tone-nya, yang kemudian menggantikan kurva pengembangan Standar. Pencampuran dua iluminan dan matriks maju tidak diterapkan, sehingga sebuah profil bisa tampak sedikit lebih hangat atau lebih dingin daripada file yang sama di Lightroom. Rendering film selalu dimulai dari data adegan netral."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

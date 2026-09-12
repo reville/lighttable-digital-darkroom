@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "사진을 클릭해 해당 서베이 셀을 활성화하세요. 셀 사이를 이동하려면 왼쪽 및 오른쪽 화살표를, 행 사이를 이동하려면 위쪽 및 아래쪽 화살표를 사용하세요.",
     "invalid Content-Length": "Content-Length가 잘못되었습니다",
     "request body is too large": "요청 본문이 너무 큽니다",
-    "the folder shown in this window cannot be removed from the catalog": "이 창에 표시된 폴더는 카탈로그에서 제거할 수 없습니다"
+    "the folder shown in this window cannot be removed from the catalog": "이 창에 표시된 폴더는 카탈로그에서 제거할 수 없습니다",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "JPEG, HEIF, TIFF 등 처리된 파일에는 이미 톤 커브가 적용되어 있으므로 LightTable은 필름 처리 전에 중간 회색을 기준으로 장면의 빛으로 되돌립니다. 하이라이트는 원래 범위를 되찾고 그림자는 장면에 있던 위치로 내려가며 중간 회색의 노출은 변하지 않습니다. RAW 파일은 이미 장면의 빛이므로 확장되지 않습니다.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "RAW 사진의 프로필 섹션에는 폴더에서 해당 카메라 이름이 포함된 .dcp 파일(예: Adobe Standard 또는 카메라 재현 룩)을 보여 주는 카메라 프로필 메뉴가 있습니다. LightTable은 이러한 프로필을 제공하지 않습니다. 사용자의 Adobe 설치에 속한 파일입니다.",
+    "Adobe Camera Raw profiles on this computer": "이 컴퓨터의 Adobe Camera Raw 프로필",
+    "Camera profile": "카메라 프로필",
+    "Camera profile folder": "카메라 프로필 폴더",
+    "Camera profiles": "카메라 프로필",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "모든 출력 레시피는 랩 스캐너가 인화지에 맞게 보정되듯이 인화지 자체의 가장 어두운 농도와 가장 밝은 농도를 검정과 흰색에 맞춰 스캔합니다. 이 단계가 없으면 인화물의 흰색은 흰색에 한참 못 미치고 검정은 떠 버려서 인화물이 아니라 바랜 결과물처럼 보입니다.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "비워 두면 Adobe Camera Raw 또는 Lightroom이 설치한 프로필을 사용합니다. RAW 사진의 프로필 섹션에 해당 카메라 이름이 포함된 프로필이 나열됩니다.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "카메라 프로필 폴더를 찾을 수 없습니다. 설정 › 현상 기본값에서 선택하세요.",
+    "No profile in the folder names this camera.": "폴더에 이 카메라 이름이 포함된 프로필이 없습니다.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "이 컴퓨터의 Adobe Camera Raw 또는 Lightroom 프로필입니다. 필름 끔 현상에만 근사적으로 적용됩니다.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "프로필은 필름 끔 현상에만 근사적으로 적용됩니다. 색조 및 채도 테이블과, 포함된 경우 톤 커브가 표준 현상 커브를 대신합니다. 이중 광원 혼합과 정방향 매트릭스는 적용되지 않으므로 같은 파일을 Lightroom에서 볼 때보다 약간 따뜻하거나 차갑게 보일 수 있습니다. 필름 렌더링은 항상 중립적인 장면 데이터에서 시작합니다.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "카메라 프로필로 RAW 사진을 현상하려면 카메라 프로필 폴더를 비워 두어 이 컴퓨터에 Adobe Camera Raw 또는 Lightroom이 설치한 프로필을 사용하거나 .dcp 파일이 있는 다른 폴더를 입력하세요.",
+    "adobe standard": "adobe standard",
+    "camera profile": "카메라 프로필",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (없음)"
   },
   "plurals": {
     " · {count} paired file linked": {

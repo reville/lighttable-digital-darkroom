@@ -22,6 +22,19 @@ VERSION = "1"
 DESCRIPTION = ("LightTable's interpretation, adjusted using reference "
                "photographs and color checks. Not calibrated to a measured film scan.")
 
+# Processed sources (JPEG, HEIC, TIFF) arrive display-referred: a camera or an
+# editor has already applied a tone curve, so their mid-tones are lifted and
+# their highlights are packed into the top of the range. The film model expects
+# scene light and adds its own toe and shoulder, which is why a finished JPEG
+# rendered as-is comes out flat and grey. Before filming, the expansion below
+# raises the linear values to this power around middle grey: grey stays put,
+# shadows fall back to where a scene would have them, and highlights extend
+# above 1.0 as scene highlights do. Metering is unaffected at middle grey, so
+# an edit with a fixed print exposure keeps its brightness. RAW decodes are
+# scene-linear already and are never expanded.
+DISPLAY_EXPANSION = 1.8
+MIDDLE_GREY_LINEAR = 0.18
+
 # Bradford-adapted linear ProPhoto D50 -> linear sRGB D65, as used by
 # colour-science. Only the inverse's red column is needed for this hue interval.
 TO_SRGB = np.asarray([
@@ -38,6 +51,7 @@ TUNING_DIGEST = hashlib.sha256(json.dumps({
     "version": VERSION, "stocks": TUNINGS, "matrix": TO_SRGB.tolist(),
     "red": FROM_SRGB_RED.tolist(), "luminance": PROPHOTO_Y.tolist(),
     "algorithm": "source-yellow-green-contraction-v1",
+    "display_expansion": DISPLAY_EXPANSION, "middle_grey": MIDDLE_GREY_LINEAR,
 }, sort_keys=True).encode()).hexdigest()
 
 
@@ -49,13 +63,27 @@ def profile_tunings(stock: str) -> list[dict]:
 
 
 def specification(params: dict) -> dict | None:
-    if (params.get("profile_enabled", True) is False
-            or params.get("film_tuning", "original") != "lighttable"
-            or str(params.get("film_tuning_version", VERSION)) != VERSION
-            or params.get("stock") not in TUNINGS):
+    """The input preparation both engines apply before filming, or None.
+
+    Two independent parts share one specification so the pixels are prepared
+    exactly once: the versioned green interpretation, which only the tuned
+    stocks carry, and the display-referred expansion, which every processed
+    source needs and no RAW decode does. A RAW source with an untuned stock
+    is the one case that needs nothing, and returns None so the engines take
+    their original path byte for byte.
+    """
+    if params.get("profile_enabled", True) is False:
         return None
-    return {"version": 1, **TUNINGS[params["stock"]],
-            "input_cctf_decoding": not params.get("linear_input", False)}
+    tuned = (params.get("film_tuning", "original") == "lighttable"
+             and str(params.get("film_tuning_version", VERSION)) == VERSION
+             and params.get("stock") in TUNINGS)
+    linear_input = bool(params.get("linear_input", False))
+    if not tuned and linear_input:
+        return None
+    return {"version": 1,
+            "green_amount": TUNINGS[params["stock"]]["green_amount"] if tuned else 0.0,
+            "input_cctf_decoding": not linear_input,
+            "display_expansion": 0.0 if linear_input else DISPLAY_EXPANSION}
 
 
 def _smooth(value):
@@ -75,6 +103,9 @@ def prepare_input(image: np.ndarray, spec: dict) -> np.ndarray:
     amount = float(spec["green_amount"])
     if not np.isfinite(amount) or not 0 <= amount < 1:
         raise ValueError("Invalid LightTable green amount")
+    expansion = float(spec.get("display_expansion", 0.0))
+    if not np.isfinite(expansion) or expansion < 0 or expansion > 4:
+        raise ValueError("Invalid LightTable display expansion")
     source = np.asarray(image, dtype=np.float32)
     if source.ndim != 3 or source.shape[-1] != 3:
         raise ValueError("Film tuning requires RGB input")
@@ -88,6 +119,13 @@ def prepare_input(image: np.ndarray, spec: dict) -> np.ndarray:
         if spec.get("input_cctf_decoding", False):
             linear = np.where(linear < 0.03125, linear / 16.0,
                               np.maximum(linear, 0.0) ** 1.8)
+        if expansion > 0:
+            # Anchored at middle grey, so exposure is unchanged and highlights
+            # are free to exceed 1.0. Non-positive values are left alone.
+            linear = np.where(
+                linear > 0,
+                MIDDLE_GREY_LINEAR * (np.maximum(linear, 0.0) / MIDDLE_GREY_LINEAR) ** expansion,
+                linear)
         rgb = linear @ TO_SRGB.T
         r, g, b = rgb.T
         delta = g - b

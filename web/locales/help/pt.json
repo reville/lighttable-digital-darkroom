@@ -2296,7 +2296,8 @@
           "title": "Controles de digitalização",
           "paragraphs": [
             "A suavidade da digitalização adiciona desfoque de lente à receita de saída selecionada. A nitidez da digitalização escala a nitidez dessa receita; o acerto de nitidez da digitalização a ativa ou desativa.",
-            "Estes são ajustes de receitas de saída modeladas, não seleções de marcas de scanner medidas. Avalie textura fina e nitidez com a pré-visualização completa em 1:1."
+            "Estes são ajustes de receitas de saída modeladas, não seleções de marcas de scanner medidas. Avalie textura fina e nitidez com a pré-visualização completa em 1:1.",
+            "Cada receita de saída digitaliza com as densidades mais escura e mais clara do próprio papel niveladas para preto e branco, do jeito que um scanner de laboratório é calibrado para seu papel. Sem essa etapa, os brancos de uma cópia ficariam bem abaixo do branco e os pretos flutuariam, o que parece um render desbotado em vez de uma cópia."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Mantenha Fotometria de cena automática ativado para fotometria de cena automática, ou desative-o para definir você mesmo a exposição de captura.",
             "Expanda Captura e processamento para escolher Como capturado, Luz do dia, Tungstênio ou Personalizado para o balanço de branco de captura de uma foto RAW.",
             "Para Personalizado, ajuste Temperatura e a tinta de Captura."
+          ],
+          "tips": [
+            "Um arquivo JPEG, HEIF, TIFF ou outro arquivo processado já traz uma curva de tom, então o LightTable o expande de volta para a luz da cena em torno do cinza médio antes de aplicar o filme: os realces recuperam sua faixa e as sombras caem para onde a cena as tinha, enquanto a exposição no cinza médio não muda. Arquivos RAW já são luz de cena e não são expandidos."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "serial",
         "iso",
+        "perfil de câmera",
+        "dcp",
+        "adobe standard",
         "fonte",
         "plano de fundo",
         "modo escuro",
@@ -2852,7 +2859,15 @@
             "Escolha as configurações iniciais de Filme, fluxo de trabalho, perfil e predefinição.",
             "Para definir padrões RAW específicos da câmera, abra uma foto RAW e ajuste suas configurações RAW.",
             "Escolha a correspondência por modelo de câmera, número serial ou câmera e ISO e, depois, clique em Use current RAW settings.",
-            "Use Redefinir na área Câmera atual para remover esse padrão de câmera."
+            "Use Redefinir na área Câmera atual para remover esse padrão de câmera.",
+            "Para revelar fotos RAW com um perfil de câmera, deixe a Pasta de perfis de câmera vazia para usar os perfis que o Adobe Camera Raw ou o Lightroom instalaram neste computador, ou informe outra pasta com arquivos .dcp."
+          ]
+        },
+        {
+          "title": "Perfis de câmera",
+          "paragraphs": [
+            "A seção Perfil de uma foto RAW oferece um menu Perfil de câmera com os arquivos .dcp da pasta que nomeiam sua câmera, como Adobe Standard ou os estilos que imitam a câmera. O LightTable nunca inclui esses perfis; eles pertencem à sua própria instalação da Adobe.",
+            "O perfil é aplicado apenas à revelação com o filme desativado, e de forma aproximada: suas tabelas de matiz e saturação e, quando a inclui, sua curva de tom, que então substitui a curva de revelação Padrão. A mistura de dois iluminantes e as matrizes diretas não são aplicadas, então um perfil pode parecer um pouco mais quente ou mais frio do que o mesmo arquivo no Lightroom. O render do filme sempre parte dos dados neutros da cena."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

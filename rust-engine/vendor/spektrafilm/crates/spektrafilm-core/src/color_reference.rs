@@ -100,6 +100,7 @@ impl ColorReference {
         params: &RuntimeParams,
         print_illuminant: &[f64],
         print_exposure_factor: f64,
+        preflash: [f64; 3],
     ) -> Self {
         let white_corr = params.scanner.white_correction;
         let black_corr = params.scanner.black_correction;
@@ -115,6 +116,7 @@ impl ColorReference {
                 params,
                 print_illuminant,
                 print_exposure_factor,
+                preflash,
                 white_corr,
                 black_corr,
             )
@@ -200,6 +202,7 @@ impl ColorReference {
         params: &RuntimeParams,
         print_illuminant: &[f64],
         print_exposure_factor: f64,
+        preflash: [f64; 3],
         white_corr: bool,
         black_corr: bool,
     ) -> Self {
@@ -211,7 +214,10 @@ impl ColorReference {
         let cmy_film_white = nanmax_per_channel(&film_curves);
 
         // Enlarger spectral exposure of those references
-        // (`_film_cmy_to_print_log_raw`, sans the unported preflash term).
+        // (`_film_cmy_to_print_log_raw`), including the preflash raw term
+        // Python adds before its log10: the references see the same fogging
+        // light the picture does, or a preflashed print corrects to the
+        // wrong black.
         let film_channel_density = profile_channel_density(film);
         let film_base_density = film.data.base_density.clone();
         let print_sensitivity = profile_sensitivity(print);
@@ -233,7 +239,8 @@ impl ColorReference {
             );
             let mut out = [0.0f64; 3];
             for c in 0..3 {
-                out[c] = ((raw[c] * print_exposure_factor).max(0.0) + 1e-10).log10();
+                out[c] = ((raw[c] * print_exposure_factor + preflash[c]).max(0.0) + 1e-10)
+                    .log10();
             }
             out
         };
@@ -534,6 +541,7 @@ mod parity_tests {
             &pipeline.params,
             pipeline.print_illuminant_slice(),
             pipeline.print_exposure_factor(),
+            pipeline.preflash_raw(),
         );
 
         assert!(cref.has_remap(), "print path must build a luminance remap");

@@ -2296,7 +2296,8 @@
           "title": "Scann-Steuerungen",
           "paragraphs": [
             "Scan-Weichheit fügt dem ausgewählten Ausgabe-Rezept Objektivunschärfe hinzu. Scan-Schärfe skaliert die Schärfung dieses Rezepts; Scan-Schärfung schaltet sie ein oder aus.",
-            "Dies sind Anpassungen an modellierten Ausgabe-Rezepten, nicht Auswahlen gemessener Scanner-Marken. Beurteilen Sie feine Struktur und Schärfe mit fertig geladenen 1:1-Vorschau-Details."
+            "Dies sind Anpassungen an modellierten Ausgabe-Rezepten, nicht Auswahlen gemessener Scanner-Marken. Beurteilen Sie feine Struktur und Schärfe mit fertig geladenen 1:1-Vorschau-Details.",
+            "Jedes Ausgaberezept scannt mit den dunkelsten und hellsten Dichten des Papiers auf Schwarz und Weiß abgeglichen, so wie ein Laborscanner auf sein Papier kalibriert wird. Ohne diesen Schritt blieben die Weißtöne eines Abzugs deutlich unter Weiß und seine Schwarztöne würden aufschwimmen, was wie eine ausgewaschene Wiedergabe statt wie ein Abzug wirkt."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Lassen Sie Szene-Messung automatisch aktiviert, wenn die automatische Szenenmessung verwendet werden soll, oder deaktivieren Sie sie, um die Belichtung selbst festzulegen.",
             "Erweitern Sie Aufnahme & Verarbeitung, um Für Aufnahme, Tageslicht, Kunstlicht oder Benutzerdefiniert für den Weißabgleich eines RAW-Fotos zu wählen.",
             "Bei Benutzerdefiniert Temperatur und Aufnahme-Tonung anpassen."
+          ],
+          "tips": [
+            "Eine JPEG-, HEIF-, TIFF- oder andere bearbeitete Datei trägt bereits eine Tonwertkurve. Deshalb dehnt LightTable sie vor der Filmsimulation um das Mittelgrau herum wieder auf Szenenlicht aus: Die Lichter erhalten ihren Umfang zurück, die Schatten fallen dorthin, wo die Szene sie hatte, und die Belichtung bei Mittelgrau bleibt unverändert. RAW-Dateien sind bereits Szenenlicht und werden nicht gedehnt."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "RAW",
         "Seriennummer",
         "iso",
+        "kameraprofil",
+        "dcp",
+        "adobe standard",
         "Schriftart",
         "Hintergrund",
         "Licht aus",
@@ -2852,7 +2859,15 @@
             "Wählen Sie die Ausgangs-Einstellungen für Film, Arbeitsablauf, Profil und Vorgabe.",
             "Um kamerabezogene RAW-Standardeinstellungen festzulegen, öffnen Sie ein RAW-Foto und passen Sie dessen RAW-Einstellungen an.",
             "Wählen Sie die Übereinstimmung nach Kameramodell, Seriennummer oder Kamera und ISO und klicken Sie dann auf Use current RAW settings.",
-            "Verwenden Sie Zurücksetzen im Bereich Aktuelle Kamera, um diese Kamera-Standardeinstellung zu entfernen."
+            "Verwenden Sie Zurücksetzen im Bereich Aktuelle Kamera, um diese Kamera-Standardeinstellung zu entfernen.",
+            "Um RAW-Fotos mit einem Kameraprofil zu entwickeln, lassen Sie „Ordner für Kameraprofile“ leer, um die von Adobe Camera Raw oder Lightroom auf diesem Computer installierten Profile zu verwenden, oder geben Sie einen anderen Ordner mit .dcp-Dateien an."
+          ]
+        },
+        {
+          "title": "Kameraprofile",
+          "paragraphs": [
+            "Der Abschnitt „Profil“ eines RAW-Fotos bietet ein Menü „Kameraprofil“ mit den .dcp-Dateien im Ordner, die seine Kamera nennen, etwa Adobe Standard oder die kameraspezifischen Looks. LightTable liefert diese Profile nie mit; sie gehören zu Ihrer eigenen Adobe-Installation.",
+            "Das Profil wird nur auf die Entwicklung mit Film aus angewendet, und zwar näherungsweise: seine Farbton- und Sättigungstabellen sowie, falls vorhanden, seine Tonwertkurve, die dann die Standard-Entwicklungskurve ersetzt. Die Mischung zweier Lichtarten und Vorwärtsmatrizen werden nicht angewendet, sodass ein Profil etwas wärmer oder kühler wirken kann als dieselbe Datei in Lightroom. Die Filmwiedergabe geht immer von den neutralen Szenendaten aus."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

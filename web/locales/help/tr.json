@@ -2296,7 +2296,8 @@
           "title": "Tarama kontrolleri",
           "paragraphs": [
             "Tara yumuşaklığı, seçili çıkış iş akışına objektif bulanıklığı ekler. Tara keskinliği, o iş akışının keskinleştirmesini ölçekler; Tara keskinleştirme ise bunu etkinleştirir ya da devre dışı bırakır.",
-            "Bunlar, ölçülmüş tarayıcı markalarının seçimleri değil, modellenmiş çıkış iş akışlarına yapılan ayarlardır. Bitmiş 1:1 önizleme ayrıntısıyla ince doku ve keskinliği değerlendirin."
+            "Bunlar, ölçülmüş tarayıcı markalarının seçimleri değil, modellenmiş çıkış iş akışlarına yapılan ayarlardır. Bitmiş 1:1 önizleme ayrıntısıyla ince doku ve keskinliği değerlendirin.",
+            "Her çıkış reçetesi, kâğıdın kendi en koyu ve en açık yoğunluklarını siyah ile beyaza dengelenmiş şekilde tarar; bir laboratuvar tarayıcısı kâğıdına böyle kalibre edilir. Bu adım olmasa bir baskının beyazları beyazın çok gerisinde kalır, siyahları yüzer ve sonuç bir baskı gibi değil, soluk bir görüntü gibi görünürdü."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Otomatik sahne ölçümü için Sahne ölçümünü otomatik kullan seçeneğini açık tutun veya çekim pozlamasını kendiniz ayarlamak için kapatın.",
             "Bir RAW fotoğraf için Çekim ve işleme bölümünü genişletip Çekim, Gün ışığı, Tungsten veya Özel çekim beyaz dengesini seçin.",
             "Özel için, Sıcaklık ve Yakalama tonunu ayarlayın."
+          ],
+          "tips": [
+            "Bir JPEG, HEIF, TIFF veya başka bir işlenmiş dosya zaten bir ton eğrisi taşır; bu yüzden LightTable film uygulamadan önce onu orta gri etrafında sahne ışığına geri genişletir: parlak alanlar aralığını geri kazanır, gölgeler sahnedeki yerlerine iner ve orta gride pozlama değişmez. RAW dosyaları zaten sahne ışığıdır ve genişletilmez."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "seri",
         "iso",
+        "kamera profili",
+        "dcp",
+        "adobe standard",
         "yazı tipi",
         "arka plan",
         "ışıklar kapalı",
@@ -2852,7 +2859,15 @@
             "Başlangıç Film’i, iş akışını, profili ve hazır ayar ayarlarını seçin.",
             "Kameraya özgü RAW varsayılanlarını ayarlamak için bir RAW fotoğrafı açın ve RAW ayarlarını düzenleyin.",
             "Kamera modeli, seri numarası veya kamera ve ISO ile eşleştirmeyi seçin, ardından Use current RAW settings’e tıklayın.",
-            "Geçerli kamera alanında Sıfırla’yı kullanarak o kameranın varsayılanını kaldırın."
+            "Geçerli kamera alanında Sıfırla’yı kullanarak o kameranın varsayılanını kaldırın.",
+            "RAW fotoğrafları bir kamera profiliyle geliştirmek için, bu bilgisayarda Adobe Camera Raw veya Lightroom tarafından kurulan profilleri kullanmak üzere Kamera profili klasörünü boş bırakın ya da .dcp dosyaları içeren başka bir klasör girin."
+          ]
+        },
+        {
+          "title": "Kamera profilleri",
+          "paragraphs": [
+            "Bir RAW fotoğrafın Profil bölümü, klasördeki ve kamerasını adlandıran .dcp dosyalarını içeren bir Kamera profili menüsü sunar; örneğin Adobe Standard veya kamerayı taklit eden görünümler. LightTable bu profilleri asla dağıtmaz; onlar kendi Adobe kurulumunuza aittir.",
+            "Profil yalnızca film kapalıyken geliştirmeye ve yaklaşık olarak uygulanır: ton ve doygunluk tabloları ile, varsa, Standart geliştirme eğrisinin yerini alan ton eğrisi. Çift ışık kaynağı karışımı ve ileri matrisler uygulanmaz; bu yüzden bir profil, aynı dosyanın Lightroom’daki hâlinden biraz daha sıcak veya soğuk görünebilir. Film işleme her zaman nötr sahne verilerinden başlar."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

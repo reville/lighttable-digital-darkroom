@@ -2257,7 +2257,8 @@
           "title": "Scan controls",
           "paragraphs": [
             "Scan softness adds lens blur to the selected output recipe. Scan sharpness scales that recipe’s sharpening; Scan sharpening enables or disables it.",
-            "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail."
+            "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.",
+            "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print."
           ]
         }
       ],
@@ -2398,6 +2399,9 @@
             "Keep Meter scene automatically enabled for automatic scene metering, or turn it off to set the capture exposure yourself.",
             "Expand Capture & processing to choose As shot, Daylight, Tungsten, or Custom capture white balance for a RAW photo.",
             "For Custom, adjust Temperature and Capture tint."
+          ],
+          "tips": [
+            "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded."
           ]
         },
         {
@@ -2774,6 +2778,9 @@
         "raw",
         "serial",
         "iso",
+        "camera profile",
+        "dcp",
+        "adobe standard",
         "font",
         "background",
         "lights out",
@@ -2801,7 +2808,15 @@
             "Choose the starting Film, workflow, profile, and preset settings.",
             "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.",
             "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.",
-            "Use Reset in the Current camera area to remove that camera default."
+            "Use Reset in the Current camera area to remove that camera default.",
+            "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files."
+          ]
+        },
+        {
+          "title": "Camera profiles",
+          "paragraphs": [
+            "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.",
+            "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data."
           ]
         },
         {

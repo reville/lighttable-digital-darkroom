@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Щелкните фото, чтобы сделать эту ячейку обзора активной. Используйте стрелки влево и вправо для перехода между ячейками, а стрелки вверх и вниз — для перехода между строками.",
     "invalid Content-Length": "недопустимый Content-Length",
     "request body is too large": "тело запроса слишком велико",
-    "the folder shown in this window cannot be removed from the catalog": "папку, показанную в этом окне, нельзя удалить из каталога"
+    "the folder shown in this window cannot be removed from the catalog": "папку, показанную в этом окне, нельзя удалить из каталога",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "Файл JPEG, HEIF, TIFF или другой обработанный файл уже содержит тоновую кривую, поэтому перед имитацией плёнки LightTable возвращает его к свету сцены относительно среднего серого: света снова получают свой диапазон, тени опускаются туда, где они были в сцене, а экспозиция в среднем сером не меняется. Файлы RAW уже являются светом сцены и не расширяются.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "Раздел «Профиль» RAW-фотографии предлагает меню «Профиль камеры» с файлами .dcp из папки, в названии которых указана её камера, например Adobe Standard или стили, повторяющие камеру. LightTable никогда не поставляет эти профили; они принадлежат вашей собственной установке Adobe.",
+    "Adobe Camera Raw profiles on this computer": "Профили Adobe Camera Raw на этом компьютере",
+    "Camera profile": "Профиль камеры",
+    "Camera profile folder": "Папка профилей камеры",
+    "Camera profiles": "Профили камеры",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "Каждый рецепт вывода сканирует так, что самая тёмная и самая светлая плотности самой бумаги выравниваются к чёрному и белому, как лабораторный сканер калибруется под свою бумагу. Без этого шага белые тона отпечатка остались бы далеко от белого, а чёрные всплыли бы, и результат выглядел бы выцветшим, а не как отпечаток.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "Оставьте пустым, чтобы использовать профили, установленные Adobe Camera Raw или Lightroom. Раздел «Профиль» RAW-фотографии показывает те, в названии которых указана её камера.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "Папка профилей камеры не найдена. Выберите её в Настройки › Настройки по умолчанию для проявки.",
+    "No profile in the folder names this camera.": "Ни в одном профиле в папке не указана эта камера.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "Профили из Adobe Camera Raw или Lightroom на этом компьютере. Применяются приблизительно и только к проявке с выключенной плёнкой.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "Профиль применяется только к проявке с выключенной плёнкой, причём приблизительно: его таблицы оттенка и насыщенности и, если она есть, его тоновая кривая, которая тогда заменяет стандартную кривую проявки. Смешение двух источников света и прямые матрицы не применяются, поэтому профиль может выглядеть чуть теплее или холоднее, чем тот же файл в Lightroom. Рендеринг плёнки всегда начинается с нейтральных данных сцены.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "Чтобы проявлять RAW-фотографии с профилем камеры, оставьте «Папка профилей камеры» пустой, чтобы использовать профили, установленные на этом компьютере Adobe Camera Raw или Lightroom, или укажите другую папку с файлами .dcp.",
+    "adobe standard": "adobe standard",
+    "camera profile": "профиль камеры",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (отсутствует)"
   },
   "plurals": {
     " · {count} paired file linked": {

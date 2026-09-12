@@ -134,10 +134,6 @@ TRACKED_DEFECTS = {
         "is simply scaled far below anything a person can see. (Zero effect on "
         "a reversal stock is separate and intended: reversal routes straight "
         "to the scanner and skips print-stage glare.)",
-    "film.glare_on":
-        "The same scaling as film.glare_amount: switching scanner glare on at "
-        "its default amount changes the render by under one code value, so the "
-        "switch reads as inert.",
 }
 UNCLAIMED = {
     "film.development_time": "measured curve family; direction is per stock",
@@ -254,7 +250,10 @@ def audit(control: Control, root: Path, source: Path, engine=None) -> Finding:
 
 def auditable() -> list[Control]:
     skip = {"film.profile_enabled", "film.input_color_space", "film.linear_input",
-            "film.film_tuning_version", "film.paper_locked"}
+            "film.film_tuning_version", "film.paper_locked",
+            # Resolved from the user's profile folder in the Film-off develop,
+            # never by the film engine; covered by tests/test_camera_profile_develop.py.
+            "film.camera_profile"}
     return [control for control in controls()
             if control.surface == "film" and control.key not in skip]
 
