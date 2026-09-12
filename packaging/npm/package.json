@@ -1,21 +1,35 @@
 {
   "name": "lighttable-digital-darkroom",
-  "version": "0.0.0-unreleased",
+  "version": "0.6.2",
   "description": "Install the LightTable digital darkroom and run its bundled command-line interface",
   "license": "GPL-3.0-only",
   "type": "module",
-  "bin": { "lighttable": "bin/lighttable.mjs" },
-  "engines": { "node": ">=20" },
+  "bin": {
+    "lighttable": "bin/lighttable.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reville/lighttable-digital-darkroom.git",
     "directory": "packaging/npm"
   },
   "homepage": "https://github.com/reville/lighttable-digital-darkroom",
-  "files": ["bin/", "lib/", "scripts/postinstall.mjs", "scripts/check-release.mjs", "release.json", "README.md", "LICENSE"],
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/postinstall.mjs",
+    "scripts/check-release.mjs",
+    "release.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "node --test",
     "prepublishOnly": "node scripts/check-release.mjs"
   },
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  }
 }
