@@ -3435,7 +3435,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 12  # scan levels correction and display-referred source expansion
+RENDER_CACHE_VERSION = 13  # scan levels correction and meter-anchored display-referred source expansion
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
@@ -3724,6 +3724,35 @@ def preview_engine():
 
 
 
+# The expansion anchor is a property of the photograph, measured once on a
+# small preview so the interactive preview, the export and the CLI fallback
+# all prepare the source identically.
+ANCHOR_WIDTH = 512
+_ANCHOR_CACHE: OrderedDict = OrderedDict()
+
+
+def expansion_anchor_for(name: str, params: dict) -> float | None:
+    cp = fp.clean_params(params)
+    if is_raw(name) or not cp["profile_enabled"]:
+        return None
+    key = (file_key(name), ANCHOR_WIDTH)
+    with STATE_LOCK:
+        cached = _ANCHOR_CACHE.get(key)
+    if cached is not None:
+        return cached
+    import film_tuning
+    anchor = film_tuning.expansion_anchor(linear_for(name, ANCHOR_WIDTH, params), encoded=True)
+    with STATE_LOCK:
+        _ANCHOR_CACHE[key] = anchor
+        while len(_ANCHOR_CACHE) > 512:
+            _ANCHOR_CACHE.popitem(last=False)
+    return anchor
+
+
+def tuning_request_for(name: str, params: dict) -> dict:
+    return fp.rust_tuning_request(params, anchor=expansion_anchor_for(name, params))
+
+
 def render_key(name: str, params: dict, width: int, engine: str = "rs",
                variant: str | None = None) -> str:
     """`variant` pins the RAW quality this key describes.
@@ -3773,7 +3802,7 @@ def render_rust(name: str, params: dict, width: int,
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
             "params": fp.rust_params_json(params),
-            **fp.rust_tuning_request(params),
+            **tuning_request_for(name, params),
             "quality": 88,
             "rotate_quarters_ccw": rot90k(cp["rotate"]),
         }
@@ -3844,7 +3873,7 @@ def render_rust(name: str, params: dict, width: int,
         import tifffile as tf
         arr = linear_for(name, width, params)
         tf.imwrite(src_tif, (np.clip(arr, 0, 1) * 65535 + 0.5).astype(np.uint16))
-    with fp.prepared_input_file(src_tif, cp) as prepared:
+    with fp.prepared_input_file(src_tif, cp, anchor=expansion_anchor_for(name, params)) as prepared:
         cmd[2] = str(prepared)
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=300,
                            env=fp.rust_cli_environment(),
@@ -3907,7 +3936,7 @@ def render_viewport_rust(name: str, params: dict, output: Path | None,
     request = {"data_dir": str(RUST_DATA), "film": cp["stock"], "paper": cp["paper"],
                "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
                "params": fp.rust_params_json(params),
-               **fp.rust_tuning_request(params), "quality": 88,
+               **tuning_request_for(name, params), "quality": 88,
                "rotate_quarters_ccw": rot90k(cp["rotate"]), "viewport": viewport}
     if output is not None:
         request["output"] = str(output)
@@ -4869,7 +4898,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
             "params": fp.rust_params_json(params),
-            **fp.rust_tuning_request(params),
+            **tuning_request_for(name, params),
             "rotate_quarters_ccw": rot90k(cp["rotate"]),
             "quality": int(job.get("quality", 92)),
             "grade": grade.clean(job.get("grade") or {}),
@@ -4915,7 +4944,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
                 "data_dir": str(RUST_DATA), "film": cp["stock"],
                 "paper": cp["paper"], "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
                 "params": fp.rust_params_json(params),
-                **fp.rust_tuning_request(params),
+                **tuning_request_for(name, params),
                 "rotate_quarters_ccw": rot90k(cp["rotate"]), "bit_depth": 32,
             }
             metrics = _resident_render_full(name, params, request)
@@ -4960,7 +4989,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
                     "paper": cp["paper"],
                     "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
                     "params": fp.rust_params_json(params),
-                    **fp.rust_tuning_request(params),
+                    **tuning_request_for(name, params),
                     "rotate_quarters_ccw": rot90k(cp["rotate"]),
                     "bit_depth": 32,
                 }

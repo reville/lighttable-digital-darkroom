@@ -483,23 +483,35 @@ def rust_params_json(p: dict) -> dict:
     return result
 
 
-def rust_tuning_request(p: dict) -> dict:
-    """LightTable worker extension, deliberately outside upstream params."""
-    spec = film_tuning.specification(clean_params(p))
+def rust_tuning_request(p: dict, image: np.ndarray | None = None,
+                        anchor: float | None = None) -> dict:
+    """LightTable worker extension, deliberately outside upstream params.
+
+    ``image`` or ``anchor`` supplies the expansion anchor for a processed
+    source; the application passes the anchor it measured once per photo so
+    preview and export agree. Without either the anchor is middle grey.
+    """
+    spec = film_tuning.specification(clean_params(p), image)
+    if spec is not None and anchor is not None and spec["display_expansion"] > 0:
+        spec = dict(spec, display_expansion_anchor=float(anchor))
     return {"input_tuning": spec} if spec is not None else {}
 
 
 @contextmanager
-def prepared_input_file(source: str | Path, p: dict):
+def prepared_input_file(source: str | Path, p: dict, anchor: float | None = None):
     """Apply the same tuning for the separately pinned one-shot Rust CLI."""
-    spec = film_tuning.specification(clean_params(p))
-    if spec is None:
+    cleaned = clean_params(p)
+    if film_tuning.specification(cleaned) is None:
         yield Path(source)
         return
     import tifffile
     with tempfile.TemporaryDirectory(prefix="lighttable-film-input-") as directory:
         path = Path(directory) / "linear-prophoto.tif"
-        tuned = film_tuning.prepare_input(load_linear(str(source)), spec)
+        pixels = load_linear(str(source))
+        spec = film_tuning.specification(cleaned, pixels)
+        if anchor is not None and spec["display_expansion"] > 0:
+            spec = dict(spec, display_expansion_anchor=float(anchor))
+        tuned = film_tuning.prepare_input(pixels, spec)
         if spec.get("display_expansion", 0.0) > 0:
             # Expanded highlights are scene-linear values above 1.0. A 16-bit
             # file would clip them back to display white, so hand the CLI the
@@ -679,7 +691,7 @@ def render_float(image: np.ndarray, p: dict) -> np.ndarray:
                            out * 12.92,
                            1.055 * np.power(out, 1.0 / 2.4) - 0.055)
         return np.clip(out, 0.0, 1.0).astype(np.float32)
-    spec = film_tuning.specification(p)
+    spec = film_tuning.specification(p, image)
     if spec is not None:
         image = film_tuning.prepare_input(image, spec)
     out = spektrafilm.simulate(image, build_params(p))

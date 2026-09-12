@@ -263,6 +263,7 @@ class DecodedViewportTests(unittest.TestCase):
             engine.render.return_value = {"width": 2, "height": 2, "full_width": 6, "full_height": 10}
             with mock.patch.object(server, "preview_engine", return_value=engine), \
                     mock.patch.object(server, "tiff_for", return_value=path), \
+                    mock.patch.object(server, "expansion_anchor_for", return_value=None), \
                     mock.patch.object(tf.TiffPage, "asarray", side_effect=AssertionError("full TIFF read")):
                 result = server.render_viewport_rust("frame.jpg", {"rotate": 270}, None,
                     Path("unused.rgba"), {"x": 4, "y": 8, "width": 20, "height": 20})

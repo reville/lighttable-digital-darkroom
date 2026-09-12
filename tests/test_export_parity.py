@@ -123,6 +123,8 @@ class ExportParityTests(unittest.TestCase):
             }
             with mock.patch.object(server, "_resident_render_full",
                                    side_effect=render), \
+                    mock.patch.object(server, "expansion_anchor_for",
+                                      return_value=None), \
                     mock.patch.object(server.color_pipeline, "icc_bytes",
                                       return_value=profile), \
                     mock.patch.object(server, "finish_export") as finish:
@@ -163,6 +165,8 @@ class ExportParityTests(unittest.TestCase):
 
             with mock.patch.object(server, "CACHE", cache), \
                     mock.patch.object(server, "render_key", return_value="key"), \
+                    mock.patch.object(server, "expansion_anchor_for",
+                                      return_value=None), \
                     mock.patch.object(server, "_resident_render_full",
                                       side_effect=resident), \
                     mock.patch.object(server, "finish_export",

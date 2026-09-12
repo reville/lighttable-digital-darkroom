@@ -34,6 +34,57 @@ DESCRIPTION = ("LightTable's interpretation, adjusted using reference "
 # scene-linear already and are never expanded.
 DISPLAY_EXPANSION = 1.8
 MIDDLE_GREY_LINEAR = 0.18
+# The film model's automatic exposure is a centre-weighted mean of luminance
+# pulled to 0.184, measured after the input is prepared. An expansion anchored
+# at a fixed grey would spread that mean and the meter would pull the whole
+# frame darker. Anchoring it instead at the value that leaves the weighted
+# mean unchanged makes the expansion exposure-neutral for the meter and, with
+# metering off, keeps the frame's overall brightness. The weighting mirrors
+# spektrafilm's centre-weighted method: a Gaussian with sigma 0.2 of the long
+# edge, measured on a preview no larger than this.
+ANCHOR_PREVIEW = 256
+ANCHOR_SIGMA = 0.2
+ANCHOR_RANGE = (0.001, 4.0)
+
+
+def _romm_decode(value: np.ndarray) -> np.ndarray:
+    return np.where(value < 0.03125, value / 16.0, np.maximum(value, 0.0) ** 1.8)
+
+
+def expansion_anchor(image: np.ndarray, *, encoded: bool,
+                     expansion: float = DISPLAY_EXPANSION) -> float:
+    """The luminance the expansion pivots on so the metered mean is unchanged.
+
+    For a power ``k`` around anchor ``a``, ``a * (Y / a) ** k`` has the same
+    weighted mean as ``Y`` when ``a = (mean(Y**k) / mean(Y)) ** (1 / (k - 1))``.
+    ``encoded`` says the pixels carry the ROMM transfer curve, as processed
+    sources do; the anchor is always a linear value.
+    """
+    source = np.asarray(image, dtype=np.float32)
+    if source.ndim != 3 or source.shape[-1] < 3 or not np.isfinite(expansion) or expansion <= 1.0:
+        return MIDDLE_GREY_LINEAR
+    step = max(1, int(np.ceil(max(source.shape[:2]) / ANCHOR_PREVIEW)))
+    small = source[::step, ::step, :3].astype(np.float64)
+    if encoded:
+        small = _romm_decode(np.clip(small, 0.0, 1.0))
+    # The expansion is applied per channel and the meter reads luminance, so
+    # the means are taken per channel and combined with the luminance weights:
+    # mean(Y') = a**(1-k) * sum_c(coef_c * mean(x_c**k)) must equal mean(Y).
+    channels = np.maximum(small, 0.0)
+    height, width = channels.shape[:2]
+    longest = max(height, width)
+    x = (np.arange(width) / width - 0.5) * (width / longest)
+    y = (np.arange(height) / height - 0.5) * (height / longest)
+    weight = np.exp(-(x[None, :] ** 2 + y[:, None] ** 2) / (2.0 * ANCHOR_SIGMA ** 2))
+    weight = weight[:, :, None] / np.sum(weight)
+    mean = float(np.sum(weight * channels, axis=(0, 1)) @ PROPHOTO_Y)
+    if not np.isfinite(mean) or mean <= 1e-6:
+        return MIDDLE_GREY_LINEAR
+    mean_power = float(np.sum(weight * channels ** expansion, axis=(0, 1)) @ PROPHOTO_Y)
+    anchor = (mean_power / mean) ** (1.0 / (expansion - 1.0))
+    if not np.isfinite(anchor):
+        return MIDDLE_GREY_LINEAR
+    return float(min(ANCHOR_RANGE[1], max(ANCHOR_RANGE[0], anchor)))
 
 # Bradford-adapted linear ProPhoto D50 -> linear sRGB D65, as used by
 # colour-science. Only the inverse's red column is needed for this hue interval.
@@ -52,6 +103,7 @@ TUNING_DIGEST = hashlib.sha256(json.dumps({
     "red": FROM_SRGB_RED.tolist(), "luminance": PROPHOTO_Y.tolist(),
     "algorithm": "source-yellow-green-contraction-v1",
     "display_expansion": DISPLAY_EXPANSION, "middle_grey": MIDDLE_GREY_LINEAR,
+    "anchor": [ANCHOR_PREVIEW, ANCHOR_SIGMA, list(ANCHOR_RANGE)],
 }, sort_keys=True).encode()).hexdigest()
 
 
@@ -62,7 +114,7 @@ def profile_tunings(stock: str) -> list[dict]:
              "name": "LightTable tuned", "description": DESCRIPTION}]
 
 
-def specification(params: dict) -> dict | None:
+def specification(params: dict, image: np.ndarray | None = None) -> dict | None:
     """The input preparation both engines apply before filming, or None.
 
     Two independent parts share one specification so the pixels are prepared
@@ -80,10 +132,15 @@ def specification(params: dict) -> dict | None:
     linear_input = bool(params.get("linear_input", False))
     if not tuned and linear_input:
         return None
+    expansion = 0.0 if linear_input else DISPLAY_EXPANSION
+    anchor = MIDDLE_GREY_LINEAR
+    if expansion > 0 and image is not None:
+        anchor = expansion_anchor(image, encoded=True, expansion=expansion)
     return {"version": 1,
             "green_amount": TUNINGS[params["stock"]]["green_amount"] if tuned else 0.0,
             "input_cctf_decoding": not linear_input,
-            "display_expansion": 0.0 if linear_input else DISPLAY_EXPANSION}
+            "display_expansion": expansion,
+            "display_expansion_anchor": anchor}
 
 
 def _smooth(value):
@@ -106,6 +163,9 @@ def prepare_input(image: np.ndarray, spec: dict) -> np.ndarray:
     expansion = float(spec.get("display_expansion", 0.0))
     if not np.isfinite(expansion) or expansion < 0 or expansion > 4:
         raise ValueError("Invalid LightTable display expansion")
+    anchor = float(spec.get("display_expansion_anchor", MIDDLE_GREY_LINEAR))
+    if not np.isfinite(anchor) or not ANCHOR_RANGE[0] <= anchor <= ANCHOR_RANGE[1]:
+        raise ValueError("Invalid LightTable display expansion anchor")
     source = np.asarray(image, dtype=np.float32)
     if source.ndim != 3 or source.shape[-1] != 3:
         raise ValueError("Film tuning requires RGB input")
@@ -120,11 +180,12 @@ def prepare_input(image: np.ndarray, spec: dict) -> np.ndarray:
             linear = np.where(linear < 0.03125, linear / 16.0,
                               np.maximum(linear, 0.0) ** 1.8)
         if expansion > 0:
-            # Anchored at middle grey, so exposure is unchanged and highlights
-            # are free to exceed 1.0. Non-positive values are left alone.
+            # Anchored where the metered mean stays put, so exposure is
+            # unchanged and highlights are free to exceed 1.0. Non-positive
+            # values are left alone.
             linear = np.where(
                 linear > 0,
-                MIDDLE_GREY_LINEAR * (np.maximum(linear, 0.0) / MIDDLE_GREY_LINEAR) ** expansion,
+                anchor * (np.maximum(linear, 0.0) / anchor) ** expansion,
                 linear)
         rgb = linear @ TO_SRGB.T
         r, g, b = rgb.T

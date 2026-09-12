@@ -24,6 +24,15 @@ pub struct Specification {
     /// alone; RAW decodes always send zero.
     #[serde(default)]
     pub display_expansion: f64,
+    /// Linear luminance the expansion pivots on. The application measures it
+    /// so the film meter's centre-weighted mean is unchanged by the expansion;
+    /// middle grey is the fallback.
+    #[serde(default = "default_anchor")]
+    pub display_expansion_anchor: f64,
+}
+
+fn default_anchor() -> f64 {
+    MIDDLE_GREY_LINEAR
 }
 
 impl Specification {
@@ -36,6 +45,11 @@ impl Specification {
         }
         if !self.display_expansion.is_finite() || !(0.0..=4.0).contains(&self.display_expansion) {
             bail!("invalid LightTable display expansion");
+        }
+        if !self.display_expansion_anchor.is_finite()
+            || !(0.001..=4.0).contains(&self.display_expansion_anchor)
+        {
+            bail!("invalid LightTable display expansion anchor");
         }
         Ok(())
     }
@@ -98,8 +112,8 @@ fn prepare_pixel(mut linear: [f64; 3], spec: Specification) -> [f64; 3] {
             // Anchored at middle grey, so exposure is unchanged and highlights
             // are free to exceed 1.0. Non-positive values are left alone.
             if *channel > 0.0 {
-                *channel = MIDDLE_GREY_LINEAR
-                    * (channel.max(0.0) / MIDDLE_GREY_LINEAR).powf(spec.display_expansion);
+                let anchor = spec.display_expansion_anchor;
+                *channel = anchor * (channel.max(0.0) / anchor).powf(spec.display_expansion);
             }
         }
     }
@@ -175,6 +189,7 @@ mod tests {
             green_amount: 0.9,
             input_cctf_decoding: false,
             display_expansion: 0.0,
+            display_expansion_anchor: MIDDLE_GREY_LINEAR,
         }
     }
 
@@ -207,6 +222,12 @@ mod tests {
         )
         .unwrap();
         assert_eq!(absent.display_expansion, 0.0);
+        assert_eq!(absent.display_expansion_anchor, MIDDLE_GREY_LINEAR);
+        // The anchor is the fixed point of the expansion whatever its value.
+        let anchored = Specification { green_amount: 0.0, display_expansion: 1.8, display_expansion_anchor: 0.42, ..spec() };
+        let held = prepare_pixel([0.42, 0.42, 0.42], anchored);
+        assert!(held.iter().all(|v| (v - 0.42).abs() < 1e-12));
+        assert!(Specification { display_expansion_anchor: 0.0, ..spec() }.validate().is_err());
     }
 
     #[test]

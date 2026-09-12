@@ -52,10 +52,39 @@ class FilmTuningTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             ft.prepare_input(source, dict(spec, display_expansion=9.))
 
+    def test_expansion_anchor_keeps_the_metered_mean(self):
+        # The film meter is a centre-weighted mean of luminance; anchoring the
+        # expansion at expansion_anchor() must leave that mean unchanged so
+        # automatic exposure does not pull an expanded frame darker.
+        def metered(img):
+            lum = np.maximum(img @ ft.PROPHOTO_Y, 0); h, w = lum.shape; longest = max(h, w)
+            x = (np.arange(w) / w - .5) * (w / longest); y = (np.arange(h) / h - .5) * (h / longest)
+            weight = np.exp(-(x[None] ** 2 + y[:, None] ** 2) / (2 * ft.ANCHOR_SIGMA ** 2))
+            return float((weight * lum).sum() / weight.sum())
+        rng = np.random.default_rng(5)
+        linear = (rng.random((120, 180, 3), dtype=np.float32) ** 2.2) * 0.9
+        encoded = np.where(linear < 1/512, linear * 16, linear ** (1/1.8)).astype(np.float32)
+        anchor = ft.expansion_anchor(encoded, encoded=True)
+        self.assertNotAlmostEqual(anchor, ft.MIDDLE_GREY_LINEAR, places=2)
+        spec = fp.rust_tuning_request({'stock': 'kodak_ektar_100'}, image=encoded)['input_tuning']
+        self.assertAlmostEqual(spec['display_expansion_anchor'], anchor)
+        out = ft.prepare_input(encoded, spec)
+        before = metered(ft._romm_decode(encoded))
+        self.assertLess(abs(metered(out) - before) / before, 0.01)
+        # Without pixels the anchor is middle grey, and an explicit anchor wins.
+        self.assertEqual(fp.rust_tuning_request({'stock': 'kodak_ektar_100'})['input_tuning']['display_expansion_anchor'], ft.MIDDLE_GREY_LINEAR)
+        self.assertEqual(fp.rust_tuning_request({'stock': 'kodak_ektar_100'}, image=encoded, anchor=0.3)['input_tuning']['display_expansion_anchor'], 0.3)
+        # RAW sources carry no anchor of interest and are never expanded.
+        raw = fp.rust_tuning_request({'stock': 'kodak_portra_400', 'linear_input': True}, image=encoded)['input_tuning']
+        self.assertEqual(raw['display_expansion'], 0.0)
+        with self.assertRaises(ValueError):
+            ft.prepare_input(encoded, dict(spec, display_expansion_anchor=0.0))
+
     def test_prepared_cli_input_keeps_expanded_highlights(self):
         import tempfile, tifffile
         from pathlib import Path
-        source = np.full((2, 2, 3), .95, np.float32)
+        # A varied frame: pixels above the anchor expand past display white.
+        source = np.linspace(0.05, 0.98, 48, dtype=np.float32).reshape(4, 12, 1).repeat(3, axis=2)
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'in.tif'
             tifffile.imwrite(path, (source * 65535 + .5).astype(np.uint16), photometric='rgb')
@@ -150,13 +179,17 @@ class FilmTuningTests(unittest.TestCase):
             self.assertIs(simulate.call_args.args[0],source)
 
     def test_processed_source_is_expanded_before_upstream(self):
-        source=np.full((2,2,3),.6,np.float32)
+        source=np.array([[[.3,.3,.3],[.6,.6,.6]],[[.45,.45,.45],[.9,.9,.9]]],np.float32)
         with patch('spektrafilm.simulate',return_value=source) as simulate:
             fp.render_float(source,{'stock':'kodak_portra_160'})
             prepared = simulate.call_args.args[0]
             self.assertIsNot(prepared, source)
-            # ROMM-decoded 0.6 is 0.399 linear; expanded around grey it lands higher.
-            self.assertGreater(float(prepared[0,0,0]), 0.399)
+            # The transfer curve is decoded and the spread between a bright
+            # and a dark pixel grows by the expansion power.
+            decoded = ft._romm_decode(source.astype(np.float64))
+            before = decoded[1,1,0] / decoded[0,0,0]
+            after = prepared[1,1,0] / prepared[0,0,0]
+            self.assertAlmostEqual(float(after), float(before ** ft.DISPLAY_EXPANSION), places=3)
             self.assertFalse(simulate.call_args.args[1].io.input_cctf_decoding)
 
 
