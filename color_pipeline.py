@@ -19,6 +19,7 @@ import threading
 from collections import OrderedDict
 from pathlib import Path
 
+import functools
 import numpy as np
 import tifffile
 from PIL import Image, ImageOps
@@ -80,22 +81,35 @@ RAW_DENOISE_MODES = {"off", "light", "full"}
 DEVELOP_PROFILES = {"linear", "standard", "soft"}
 DEFAULT_DEVELOP_PROFILE = "standard"
 
+# The application installs a resolver that turns a camera profile file name
+# from the edit parameters into a path inside the folder the user chose. This
+# module stays free of preferences and filesystem policy; with no resolver,
+# or when the resolver finds nothing, the built-in develop profile applies.
+CAMERA_PROFILE_RESOLVER = None
+
 # Base-curve design constants. The shape is specified on the sRGB code-value
 # axis rather than in linear light because that is the axis a tone curve is
 # read on, but the table it produces is scene-linear in and scene-linear out
 # so it can be applied before the encode, where a camera profile belongs.
 STANDARD_CURVE_SIZE = 256
 # Slope of the curve at middle grey, in code values per code value: a 25%
-# mid-tone contrast increase. Also the toe and shoulder exponent, so the
-# curve is C1-continuous through the pivot.
+# mid-tone contrast increase. The toe and shoulder exponents are derived from
+# it so the curve stays C1-continuous through the pivot.
 STANDARD_CURVE_CONTRAST = 1.25
 SOFT_CURVE_CONTRAST = 1.12
 MIDDLE_GREY_LINEAR = 0.18
-# Middle grey is a fixed point of the curve, so an 18% grey card still
-# reproduces at the sRGB code value that encodes 0.18 linear: 0.4614, or
-# 117.6/255. That is Zone V, the nominal print value of a grey card, and
-# keeping it fixed means switching profiles changes contrast, not exposure.
+# 0.18 linear encodes to the sRGB code value 0.4614, or 117.6/255. That is
+# where the curve's pivot sits on the input axis.
 MIDDLE_GREY_DISPLAY = 0.4614
+# Where the pivot lands on the output axis. Every mainstream RAW converter
+# renders a grey card brighter than its plain sRGB encode: Adobe's default
+# curve, and the camera-matching curves in the same profiles, lift middle
+# grey by roughly half a stop and roll the highlights off above it. 0.53
+# is decode(0.53) = 0.243 linear, a lift of 0.43 EV, so the Standard render
+# reads as a finished photograph rather than as the flat encode a scanner
+# match wants. Standard and Soft share the lift, so switching between them
+# changes contrast, not exposure.
+STANDARD_GREY_DISPLAY = 0.53
 
 # Linear sRGB (D65) to linear ProPhoto RGB (D50), including Bradford
 # chromatic adaptation. This keeps the provisional embedded RAW preview on
@@ -158,53 +172,105 @@ def standard_base_curve_domain() -> np.ndarray:
     return _srgb_decode(code).astype(np.float32)
 
 
-def standard_base_curve() -> np.ndarray:
-    """The fixed Standard develop curve as 256 scene-linear output values.
+def _base_curve(contrast: float, grey_display: float) -> np.ndarray:
+    """A toe and a shoulder meeting at middle grey, as 256 scene-linear outputs.
 
     Entry ``i`` is the scene-linear value that
     ``standard_base_curve_domain()[i]`` renders to, before the sRGB encode.
 
-    The shape is a pair of powers meeting at middle grey on the code-value
-    axis, which gives all three parts the roadmap asks for from one
-    parameter: a gentle toe (the slope falls away below roughly 10% code
-    value), ``STANDARD_CURVE_CONTRAST`` mid-tone slope through the pivot, and
-    a filmic shoulder whose slope decays to zero as it approaches white, so
-    highlights compress into 1.0 instead of clipping against it. Black and
-    white are exact fixed points, so the 99.5th-percentile normalisation that
-    follows behaves the same under either profile.
+    On the code-value axis the pivot maps ``MIDDLE_GREY_DISPLAY`` to
+    ``grey_display`` with slope ``contrast``. Below it a power toe falls to
+    black; above it a mirrored power shoulder rises to white with a slope that
+    decays to zero, so highlights compress into 1.0 instead of clipping
+    against it. The two exponents are solved from the pivot so the slopes
+    agree there, which is what keeps the curve C1-continuous when the pivot
+    is lifted. Black and white are exact fixed points.
     """
     code = np.arange(STANDARD_CURVE_SIZE, dtype=np.float64) / (
         STANDARD_CURVE_SIZE - 1)
-    pivot = float(_srgb_encode(MIDDLE_GREY_LINEAR))
-    contrast = STANDARD_CURVE_CONTRAST
-    toe = pivot * np.power(code / pivot, contrast)
-    shoulder = 1.0 - (1.0 - pivot) * np.power(
-        (1.0 - code) / (1.0 - pivot), contrast)
-    shaped = np.where(code <= pivot, toe, shoulder)
+    pivot_in = float(_srgb_encode(MIDDLE_GREY_LINEAR))
+    pivot_out = float(grey_display)
+    toe_exponent = contrast * pivot_in / pivot_out
+    shoulder_exponent = contrast * (1.0 - pivot_in) / (1.0 - pivot_out)
+    toe = pivot_out * np.power(code / pivot_in, toe_exponent)
+    shoulder = 1.0 - (1.0 - pivot_out) * np.power(
+        (1.0 - code) / (1.0 - pivot_in), shoulder_exponent)
+    shaped = np.where(code <= pivot_in, toe, shoulder)
     return np.clip(_srgb_decode(shaped), 0.0, 1.0).astype(np.float32)
+
+
+def standard_base_curve() -> np.ndarray:
+    """The fixed Standard develop curve: lifted middle grey, 25% mid contrast."""
+    return _base_curve(STANDARD_CURVE_CONTRAST, STANDARD_GREY_DISPLAY)
 
 
 def soft_base_curve() -> np.ndarray:
-    """The Soft develop curve with an extended filmic shoulder as 256 output values.
+    """The Soft develop curve: the same grey lift with a gentler shoulder.
 
-    Shares the middle-grey fixed point and domain with ``standard_base_curve()``,
-    but applies a gentler contrast exponent (1.12) to provide softer highlight
-    roll-off and preserve cloud/sky detail in high-dynamic-range scenes.
+    A lower contrast exponent keeps more separation in the highlights, which
+    preserves cloud and sky detail in high-dynamic-range scenes.
     """
-    code = np.arange(STANDARD_CURVE_SIZE, dtype=np.float64) / (
-        STANDARD_CURVE_SIZE - 1)
-    pivot = float(_srgb_encode(MIDDLE_GREY_LINEAR))
-    contrast = SOFT_CURVE_CONTRAST
-    toe = pivot * np.power(code / pivot, contrast)
-    shoulder = 1.0 - (1.0 - pivot) * np.power(
-        (1.0 - code) / (1.0 - pivot), contrast)
-    shaped = np.where(code <= pivot, toe, shoulder)
-    return np.clip(_srgb_decode(shaped), 0.0, 1.0).astype(np.float32)
+    return _base_curve(SOFT_CURVE_CONTRAST, STANDARD_GREY_DISPLAY)
 
 
 def _normalise_develop_profile(value: object) -> str:
     value = str(value or DEFAULT_DEVELOP_PROFILE)
     return value if value in DEVELOP_PROFILES else DEFAULT_DEVELOP_PROFILE
+
+
+def camera_profile_path(params: dict | None):
+    """The resolved ``.dcp`` path an edit asks for, or None."""
+    name = str((params or {}).get("camera_profile", "") or "")
+    resolver = CAMERA_PROFILE_RESOLVER
+    if not name or resolver is None:
+        return None
+    try:
+        path = resolver(name)
+    except Exception:  # noqa: BLE001 - a broken folder must not break develop
+        return None
+    return Path(path) if path else None
+
+
+def _camera_profile_identity(params: dict | None) -> str:
+    """Name and file signature, so a replaced profile invalidates caches."""
+    path = camera_profile_path(params)
+    if path is None:
+        return ""
+    try:
+        stat = path.stat()
+    except OSError:
+        return ""
+    return f"{path.name}|{stat.st_size}|{stat.st_mtime_ns}"
+
+
+@functools.lru_cache(maxsize=8)
+def _read_camera_profile(path: str, signature: str) -> dict:
+    import camera_profile
+    return camera_profile.read_profile(path)
+
+
+def apply_camera_profile(linear: np.ndarray, params: dict | None) -> tuple[np.ndarray, bool]:
+    """Apply the edit's camera profile to linear ProPhoto, if it resolves.
+
+    Returns the image and whether the profile supplied its own tone curve.
+    A profile with a curve replaces the built-in develop curve, as the DNG
+    pipeline does; Adobe's own "Adobe Standard" files carry none and rely
+    on the converter's default curve, so those keep LightTable's Standard
+    curve for tone and contribute their hue and saturation tables only.
+    """
+    path = camera_profile_path(params)
+    if path is None:
+        return linear, False
+    identity = _camera_profile_identity(params)
+    if not identity:
+        return linear, False
+    try:
+        profile = _read_camera_profile(str(path), identity)
+        import camera_profile
+        applied = camera_profile.apply_profile(linear, profile)
+    except Exception:  # noqa: BLE001 - an unreadable profile renders built-in
+        return linear, False
+    return np.asarray(applied, dtype=np.float32), profile.get("toneCurve") is not None
 
 
 def develop_profile_for(params: dict | None) -> str:
@@ -248,6 +314,7 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     if denoise not in RAW_DENOISE_MODES:
         denoise = "off"
     develop = develop_profile_for(params)
+    camera = _camera_profile_identity(params)
     # Imported lazily because enhance_workflow uses this module for its tile
     # exchange. The model identity must be part of the neutral decode cache.
     import enhance_workflow
@@ -255,7 +322,7 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     import hashlib
     return hashlib.sha256(
         (f"linear-prophoto-v5|{profile}|{recovery}|{denoise}|{learned}|"
-         f"{mode}|{temperature}|{tint}|{develop}").encode()
+         f"{mode}|{temperature}|{tint}|{develop}|{camera}").encode()
     ).hexdigest()[:12]
 
 
@@ -449,40 +516,59 @@ def linear_prophoto_to_display(
     default to :data:`DEFAULT_DEVELOP_PROFILE`, so existing callers keep
     working.
 
-    Under ``standard`` the base curve is applied to the scene-linear input,
-    before the gamut conversion and the sRGB encode, which is where a camera
-    profile's tone curve belongs and matches how the wide-gamut working space
-    keeps per-channel curves from shifting hue. ``linear`` skips it entirely
-    and is byte-for-byte the render this function produced before the profile
-    existed. A wider output retains the same extended sRGB tone rendering,
-    converting to the requested gamut before its first gamut clip.
+    ``linear`` is byte-for-byte the render this function produced before the
+    profiles existed: an sRGB encode, then a brightness normalisation that
+    places the 99.5th percentile of the encoded values at 0.96. That matches
+    the useful brightness of a conventional neutral RAW conversion without
+    applying a camera look or throwing away reconstructed channels.
+
+    ``standard`` and ``soft`` apply that same normalisation first, as an
+    exposure in scene-linear light, and only then the base curve, before the
+    gamut conversion and the sRGB encode. The order is the one every RAW
+    converter uses, exposure then tone curve, and it matters: normalising
+    after the curve measured the curve's own lifted highlights and scaled the
+    whole frame back down, which left dim scenes darker under Standard than
+    under Linear. The brightest useful values now land where the curve's
+    shoulder puts them, just under white. Applying the curve in the
+    wide-gamut working space is where a camera profile's tone curve belongs
+    and keeps per-channel curves from shifting hue. A wider output retains
+    the same extended sRGB tone rendering, converting to the requested gamut
+    before its first gamut clip.
     """
     import colour
 
     profile = (_normalise_develop_profile(develop_profile)
                if develop_profile is not None else develop_profile_for(params))
     linear = as_float_rgb(image)
-    if profile == "standard":
-        linear = np.interp(linear, standard_base_curve_domain(),
-                           standard_base_curve()).astype(np.float32)
-    elif profile == "soft":
-        linear = np.interp(linear, standard_base_curve_domain(),
-                           soft_base_curve()).astype(np.float32)
     prophoto = colour.RGB_COLOURSPACES["ProPhoto RGB"]
     srgb = colour.RGB_COLOURSPACES["sRGB"]
-    encoded = colour.RGB_to_RGB(
-        linear, prophoto, srgb,
-        chromatic_adaptation_transform="Bradford",
-        apply_cctf_decoding=False, apply_cctf_encoding=True,
-    )
-    # Match the useful brightness of a conventional neutral RAW conversion
-    # without applying a camera look or throwing away reconstructed channels.
-    # Both profiles normalise identically: the base curve fixes white at 1.0,
-    # so the percentile it measures barely moves and the two profiles differ
-    # in contrast rather than in overall exposure.
+
+    def encode(scene: np.ndarray) -> np.ndarray:
+        return colour.RGB_to_RGB(
+            scene, prophoto, srgb,
+            chromatic_adaptation_transform="Bradford",
+            apply_cctf_decoding=False, apply_cctf_encoding=True,
+        )
+
+    encoded = encode(linear)
     white = float(np.percentile(np.maximum(encoded, 0.0), 99.5))
-    if np.isfinite(white) and white > 0:
-        encoded = encoded * min(4.0, 0.96 / white)
+    normalise = np.isfinite(white) and white > 0
+    if profile == "linear":
+        if normalise:
+            encoded = encoded * min(4.0, 0.96 / white)
+    else:
+        if normalise:
+            # The code-value gain, expressed as the exposure that reaches the
+            # same target, so the curve shapes a correctly exposed frame.
+            target = min(0.96, 4.0 * white)
+            gain = float(_srgb_decode(target) / _srgb_decode(white))
+            linear = np.clip(linear * np.float32(gain), 0.0, 1.0)
+        linear, profile_has_curve = apply_camera_profile(linear, params)
+        if not profile_has_curve:
+            curve = standard_base_curve() if profile == "standard" else soft_base_curve()
+            linear = np.interp(linear, standard_base_curve_domain(),
+                               curve).astype(np.float32)
+        encoded = encode(linear)
     # Keep the same tone/exposure rendering as the sRGB preview. Convert its
     # extended (unclipped) code values before bounding to the delivered gamut;
     # clipping here first would irreversibly discard RAW colors outside sRGB.

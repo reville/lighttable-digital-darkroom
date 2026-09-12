@@ -9,12 +9,30 @@ use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 use spektrafilm_math::{image::ImageBuf, precision};
 
+/// Middle grey in linear light; the fixed point of the display expansion.
+const MIDDLE_GREY_LINEAR: f64 = 0.18;
+
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct Specification {
     pub version: u32,
     pub green_amount: f64,
     pub input_cctf_decoding: bool,
+    /// Power applied to processed (display-referred) sources around middle
+    /// grey before filming, so a finished JPEG's compressed highlights and
+    /// lifted shadows go back to scene proportions. Zero leaves the input
+    /// alone; RAW decodes always send zero.
+    #[serde(default)]
+    pub display_expansion: f64,
+    /// Linear luminance the expansion pivots on. The application measures it
+    /// so the film meter's centre-weighted mean is unchanged by the expansion;
+    /// middle grey is the fallback.
+    #[serde(default = "default_anchor")]
+    pub display_expansion_anchor: f64,
+}
+
+fn default_anchor() -> f64 {
+    MIDDLE_GREY_LINEAR
 }
 
 impl Specification {
@@ -24,6 +42,14 @@ impl Specification {
         }
         if !self.green_amount.is_finite() || !(0.0..1.0).contains(&self.green_amount) {
             bail!("invalid LightTable green amount");
+        }
+        if !self.display_expansion.is_finite() || !(0.0..=4.0).contains(&self.display_expansion) {
+            bail!("invalid LightTable display expansion");
+        }
+        if !self.display_expansion_anchor.is_finite()
+            || !(0.001..=4.0).contains(&self.display_expansion_anchor)
+        {
+            bail!("invalid LightTable display expansion anchor");
         }
         Ok(())
     }
@@ -79,6 +105,16 @@ fn prepare_pixel(mut linear: [f64; 3], spec: Specification) -> [f64; 3] {
             } else {
                 channel.max(0.0).powf(1.8)
             };
+        }
+    }
+    if spec.display_expansion > 0.0 {
+        for channel in &mut linear {
+            // Anchored at middle grey, so exposure is unchanged and highlights
+            // are free to exceed 1.0. Non-positive values are left alone.
+            if *channel > 0.0 {
+                let anchor = spec.display_expansion_anchor;
+                *channel = anchor * (channel.max(0.0) / anchor).powf(spec.display_expansion);
+            }
         }
     }
     let [r, g, b] = TO_SRGB.map(|row| dot(row, linear));
@@ -152,7 +188,46 @@ mod tests {
             version: 1,
             green_amount: 0.9,
             input_cctf_decoding: false,
+            display_expansion: 0.0,
+            display_expansion_anchor: MIDDLE_GREY_LINEAR,
         }
+    }
+
+    #[test]
+    fn display_expansion_holds_grey_and_frees_highlights() {
+        // Values captured from film_tuning.prepare_input with expansion 1.8,
+        // green amount 0, on float32 sources.
+        let expanded = Specification {
+            green_amount: 0.0,
+            display_expansion: 1.8,
+            ..spec()
+        };
+        let cases: [([f32; 3], [f64; 3]); 4] = [
+            ([0.18, 0.18, 0.18], [0.18000000715255737; 3]),
+            ([1.0, 0.5, 0.05], [3.9425933361053467, 1.1322126388549805, 0.01794436201453209]),
+            ([0.0, -0.01, 0.02], [0.0, -0.009999999776482582, 0.003448545467108488]),
+            ([0.36, 0.09, 0.72], [0.6267964243888855, 0.05169142782688141, 2.1826319694519043]),
+        ];
+        for (pixel, expected) in cases {
+            // prepare_input feeds prepare_pixel float32-rounded values.
+            let actual = prepare_pixel(pixel.map(f64::from), expanded);
+            for c in 0..3 {
+                assert!((actual[c] - expected[c]).abs() < 1e-6, "{pixel:?} -> {actual:?}");
+            }
+        }
+        assert!(Specification { display_expansion: 4.5, ..spec() }.validate().is_err());
+        assert!(Specification { display_expansion: -0.1, ..spec() }.validate().is_err());
+        let absent: Specification = serde_json::from_str(
+            r#"{"version":1,"green_amount":0.8,"input_cctf_decoding":true}"#,
+        )
+        .unwrap();
+        assert_eq!(absent.display_expansion, 0.0);
+        assert_eq!(absent.display_expansion_anchor, MIDDLE_GREY_LINEAR);
+        // The anchor is the fixed point of the expansion whatever its value.
+        let anchored = Specification { green_amount: 0.0, display_expansion: 1.8, display_expansion_anchor: 0.42, ..spec() };
+        let held = prepare_pixel([0.42, 0.42, 0.42], anchored);
+        assert!(held.iter().all(|v| (v - 0.42).abs() < 1e-12));
+        assert!(Specification { display_expansion_anchor: 0.0, ..spec() }.validate().is_err());
     }
 
     #[test]

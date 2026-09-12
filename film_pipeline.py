@@ -188,8 +188,24 @@ FILM_FORMATS_MM = {
 # Coherent output-chain starting points. These are modeled recipes, not claims
 # that a named commercial lab scanner has been measured. Physical advanced
 # controls are applied as offsets/scalars over the selected recipe.
+#
+# Every recipe scans with black and white point correction on. The engine's
+# print stage reproduces the paper as it is, and paper is neither white nor
+# black: without the correction a print's brightest pixel reaches only about
+# 0.86 in sRGB and its blacks sit near 0.07, which reads as a washed-out
+# render rather than as a print. The correction maps the paper's own maximum
+# and minimum densities to the scan levels below, which is what a lab scanner
+# does when it is calibrated to the paper base. It is off in upstream
+# spektrafilm, whose default is to show the physical print.
+SCAN_LEVELS = {
+    "scan_white_correction": True,
+    "scan_black_correction": True,
+    "scan_white_level": 0.98,
+    "scan_black_level": 0.01,
+}
 OUTPUT_RECIPES = {
     "clean_scan": {
+        **SCAN_LEVELS,
         "name": "Clean scan",
         "description": "Low flare, crisp neutral scan",
         "provenance": "modeled",
@@ -200,6 +216,7 @@ OUTPUT_RECIPES = {
         "preflash_exposure": 0.0,
     },
     "neutral_print_scan": {
+        **SCAN_LEVELS,
         "name": "Neutral print scan",
         "description": "Balanced optical print and neutral scan",
         "provenance": "modeled",
@@ -210,6 +227,7 @@ OUTPUT_RECIPES = {
         "preflash_exposure": 0.0,
     },
     "soft_optical_print": {
+        **SCAN_LEVELS,
         "name": "Soft optical print",
         "description": "Gentler scan MTF with visible print flare",
         "provenance": "modeled",
@@ -249,7 +267,17 @@ RAW_DEVELOP_KEYS = (
     "raw_profile", "raw_highlight_recovery", "raw_sensor_denoise",
     "learned_denoise", "learned_denoise_strength",
     "wb_mode", "wb_temperature", "wb_tint", "developProfile",
+    "camera_profile",
 )
+
+
+def camera_profile_name(value) -> str:
+    """A bare ``.dcp`` file name, or empty. Never a path."""
+    name = " ".join(str(value or "").split()).strip()
+    if (not name or len(name) > 200 or "/" in name or "\\" in name
+            or name.startswith(".") or not name.lower().endswith(".dcp")):
+        return ""
+    return name
 
 DEFAULT_PARAMS = {
     # A non-destructive bypass. The selected stock, paper, and physical-stage
@@ -291,6 +319,12 @@ DEFAULT_PARAMS = {
     # imported edits; "linear" is the flat scene-linear encode, for people
     # matching scans. It has no effect on the film render path.
     "developProfile": "standard",
+    # A camera profile (.dcp) from the user's own Adobe Camera Raw or
+    # Lightroom installation, by file name inside the configured profile
+    # folder. Empty means the built-in develop profile. Applied to the
+    # Film-off develop only, and read through color_pipeline's resolver so
+    # this module never touches the filesystem.
+    "camera_profile": "",
     "film_format": "35mm",
     # Presentation-only, in degrees clockwise. Some files (notably these
     # X100VI RAFs) carry Orientation=1 despite portrait content, so the
@@ -415,6 +449,10 @@ def rust_params_json(p: dict) -> dict:
         },
         "scanner": {
             "lens_blur": recipe["scanner_lens_blur"] + p["scan_softness"],
+            "white_correction": recipe["scan_white_correction"],
+            "black_correction": recipe["scan_black_correction"],
+            "white_level": recipe["scan_white_level"],
+            "black_level": recipe["scan_black_level"],
             "unsharp_mask": [
                 recipe["unsharp_sigma"],
                 (recipe["unsharp_amount"] * p["scan_sharpness"]
@@ -445,25 +483,44 @@ def rust_params_json(p: dict) -> dict:
     return result
 
 
-def rust_tuning_request(p: dict) -> dict:
-    """LightTable worker extension, deliberately outside upstream params."""
-    spec = film_tuning.specification(clean_params(p))
+def rust_tuning_request(p: dict, image: np.ndarray | None = None,
+                        anchor: float | None = None) -> dict:
+    """LightTable worker extension, deliberately outside upstream params.
+
+    ``image`` or ``anchor`` supplies the expansion anchor for a processed
+    source; the application passes the anchor it measured once per photo so
+    preview and export agree. Without either the anchor is middle grey.
+    """
+    spec = film_tuning.specification(clean_params(p), image)
+    if spec is not None and anchor is not None and spec["display_expansion"] > 0:
+        spec = dict(spec, display_expansion_anchor=float(anchor))
     return {"input_tuning": spec} if spec is not None else {}
 
 
 @contextmanager
-def prepared_input_file(source: str | Path, p: dict):
+def prepared_input_file(source: str | Path, p: dict, anchor: float | None = None):
     """Apply the same tuning for the separately pinned one-shot Rust CLI."""
-    spec = film_tuning.specification(clean_params(p))
-    if spec is None:
+    cleaned = clean_params(p)
+    if film_tuning.specification(cleaned) is None:
         yield Path(source)
         return
     import tifffile
     with tempfile.TemporaryDirectory(prefix="lighttable-film-input-") as directory:
         path = Path(directory) / "linear-prophoto.tif"
-        tuned = film_tuning.prepare_input(load_linear(str(source)), spec)
-        tifffile.imwrite(path, (np.clip(tuned, 0, 1) * 65535 + 0.5).astype(np.uint16),
-                         photometric="rgb")
+        pixels = load_linear(str(source))
+        spec = film_tuning.specification(cleaned, pixels)
+        if anchor is not None and spec["display_expansion"] > 0:
+            spec = dict(spec, display_expansion_anchor=float(anchor))
+        tuned = film_tuning.prepare_input(pixels, spec)
+        if spec.get("display_expansion", 0.0) > 0:
+            # Expanded highlights are scene-linear values above 1.0. A 16-bit
+            # file would clip them back to display white, so hand the CLI the
+            # float pixels the resident engine sees.
+            tifffile.imwrite(path, np.ascontiguousarray(tuned, dtype=np.float32),
+                             photometric="rgb")
+        else:
+            tifffile.imwrite(path, (np.clip(tuned, 0, 1) * 65535 + 0.5).astype(np.uint16),
+                             photometric="rgb")
         yield path
 
 
@@ -496,6 +553,7 @@ def clean_params(p: dict) -> dict:
             out[k] = str(raw)
     for key, (minimum, maximum) in NUMERIC_RANGES.items():
         out[key] = round(max(minimum, min(maximum, out[key])), 4)
+    out["camera_profile"] = camera_profile_name(out["camera_profile"])
     if out["stock"] not in {p["id"] for p in FILM_PROFILES}:
         out["stock"] = DEFAULT_PARAMS["stock"]
     if "film_tuning" not in source and "stock" in source:
@@ -568,6 +626,10 @@ def build_params(p: dict):
     params.camera.diffusion_filter.filter_family = p["camera_diffusion_family"]
     params.camera.diffusion_filter.strength = p["camera_diffusion_strength"]
     params.scanner.lens_blur = recipe["scanner_lens_blur"] + p["scan_softness"]
+    params.scanner.white_correction = recipe["scan_white_correction"]
+    params.scanner.black_correction = recipe["scan_black_correction"]
+    params.scanner.white_level = recipe["scan_white_level"]
+    params.scanner.black_level = recipe["scan_black_level"]
     params.scanner.unsharp_mask = (
         recipe["unsharp_sigma"],
         recipe["unsharp_amount"] * p["scan_sharpness"]
@@ -629,7 +691,7 @@ def render_float(image: np.ndarray, p: dict) -> np.ndarray:
                            out * 12.92,
                            1.055 * np.power(out, 1.0 / 2.4) - 0.055)
         return np.clip(out, 0.0, 1.0).astype(np.float32)
-    spec = film_tuning.specification(p)
+    spec = film_tuning.specification(p, image)
     if spec is not None:
         image = film_tuning.prepare_input(image, spec)
     out = spektrafilm.simulate(image, build_params(p))

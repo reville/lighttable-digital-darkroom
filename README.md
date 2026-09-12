@@ -69,9 +69,12 @@ scan, using published sensitivity and density data.
 - **Development:** development controls, halation, and physical grain scaled
   to the stock and film format.
 - **Print:** paper, exposure, preflash, and yellow/magenta filtration.
-- **Scan:** glare, softness, and sharpening. Reversal film goes straight to scan.
+- **Scan:** glare, softness, and sharpening, levelled to the paper's own black
+  and white the way a lab scanner is calibrated. Reversal film goes straight to scan.
 
-The print and scan stages remain editable. Profile sources and the distinction
+Processed JPEG, HEIF, and TIFF sources are expanded back toward scene light
+around middle grey before filming, so a finished photograph keeps its contrast
+instead of being toned twice. The print and scan stages remain editable. Profile sources and the distinction
 between measured data and modeled assumptions are documented in
 [Film profiles](docs/film-profiles.md) and the [calibration guide](calibration/README.md).
 
@@ -122,7 +125,10 @@ Existing edits keep their original vignette appearance with the default Size
 and Feather values; setting Vignette to zero turns the effect off.
 
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
-before film; processing stays floating point until the final encoder. Export
+before film; processing stays floating point until the final encoder. A RAW
+starts with capture sharpening and colour noise reduction, and its Film-off
+develop can use a camera profile from your own Adobe Camera Raw or Lightroom
+installation, applied approximately and never bundled. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,
 Display P3, or ProPhoto RGB.
 

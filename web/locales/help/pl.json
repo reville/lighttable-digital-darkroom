@@ -2296,7 +2296,8 @@
           "title": "Kontrolki skanowania",
           "paragraphs": [
             "Miękkość skanowania dodaje rozmycie obiektywu do wybranej receptury wyjściowej. Ostrość skanowania skaluje wyostrzanie tej receptury; Wyostrzanie skanu włącza je lub wyłącza.",
-            "Są to korekty modelowanych receptur wyjściowych, a nie wybory zmierzonych marek skanerów. Oceniaj drobną fakturę i ostrość przy ukończonym podglądzie szczegółów 1:1."
+            "Są to korekty modelowanych receptur wyjściowych, a nie wybory zmierzonych marek skanerów. Oceniaj drobną fakturę i ostrość przy ukończonym podglądzie szczegółów 1:1.",
+            "Każda receptura wyjściowa skanuje z najciemniejszą i najjaśniejszą gęstością papieru wyrównanymi do czerni i bieli, tak jak skaner laboratoryjny jest kalibrowany do swojego papieru. Bez tego kroku biele odbitki zatrzymałyby się daleko przed bielą, a czernie by pływały, co wygląda jak wyblakły rendering, a nie odbitka."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Pozostaw Pomiar sceny autom. włączony, aby automatycznie mierzyć scenę, albo wyłącz go, aby samodzielnie ustawić ekspozycję wykonania.",
             "Rozwiń Wykonanie i przetwarzanie, aby wybrać Jak wykonano, Światło dzienne, Tungsten lub Niestandardowy balans bieli wykonania dla zdjęcia raw.",
             "W przypadku Niestandardowy dostosuj Temperaturę i odcień przechwytywania."
+          ],
+          "tips": [
+            "Plik JPEG, HEIF, TIFF lub inny przetworzony plik ma już krzywą tonalną, więc przed symulacją filmu LightTable rozciąga go z powrotem w stronę światła sceny wokół szarości średniej: światła odzyskują swój zakres, cienie wracają tam, gdzie miała je scena, a ekspozycja w szarości średniej pozostaje bez zmian. Pliki RAW są już światłem sceny i nie są rozciągane."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "seryjny",
         "iso",
+        "profil aparatu",
+        "dcp",
+        "adobe standard",
         "czcionka",
         "tło",
         "tryb ciemny",
@@ -2852,7 +2859,15 @@
             "Wybierz początkowe ustawienia Film, workflow, profil i preset.",
             "Aby ustawić domyślne RAW dla konkretnego aparatu, otwórz zdjęcie RAW i dostosuj jego ustawienia RAW.",
             "Wybierz dopasowanie według modelu aparatu, numeru seryjnego albo aparatu i ISO, a następnie kliknij Użyj bieżących ustawień RAW.",
-            "Użyj Resetuj w obszarze Bieżący aparat, aby usunąć domyślne ustawienie tego aparatu."
+            "Użyj Resetuj w obszarze Bieżący aparat, aby usunąć domyślne ustawienie tego aparatu.",
+            "Aby wywoływać zdjęcia RAW z profilem aparatu, pozostaw Folder profili aparatu pusty, by używać profili zainstalowanych na tym komputerze przez Adobe Camera Raw lub Lightroom, albo podaj inny folder z plikami .dcp."
+          ]
+        },
+        {
+          "title": "Profile aparatu",
+          "paragraphs": [
+            "Sekcja Profil zdjęcia RAW oferuje menu Profil aparatu z plikami .dcp z folderu, które wymieniają jego aparat, na przykład Adobe Standard lub style naśladujące aparat. LightTable nigdy nie dostarcza tych profili; należą do Twojej własnej instalacji Adobe.",
+            "Profil jest stosowany tylko do wywoływania z wyłączonym filmem, i to w przybliżeniu: jego tabele barwy i nasycenia oraz, jeśli ją zawiera, jego krzywa tonalna, która zastępuje wtedy standardową krzywą wywoływania. Mieszanie dwóch iluminantów i macierze wprost nie są stosowane, więc profil może wyglądać nieco cieplej lub chłodniej niż ten sam plik w Lightroom. Renderowanie filmu zawsze zaczyna się od neutralnych danych sceny."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "单击一张照片使该概览单元格处于活动状态。使用左箭头和右箭头在单元格之间移动，使用上箭头和下箭头在行之间移动。",
     "invalid Content-Length": "Content-Length 无效",
     "request body is too large": "请求正文过大",
-    "the folder shown in this window cannot be removed from the catalog": "此窗口中显示的文件夹无法从目录中移除"
+    "the folder shown in this window cannot be removed from the catalog": "此窗口中显示的文件夹无法从目录中移除",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "JPEG、HEIF、TIFF 或其他已处理文件本身已带有色调曲线，因此 LightTable 在胶片模拟之前会以中灰为基准将其还原为场景光：高光找回原有范围，阴影回落到场景中的位置，而中灰处的曝光保持不变。RAW 文件本身就是场景光，不会被扩展。",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "RAW 照片的“配置文件”部分提供“相机配置文件”菜单，列出文件夹中名称包含该相机的 .dcp 文件，例如 Adobe Standard 或相机匹配风格。LightTable 从不附带这些配置文件；它们属于您自己的 Adobe 安装。",
+    "Adobe Camera Raw profiles on this computer": "此电脑上的 Adobe Camera Raw 配置文件",
+    "Camera profile": "相机配置文件",
+    "Camera profile folder": "相机配置文件文件夹",
+    "Camera profiles": "相机配置文件",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "每个输出配方在扫描时都会把相纸自身最暗和最亮的密度校准为黑与白，就像实验室扫描仪针对相纸进行校准一样。没有这一步，照片的白色会远达不到白，黑色会发灰，看起来像是褪色的渲染而不是一张照片。",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "留空则使用 Adobe Camera Raw 或 Lightroom 安装的配置文件。RAW 照片的“配置文件”部分会列出名称包含该相机的配置文件。",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "未找到相机配置文件文件夹。请在“设置 › 默认开发设置”中选择一个。",
+    "No profile in the folder names this camera.": "文件夹中没有名称包含此相机的配置文件。",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "来自此电脑上 Adobe Camera Raw 或 Lightroom 的配置文件。仅在关闭胶片的显影中近似应用。",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "配置文件仅在关闭胶片的显影中近似应用：其色相和饱和度表，以及在包含时其色调曲线，此时该曲线会替换标准显影曲线。不应用双光源混合和正向矩阵，因此配置文件的渲染可能比同一文件在 Lightroom 中略暖或略冷。胶片渲染始终从中性场景数据开始。",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "要使用相机配置文件显影 RAW 照片，请将“相机配置文件文件夹”留空以使用此电脑上 Adobe Camera Raw 或 Lightroom 安装的配置文件，或输入另一个包含 .dcp 文件的文件夹。",
+    "adobe standard": "adobe standard",
+    "camera profile": "相机配置文件",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName}（缺失）"
   },
   "plurals": {
     " · {count} paired file linked": {

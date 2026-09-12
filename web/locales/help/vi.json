@@ -2296,7 +2296,8 @@
           "title": "Điều khiển quét",
           "paragraphs": [
             "Độ mềm của quét thêm độ mờ ống kính cho quy trình đầu ra đã chọn. Độ sắc của quét điều chỉnh tỷ lệ tăng độ sắc nét của quy trình đó; tính năng tăng độ sắc của quét bật hoặc tắt nó.",
-            "Đây là các điều chỉnh đối với quy trình đầu ra được mô phỏng, không phải lựa chọn của các thương hiệu máy quét đã đo. Hãy đánh giá kết cấu mịn và độ sắc nét bằng chi tiết xem trước 1:1 hoàn chỉnh."
+            "Đây là các điều chỉnh đối với quy trình đầu ra được mô phỏng, không phải lựa chọn của các thương hiệu máy quét đã đo. Hãy đánh giá kết cấu mịn và độ sắc nét bằng chi tiết xem trước 1:1 hoàn chỉnh.",
+            "Mỗi công thức đầu ra quét với mật độ tối nhất và sáng nhất của chính tờ giấy được cân về đen và trắng, giống như máy quét phòng lab được hiệu chỉnh theo giấy của nó. Không có bước đó, vùng trắng của bản in sẽ dừng xa dưới mức trắng và vùng đen sẽ nổi lên, trông như một kết quả bạc màu thay vì một bản in."
           ]
         }
       ],
@@ -2440,6 +2441,9 @@
             "Giữ bật Meter scene automatically để đo sáng cảnh tự động, hoặc tắt nó để tự đặt phơi sáng chụp.",
             "Mở rộng Capture & processing để chọn As shot, Daylight, Tungsten, hoặc Custom cho cân bằng trắng chụp của một ảnh RAW.",
             "Với Tùy chỉnh, điều chỉnh Nhiệt độ và Sắc thái chụp."
+          ],
+          "tips": [
+            "Tệp JPEG, HEIF, TIFF hoặc tệp đã xử lý khác đã mang sẵn một đường cong tông màu, nên trước khi giả lập film, LightTable mở rộng nó trở lại ánh sáng cảnh quanh xám trung bình: vùng sáng lấy lại dải của mình, vùng tối lùi về nơi cảnh vốn có, còn phơi sáng ở xám trung bình không đổi. Tệp RAW vốn đã là ánh sáng cảnh và không được mở rộng."
           ]
         },
         {
@@ -2825,6 +2829,9 @@
         "raw",
         "số sê-ri",
         "iso",
+        "hồ sơ máy ảnh",
+        "dcp",
+        "adobe standard",
         "phông chữ",
         "nền",
         "tắt đèn",
@@ -2852,7 +2859,15 @@
             "Chọn Phim, quy trình, hồ sơ, và thiết lập sẵn bắt đầu.",
             "Để đặt mặc định RAW theo từng máy ảnh, hãy mở một ảnh RAW và điều chỉnh cài đặt RAW của nó.",
             "Chọn khớp theo kiểu máy ảnh, số sê-ri, hoặc camera and ISO, rồi nhấp Use current RAW settings.",
-            "Dùng Đặt lại trong vùng Máy ảnh hiện tại để xóa mặc định của máy ảnh đó."
+            "Dùng Đặt lại trong vùng Máy ảnh hiện tại để xóa mặc định của máy ảnh đó.",
+            "Để phát triển ảnh RAW với hồ sơ máy ảnh, hãy để trống Thư mục hồ sơ máy ảnh để dùng các hồ sơ mà Adobe Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc nhập một thư mục khác chứa tệp .dcp."
+          ]
+        },
+        {
+          "title": "Hồ sơ máy ảnh",
+          "paragraphs": [
+            "Mục Hồ sơ của ảnh RAW có menu Hồ sơ máy ảnh với các tệp .dcp trong thư mục có tên máy ảnh đó, chẳng hạn Adobe Standard hoặc các kiểu mô phỏng máy ảnh. LightTable không bao giờ kèm theo các hồ sơ này; chúng thuộc bản cài đặt Adobe của riêng bạn.",
+            "Hồ sơ chỉ được áp dụng cho bước phát triển khi Film tắt, và chỉ gần đúng: các bảng sắc độ và độ bão hòa của nó và, nếu có, đường cong tông màu của nó, khi đó sẽ thay thế đường cong phát triển Tiêu chuẩn. Việc pha trộn hai nguồn sáng và ma trận thuận không được áp dụng, nên một hồ sơ có thể hiển thị hơi ấm hơn hoặc lạnh hơn so với cùng tệp đó trong Lightroom. Việc kết xuất film luôn bắt đầu từ dữ liệu cảnh trung tính."
           ]
         },
         {
@@ -3270,5 +3285,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638"
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
 }

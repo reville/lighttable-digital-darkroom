@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "انقر صورة لجعل خلية الاستعراض تلك نشطة. استخدم السهمين الأيسر والأيمن للتنقل بين الخلايا، والسهمين الأعلى والأسفل للتنقل بين الصفوف.",
     "invalid Content-Length": "Content-Length غير صالح",
     "request body is too large": "نص الطلب كبير جدًا",
-    "the folder shown in this window cannot be removed from the catalog": "لا يمكن إزالة المجلد المعروض في هذه النافذة من الكتالوج"
+    "the folder shown in this window cannot be removed from the catalog": "لا يمكن إزالة المجلد المعروض في هذه النافذة من الكتالوج",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "يحمل ملف JPEG أو HEIF أو TIFF أو أي ملف معالَج آخر منحنى درجات لونية بالفعل، لذا يوسّعه LightTable مجددًا نحو ضوء المشهد حول الرمادي المتوسط قبل تطبيق الفيلم: تستعيد الإبرازات مداها وتعود الظلال إلى حيث كانت في المشهد، بينما يبقى التعريض عند الرمادي المتوسط دون تغيير. ملفات RAW هي ضوء مشهد أصلًا ولا يتم توسيعها.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "يوفّر قسم «الملف الشخصي» في صورة RAW قائمة «ملف الكاميرا الشخصي» تضم ملفات ‎.dcp الموجودة في المجلد والتي تحمل اسم الكاميرا، مثل Adobe Standard أو المظاهر المطابقة للكاميرا. لا يشحن LightTable هذه الملفات أبدًا؛ فهي تخص تثبيت Adobe الخاص بك.",
+    "Adobe Camera Raw profiles on this computer": "ملفات Adobe Camera Raw الشخصية على هذا الكمبيوتر",
+    "Camera profile": "ملف الكاميرا الشخصي",
+    "Camera profile folder": "مجلد ملفات الكاميرا الشخصية",
+    "Camera profiles": "ملفات الكاميرا الشخصية",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "تمسح كل وصفة إخراج بحيث تُضبط أغمق وأفتح كثافات الورقة نفسها على الأسود والأبيض، كما يُعاير ماسح المختبر على ورقه. من دون هذه الخطوة تتوقف درجات البياض في الطبعة دون البياض بكثير وتطفو درجات السواد، فتبدو النتيجة باهتة بدل أن تبدو كطبعة.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "اتركه فارغًا لاستخدام الملفات الشخصية التي ثبّتها Adobe Camera Raw أو Lightroom. يعرض قسم «الملف الشخصي» في صورة RAW الملفات التي تحمل اسم كاميرتها.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "لم يُعثر على مجلد ملفات الكاميرا الشخصية. اختر مجلدًا في الإعدادات › الإعدادات الافتراضية للتحرير.",
+    "No profile in the folder names this camera.": "لا يوجد ملف شخصي في المجلد يحمل اسم هذه الكاميرا.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "ملفات شخصية من Adobe Camera Raw أو Lightroom على هذا الكمبيوتر. تُطبَّق تقريبيًا، وعلى التحميض مع إيقاف الفيلم فقط.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "يُطبَّق الملف الشخصي على التحميض مع إيقاف الفيلم فقط، وبصورة تقريبية: جداول الصبغة والتشبع فيه، ومنحنى الدرجات اللونية إن وُجد، والذي يحل حينها محل منحنى التحميض القياسي. لا يُطبَّق مزج المصدرين الضوئيين ولا المصفوفات الأمامية، لذا قد يبدو الملف الشخصي أدفأ أو أبرد قليلًا من الملف نفسه في Lightroom. يبدأ عرض الفيلم دائمًا من بيانات المشهد المحايدة.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "لتحميض صور RAW بملف كاميرا شخصي، اترك «مجلد ملفات الكاميرا الشخصية» فارغًا لاستخدام الملفات التي ثبّتها Adobe Camera Raw أو Lightroom على هذا الكمبيوتر، أو أدخل مجلدًا آخر يحتوي ملفات ‎.dcp.",
+    "adobe standard": "adobe standard",
+    "camera profile": "ملف الكاميرا الشخصي",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (مفقود)"
   },
   "plurals": {
     " · {count} paired file linked": {

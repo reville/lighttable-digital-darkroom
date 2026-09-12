@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "Nhấp một ảnh để làm ô survey đó hoạt động. Dùng phím mũi tên trái và phải để di chuyển giữa các ô, và phím mũi tên lên và xuống để di chuyển giữa các hàng.",
     "invalid Content-Length": "Content-Length không hợp lệ",
     "request body is too large": "thân yêu cầu quá lớn",
-    "the folder shown in this window cannot be removed from the catalog": "thư mục hiển thị trong cửa sổ này không thể bị xóa khỏi danh mục"
+    "the folder shown in this window cannot be removed from the catalog": "thư mục hiển thị trong cửa sổ này không thể bị xóa khỏi danh mục",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "Tệp JPEG, HEIF, TIFF hoặc tệp đã xử lý khác đã mang sẵn một đường cong tông màu, nên trước khi giả lập film, LightTable mở rộng nó trở lại ánh sáng cảnh quanh xám trung bình: vùng sáng lấy lại dải của mình, vùng tối lùi về nơi cảnh vốn có, còn phơi sáng ở xám trung bình không đổi. Tệp RAW vốn đã là ánh sáng cảnh và không được mở rộng.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "Mục Hồ sơ của ảnh RAW có menu Hồ sơ máy ảnh với các tệp .dcp trong thư mục có tên máy ảnh đó, chẳng hạn Adobe Standard hoặc các kiểu mô phỏng máy ảnh. LightTable không bao giờ kèm theo các hồ sơ này; chúng thuộc bản cài đặt Adobe của riêng bạn.",
+    "Adobe Camera Raw profiles on this computer": "Hồ sơ Adobe Camera Raw trên máy tính này",
+    "Camera profile": "Hồ sơ máy ảnh",
+    "Camera profile folder": "Thư mục hồ sơ máy ảnh",
+    "Camera profiles": "Hồ sơ máy ảnh",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "Mỗi công thức đầu ra quét với mật độ tối nhất và sáng nhất của chính tờ giấy được cân về đen và trắng, giống như máy quét phòng lab được hiệu chỉnh theo giấy của nó. Không có bước đó, vùng trắng của bản in sẽ dừng xa dưới mức trắng và vùng đen sẽ nổi lên, trông như một kết quả bạc màu thay vì một bản in.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "Để trống để dùng các hồ sơ do Adobe Camera Raw hoặc Lightroom cài đặt. Mục Hồ sơ của ảnh RAW liệt kê những hồ sơ có tên máy ảnh đó.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "Không tìm thấy thư mục hồ sơ máy ảnh. Hãy chọn một thư mục trong Cài đặt › Mặc định phát triển.",
+    "No profile in the folder names this camera.": "Không có hồ sơ nào trong thư mục có tên máy ảnh này.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "Hồ sơ từ Adobe Camera Raw hoặc Lightroom trên máy tính này. Được áp dụng gần đúng, chỉ cho bước phát triển khi Film tắt.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "Hồ sơ chỉ được áp dụng cho bước phát triển khi Film tắt, và chỉ gần đúng: các bảng sắc độ và độ bão hòa của nó và, nếu có, đường cong tông màu của nó, khi đó sẽ thay thế đường cong phát triển Tiêu chuẩn. Việc pha trộn hai nguồn sáng và ma trận thuận không được áp dụng, nên một hồ sơ có thể hiển thị hơi ấm hơn hoặc lạnh hơn so với cùng tệp đó trong Lightroom. Việc kết xuất film luôn bắt đầu từ dữ liệu cảnh trung tính.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "Để phát triển ảnh RAW với hồ sơ máy ảnh, hãy để trống Thư mục hồ sơ máy ảnh để dùng các hồ sơ mà Adobe Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc nhập một thư mục khác chứa tệp .dcp.",
+    "adobe standard": "adobe standard",
+    "camera profile": "hồ sơ máy ảnh",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (thiếu)"
   },
   "plurals": {
     " · {count} paired file linked": {

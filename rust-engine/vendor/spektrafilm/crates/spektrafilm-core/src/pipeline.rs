@@ -543,6 +543,7 @@ impl Pipeline {
             &self.params,
             &self.print_illuminant,
             self.print_exposure_factor,
+            self.preflash_raw(),
         );
         print_stage_timing(stage_timings, "color_reference", t);
 
@@ -660,6 +661,7 @@ impl Pipeline {
             &self.params,
             &self.print_illuminant,
             self.print_exposure_factor,
+            self.preflash_raw(),
         );
         // Direct positive-film scanner correction changes filming exposure.
         // Key its actual derived value so print-only reference settings can
@@ -683,7 +685,7 @@ impl Pipeline {
         if self.tc_lut.is_none() && self.mallett_core.is_none() { return None; }
         let color_ref = crate::color_reference::ColorReference::compute(
             &self.film, &self.print, &self.params, &self.print_illuminant,
-            self.print_exposure_factor);
+            self.print_exposure_factor, self.preflash_raw());
         let key = film_cache_key.map(|key|
             format!("{key}:{}", color_ref.filming_exposure_correction.to_bits()));
         match self.try_gpu_resident_output(image, backend, &color_ref,

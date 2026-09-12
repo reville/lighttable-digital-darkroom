@@ -113,11 +113,11 @@ const FILM_TOGGLES = ['auto_exposure', 'couplers_on', 'halation_on',
   'grain_on', 'glare_on', 'scan_sharpen', 'paper_locked'];
 const FILM_SELECTS = ['workflow_mode', 'wb_mode', 'film_format', 'output_recipe',
   'raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
-  'developProfile'];
+  'developProfile', 'camera_profile'];
 const RESET_GROUPS = {
   raw: ['raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
         'learned_denoise', 'learned_denoise_strength',
-        'developProfile'],
+        'developProfile', 'camera_profile'],
   // Film resets restore sliders while keeping switches and selected options.
   film: ['wb_temperature', 'wb_tint', 'exposure_ev', 'print_exposure', 'gamma'],
   stages: ['couplers_amount', 'halation_amount', 'grain_amount', 'glare_amount',
@@ -6865,6 +6865,12 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
   };
 }
 
+// The server owns the RAW starting grade so thumbnails, exports and the
+// editor agree; these values are the fallback until /api/config answers.
+function rawGradeDefaults() {
+  return { ...(S.rawGradeDefaults || { sharpness: 0.25, colorNoise: 0.25 }) };
+}
+
 function showCurrentImage(im) {
   stopZoomMotion({finish: true});
   photoPanKey = JSON.stringify([S.rootFolder, im.name, im.recoverySourceKey || im.fileKey || null]);
@@ -6879,7 +6885,7 @@ function showCurrentImage(im) {
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
   const isRaw = im.raw === true || isRawInput();
-  const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? rawGradeDefaults() : {};
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...rawDefaults, ...(im.grade || {}) };
   S.crop = im.crop || null;
   S.preset = cloneValue(im.preset || null);
@@ -7078,12 +7084,58 @@ function goGridRow(direction) {
 }
 
 const _rawDefaultCache = new Map();
+const _cameraProfileCache = new Map();
+
+// The Camera profile select lists the .dcp files in the configured folder
+// that name this photo's camera, plus whatever the edit already saved, so a
+// profile that has since gone missing still shows rather than silently
+// snapping back to Built-in.
+function populateCameraProfiles(profiles) {
+  const select = $('camera_profile');
+  if (!select) return;
+  const current = S.params.camera_profile || '';
+  const options = [new Option(tr("Built-in"), '')];
+  for (const item of profiles) options.push(new Option(item.name, item.file));
+  if (current && !profiles.some((item) => item.file === current)) {
+    options.push(new Option(tr("{fileName} (missing)", {fileName: current.replace(/\.dcp$/i, '')}), current));
+  }
+  select.replaceChildren(...options);
+  select.value = current;
+}
+
+async function loadCameraProfiles(name) {
+  if (cur()?.name !== name || cur()?.raw !== true) return;
+  try {
+    let result = _cameraProfileCache.get(name);
+    if (!result) {
+      result = await fetch(`/api/camera-profiles?name=${encodeURIComponent(name)}`)
+        .then((response) => response.json());
+      _cameraProfileCache.set(name, result);
+    }
+    if (cur()?.name !== name) return;
+    populateCameraProfiles(result.profiles || []);
+    $('cameraProfileHint').textContent = !result.available
+      ? tr("No camera profile folder was found. Choose one in Settings › Develop Defaults.")
+      : (result.profiles || []).length
+        ? tr("Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.")
+        : tr("No profile in the folder names this camera.");
+  } catch (_) {
+    if (cur()?.name === name) populateCameraProfiles([]);
+  }
+}
+window.addEventListener('lighttable-camera-profiles-changed', () => {
+  _cameraProfileCache.clear();
+  if (cur()?.raw === true) loadCameraProfiles(cur().name);
+});
+
 async function loadRawCameraDefault(name, hadSavedParams) {
   if (cur()?.name !== name || cur()?.raw !== true) {
     S.rawDefault = null;
+    populateCameraProfiles([]);
     syncControls();
     return;
   }
+  loadCameraProfiles(name);
   try {
     let result = _rawDefaultCache.get(name);
     if (!result) {
@@ -7907,6 +7959,7 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   }
   S.filmDefaults = d.defaults;
   S.newPhotoGradeDefaults = d.gradeDefaults || GRADE_DEFAULTS;
+  S.rawGradeDefaults = d.rawGradeDefaults || S.rawGradeDefaults;
   S.grainBaselines = d.stocks.grainBaselines || {};
   S.profiles = Array.isArray(d.profiles) ? d.profiles : [];
   S.profileById = Object.fromEntries(S.profiles.map((profile) =>
@@ -8099,7 +8152,7 @@ $('rawSaveCameraDefault').onclick = async () => {
     settings: Object.fromEntries([
       'raw_profile', 'raw_highlight_recovery', 'raw_sensor_denoise',
       'learned_denoise', 'learned_denoise_strength',
-      'developProfile', 'wb_mode', 'wb_temperature', 'wb_tint',
+      'developProfile', 'camera_profile', 'wb_mode', 'wb_temperature', 'wb_tint',
     ].map((key) => [key, S.params[key]])),
   });
   if (result.error) return toast(result.error);
@@ -8360,7 +8413,7 @@ $('filmstripResize').addEventListener('keydown', (event) => {
 $('resetEdit').onclick = () => {
   if (!cur()) return;
   pushUndo();
-  const rawDefaults = isRawInput() ? { sharpness: 0.25, colorNoise: 0.25 } : {};
+  const rawDefaults = isRawInput() ? rawGradeDefaults() : {};
   S.grade = { ...GRADE_DEFAULTS, ...rawDefaults };
   syncGrade(); syncCurveFromGrade(); syncHsl();
   drawGrade(); saveState(true);

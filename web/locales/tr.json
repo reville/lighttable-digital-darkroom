@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "7618f2d1cb24d520bc5e64d952d4afc4fc73a27efec81c4a9a5193d32ef16638",
+  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4259,7 +4259,24 @@
     "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.": "O survey hücresini etkin yapmak için bir fotoğrafa tıklayın. Hücreler arasında geçmek için sol ve sağ okları, satırlar arasında geçmek için yukarı ve aşağı okları kullanın.",
     "invalid Content-Length": "geçersiz Content-Length",
     "request body is too large": "istek gövdesi çok büyük",
-    "the folder shown in this window cannot be removed from the catalog": "bu pencerede gösterilen klasör katalogdan kaldırılamaz"
+    "the folder shown in this window cannot be removed from the catalog": "bu pencerede gösterilen klasör katalogdan kaldırılamaz",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.": "Bir JPEG, HEIF, TIFF veya başka bir işlenmiş dosya zaten bir ton eğrisi taşır; bu yüzden LightTable film uygulamadan önce onu orta gri etrafında sahne ışığına geri genişletir: parlak alanlar aralığını geri kazanır, gölgeler sahnedeki yerlerine iner ve orta gride pozlama değişmez. RAW dosyaları zaten sahne ışığıdır ve genişletilmez.",
+    "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.": "Bir RAW fotoğrafın Profil bölümü, klasördeki ve kamerasını adlandıran .dcp dosyalarını içeren bir Kamera profili menüsü sunar; örneğin Adobe Standard veya kamerayı taklit eden görünümler. LightTable bu profilleri asla dağıtmaz; onlar kendi Adobe kurulumunuza aittir.",
+    "Adobe Camera Raw profiles on this computer": "Bu bilgisayardaki Adobe Camera Raw profilleri",
+    "Camera profile": "Kamera profili",
+    "Camera profile folder": "Kamera profili klasörü",
+    "Camera profiles": "Kamera profilleri",
+    "Every output recipe scans with the paper’s own darkest and lightest densities levelled to black and white, the way a lab scanner is calibrated to its paper. Without that step a print’s whites would stop well short of white and its blacks would float, which reads as a washed-out render rather than as a print.": "Her çıkış reçetesi, kâğıdın kendi en koyu ve en açık yoğunluklarını siyah ile beyaza dengelenmiş şekilde tarar; bir laboratuvar tarayıcısı kâğıdına böyle kalibre edilir. Bu adım olmasa bir baskının beyazları beyazın çok gerisinde kalır, siyahları yüzer ve sonuç bir baskı gibi değil, soluk bir görüntü gibi görünürdü.",
+    "Leave empty to use the profiles that Adobe Camera Raw or Lightroom installed. The Profile section of a RAW photo lists the ones that name its camera.": "Adobe Camera Raw veya Lightroom tarafından kurulan profilleri kullanmak için boş bırakın. Bir RAW fotoğrafın Profil bölümü, kamerasını adlandıran profilleri listeler.",
+    "No camera profile folder was found. Choose one in Settings › Develop Defaults.": "Kamera profili klasörü bulunamadı. Ayarlar › Geliştirme Varsayılanları altından bir tane seçin.",
+    "No profile in the folder names this camera.": "Klasördeki hiçbir profil bu kamerayı adlandırmıyor.",
+    "Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.": "Bu bilgisayardaki Adobe Camera Raw veya Lightroom profilleri. Yaklaşık olarak ve yalnızca film kapalıyken geliştirmeye uygulanır.",
+    "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data.": "Profil yalnızca film kapalıyken geliştirmeye ve yaklaşık olarak uygulanır: ton ve doygunluk tabloları ile, varsa, Standart geliştirme eğrisinin yerini alan ton eğrisi. Çift ışık kaynağı karışımı ve ileri matrisler uygulanmaz; bu yüzden bir profil, aynı dosyanın Lightroom’daki hâlinden biraz daha sıcak veya soğuk görünebilir. Film işleme her zaman nötr sahne verilerinden başlar.",
+    "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files.": "RAW fotoğrafları bir kamera profiliyle geliştirmek için, bu bilgisayarda Adobe Camera Raw veya Lightroom tarafından kurulan profilleri kullanmak üzere Kamera profili klasörünü boş bırakın ya da .dcp dosyaları içeren başka bir klasör girin.",
+    "adobe standard": "adobe standard",
+    "camera profile": "kamera profili",
+    "dcp": "dcp",
+    "{fileName} (missing)": "{fileName} (eksik)"
   },
   "plurals": {
     " · {count} paired file linked": {

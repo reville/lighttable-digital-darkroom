@@ -393,6 +393,9 @@ COLOR_GRADING_COMPANION = {"saturation": 0.6, "hue": 40.0}
 # real but belongs to the client, so a server-side sweep correctly does
 # nothing and the browser gate has to own them.
 COVERED_ELSEWHERE = {
+    "film.camera_profile":
+        "needs a .dcp file resolved from the user's profile folder; covered by "
+        "tests/test_camera_profile_develop.py",
     "optics.profileEnabled":
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
     "optics.profileVignette":
