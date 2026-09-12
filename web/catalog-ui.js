@@ -124,19 +124,28 @@ export function createCatalogUI(ctx) {
         const row = button.closest('.source-row');
         const id = Number(row.dataset.id);
         const action = button.dataset.act;
+        const send = async (path, body) => {
+          try {
+            await post(path, body);
+            return true;
+          } catch (error) {
+            toast(String(error?.message || error));
+            return false;
+          }
+        };
         if (action === 'remove') {
           const source = (catalog.sources || []).find((s) => s.id === id);
           if (!window.confirm(
             tr("Remove “{value}” from the catalog? Photos and edits stay recoverable; adding the same folder again restores them.", {value: source ? source.name : tr("this folder")}))) {
             return;
           }
-          await post('/api/catalog/sources', { action: 'remove', id });
+          if (!await send('/api/catalog/sources', { action: 'remove', id })) return;
         } else if (action === 'favorite') {
           const source = (catalog.sources || []).find((s) => s.id === id);
-          await post('/api/catalog/sources',
-                     { action: 'favorite', id, favorite: !(source && source.favorite) });
+          if (!await send('/api/catalog/sources',
+                          { action: 'favorite', id, favorite: !(source && source.favorite) })) return;
         } else if (action === 'rescan') {
-          await post('/api/catalog/scan', { sourceId: id });
+          if (!await send('/api/catalog/scan', { sourceId: id })) return;
           toast(tr("Scanning…"));
         }
         await refresh();
@@ -546,6 +555,14 @@ export function createCatalogUI(ctx) {
       });
     }
     open.addEventListener('click', () => show(true));
+    dialog.addEventListener('keydown', (event) => {
+      if (!dialog.classList.contains('on')) return;
+      event.stopPropagation();
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (!busy && !scanning) show(false);
+      }
+    });
     cancel.addEventListener('click', async () => {
       if (!busy) { show(false); return; }
       if (!jobId || cancelling) return;
@@ -761,6 +778,14 @@ export function createCatalogUI(ctx) {
       el(id).addEventListener('change', syncMode);
     }
     el('watchCancel')?.addEventListener('click', () => show(false));
+    dialog.addEventListener('keydown', (event) => {
+      if (!dialog.classList.contains('on')) return;
+      event.stopPropagation();
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (!saving) show(false);
+      }
+    });
     el('watchMode')?.addEventListener('change', syncMode);
     [['watchChoose', 'watchPath'], ['watchChooseDest', 'watchDest']]
       .forEach(([buttonId, field]) => el(buttonId)?.addEventListener('click', () => {

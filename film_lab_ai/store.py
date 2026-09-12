@@ -229,11 +229,32 @@ class IndexStore:
             errors = int(row["errors"] or 0)
             return {"indexed": int(row["total"] or 0) - errors, "errors": errors}
 
+    def sweep_previews(self) -> None:
+        """Remove preview temp files left by an interrupted analysis."""
+        try:
+            for leftover in self.database.parent.glob("photo-*.jpg"):
+                leftover.unlink(missing_ok=True)
+        except OSError:
+            pass
+
     def reset(self) -> None:
         """Delete only generated index data; settings are owned by the service."""
         with self._lock:
+            if self.database.is_file():
+                # Erase deleted captions/tags from free pages before the file
+                # goes away; the index is private generated data.
+                try:
+                    connection = sqlite3.connect(self.database, timeout=10)
+                    try:
+                        connection.execute("PRAGMA secure_delete=ON")
+                        connection.execute("VACUUM")
+                    finally:
+                        connection.close()
+                except sqlite3.Error:
+                    pass
             for suffix in ("", "-wal", "-shm"):
                 Path(str(self.database) + suffix).unlink(missing_ok=True)
+            self.sweep_previews()
 
 
 def _json_object(value: str) -> dict:

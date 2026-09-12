@@ -23,6 +23,47 @@ class ParametricStateTests(unittest.TestCase):
         self.assertEqual(grade.clean(state), state)
 
 
+class NonFiniteStateTests(unittest.TestCase):
+    def test_non_finite_scalars_fall_back_to_defaults(self):
+        state = grade.clean({
+            "exposure": float("nan"), "contrast": float("inf"),
+            "temp": float("-inf"), "monochrome": float("nan"),
+        })
+        self.assertEqual(state["exposure"], grade.DEFAULTS["exposure"])
+        self.assertEqual(state["contrast"], grade.DEFAULTS["contrast"])
+        self.assertEqual(state["temp"], grade.DEFAULTS["temp"])
+        self.assertEqual(state["monochrome"], grade.DEFAULTS["monochrome"])
+        self.assertTrue(all(np.isfinite(v) for v in state.values()
+                            if isinstance(v, (int, float))))
+
+    def test_non_finite_curve_is_dropped(self):
+        curve = [x / 255 for x in range(256)]
+        curve[128] = float("nan")
+        self.assertNotIn("curveL", grade.clean({"curveL": curve}))
+
+    def test_non_finite_advanced_color_stays_finite(self):
+        state = grade.clean({
+            "pointColor": [{"hue": float("nan"), "saturation": float("inf"),
+                            "range": float("nan")}],
+            "colorGrading": {"shadows": {"hue": float("inf"),
+                                          "saturation": 0.5}},
+        })
+        point = state["pointColor"][0]
+        self.assertTrue(np.isfinite(point["hue"]))
+        self.assertTrue(np.isfinite(point["saturation"]))
+        self.assertTrue(np.isfinite(point["range"]))
+        self.assertTrue(np.isfinite(
+            state["colorGrading"]["shadows"]["hue"]))
+
+    def test_apply_of_non_finite_inputs_is_finite(self):
+        cleaned = grade.clean({
+            "pointColor": [{"hue": float("nan"), "saturation": float("inf")}],
+        })
+        image = np.full((4, 4, 3), 0.5, dtype=np.float32)
+        out = grade.apply(image, cleaned)
+        self.assertTrue(np.isfinite(out).all())
+
+
 class GradeEffectsTests(unittest.TestCase):
     def setUp(self):
         y, x = np.mgrid[0:32, 0:32].astype(np.float32)

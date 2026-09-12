@@ -692,53 +692,58 @@ final class ServerController {
                         completion: @escaping (StartupOutcome) -> Void) {
         let child = process
         let pid = child?.processIdentifier
+        // A restart replaces the child while an earlier waiter may still be
+        // polling. Its stale result must not surface after the new session
+        // started, so every callback is tagged with the session it watched.
+        let session = sessionID
         DispatchQueue.global(qos: .userInitiated).async {
+            func finish(_ outcome: StartupOutcome, port adopted: Int? = nil) {
+                DispatchQueue.main.async {
+                    guard self.sessionID == session else { return }
+                    if let adopted { self.port = adopted }
+                    completion(outcome)
+                }
+            }
             let deadline = Date().addingTimeInterval(timeout)
             var lastDetail = ""
             var probePort = self.port
             while Date() < deadline {
+                if self.sessionID != session { return }
                 let report = self.readStartupReport()
                 if let report {
                     if report.phase == "failed" {
-                        DispatchQueue.main.async { completion(.failed(report)) }
+                        finish(.failed(report))
                         return
                     }
                     if let moved = report.port, moved > 0 { probePort = moved }
                     // Keep the last startup message until the editor opens.
                     if report.phase != "ready", let detail = report.detail, detail != lastDetail {
                         lastDetail = detail
+                        let translated: String
+                        switch detail {
+                        case "Opening the catalog…": translated = L("Opening the catalog…")
+                        case "Checking the catalog…": translated = L("Checking the catalog…")
+                        case "Starting the local server…": translated = L("Starting the local server…")
+                        case "Ready": translated = L("Ready")
+                        default: translated = L(detail)
+                        }
                         DispatchQueue.main.async {
-                            let translated: String
-                            switch detail {
-                            case "Opening the catalog…": translated = L("Opening the catalog…")
-                            case "Checking the catalog…": translated = L("Checking the catalog…")
-                            case "Starting the local server…": translated = L("Starting the local server…")
-                            case "Ready": translated = L("Ready")
-                            default: translated = L(detail)
-                            }
+                            guard self.sessionID == session else { return }
                             progress(translated)
                         }
                     }
                 }
                 if let child, !child.isRunning {
-                    let status = child.terminationStatus
-                    DispatchQueue.main.async {
-                        completion(.exited(status, report))
-                    }
+                    finish(.exited(child.terminationStatus, report))
                     return
                 }
                 if self.healthy(port: probePort, pid: pid) {
-                    let adopted = probePort
-                    DispatchQueue.main.async {
-                        self.port = adopted
-                        completion(.ready)
-                    }
+                    finish(.ready, port: probePort)
                     return
                 }
                 usleep(250_000)
             }
-            let report = self.readStartupReport()
-            DispatchQueue.main.async { completion(.timedOut(report)) }
+            finish(.timedOut(self.readStartupReport()))
         }
     }
 }
@@ -2766,6 +2771,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard webView === self.webView,
+              let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+        if isLocalEditorPage(url, port: server.port) || url.scheme == "about" {
+            decisionHandler(.allow)
+            return
+        }
+        // A link in the editor becomes a browser tab; the web view itself may
+        // only ever show the local editor origin.
+        if let external = externalWebURL(url),
+           !NSWorkspace.shared.open(external) {
+            sendEvent(["type": "error",
+                       "message": L("Could not open the link in your browser.")])
+        }
+        decisionHandler(.cancel)
+    }
+
+    func webView(_ webView: WKWebView,
                  createWebViewWith configuration: WKWebViewConfiguration,
                  for navigationAction: WKNavigationAction,
                  windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -2812,9 +2839,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
+        // Every action mutates the user's library or launches processes, so it
+        // must come from the editor page itself. Without this guard a page
+        // navigated away from the local origin could still reach the bridge.
         guard message.name == "lightTable",
               let body = message.body as? [String: Any],
-              let action = body["action"] as? String else { return }
+              let action = body["action"] as? String,
+              isTrustedEditorFrame(message.frameInfo, in: webView) else { return }
         switch action {
         case "showPhotoCopyMenu":
             guard message.frameInfo.isMainFrame,
@@ -3512,7 +3543,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func migrateWebPreferences(from oldRoot: String, to newRoot: String) {
-        let url = projectDir.appendingPathComponent("prefs.json")
+        let url = lightTablePreferencesURL()
         guard let data = try? Data(contentsOf: url),
               var prefs = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
         else { return }

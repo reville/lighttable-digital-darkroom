@@ -51,7 +51,7 @@ class NeutralPreviewCacheTests(unittest.TestCase):
 
     def test_rgb16_cache_keeps_preview_rounding_below_one_code_value(self):
         pixels = np.random.default_rng(17).random((64, 96, 3), dtype=np.float32)
-        expected = server.color_pipeline.resize_float_width(pixels, 48)
+        expected = server.color_pipeline.resize_float_width(pixels, 64)
         expected = (expected * 255 + .5).astype(np.uint8)
         with tempfile.TemporaryDirectory() as directory, \
                 mock.patch.object(server, 'CACHE', Path(directory)), \
@@ -60,7 +60,7 @@ class NeutralPreviewCacheTests(unittest.TestCase):
                 mock.patch.object(server.color_pipeline, 'decode_raw', return_value=pixels), \
                 mock.patch.object(server.color_pipeline, 'linear_prophoto_to_display_srgb', return_value=pixels), \
                 mock.patch.object(server, 'jpeg_bytes', return_value=b'jpeg') as encode:
-            server.build_neutral_preview('missing.dng', 48)
+            server.build_neutral_preview('missing.dng', 64)
             actual = encode.call_args.args[0]
             self.assertLessEqual(np.abs(actual.astype(int) - expected.astype(int)).max(), 1)
 

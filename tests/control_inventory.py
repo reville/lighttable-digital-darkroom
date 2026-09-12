@@ -57,6 +57,14 @@ NON_PROCESSING_UI = {
     "maskLumaHigh": "luminance-range mask picker input",
 }
 
+# Markup that edits the selected tone or hue band rather than one fixed
+# control. The concrete keys are generated and audited by the colour-grading
+# and HSL suites; a new slider anywhere else must still be classified.
+NON_PROCESSING_TEMPLATE_SLIDERS = {
+    "colorGrading.hue", "colorGrading.saturation", "colorGrading.luminance",
+    "hsl.*.h", "hsl.*.s", "hsl.*.l",
+}
+
 
 @dataclass(frozen=True)
 class Slider:

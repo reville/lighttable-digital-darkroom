@@ -209,9 +209,13 @@ export function createMetadataPanel(ctx) {
       applyAll.addEventListener('click', async () => {
         const names = ctx.selection();
         if (!names.length) { toast(tr("Select photos first")); return; }
-        const response = await post('/api/metadata/bulk',
-                                    { names, fields: collect() });
-        toast(tr("Metadata applied to {value} photos", {value: (response.count || 0)}));
+        try {
+          const response = await post('/api/metadata/bulk',
+                                      { names, fields: collect() });
+          toast(tr("Metadata applied to {value} photos", {value: (response.count || 0)}));
+        } catch (error) {
+          toast(String(error?.message || error));
+        }
       });
     }
 

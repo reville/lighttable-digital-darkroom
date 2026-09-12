@@ -83,6 +83,11 @@ class ControlSemantics(unittest.TestCase):
         self.assertGreater(len(verified), 60,
                            "too few controls have a verified directional claim")
 
+    def test_every_control_is_accounted_for(self):
+        """A control the audit cannot run must fail loudly, not stay silent."""
+        unexplained = [f.key for f in self.findings if f.verdict == "unaudited"]
+        self.assertEqual(unexplained, [], f"audit could not run: {unexplained}")
+
 
 if __name__ == "__main__":
     unittest.main()

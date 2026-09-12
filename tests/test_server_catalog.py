@@ -346,6 +346,28 @@ class RenameTests(CatalogServerTestCase):
         self.assertEqual(moved["total"], 1)
         self.assertEqual(moved["items"][0]["rating"], 3)
 
+    def test_case_only_rename_keeps_the_same_file(self):
+        probe = self.root / "CaseProbe"
+        probe.write_bytes(b"case")
+        insensitive = (self.root / "caseprobe").exists()
+        probe.unlink()
+        if not insensitive:
+            self.skipTest("case-insensitive filesystem required")
+
+        name = self.qualified("a.jpg")
+        server.save_image_state(name, {"rating": 4})
+        result = server.rename_photos({"names": [name], "template": "A"})
+
+        self.assertTrue(result["ok"], result)
+        self.assertEqual(result["renamed"], 1)
+        row = self.catalog.connection.execute(
+            "SELECT relpath FROM files WHERE source_id=? AND relpath='A.jpg'",
+            (self.source,)).fetchone()
+        self.assertIsNotNone(row)
+        self.assertEqual(
+            self.catalog.state_for(
+                self.catalog.image_id_for(self.source, "A.jpg"))["rating"], 4)
+
     def test_camera_and_date_tokens_describe_each_photo(self):
         """Every photo is described itself, not the first one in its folder."""
         import ingest_workflow

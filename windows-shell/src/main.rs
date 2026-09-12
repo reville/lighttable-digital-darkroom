@@ -129,7 +129,7 @@ const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 enum UserEvent {
     #[cfg(target_os = "windows")]
     WindowsUpdate(lighttable_desktop_shell::windows_update::native::Request),
-    NativeMessage(String),
+    NativeMessage(String, String),
     EditJournalReply(Value),
     PageLoaded,
     PageStarted,
@@ -694,6 +694,14 @@ impl AppState {
                 result,
             });
         });
+    }
+
+    /// Messages may only come from the local server page the window loaded.
+    /// A webview navigated elsewhere would otherwise still reach every native
+    /// action through the IPC bridge.
+    fn trusted_ipc_origin(&self, origin: &str) -> bool {
+        let Some(server) = &self.server else { return false };
+        origin.starts_with(&format!("http://127.0.0.1:{}/", server.port))
     }
 
     fn server_ready(&mut self, generation: u64, folder: PathBuf, result: Result<ServerController>) {
@@ -1521,8 +1529,15 @@ fn run() -> Result<()> {
         .with_background_color(BACKGROUND)
         .with_initialization_script(&bridge_script)
         .with_clipboard(true)
+        .with_navigation_handler(move |url| {
+            // The web view only ever shows the local server. External links
+            // use the bridge's own action, so an arbitrary navigation must
+            // not replace the page that is allowed to reach the IPC bridge.
+            url.starts_with("http://127.0.0.1:") || url.starts_with("about:")
+        })
         .with_ipc_handler(move |request| {
-            let _ = command_proxy.send_event(UserEvent::NativeMessage(request.body().clone()));
+            let _ = command_proxy.send_event(UserEvent::NativeMessage(
+                request.body().clone(), request.uri().to_string()));
         })
         .with_on_page_load_handler(move |event, _| {
             let _ = load_proxy.send_event(match event {
@@ -1604,12 +1619,14 @@ fn run() -> Result<()> {
         match event {
             #[cfg(target_os = "windows")]
             Event::UserEvent(UserEvent::WindowsUpdate(request)) => app.windows_update(request),
-            Event::UserEvent(UserEvent::NativeMessage(message)) => {
-                if let Err(error) = app.handle_command(&message) {
-                    let _ = app.send_event(json!({
-                        "type": "error",
-                        "message": format!("{error:#}"),
-                    }));
+            Event::UserEvent(UserEvent::NativeMessage(message, origin)) => {
+                if app.trusted_ipc_origin(&origin) {
+                    if let Err(error) = app.handle_command(&message) {
+                        let _ = app.send_event(json!({
+                            "type": "error",
+                            "message": format!("{error:#}"),
+                        }));
+                    }
                 }
             }
             Event::UserEvent(UserEvent::EditJournalReply(reply)) => {

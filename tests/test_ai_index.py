@@ -253,6 +253,30 @@ class AIIndexServiceTests(unittest.TestCase):
             self.assertFalse(service.store.database.exists())
             service.shutdown()
 
+    def test_clear_removes_stray_analysis_previews(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self.make_service(root, FakeAnalyzer())
+            service.enable()
+            self.wait_for_scan(service)
+
+            orphan = service.root / "photo-orphaned.jpg"
+            orphan.write_bytes(b"preview left by an interrupted analysis")
+            service.clear()
+
+            self.assertFalse(orphan.exists())
+            service.shutdown()
+
+    def test_analysis_leaves_no_preview_files_behind(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            service = self.make_service(root, FakeAnalyzer())
+            service.enable()
+            self.wait_for_scan(service)
+
+            self.assertEqual(list(service.root.glob("photo-*.jpg")), [])
+            service.shutdown()
+
     def test_a_damaged_generated_index_is_preserved_and_rebuilt(self):
         with tempfile.TemporaryDirectory() as temporary:
             database = Path(temporary) / "index.sqlite3"

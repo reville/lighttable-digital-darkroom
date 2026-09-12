@@ -184,13 +184,14 @@ class ControlCoverage(unittest.TestCase):
         """A new slider must be classified, not silently ignored."""
         known = {control.key for control in inventory.controls()}
         stray = sorted(
-            key.split(".", 1)[1] for key in inventory.sliders()
-            if key not in known and key.startswith("ui.")
+            key for key in inventory.sliders()
+            if key not in known
+            and key not in inventory.NON_PROCESSING_TEMPLATE_SLIDERS
             and key.split(".", 1)[1] not in inventory.NON_PROCESSING_UI)
         self.assertEqual(stray, [], "\n".join([
             "These range inputs match no control in the schema. Wire them up,",
-            "or add them to NON_PROCESSING_UI with the reason they are not",
-            "part of image processing:", *stray]))
+            "or add them to NON_PROCESSING_UI (or the template waiver) with",
+            "the reason they are not part of image processing:", *stray]))
 
 
 if __name__ == "__main__":

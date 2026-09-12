@@ -73,8 +73,16 @@ def _flush_directory(directory: Path) -> None:
         os.close(descriptor)
 
 
+def flush_directory(directory: Path) -> None:
+    """Public form of the directory-entry durability helper."""
+    _flush_directory(directory)
+
+
 def _write_file(path: Path, payload: bytes) -> None:
-    with path.open("wb") as handle:
+    # Create with owner-only permissions so a private state file (the instance
+    # token, preferences) is never briefly world-readable through the umask.
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(descriptor, "wb") as handle:
         handle.write(payload)
         handle.flush()
         os.fsync(handle.fileno())

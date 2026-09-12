@@ -150,6 +150,7 @@ class AIIndexService:
             self._last_error = ""
             self._skipped = {}
         try:
+            self.store.sweep_previews()
             capabilities = self.analyzer.capabilities()
             if not capabilities.get("vision", {}).get("available"):
                 raise RuntimeError(T("the local Vision analyzer has not been built"))
@@ -220,8 +221,10 @@ class AIIndexService:
             with tempfile.NamedTemporaryFile(
                 suffix=".jpg", prefix="photo-", dir=self.root, delete=False,
             ) as handle:
-                handle.write(preview)
+                # Record the path before writing: a failed write must not
+                # leave the preview behind for the finally block to miss.
                 temporary = Path(handle.name)
+                handle.write(preview)
             result = self.analyzer.analyze(temporary)
             # Culling scores replace the raw Vision cues they are drawn from:
             # the cues include a subject mask that is far larger than the
