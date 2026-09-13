@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -111,7 +112,7 @@
           "title": "Übersetzte Bearbeitungen prüfen",
           "paragraphs": [
             "Develop-Einstellungen sind ungefähre Werte und können Lightrooms dargestellte Erscheinung nicht garantieren. Nicht unterstützte lokale Masken, Kameraprofiele, .lrcat-data-KI-Masken oder LUT-Nutzdaten sowie nicht unterstützte Regeln für intelligente Sammlungen werden als übersprungen gemeldet. Importierte Develop-Einstellungen schalten Film aus.",
-            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
+            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Entwicklungseinstellungen und Zuschnitt wendet sie nur an, wenn Sie diese Optionen einschalten. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Erste Schritte"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Umstieg von Lightroom",
+      "category": "Getting started",
+      "summary": "Was ein Lightroom-Classic-Katalog und XMP-Sidecars mitbringen, wofür es keinen Importweg gibt und wie sich die Begriffe unterscheiden.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "Migrieren",
+        "Migration",
+        "XMP",
+        "Sidecars",
+        "Vorgaben",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Was übernommen wird",
+          "paragraphs": [
+            "Aus einem Lightroom-Classic-Katalog: Fotos bleiben in ihren aktuellen Ordnern und werden referenziert, nicht kopiert. Der Importer liest Bewertungen, Markierungen, Etiketten und IPTC-Felder; Stichwörter; Sammlungen und unterstützte Smart-Sammlungen; Stapel; virtuelle Kopien; Zuschnitt und Begradigung; näherungsweise Entwicklungseinstellungen; und auf Wunsch den Bearbeitungsverlauf. Ihre .lrcat-Datei wird nie verändert.",
+            "Aus XMP-Sidecars neben Ihren Fotos: Sternebewertungen, Auswählen- und Ablehnen-Markierungen, Standard-Farbetiketten, Stichwörter und beschreibende IPTC-Felder. Ordner ••• → Sidecars importieren… kann auch Entwicklungseinstellungen und Zuschnitt anwenden, wenn Sie diese Optionen einschalten.",
+            "Beide Wege nutzen denselben Konverter, daher wird eine Einstellung auf beiden Wegen gleich abgebildet: Tonwerte, Weißabgleich-Verschiebungen, Textur, Klarheit, Dunst entfernen, der Farbmixer, die Schwarzweiß-Umwandlung mit ihrem Mixer, Punktkurven, Vignettenstärke, Schärfen und Rauschreduzierung. Ein Wert außerhalb des Bereichs von LightTable, etwa eine Belichtung jenseits von ±5 EV, wird begrenzt und im Bericht genannt."
+          ]
+        },
+        {
+          "title": "Wofür es keinen Importweg gibt",
+          "paragraphs": [
+            "Cloud-Alben und Vorgaben, die nur in der Cloud-App gespeichert sind, können nicht gelesen werden. Synchronisieren Sie sie zuerst in Lightroom Classic oder speichern Sie die Vorgaben als Dateien.",
+            "KI-Masken und generative Bearbeitungen, Objektivunschärfe und Entrauschen-Einstellungen sind proprietäre Renderschritte. Sie werden als übersprungen gemeldet statt angenähert, ebenso Kameraprofile, LUT-Looks, lokale Masken, Reparaturen und Objektivprofil-Kennungen. Importierte Bearbeitungen beginnen mit ausgeschaltetem Film, damit die umgewandelten Develop-Einstellungen für sich allein sichtbar sind."
+          ]
+        },
+        {
+          "title": "Begriffe",
+          "paragraphs": [
+            "Sammlungen heißen auch hier Sammlungen; die Alben der Cloud-App kommen nur über einen Lightroom-Classic-Katalog an.",
+            "Auswählen- und Ablehnen-Markierungen funktionieren gleich, und die untere Leiste zeigt sie für die ausgewählten Fotos.",
+            "Entwickeln heißt Bearbeiten. Film ist bei neuen und importierten Fotos standardmäßig aus; schalten Sie ihn ein, wenn Sie eine Filmbehandlung über der Bearbeitung möchten.",
+            "Kameraprofil in Bearbeiten listet die Adobe-DCP-Profile, die Camera Raw oder Lightroom auf diesem Computer installiert hat, oder den in den Einstellungen gewählten Ordner für Kameraprofile. Profile wirken näherungsweise und nur auf die Entwicklung bei ausgeschaltetem Film."
+          ]
+        },
+        {
+          "title": "Ihre Vorgaben importieren",
+          "paragraphs": [
+            "Vorgaben → Verwalten… → Importieren… akzeptiert .xmp-Vorgaben aus Lightroom und Camera Raw, ältere .lrtemplate-Vorgaben und Capture-One-Stile (.costyle). Nach einem Katalog- oder Ordnerimport bietet die Einrichtung ebenfalls Vorgaben importieren… an. Jede importierte Vorgabe zeigt vor dem Anwenden, wie viele Einstellungen abgebildet und welche übersprungen wurden."
+          ],
+          "steps": [
+            "Öffnen Sie Vorgaben, klicken Sie auf Verwalten…, dann auf Importieren… und wählen Sie die Vorgabendateien oder, in der Mac-App, einen ganzen Vorgabenordner.",
+            "Prüfen Sie den Umwandlungsbericht und wenden Sie die Vorgabe dann unter Deine an."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Bitten Sie das andere Programm, seine Metadaten in benachbarte XMP-Dateien zu speichern, und wählen Sie dann Ordner ••• → Sidecars importieren…. Die Aktion liest die Originale des Katalogs, einschließlich aller Seiten großer Bibliotheken mit bis zu 100.000 Fotos pro Import. Virtuelle Kopien behalten ihre eigenen Metadaten.",
             "Unterstützte Metadaten umfassen Sternbewertungen, Auswahl/Ablehnung-Markierungen, standardisierte Farblabel, flache und hierarchische Stichwörter sowie beschreibende IPTC-Felder. Ein explizit leerer Wert löscht dieses Feld; ein fehlender Wert lässt es unverändert. Benutzerdefinierte Farblabel, die keinem LightTable-Farbton entsprechen, werden als übersprungen gemeldet.",
-            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden durch diese Menüaktion nicht angewendet."
+            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden nur angewendet, wenn Sie diese Optionen im Dialog Sidecars importieren einschalten."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Fotos ausblenden, die nicht angezeigt werden können",
           "paragraphs": [
             "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Im Filmstreifen wird dieser Link unter der Fotoanzahl nur angezeigt, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können.",
             "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
           ]
         },
@@ -1095,13 +1159,19 @@
         "auto",
         "Histogramm",
         "Abschneiden",
-        "vorher"
+        "vorher",
+        "Farbmesspunkt",
+        "Farbmesspunkt",
+        "Messpunkt",
+        "RGB-Werte",
+        "Messwert",
+        "Messen"
       ],
       "sections": [
         {
           "title": "Mit Licht beginnen",
           "paragraphs": [
-            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an. Kontrast verändert deren Trennung."
+            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an: Erhöhen Sie Weißtöne, um die hellsten Töne aufzuhellen, erhöhen Sie Schwarztöne, um die dunkelsten anzuheben, und verringern Sie einen der beiden Werte, um dieses Ende wieder zurückzunehmen. Kontrast verändert deren Trennung."
           ],
           "steps": [
             "Belichtung für das Hauptmotiv festlegen.",
@@ -1126,6 +1196,21 @@
             "Wenn Auto angibt, dass es auf die Bildvorschau wartet, lassen Sie die Vorschau laden und versuchen Sie es erneut.",
             "Das Scope-Menü bietet außerdem Waveform, RGB Parade und Vectorscope zur Prüfung von Tonwerten und Farben."
           ]
+        },
+        {
+          "title": "Farben mit Messpunkten messen",
+          "paragraphs": [
+            "Farbmesspunkte zeigen die Rot-, Grün- und Blauwerte (0–255) und die Helligkeit L* an bis zu vier Stellen im Foto. Die Werte werden beim Bearbeiten aktualisiert, sodass Sie während der Anpassung eine Graukarte, eine Filmbasis oder Hauttöne prüfen können."
+          ],
+          "steps": [
+            "Klicken Sie auf die Messpunkt-Schaltfläche neben dem Histogramm.",
+            "Klicken Sie ins Foto, um einen Messpunkt zu setzen. Sie können bis zu vier setzen.",
+            "Lesen Sie die Werte unter dem Histogramm ab. Mit × entfernen Sie einen Messpunkt."
+          ],
+          "tips": [
+            "Messpunkte lesen die angezeigte Bearbeitung. Sie gehören zur aktuellen Fenstersitzung und werden nicht mit dem Foto gespeichert.",
+            "Drücken Sie Escape, um das Setzen von Messpunkten zu beenden."
+          ]
         }
       ],
       "related": [
@@ -1139,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Objektiv- und chromatische-Abberationskorrekturen anwenden",
       "category": "Editing",
-      "summary": "Verwenden Sie ein abgeglichenes oder manuell ausgewähltes Objektivprofil, oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
+      "summary": "Verwenden Sie ein gematchtes oder manuell ausgewähltes Objektivprofil, korrigieren Sie chromatische Aberration, entfernen Sie violette und grüne Farbsäume oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
       "keywords": [
         "Objektiv",
         "Profil",
@@ -1148,6 +1233,9 @@
         "Abdunkeln",
         "chromatische Aberration",
         "Farbsäume",
+        "Farbsäume entfernen",
+        "violetter Farbsaum",
+        "grüner Farbsaum",
         "Rot-Cyan",
         "blau gelb",
         "optik"
@@ -1156,18 +1244,21 @@
         {
           "title": "Eine Korrektur auswählen und überprüfen",
           "paragraphs": [
-            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profikarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist."
+            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profilkarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist. Der Bereich nennt außerdem die Version der verwendeten Objektivdatenbank und wie viele Kameras und Objektive sie enthält; die Datenbank wird mit der Objektivbibliothek geliefert, nicht mit LightTable.",
+            "Wenn Kamera und Objektiv in den Fotometadaten genau zu einem Profil passen, ist Gematchtes Objektivprofil verwenden beim Öffnen des Fotos sofort aktiv und gilt auch für Miniaturen und Exporte. Ein abgeleiteter oder mehrdeutiger Treffer bleibt aus. Einstellungen → Standardwerte der Entwicklung → Gematchtes Objektivprofil automatisch anwenden schaltet dieses Verhalten ab; Fotos mit gespeicherten Objektiveinstellungen behalten diese in jedem Fall."
           ],
           "steps": [
             "Den Profilnamen und die Angleich-Erklärung lesen.",
-            "Aktivieren Sie Das angepasste Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann Verzeichnung korrigieren und Objektivabschattung korrigieren nach Bedarf.",
+            "Aktivieren Sie Gematchtes Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann nach Bedarf Verzeichnung korrigieren, Objektivabdunkeln korrigieren und Chromatische Aberration korrigieren. Jeder Schalter ist unabhängig, sodass sich die chromatische Aberration ohne Änderung der Geometrie korrigieren lässt.",
             "Wählen Sie bei Bedarf einen anderen Eintrag in Lens profile und vergleichen Sie die Korrektur mit dem Original.",
-            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an."
+            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an.",
+            "Erhöhen Sie unter Farbsäume entfernen Violett oder Grün, um diese Farbe aus stark gesättigten Pixeln neben harten Kanten zu entfernen. Die Regler für Farbton-Anfang und Farbton-Ende legen den Farbtonbereich fest, den jeder Regler behandelt; ein Anfang über seinem Ende läuft über Rot."
           ],
           "tips": [
             "Wird kein exaktes Objektivprofil gefunden, bleiben manuelle Steuerelemente für Verzeichnung und Perspektive verfügbar.",
-            "Die Kontrollkästchen für Profil-Verzeichnung und Abschattung sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
+            "Die Kontrollkästchen für Profil-Verzeichnung, Abschattung und chromatische Aberration sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
             "Ein manuell ausgewähltes Profil muss visuell geprüft werden; die Auswahl bedeutet nicht, dass es eine exakte Übereinstimmung ist.",
+            "Farbsäume entfernen behandelt den Umriss eines großen violetten oder grünen Motivs wie einen Farbsaum. Verringern Sie die Stärke oder verengen Sie den Farbtonbereich, wenn ein Motiv an seiner Kante Farbe verliert.",
             "Objektiv- und Farbsäume-Korrekturen bleiben bis zum Export nicht-destruktiv."
           ]
         }
@@ -1313,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -1603,7 +1695,15 @@
         "schwarztöne",
         "Überlagerung",
         "Abwedeln",
-        "Nachbelichten"
+        "Nachbelichten",
+        "Objektivunschärfe",
+        "Hintergrundunschärfe",
+        "Unschärfe",
+        "Bokeh",
+        "Schärfentiefe",
+        "Luminanz",
+        "Luminanz-Mischung",
+        "Farbe erhalten"
       ],
       "sections": [
         {
@@ -1660,10 +1760,26 @@
           ]
         },
         {
+          "title": "Einen Teil des Fotos weichzeichnen",
+          "paragraphs": [
+            "Objektivunschärfe im Abschnitt Effekte einer Maske zeichnet den ausgewählten Bereich so weich wie ein unscharf gestelltes Objektiv. Der Unschärferadius wächst mit der Stärke der Maske, sodass eine weiche Kante oder ein Tiefenbereich allmählich ausläuft, statt an einer harten Linie zu enden.",
+            "Die Unschärfe wird auf das fertige Bild angewendet, nach dem Film-Rendering und den übrigen Anpassungen der Maske. Sie glättet auch das Filmkorn im unscharfen Bereich."
+          ],
+          "steps": [
+            "Erstellen Sie eine Motiv-Maske und wählen Sie Umkehren, eine Tiefe-Maske für einen Entfernungsbereich oder zeichnen Sie eine Radial-Maske und kehren Sie sie um.",
+            "Klappen Sie Effekte auf und erhöhen Sie Objektivunschärfe. Warten Sie die aktualisierte Vorschau ab, bevor Sie das Ergebnis beurteilen.",
+            "Verfeinern Sie die Auswahl mit Hinzufügen, Subtrahieren oder Weiche Kante, wo die Unschärfe auf scharfe Kanten übergreift."
+          ],
+          "tips": [
+            "Nur ausgewählte Pixel fließen in die Unschärfe ein, sodass ein scharfes Motiv nicht in den unscharfen Hintergrund verschmiert. Prüfen Sie feine Kanten wie Haare bei 1:1."
+          ]
+        },
+        {
           "title": "Passe eine lokale Tonkurve an",
           "steps": [
             "Erweitere die Tonkurve für die ausgewählte Maske und wähle RGB, Rot, Grün oder Blau.",
             "Klicke auf das Diagramm, um einen Punkt hinzuzufügen, und ziehe ihn dann. Wenn du einen Punkt nach oben bewegst, wird seine Ausgabe heller; wenn du ihn nach unten bewegst, wird sie dunkler. Doppelklicke auf einen inneren Punkt, um ihn zu entfernen.",
+            "Aktivieren Sie Nur Luminanz, um die Helligkeit zu ändern, ohne Farbe oder Sättigung zu verschieben.",
             "Verwende Kurve zurücksetzen, um nur den ausgewählten Kanal dieser Maske zurückzusetzen, oder Rückgängig, um eine Bearbeitung rückgängig zu machen."
           ],
           "tips": [
@@ -1818,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Entfernen Sie Flecken und verfeinern Sie Reparatur- oder Klon-Korrekturen",
       "category": "Editing",
-      "summary": "Übermalen Sie Störungen, prüfen Sie die Sichtbarkeit der Retusche und verschieben Sie die Quelle oder das Ziel einer Korrektur.",
+      "summary": "Entfernen Sie Flecken und gemalte Striche, beseitigen Sie Staub und Kratzer im ganzen Foto und verfeinern Sie Reparieren- oder Klonen-Korrekturen.",
       "keywords": [
         "entfernen",
         "reparieren",
@@ -1830,7 +1946,18 @@
         "Flecken visualisieren",
         "quelle",
         "Ziel",
-        "Ablenkung"
+        "Ablenkung",
+        "Staub und Kratzer",
+        "Kratzer",
+        "Haare",
+        "Draht",
+        "Pinsel",
+        "Strich",
+        "Füllung",
+        "Texturfüllung",
+        "inhaltsbasierte Füllung",
+        "Filmscan",
+        "Makel"
       ],
       "sections": [
         {
@@ -1841,22 +1968,44 @@
           ],
           "steps": [
             "Wählen Sie Entfernen, Reparieren oder Klonen und legen Sie dann Größe, Weiche Kante und Deckkraft fest.",
-            "Klicken Sie auf einen Fleck oder ziehen Sie über eine Ablenkung im Foto.",
+            "Wählen Sie für Entfernen Punkt, um eine runde Korrektur zu klicken oder zu ziehen, oder Pinsel, um entlang eines Kratzers, Haars oder Drahts zu malen.",
+            "Wählen Sie für Entfernen eine Option unter Füllung. Umgebungstextur übernehmen kopiert Details aus der Nähe im Foto; Weicher Übergang blendet die Ränder nach innen und eignet sich für gleichmäßige Flächen wie Himmel.",
+            "Klicken Sie auf einen Fleck, ziehen Sie über eine Ablenkung oder malen Sie einen Strich im Foto.",
             "Für kleine Staubflecken aktivieren Sie Visualize Spots und passen Sie Threshold an, um Kanten leichter zu prüfen.",
             "Schalten Sie Flecken visualisieren aus und prüfen Sie das korrigierte Foto."
           ],
           "tips": [
-            "Wenn Sie eine Korrektur auswählen und einen anderen Modus wählen, ändert sich der Modus dieser Korrektur."
+            "Wenn Sie eine Korrektur auswählen und einen anderen Modus wählen, ändert sich der Modus dieser Korrektur.",
+            "Umgebungstextur übernehmen kopiert Pixel aus diesem Foto; es werden nie neue Details erzeugt. Änderungen an Füllung gelten für die ausgewählte Entfernen-Korrektur. Korrekturen, die vor dieser Option erstellt wurden, behalten Weicher Übergang.",
+            "Ein Pinselstrich umfasst bis zu 256 Punkte. Lassen Sie los und malen Sie einen weiteren Strich, um fortzufahren."
+          ]
+        },
+        {
+          "title": "Staub und Kratzer im ganzen Foto entfernen",
+          "paragraphs": [
+            "Staub und Kratzer findet kleine Makel, die sich deutlich von ihrer Umgebung abheben, etwa Staub auf einem Filmscan, und füllt sie mit Pixeln aus der Nähe. Die Funktion wirkt als eine Korrektur oben in der Liste auf das ganze Foto, sodass spätere Korrekturen das bereinigte Bild abtasten.",
+            "Größter Makel legt den breitesten Makel fest, der berücksichtigt wird, als Anteil der kurzen Kante des Fotos. Empfindlichkeit legt fest, wie stark sich ein Makel von seiner Umgebung unterscheiden muss. Höhere Werte finden schwächere Makel und erfassen eher feine Details."
+          ],
+          "steps": [
+            "Entfernen öffnen und Staub und Kratzer aufklappen.",
+            "Stellen Sie Größter Makel etwas breiter ein als der sichtbare Staub und lassen Sie Empfindlichkeit zunächst bei 50 %.",
+            "Klicken Sie auf Staub entfernen. Erkannte Makel anzeigen umrandet die Funde rot und meldet, wie viele Makel gefunden wurden.",
+            "Vergrößern Sie Haare, Sterne, Spitzlichter in den Augen und Text. Werden sie erfasst, verringern Sie Empfindlichkeit oder Größter Makel oder senken Sie die Deckkraft.",
+            "Schalten Sie Erkannte Makel anzeigen aus, um das Ergebnis zu beurteilen."
+          ],
+          "tips": [
+            "Wählen Sie die Staub-Korrektur in der Liste aus, um sie später zu ändern. Diese Korrektur aktivieren vergleicht das Ergebnis, und Korrektur löschen entfernt sie.",
+            "Lange, dünne Kratzer werden gefunden, wenn ihre Breite unter Größter Makel liegt. Malen Sie breitere Kratzer stattdessen mit dem Entfernen-Pinsel."
           ]
         },
         {
           "title": "Eine vorhandene Korrektur verfeinern",
           "paragraphs": [
-            "Wählen Sie eine Korrektur in der Liste aus, um ihre Steuerungen anzuzeigen. Die Kreise im Bild zeigen das bearbeitbare Ziel und bei Reparieren und Klonen die Quelle an.",
+            "Wählen Sie eine Korrektur in der Liste aus, um ihre Steuerelemente anzuzeigen. Die Kreise oder Striche im Bild zeigen das bearbeitbare Ziel und bei Reparieren und Klonen die Quelle.",
             "Vergrößern Sie für eine präzise Platzierung. Kreisumrisse und Pins bleiben auf jeder Zoom-Stufe gestochen scharf; die Kreise zeigen weiterhin denselben Bereich des Fotos an."
           ],
           "steps": [
-            "Ziehen Sie den Zielkreis, um die Korrektur neu zu positionieren, oder wählen Sie Move Target und klicken Sie auf die neue Position.",
+            "Ziehen Sie den Zielkreis oder einen gemalten Strich, um die Korrektur neu zu positionieren, oder wählen Sie Ziel verschieben und klicken Sie auf die neue Position.",
             "Ziehen Sie bei Heal oder Clone den Quellenkreis auf einen besseren Bereich. Refresh Source versucht eine andere Quellposition.",
             "Passen Sie Weiche Kante oder Deckkraft an, wenn die Kante oder Stärke der Korrektur verfeinert werden muss.",
             "Schalten Sie Korrektur aktivieren um, um zu vergleichen, oder verwenden Sie Korrektur löschen, um sie zu entfernen."
@@ -1970,7 +2119,8 @@
         {
           "title": "Personen oder Gesichtsbereiche auswählen",
           "paragraphs": [
-            "Personen bietet Person, Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Diese Steuerelemente benötigen den Vision-Helfer unter macOS 14 oder neuer und sind unter Linux und Windows ausgeblendet. Gesichtshaut und Haare werden geschätzt, und es wird keine Identität abgeleitet."
+            "Personen bietet Person und Haare auf jeder Plattform. Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne und Haut glätten erfordern den Vision-Helfer unter macOS 14 oder neuer. Gesichtshaut wird geschätzt, und es wird keine Identität abgeleitet.",
+            "Haare verwendet ein mitgeliefertes Modell, das lokal ausgeführt wird und Haare auch außerhalb des Gesichts auswählt, einschließlich schulterlangem Haar. Prüfen Sie feine Strähnen, helle Lichter, Perücken und kleine Personen im Hintergrund; diese können dennoch übersehen werden. Ältere oder Quell-Builds ohne das Modell verwenden, falls verfügbar, die frühere Vision-Schätzung. Vorhandene gespeicherte Masken behalten ihre Auswahlen."
           ],
           "steps": [
             "Personen wählen und dann den Teil, den Sie anpassen möchten.",
@@ -2010,7 +2160,8 @@
         {
           "title": "Farbstich neutralisieren",
           "paragraphs": [
-            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs."
+            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs.",
+            "Bei einem RAW-Original steht darüber ein Block Weißabgleich der Aufnahme mit Wie aufgenommen, Auto, Vorgaben und Benutzerdefiniert für eine Farbtemperatur in Kelvin und eine Aufnahmetönung. Er entwickelt die RAW-Daten neu und funktioniert mit ein- oder ausgeschaltetem Film; bei bearbeiteten Dateien ist er ausgeblendet."
           ],
           "steps": [
             "Bearbeiten öffnen und Farbe aufklappen.",
@@ -2028,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -2047,7 +2199,15 @@
         "blau",
         "Kontrast",
         "Kontrollpunkt",
-        "S-Kurve"
+        "S-Kurve",
+        "Pipette",
+        "Schwarzpunkt",
+        "Weißpunkt",
+        "Graupunkt",
+        "Graupunkt",
+        "Neutral",
+        "Farbstich",
+        "Tonwerte"
       ],
       "sections": [
         {
@@ -2065,6 +2225,21 @@
           "tips": [
             "Verwenden Sie nur wenige Punkte und vergleichen Sie das Foto während der Arbeit; Kanal-Kurven können starke Farbstiche erzeugen.",
             "Eine gespeicherte oder importierte Kurve behält ihre exakt gespeicherte Tabelle, bis Sie sie bearbeiten. Die App erstellt repräsentative Griffe für die Bearbeitung neu, daher kann die erste Anpassung eine importierte Kurve über den von Ihnen bewegten Punkt hinaus verändern."
+          ]
+        },
+        {
+          "title": "Schwarz-, Grau- und Weißpunkt festlegen",
+          "paragraphs": [
+            "Die Pipetten unter der Punktkurve legen die Rot-, Grün- und Blaukurven anhand einer Stelle im Foto fest. Schwarzpunkt macht den aufgenommenen Bereich schwarz, Weißpunkt macht ihn weiß, und Graupunkt macht ihn neutral, ohne seine Helligkeit zu ändern. Das hilft, einen Farbstich aus einem Scan zu entfernen."
+          ],
+          "steps": [
+            "Bearbeiten öffnen, Kurve aufklappen und Schwarzpunkt, Graupunkt oder Weißpunkt wählen.",
+            "Klicken Sie auf einen Bereich des Fotos, der schwarz, neutralgrau oder weiß sein soll.",
+            "Prüfen Sie die R-, G- und B-Kurven und verfeinern Sie sie oder setzen Sie sie zurück, wenn das Ergebnis zu stark ist."
+          ],
+          "tips": [
+            "Schwarzpunkt benötigt einen Bereich, der dunkler als Mittelgrau ist, und Weißpunkt einen, der heller als Mittelgrau ist. Drücken Sie Escape, um eine Pipette abzubrechen.",
+            "Die Pipetten schalten Kurve in den Modus Punkt, weil sie die Kanal-Kurven bearbeiten."
           ]
         },
         {
@@ -2434,7 +2609,7 @@
           "title": "Aufnahme- und Abschlusssteuerungen",
           "paragraphs": [
             "Kamera-EV und Capture-Weißabgleich wirken vor der Filmbelichtung. Belichtung und Temp/Tönung im Bearbeiten-Bereich sind spätere Abschlusskorrekturen im Workflow.",
-            "Der Aufnahme-Weißabgleich erfordert ein RAW-Original. Für JPEG, HEIF, TIFF oder eine andere verarbeitete Datei verwenden Sie Bearbeiten Temp/Tönung."
+            "Der Weißabgleich der Aufnahme steht bei RAW-Originalen oben im Bereich Farbe und funktioniert mit ein- oder ausgeschaltetem Film: Wählen Sie Wie aufgenommen, Auto, eine Vorgabe oder Benutzerdefiniert, um eine Farbtemperatur in Kelvin und eine Aufnahmetönung festzulegen. Bei JPEG, HEIF, TIFF oder einer anderen bearbeiteten Datei ist der Block ausgeblendet; verwenden Sie Bearbeiten Temp/Tönung."
           ],
           "steps": [
             "Schalten Sie Film ein, wählen Sie einen Film und passen Sie Kamera EV an.",
@@ -2527,7 +2702,11 @@
         "Qualität",
         "Vollgröße",
         "Auflösung",
-        "Vorgabe"
+        "Vorgabe",
+        "Rand",
+        "Rahmen",
+        "Matt",
+        "Seitenrand"
       ],
       "sections": [
         {
@@ -2540,6 +2719,17 @@
             "Exportieren öffnen und oben eine Vorgabe auswählen.",
             "Legen Sie die Abmessungen auf Vollgröße oder ein Limit für die lange Kante fest.",
             "Prüfen Sie Ausgabevorschau: Die exportierte Größe berücksichtigt Drehung und Zuschnitt, und eine Begrenzung der langen Kante verkleinert größere Bilder, ohne kleinere zu vergrößern."
+          ]
+        },
+        {
+          "title": "Rand hinzufügen",
+          "paragraphs": [
+            "Rand in Erweitert fügt jedem exportierten Foto einen schlichten weißen, grauen oder schwarzen Rand hinzu. Der Rand wird nach dem Skalieren hinzugefügt. Seine Breite ist daher ein Anteil der ausgegebenen langen Kante, und die Ausgabe ist auf jeder Seite um diesen Rand größer als das Foto."
+          ],
+          "steps": [
+            "Exportieren öffnen und Erweitert aufklappen.",
+            "Wählen Sie Schmal, Mittel oder Breit in Rand und dann Randfarbe.",
+            "Prüfen Sie die endgültigen Abmessungen in Ausgabevorschau."
           ]
         },
         {
@@ -2663,7 +2853,10 @@
         "Bewertet",
         "Stapel",
         "abbrechen",
-        "Fortschritt"
+        "Fortschritt",
+        "Kontaktabzug",
+        "Kontaktbogen",
+        "Indexprint"
       ],
       "sections": [
         {
@@ -2686,6 +2879,22 @@
             "Ausgewählte Fotos verwendet ausgewählte Fotos, die noch im aktuellen Ordner, der aktuellen Sammlung und den aktuellen Filtern angezeigt werden. Wenn kein Teil der Auswahl mehr sichtbar ist, wird das aktive Foto verwendet. Überprüfen Sie vor dem Start in Export die Fotoanzahl und den Namen.",
             "Nur Ausgewählt, Bewertet 1+ und Alle außer abgelehnt wählen passende Standfotos aus dem aktiven Katalog aus und können Fotos außerhalb der angezeigten Sammlung oder des Filters einschließen. Ausgewählte Fotos bietet eine explizite Kontrolle über die Auswahl.",
             "Wenn ein Stapel in mehrere Ordner schreibt, zeigt Im Finder anzeigen das zuerst erfolgreich exportierte Foto an. Der Link ist nicht vorhanden, wenn keine Fotos exportiert wurden. Verwenden Sie Export abbrechen, um das Stoppen anzufordern. Exportdetails meldet die Anzahl der abgeschlossenen, übersprungenen und abgebrochenen Vorgänge sowie Warnungen und Fehler; eine Warnung kann auftreten, nachdem ein Foto erfolgreich geschrieben wurde. Videoclips werden vom Export-Workflow für Standbilder nicht gerendert. Wenn sich ein Original ändert, während sein Export in der Warteschlange steht oder gerendert wird, schlägt dieses Foto mit einem Fehler fehl; stellen Sie es nach der Überprüfung des Originals erneut in die Warteschlange."
+          ]
+        },
+        {
+          "title": "Einen Kontaktabzug erstellen",
+          "paragraphs": [
+            "Kontaktabzug… in Exportieren ordnet die im Feld Fotos gewählten Fotos mit Ihren Bearbeitungen auf einem beschrifteten JPEG an. Er kann bis zu 200 Fotos enthalten."
+          ],
+          "steps": [
+            "Exportieren öffnen und Fotos sowie den Zielordner festlegen.",
+            "Klicken Sie auf Kontaktabzug… und wählen Sie Spalten, Bogenbreite, Hintergrund und einen Titel.",
+            "Wählen Sie die Beschriftungen: Dateiname, Film und Bewertung.",
+            "Klicken Sie auf Bogen erstellen. Der Dialog zeigt den Fortschritt an, und eine Benachrichtigung nennt den Pfad der gespeicherten Datei."
+          ],
+          "tips": [
+            "Der Bogen wird als contact-sheet gefolgt von Datum und Uhrzeit gespeichert. Ein Foto, das nicht gerendert werden kann, wird übersprungen und in der Benachrichtigung mitgezählt.",
+            "Wählen Sie mehr Spalten, wenn der Bogen durch eine große Auswahl zu hoch zum Erstellen wird."
           ]
         }
       ],
@@ -2852,7 +3061,8 @@
         {
           "title": "Standardwerte für unbearbeitete Fotos",
           "paragraphs": [
-            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden."
+            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden.",
+            "Gematchtes Objektivprofil automatisch anwenden, standardmäßig aktiv, schaltet das Objektivprofil für Fotos ein, deren Kamera und Objektiv genau zu einem Profil passen und deren Objektiveinstellungen nie gespeichert wurden. Schalten Sie es aus, um jedes Foto mit deaktiviertem Profil zu öffnen."
           ],
           "steps": [
             "Einstellungen → Entwicklungs-Standardwerte öffnen.",
@@ -3285,5 +3495,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

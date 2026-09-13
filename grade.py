@@ -244,6 +244,36 @@ def _apply_curve(c: np.ndarray, g: dict) -> np.ndarray:
     return c
 
 
+def set_luminance(color: np.ndarray, target: np.ndarray) -> np.ndarray:
+    """Give each pixel the ``target`` luminance while keeping its colour.
+
+    Colour differences from the pixel's own luminance are preserved, then
+    scaled toward grey only as far as needed to stay inside the gamut.
+    """
+    color = np.asarray(color, dtype=np.float32)
+    shifted = color + (np.asarray(target, dtype=np.float32) - color @ LUMA)[..., None]
+    lum = (shifted @ LUMA)[..., None]
+    low = shifted.min(axis=-1, keepdims=True)
+    shifted = np.where(low < 0.0, lum + (shifted - lum) * lum / np.maximum(lum - low, 1e-6),
+                       shifted)
+    high = shifted.max(axis=-1, keepdims=True)
+    shifted = np.where(high > 1.0,
+                       lum + (shifted - lum) * (1.0 - lum) / np.maximum(high - lum, 1e-6),
+                       shifted)
+    return np.clip(shifted, 0.0, 1.0).astype(np.float32)
+
+
+def apply_curves(c: np.ndarray, g: dict, *, luminosity: bool = False) -> np.ndarray:
+    """Apply the sampled curve tables, optionally to luminance only."""
+    if not any(g.get(key) for key in CURVE_KEYS):
+        return c
+    source = np.clip(np.asarray(c, dtype=np.float32), 0.0, 1.0)
+    curved = _apply_curve(source.copy(), g)
+    if not luminosity:
+        return curved
+    return set_luminance(source, curved @ LUMA)
+
+
 def _rgb_to_hsv(c: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     mx = c.max(axis=2)
     mn = c.min(axis=2)
@@ -467,7 +497,9 @@ if _HAS_NUMBA:
         gain_r = 1.0 + temp * 0.18 + tint * 0.06
         gain_g = 1.0 - tint * 0.12
         gain_b = 1.0 - temp * 0.18 + tint * 0.06
-        w_denom = max(1.0 + whites * 0.35 - (blacks * -0.25), 1e-4)
+        # Positive Whites lowers the white point so the brightest tones
+        # stretch up to white; positive Blacks lifts the black point.
+        w_denom = max(1.0 - whites * 0.35 - (blacks * -0.25), 1e-4)
         b_val = blacks * -0.25
         haze_val = dehaze * 0.12
         haze_denom = max(1.0 - haze_val, 0.2)
@@ -668,7 +700,9 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
         # --- display-referred stage --------------------------------------------
         if g["whites"] or g["blacks"]:
             # Move the endpoints, then renormalise so the range stays [0,1].
-            w = 1.0 + g["whites"] * 0.35
+            # Positive Whites lowers the white point (brightens the top of
+            # the range); positive Blacks raises the black point (lifts).
+            w = 1.0 - g["whites"] * 0.35
             b = g["blacks"] * -0.25
             c = np.clip((c - b) / max(w - b, 1e-4), 0.0, 1.0)
 

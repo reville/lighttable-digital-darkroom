@@ -45,6 +45,8 @@ struct Request {
     native_shared: bool,
     #[serde(default)]
     export_shared: bool,
+    #[serde(default)]
+    export_rgb8: bool,
     viewport: Option<region::Rect>,
     data_dir: Option<PathBuf>,
     film: Option<String>,
@@ -318,7 +320,8 @@ impl Engine {
 
         let output = request.output.as_deref();
         let native_output = request.native_output.as_deref();
-        if output.is_none() && native_output.is_none() && !request.export_shared {
+        if output.is_none() && native_output.is_none() && !request.export_shared
+            && !request.export_rgb8 {
             bail!("missing output");
         }
         let data_dir = request.data_dir.as_deref().context("missing data_dir")?;
@@ -524,7 +527,7 @@ impl Engine {
         } else { key });
         let render_started = Instant::now();
         let native_only = native_output.is_some() && output.is_none()
-            && !request.export_shared
+            && !request.export_shared && !request.export_rgb8
             && request.grade.is_none() && request.masks.is_none()
             && request.crop.is_none() && request.long_edge.is_none();
         let packed = if native_only {
@@ -626,6 +629,10 @@ impl Engine {
         }
         let export_shared = if request.export_shared {
             Some(export_surface::publish(width, height, &samples)?)
+        } else if request.export_rgb8 {
+            // The same quantisation as the in-engine JPEG path, so the codes
+            // the server encodes are the codes this process would have encoded.
+            Some(export_surface::publish_rgb8(width, height, &quantize_u8(&samples))?)
         } else { None };
         let encode_ms = millis(encode_started.elapsed());
 

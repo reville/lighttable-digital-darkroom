@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Başlarken"
     },
@@ -111,7 +112,7 @@
           "title": "Çevrilmiş düzenlemeleri incele",
           "paragraphs": [
             "Geliştirme ayarları yaklaşık değerlerdir ve Lightroom’un işlenmiş görünümünü garanti edemez. Desteklenmeyen local masks, camera profiles, .lrcat-data AI masks veya LUT yükleri ve desteklenmeyen akıllı koleksiyon kuralları atlandı olarak bildirilir. İçe aktarılan geliştirme ayarları Film’i kapatır.",
-            "Klasörler ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstverileri bitişik yardımcı dosyalardan okumak için ayrı bir işlemdir. Bu işlem, geliştirme ayarlarını veya kırpmayı uygulamaz. Sonuç iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
+            "Klasörler ••• → Yardımcı dosyaları içe aktar… komutu, desteklenen üstverileri bitişik yardımcı dosyalardan okumak için ayrı bir işlemdir. Geliştirme ayarlarını ve kırpmayı yalnızca bu seçenekleri açtığınızda uygular. Sonuç iletişim kutusunda ilerleme, uygulanan sayılar, atlanan ayarlar ve hatalar gösterilir."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Başlarken"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Başlarken"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Lightroom’dan geçiş",
+      "category": "Getting started",
+      "summary": "Bir Lightroom Classic kataloğu ile XMP yardımcı dosyalarının neleri getirdiği, nelerin içe aktarma yolu olmadığı ve terimlerin nasıl farklılaştığı.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "taşı",
+        "geçiş",
+        "XMP",
+        "yardımcı dosyalar",
+        "hazır ayarlar",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Neler aktarılır",
+          "paragraphs": [
+            "Bir Lightroom Classic kataloğundan: fotoğraflar mevcut klasörlerinde kalır ve kopyalanmaz, başvurulur. İçe aktarıcı puanları, bayrakları, etiketleri ve IPTC alanlarını; anahtar sözcükleri; koleksiyonları ve desteklenen akıllı koleksiyonları; yığınları; sanal kopyaları; kırpma ve düzleştirmeyi; yaklaşık geliştirme ayarlarını ve seçilirse düzenleme geçmişini okur. .lrcat dosyanız hiçbir zaman değiştirilmez.",
+            "Fotoğraflarınızın yanındaki XMP yardımcı dosyalarından: yıldız puanları, seçme ve reddetme bayrakları, standart renk etiketleri, anahtar sözcükler ve açıklayıcı IPTC alanları. Klasörler ••• → Yardımcı dosyaları içe aktar… bu seçenekleri açtığınızda geliştirme ayarlarını ve kırpmayı da uygulayabilir.",
+            "Her iki yol da aynı dönüştürücüyü kullanır; bu yüzden bir ayar hangi yoldan gelirse gelsin aynı şekilde eşlenir: ton, beyaz dengesi kaydırmaları, doku, netlik, pus giderme, renk karıştırıcı, karıştırıcısıyla birlikte siyah beyaz dönüşümü, nokta eğrileri, vinyet miktarı, keskinleştirme ve gürültü azaltma. LightTable aralığının dışındaki bir değer, örneğin ±5 EV’yi aşan pozlama, aralığa sınırlanır ve raporda adıyla belirtilir."
+          ]
+        },
+        {
+          "title": "Nelerin içe aktarma yolu yok",
+          "paragraphs": [
+            "Yalnızca bulut uygulamasında saklanan bulut albümleri ve hazır ayarlar okunamaz. Önce bunları Lightroom Classic’e eşitleyin veya hazır ayarları dosya olarak kaydedin.",
+            "Yapay zekâ maskeleri ve üretken düzenlemeler, Lens Bulanıklığı ve Gürültü Giderme ayarları tescilli işleme adımlarıdır. Bunlar yaklaşık olarak aktarılmak yerine atlandı olarak bildirilir; kamera profilleri, LUT görünümleri, yerel maskeler, onarım ve lens profili kimlikleri de öyle. İçe aktarılan düzenlemeler Film kapalı olarak başlar, böylece dönüştürülen geliştirme ayarları tek başına görünür."
+          ]
+        },
+        {
+          "title": "Terimler",
+          "paragraphs": [
+            "Koleksiyonlar burada da koleksiyondur; bulut uygulamasının albümleri yalnızca bir Lightroom Classic kataloğu üzerinden gelir.",
+            "Seç ve Reddet bayrakları aynı şekilde çalışır ve alt şerit bunları seçili fotoğraflar için gösterir.",
+            "Geliştir burada Düzenle olarak adlandırılır. Yeni ve içe aktarılan fotoğraflar için Film varsayılan olarak kapalıdır; düzenlemenin üzerine bir film işlemesi istediğinizde açın.",
+            "Düzenle’deki Kamera profili, Camera Raw veya Lightroom’un bu bilgisayara yüklediği Adobe DCP profillerini ya da Ayarlar’da seçilen kamera profili klasörünü listeler. Profiller yaklaşık olarak ve yalnızca Film kapalı geliştirmeye uygulanır."
+          ]
+        },
+        {
+          "title": "Hazır ayarlarınızı içe aktarın",
+          "paragraphs": [
+            "Hazır Ayarlar → Yönet… → İçe Aktar…, Lightroom ve Camera Raw .xmp hazır ayarlarını, eski .lrtemplate hazır ayarlarını ve Capture One .costyle stillerini kabul eder. Bir katalog veya klasör içe aktarımından sonra kurulum da Hazır ayarları içe aktar… seçeneğini sunar. İçe aktarılan her hazır ayar, uygulamadan önce kaç ayarın eşlendiğini ve hangilerinin atlandığını gösterir."
+          ],
+          "steps": [
+            "Hazır Ayarlar’ı açın, Yönet…’e ve ardından İçe Aktar…’a tıklayıp hazır ayar dosyalarını veya Mac uygulamasında tüm bir hazır ayar klasörünü seçin.",
+            "Dönüştürme raporunu inceleyin, sonra hazır ayarı Sizin bölümünden uygulayın."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Başlarken"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Diğer düzenleyiciden üstverisini bitişik XMP dosyalarına kaydetmesini isteyin, ardından Klasörler ••• → Yardımcı dosyaları içe aktar… seçin. Bu işlem, büyük kitaplıkların tüm sayfaları dahil olmak üzere kataloğun orijinallerini okur; içe aktarma başına en fazla 100.000 fotoğraf desteklenir. Sanal kopyalar kendi üstverilerini korur.",
             "Desteklenen üstveri arasında yıldız derecelendirmeleri, seç/reddet işaretleri, standart renk etiketleri, düz ve hiyerarşik anahtar kelimeler ve açıklayıcı IPTC alanları bulunur. Açıkça girilmiş boş bir değer o alanı temizler; olmayan bir değer ise olduğu gibi bırakır. Bir LightTable rengiyle eşleşmeyen özel renk etiketleri atlandı olarak bildirilir.",
-            "İçe aktarıcı, desteklenen Photo Mechanic ve digiKam üstveri kurallarını okur. Her uygulamanın ek kuralları vardır; bu nedenle tüm bir kütüphaneyi değiş tokuş etmeden önce her iki uygulamada da küçük bir örneği inceleyin. İşleme ayarları ve kırpma bu menü eylemiyle uygulanmaz."
+            "İçe aktarıcı, desteklenen Photo Mechanic ve digiKam üstveri kurallarını okur. Her uygulamanın ek kuralları vardır; bu nedenle tüm bir kütüphaneyi değiş tokuş etmeden önce her iki uygulamada da küçük bir örneği inceleyin. Geliştirme ayarları ve kırpma yalnızca Yardımcı dosyaları içe aktar iletişim kutusunda bu seçenekleri açtığınızda uygulanır."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Görüntülenemeyen fotoğrafları gizle",
           "paragraphs": [
             "Izgarada bir küçük resim hatası görünüyorsa konum özetinin yanındaki Görüntülenemeyen fotoğrafları gizle seçeneğini seçin. Bu, Filtre içindeki ilgili anahtarı açar. Anahtar varsayılan olarak kapalıdır ve ayarı oturumlar arasında kaydedilir. Bu anahtar akıllı koleksiyon kurallarına kaydedilmez.",
+            "Film şeridinde bu bağlantı, fotoğraf sayısının altında yalnızca geçerli liste görüntülenemeyen fotoğraflar içerdiğinde görünür.",
             "Anahtar, kullanılamadığı veya yalnızca bulutta olduğu bilinen fotoğrafları ve küçük resim ya da önizleme hatası gözlenen fotoğrafları gizler. Diğer kod çözme hataları fotoğraflar yüklenirken belirlenir. Fotoğrafları yeniden göstermek için anahtarı kapatın, filtre etiketini kaldırın veya Tümünü temizle seçeneğini seçin. Başarılı bir Tekrar dene işlemi veya orijinalin değişmesi, kaydedilen hatayı temizler."
           ]
         },
@@ -1095,13 +1159,19 @@
         "otomatik",
         "histogram",
         "kırpılma",
-        "önce"
+        "önce",
+        "renk örnekleyici",
+        "renk örnekleme",
+        "örnekleyici",
+        "rgb değerleri",
+        "okuma değeri",
+        "ölç"
       ],
       "sections": [
         {
           "title": "Işık ile başla",
           "paragraphs": [
-            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar. Kontrast, bunların ayrımını değiştirir."
+            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar: en parlak tonları aydınlatmak için Beyazlar'ı yükseltin, en koyu tonları kaldırmak için Siyahlar'ı yükseltin ve o ucu geri çekmek için herhangi birini düşürün. Kontrast, bunların ayrımını değiştirir."
           ],
           "steps": [
             "Ana konu için Pozlama’yı ayarlayın.",
@@ -1126,6 +1196,21 @@
             "Otomatik, görüntü önizlemesini beklediğini söylüyorsa, önizlemenin yüklenmesine izin verin ve yeniden deneyin.",
             "Scope menüsü, ton ve rengi incelemek için Waveform, RGB Parade ve Vectorscope seçeneklerini de sunar."
           ]
+        },
+        {
+          "title": "Renkleri örnekleyicilerle ölçün",
+          "paragraphs": [
+            "Renk örnekleyiciler, fotoğraftaki en fazla dört noktanın kırmızı, yeşil ve mavi değerlerini (0–255) ve açıklığını (L*) gösterir. Değerler siz düzenledikçe güncellenir; böylece ayar yaparken gri kartı, film tabanını veya ten rengini kontrol edebilirsiniz."
+          ],
+          "steps": [
+            "Histogramın yanındaki örnekleyici düğmesine tıklayın.",
+            "Örnekleyici yerleştirmek için fotoğrafa tıklayın. En fazla dört tane yerleştirebilirsiniz.",
+            "Histogramın altındaki değerleri okuyun. Bir örnekleyiciyi kaldırmak için × kullanın."
+          ],
+          "tips": [
+            "Örnekleyiciler görüntülenen düzenlemeyi okur. Geçerli pencere oturumuna aittirler ve fotoğrafla birlikte kaydedilmezler.",
+            "Örnekleyici yerleştirmeyi durdurmak için Escape tuşuna basın."
+          ]
         }
       ],
       "related": [
@@ -1139,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Objektif ve kromatik sapma düzeltmelerini uygulayın",
       "category": "Editing",
-      "summary": "Eşleşen ya da elle seçilmiş bir objektif profili kullanın veya tam bir profil yoksa elle düzeltmeler yapın.",
+      "summary": "Eşleşen ya da elle seçilmiş bir objektif profili kullanın, kromatik sapmayı düzeltin, mor ve yeşil saçakları kaldırın veya tam bir profil yoksa elle düzeltmeler yapın.",
       "keywords": [
         "objektif",
         "profil",
@@ -1148,6 +1233,9 @@
         "gölgelendirme",
         "kromatik sapma",
         "saçaklanma",
+        "saçak giderme",
+        "mor saçak",
+        "yeşil saçak",
         "kırmızı camgöbeği",
         "mavi sarı",
         "optik"
@@ -1156,18 +1244,21 @@
         {
           "title": "Bir düzeltme seçin ve doğrulayın",
           "paragraphs": [
-            "Düzenle bölümünde Objektif düzeltmeleri'ni genişletin. Profil kartı, otomatik kamera/objektif eşleşmesini ve kullanılabilir bir profil olup olmadığını açıklar."
+            "Düzenle bölümünde Lens düzeltmeleri'ni genişletin. Profil kartı, otomatik kamera/objektif eşleşmesini ve kullanılabilir bir profil olup olmadığını açıklar. Panel ayrıca kullanılan objektif veritabanının sürümünü ve kaç kamera ile objektif listelediğini belirtir; veritabanı LightTable ile değil, objektif kitaplığıyla birlikte gelir.",
+            "Fotoğraf meta verilerindeki kamera ve objektif tek bir profille tam eşleştiğinde, Eşleşen objektif profilini kullan fotoğraf açılır açılmaz açıktır ve küçük resimler ile dışa aktarmalara da uygulanır. Çıkarım yapılan ya da belirsiz bir eşleşme kapalı kalır. Ayarlar → Geliştirme Varsayılanları → Eşleşen objektif profilini otomatik uygula bu davranışı kapatır; kaydedilmiş objektif ayarları olan fotoğraflar bunları her durumda korur."
           ],
           "steps": [
             "Profil adını ve eşleştirme açıklamasını okuyun.",
-            "Bir profil mevcut olduğunda Eşleşen objektif profilini kullan seçeneğini etkinleştirin, ardından gerektiğinde Distorsiyonu düzelt ve Objektif gölgelemesini düzelt seçeneklerini belirleyin.",
+            "Bir profil mevcut olduğunda Eşleşen objektif profilini kullan seçeneğini etkinleştirin, ardından gerektiğinde Bozulmayı düzelt, Objektif gölgelenmesini düzelt ve Kromatik sapmayı düzelt seçeneklerini belirleyin. Her anahtar bağımsızdır; kromatik sapma geometri değiştirilmeden düzeltilebilir.",
             "Gerekirse Lens profile içinde farklı bir giriş seçin ve düzeltmeyi özgünle karşılaştırın.",
-            "Elle yapılan Bozulma ve Vinyet kontrollerini iyileştirin. Renk saçakları için, Kromatik aberasyon altında Kırmızı / Camgöbeği ve Mavi / Sarı ayarlayın."
+            "Elle yapılan Bozulma ve Vinyet kontrollerini iyileştirin. Renk saçakları için, Kromatik aberasyon altında Kırmızı / Camgöbeği ve Mavi / Sarı ayarlayın.",
+            "Saçak giderme altında, sert kenarların yanındaki çok doygun piksellerden o rengi çekmek için Mor ya da Yeşil değerini yükseltin. Ton başlangıcı ve ton bitişi kaydırıcıları her kontrolün ele aldığı ton aralığını belirler; bitişinden büyük bir başlangıç kırmızıdan geçer."
           ],
           "tips": [
             "Tam eşleşen bir objektif profili bulunmadığında, manuel bozulma ve perspektif kontrolleri kullanılabilir durumda kalır.",
-            "Profil bozulma ve gölgeleme onay kutuları yalnızca seçili profil bu düzeltmeyi sağladığında ve profil etkin olduğunda açılır.",
+            "Profil bozulma, gölgeleme ve kromatik sapma onay kutuları yalnızca seçili profil bu düzeltmeyi sağladığında ve profil etkin olduğunda açılır.",
             "Elle seçilen bir profilin görsel olarak kontrol edilmesi gerekir; seçim, onun tam eşleşme olduğunu göstermez.",
+            "Saçak giderme, büyük mor ya da yeşil bir öznenin dış hattını saçak gibi ele alır. Bir özne kenarında renk kaybederse miktarı düşürün ya da ton aralığını daraltın.",
             "Objektif ve renk saçılması düzeltmeleri dışa aktarma boyunca yıkıcı olmayan şekilde kalır."
           ]
         }
@@ -1313,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Düzenleme"
     },
@@ -1603,7 +1695,15 @@
         "siyahlar",
         "bindirme",
         "karartma",
-        "yak"
+        "yak",
+        "lens bulanıklığı",
+        "arka plan bulanıklığı",
+        "bulanıklık",
+        "bokeh",
+        "alan derinliği",
+        "parlaklık",
+        "parlaklık karışımı",
+        "rengi koru"
       ],
       "sections": [
         {
@@ -1660,10 +1760,26 @@
           ]
         },
         {
+          "title": "Fotoğrafın bir bölümünü bulanıklaştır",
+          "paragraphs": [
+            "Bir maskenin Efektler bölümündeki Lens bulanıklığı, seçilen alanı odak dışı bir lensin yaptığı gibi yumuşatır. Bulanıklık yarıçapı maskenin gücüyle birlikte artar; böylece yumuşatılmış bir kenar veya derinlik aralığı sert bir çizgide bitmek yerine kademeli olarak azalır.",
+            "Bulanıklık, film işlemesinden ve maskenin diğer ayarlarından sonra bitmiş görüntüye uygulanır. Bulanık alandaki film grenini de yumuşatır."
+          ],
+          "steps": [
+            "Bir Konu maskesi oluşturup Tersine Çevir seçeneğini belirleyin ya da bir mesafe aralığı için Derinlik maskesi oluşturun veya bir Radyal maske çizip tersine çevirin.",
+            "Efektler’i genişletin ve Lens bulanıklığı değerini artırın. Değerlendirmeden önce önizlemenin güncellenmesini bekleyin.",
+            "Bulanıklığın keskin kenarlara taştığı yerlerde seçimi Ekle, Çıkar veya Yumuşatma ile iyileştirin."
+          ],
+          "tips": [
+            "Bulanıklığa yalnızca seçili pikseller katkıda bulunur; böylece keskin bir konu bulanık arka plana yayılmaz. Saç gibi ince kenarları 1:1’de kontrol edin."
+          ]
+        },
+        {
           "title": "Yerel ton eğrisini ayarlayın",
           "steps": [
             "Seçili maske için Ton Eğrisi’ni genişletin ve RGB, Kırmızı, Yeşil veya Mavi’yi seçin.",
             "Nokta eklemek için grafiğe tıklayın, sonra sürükleyin. Bir noktayı yukarı taşımak çıkışını açar; aşağı taşımak karartır. İçteki bir noktayı kaldırmak için çift tıklayın.",
+            "Rengi veya doygunluğu kaydırmadan parlaklığı değiştirmek için Yalnızca parlaklık seçeneğini etkinleştirin.",
             "Yalnızca bu maskenin seçili kanalını sıfırlamak için Eğriyi Sıfırla’yı, bir düzenlemeyi geri almak için Geri Al’ı kullanın."
           ],
           "tips": [
@@ -1818,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Lekeleri kaldırın ve İyileştir veya Klonla düzeltmelerini ince ayarlayın",
       "category": "Editing",
-      "summary": "Dikkat dağıtan unsurların üzerini boyayın, nokta görünürlüğünü inceleyin ve bir düzeltmenin kaynağını veya hedefini taşıyın.",
+      "summary": "Lekeleri ve boyanmış darbeleri kaldırın, fotoğrafın tamamındaki toz ve çizikleri temizleyin, İyileştir veya Klonla düzeltmelerinde ince ayar yapın.",
       "keywords": [
         "kaldır",
         "iyileştir",
@@ -1830,7 +1946,18 @@
         "noktaları görselleştir",
         "kaynak",
         "hedef",
-        "dikkat dağıtıcı unsur"
+        "dikkat dağıtıcı unsur",
+        "toz ve çizikler",
+        "çizik",
+        "saç",
+        "kablo",
+        "fırça",
+        "fırça darbesi",
+        "dolgu",
+        "doku dolgusu",
+        "içeriğe duyarlı dolgu",
+        "film taraması",
+        "izler"
       ],
       "sections": [
         {
@@ -1841,22 +1968,44 @@
           ],
           "steps": [
             "Kaldır, İyileştir veya Klonla seçin, ardından Boyut, Yumuşatma ve Opaklık’ı ayarlayın.",
-            "Fotoğraftaki dikkat dağıtıcı bir noktaya tıklayın veya sürükleyin.",
+            "Kaldır için, tıklayarak veya sürükleyerek yuvarlak bir düzeltme yapmak üzere Nokta’yı ya da bir çizik, saç teli veya kablo boyunca boyamak için Fırça’yı seçin.",
+            "Kaldır için Dolgu seçeneğini belirleyin. Çevre dokusuyla eşleştir, fotoğraftaki yakın ayrıntıları kopyalar; Yumuşak geçiş kenarları içe doğru harmanlar ve gökyüzü gibi düz alanlara uygundur.",
+            "Fotoğrafta bir lekeye tıklayın, dikkat dağıtıcı bir unsurun üzerine sürükleyin veya bir darbe boyayın.",
             "Küçük toz noktaları için Visualize Spots’u etkinleştirin ve kenarları incelemeyi kolaylaştırmak için Threshold’u ayarlayın.",
             "Noktaları Görselleştir’i kapatın ve düzeltilmiş fotoğrafı inceleyin."
           ],
           "tips": [
-            "Bir düzeltmeyi seçip farklı bir kip seçmek, o düzeltmenin kipini değiştirir."
+            "Bir düzeltmeyi seçip farklı bir kip seçmek, o düzeltmenin kipini değiştirir.",
+            "Çevre dokusuyla eşleştir bu fotoğraftan piksel kopyalar; hiçbir zaman yeni ayrıntı üretmez. Dolgu değişiklikleri seçili Kaldır düzeltmesine uygulanır. Bu seçenek eklenmeden önce yapılan düzeltmeler Yumuşak geçiş olarak kalır.",
+            "Bir fırça darbesi en fazla 256 nokta içerebilir. Devam etmek için bırakın ve yeni bir darbe boyayın."
+          ]
+        },
+        {
+          "title": "Fotoğraftaki toz ve çizikleri kaldır",
+          "paragraphs": [
+            "Toz ve çizikler, film taramasındaki toz gibi çevresinden belirgin şekilde ayrılan küçük izleri bulur ve bunları yakındaki piksellerle doldurur. Listenin en üstünde tek bir düzeltme olarak tüm fotoğrafa uygulanır; böylece sonraki düzeltmeler temizlenmiş görüntüden örnek alır.",
+            "En büyük iz, dikkate alınan en geniş izi fotoğrafın kısa kenarının bir oranı olarak belirler. Hassasiyet, bir izin çevresinden ne kadar farklı olması gerektiğini belirler. Daha yüksek değerler daha soluk izleri bulur ve ince ayrıntıları yakalama olasılığı daha yüksektir."
+          ],
+          "steps": [
+            "Kaldır’ı açın ve Toz ve çizikler bölümünü genişletin.",
+            "En büyük iz değerini gördüğünüz tozdan biraz daha geniş ayarlayın ve başlangıç için Hassasiyet değerini %50’de bırakın.",
+            "Tozu Kaldır düğmesine tıklayın. Algılanan izleri göster, bulunanları kırmızıyla çevreler ve kaç iz bulunduğunu bildirir.",
+            "Saçları, yıldızları, gözdeki ışık yansımalarını ve metni yakınlaştırarak inceleyin. Bunlar yakalanıyorsa Hassasiyet veya En büyük iz değerini düşürün ya da Opaklık değerini azaltın.",
+            "Sonucu değerlendirmek için Algılanan izleri göster seçeneğini kapatın."
+          ],
+          "tips": [
+            "Daha sonra değiştirmek için listeden Toz düzeltmesini seçin. Bu düzeltmeyi etkinleştir sonucu karşılaştırır, Düzeltmeyi Sil ise düzeltmeyi kaldırır.",
+            "Uzun ince çizikler, genişlikleri En büyük iz değerinin altındaysa bulunur. Daha geniş çizikleri Kaldır fırçasıyla boyayın."
           ]
         },
         {
           "title": "Mevcut bir düzeltmeyi ince ayarla",
           "paragraphs": [
-            "Kontrollerini göstermek için listedeki bir düzeltmeyi seçin. Görüntü üzerindeki daireler, düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
+            "Denetimlerini göstermek için listeden bir düzeltme seçin. Görüntü üzerindeki daireler veya darbeler düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
             "Hassas yerleştirme için yakınlaştırın. Daire konturları ve sabitleme noktaları her yakınlaştırma seviyesinde keskin kalır; daireler fotoğrafın aynı alanını göstermeye devam eder."
           ],
           "steps": [
-            "Düzeltmeyi yeniden konumlandırmak için hedef daireyi sürükleyin veya Move Target’ı seçip yeni konumuna tıklayın.",
+            "Düzeltmeyi yeniden konumlandırmak için hedef dairesini veya boyanmış bir darbeyi sürükleyin ya da Hedefi Taşı seçeneğini belirleyip yeni konumuna tıklayın.",
             "Heal veya Clone için kaynak dairesini daha iyi bir alana sürükleyin. Refresh Source farklı bir kaynak konumu dener.",
             "Düzeltmenin kenarı veya gücü iyileştirme gerektiriyorsa Yumuşatma veya Opaklık’ı ayarlayın.",
             "Karşılaştırmak için Bu düzeltmeyi etkinleştir’i açıp kapatın ya da kaldırmak için Düzeltmeyi sil’i kullanın."
@@ -1970,7 +2119,8 @@
         {
           "title": "Kişileri veya yüz bölgelerini seçin",
           "paragraphs": [
-            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cildi yumuşat seçeneklerini sunar. Bu kontroller macOS 14 veya sonraki sürümlerde Vision yardımcısını gerektirir ve Linux ile Windows'ta gizlidir. Yüz cildi ve saç tahmin edilir, kimlik çıkarımı yapılmaz."
+            "Kişiler, her platformda Kişi ve Saç sunar. Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler ve Cildi yumuşat, macOS 14 veya sonraki sürümlerde Vision yardımcı aracını gerektirir. Yüz cildi tahmin edilir ve kimlik çıkarımı yapılmaz.",
+            "Saç, yerel olarak çalışan ve yüzün ötesindeki saçı, omuz hizasındaki saçlar dahil, seçen gömülü bir model kullanır. İnce telleri, parlak vurguları, perukları ve arka plandaki küçük kişileri inceleyin; bunlar yine de kaçabilir. Modeli içermeyen eski veya kaynak derlemeler, kullanılabildiğinde önceki Vision tahminini kullanır. Mevcut kaydedilmiş maskeler seçimlerini korur."
           ],
           "steps": [
             "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
@@ -2010,7 +2160,8 @@
         {
           "title": "Bir renk tonunu nötrleştir",
           "paragraphs": [
-            "Düzenle bölümündeki Renk kısmı, Sıcaklık ve Renk tonu ile birlikte Sıcaklık yanında bir beyaz dengesi damlalığı içerir. Bunlar Düzenle panelinin sonlandırma kontrolleridir."
+            "Düzenle bölümündeki Renk kısmı, Sıcaklık ve Renk tonu ile birlikte Sıcaklık yanında bir beyaz dengesi damlalığı içerir. Bunlar Düzenle panelinin sonlandırma kontrolleridir.",
+            "RAW özgün dosya için bunların üstünde, kelvin cinsinden sıcaklık ve yakalama tonu için Çekimdeki gibi, Otomatik, hazır ayarlar ve Özel seçeneklerini içeren bir Yakalama beyaz dengesi bloğu bulunur. RAW verisini yeniden geliştirir ve Film açık ya da kapalı çalışır; işlenmiş dosyalarda gizlidir."
           ],
           "steps": [
             "Düzenle'yi açın ve Renk'i genişletin.",
@@ -2028,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Düzenleme"
     },
@@ -2047,7 +2199,15 @@
         "mavi",
         "kontrast",
         "kontrol noktası",
-        "s eğrisi"
+        "s eğrisi",
+        "damlalık",
+        "siyah nokta",
+        "beyaz nokta",
+        "gri nokta",
+        "gri nokta",
+        "nötr",
+        "renk tonu",
+        "düzeyler"
       ],
       "sections": [
         {
@@ -2065,6 +2225,21 @@
           "tips": [
             "Birkaç nokta kullanın ve çalışırken fotoğrafı karşılaştırın; kanal eğrileri güçlü renk kaymaları oluşturabilir.",
             "Saklanan veya içe aktarılan bir eğri, siz onu düzenleyene kadar tam kaydedilmiş tablosunu korur. Uygulama, düzenleme için temsilî tutamaçları yeniden oluşturur; bu nedenle ilk ayarlama, içe aktarılan bir eğriyi taşıdığınız noktadan öteye yeniden şekillendirebilir."
+          ]
+        },
+        {
+          "title": "Siyah, gri ve beyaz noktaları ayarla",
+          "paragraphs": [
+            "Nokta eğrisinin altındaki damlalıklar, fotoğraftaki bir konuma göre kırmızı, yeşil ve mavi eğrileri ayarlar. Siyah nokta örneklenen alanı siyah, Beyaz nokta beyaz yapar; Gri nokta ise parlaklığını koruyarak nötr hale getirir. Bu, bir taramadaki renk kaymasını gidermek için kullanışlıdır."
+          ],
+          "steps": [
+            "Düzenle’yi açın, Eğri’yi genişletin ve Siyah nokta, Gri nokta veya Beyaz nokta seçeneğini belirleyin.",
+            "Fotoğrafta siyah, nötr gri veya beyaz olması gereken bir alana tıklayın.",
+            "R, G ve B eğrilerini kontrol edin; sonuç çok güçlüyse bunları iyileştirin veya sıfırlayın."
+          ],
+          "tips": [
+            "Siyah nokta için orta griden daha koyu, Beyaz nokta için ise orta griden daha açık bir alan gerekir. Damlalığı iptal etmek için Escape tuşuna basın.",
+            "Damlalıklar kanal eğrilerini düzenledikleri için Eğri’yi Nokta moduna geçirir."
           ]
         },
         {
@@ -2434,7 +2609,7 @@
           "title": "Yakalama kontrolleri ve sonlandırma kontrolleri",
           "paragraphs": [
             "Kamera EV ve Yakalama beyaz dengesi, film pozlamasından önce uygulanır. Düzenle panelindeki Pozlama ve Sıcaklık/Renk tonu ise iş akışının ilerleyen aşamalarındaki son düzeltmelerdir.",
-            "Çekim beyaz dengesi için bir RAW özgünü gerekir. JPEG, HEIF, TIFF veya başka bir işlenmiş dosya için Düzenle Sıcaklık/Renk tonu'nu kullanın."
+            "Yakalama beyaz dengesi RAW özgün dosyalar için Renk bölümünün en üstünde yer alır ve Film açık ya da kapalı çalışır: kelvin cinsinden sıcaklık ve yakalama tonu ayarlamak için Çekimdeki gibi, Otomatik, bir hazır ayar ya da Özel seçin. JPEG, HEIF, TIFF veya başka bir işlenmiş dosyada blok gizlidir; Düzenle Sıcaklık/Renk tonu kullanın."
           ],
           "steps": [
             "Film’i açın, bir film stoğu seçin ve Kamera EV’yi ayarlayın.",
@@ -2527,7 +2702,11 @@
         "kalite",
         "tam boyut",
         "çözünürlük",
-        "hazır ayar"
+        "hazır ayar",
+        "kenarlık",
+        "çerçeve",
+        "mat",
+        "kenar boşluğu"
       ],
       "sections": [
         {
@@ -2540,6 +2719,17 @@
             "Dışa Aktar’ı açın ve üst kısımdan bir hazır ayar seçin.",
             "Boyutları Tam boyut veya uzun kenar sınırı olarak ayarlayın.",
             "Çıkış önizlemesini kontrol edin: dışa aktarılan boyut döndürme ve kırpma sonucunu yansıtır ve uzun kenar sınırı daha büyük görüntüleri küçültür, daha küçük olanları büyütmez."
+          ]
+        },
+        {
+          "title": "Kenarlık ekle",
+          "paragraphs": [
+            "Gelişmiş bölümündeki Kenarlık, dışa aktarılan her fotoğrafın çevresine düz beyaz, gri veya siyah bir kenar boşluğu ekler. Boşluk yeniden boyutlandırmadan sonra eklenir; bu nedenle genişliği teslim edilen uzun kenarın bir oranıdır ve çıktı her kenarda bu boşluk kadar fotoğraftan büyüktür."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın ve Gelişmiş’i genişletin.",
+            "Kenarlık bölümünde İnce, Orta veya Geniş seçeneğini, ardından Kenarlık rengi seçeneğini belirleyin.",
+            "Son boyutları Çıkış önizlemesi bölümünde kontrol edin."
           ]
         },
         {
@@ -2663,7 +2853,10 @@
         "puanlanmış",
         "toplu iş",
         "iptal",
-        "ilerleme"
+        "ilerleme",
+        "kontak sayfası",
+        "kontak baskı",
+        "indeks baskı"
       ],
       "sections": [
         {
@@ -2686,6 +2879,22 @@
             "Seçili fotoğraflar, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğrafları kullanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafı kullanır. Başlamadan önce Dışa Aktar bölümündeki fotoğraf sayısını ve adı kontrol edin.",
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
             "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
+          ]
+        },
+        {
+          "title": "Kontak sayfası oluştur",
+          "paragraphs": [
+            "Dışa Aktar içindeki Kontak Sayfası…, Fotoğraflar alanında seçilen fotoğrafları düzenlemeleriniz uygulanmış olarak alt yazılı tek bir JPEG üzerine yerleştirir. En fazla 200 fotoğraf alabilir."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın, Fotoğraflar alanını ve hedef klasörü ayarlayın.",
+            "Kontak Sayfası… düğmesine tıklayın ve Sütunlar, Sayfa genişliği, Arka plan ile bir Başlık seçin.",
+            "Alt yazıları seçin: Dosya adı, Film stoğu ve Derecelendirme.",
+            "Sayfa Oluştur düğmesine tıklayın. İletişim kutusu ilerlemeyi gösterir ve bir bildirim kaydedilen dosyanın yolunu verir."
+          ],
+          "tips": [
+            "Sayfa, contact-sheet ve ardından tarih ile saatten oluşan bir adla kaydedilir. İşlenemeyen bir fotoğraf atlanır ve bildirimde sayılır.",
+            "Büyük bir seçim sayfayı oluşturulamayacak kadar uzun yapıyorsa daha fazla sütun seçin."
           ]
         }
       ],
@@ -2852,7 +3061,8 @@
         {
           "title": "Düzenlenmemiş fotoğraflar için varsayılanlar",
           "paragraphs": [
-            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler."
+            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler.",
+            "Varsayılan olarak açık olan Eşleşen objektif profilini otomatik uygula, kamerası ve objektifi tek bir profille tam eşleşen ve objektif ayarları hiç kaydedilmemiş fotoğraflar için objektif profilini açar. Her fotoğrafı profil kapalı açmak için kapatın."
           ],
           "steps": [
             "Ayarlar → Geliştirme Varsayılanları’nı açın.",
@@ -3285,5 +3495,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

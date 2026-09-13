@@ -188,6 +188,7 @@ export function installSettings(context) {
     byId('cropGuide').value = pref('cropGuide', 'thirds');
     const defaults = pref('newPhotoDefaults', {});
     byId('newPhotoFilmEnabled').checked = defaults.filmEnabled === true;
+    byId('newPhotoLensProfile').checked = defaults.lensProfileAuto !== false;
     byId('newPhotoWorkflow').value = defaults.workflow || 'authentic';
     byId('newPhotoDevelopProfile').value = defaults.developProfile || 'standard';
     const presets = await fetch('/api/presets').then((response) => response.json())
@@ -324,13 +325,14 @@ export function installSettings(context) {
   const saveDefaults = async () => {
     await savePatch({ newPhotoDefaults: {
     filmEnabled: byId('newPhotoFilmEnabled').checked,
+    lensProfileAuto: byId('newPhotoLensProfile').checked,
     workflow: byId('newPhotoWorkflow').value,
     developProfile: byId('newPhotoDevelopProfile').value,
     preset: byId('newPhotoPreset').value,
     } }, tr('Saved · applies to unedited photos'));
     await context.reloadDefaults();
   };
-  for (const id of ['newPhotoFilmEnabled', 'newPhotoWorkflow',
+  for (const id of ['newPhotoFilmEnabled', 'newPhotoLensProfile', 'newPhotoWorkflow',
     'newPhotoDevelopProfile', 'newPhotoPreset']) {
     byId(id).addEventListener('change', saveDefaults);
   }

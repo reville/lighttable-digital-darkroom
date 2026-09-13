@@ -36,10 +36,21 @@ python3 scripts/help_content.py build
 python3 scripts/localization.py extract
 ```
 
-Refresh every affected catalog in `web/locales/`. `translate-locales.py` is an
-optional bounded authoring tool requiring an API key in its environment. Normal
-builds and the installed app never call a translation service. Missing entries
-must be translated; English fallback does not satisfy the completion checks.
+Between releases a feature may merge with pending translations. Run
+`python3 scripts/localization.py check --allow-pending` and
+`python3 scripts/help_content.py localization-check --allow-pending`, which is
+what CI runs on pull requests and `main`: they validate the translations that
+exist, report the missing messages per locale, and keep each lagging locale's
+last complete Help bundle. The interface shows English for a missing message
+until its catalog catches up. `python3 scripts/localization.py pending --json`
+lists what is missing.
+
+Before a release, complete every catalog in `web/locales/` with
+`translate-locales.py`, a bounded authoring tool that needs an API key in its
+environment and keeps existing translations, then run the strict checks below.
+Normal builds and the installed app never call a translation service. The
+release build's `translations` job refuses a tag whose catalogs are incomplete;
+English fallback does not satisfy the strict checks.
 
 ```sh
 python3 scripts/localization.py check
@@ -52,7 +63,9 @@ python3 scripts/native_localization_sources.py
 ```
 
 Commit the implementation, English sources, review lock, extracted inventories,
-shared catalogs, and generated Help together. CI repeats these checks. Both
+shared catalogs, and generated Help together. CI repeats these checks, allowing
+pending translations on pull requests and `main` and requiring complete
+catalogs for a release. Both
 macOS build routes package translated Photos permission text from these same
 catalogs. See [server messages](SERVER.md) for error classification and workers,
 and [Help maintenance](../help/README.md) for article identity and review rules.

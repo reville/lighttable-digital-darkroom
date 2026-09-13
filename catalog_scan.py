@@ -12,6 +12,10 @@ Three jobs live here:
 Only new or changed files pay for complete hashing and metadata reads after a
 one-time full-digest backfill for older catalogs. Unchanged files use a `stat`
 compare, keeping ordinary rescans close to the cost of the walk itself.
+
+Content hashing of a batch runs on a small bounded thread pool: BLAKE2b and
+file reads release the GIL, so several new files digest at once. Everything
+that touches the catalog stays on the scanning thread, in walk order.
 """
 
 from __future__ import annotations
@@ -22,12 +26,14 @@ import os
 import sqlite3
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Iterable
 
 import catalog as catalog_module
 import durable_io
+import edit_schema
 import dam_filters
 import file_identity
 import media_formats
@@ -47,6 +53,71 @@ SKIP_DIRS = {EXPORT_DIR_NAME, "__pycache__"}
 
 HEADER_CHUNK = 65536
 METADATA_VERSION = 6
+
+
+def hash_worker_count() -> int:
+    """Threads that digest new files' bytes concurrently during a scan.
+
+    Windows keeps one: its strong signature already reads every byte through a
+    single-entry signature cache that concurrent hashing would only thrash.
+    ``LIGHTTABLE_SCAN_HASH_WORKERS`` overrides the count (1 is serial).
+    """
+    configured = os.environ.get("LIGHTTABLE_SCAN_HASH_WORKERS", "")
+    if configured.strip():
+        try:
+            return max(1, min(8, int(configured)))
+        except ValueError:
+            pass
+    if os.name == "nt":
+        return 1
+    return max(2, min(4, (os.cpu_count() or 2) // 2))
+
+
+HASH_WORKERS = hash_worker_count()
+_HASH_POOL: ThreadPoolExecutor | None = None
+_HASH_POOL_LOCK = threading.Lock()
+
+
+def _hash_pool() -> ThreadPoolExecutor:
+    global _HASH_POOL
+    with _HASH_POOL_LOCK:
+        if _HASH_POOL is None:
+            _HASH_POOL = ThreadPoolExecutor(
+                max_workers=HASH_WORKERS, thread_name_prefix="lighttable-scan-hash")
+        return _HASH_POOL
+
+
+def _identify_record(record: dict) -> None:
+    """Fill the header and complete content hashes; raises OSError on change."""
+    record["header_hash"] = header_hash(Path(record["path"]))
+    record["content_hash"] = file_identity.content_hash(
+        record["path"], expected_revision=(record["size"], record["mtime_ns"]),
+        expected_signature=record.get("content_signature"))
+
+
+def identify_records(records: list[dict], on_error) -> None:
+    """Hash ``records`` concurrently; report failures in walk order.
+
+    Only file reads and digests run on the pool. The caller keeps every
+    catalog decision on its own thread, iterating the records in their
+    original order, so relink and duplicate rules see the same sequence a
+    serial scan would.
+    """
+    if len(records) < 2 or HASH_WORKERS < 2:
+        for record in records:
+            try:
+                _identify_record(record)
+            except OSError as error:
+                record["identity_error"] = True
+                on_error(str(error))
+        return
+    futures = [_hash_pool().submit(_identify_record, record) for record in records]
+    for record, future in zip(records, futures):
+        try:
+            future.result()
+        except OSError as error:
+            record["identity_error"] = True
+            on_error(str(error))
 
 
 class _ChangedScanSource(OSError):
@@ -352,6 +423,7 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
             return
         # Read complete bytes only for new/changed files or the one-time legacy
         # digest backfill. Keep disk IO outside the catalog write transaction.
+        to_hash: list[dict] = []
         for record in records:
             previous = existing.get(record["relpath"])
             if record.get("availability", "local") != "local":
@@ -362,14 +434,8 @@ def scan_source(cat: catalog_module.Catalog, source_id: int, *,
             if unchanged and previous["content_hash"]:
                 record["content_hash"] = previous["content_hash"]
                 continue
-            try:
-                record["header_hash"] = header_hash(Path(record["path"]))
-                record["content_hash"] = file_identity.content_hash(
-                    record["path"], expected_revision=(record["size"], record["mtime_ns"]),
-                    expected_signature=record.get("content_signature"))
-            except OSError as error:
-                record["identity_error"] = True
-                incomplete(str(error))
+            to_hash.append(record)
+        identify_records(to_hash, incomplete)
         counts_before = (added, updated, relinked, cloud_only)
         validated_records = []
         try:
@@ -646,6 +712,9 @@ def _import_state_file(cat: catalog_module.Catalog, source_id: int,
     if not isinstance(state, dict):
         return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
                 "skipped": 0, "present": True, "error": "unreadable"}
+    # A file written by an older build carries its recipes under the edit
+    # schema of that build; read them as the catalog understands them.
+    state, _ = edit_schema.upgrade_state(state)
     images = state.get("images")
     images = images if isinstance(images, dict) else {}
 
@@ -855,7 +924,9 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
     try:
         candidate = json.loads(target.read_text())
         if isinstance(candidate, dict):
-            existing = candidate
+            # Entries an older build left in the file are translated before
+            # current rows are merged in, so one file never mixes schemas.
+            existing, _ = edit_schema.upgrade_state(candidate)
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         pass
     pending = cat.connection.execute("SELECT 1 FROM meta WHERE key=?",
@@ -931,7 +1002,7 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
     # image rows, but mirroring them must never erase unrelated portable data.
     payload = dict(existing)
     payload.update(images=images, virtualCopies=virtual_copies, mirroredAt=_iso(mirrored_at),
-                   mirroredRevision=mirrored_at)
+                   mirroredRevision=mirrored_at, editSchema=edit_schema.EDIT_SCHEMA_VERSION)
     try:
         if not existing:
             # A newly generated mirror has no legacy state left to adopt.

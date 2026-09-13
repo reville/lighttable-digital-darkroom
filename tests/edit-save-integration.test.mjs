@@ -102,6 +102,7 @@ function harness({manual = false, client = 'test-window'} = {}) {
     'loadRawCameraDefault', 'showExif', 'presentVideo', 'broadcastToLoupe', 'prefetch',
     'setEditorLoading', 'syncPairControls', 'beginCropSession', 'syncPreviewDetailStatus',
     'invalidateVisibleCache', 'syncCullPanel', 'confirmTransfer', 'showTransferDialog', 'closeTransferDialog',
+    'setCurvePick', 'setSamplerMode', 'updateSamplerReadouts', 'drawSamplerOverlay',
   ]) context[name] = noop;
   const stateStart = appSource.indexOf("let _lastHistorySnapshot = '';");
   const stateEnd = appSource.indexOf('function photoMatchesQuery(', stateStart);
