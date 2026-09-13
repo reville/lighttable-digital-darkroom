@@ -77,6 +77,11 @@ RUST_SOURCE="$ROOT/.build/release/dependencies/spektrafilm-rust"
 PACKAGE_RESOLVED="$ROOT/LightTable.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
 MODEL_PACKAGE="$ROOT/scripts/models/denoise.mlpackage"
 MODEL_INDEX="$ROOT/scripts/models/models.json"
+HAIR_MODEL_ASSETS=(
+  "$ROOT/scripts/models/selfie_multiclass_256x256.tflite"
+  "$ROOT/scripts/models/HairSegmentation-APACHE-2.0.txt"
+  "$ROOT/scripts/models/hair-model.json"
+)
 APP_ICON="$ROOT/build/LightTable.icns"
 
 require_file() {
@@ -97,6 +102,9 @@ require_file "$BUILD_RELEASE"
 require_file "$ROOT/requirements-runtime.lock"
 require_file "$PACKAGE_RESOLVED"
 require_file "$MODEL_INDEX"
+for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"; do
+  require_file "$MODEL_ASSET"
+done
 require_file "$APP_ICON"
 require_directory "$MODEL_PACKAGE"
 require_directory "$BASE_CONTENTS"
@@ -231,7 +239,7 @@ ENGINE_HASH="$(hash_sources "$ROOT/rust-engine/Cargo.toml" \
   "$ROOT/rust-engine/Cargo.lock" "$ROOT/rust-engine/src")"
 MODEL_HASH="$(hash_sources "$MODEL_PACKAGE" "$MODEL_INDEX" \
   "$ROOT/scripts/models/SCUNet-CODE-LICENSE.txt" \
-  "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt")"
+  "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt" "${HAIR_MODEL_ASSETS[@]}")"
 SOURCE_TREE_HASH="$(hash_sources \
   "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
   "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
@@ -379,7 +387,7 @@ fi
   "$STAGE_PAYLOAD/engine/spektrafilm-rs"
 
 if [[ -z "$PREVIOUS_MODEL_HASH" || "$PREVIOUS_MODEL_HASH" != "$MODEL_HASH" ]]; then
-  echo "Refreshing the denoise model..."
+  echo "Refreshing the bundled models..."
   /bin/rm -rf "$STAGE_CONTENTS/Resources/models"
   mkdir -p "$STAGE_CONTENTS/Resources/models"
   /bin/cp -cRp "$MODEL_PACKAGE" \
@@ -390,8 +398,12 @@ if [[ -z "$PREVIOUS_MODEL_HASH" || "$PREVIOUS_MODEL_HASH" != "$MODEL_HASH" ]]; t
     /usr/bin/ditto "$ROOT/scripts/models/$LICENSE_NAME" \
       "$STAGE_CONTENTS/Resources/models/$LICENSE_NAME"
   done
+  for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"; do
+    /usr/bin/ditto "$MODEL_ASSET" \
+      "$STAGE_CONTENTS/Resources/models/$(basename "$MODEL_ASSET")"
+  done
 else
-  echo "Denoise model unchanged; reusing it."
+  echo "Bundled models unchanged; reusing them."
 fi
 
 /usr/bin/ditto "$ROOT/app/NativePreview.metal" \
@@ -482,6 +494,13 @@ fi
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$STAGE_PAYLOAD" \
   "$STAGE_CONTENTS/Resources/Python/bin/python3.13" -c \
   'import catalog, film_pipeline, server; print("Packaged Python import smoke: OK")'
+# The stage is a relocated copy of the base runtime; test its bundled model.
+PYTHONPATH="$STAGE_PAYLOAD" \
+LIGHTTABLE_MODEL_DIR="$STAGE_CONTENTS/Resources/models" \
+  "$STAGE_CONTENTS/Resources/Python/bin/python3.13" -B \
+  "$ROOT/scripts/smoke-hair-mask.py" \
+  --model-dir "$STAGE_CONTENTS/Resources/models" \
+  --image "$ROOT/tests/fixtures/photos/portrait.jpg"
 /usr/bin/codesign --verify --deep --strict "$STAGE_APP"
 "$STAGE_CONTENTS/Resources/Python/bin/python3.13" \
   "$ROOT/scripts/native-app-smoke.py" --app "$STAGE_APP" --layer package \

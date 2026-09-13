@@ -494,7 +494,7 @@
       },
       {
         "title": "Select people or facial regions",
-        "paragraphs": ["People offers Person, Face skin, Eyes, Eyebrows, Lips, Teeth, Hair, and Soften skin. These controls require the Vision helper on macOS 14 or later and are hidden on Linux and Windows. Face skin and hair are estimated, and no identity is inferred."],
+        "paragraphs": ["People offers Person and Hair on every platform. Face skin, Eyes, Eyebrows, Lips, Teeth, and Soften skin require the Vision helper on macOS 14 or later. Face skin is estimated, and no identity is inferred.", "Hair uses a bundled model that runs locally and selects hair beyond the face, including shoulder-length hair. Inspect fine strands, bright highlights, wigs, and small background people; these can still be missed. Older or source builds without the model use the earlier Vision estimate when available. Existing saved masks keep their selections."],
         "steps": ["Choose People, then the part you want to adjust.", "Inspect the overlay and use painted refinements around boundaries as needed.", "For Soften skin, review the automatically applied Texture and Clarity reduction, then adjust it to suit the portrait."],
         "tips": ["Read any availability or detection error in the mask panel. A tool appearing in the menu does not guarantee that the required helper or a usable selection is available."]
       }
@@ -507,7 +507,8 @@
       {"path": "semantic_masks.py", "anchor": "People masks need the Vision helper (macOS 14 or later)"},
       {"path": "semantic_masks.py", "anchor": "def object_mask("},
       {"path": "web/index.html", "anchor": "Depth runs from far to near. Embedded capture depth is used when available; otherwise LightTable estimates locally."},
-      {"path": "web/index.html", "anchor": "Face skin and hair are estimated; no identity is inferred."},
+      {"path": "web/index.html", "anchor": "Selections run locally. Inspect the overlay and refine missed or extra areas."},
+      {"path": "film_lab_ai/hair_segmentation.py", "anchor": "def hair_mask("},
       {"path": "web/app.js", "anchor": "mask.grade.texture = -0.4;"},
       {"path": "web/app.js", "anchor": "Click the object to select."}
     ]

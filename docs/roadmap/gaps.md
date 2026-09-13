@@ -490,7 +490,8 @@ same floor `--foreground-mask` already requires.
   `VisionProvider.person_parts()` makes one helper call and caches the set
   under `CACHE/semantic/<key>_parts/`, so adding Lips after Eyes is free.
   Without the helper (Windows, or older macOS) `person` falls back to
-  `subject_mask()` with `provider: "local-segmentation"`; every part refuses
+  `subject_mask()` with `provider: "local-segmentation"`; Hair uses the bundled
+  cross-platform model with `provider: "local-hair-segmentation"`. Other parts refuse
   with "People masks need the Vision helper (macOS 14 or later)". No part is
   ever approximated from colour.
 - **Resolution.** Subject, Sky, Object, and portrait parts now retain up to a
@@ -511,8 +512,12 @@ same floor `--foreground-mask` already requires.
   independent axes, rotation, and direct move/resize/rotate handles.
 - **Selection quality remains limited.** Higher resolution improves boundary
   detail without replacing the underlying detectors. Hair and skin remain
-  geometric estimates around detected faces. The portrait fixture's hair mask
-  misses much of the long hair below the face; inspect and paint refinements.
+  geometric estimates around detected faces in older builds. New Hair masks use
+  the bundled SelfieMulticlass model (Apache-2.0, 16.4 MB) through the offline
+  LiteRT interpreter. It separates full-image hair from skin and clothing and
+  improves shoulder-length, short, and thinning hair in the inspected fixtures.
+  Fine strands, overexposed wigs, and small background people remain difficult.
+  Face skin still uses the Vision estimate. Saved masks retain their bitmaps.
   Subject/Sky/Object estimates can still select the wrong region.
 - **UI.** A "People" button in the mask toolbar opens a popover with the
   seven parts and the face count ("2 faces found"); each creates a mask

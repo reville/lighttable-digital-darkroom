@@ -1971,7 +1971,8 @@
         {
           "title": "Kişileri veya yüz bölgelerini seçin",
           "paragraphs": [
-            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cildi yumuşat seçeneklerini sunar. Bu kontroller macOS 14 veya sonraki sürümlerde Vision yardımcısını gerektirir ve Linux ile Windows'ta gizlidir. Yüz cildi ve saç tahmin edilir, kimlik çıkarımı yapılmaz."
+            "Kişiler, her platformda Kişi ve Saç sunar. Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler ve Cildi yumuşat, macOS 14 veya sonraki sürümlerde Vision yardımcı aracını gerektirir. Yüz cildi tahmin edilir ve kimlik çıkarımı yapılmaz.",
+            "Saç, yerel olarak çalışan ve yüzün ötesindeki saçı, omuz hizasındaki saçlar dahil, seçen gömülü bir model kullanır. İnce telleri, parlak vurguları, perukları ve arka plandaki küçük kişileri inceleyin; bunlar yine de kaçabilir. Modeli içermeyen eski veya kaynak derlemeler, kullanılabildiğinde önceki Vision tahminini kullanır. Mevcut kaydedilmiş maskeler seçimlerini korur."
           ],
           "steps": [
             "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
@@ -3286,5 +3287,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "0f5fe0fbef1fb987e6ea524b93d9c899f15c5d3ed2d35b545683f6f3d5d24d5a"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }
