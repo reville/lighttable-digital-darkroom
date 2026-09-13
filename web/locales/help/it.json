@@ -574,6 +574,7 @@
           "title": "Nascondi le foto che non possono essere visualizzate",
           "paragraphs": [
             "Quando nella griglia è visibile un errore di miniatura, scegli Nascondi le foto che non possono essere visualizzate accanto al riepilogo della posizione. Questo attiva l’interruttore corrispondente in Filtro, disattivato per impostazione predefinita e salvato tra le sessioni. Questo interruttore non viene salvato nelle regole delle raccolte intelligenti.",
+            "Nella pellicola, questo collegamento appare sotto il conteggio delle foto solo quando l'elenco corrente contiene foto che non possono essere visualizzate.",
             "L’interruttore nasconde le foto note come non disponibili o solo nel cloud e quelle con errori di miniatura o anteprima già rilevati. Gli altri errori di decodifica vengono scoperti durante il caricamento delle foto. Disattiva l’interruttore, rimuovi la sua etichetta o scegli Cancella tutto per mostrare di nuovo le foto. Un Riprova riuscito o una modifica all’originale cancella l’errore registrato."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Seleziona persone o regioni facciali",
           "paragraphs": [
-            "Persone offre Persona, Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti, Capelli e Leviga la pelle. Questi controlli richiedono l'assistente Vision su macOS 14 o successivo e sono nascosti su Linux e Windows. Incarnato del viso e capelli vengono stimati e non viene dedotta alcuna identità."
+            "Persone offre Persona e Capelli su tutte le piattaforme. Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti e Leviga la pelle richiedono l'assistente Vision su macOS 14 o versioni successive. Incarnato del viso viene stimato e non viene inferita alcuna identità.",
+            "Capelli usa un modello incluso che viene eseguito localmente e seleziona i capelli oltre il viso, inclusi i capelli lunghi fino alle spalle. Ispeziona ciocche fini, alte luci brillanti, parrucche e piccole persone sullo sfondo; anche questi elementi possono ancora essere mancati. Le versioni precedenti o quelle di origine senza il modello usano la precedente stima di Vision quando disponibile. Le maschere salvate esistenti mantengono le loro selezioni."
           ],
           "steps": [
             "Scegli Persone, poi la parte che vuoi regolare.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

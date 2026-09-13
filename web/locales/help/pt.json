@@ -574,6 +574,7 @@
           "title": "Ocultar fotos que não podem ser exibidas",
           "paragraphs": [
             "Quando um erro de miniatura estiver visível na grade, escolha Ocultar fotos que não podem ser exibidas ao lado do resumo da localização. Isso ativa a opção correspondente em Filtro, que vem desativada por padrão e é salva entre sessões. Esta opção não é salva nas regras de coleções inteligentes.",
+            "Na tira de filme, este link aparece abaixo da contagem de fotos somente quando a lista atual contém fotos que não podem ser exibidas.",
             "A opção oculta fotos identificadas como indisponíveis ou armazenadas apenas na nuvem e fotos com falhas de miniatura ou prévia já detectadas. Outras falhas de decodificação são descobertas à medida que as fotos carregam. Desative a opção, remova seu marcador de filtro ou escolha Limpar tudo para mostrar as fotos novamente. Um Tentar novamente bem-sucedido ou uma alteração no original apaga a falha registrada."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Selecionar pessoas ou regiões faciais",
           "paragraphs": [
-            "Pessoas oferece Pessoa, Pele do rosto, Olhos, Sobrancelhas, Lábios, Dentes, Cabelo e Suavizar pele. Esses controles exigem o auxiliar Vision no macOS 14 ou posterior e ficam ocultos no Linux e Windows. Pele do rosto e cabelo são estimados, e nenhuma identidade é inferida."
+            "Pessoas oferece Pessoa e Cabelo em todas as plataformas. Pele do rosto, Olhos, Sobrancelhas, Lábios, Dentes e Suavizar pele exigem o auxiliar Vision no macOS 14 ou posterior. A pele do rosto é estimada, e nenhuma identidade é inferida.",
+            "Cabelo usa um modelo incluído que é executado localmente e seleciona cabelo além do rosto, incluindo cabelo na altura dos ombros. Inspecione fios finos, realces brilhantes, perucas e pessoas pequenas ao fundo; eles ainda podem ser perdidos. Compilações mais antigas ou da origem sem o modelo usam a estimativa Vision anterior quando disponível. Máscaras salvas existentes mantêm suas seleções."
           ],
           "steps": [
             "Escolha Pessoas e depois a parte que você quer ajustar.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

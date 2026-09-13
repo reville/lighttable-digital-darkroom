@@ -574,6 +574,7 @@
           "title": "Görüntülenemeyen fotoğrafları gizle",
           "paragraphs": [
             "Izgarada bir küçük resim hatası görünüyorsa konum özetinin yanındaki Görüntülenemeyen fotoğrafları gizle seçeneğini seçin. Bu, Filtre içindeki ilgili anahtarı açar. Anahtar varsayılan olarak kapalıdır ve ayarı oturumlar arasında kaydedilir. Bu anahtar akıllı koleksiyon kurallarına kaydedilmez.",
+            "Film şeridinde bu bağlantı, fotoğraf sayısının altında yalnızca geçerli liste görüntülenemeyen fotoğraflar içerdiğinde görünür.",
             "Anahtar, kullanılamadığı veya yalnızca bulutta olduğu bilinen fotoğrafları ve küçük resim ya da önizleme hatası gözlenen fotoğrafları gizler. Diğer kod çözme hataları fotoğraflar yüklenirken belirlenir. Fotoğrafları yeniden göstermek için anahtarı kapatın, filtre etiketini kaldırın veya Tümünü temizle seçeneğini seçin. Başarılı bir Tekrar dene işlemi veya orijinalin değişmesi, kaydedilen hatayı temizler."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Kişileri veya yüz bölgelerini seçin",
           "paragraphs": [
-            "Kişiler; Kişi, Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler, Saç ve Cildi yumuşat seçeneklerini sunar. Bu kontroller macOS 14 veya sonraki sürümlerde Vision yardımcısını gerektirir ve Linux ile Windows'ta gizlidir. Yüz cildi ve saç tahmin edilir, kimlik çıkarımı yapılmaz."
+            "Kişiler, her platformda Kişi ve Saç sunar. Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler ve Cildi yumuşat, macOS 14 veya sonraki sürümlerde Vision yardımcı aracını gerektirir. Yüz cildi tahmin edilir ve kimlik çıkarımı yapılmaz.",
+            "Saç, yerel olarak çalışan ve yüzün ötesindeki saçı, omuz hizasındaki saçlar dahil, seçen gömülü bir model kullanır. İnce telleri, parlak vurguları, perukları ve arka plandaki küçük kişileri inceleyin; bunlar yine de kaçabilir. Modeli içermeyen eski veya kaynak derlemeler, kullanılabildiğinde önceki Vision tahminini kullanır. Mevcut kaydedilmiş maskeler seçimlerini korur."
           ],
           "steps": [
             "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

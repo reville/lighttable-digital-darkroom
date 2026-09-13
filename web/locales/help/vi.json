@@ -574,6 +574,7 @@
           "title": "Ẩn ảnh không thể hiển thị",
           "paragraphs": [
             "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh.",
+            "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa các ảnh không thể hiển thị.",
             "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Chọn người hoặc vùng khuôn mặt",
           "paragraphs": [
-            "Mọi người cung cấp Người, Da mặt, Mắt, Lông mày, Môi, Răng, Tóc và Làm mềm da. Các điều khiển này yêu cầu trình trợ giúp Vision trên macOS 14 trở lên và bị ẩn trên Linux và Windows. Da mặt và tóc được ước tính, và không có nhận dạng danh tính nào được suy ra."
+            "People cung cấp Person và Hair trên mọi nền tảng. Face skin, Eyes, Eyebrows, Lips, Teeth và Soften skin yêu cầu Vision helper trên macOS 14 trở lên. Face skin là ước tính và không suy ra danh tính.",
+            "Hair sử dụng một mô hình đi kèm chạy cục bộ và chọn tóc vượt ra ngoài khuôn mặt, bao gồm cả tóc dài ngang vai. Hãy kiểm tra các sợi tóc mảnh, vùng sáng mạnh, tóc giả và những người nhỏ ở nền; những phần này vẫn có thể bị bỏ sót. Các bản build cũ hơn hoặc bản source không có mô hình sẽ dùng ước tính Vision trước đây khi khả dụng. Các mặt nạ đã lưu hiện có sẽ giữ nguyên các vùng chọn của chúng."
           ],
           "steps": [
             "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

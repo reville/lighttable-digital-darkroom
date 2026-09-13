@@ -574,6 +574,7 @@
           "title": "Fotos ausblenden, die nicht angezeigt werden können",
           "paragraphs": [
             "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Im Filmstreifen wird dieser Link unter der Fotoanzahl nur angezeigt, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können.",
             "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Personen oder Gesichtsbereiche auswählen",
           "paragraphs": [
-            "Personen bietet Person, Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Diese Steuerelemente benötigen den Vision-Helfer unter macOS 14 oder neuer und sind unter Linux und Windows ausgeblendet. Gesichtshaut und Haare werden geschätzt, und es wird keine Identität abgeleitet."
+            "Personen bietet Person und Haare auf jeder Plattform. Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne und Haut glätten erfordern den Vision-Helfer unter macOS 14 oder neuer. Gesichtshaut wird geschätzt, und es wird keine Identität abgeleitet.",
+            "Haare verwendet ein mitgeliefertes Modell, das lokal ausgeführt wird und Haare auch außerhalb des Gesichts auswählt, einschließlich schulterlangem Haar. Prüfen Sie feine Strähnen, helle Lichter, Perücken und kleine Personen im Hintergrund; diese können dennoch übersehen werden. Ältere oder Quell-Builds ohne das Modell verwenden, falls verfügbar, die frühere Vision-Schätzung. Vorhandene gespeicherte Masken behalten ihre Auswahlen."
           ],
           "steps": [
             "Personen wählen und dann den Teil, den Sie anpassen möchten.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

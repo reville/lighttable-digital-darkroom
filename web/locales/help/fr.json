@@ -574,6 +574,7 @@
           "title": "Masquer les photos qui ne peuvent pas être affichées",
           "paragraphs": [
             "Lorsqu’une erreur de vignette est visible dans la grille, choisissez Masquer les photos qui ne peuvent pas être affichées à côté du résumé de l’emplacement. Cela active le commutateur correspondant dans Filtre, désactivé par défaut et conservé d’une session à l’autre. Ce commutateur n’est pas enregistré dans les règles des collections intelligentes.",
+            "Dans la bande de film, ce lien apparaît sous le nombre de photos uniquement lorsque la liste actuelle contient des photos qui ne peuvent pas être affichées.",
             "Le commutateur masque les photos connues comme indisponibles ou uniquement dans le cloud, ainsi que celles dont la vignette ou l’aperçu a échoué. Les autres erreurs de décodage sont découvertes au chargement des photos. Désactivez le commutateur, retirez sa pastille ou choisissez Tout effacer pour afficher à nouveau les photos. Une nouvelle tentative réussie avec Réessayer ou une modification de l’original efface l’échec enregistré."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Sélectionner des personnes ou des régions faciales",
           "paragraphs": [
-            "Personnes propose Personne, Peau du visage, Yeux, Sourcils, Lèvres, Dents, Cheveux et Adoucir la peau. Ces commandes nécessitent l’assistant Vision sur macOS 14 ou version ultérieure et sont masquées sur Linux et Windows. La peau du visage et les cheveux sont estimés, et aucune identité n’est déduite."
+            "People propose Personne et Cheveux sur toutes les plateformes. Peau du visage, Yeux, Sourcils, Lèvres, Dents et Adoucir la peau nécessitent l’assistant Vision sur macOS 14 ou version ultérieure. La peau du visage est estimée, et aucune identité n’est déduite.",
+            "Cheveux utilise un modèle intégré qui s’exécute localement et sélectionne les cheveux au-delà du visage, y compris les cheveux jusqu’aux épaules. Inspectez les mèches fines, les hautes lumières claires, les perruques et les petites personnes en arrière-plan ; ils peuvent tout de même être manqués. Les anciennes versions ou les versions source sans le modèle utilisent l’estimation Vision antérieure lorsqu’elle est disponible. Les masques enregistrés existants conservent leurs sélections."
           ],
           "steps": [
             "Choisir Personnes, puis la partie que vous voulez ajuster.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

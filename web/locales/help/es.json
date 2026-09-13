@@ -574,6 +574,7 @@
           "title": "Ocultar fotos que no se pueden mostrar",
           "paragraphs": [
             "Cuando veas un error de miniatura en la cuadrícula, elige Ocultar fotos que no se pueden mostrar junto al resumen de ubicación. Esto activa el interruptor correspondiente en Filtro, que está desactivado de forma predeterminada y se guarda entre sesiones. Este interruptor no se guarda en las reglas de las colecciones inteligentes.",
+            "En la tira de película, este enlace aparece debajo del recuento de fotos solo cuando la lista actual contiene fotos que no se pueden mostrar.",
             "El interruptor oculta las fotos que se sabe que no están disponibles o que solo están en la nube, y aquellas cuyas miniaturas o vistas previas han fallado. Otros errores de decodificación se detectan al cargar las fotos. Desactiva el interruptor, elimina su etiqueta o elige Borrar todo para volver a mostrar las fotos. Un Reintentar exitoso o un cambio en el original borra el error registrado."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Seleccionar personas o regiones faciales",
           "paragraphs": [
-            "Personas ofrece Persona, Piel de la cara, Ojos, Cejas, Labios, Dientes, Cabello y Suavizar piel. Estos controles requieren el asistente Vision en macOS 14 o posterior y están ocultos en Linux y Windows. La piel de la cara y el cabello se estiman, y no se infiere ninguna identidad."
+            "Personas ofrece Persona y Cabello en todas las plataformas. Piel de la cara, Ojos, Cejas, Labios, Dientes y Suavizar piel requieren el asistente Vision en macOS 14 o posterior. Piel de la cara se estima y no se infiere la identidad.",
+            "Cabello usa un modelo incluido que se ejecuta localmente y selecciona cabello más allá de la cara, incluido el cabello hasta los hombros. Inspeccione mechones finos, iluminaciones brillantes, pelucas y personas pequeñas en el fondo; aun así, pueden omitirse. Las compilaciones anteriores o de origen sin el modelo usan la estimación anterior de Vision cuando está disponible. Las máscaras guardadas existentes conservan sus selecciones."
           ],
           "steps": [
             "Elija Personas y luego la parte que desea ajustar.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }
