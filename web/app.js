@@ -3825,7 +3825,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
-      allow_draft: false,
+      // Opening a photo shows the embedded-camera draft through the film
+      // pipeline at once and refines it; every later request for a photo that
+      // is already on screen asks for accurate pixels only, so no draft is
+      // computed that could not be displayed.
+      allow_draft: phase === 'navigation',
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3984,6 +3988,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       // creates a second temporary film result that will soon be replaced.
       const refinementRequest = { name: im.name, params: { ...request.params },
         w: requestedWidth, client: CLIENT_ID, generation: my };
+      // Neighbours start warming behind the draft; the decode gate keeps this
+      // photo's refinement ahead of their demosaics.
+      prefetch();
       const ready = await waitForRawRefinement({
         request: () => api('/api/refine', refinementRequest),
         isCurrent: () => my === S.seq && cur()?.name === im.name,
@@ -4010,7 +4017,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
-    prefetch(m.refining || phase === 'interactive');
+    // Neighbours start warming behind the first frame; the decode gate keeps
+    // this photo's refinement ahead of their demosaics.
+    prefetch();
   } catch (e) {
     const failedAt = performance.now();
     if (my === S.seq) automaticPreviewRequest = null;
@@ -4615,6 +4624,12 @@ function prefetchState(im) {
 let prefetchTimer = null;
 let lastNavigationDirection = 1;
 
+// Small frames are one film render once the standard preview exists, so the
+// window reaches further ahead than behind. Full-width detail stays at one
+// neighbour each way: that pass needs its own input and a much larger render.
+const PREFETCH_AHEAD = 3;
+const PREFETCH_BEHIND = 1;
+
 async function prefetchImage(target, epoch, generation, detail = false) {
   const current = () => epoch === navigationGeneration && generation === S.seq;
   if (!target || !current()) return;
@@ -4633,6 +4648,8 @@ async function prefetchImage(target, epoch, generation, detail = false) {
       engine: $('engine').value,
       client: CLIENT_ID, generation, priority: 'prefetch',
       allow_draft: false,
+      // The small pass must not start a demosaic; the detail pass may.
+      ...(detail ? {} : { prepared_only: true }),
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
@@ -4644,24 +4661,30 @@ async function prefetchImage(target, epoch, generation, detail = false) {
   } catch (_) { /* A speculative miss must not interrupt navigation. */ }
 }
 
-function prefetch(refining = false) {
+function prefetch() {
   clearTimeout(prefetchTimer);
-  if (refining) return;
   const ordered = visible();
   const visibleIndex = ordered.indexOf(cur());
   if (visibleIndex < 0) return;
   const primary = ordered[visibleIndex + lastNavigationDirection];
   const secondary = ordered[visibleIndex - lastNavigationDirection];
   if (!primary && !secondary) return;
+  const small = [];
+  for (let step = 1; step <= Math.max(PREFETCH_AHEAD, PREFETCH_BEHIND); step++) {
+    if (step <= PREFETCH_AHEAD) small.push(ordered[visibleIndex + step * lastNavigationDirection]);
+    if (step <= PREFETCH_BEHIND) small.push(ordered[visibleIndex - step * lastNavigationDirection]);
+  }
 
   const epoch = navigationGeneration, generation = S.seq;
   prefetchTimer = setTimeout(async () => {
-    // Warm both useful first frames before larger work. Each step rechecks the
-    // photo and render generation so navigation, zoom, or edits stop the batch.
-    for (const detail of [false, true]) {
-      for (const target of [primary, secondary]) {
-        await prefetchImage(target, epoch, generation, detail);
-      }
+    // Warm the small first frames across the window before larger work. Each
+    // step rechecks the photo and render generation so navigation, zoom, or
+    // edits stop the batch.
+    for (const target of small) {
+      await prefetchImage(target, epoch, generation, false);
+    }
+    for (const target of [primary, secondary]) {
+      await prefetchImage(target, epoch, generation, true);
     }
   }, 80);
 }
@@ -5103,6 +5126,8 @@ function recordPhotoDisplayState(im, failed, channel = 'thumbnail') {
 function syncUndisplayableLink() {
   const library = $('library');
   const link = $('hideUndisplayableLink');
+  $('filmstripHideUndisplayableLink').hidden = LIBRARY_FILTERS.hideUndisplayable()
+    || !visible().some(im => PHOTO_DISPLAY_STATUS.cannotDisplay(im));
   link.hidden = true;
   if (!library.classList.contains('show') || LIBRARY_FILTERS.hideUndisplayable()) return;
   const viewport = library.getBoundingClientRect();
@@ -5364,6 +5389,7 @@ function syncStripItem(element, im) {
 
 function renderStrip(fromScroll = false) {
   const list = visible();
+  syncUndisplayableLink();
   const host = $('strip');
   const itemPitch = stripItemPitch();
   const viewportCount = Math.max(1,
@@ -7984,7 +8010,10 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
       if (heif) { heif.disabled = true; heif.hidden = true; }
       if (select.value === 'heif') select.value = 'jpeg';
     }
-    for (const id of ['maskAddPeople', 'maskSoftenSkin']) $(id).hidden = true;
+    $('maskSoftenSkin').hidden = true;
+    document.querySelectorAll('[data-person-part]').forEach((button) => {
+      button.hidden = !['person', 'hair'].includes(button.dataset.personPart);
+    });
   }
   FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;

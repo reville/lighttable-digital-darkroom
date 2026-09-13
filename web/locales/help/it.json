@@ -574,6 +574,7 @@
           "title": "Nascondi le foto che non possono essere visualizzate",
           "paragraphs": [
             "Quando nella griglia è visibile un errore di miniatura, scegli Nascondi le foto che non possono essere visualizzate accanto al riepilogo della posizione. Questo attiva l’interruttore corrispondente in Filtro, disattivato per impostazione predefinita e salvato tra le sessioni. Questo interruttore non viene salvato nelle regole delle raccolte intelligenti.",
+            "Nella pellicola, questo collegamento appare sotto il conteggio delle foto solo quando l'elenco corrente contiene foto che non possono essere visualizzate.",
             "L’interruttore nasconde le foto note come non disponibili o solo nel cloud e quelle con errori di miniatura o anteprima già rilevati. Gli altri errori di decodifica vengono scoperti durante il caricamento delle foto. Disattiva l’interruttore, rimuovi la sua etichetta o scegli Cancella tutto per mostrare di nuovo le foto. Un Riprova riuscito o una modifica all’originale cancella l’errore registrato."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Seleziona persone o regioni facciali",
           "paragraphs": [
-            "Persone offre Persona, Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti, Capelli e Leviga la pelle. Questi controlli richiedono l'assistente Vision su macOS 14 o successivo e sono nascosti su Linux e Windows. Incarnato del viso e capelli vengono stimati e non viene dedotta alcuna identità."
+            "Persone offre Persona e Capelli su tutte le piattaforme. Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti e Leviga la pelle richiedono l'assistente Vision su macOS 14 o versioni successive. Incarnato del viso viene stimato e non viene inferita alcuna identità.",
+            "Capelli usa un modello incluso che viene eseguito localmente e seleziona i capelli oltre il viso, inclusi i capelli lunghi fino alle spalle. Ispeziona ciocche fini, alte luci brillanti, parrucche e piccole persone sullo sfondo; anche questi elementi possono ancora essere mancati. Le versioni precedenti o quelle di origine senza il modello usano la precedente stima di Vision quando disponibile. Le maschere salvate esistenti mantengono le loro selezioni."
           ],
           "steps": [
             "Scegli Persone, poi la parte che vuoi regolare.",
@@ -2352,7 +2354,7 @@
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
             "Una pellicola descrive il processo della pellicola fisica. Un predefinito di modifica può contenere regolazioni salvate più ampie e può includere anche impostazioni Film. Il menu Output dentro Film sceglie una ricetta di scansione o stampa; non esporta un file.",
-            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. Con Pellicola attiva, il primo fotogramma di una foto non memorizzata nella cache usa l’anteprima incorporata della fotocamera; la conversione accurata la sostituisce poco dopo e, fino ad allora, lo stato mostra “Rifinitura RAW…”. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
           ],
           "tips": [
             "Se una pellicola non è disponibile, potrebbe richiedere il motore GPU. La disponibilità del motore è mostrata in Impostazioni → Prestazioni."
@@ -3214,8 +3216,8 @@
         {
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
-            "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte.",
-            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
+            "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte. Viene inoltre preparata un’anteprima standard di ogni RAW, in modo che la foto si apra senza attendere una decodifica completa.",
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. Con Pellicola attiva, il primo fotogramma di una foto non memorizzata nella cache usa l’anteprima incorporata della fotocamera; la conversione accurata la sostituisce poco dopo e, fino ad allora, lo stato mostra “Rifinitura RAW…”. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
             "Quando cambi foto con lo zoom attivo, LightTable mostra subito un’anteprima corrispondente nella cache, se disponibile. I dettagli più nitidi vengono caricati in background e le foto vicine vengono precaricate per il tuo livello di zoom.",
             "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

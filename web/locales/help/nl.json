@@ -574,6 +574,7 @@
           "title": "Foto’s verbergen die niet kunnen worden weergegeven",
           "paragraphs": [
             "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties.",
+            "In de filmstrip verschijnt deze link onder het aantal foto's alleen wanneer de huidige lijst foto's bevat die niet kunnen worden weergegeven.",
             "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Personen of gezichtsgebieden selecteren",
           "paragraphs": [
-            "Personen biedt Persoon, Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Deze bedieningselementen vereisen de Vision-helper op macOS 14 of nieuwer en zijn verborgen op Linux en Windows. Gezichtshuid en haar worden geschat en er wordt geen identiteit afgeleid."
+            "Personen biedt Persoon en Haar op elk platform. Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden en Huid verzachten vereisen de Vision-helper op macOS 14 of later. Gezichtshuid wordt geschat en er wordt geen identiteit afgeleid.",
+            "Haar gebruikt een meegeleverd model dat lokaal draait en haar selecteert buiten het gezicht, inclusief haar tot op de schouders. Controleer fijne haarstrengen, heldere hooglichten, pruiken en kleine personen op de achtergrond; deze kunnen nog steeds worden gemist. Oudere versies of bron-builds zonder het model gebruiken de eerdere Vision-schatting wanneer beschikbaar. Bestaande opgeslagen maskers behouden hun selecties."
           ],
           "steps": [
             "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
@@ -2352,7 +2354,7 @@
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
             "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
           ],
           "tips": [
             "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
@@ -3214,8 +3216,8 @@
         {
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
-            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering.",
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
             "Als je ingezoomd van foto wisselt, toont LightTable direct een overeenkomend voorbeeld uit de cache, als dat beschikbaar is. Scherpere details worden op de achtergrond geladen en nabijgelegen foto’s worden vooraf geladen voor je zoomniveau.",
             "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

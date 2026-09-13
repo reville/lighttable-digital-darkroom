@@ -574,6 +574,7 @@
           "title": "Ẩn ảnh không thể hiển thị",
           "paragraphs": [
             "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh.",
+            "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa các ảnh không thể hiển thị.",
             "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Chọn người hoặc vùng khuôn mặt",
           "paragraphs": [
-            "Mọi người cung cấp Người, Da mặt, Mắt, Lông mày, Môi, Răng, Tóc và Làm mềm da. Các điều khiển này yêu cầu trình trợ giúp Vision trên macOS 14 trở lên và bị ẩn trên Linux và Windows. Da mặt và tóc được ước tính, và không có nhận dạng danh tính nào được suy ra."
+            "People cung cấp Person và Hair trên mọi nền tảng. Face skin, Eyes, Eyebrows, Lips, Teeth và Soften skin yêu cầu Vision helper trên macOS 14 trở lên. Face skin là ước tính và không suy ra danh tính.",
+            "Hair sử dụng một mô hình đi kèm chạy cục bộ và chọn tóc vượt ra ngoài khuôn mặt, bao gồm cả tóc dài ngang vai. Hãy kiểm tra các sợi tóc mảnh, vùng sáng mạnh, tóc giả và những người nhỏ ở nền; những phần này vẫn có thể bị bỏ sót. Các bản build cũ hơn hoặc bản source không có mô hình sẽ dùng ước tính Vision trước đây khi khả dụng. Các mặt nạ đã lưu hiện có sẽ giữ nguyên các vùng chọn của chúng."
           ],
           "steps": [
             "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
@@ -2352,7 +2354,7 @@
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
             "Một film stock mô tả quy trình phim vật lý. Một preset chỉnh sửa có thể chứa các điều chỉnh đã lưu rộng hơn, và cũng có thể bao gồm các thiết lập Film. Menu Output bên trong Film chọn một recipe quét hoặc in; nó không xuất tệp.",
-            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
           ],
           "tips": [
             "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng."
@@ -3214,8 +3216,8 @@
         {
           "title": "Kiểm tra những gì đã kết xuất xong",
           "paragraphs": [
-            "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng.",
-            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
+            "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng. Ảnh xem trước tiêu chuẩn của mỗi ảnh RAW cũng được chuẩn bị sẵn để ảnh mở ra mà không phải chờ giải mã đầy đủ.",
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
             "Khi chuyển ảnh trong lúc phóng to, LightTable hiển thị ngay bản xem trước phù hợp trong bộ nhớ đệm nếu có. Chi tiết sắc nét hơn được tải trong nền, còn các ảnh lân cận được tải trước theo mức thu phóng của bạn.",
             "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

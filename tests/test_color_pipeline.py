@@ -407,5 +407,187 @@ class StandardDevelopProfileTests(unittest.TestCase):
             self.assertLess(top, 0.995, msg=profile)
 
 
+def _previous_resize_float_to_size(image, size):
+    """The single-threaded resize the threaded one must reproduce."""
+    from PIL import Image
+    source = color_pipeline.as_float_rgb(image)
+    channels = [
+        np.asarray(Image.fromarray(source[..., channel], mode="F").resize(
+            size, Image.Resampling.LANCZOS, reducing_gap=3.0), dtype=np.float32)
+        for channel in range(3)]
+    return np.clip(np.stack(channels, axis=2), 0.0, 1.0).astype(np.float32, copy=False)
+
+
+@unittest.skipIf(color_pipeline._develop_kernels() is None, "needs numba")
+class DevelopKernelTests(unittest.TestCase):
+    """The parallel Develop must be bit-identical to the colour-science render."""
+
+    PROFILES = ("linear", "standard", "soft")
+    SPACES = ("srgb", "display_p3", "prophoto")
+
+    def setUp(self):
+        self.kernels = color_pipeline._develop_kernels()
+
+    def assertSameBits(self, actual, expected, msg=None):
+        self.assertEqual(actual.dtype, expected.dtype, msg)
+        self.assertEqual(actual.shape, expected.shape, msg)
+        self.assertEqual(actual.tobytes(), expected.tobytes(), msg)
+
+    def _inputs(self):
+        rng = np.random.default_rng(29)
+        codes = rng.integers(0, 65536, (40, 56, 3), dtype=np.uint16)
+        codes[:4] = 0
+        codes[4:6] = 65535
+        rgba = np.concatenate(
+            [codes, np.full((40, 56, 1), 65535, dtype=np.uint16)], axis=2)
+        return {
+            "uint16": codes,
+            "uint16 with alpha": rgba,
+            "uint8": rng.integers(0, 256, (40, 56, 3), dtype=np.uint8),
+            # Out-of-range floats exercise the input clip; squared values put
+            # most of the frame in the shadows, like a linear decode.
+            "float32": (rng.random((40, 56, 3), dtype=np.float32) * 1.5 - 0.2) ** 2,
+            "float64": codes / 65535.0,
+            "dim uint16": (codes // 64).astype(np.uint16),
+        }
+
+    def test_every_profile_and_output_space_matches_the_reference(self):
+        for label, image in self._inputs().items():
+            for profile in self.PROFILES:
+                for space in self.SPACES:
+                    msg = f"{label} {profile} {space}"
+                    params = {"developProfile": profile}
+                    expected = color_pipeline._linear_prophoto_to_display_reference(
+                        image, params, profile, space)
+                    # Called directly so a kernel error fails instead of
+                    # silently taking the reference path.
+                    self.assertSameBits(color_pipeline._develop_with_kernels(
+                        self.kernels, image, params, profile, space), expected, msg)
+                    self.assertSameBits(color_pipeline.linear_prophoto_to_display(
+                        image, params, output_space=space), expected, msg)
+
+    def test_wide_gamut_export_conversion_matches_colour_science(self):
+        import colour
+        rng = np.random.default_rng(17)
+        # Large enough for the kernel path; extended values reach both
+        # transfer-function branches and the output clip.
+        frames = (rng.random((800, 700, 3), dtype=np.float32) * 1.3 - 0.15,
+                  rng.random((800, 700, 3)) * 1.3 - 0.15)
+        for frame in frames:
+            for space in ("display_p3", "prophoto"):
+                expected = np.clip(colour.RGB_to_RGB(
+                    np.asarray(frame, dtype=np.float64), "sRGB",
+                    color_pipeline.COLOUR_SPACE_NAMES[space],
+                    apply_cctf_decoding=True, apply_cctf_encoding=True),
+                    0.0, 1.0).astype(np.float32)
+                converted = color_pipeline._convert_from_srgb_with_kernels(
+                    frame, space)
+                self.assertIsNotNone(converted, space)
+                self.assertSameBits(converted, expected, f"{frame.dtype} {space}")
+                self.assertSameBits(color_pipeline.convert_output_space(
+                    frame, space), expected, f"{frame.dtype} {space}")
+
+    def test_black_frame_skips_normalisation_identically(self):
+        black = np.zeros((8, 8, 3), dtype=np.uint16)
+        for profile in self.PROFILES:
+            for space in self.SPACES:
+                self.assertSameBits(
+                    color_pipeline._develop_with_kernels(
+                        self.kernels, black, {}, profile, space),
+                    color_pipeline._linear_prophoto_to_display_reference(
+                        black, {}, profile, space), f"{profile} {space}")
+
+    def test_kernel_failure_renders_through_the_reference(self):
+        image = self._inputs()["uint16"]
+        expected = color_pipeline._linear_prophoto_to_display_reference(
+            image, {}, "standard", "srgb")
+        with mock.patch.object(color_pipeline, "_develop_with_kernels",
+                               side_effect=RuntimeError("kernel")):
+            self.assertSameBits(
+                color_pipeline.linear_prophoto_to_display_srgb(image, {}), expected)
+
+    def test_warm_up_compiles_every_kernel_a_raw_develop_uses(self):
+        names = ("encode_codes", "deliver", "count_at_least", "gather_at_least")
+        color_pipeline.warm_develop_jit()
+        warmed = {name: len(getattr(self.kernels, name).signatures) for name in names}
+        for name in names:
+            self.assertTrue(warmed[name], name)
+        # A 16-bit frame large enough for the candidate percentile must find
+        # every specialization already compiled, so warming covered it.
+        codes = np.random.default_rng(2).integers(
+            0, 65536, (620, 600, 3), dtype=np.uint16)
+        for profile in self.PROFILES:
+            for space in ("srgb", "display_p3"):
+                color_pipeline._develop_with_kernels(
+                    self.kernels, codes, {}, profile, space)
+        for name in names:
+            self.assertEqual(len(getattr(self.kernels, name).signatures),
+                             warmed[name], name)
+
+    def test_white_point_gathers_candidates_and_matches_numpy(self):
+        rng = np.random.default_rng(5)
+        shape = (180, 240, 3)
+        spread = rng.random(shape) * 1.4 - 0.2
+        ties = np.round(rng.random(shape), 2)
+        clipped = np.where(rng.random(shape) < 0.8, 1.0, rng.random(shape))
+        signed_zero = np.where(rng.random(shape) < 0.5, -0.0, spread)
+        cases = {"spread": spread, "ties": ties, "clipped": clipped,
+                 "signed zero": signed_zero, "black": np.zeros(shape),
+                 "negative": -np.abs(spread)}
+        for label, encoded in cases.items():
+            encoded = np.ascontiguousarray(encoded)
+            expected = float(np.percentile(np.maximum(encoded, 0.0), 99.5))
+            with mock.patch.object(color_pipeline.np, "percentile",
+                                   side_effect=AssertionError("numpy fallback")):
+                white = color_pipeline._develop_white_point(
+                    encoded, self.kernels, min_values=0, sample_stride=7)
+            self.assertEqual(np.float64(white).tobytes(),
+                             np.float64(expected).tobytes(), label)
+
+    def test_white_point_falls_back_to_numpy_when_the_sample_misleads(self):
+        size = 180 * 240 * 3
+        flat = np.full(size, 0.5)
+        sampled = np.arange(size) % 7 == 0
+        # Just over 1% of the sampled values are the brightest in the frame,
+        # so the sample's threshold keeps far fewer than 0.5% of all values.
+        bright = np.flatnonzero(sampled)[::90]
+        flat[sampled] = 0.0
+        flat[bright] = 1.0
+        encoded = flat.reshape(180, 240, 3)
+        expected = float(np.percentile(np.maximum(encoded, 0.0), 99.5))
+        with mock.patch.object(color_pipeline.np, "percentile",
+                               wraps=np.percentile) as percentile:
+            white = color_pipeline._develop_white_point(
+                encoded, self.kernels, min_values=0, sample_stride=7)
+        percentile.assert_called_once()
+        self.assertEqual(white, expected)
+
+        with_nan = np.ascontiguousarray(encoded.copy())
+        with_nan[3, 4, 1] = np.nan
+        self.assertTrue(np.isnan(color_pipeline._develop_white_point(
+            with_nan, self.kernels, min_values=0, sample_stride=7)))
+
+
+class ThreadedPixelOperationTests(unittest.TestCase):
+    def test_threaded_resize_matches_the_single_threaded_resize(self):
+        rng = np.random.default_rng(3)
+        for image in (rng.integers(0, 65536, (300, 420, 3), dtype=np.uint16),
+                      rng.random((300, 420, 4), dtype=np.float32) * 1.2 - 0.1):
+            for size in ((150, 107), (420, 300), (840, 600)):
+                expected = _previous_resize_float_to_size(image, size)
+                resized = color_pipeline.resize_float_to_size(image, size)
+                self.assertEqual(resized.dtype, expected.dtype)
+                self.assertEqual(resized.tobytes(), expected.tobytes(), size)
+
+    def test_band_quantisation_matches_the_whole_frame_expression(self):
+        rng = np.random.default_rng(8)
+        for image in (rng.random((1210, 1203, 3), dtype=np.float32),
+                      rng.random((1210, 1203, 3)) * 1.1 - 0.05,
+                      rng.random((9, 7, 3), dtype=np.float32)):
+            expected = (image * 65535.0 + 0.5).astype(np.uint16)
+            self.assertEqual(color_pipeline.to_uint16(image).tobytes(),
+                             expected.tobytes())
+
+
 if __name__ == "__main__":
     unittest.main()
