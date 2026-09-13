@@ -116,9 +116,13 @@ class WideDevelopColorTests(unittest.TestCase):
                 displayed = color.convert_output_space(wide, 'srgb', input_space=space)
                 # Neutral patches are primaries-independent, so the graded
                 # delivery shows the preview's tones exactly. Saturated
-                # patches keep their wide colors and stay close.
+                # patches keep their wide colors; their channels differ by
+                # the preview's gamut clip, so compare their brightness.
                 np.testing.assert_allclose(displayed[:, 3:], preview[:, 3:], atol=2e-3)
-                np.testing.assert_allclose(displayed[:, :3], preview[:, :3], atol=.05)
+                luma = np.array([.2126, .7152, .0722])
+                np.testing.assert_allclose(
+                    grade._srgb_to_linear(displayed[:, :3]) @ luma,
+                    grade._srgb_to_linear(preview[:, :3]) @ luma, atol=.02)
                 self.assertGreater(float(np.max(abs(wide - color.convert_output_space(
                     preview, space)))), .02)
 

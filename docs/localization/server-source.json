@@ -140,7 +140,7 @@
     "The {space} output color profile is missing. Repair the installation before exporting.",
     "There are no saved masks to undo for this batch",
     "There is no face-group change to undo",
-    "This export uses sRGB-limited colors: film rendering and adjusted Develop images do not yet retain colors outside sRGB. The requested output profile is embedded.",
+    "This export uses sRGB-limited colors: film rendering, color and detail adjustments, masks, retouching and watermarks do not yet retain colors outside sRGB. The requested output profile is embedded.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.",
     "This person group no longer exists",
     "This photo is stored online in Box. Make its containing folder available offline in Box Drive, wait for the download to finish, then retry.",
@@ -342,7 +342,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "e27eb7fdb6a42e3c41305412d5950894a4fcb92ebc7dc367e8ace95d222418a4",
+  "sourceDigest": "0e23339bb26ba133ee0a47e87f668d3588d9e92752dc6c2c6af10da9faf09858",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -623,7 +623,7 @@
       "ImageIO did not create an output file",
       "Requested metadata could not be saved.",
       "The {space} output color profile is missing. Repair the installation before exporting.",
-      "This export uses sRGB-limited colors: film rendering and adjusted Develop images do not yet retain colors outside sRGB. The requested output profile is embedded.",
+      "This export uses sRGB-limited colors: film rendering, color and detail adjustments, masks, retouching and watermarks do not yet retain colors outside sRGB. The requested output profile is embedded.",
       "expected an HxWx3 RGB image"
     ],
     "film_lab_ai/providers.py": [

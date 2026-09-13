@@ -1149,7 +1149,8 @@
         {
           "title": "Start with Light",
           "paragraphs": [
-            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation."
+            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.",
+            "These Light controls work on the light behind the displayed image rather than on its clipped pixels. Tones that Exposure pushes past white stay available for Highlights and Whites to bring back, and the brightest tones roll off softly instead of clipping."
           ],
           "steps": [
             "Set Exposure for the main subject.",
@@ -2691,7 +2692,7 @@
           "title": "Color space limits",
           "paragraphs": [
             "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.",
-            "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."
+            "Wide-gamut Develop exports preserve source colors when only the Light adjustments (Exposure, Highlights, Shadows, Whites, Blacks, and Contrast) are applied; those controls work on light rather than on sRGB colors. Film rendering and Develop exports with color or detail adjustments, masks, retouching, or a watermark are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."
           ]
         }
       ],

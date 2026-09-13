@@ -182,14 +182,14 @@
       },
       {
         "title": "Color space limits",
-        "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]
+        "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when only the Light adjustments (Exposure, Highlights, Shadows, Whites, Blacks, and Contrast) are applied; those controls work on light rather than on sRGB colors. Film rendering and Develop exports with color or detail adjustments, masks, retouching, or a watermark are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]
       }
     ],
     "related": ["export-photos", "soft-proof", "external-editor"],
     "sources": [
       {"path": "web/app.js", "anchor": "const EXPORT_MODAL_PRESETS = {"},
       {"path": "web/index.html", "anchor": "TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile."},
-      {"path": "web/index.html", "anchor": "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors."},
+      {"path": "web/index.html", "anchor": "Wide-gamut Develop exports preserve source colors when only Light adjustments are applied. Film rendering and Develop exports with color, detail, or local adjustments are limited to sRGB colors."}, {"path": "color_pipeline.py", "anchor": "def wide_develop_edits_supported(job: dict) -> bool:"},
       {"path": "export_workflow.py", "anchor": "if long_edge and max(width, height) > int(long_edge):"},
       {"path": "web/app.js", "anchor": "$('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';"},
       {"path": "web/index.html", "anchor": "id=\"modalExBorder\""},

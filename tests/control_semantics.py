@@ -925,9 +925,11 @@ def audit_tone_headroom() -> Finding:
     """
     key = "tone.headroom"
     base = audit_target()
-    row = base[8, :, 0]
-    bright = row > 0.6
-    rendered = grade.apply(base, {"exposure": 1.0, "whites": -1.0})[8, :, 0]
+    # The first row of the target is the clean 0..1 luma ramp (later rows in
+    # the band carry the sharpening edge and its white plateau).
+    row = base[0, :, 0]
+    bright = (row > 0.6) & (row < 0.999)
+    rendered = grade.apply(base, {"exposure": 1.0, "whites": -1.0})[0, :, 0]
     steps = np.diff(rendered[bright])
     spread = float(rendered[bright].max() - rendered[bright].min())
     readings = [float(rendered[bright].min()), float(rendered[bright].max())]

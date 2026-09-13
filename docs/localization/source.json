@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "21efc49f606c3d2060552773a03e5747888f957b432e903927a86ae0e1cbaecd",
+  "sourceDigest": "324647a3427c8a1e673a9175335239b1aa5da6c756018af321527733eba27d7e",
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3",
   "pluralPairs": [
     {
@@ -3448,6 +3448,7 @@
     "The × beside a snapshot deletes that named snapshot, not the original photo.",
     "There are no saved masks to undo for this batch",
     "There is no face-group change to undo",
+    "These Light controls work on the light behind the displayed image rather than on its clipped pixels. Tones that Exposure pushes past white stay available for Highlights and Whites to bring back, and the brightest tones roll off softly instead of clipping.",
     "These are adjustments to modeled output recipes, not selections of measured scanner brands. Evaluate fine texture and sharpness with completed 1:1 preview detail.",
     "These are analysis signals for your review, not final judgments about which photographs to keep. Rejecting sets a flag; it does not itself move originals to Trash.",
     "These controls modify the selected output recipe. Scanner brand names are intentionally omitted until measured reference scans exist.",
@@ -3458,7 +3459,7 @@
     "This catalog has no photos. Choose another catalog or start with a folder.",
     "This catalog was created by a newer LightTable build. It was left unchanged; update the app to reopen it.",
     "This catalog was made by a newer LightTable. It was left unchanged; update the app to open it.",
-    "This export uses sRGB-limited colors: film rendering and adjusted Develop images do not yet retain colors outside sRGB. The requested output profile is embedded.",
+    "This export uses sRGB-limited colors: film rendering, color and detail adjustments, masks, retouching and watermarks do not yet retain colors outside sRGB. The requested output profile is embedded.",
     "This file already exists and will be skipped.",
     "This file is empty (0 bytes). Download or restore the original photo, then retry.",
     "This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren’t transferred.",
@@ -3773,8 +3774,8 @@
     "Whites",
     "Whole-library import requires the updated LightTable app for macOS. You can also export originals from Photos and choose their folder.",
     "Wide · 10% of the long edge",
-    "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors.",
-    "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering.",
+    "Wide-gamut Develop exports preserve source colors when only Light adjustments are applied. Film rendering and Develop exports with color, detail, or local adjustments are limited to sRGB colors.",
+    "Wide-gamut Develop exports preserve source colors when only the Light adjustments (Exposure, Highlights, Shadows, Whites, Blacks, and Contrast) are applied; those controls work on light rather than on sRGB colors. Film rendering and Develop exports with color or detail adjustments, masks, retouching, or a watermark are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering.",
     "Width",
     "Window",
     "With a regular collection active, choose photos to add and click Add selected to collection.",
