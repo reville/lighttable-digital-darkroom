@@ -241,3 +241,32 @@ test('folder setup offers sidecar import when sidecars are detected', async () =
   assert.equal(f.writes.at(-1).body.firstRunSetup.source, 'folder');
   assert.equal(f.writes.at(-1).body.firstRunSetup.status, 'completed');
 });
+
+test('catalog and folder results offer preset import through the ordinary importer', async () => {
+  const f = fixture({ native: true });
+  f.controller.nativeEvent({ type: 'sources', firstRun: true });
+  let presetClicks = 0;
+  f.all.get('presetImport').click = () => { presetClicks++; };
+
+  f.controller.nativeEvent({ type: 'setupFolderSelected', path: '/library' });
+  assert.equal(f.all.get('setupImportPresets').hidden, false);
+  await f.click('setupImportPresets');
+  assert.equal(presetClicks, 1);
+  assert.equal(f.writes.at(-1).body.firstRunSetup.source, 'folder');
+  assert.equal(f.writes.at(-1).body.firstRunSetup.status, 'completed');
+  assert.equal(f.open(), false);
+
+  const g = fixture({ native: true });
+  g.controller.nativeEvent({ type: 'sources', firstRun: true });
+  g.all.get('presetImport').click = () => { presetClicks++; };
+  g.controller.nativeEvent({ type: 'setupCatalogImported', matched: 4, unmatched: 0 });
+  assert.equal(g.all.get('setupImportPresets').hidden, false);
+  await g.click('setupImportPresets');
+  assert.equal(presetClicks, 2);
+  assert.equal(g.writes.at(-1).body.firstRunSetup.source, 'lightroom');
+
+  const h = fixture({ native: true });
+  h.controller.nativeEvent({ type: 'sources', firstRun: true });
+  h.controller.nativeEvent({ type: 'photosImported', count: 2 });
+  assert.equal(h.all.get('setupImportPresets').hidden, true);
+});

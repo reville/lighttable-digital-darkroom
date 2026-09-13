@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Aplique correcciones de lente y de aberración cromática",
       "category": "Editing",
-      "summary": "Use un perfil de lente emparejado o seleccionado manualmente, o haga correcciones manuales cuando no haya un perfil exacto disponible.",
+      "summary": "Use un perfil de lente emparejado o seleccionado manualmente, corrija la aberración cromática, elimine halos púrpura y verdes, o haga correcciones manuales cuando no haya un perfil exacto disponible.",
       "keywords": [
         "lente",
         "perfil",
@@ -1148,6 +1148,9 @@
         "sombras",
         "aberración cromática",
         "franjas",
+        "eliminar halos",
+        "halo púrpura",
+        "halo verde",
         "rojo cian",
         "azul amarillo",
         "óptica"
@@ -1156,18 +1159,21 @@
         {
           "title": "Elegir y verificar una corrección",
           "paragraphs": [
-            "Expanda Correcciones de lente en Editar. La tarjeta de perfil explica la coincidencia automática de cámara/lente y si hay un perfil utilizable disponible."
+            "Expanda Correcciones de lente en Editar. La tarjeta de perfil explica la coincidencia automática de cámara/lente y si hay un perfil utilizable disponible. El panel también indica la versión de la base de datos de objetivos en uso y cuántas cámaras y objetivos incluye; la base de datos viene con la biblioteca de objetivos, no con LightTable.",
+            "Cuando la cámara y el objetivo de los metadatos de la foto coinciden exactamente con un solo perfil, Usar el perfil de lente coincidente está activado en cuanto se abre la foto y se aplica también a miniaturas y exportaciones. Una coincidencia inferida o ambigua permanece desactivada. Ajustes → Valores predeterminados de revelado → Aplicar automáticamente el perfil de objetivo coincidente desactiva este comportamiento; las fotos con ajustes de objetivo guardados los conservan en cualquier caso."
           ],
           "steps": [
             "Lea el nombre del perfil y la explicación de coincidencia.",
-            "Active Usar perfil de lente emparejado cuando haya un perfil disponible y luego elija Corregir distorsión y Corregir sombreado de lente según sea necesario.",
+            "Active Usar el perfil de lente coincidente cuando haya un perfil disponible y luego elija Corregir distorsión, Corregir sombreado de lente y Corregir aberración cromática según sea necesario. Cada interruptor es independiente, así que la aberración cromática puede corregirse sin cambiar la geometría.",
             "Si es necesario, elige otra entrada en Perfil de lente y compara la corrección con el original.",
-            "Refine los controles manuales de Distorsión y Viñeta. Para franjas de color, ajuste Rojo / Cian y Azul / Amarillo bajo Aberración cromática."
+            "Refine los controles manuales de Distorsión y Viñeta. Para franjas de color, ajuste Rojo / Cian y Azul / Amarillo bajo Aberración cromática.",
+            "En Eliminar halos, suba Púrpura o Verde para quitar ese color de los píxeles muy saturados junto a bordes duros. Los controles de inicio y fin de tono definen el rango de tonos que trata cada control; un inicio mayor que su fin pasa por el rojo."
           ],
           "tips": [
             "Si no se encuentra un perfil de lente exacto, siguen disponibles los controles manuales de distorsión y perspectiva.",
-            "Las casillas de verificación de distorsión y sombreado del perfil solo se activan cuando el perfil seleccionado proporciona esa corrección y el perfil está activado.",
+            "Las casillas de distorsión, sombreado y aberración cromática del perfil solo se activan cuando el perfil seleccionado proporciona esa corrección y el perfil está activado.",
             "Un perfil seleccionado manualmente necesita verificación visual; la selección no establece que sea una coincidencia exacta.",
+            "Eliminar halos trata el contorno de un sujeto grande púrpura o verde como un halo. Baje la cantidad o estreche el rango de tonos si un sujeto pierde color en su borde.",
             "Las correcciones de lente y de franjas permanecen no destructivas hasta la exportación."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Neutralizar una dominante de color",
           "paragraphs": [
-            "La sección Color en Editar contiene Temp y Tinte, además de un cuentagotas de balance de blancos junto a Temp. Estos son los controles de acabado del panel Editar."
+            "La sección Color en Editar contiene Temp y Tinte, además de un cuentagotas de balance de blancos junto a Temp. Estos son los controles de acabado del panel Editar.",
+            "Para un original RAW, un bloque Balance de blancos de captura aparece encima con Según captura, Auto, ajustes preestablecidos y Personalizado para una temperatura en kelvin y un tinte de captura. Vuelve a revelar los datos RAW y funciona con Film activado o desactivado; se oculta para archivos procesados."
           ],
           "steps": [
             "Abrir Editar y expandir Color.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Edición"
     },
@@ -2352,7 +2360,7 @@
           "paragraphs": [
             "Las vistas previas de stock incluyen las ediciones de la foto actual. Explorar y cerrar la ventana de vista previa no aplica un stock; elegir una vista previa sí.",
             "Un stock de película describe el proceso físico de la película. Un ajuste preestablecido de edición puede contener ajustes guardados más amplios y también puede incluir ajustes de Película. El menú Salida dentro de Película elige una receta de escaneo o impresión; no exporta un archivo.",
-            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible."
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. Con Película activada, el primer fotograma de una foto sin caché usa la vista previa incrustada de la cámara; la conversión precisa la sustituye poco después y, hasta entonces, el estado muestra «Refinando RAW…». La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible."
           ],
           "tips": [
             "Si un stock no está disponible, puede requerir el motor GPU. La disponibilidad del motor se muestra en Ajustes → Rendimiento."
@@ -2434,7 +2442,7 @@
           "title": "Controles de captura y controles de acabado",
           "paragraphs": [
             "EV de cámara y balance de blancos de Captura actúan antes de la exposición de la película. Exposición y Temp/Tinte en el panel Editar son ajustes finales más adelante en el flujo de trabajo.",
-            "El balance de blancos de captura requiere un original RAW. Para un JPEG, HEIF, TIFF u otro archivo procesado, use Editar Temp/Tinte."
+            "El balance de blancos de captura está en la parte superior de la sección Color para originales RAW y funciona con Film activado o desactivado: elija Según captura, Auto, un ajuste preestablecido o Personalizado para fijar una temperatura en kelvin y un tinte de captura. Para un JPEG, HEIF, TIFF u otro archivo procesado, el bloque se oculta; use Editar Temp/Tinte."
           ],
           "steps": [
             "Activa Película, elige un stock y ajusta Cámara EV.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Predeterminados para fotos sin editar",
           "paragraphs": [
-            "Los valores predeterminados de revelado se aplican solo a fotos que aún no tienen ediciones guardadas. Pueden activar Película por defecto, elegir un flujo de trabajo y un perfil de revelado neutro, y aplicar un ajuste preestablecido predeterminado."
+            "Los valores predeterminados de revelado se aplican solo a fotos que aún no tienen ediciones guardadas. Pueden activar Película por defecto, elegir un flujo de trabajo y un perfil de revelado neutro, y aplicar un ajuste preestablecido predeterminado.",
+            "Aplicar automáticamente el perfil de objetivo coincidente, activado de forma predeterminada, activa el perfil de objetivo en las fotos cuya cámara y objetivo coinciden exactamente con un solo perfil y cuyos ajustes de objetivo nunca se guardaron. Desactívelo para abrir todas las fotos con el perfil desactivado."
           ],
           "steps": [
             "Abra Configuración → Predeterminados de revelado.",
@@ -3214,8 +3223,8 @@
         {
           "title": "Compruebe qué ha terminado de renderizarse",
           "paragraphs": [
-            "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas.",
-            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
+            "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas. También se prepara una vista previa estándar de cada RAW para que la foto se abra sin esperar una decodificación completa.",
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. Con Película activada, el primer fotograma de una foto sin caché usa la vista previa incrustada de la cámara; la conversión precisa la sustituye poco después y, hasta entonces, el estado muestra «Refinando RAW…». La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
             "Al cambiar de foto con el zoom ampliado, LightTable muestra inmediatamente una vista previa compatible en caché, si está disponible. Los detalles más nítidos se cargan en segundo plano y las fotos cercanas se precargan para tu nivel de zoom.",
             "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

@@ -642,6 +642,32 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
 
 
 
+def preload_denoise(*, cancel=None, tile: int = DEFAULT_TILE) -> dict:
+    """Compile and load the denoise model once by running one blank tile.
+
+    The helper compiles the bundled ``.mlpackage`` into the user's cache the
+    first time (about thirty seconds) and loads the compiled model in about a
+    second afterwards. Running a single tile while the app is idle moves that
+    first cost off the first real denoise. There is no identity fallback: a
+    missing model or helper reports ``available: False``.
+    """
+    started = time.monotonic()
+    report = capabilities()
+    if not report["modes"]["denoise"]:
+        return {"ok": False, "available": False, "seconds": 0.0,
+                "error": report["reason"] or "denoise is unavailable"}
+    blank = np.full((MIN_TILE, MIN_TILE, 3), 0.5, dtype=np.float32)
+    try:
+        produced = helper_batch_runner(
+            [blank], "denoise", {"strength": 1.0, "tile": int(tile)}, cancel=cancel)
+    except Exception as error:  # reported, never raised: this is a warm-up
+        return {"ok": False, "available": True, "error": str(error),
+                "seconds": round(time.monotonic() - started, 3)}
+    ok = len(produced) == 1 and tuple(produced[0].shape) == blank.shape
+    return {"ok": ok, "available": True, "error": "" if ok else "denoise returned no tile",
+            "seconds": round(time.monotonic() - started, 3)}
+
+
 def run_model(image, mode: str, *, strength: float = 1.0, scale: int = 2,
               runner=None, tile: int = DEFAULT_TILE,
               overlap: int = DEFAULT_OVERLAP, status=None,

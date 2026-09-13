@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Terapkan koreksi lensa dan aberasi kromatik",
       "category": "Editing",
-      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
+      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, koreksi aberasi kromatik, hapus fringe ungu dan hijau, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
       "keywords": [
         "lensa",
         "profil",
@@ -1148,6 +1148,9 @@
         "pencahayaan",
         "aberasi kromatik",
         "fringing",
+        "hapus fringe",
+        "fringe ungu",
+        "fringe hijau",
         "merah sian",
         "biru kuning",
         "optik"
@@ -1156,18 +1159,21 @@
         {
           "title": "Pilih dan verifikasi koreksi",
           "paragraphs": [
-            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia."
+            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia. Panel ini juga menyebutkan versi basis data lensa yang digunakan serta berapa banyak kamera dan lensa yang tercantum; basis data disertakan bersama pustaka lensa, bukan bersama LightTable.",
+            "Saat kamera dan lensa dalam metadata foto cocok persis dengan satu profil, Gunakan profil lensa yang cocok aktif begitu foto dibuka dan berlaku juga untuk thumbnail dan ekspor. Kecocokan yang disimpulkan atau ambigu tetap nonaktif. Pengaturan → Default Pengembangan → Terapkan profil lensa yang cocok secara otomatis mematikan perilaku ini; foto dengan pengaturan lensa tersimpan tetap mempertahankannya."
           ],
           "steps": [
             "Baca nama profil dan penjelasan kecocokan.",
-            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi dan Koreksi shading lensa sesuai kebutuhan.",
+            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi, Perbaiki pencahayaan lensa, dan Koreksi aberasi kromatik sesuai kebutuhan. Setiap sakelar independen, sehingga aberasi kromatik dapat dikoreksi tanpa mengubah geometri.",
             "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
-            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik."
+            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik.",
+            "Di bawah Hapus fringe, naikkan Ungu atau Hijau untuk menarik warna itu dari piksel sangat jenuh di samping tepi tajam. Slider awal hue dan akhir hue mengatur rentang hue yang ditangani setiap kontrol; awal di atas akhirnya melingkar melalui merah."
           ],
           "tips": [
             "Tidak ditemukan profil lensa yang tepat; kontrol distorsi dan perspektif manual tetap tersedia.",
-            "Kotak centang distorsi dan shading profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
+            "Kotak centang distorsi, shading, dan aberasi kromatik profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
             "Profil yang dipilih secara manual perlu diperiksa secara visual; pilihan itu tidak membuktikan bahwa profil tersebut cocok tepat.",
+            "Hapus fringe memperlakukan garis tepi subjek ungu atau hijau yang besar seperti fringe. Turunkan jumlahnya atau persempit rentang hue jika subjek kehilangan warna di tepinya.",
             "Koreksi lensa dan fringe tetap tidak merusak sepanjang ekspor."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Netralisir cast warna",
           "paragraphs": [
-            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit."
+            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit.",
+            "Untuk original RAW, blok Keseimbangan putih tangkap berada di atasnya dengan Seperti diambil, Otomatis, preset, dan Kustom untuk suhu dalam kelvin dan tint kamera. Blok ini mengembangkan ulang data RAW dan bekerja dengan Film aktif atau nonaktif; disembunyikan untuk file yang sudah diproses."
           ],
           "steps": [
             "Buka Edit dan perluas Warna.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2352,7 +2360,7 @@
           "paragraphs": [
             "Pratinjau stok mencakup edit foto saat ini. Menelusuri dan menutup jendela pratinjau tidak menerapkan stok; memilih pratinjau melakukannya.",
             "Film stock menjelaskan proses film fisik. Preset pengeditan dapat berisi penyesuaian tersimpan yang lebih luas, dan juga dapat menyertakan pengaturan Film. Menu Output di dalam Film memilih resep scan atau print; ini tidak mengekspor file.",
-            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat."
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Saat Film aktif, bingkai pertama foto yang belum tersimpan di cache menggunakan pratinjau tersemat dari kamera; konversi yang akurat menggantikannya tak lama kemudian, dan hingga saat itu status menampilkan “Menyempurnakan RAW…”. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat."
           ],
           "tips": [
             "Jika suatu stok tidak tersedia, mungkin diperlukan engine GPU. Ketersediaan engine ditampilkan di Pengaturan → Performa."
@@ -2434,7 +2442,7 @@
           "title": "Kontrol tangkap dan kontrol penyelesaian",
           "paragraphs": [
             "Camera EV dan Capture white balance bekerja sebelum eksposur film. Exposure dan Temp/Tint di panel Edit adalah penyesuaian akhir di tahap selanjutnya dalam alur kerja.",
-            "White balance tangkapan memerlukan original RAW. Untuk JPEG, HEIF, TIFF, atau file lain yang telah diproses, gunakan Edit Temp/Tint."
+            "Keseimbangan putih tangkap berada di bagian atas bagian Warna untuk original RAW dan bekerja dengan Film aktif atau nonaktif: pilih Seperti diambil, Otomatis, preset, atau Kustom untuk mengatur suhu dalam kelvin dan tint kamera. Untuk JPEG, HEIF, TIFF, atau file yang sudah diproses lainnya, blok ini disembunyikan; gunakan Edit Temp/Tint."
           ],
           "steps": [
             "Aktifkan Film, pilih stok, dan sesuaikan Kamera EV.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Default untuk foto tanpa edit",
           "paragraphs": [
-            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan."
+            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan.",
+            "Terapkan profil lensa yang cocok secara otomatis, aktif secara default, menyalakan profil lensa untuk foto yang kamera dan lensanya cocok persis dengan satu profil dan pengaturan lensanya belum pernah disimpan. Matikan untuk membuka setiap foto dengan profil nonaktif."
           ],
           "steps": [
             "Buka Pengaturan → Default Develop.",
@@ -3214,8 +3223,8 @@
         {
           "title": "Periksa apa yang telah selesai dirender",
           "paragraphs": [
-            "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap.",
-            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
+            "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap. Pratinjau standar untuk setiap RAW juga disiapkan agar foto terbuka tanpa menunggu proses dekode penuh.",
+            "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Saat Film aktif, bingkai pertama foto yang belum tersimpan di cache menggunakan pratinjau tersemat dari kamera; konversi yang akurat menggantikannya tak lama kemudian, dan hingga saat itu status menampilkan “Menyempurnakan RAW…”. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
             "Saat beralih foto dalam tampilan diperbesar, LightTable langsung menampilkan pratinjau cache yang sesuai jika tersedia. Detail yang lebih tajam dimuat di latar belakang, dan foto di sekitarnya dimuat terlebih dahulu sesuai tingkat zoom Anda.",
             "Zoom mempertahankan pratinjau paling tajam yang tersedia sambil memuat detail tambahan. Saat memperkecil, pratinjau tersebut digunakan kembali. Pada 1:1, periksa tooltip tombol sebelum menilai detail halus.",
             "Jika tooltip tombol 1:1 melaporkan ukuran piksel pratinjau lebih kecil daripada sumber, berarti Anda melihat pratinjau yang dikirim dalam ukuran lebih kecil. Resolusi otomatis menyesuaikan dengan tampilan dan meningkatkan permintaan saat melihat dengan zoom; sumber yang sangat besar dapat melampaui batas permintaan pratinjau.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

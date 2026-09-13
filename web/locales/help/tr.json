@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Objektif ve kromatik sapma düzeltmelerini uygulayın",
       "category": "Editing",
-      "summary": "Eşleşen ya da elle seçilmiş bir objektif profili kullanın veya tam bir profil yoksa elle düzeltmeler yapın.",
+      "summary": "Eşleşen ya da elle seçilmiş bir objektif profili kullanın, kromatik sapmayı düzeltin, mor ve yeşil saçakları kaldırın veya tam bir profil yoksa elle düzeltmeler yapın.",
       "keywords": [
         "objektif",
         "profil",
@@ -1148,6 +1148,9 @@
         "gölgelendirme",
         "kromatik sapma",
         "saçaklanma",
+        "saçak giderme",
+        "mor saçak",
+        "yeşil saçak",
         "kırmızı camgöbeği",
         "mavi sarı",
         "optik"
@@ -1156,18 +1159,21 @@
         {
           "title": "Bir düzeltme seçin ve doğrulayın",
           "paragraphs": [
-            "Düzenle bölümünde Objektif düzeltmeleri'ni genişletin. Profil kartı, otomatik kamera/objektif eşleşmesini ve kullanılabilir bir profil olup olmadığını açıklar."
+            "Düzenle bölümünde Lens düzeltmeleri'ni genişletin. Profil kartı, otomatik kamera/objektif eşleşmesini ve kullanılabilir bir profil olup olmadığını açıklar. Panel ayrıca kullanılan objektif veritabanının sürümünü ve kaç kamera ile objektif listelediğini belirtir; veritabanı LightTable ile değil, objektif kitaplığıyla birlikte gelir.",
+            "Fotoğraf meta verilerindeki kamera ve objektif tek bir profille tam eşleştiğinde, Eşleşen objektif profilini kullan fotoğraf açılır açılmaz açıktır ve küçük resimler ile dışa aktarmalara da uygulanır. Çıkarım yapılan ya da belirsiz bir eşleşme kapalı kalır. Ayarlar → Geliştirme Varsayılanları → Eşleşen objektif profilini otomatik uygula bu davranışı kapatır; kaydedilmiş objektif ayarları olan fotoğraflar bunları her durumda korur."
           ],
           "steps": [
             "Profil adını ve eşleştirme açıklamasını okuyun.",
-            "Bir profil mevcut olduğunda Eşleşen objektif profilini kullan seçeneğini etkinleştirin, ardından gerektiğinde Distorsiyonu düzelt ve Objektif gölgelemesini düzelt seçeneklerini belirleyin.",
+            "Bir profil mevcut olduğunda Eşleşen objektif profilini kullan seçeneğini etkinleştirin, ardından gerektiğinde Bozulmayı düzelt, Objektif gölgelenmesini düzelt ve Kromatik sapmayı düzelt seçeneklerini belirleyin. Her anahtar bağımsızdır; kromatik sapma geometri değiştirilmeden düzeltilebilir.",
             "Gerekirse Lens profile içinde farklı bir giriş seçin ve düzeltmeyi özgünle karşılaştırın.",
-            "Elle yapılan Bozulma ve Vinyet kontrollerini iyileştirin. Renk saçakları için, Kromatik aberasyon altında Kırmızı / Camgöbeği ve Mavi / Sarı ayarlayın."
+            "Elle yapılan Bozulma ve Vinyet kontrollerini iyileştirin. Renk saçakları için, Kromatik aberasyon altında Kırmızı / Camgöbeği ve Mavi / Sarı ayarlayın.",
+            "Saçak giderme altında, sert kenarların yanındaki çok doygun piksellerden o rengi çekmek için Mor ya da Yeşil değerini yükseltin. Ton başlangıcı ve ton bitişi kaydırıcıları her kontrolün ele aldığı ton aralığını belirler; bitişinden büyük bir başlangıç kırmızıdan geçer."
           ],
           "tips": [
             "Tam eşleşen bir objektif profili bulunmadığında, manuel bozulma ve perspektif kontrolleri kullanılabilir durumda kalır.",
-            "Profil bozulma ve gölgeleme onay kutuları yalnızca seçili profil bu düzeltmeyi sağladığında ve profil etkin olduğunda açılır.",
+            "Profil bozulma, gölgeleme ve kromatik sapma onay kutuları yalnızca seçili profil bu düzeltmeyi sağladığında ve profil etkin olduğunda açılır.",
             "Elle seçilen bir profilin görsel olarak kontrol edilmesi gerekir; seçim, onun tam eşleşme olduğunu göstermez.",
+            "Saçak giderme, büyük mor ya da yeşil bir öznenin dış hattını saçak gibi ele alır. Bir özne kenarında renk kaybederse miktarı düşürün ya da ton aralığını daraltın.",
             "Objektif ve renk saçılması düzeltmeleri dışa aktarma boyunca yıkıcı olmayan şekilde kalır."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Bir renk tonunu nötrleştir",
           "paragraphs": [
-            "Düzenle bölümündeki Renk kısmı, Sıcaklık ve Renk tonu ile birlikte Sıcaklık yanında bir beyaz dengesi damlalığı içerir. Bunlar Düzenle panelinin sonlandırma kontrolleridir."
+            "Düzenle bölümündeki Renk kısmı, Sıcaklık ve Renk tonu ile birlikte Sıcaklık yanında bir beyaz dengesi damlalığı içerir. Bunlar Düzenle panelinin sonlandırma kontrolleridir.",
+            "RAW özgün dosya için bunların üstünde, kelvin cinsinden sıcaklık ve yakalama tonu için Çekimdeki gibi, Otomatik, hazır ayarlar ve Özel seçeneklerini içeren bir Yakalama beyaz dengesi bloğu bulunur. RAW verisini yeniden geliştirir ve Film açık ya da kapalı çalışır; işlenmiş dosyalarda gizlidir."
           ],
           "steps": [
             "Düzenle'yi açın ve Renk'i genişletin.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Düzenleme"
     },
@@ -2352,7 +2360,7 @@
           "paragraphs": [
             "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
             "Bir film stoğu, fiziksel film sürecini tanımlar. Bir düzenleme hazır ayarı daha geniş kaydedilmiş ayarlar içerebilir ve Film ayarlarını da içerebilir. Film içindeki Çıkış menüsü bir tarama veya baskı iş akışı seçer; bir dosya dışa aktarmaz.",
-            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Film açıkken, önbelleğe alınmamış bir fotoğrafın ilk karesi kameranın gömülü önizlemesini kullanır; kısa süre sonra doğru dönüştürme onun yerini alır ve o zamana kadar durum “RAW iyileştiriliyor…” gösterir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
           ],
           "tips": [
             "Bir film stoğu kullanılamıyorsa GPU motoru gerekebilir. Motor kullanılabilirliği Ayarlar → Performans bölümünde gösterilir."
@@ -2434,7 +2442,7 @@
           "title": "Yakalama kontrolleri ve sonlandırma kontrolleri",
           "paragraphs": [
             "Kamera EV ve Yakalama beyaz dengesi, film pozlamasından önce uygulanır. Düzenle panelindeki Pozlama ve Sıcaklık/Renk tonu ise iş akışının ilerleyen aşamalarındaki son düzeltmelerdir.",
-            "Çekim beyaz dengesi için bir RAW özgünü gerekir. JPEG, HEIF, TIFF veya başka bir işlenmiş dosya için Düzenle Sıcaklık/Renk tonu'nu kullanın."
+            "Yakalama beyaz dengesi RAW özgün dosyalar için Renk bölümünün en üstünde yer alır ve Film açık ya da kapalı çalışır: kelvin cinsinden sıcaklık ve yakalama tonu ayarlamak için Çekimdeki gibi, Otomatik, bir hazır ayar ya da Özel seçin. JPEG, HEIF, TIFF veya başka bir işlenmiş dosyada blok gizlidir; Düzenle Sıcaklık/Renk tonu kullanın."
           ],
           "steps": [
             "Film’i açın, bir film stoğu seçin ve Kamera EV’yi ayarlayın.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Düzenlenmemiş fotoğraflar için varsayılanlar",
           "paragraphs": [
-            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler."
+            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler.",
+            "Varsayılan olarak açık olan Eşleşen objektif profilini otomatik uygula, kamerası ve objektifi tek bir profille tam eşleşen ve objektif ayarları hiç kaydedilmemiş fotoğraflar için objektif profilini açar. Her fotoğrafı profil kapalı açmak için kapatın."
           ],
           "steps": [
             "Ayarlar → Geliştirme Varsayılanları’nı açın.",
@@ -3214,8 +3223,8 @@
         {
           "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
           "paragraphs": [
-            "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır.",
-            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
+            "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır. Ayrıca her RAW için standart bir önizleme hazırlanır; böylece fotoğraf tam kod çözme beklenmeden açılır.",
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Film açıkken, önbelleğe alınmamış bir fotoğrafın ilk karesi kameranın gömülü önizlemesini kullanır; kısa süre sonra doğru dönüştürme onun yerini alır ve o zamana kadar durum “RAW iyileştiriliyor…” gösterir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
             "Yakınlaştırılmış görünümde fotoğraf değiştirirken LightTable, varsa eşleşen önbellek önizlemesini hemen gösterir. Daha keskin ayrıntılar arka planda yüklenir ve komşu fotoğraflar yakınlaştırma düzeyinize göre önceden yüklenir.",
             "Yakınlaştırma, daha fazla ayrıntı yüklenirken mevcut en keskin önizlemeyi korur. Uzaklaştırmada aynı önizleme yeniden kullanılır. 1:1 görünümde, ince ayrıntıları değerlendirmeden önce düğmenin araç ipucunu kontrol edin.",
             "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }
