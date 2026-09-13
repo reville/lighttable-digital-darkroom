@@ -2441,8 +2441,7 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                         denoise_cancel=denoise_cancel))
                     display = color_pipeline.linear_prophoto_to_display(
                         linear, params, output_space=output_space)
-                    tf.imwrite(temporary,
-                               (display * 65535.0 + 0.5).astype(np.uint16))
+                    tf.imwrite(temporary, color_pipeline.to_uint16(display))
                 else:
                     platform_image.convert_processed_to_tiff(
                         src, temporary, app_root=APP, output_space=output_space)
@@ -2500,7 +2499,7 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
                    linear.shape) if identity is not None else None
             def develop():
                 display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
-                return (display * 65535.0 + 0.5).astype(np.uint16)
+                return color_pipeline.to_uint16(display)
             image = NEUTRAL_DISPLAY_CACHE.get_or_build(
                 key, develop, raw_decode_runtime.check_cancel)
     else:
@@ -4450,7 +4449,10 @@ def _render_preview(name: str, params: dict, width: int,
         else:
             arr = linear_for(name, width, params)
             preview_progress.advance(2)
-            out = fp.render(arr, params)
+            # The Python film engine runs numba parallel kernels too; two
+            # parallel regions entered at once abort the process.
+            with grade._PARALLEL_KERNEL_LOCK:
+                out = fp.render(arr, params)
             preview_progress.advance(3)
         ms = int((time.time() - t0) * 1000)
         if engine != "rs":
@@ -8257,6 +8259,7 @@ def main() -> None:
         except Exception:
             pass
         grade.warm_grade_jit()
+        color_pipeline.warm_develop_jit()
     timer = threading.Timer(0.75, warm_colour)
     timer.daemon = True
     timer.start()
