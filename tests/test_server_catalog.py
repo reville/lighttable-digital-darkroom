@@ -271,6 +271,116 @@ class CollectionActionTests(CatalogServerTestCase):
         self.assertFalse((self.root / ".lighttable-state.json").exists())
 
 
+class CollectionTreeRouteTests(CatalogServerTestCase):
+    def test_nested_create_rename_move_and_reorder(self):
+        parent = server.catalog_collections_action(
+            {"action": "create", "name": "Trips"})["id"]
+        child = server.catalog_collections_action(
+            {"action": "create", "name": "Rome", "parentId": parent})["id"]
+        other = server.catalog_collections_action(
+            {"action": "create", "name": "Oslo", "parentId": parent})["id"]
+        result = server.catalog_collections_action(
+            {"action": "rename", "id": child, "name": "Roma"})
+        by_id = {c["id"]: c for c in result["collections"]}
+        self.assertEqual(by_id[child]["name"], "Roma")
+        self.assertEqual(by_id[child]["parentId"], parent)
+        library = {c["id"]: c for c in result["library"]["collections"]}
+        self.assertEqual(library[str(child)]["parentId"], str(parent))
+        self.assertIsNone(library[str(parent)]["parentId"])
+
+        reordered = server.catalog_collections_action(
+            {"action": "reorder", "parentId": parent, "ids": [other, child]})
+        siblings = [c["id"] for c in reordered["collections"]
+                    if c["parentId"] == parent]
+        self.assertEqual(siblings, [other, child])
+
+        with self.assertRaises(ValueError):
+            server.catalog_collections_action(
+                {"action": "move", "id": parent, "parentId": child})
+        moved = server.catalog_collections_action(
+            {"action": "move", "id": child, "parentId": None})
+        self.assertIsNone({c["id"]: c for c in moved["collections"]}[child]["parentId"])
+
+        deleted = server.catalog_collections_action(
+            {"action": "delete", "id": parent})
+        self.assertEqual(deleted["deleted"], 2)
+        self.assertEqual([c["id"] for c in deleted["collections"]], [child])
+
+    def test_quick_collection_toggle_and_library_membership(self):
+        image_id = self.catalog.image_id_for(self.source, "a.jpg")
+        result = server.catalog_collections_action(
+            {"action": "quick_toggle", "imageIds": [image_id]})
+        self.assertEqual(result["quick"]["added"], 1)
+        quick = result["quick"]["id"]
+        record = next(c for c in result["library"]["collections"]
+                      if c["id"] == str(quick))
+        self.assertEqual(record["type"], "quick")
+        self.assertEqual(record["members"], [self.qualified("a.jpg")])
+        again = server.catalog_collections_action(
+            {"action": "quick_toggle", "imageIds": [image_id]})
+        self.assertEqual(again["quick"]["removed"], 1)
+        server.catalog_collections_action(
+            {"action": "quick_toggle", "imageIds": [image_id]})
+        cleared = server.catalog_collections_action({"action": "quick_clear"})
+        self.assertEqual(next(c for c in cleared["collections"]
+                              if c["id"] == quick)["count"], 0)
+        with self.assertRaises(ValueError):
+            server.catalog_collections_action({"action": "delete", "id": quick})
+
+    def test_remove_from_collection(self):
+        image_id = self.catalog.image_id_for(self.source, "a.jpg")
+        created = server.catalog_collections_action(
+            {"action": "create", "name": "Picks", "imageIds": [image_id]})
+        removed = server.catalog_collections_action(
+            {"action": "remove", "id": created["id"], "imageIds": [image_id]})
+        self.assertEqual(removed["removed"], 1)
+        self.assertEqual(next(c for c in removed["collections"]
+                              if c["id"] == created["id"])["count"], 0)
+
+
+class LocateRouteTests(CatalogServerTestCase):
+    def test_locate_moves_the_source_root_and_keeps_edits(self):
+        image_id = self.catalog.image_id_for(self.source, "sub/b.jpg")
+        self.catalog.save_state(image_id, {"rating": 4, "grade": {"contrast": 0.2}})
+        moved = Path(self._dir.name) / "relocated"
+        os.rename(self.root, moved)
+        with self.assertRaisesRegex(ValueError, "new location"):
+            server.catalog_sources_action({"action": "locate", "id": self.source})
+        result = server.catalog_sources_action(
+            {"action": "locate", "id": self.source, "path": str(moved)})
+        self.assertEqual(result["located"]["path"], str(moved.resolve()))
+        self.assertTrue(result["sources"][0]["available"])
+        self.assertEqual(self.catalog.image_id_for(self.source, "sub/b.jpg"), image_id)
+        state = self.catalog.state_for(image_id)
+        self.assertEqual((state["rating"], state["grade"]["contrast"]), (4, 0.2))
+        os.rename(moved, self.root)
+
+    def test_locate_refuses_a_different_folder(self):
+        other = Path(self._dir.name) / "other"
+        make_photo(other / "a.jpg", (1, 2, 3))
+        with self.assertRaisesRegex(ValueError, "Could not relink"):
+            server.catalog_sources_action(
+                {"action": "locate", "id": self.source, "path": str(other)})
+
+    def test_locate_missing_reports_a_summary(self):
+        image_id = self.catalog.image_id_for(self.source, "sub/b.jpg")
+        elsewhere = Path(self._dir.name) / "elsewhere"
+        elsewhere.mkdir()
+        os.rename(self.root / "sub" / "b.jpg", elsewhere / "b-renamed.jpg")
+        catalog_scan.scan_source(self.catalog, self.source,
+                                 read_metadata_for_new=False)
+        self.assertEqual(self.catalog.stats()["missing"], 1)
+        result = server.catalog_sources_action(
+            {"action": "locate_missing", "path": str(elsewhere)})
+        summary = result["summary"]
+        self.assertEqual((summary["relinked"], summary["missingAfter"]), (1, 0))
+        self.assertEqual(self.catalog.image_id_for(
+            summary["sourceAdded"], "b-renamed.jpg"), image_id)
+        with self.assertRaisesRegex(ValueError, "Could not search"):
+            server.catalog_sources_action(
+                {"action": "locate_missing", "path": str(elsewhere / "nope")})
+
+
 class SidecarImportTests(CatalogServerTestCase):
     SIDECAR = """<?xml version="1.0"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/">
