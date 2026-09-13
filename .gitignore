@@ -45,3 +45,7 @@ node_modules/
 !/build/icon-1024.png
 !/build/LightTable.iconset/
 !/build/LightTable.iconset/**
+
+scripts/models/selfie_multiclass_256x256.tflite
+scripts/models/hair-model.json
+scripts/models/HairSegmentation-APACHE-2.0.txt

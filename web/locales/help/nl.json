@@ -1970,7 +1970,8 @@
         {
           "title": "Personen of gezichtsgebieden selecteren",
           "paragraphs": [
-            "Personen biedt Persoon, Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Deze bedieningselementen vereisen de Vision-helper op macOS 14 of nieuwer en zijn verborgen op Linux en Windows. Gezichtshuid en haar worden geschat en er wordt geen identiteit afgeleid."
+            "Personen biedt Persoon en Haar op elk platform. Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden en Huid verzachten vereisen de Vision-helper op macOS 14 of later. Gezichtshuid wordt geschat en er wordt geen identiteit afgeleid.",
+            "Haar gebruikt een meegeleverd model dat lokaal draait en haar selecteert buiten het gezicht, inclusief haar tot op de schouders. Controleer fijne lokken, heldere hooglichten, pruiken en kleine personen op de achtergrond; deze kunnen nog steeds worden gemist. Oudere builds of builds uit de bron zonder het model gebruiken de eerdere Vision-schatting wanneer beschikbaar. Bestaande opgeslagen maskers behouden hun selecties."
           ],
           "steps": [
             "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }

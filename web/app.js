@@ -7945,7 +7945,10 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
       if (heif) { heif.disabled = true; heif.hidden = true; }
       if (select.value === 'heif') select.value = 'jpeg';
     }
-    for (const id of ['maskAddPeople', 'maskSoftenSkin']) $(id).hidden = true;
+    $('maskSoftenSkin').hidden = true;
+    document.querySelectorAll('[data-person-part]').forEach((button) => {
+      button.hidden = !['person', 'hair'].includes(button.dataset.personPart);
+    });
   }
   FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;

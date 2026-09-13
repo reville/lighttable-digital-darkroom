@@ -1970,7 +1970,8 @@
         {
           "title": "Seleccionar personas o regiones faciales",
           "paragraphs": [
-            "Personas ofrece Persona, Piel de la cara, Ojos, Cejas, Labios, Dientes, Cabello y Suavizar piel. Estos controles requieren el asistente Vision en macOS 14 o posterior y están ocultos en Linux y Windows. La piel de la cara y el cabello se estiman, y no se infiere ninguna identidad."
+            "Personas ofrece Persona y Cabello en todas las plataformas. Piel de la cara, Ojos, Cejas, Labios, Dientes y Suavizar piel requieren el asistente Vision en macOS 14 o posterior. Piel de la cara se estima y no se infiere ninguna identidad.",
+            "Cabello usa un modelo integrado que se ejecuta localmente y selecciona el cabello más allá de la cara, incluido el cabello a la altura de los hombros. Inspeccione mechones finos, iluminaciones brillantes, pelucas y personas pequeñas del fondo; estos aún pueden omitirse. Las versiones anteriores o de origen sin el modelo usan la estimación anterior de Vision cuando está disponible. Las máscaras guardadas existentes conservan sus selecciones."
           ],
           "steps": [
             "Elija Personas y luego la parte que desea ajustar.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }
