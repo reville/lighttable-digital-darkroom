@@ -73,8 +73,7 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection",
-        "coming-from-lightroom"
+        "views-and-selection"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -112,7 +111,7 @@
           "title": "Xem lại các chỉnh sửa đã dịch",
           "paragraphs": [
             "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
-            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này chỉ áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
+            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng thiết lập phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
           ]
         }
       ],
@@ -120,8 +119,7 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange",
-        "coming-from-lightroom"
+        "xmp-interchange"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -161,67 +159,6 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
-      ],
-      "categoryLabel": "Bắt đầu"
-    },
-    {
-      "id": "coming-from-lightroom",
-      "title": "Chuyển từ Lightroom",
-      "category": "Getting started",
-      "summary": "Danh mục Lightroom Classic và sidecar XMP mang sang được gì, thứ gì không có đường nhập, và thuật ngữ khác nhau ra sao.",
-      "keywords": [
-        "Lightroom",
-        "Lightroom Classic",
-        "di chuyển",
-        "di chuyển dữ liệu",
-        "XMP",
-        "sidecar",
-        "thiết lập sẵn",
-        "mẫu LR",
-        "Capture One"
-      ],
-      "sections": [
-        {
-          "title": "Những gì được mang sang",
-          "paragraphs": [
-            "Từ danh mục Lightroom Classic: ảnh vẫn ở thư mục hiện tại và được tham chiếu, không sao chép. Trình nhập đọc xếp hạng, cờ, nhãn và trường IPTC; từ khóa; bộ sưu tập và bộ sưu tập thông minh được hỗ trợ; ngăn xếp; bản sao ảo; cắt xén và làm thẳng; thiết lập phát triển gần đúng; và lịch sử chỉnh sửa nếu chọn. Tệp .lrcat của bạn không bao giờ bị thay đổi.",
-            "Từ sidecar XMP cạnh ảnh của bạn: xếp hạng sao, cờ chọn và từ chối, nhãn màu chuẩn, từ khóa và các trường IPTC mô tả. Thư mục ••• → Nhập sidecar… cũng có thể áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó.",
-            "Cả hai đường đều dùng cùng một bộ chuyển đổi, nên một cài đặt được ánh xạ giống nhau dù đến theo đường nào: tông, độ lệch cân bằng trắng, kết cấu, độ rõ, khử mờ sương, bộ trộn màu, chuyển đổi đen trắng cùng bộ trộn của nó, đường cong điểm, lượng vignette, làm nét và giảm nhiễu. Giá trị nằm ngoài phạm vi của LightTable, chẳng hạn phơi sáng vượt ±5 EV, sẽ bị giới hạn và được nêu tên trong báo cáo."
-          ]
-        },
-        {
-          "title": "Những gì không có đường nhập",
-          "paragraphs": [
-            "Không thể đọc album đám mây và thiết lập sẵn chỉ lưu trong ứng dụng đám mây. Hãy đồng bộ chúng vào Lightroom Classic hoặc lưu thiết lập sẵn thành tệp trước.",
-            "Mặt nạ AI và chỉnh sửa tạo sinh, Lens Blur và các cài đặt Denoise là những bước kết xuất độc quyền. Chúng được báo là đã bỏ qua thay vì ước lượng, cũng như hồ sơ máy ảnh, look LUT, mặt nạ cục bộ, sửa lỗi và định danh hồ sơ ống kính. Các chỉnh sửa đã nhập bắt đầu với Phim tắt để các cài đặt phát triển đã chuyển đổi hiển thị riêng."
-          ]
-        },
-        {
-          "title": "Thuật ngữ",
-          "paragraphs": [
-            "Bộ sưu tập ở đây cũng là bộ sưu tập; album của ứng dụng đám mây chỉ vào được qua danh mục Lightroom Classic.",
-            "Cờ Chọn và Từ chối hoạt động giống nhau, và thanh dưới cùng hiển thị chúng cho các ảnh đã chọn.",
-            "Phát triển ở đây gọi là Chỉnh sửa. Phim mặc định tắt với ảnh mới và ảnh đã nhập; bật lên khi bạn muốn phủ hiệu ứng phim lên trên chỉnh sửa.",
-            "Hồ sơ máy ảnh trong Chỉnh sửa liệt kê các hồ sơ Adobe DCP mà Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc thư mục hồ sơ máy ảnh đã chọn trong Cài đặt. Hồ sơ được áp dụng gần đúng và chỉ cho phát triển khi Phim tắt."
-          ]
-        },
-        {
-          "title": "Nhập thiết lập sẵn của bạn",
-          "paragraphs": [
-            "Thiết lập sẵn → Quản lý… → Nhập… chấp nhận thiết lập sẵn .xmp của Lightroom và Camera Raw, thiết lập sẵn .lrtemplate cũ và style .costyle của Capture One. Sau khi nhập danh mục hoặc thư mục, phần thiết lập cũng đưa ra Nhập thiết lập sẵn…. Mỗi thiết lập sẵn đã nhập cho biết bao nhiêu cài đặt được ánh xạ và cài đặt nào bị bỏ qua trước khi bạn áp dụng."
-          ],
-          "steps": [
-            "Mở Thiết lập sẵn, bấm Quản lý…, rồi bấm Nhập… và chọn các tệp thiết lập sẵn hoặc, trong ứng dụng Mac, cả một thư mục thiết lập sẵn.",
-            "Xem lại báo cáo chuyển đổi, rồi áp dụng thiết lập sẵn từ Của bạn."
-          ]
-        }
-      ],
-      "related": [
-        "import-lightroom-catalog",
-        "xmp-interchange",
-        "editing-presets",
-        "add-photos",
-        "film-getting-started"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -560,7 +497,7 @@
           "paragraphs": [
             "Hãy yêu cầu trình chỉnh sửa khác lưu siêu dữ liệu của nó vào các tệp XMP liền kề, rồi chọn Thư mục ••• → Nhập sidecar…. Thao tác này đọc các bản gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100,000 ảnh cho mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
             "Siêu dữ liệu được hỗ trợ gồm xếp hạng sao, cờ chọn/từ chối, nhãn màu chuẩn, từ khóa phẳng và phân cấp, cùng các trường IPTC mô tả. Một giá trị rỗng rõ ràng sẽ xóa trường đó; một giá trị không có sẽ giữ nguyên không đổi. Các nhãn màu tùy chỉnh không khớp với màu của LightTable sẽ được báo là bị bỏ qua.",
-            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Thiết lập phát triển và cắt xén chỉ được áp dụng khi bạn bật các tùy chọn đó trong hộp thoại Nhập sidecar."
+            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Cài đặt phát triển và cắt xén không được áp dụng bởi thao tác menu này."
           ]
         },
         {
@@ -637,7 +574,6 @@
           "title": "Ẩn ảnh không thể hiển thị",
           "paragraphs": [
             "Khi có lỗi hình thu nhỏ xuất hiện trong lưới, chọn Ẩn ảnh không thể hiển thị bên cạnh phần tóm tắt vị trí. Thao tác này bật công tắc tương ứng trong Bộ lọc. Công tắc mặc định tắt và cài đặt được lưu giữa các phiên. Công tắc này không được lưu trong quy tắc của bộ sưu tập thông minh.",
-            "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa các ảnh không thể hiển thị.",
             "Công tắc ẩn những ảnh đã biết là không khả dụng hoặc chỉ có trên đám mây, cùng những ảnh đã gặp lỗi hình thu nhỏ hoặc bản xem trước. Các lỗi giải mã khác được phát hiện khi ảnh tải. Tắt công tắc, xóa thẻ bộ lọc của nó hoặc chọn Xóa tất cả để hiển thị lại ảnh. Một lần Thử lại thành công hoặc thay đổi tệp gốc sẽ xóa lỗi đã ghi nhận."
           ]
         },
@@ -1203,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Áp dụng các hiệu chỉnh ống kính và quang sai màu",
       "category": "Editing",
-      "summary": "Dùng hồ sơ ống kính đã khớp hoặc chọn thủ công, hoặc thực hiện hiệu chỉnh thủ công khi không có hồ sơ chính xác.",
+      "summary": "Dùng hồ sơ ống kính đã khớp hoặc chọn thủ công, hiệu chỉnh quang sai màu, loại bỏ viền màu tím và xanh lá, hoặc thực hiện hiệu chỉnh thủ công khi không có hồ sơ chính xác.",
       "keywords": [
         "ống kính",
         "hồ sơ",
@@ -1212,6 +1148,9 @@
         "đổ bóng",
         "quang sai màu",
         "viền màu",
+        "khử viền màu",
+        "viền màu tím",
+        "viền màu xanh lá",
         "đỏ lục lam",
         "xanh dương vàng",
         "quang học"
@@ -1220,18 +1159,21 @@
         {
           "title": "Chọn và xác minh một hiệu chỉnh",
           "paragraphs": [
-            "Mở rộng Lens corrections trong Chỉnh sửa. Thẻ hồ sơ giải thích sự khớp tự động giữa máy ảnh/ống kính và việc có sẵn một hồ sơ dùng được hay không."
+            "Mở rộng Hiệu chỉnh ống kính trong Chỉnh sửa. Thẻ hồ sơ giải thích sự khớp tự động giữa máy ảnh/ống kính và việc có sẵn một hồ sơ dùng được hay không. Bảng này cũng nêu phiên bản cơ sở dữ liệu ống kính đang dùng và số máy ảnh, ống kính được liệt kê; cơ sở dữ liệu đi kèm thư viện ống kính chứ không phải LightTable.",
+            "Khi máy ảnh và ống kính trong siêu dữ liệu ảnh khớp chính xác với một hồ sơ, Dùng hồ sơ ống kính đã khớp được bật ngay khi mở ảnh và cũng áp dụng cho hình thu nhỏ và xuất. Khớp suy luận hoặc không rõ ràng vẫn tắt. Cài đặt → Mặc định phát triển → Tự động áp dụng hồ sơ ống kính đã khớp sẽ tắt hành vi này; ảnh có cài đặt ống kính đã lưu vẫn giữ nguyên trong mọi trường hợp."
           ],
           "steps": [
             "Đọc tên hồ sơ và phần giải thích khớp.",
-            "Bật Use matched lens profile khi có hồ sơ, rồi chọn Correct distortion và Correct lens shading khi cần.",
+            "Bật Dùng hồ sơ ống kính đã khớp khi có hồ sơ, rồi chọn Hiệu chỉnh biến dạng, Chỉnh sửa đổ bóng ống kính và Hiệu chỉnh quang sai màu khi cần. Mỗi công tắc độc lập, nên có thể hiệu chỉnh quang sai màu mà không thay đổi hình học.",
             "Nếu cần, chọn một mục khác trong Lens profile và so sánh chỉnh sửa với bản gốc.",
-            "Tinh chỉnh các điều khiển thủ công Distortion và Vignette. Với viền màu, điều chỉnh Red / Cyan và Blue / Yellow trong Chromatic aberration."
+            "Tinh chỉnh các điều khiển thủ công Distortion và Vignette. Với viền màu, điều chỉnh Red / Cyan và Blue / Yellow trong Chromatic aberration.",
+            "Trong Khử viền màu, tăng Tím hoặc Xanh lá để rút màu đó khỏi các điểm ảnh bão hòa mạnh cạnh các cạnh sắc nét. Thanh trượt bắt đầu và kết thúc sắc độ đặt khoảng sắc độ mà mỗi điều khiển xử lý; điểm bắt đầu lớn hơn điểm kết thúc sẽ vòng qua màu đỏ."
           ],
           "tips": [
             "Không tìm thấy hồ sơ ống kính khớp chính xác thì các điều khiển méo hình và phối cảnh thủ công vẫn khả dụng.",
-            "Các ô chọn profile distortion và shading chỉ được bật khi hồ sơ đã chọn cung cấp hiệu chỉnh đó và hồ sơ đang được bật.",
+            "Các ô chọn biến dạng, đổ bóng và quang sai màu của hồ sơ chỉ được bật khi hồ sơ đã chọn cung cấp hiệu chỉnh đó và hồ sơ đang được bật.",
             "Một hồ sơ được chọn thủ công cần được kiểm tra bằng mắt; việc chọn không xác lập rằng nó là khớp chính xác.",
+            "Khử viền màu coi đường viền của một chủ thể lớn màu tím hoặc xanh lá như một viền màu. Giảm mức hoặc thu hẹp khoảng sắc độ nếu chủ thể mất màu dọc theo cạnh.",
             "Hiệu chỉnh ống kính và quang sai viền vẫn không phá hủy qua quá trình xuất."
           ]
         }
@@ -1377,8 +1319,7 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves",
-        "coming-from-lightroom"
+        "editing-curves"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -2075,7 +2016,8 @@
         {
           "title": "Trung hòa ám màu",
           "paragraphs": [
-            "Mục Color trong Chỉnh sửa chứa Temp và Tint, cùng một ống nhỏ giọt cân bằng trắng bên cạnh Temp. Đây là các điều khiển hoàn thiện của bảng Chỉnh sửa."
+            "Mục Color trong Chỉnh sửa chứa Temp và Tint, cùng một ống nhỏ giọt cân bằng trắng bên cạnh Temp. Đây là các điều khiển hoàn thiện của bảng Chỉnh sửa.",
+            "Với bản gốc RAW, khối Cân bằng trắng khi chụp nằm phía trên với Như khi chụp, Tự động, các thiết lập sẵn và Tùy chỉnh cho nhiệt độ theo kelvin và sắc thái máy ảnh. Khối này phát triển lại dữ liệu RAW và hoạt động khi Film bật hoặc tắt; bị ẩn với tệp đã xử lý."
           ],
           "steps": [
             "Mở Chỉnh sửa và mở rộng Màu sắc.",
@@ -2093,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -2499,7 +2442,7 @@
           "title": "Các điều khiển chụp và điều khiển hoàn thiện",
           "paragraphs": [
             "EV của Máy ảnh và cân bằng trắng Chụp tác động trước phơi sáng phim. Phơi sáng và Temp/Tint trong bảng Chỉnh sửa là các điều chỉnh hoàn thiện ở giai đoạn sau của quy trình.",
-            "Cân bằng trắng chụp yêu cầu một bản gốc RAW. Với JPEG, HEIF, TIFF hoặc tệp đã xử lý khác, dùng Chỉnh sửa Temp/Tint."
+            "Cân bằng trắng khi chụp nằm ở đầu phần Màu cho bản gốc RAW và hoạt động khi Film bật hoặc tắt: chọn Như khi chụp, Tự động, một thiết lập sẵn hoặc Tùy chỉnh để đặt nhiệt độ theo kelvin và sắc thái máy ảnh. Với JPEG, HEIF, TIFF hoặc tệp đã xử lý khác, khối này bị ẩn; dùng Edit Temp/Tint."
           ],
           "steps": [
             "Bật Phim, chọn một phim, và điều chỉnh EV Máy ảnh.",
@@ -2917,7 +2860,8 @@
         {
           "title": "Mặc định cho ảnh chưa chỉnh sửa",
           "paragraphs": [
-            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định."
+            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định.",
+            "Tự động áp dụng hồ sơ ống kính đã khớp, bật theo mặc định, sẽ bật hồ sơ ống kính cho các ảnh có máy ảnh và ống kính khớp chính xác với một hồ sơ và chưa từng lưu cài đặt ống kính. Tắt để mở mọi ảnh với hồ sơ đã tắt."
           ],
           "steps": [
             "Mở Cài đặt → Mặc định chỉnh sửa.",
@@ -3350,5 +3294,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

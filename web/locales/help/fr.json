@@ -73,8 +73,7 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection",
-        "coming-from-lightroom"
+        "views-and-selection"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -112,7 +111,7 @@
           "title": "Vérifier les retouches traduites",
           "paragraphs": [
             "Les réglages de développement sont approximatifs et ne peuvent pas promettre l’apparence rendue de Lightroom. Les masques locaux non pris en charge, les profils d’appareil photo, les masques IA .lrcat-data ou les charges utiles LUT, ainsi que les règles de collection intelligente non prises en charge, sont signalés comme ignorés. Les réglages de développement importés désactivent Film.",
-            "Dossiers ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Elle n’applique les réglages de développement et le recadrage que si vous activez ces options. La boîte de dialogue de résultats affiche la progression, les quantités appliquées, les réglages ignorés et les erreurs."
+            "Dossiers ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage. La boîte de dialogue de résultats affiche la progression, les quantités appliquées, les réglages ignorés et les erreurs."
           ]
         }
       ],
@@ -120,8 +119,7 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange",
-        "coming-from-lightroom"
+        "xmp-interchange"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -161,67 +159,6 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
-      ],
-      "categoryLabel": "Premiers pas"
-    },
-    {
-      "id": "coming-from-lightroom",
-      "title": "Venir de Lightroom",
-      "category": "Getting started",
-      "summary": "Ce qu’un catalogue Lightroom Classic et les sidecars XMP apportent, ce qui n’a pas de voie d’import et en quoi le vocabulaire diffère.",
-      "keywords": [
-        "Lightroom",
-        "Lightroom Classic",
-        "migrer",
-        "migration",
-        "XMP",
-        "sidecars",
-        "préréglages",
-        "modèle Lightroom",
-        "Capture One"
-      ],
-      "sections": [
-        {
-          "title": "Ce qui est repris",
-          "paragraphs": [
-            "Depuis un catalogue Lightroom Classic : les photos restent dans leurs dossiers actuels et sont référencées, pas copiées. L’importateur lit les notes, marques, libellés et champs IPTC ; les mots-clés ; les collections et les collections dynamiques prises en charge ; les piles ; les copies virtuelles ; le recadrage et le redressement ; les réglages de développement approximatifs ; et, si vous le choisissez, l’historique des retouches. Votre fichier .lrcat n’est jamais modifié.",
-            "Depuis les sidecars XMP à côté de vos photos : notes en étoiles, marques de sélection et de rejet, libellés de couleur standard, mots-clés et champs IPTC descriptifs. Dossiers ••• → Importer les sidecars… peut aussi appliquer les réglages de développement et le recadrage si vous activez ces options.",
-            "Les deux voies utilisent le même convertisseur : un réglage est donc transposé de la même façon quelle que soit son origine : tonalité, décalages de balance des blancs, texture, clarté, correction du voile, mélangeur de couleurs, conversion noir et blanc avec son mélangeur, courbes par points, quantité de vignettage, netteté et réduction du bruit. Une valeur hors de la plage de LightTable, comme une exposition au-delà de ±5 EV, est limitée et nommée dans le rapport."
-          ]
-        },
-        {
-          "title": "Ce qui n’a pas de voie d’import",
-          "paragraphs": [
-            "Les albums cloud et les préréglages stockés uniquement dans l’application cloud ne peuvent pas être lus. Synchronisez-les d’abord dans Lightroom Classic ou enregistrez les préréglages sous forme de fichiers.",
-            "Les masques IA et les retouches génératives, le flou d’objectif et les réglages de réduction du bruit sont des étapes de rendu propriétaires. Ils sont signalés comme ignorés plutôt qu’approximés, tout comme les profils d’appareil photo, les looks LUT, les masques locaux, les corrections et les identités de profil d’objectif. Les retouches importées commencent avec Film désactivé afin que les réglages de développement convertis apparaissent seuls."
-          ]
-        },
-        {
-          "title": "Vocabulaire",
-          "paragraphs": [
-            "Les collections sont aussi des collections ici ; les albums de l’application cloud n’arrivent que par un catalogue Lightroom Classic.",
-            "Les marques Sélectionner et Rejeter fonctionnent de la même façon, et la barre inférieure les affiche pour les photos sélectionnées.",
-            "Développement s’appelle Modifier. Film est désactivé par défaut pour les photos nouvelles et importées ; activez-le quand vous voulez un traitement film par-dessus la retouche.",
-            "Profil d’appareil photo dans Modifier liste les profils Adobe DCP installés sur cet ordinateur par Camera Raw ou Lightroom, ou le dossier des profils d’appareil photo choisi dans les Réglages. Les profils s’appliquent de façon approximative et uniquement au développement avec Film désactivé."
-          ]
-        },
-        {
-          "title": "Importer vos préréglages",
-          "paragraphs": [
-            "Préréglages → Gérer… → Importer… accepte les préréglages .xmp de Lightroom et Camera Raw, les anciens préréglages .lrtemplate et les styles Capture One .costyle. Après l’import d’un catalogue ou d’un dossier, la configuration propose aussi Importer des préréglages…. Chaque préréglage importé indique combien de réglages ont été transposés et lesquels ont été ignorés avant que vous l’appliquiez."
-          ],
-          "steps": [
-            "Ouvrez Préréglages, cliquez sur Gérer…, puis sur Importer… et choisissez les fichiers de préréglages ou, dans l’application Mac, un dossier de préréglages entier.",
-            "Consultez le rapport de conversion, puis appliquez le préréglage depuis Vos."
-          ]
-        }
-      ],
-      "related": [
-        "import-lightroom-catalog",
-        "xmp-interchange",
-        "editing-presets",
-        "add-photos",
-        "film-getting-started"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -560,7 +497,7 @@
           "paragraphs": [
             "Demandez à l’autre éditeur d’enregistrer ses métadonnées dans les fichiers XMP adjacents, puis choisissez Dossiers ••• → Importer les sidecars…. L’action lit les originaux du catalogue, y compris toutes les pages des grandes bibliothèques jusqu’à 100 000 photos par importation. Les copies virtuelles conservent leurs propres métadonnées.",
             "Les métadonnées prises en charge incluent les notes en étoiles, les marques choisir/rejeter, les étiquettes de couleur standard, les mots-clés plats et hiérarchiques, ainsi que les champs IPTC descriptifs. Une valeur vide explicite efface ce champ ; une valeur absente le laisse inchangé. Les étiquettes de couleur personnalisées qui ne correspondent pas à une couleur de LightTable sont signalées comme ignorées.",
-            "L'importateur lit les conventions de métadonnées prises en charge de Photo Mechanic et digiKam. Chaque application a des conventions supplémentaires, alors vérifiez un petit échantillon dans les deux applications avant d'échanger une bibliothèque entière. Les réglages de développement et le recadrage ne sont appliqués que si vous activez ces options dans la boîte de dialogue Importer les sidecars."
+            "L'importateur lit les conventions de métadonnées prises en charge de Photo Mechanic et digiKam. Chaque application a des conventions supplémentaires, alors vérifiez un petit échantillon dans les deux applications avant d'échanger une bibliothèque entière. Les réglages de développement et le recadrage ne sont pas appliqués par cette action de menu."
           ]
         },
         {
@@ -637,7 +574,6 @@
           "title": "Masquer les photos qui ne peuvent pas être affichées",
           "paragraphs": [
             "Lorsqu’une erreur de vignette est visible dans la grille, choisissez Masquer les photos qui ne peuvent pas être affichées à côté du résumé de l’emplacement. Cela active le commutateur correspondant dans Filtre, désactivé par défaut et conservé d’une session à l’autre. Ce commutateur n’est pas enregistré dans les règles des collections intelligentes.",
-            "Dans la bande de film, ce lien apparaît sous le nombre de photos uniquement lorsque la liste actuelle contient des photos qui ne peuvent pas être affichées.",
             "Le commutateur masque les photos connues comme indisponibles ou uniquement dans le cloud, ainsi que celles dont la vignette ou l’aperçu a échoué. Les autres erreurs de décodage sont découvertes au chargement des photos. Désactivez le commutateur, retirez sa pastille ou choisissez Tout effacer pour afficher à nouveau les photos. Une nouvelle tentative réussie avec Réessayer ou une modification de l’original efface l’échec enregistré."
           ]
         },
@@ -1203,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Appliquer les corrections d’objectif et d’aberration chromatique",
       "category": "Editing",
-      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
+      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, corrigez l’aberration chromatique, supprimez les franges violettes et vertes, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
       "keywords": [
         "objectif",
         "profil",
@@ -1212,6 +1148,9 @@
         "ombrage",
         "aberration chromatique",
         "franges",
+        "défrangeage",
+        "frange violette",
+        "frange verte",
         "rouge cyan",
         "bleu jaune",
         "optique"
@@ -1220,18 +1159,21 @@
         {
           "title": "Choisir et vérifier une correction",
           "paragraphs": [
-            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible."
+            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible. Le panneau indique aussi la version de la base de données d’objectifs utilisée et le nombre d’appareils et d’objectifs qu’elle répertorie ; la base de données est fournie avec la bibliothèque d’objectifs, pas avec LightTable.",
+            "Lorsque l’appareil et l’objectif des métadonnées de la photo correspondent exactement à un seul profil, Utiliser le profil d’objectif correspondant est activé dès l’ouverture de la photo et s’applique aussi aux vignettes et aux exports. Une correspondance déduite ou ambiguë reste désactivée. Réglages → Réglages de développement → Appliquer automatiquement le profil d’objectif correspondant désactive ce comportement ; les photos ayant des réglages d’objectif enregistrés les conservent dans tous les cas."
           ],
           "steps": [
             "Lire le nom du profil et l’explication de la correspondance.",
-            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion et Corriger l’ombre de l’objectif selon le besoin.",
+            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion, Corriger l’ombrage de l’objectif et Corriger l’aberration chromatique selon le besoin. Chaque interrupteur est indépendant : l’aberration chromatique peut être corrigée sans modifier la géométrie.",
             "Si nécessaire, choisissez une autre entrée dans Profil d’objectif et comparez la correction avec l’original.",
-            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique."
+            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique.",
+            "Sous Défrangeage, augmentez Violet ou Vert pour retirer cette couleur des pixels fortement saturés bordant les contours nets. Les curseurs de début et de fin de teinte définissent la plage de teintes traitée par chaque contrôle ; un début supérieur à sa fin passe par le rouge."
           ],
           "tips": [
             "Si aucun profil d’objectif exact n’est trouvé, les réglages manuels de distorsion et de perspective restent disponibles.",
-            "Les cases à cocher de distorsion et d’ombre du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
+            "Les cases Distorsion, Ombrage et Aberration chromatique du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
             "Un profil sélectionné manuellement nécessite une vérification visuelle ; la sélection n’établit pas qu’il s’agit d’une correspondance exacte.",
+            "Le défrangeage traite le contour d’un grand sujet violet ou vert comme une frange. Réduisez la quantité ou resserrez la plage de teintes si un sujet perd sa couleur le long de son bord.",
             "Les corrections de l’objectif et des franges restent non destructives jusqu’à l’export."
           ]
         }
@@ -1377,8 +1319,7 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves",
-        "coming-from-lightroom"
+        "editing-curves"
       ],
       "categoryLabel": "Modification"
     },
@@ -2075,7 +2016,8 @@
         {
           "title": "Neutraliser une dominante de couleur",
           "paragraphs": [
-            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche."
+            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche.",
+            "Pour un original RAW, un bloc Balance des blancs de capture se trouve au-dessus, avec Telle que prise, Auto, des préréglages et Personnalisé pour une température en kelvins et une teinte de capture. Il redéveloppe les données RAW et fonctionne avec Film activé ou non ; il est masqué pour les fichiers traités."
           ],
           "steps": [
             "Ouvrir Modifier et développer Couleur.",
@@ -2093,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Modification"
     },
@@ -2499,7 +2442,7 @@
           "title": "Contrôles de capture et contrôles de finition",
           "paragraphs": [
             "L’EV de l’appareil photo et la balance des blancs de Capture agissent avant l’exposition du film. L’exposition et Temp/Teinte dans le panneau Modifier sont des ajustements de finition effectués plus tard dans le flux de travail.",
-            "La balance des blancs de capture nécessite un original RAW. Pour un JPEG, HEIF, TIFF ou tout autre fichier traité, utilisez Modifier Temp/Teinte."
+            "La balance des blancs de capture se trouve en haut de la section Couleur pour les originaux RAW et fonctionne avec Film activé ou non : choisissez Telle que prise, Auto, un préréglage ou Personnalisé pour définir une température en kelvins et une teinte de capture. Pour un JPEG, HEIF, TIFF ou un autre fichier traité, le bloc est masqué ; utilisez Modifier Temp/Teinte."
           ],
           "steps": [
             "Activez Film, choisissez une pellicule et ajustez l’EV de l’Appareil photo.",
@@ -2917,7 +2860,8 @@
         {
           "title": "Valeurs par défaut pour les photos non modifiées",
           "paragraphs": [
-            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut."
+            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut.",
+            "Appliquer automatiquement le profil d’objectif correspondant, activé par défaut, active le profil d’objectif pour les photos dont l’appareil et l’objectif correspondent exactement à un seul profil et dont les réglages d’objectif n’ont jamais été enregistrés. Désactivez-le pour ouvrir chaque photo avec le profil désactivé."
           ],
           "steps": [
             "Ouvrir Réglages → Paramètres par défaut de développement.",
@@ -3350,5 +3294,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

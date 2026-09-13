@@ -73,8 +73,7 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection",
-        "coming-from-lightroom"
+        "views-and-selection"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -112,7 +111,7 @@
           "title": "Rivedi modifiche tradotte",
           "paragraphs": [
             "Le impostazioni Develop sono approssimative e non possono garantire l’aspetto renderizzato di Lightroom. Le maschere locali non supportate, i profili fotocamera, le maschere IA .lrcat-data o i payload LUT, e le regole delle raccolte intelligenti non supportate vengono segnalati come saltati. Le impostazioni Develop importate disattivano Film.",
-            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Applica le impostazioni di sviluppo e il ritaglio solo quando attivi quelle opzioni. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
+            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
           ]
         }
       ],
@@ -120,8 +119,7 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange",
-        "coming-from-lightroom"
+        "xmp-interchange"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -161,67 +159,6 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
-      ],
-      "categoryLabel": "Per iniziare"
-    },
-    {
-      "id": "coming-from-lightroom",
-      "title": "Se vieni da Lightroom",
-      "category": "Getting started",
-      "summary": "Cosa portano con sé un catalogo Lightroom Classic e i sidecar XMP, cosa non ha una via di importazione e come differisce il vocabolario.",
-      "keywords": [
-        "Lightroom",
-        "Lightroom Classic",
-        "migra",
-        "migrazione",
-        "XMP",
-        "sidecar",
-        "predefiniti",
-        "lrtemplate",
-        "Capture One"
-      ],
-      "sections": [
-        {
-          "title": "Cosa viene trasferito",
-          "paragraphs": [
-            "Da un catalogo Lightroom Classic: le foto restano nelle cartelle attuali e vengono referenziate, non copiate. L’importatore legge valutazioni, contrassegni, etichette e campi IPTC; parole chiave; raccolte e raccolte dinamiche supportate; pile; copie virtuali; ritaglio e raddrizzamento; impostazioni di sviluppo approssimate; e, se scelto, la cronologia delle modifiche. Il file .lrcat non viene mai modificato.",
-            "Dai sidecar XMP accanto alle tue foto: valutazioni a stelle, contrassegni di selezione e rifiuto, etichette colore standard, parole chiave e campi IPTC descrittivi. Cartelle ••• → Importa sidecar… può anche applicare le impostazioni di sviluppo e il ritaglio quando attivi quelle opzioni.",
-            "Entrambe le vie usano lo stesso convertitore, quindi un’impostazione viene tradotta allo stesso modo da qualunque via arrivi: tono, scostamenti del bilanciamento del bianco, texture, chiarezza, rimozione foschia, il mixer colore, la conversione in bianco e nero con il suo mixer, curve a punti, quantità di vignettatura, nitidezza e riduzione del rumore. Un valore fuori dall’intervallo di LightTable, come un’esposizione oltre ±5 EV, viene limitato e indicato nel rapporto."
-          ]
-        },
-        {
-          "title": "Cosa non ha una via di importazione",
-          "paragraphs": [
-            "Gli album cloud e i predefiniti salvati solo nell’app cloud non possono essere letti. Sincronizzali prima in Lightroom Classic o salva i predefiniti come file.",
-            "Le maschere IA e le modifiche generative, la sfocatura obiettivo e le impostazioni di riduzione del rumore sono passaggi di rendering proprietari. Vengono segnalati come saltati anziché approssimati, così come i profili fotocamera, i look LUT, le maschere locali, le correzioni e le identità dei profili obiettivo. Le modifiche importate iniziano con Pellicola disattivata, così le impostazioni di sviluppo convertite vengono mostrate da sole."
-          ]
-        },
-        {
-          "title": "Vocabolario",
-          "paragraphs": [
-            "Le raccolte sono raccolte anche qui; gli album dell’app cloud arrivano solo tramite un catalogo Lightroom Classic.",
-            "I contrassegni Seleziona e Rifiuta funzionano allo stesso modo, e la barra inferiore li mostra per le foto selezionate.",
-            "Sviluppa si chiama Modifica. Pellicola è disattivata per impostazione predefinita nelle foto nuove e importate; attivala quando vuoi un trattamento pellicola sopra la modifica.",
-            "Profilo fotocamera in Modifica elenca i profili Adobe DCP che Camera Raw o Lightroom hanno installato su questo computer, oppure la cartella dei profili fotocamera scelta nelle Impostazioni. I profili si applicano in modo approssimato e solo allo sviluppo con Pellicola disattivata."
-          ]
-        },
-        {
-          "title": "Importa i tuoi predefiniti",
-          "paragraphs": [
-            "Predefiniti → Gestisci… → Importa… accetta predefiniti .xmp di Lightroom e Camera Raw, predefiniti .lrtemplate legacy e stili .costyle di Capture One. Dopo l’importazione di un catalogo o di una cartella, la configurazione offre anche Importa predefiniti…. Ogni predefinito importato mostra quante impostazioni sono state tradotte e quali saltate prima che tu lo applichi."
-          ],
-          "steps": [
-            "Apri Predefiniti, fai clic su Gestisci…, poi su Importa… e scegli i file dei predefiniti oppure, nell’app per Mac, un’intera cartella di predefiniti.",
-            "Esamina il rapporto di conversione, poi applica il predefinito da Tuo."
-          ]
-        }
-      ],
-      "related": [
-        "import-lightroom-catalog",
-        "xmp-interchange",
-        "editing-presets",
-        "add-photos",
-        "film-getting-started"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -560,7 +497,7 @@
           "paragraphs": [
             "Chiedi all'altro editor di salvare i metadati nei file XMP adiacenti, quindi scegli Cartelle ••• → Importa sidecar…. L'azione legge gli originali del catalogo, incluse tutte le pagine delle librerie di grandi dimensioni fino a 100.000 foto per importazione. Le copie virtuali mantengono i propri metadati.",
             "I metadati supportati includono valutazioni a stelle, contrassegni seleziona/rifiuta, etichette colore standard, parole chiave piatte e gerarchiche e campi IPTC descrittivi. Un valore vuoto esplicito cancella quel campo; un valore assente lo lascia invariato. Le etichette colore personalizzate che non corrispondono a un colore di LightTable vengono segnalate come saltate.",
-            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio vengono applicati solo quando attivi quelle opzioni nella finestra Importa sidecar."
+            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio non vengono applicati da questa azione di menu."
           ]
         },
         {
@@ -637,7 +574,6 @@
           "title": "Nascondi le foto che non possono essere visualizzate",
           "paragraphs": [
             "Quando nella griglia è visibile un errore di miniatura, scegli Nascondi le foto che non possono essere visualizzate accanto al riepilogo della posizione. Questo attiva l’interruttore corrispondente in Filtro, disattivato per impostazione predefinita e salvato tra le sessioni. Questo interruttore non viene salvato nelle regole delle raccolte intelligenti.",
-            "Nella pellicola, questo collegamento appare sotto il conteggio delle foto solo quando l'elenco corrente contiene foto che non possono essere visualizzate.",
             "L’interruttore nasconde le foto note come non disponibili o solo nel cloud e quelle con errori di miniatura o anteprima già rilevati. Gli altri errori di decodifica vengono scoperti durante il caricamento delle foto. Disattiva l’interruttore, rimuovi la sua etichetta o scegli Cancella tutto per mostrare di nuovo le foto. Un Riprova riuscito o una modifica all’originale cancella l’errore registrato."
           ]
         },
@@ -1203,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Applica correzioni dell'obiettivo e delle aberrazioni cromatiche",
       "category": "Editing",
-      "summary": "Usa un profilo obiettivo abbinato o selezionato manualmente, oppure applica correzioni manuali quando non è disponibile un profilo esatto.",
+      "summary": "Usa un profilo obiettivo abbinato o selezionato manualmente, correggi l'aberrazione cromatica, rimuovi le frange viola e verdi, oppure applica correzioni manuali quando non è disponibile un profilo esatto.",
       "keywords": [
         "obiettivo",
         "profilo",
@@ -1212,6 +1148,9 @@
         "ombreggiatura",
         "aberrazione cromatica",
         "frange",
+        "rimozione frange",
+        "frangia viola",
+        "frangia verde",
         "rosso ciano",
         "blu giallo",
         "ottica"
@@ -1220,18 +1159,21 @@
         {
           "title": "Scegli e verifica una correzione",
           "paragraphs": [
-            "Espandi Correzioni obiettivo in Modifica. La scheda del profilo spiega l'abbinamento automatico fotocamera/obiettivo e se è disponibile un profilo utilizzabile."
+            "Espandi Correzioni dell'obiettivo in Modifica. La scheda del profilo spiega l'abbinamento automatico fotocamera/obiettivo e se è disponibile un profilo utilizzabile. Il pannello indica anche la versione del database obiettivi in uso e quante fotocamere e obiettivi elenca; il database è fornito con la libreria obiettivi, non con LightTable.",
+            "Quando fotocamera e obiettivo nei metadati della foto corrispondono esattamente a un solo profilo, Usa il profilo obiettivo abbinato è attivo non appena la foto si apre e vale anche per miniature ed esportazioni. Un abbinamento dedotto o ambiguo resta disattivato. Impostazioni → Predefiniti sviluppo → Applica automaticamente il profilo obiettivo abbinato disattiva questo comportamento; le foto con impostazioni obiettivo salvate le mantengono in ogni caso."
           ],
           "steps": [
             "Leggi il nome del profilo e la spiegazione dell'abbinamento.",
-            "Abilita Usa profilo obiettivo abbinato quando è disponibile un profilo, poi scegli Correggi distorsione e Correggi ombreggiatura obiettivo secondo necessità.",
+            "Abilita Usa il profilo obiettivo abbinato quando è disponibile un profilo, poi scegli Correggi distorsione, Correggi ombreggiatura obiettivo e Correggi aberrazione cromatica secondo necessità. Ogni interruttore è indipendente, quindi l'aberrazione cromatica può essere corretta senza modificare la geometria.",
             "Se necessario, scegli una voce diversa in Profilo obiettivo e confronta la correzione con l’originale.",
-            "Affina i controlli manuali di Distorsione e Vignettatura. Per le frange colorate, regola Rosso / Ciano e Blu / Giallo sotto Aberrazione cromatica."
+            "Affina i controlli manuali di Distorsione e Vignettatura. Per le frange colorate, regola Rosso / Ciano e Blu / Giallo sotto Aberrazione cromatica.",
+            "In Rimozione frange, alza Viola o Verde per togliere quel colore dai pixel molto saturi accanto ai bordi netti. I cursori di inizio e fine tonalità definiscono l'intervallo di tonalità trattato da ciascun controllo; un inizio superiore alla sua fine passa per il rosso."
           ],
           "tips": [
             "Se non viene trovato alcun profilo obiettivo esatto, restano disponibili i controlli manuali di distorsione e prospettiva.",
-            "Le caselle di controllo di correzione della distorsione e dell'ombreggiatura del profilo sono abilitate solo quando il profilo selezionato fornisce quella correzione e il profilo è abilitato.",
+            "Le caselle Distorsione, Ombreggiatura e Aberrazione cromatica del profilo sono abilitate solo quando il profilo selezionato fornisce quella correzione e il profilo è abilitato.",
             "Un profilo selezionato manualmente richiede un controllo visivo; la selezione non stabilisce che sia una corrispondenza esatta.",
+            "Rimozione frange tratta il contorno di un soggetto grande viola o verde come una frangia. Riduci la quantità o restringi l'intervallo di tonalità se un soggetto perde colore lungo il bordo.",
             "Le correzioni di obiettivo e frange restano non distruttive fino all'esportazione."
           ]
         }
@@ -1377,8 +1319,7 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves",
-        "coming-from-lightroom"
+        "editing-curves"
       ],
       "categoryLabel": "Modifica"
     },
@@ -2075,7 +2016,8 @@
         {
           "title": "Neutralizza una dominante cromatica",
           "paragraphs": [
-            "La sezione Colore in Modifica contiene Temp e Tinta, oltre a un contagocce del bilanciamento del bianco accanto a Temp. Questi sono i controlli di finitura del pannello Modifica."
+            "La sezione Colore in Modifica contiene Temp e Tinta, oltre a un contagocce del bilanciamento del bianco accanto a Temp. Questi sono i controlli di finitura del pannello Modifica.",
+            "Per un originale RAW, un blocco Bilanciamento del bianco acquisizione si trova sopra di essi con Come scattato, Auto, predefiniti e Personalizzato per una temperatura in kelvin e una tinta di acquisizione. Sviluppa di nuovo i dati RAW e funziona con Pellicola attiva o disattiva; è nascosto per i file elaborati."
           ],
           "steps": [
             "Apri Modifica ed espandi Colore.",
@@ -2093,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Modifica"
     },
@@ -2499,7 +2442,7 @@
           "title": "Controlli di acquisizione e controlli di rifinitura",
           "paragraphs": [
             "L'EV della fotocamera e il bilanciamento del bianco di acquisizione agiscono prima dell'esposizione della pellicola. Esposizione e Temp/Tinta nel pannello Modifica sono regolazioni finali nella fase successiva del flusso di lavoro.",
-            "Il bilanciamento del bianco di cattura richiede un originale raw. Per JPEG, HEIF, TIFF o un altro file elaborato, usa Modifica Temp/Tinta."
+            "Il bilanciamento del bianco acquisizione si trova in cima alla sezione Colore per gli originali RAW e funziona con Pellicola attiva o disattiva: scegli Come scattato, Auto, un predefinito o Personalizzato per impostare una temperatura in kelvin e una tinta di acquisizione. Per JPEG, HEIF, TIFF o un altro file elaborato il blocco è nascosto; usa Modifica Temp/Tinta."
           ],
           "steps": [
             "Attiva Pellicola, scegli una pellicola e regola EV della Fotocamera.",
@@ -2917,7 +2860,8 @@
         {
           "title": "Valori predefiniti per le foto non modificate",
           "paragraphs": [
-            "I valori predefiniti di sviluppo si applicano solo alle foto che non hanno già modifiche salvate. Possono avviare Pellicola attiva, scegliere un flusso di lavoro e un profilo di sviluppo neutro e applicare un predefinito di default."
+            "I valori predefiniti di sviluppo si applicano solo alle foto che non hanno già modifiche salvate. Possono avviare Pellicola attiva, scegliere un flusso di lavoro e un profilo di sviluppo neutro e applicare un predefinito di default.",
+            "Applica automaticamente il profilo obiettivo abbinato, attivo per impostazione predefinita, attiva il profilo obiettivo per le foto la cui fotocamera e il cui obiettivo corrispondono esattamente a un solo profilo e le cui impostazioni obiettivo non sono mai state salvate. Disattivalo per aprire ogni foto con il profilo disattivato."
           ],
           "steps": [
             "Apri Impostazioni → Predefiniti di sviluppo.",
@@ -3350,5 +3294,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }
