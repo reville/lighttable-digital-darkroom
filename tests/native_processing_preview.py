@@ -9,6 +9,7 @@ after GPU completion; it never calls the offscreen snapshot() renderer.
 """
 from __future__ import annotations
 
+import base64
 import functools
 import http.server
 import json
@@ -35,6 +36,28 @@ from processing_edit_cases import edit_cases, edit_sources
 
 def _blocked(message):
     return [{"name": "native-renderer-availability", "status": "blocked", "error": message}]
+
+
+def _native_mask_payload(masks, width, height):
+    """The packed geometry atlas and settings web/app.js posts as nativeMasks.
+
+    Geometry excludes opacity and the luminance/colour ranges, which the Metal
+    shader applies from the settings, exactly as maskGeometryValues does.
+    """
+    cleaned = edits.clean_masks(masks)[:edits.MAX_MASKS]
+    if not cleaned:
+        return {"masks": []}
+    tiles = -(-len(cleaned) // 4)
+    atlas = np.zeros((height * tiles, width, 4), dtype=np.uint8)
+    for index, mask in enumerate(cleaned):
+        values = edits.raster_mask(dict(mask, opacity=1.0), height, width)
+        tile = index // 4
+        atlas[tile * height:(tile + 1) * height, :, index % 4] = np.floor(values * 255 + 0.5)
+    settings = [{key: mask[key] for key in ("enabled", "opacity", "lumaLow", "lumaHigh",
+                                            "colorHue", "colorRange", "colorAmount", "grade")
+                 if mask[key] is not None} for mask in cleaned]
+    return {"width": width, "height": height * tiles,
+            "data": base64.b64encode(atlas.tobytes()).decode(), "masks": settings}
 
 
 def run(output_dir: Path) -> list[dict]:
@@ -116,7 +139,8 @@ def run(output_dir: Path) -> list[dict]:
                 "optics": {} if baked else case.get("optics", {}),
                 "heals": [] if baked else case.get("heals", []),
                 "grade": {} if grade_baked else case.get("grade", {}),
-                "maskPayload": {"masks": []}, "recipe": case,
+                "maskPayload": {"masks": []} if grade_baked
+                else _native_mask_payload(case.get("masks"), w, h), "recipe": case,
                 "baseEditsBaked": baked, "gradeEditsBaked": grade_baked})
             references[name] = edits.apply_masks(grade.apply(edits.apply_base(
                 pixels.astype(np.float32) / 255, case.get("optics"), case.get("heals")),

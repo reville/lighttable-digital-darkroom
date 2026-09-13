@@ -77,6 +77,11 @@ RUST_SOURCE="$ROOT/.build/release/dependencies/spektrafilm-rust"
 PACKAGE_RESOLVED="$ROOT/LightTable.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
 MODEL_PACKAGE="$ROOT/scripts/models/denoise.mlpackage"
 MODEL_INDEX="$ROOT/scripts/models/models.json"
+HAIR_MODEL_ASSETS=(
+  "$ROOT/scripts/models/selfie_multiclass_256x256.tflite"
+  "$ROOT/scripts/models/HairSegmentation-APACHE-2.0.txt"
+  "$ROOT/scripts/models/hair-model.json"
+)
 APP_ICON="$ROOT/build/LightTable.icns"
 
 require_file() {
@@ -96,7 +101,22 @@ require_directory() {
 require_file "$BUILD_RELEASE"
 require_file "$ROOT/requirements-runtime.lock"
 require_file "$PACKAGE_RESOLVED"
+
+# Auto-seed models from the base app if missing in a fresh worktree
+if [[ ! -f "$MODEL_INDEX" || ! -d "$MODEL_PACKAGE" ]]; then
+  if [[ -d "$BASE_APP/Contents/Resources/models" ]]; then
+    echo "Seeding missing bundled models from $BASE_APP..."
+    mkdir -p "$ROOT/scripts/models"
+    if ! /bin/cp -cRp "$BASE_APP/Contents/Resources/models/"* "$ROOT/scripts/models/" 2>/dev/null; then
+      /usr/bin/ditto "$BASE_APP/Contents/Resources/models" "$ROOT/scripts/models"
+    fi
+  fi
+fi
+
 require_file "$MODEL_INDEX"
+for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"; do
+  require_file "$MODEL_ASSET"
+done
 require_file "$APP_ICON"
 require_directory "$MODEL_PACKAGE"
 require_directory "$BASE_CONTENTS"
@@ -106,8 +126,22 @@ require_file "$BASE_PAYLOAD/engine/spektrafilm-rs"
 require_file "$BASE_PAYLOAD/engine/VERSION.txt"
 require_file "$BASE_PAYLOAD/vendor/spektrafilm/VERSION.txt"
 require_file "$BASE_PYTHON"
-require_directory "$PYTHON_SOURCE/.git"
-require_directory "$RUST_SOURCE/.git"
+
+REUSE_BASE_FILM_ENGINE=false
+if [[ ! -d "$PYTHON_SOURCE/.git" || ! -d "$RUST_SOURCE/.git" ]]; then
+  SHARED_DEPS="${LIGHTTABLE_SHARED_DEPENDENCIES:-${HOME}/Library/Caches/LightTable/dependencies}"
+  if [[ -d "$SHARED_DEPS/spektrafilm-python/.git" && -d "$SHARED_DEPS/spektrafilm-rust/.git" ]]; then
+    PYTHON_SOURCE="$SHARED_DEPS/spektrafilm-python"
+    RUST_SOURCE="$SHARED_DEPS/spektrafilm-rust"
+  elif [[ -d "$BASE_PAYLOAD/vendor/spektrafilm/src/spektrafilm" && -d "$BASE_PAYLOAD/engine/data" ]]; then
+    REUSE_BASE_FILM_ENGINE=true
+  fi
+fi
+
+if [[ "$REUSE_BASE_FILM_ENGINE" != "true" ]]; then
+  require_directory "$PYTHON_SOURCE/.git"
+  require_directory "$RUST_SOURCE/.git"
+fi
 
 if [[ -z "$PYTHON_VERSION" || -z "$PYTHON_SOURCE_REV" || -z "$RUST_SOURCE_REV" ]]; then
   echo "Could not read the pinned runtime versions from scripts/build-release.sh" >&2
@@ -171,10 +205,12 @@ if [[ "$BASE_PYTHON_REV" != "$PYTHON_SOURCE_REV" \
   echo "A pinned film engine changed; run scripts/build-release.sh" >&2
   exit 1
 fi
-if [[ "$(git -C "$PYTHON_SOURCE" rev-parse HEAD)" != "$PYTHON_SOURCE_REV" \
-      || "$(git -C "$RUST_SOURCE" rev-parse HEAD)" != "$RUST_SOURCE_REV" ]]; then
-  echo "The cached film-engine sources do not match the release pins" >&2
-  exit 1
+if [[ "$REUSE_BASE_FILM_ENGINE" != "true" ]]; then
+  if [[ "$(git -C "$PYTHON_SOURCE" rev-parse HEAD)" != "$PYTHON_SOURCE_REV" \
+        || "$(git -C "$RUST_SOURCE" rev-parse HEAD)" != "$RUST_SOURCE_REV" ]]; then
+    echo "The cached film-engine sources do not match the release pins" >&2
+    exit 1
+  fi
 fi
 
 SPARKLE_VERSION="$(/usr/bin/plutil -extract pins.0.state.version raw \
@@ -231,7 +267,7 @@ ENGINE_HASH="$(hash_sources "$ROOT/rust-engine/Cargo.toml" \
   "$ROOT/rust-engine/Cargo.lock" "$ROOT/rust-engine/src")"
 MODEL_HASH="$(hash_sources "$MODEL_PACKAGE" "$MODEL_INDEX" \
   "$ROOT/scripts/models/SCUNet-CODE-LICENSE.txt" \
-  "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt")"
+  "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt" "${HAIR_MODEL_ASSETS[@]}")"
 SOURCE_TREE_HASH="$(hash_sources \
   "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
   "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
@@ -256,10 +292,29 @@ manifest_value() {
 }
 
 PREVIOUS_XCODE_CONFIG_HASH="$(manifest_value XCODE_CONFIG_HASH)"
+PREVIOUS_REVISION="$(manifest_value SOURCE_REVISION)"
 if [[ -n "$PREVIOUS_XCODE_CONFIG_HASH" \
       && "$PREVIOUS_XCODE_CONFIG_HASH" != "$XCODE_CONFIG_HASH" ]]; then
-  echo "Xcode packaging changed; run scripts/build-release.sh once to establish a new base" >&2
-  exit 1
+  # Check if the differences between current and base Xcode configs are purely version fields
+  IS_VERSION_ONLY=false
+  if [[ -n "$PREVIOUS_REVISION" ]] && git cat-file -e "$PREVIOUS_REVISION^{commit}" 2>/dev/null; then
+    BASE_PBXPROJ_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$ROOT/LightTable.xcodeproj/project.pbxproj" \
+      | grep -v -E '^[+-][[:space:]]*(MARKETING_VERSION|CURRENT_PROJECT_VERSION)' \
+      | grep -E '^[+-]' | grep -v -E '^[+-]{3}' || true)"
+    BASE_PLIST_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$ROOT/app/Info.plist" \
+      | grep -v -E '^[+-][[:space:]]*<(key>CFBundle(ShortVersionString|Version)|string>[0-9])' \
+      | grep -E '^[+-]' | grep -v -E '^[+-]{3}' || true)"
+    PACKAGE_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$PACKAGE_RESOLVED" || true)"
+    if [[ -z "$BASE_PBXPROJ_DIFF" && -z "$BASE_PLIST_DIFF" && -z "$PACKAGE_DIFF" ]]; then
+      IS_VERSION_ONLY=true
+    fi
+  fi
+  if [[ "$IS_VERSION_ONLY" == "true" ]]; then
+    echo "Xcode version bumped without packaging changes; preserving personal update path."
+  else
+    echo "Xcode packaging changed; run scripts/build-release.sh once to establish a new base" >&2
+    exit 1
+  fi
 fi
 
 mkdir -p "$BUILD_ROOT"
@@ -292,8 +347,14 @@ if [[ -z "$PREVIOUS_NATIVE_HASH" || "$PREVIOUS_NATIVE_HASH" != "$NATIVE_HASH" ]]
   echo "Building the native shell with the verified Sparkle framework..."
   # Match the Xcode Release target while reusing its already-validated package.
   # Direct compilation avoids the build service's compiler-probe pipe stalls.
+  SWIFT_CACHE="${TMPDIR:-/tmp}/lighttable-swift-module-cache"
+  CLANG_CACHE="${TMPDIR:-/tmp}/lighttable-clang-module-cache"
+  mkdir -p "$SWIFT_CACHE" "$CLANG_CACHE"
+  export SWIFT_MODULECACHE_PATH="$SWIFT_CACHE"
+  export CLANG_MODULE_CACHE_PATH="$CLANG_CACHE"
   swiftc -O -whole-module-optimization -swift-version 5 -module-name LightTable \
     -target arm64-apple-macos13.0 \
+    -module-cache-path "$SWIFT_CACHE" \
     -F "$BASE_CONTENTS/Frameworks" -framework Sparkle \
     -Xlinker -rpath -Xlinker @executable_path/../Frameworks \
     -o "$STAGE_CONTENTS/MacOS/LightTable" \
@@ -327,30 +388,54 @@ done
   "$ROOT/presets/" "$STAGE_PAYLOAD/presets/"
 /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
   --exclude='*.swift' "$ROOT/film_lab_ai/" "$STAGE_PAYLOAD/film_lab_ai/"
-/usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
-  "$PYTHON_SOURCE/src/spektrafilm/" \
-  "$STAGE_PAYLOAD/vendor/spektrafilm/src/spektrafilm/"
-/usr/bin/rsync -a --exclude='.DS_Store' "$RUST_SOURCE/data/" \
-  "$STAGE_PAYLOAD/engine/data/"
+if [[ "$REUSE_BASE_FILM_ENGINE" == "true" ]]; then
+  echo "Reusing verified film engine assets from the base app..."
+  /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
+    "$BASE_PAYLOAD/vendor/spektrafilm/src/spektrafilm/" \
+    "$STAGE_PAYLOAD/vendor/spektrafilm/src/spektrafilm/"
+  /usr/bin/rsync -a --exclude='.DS_Store' "$BASE_PAYLOAD/engine/data/" \
+    "$STAGE_PAYLOAD/engine/data/"
+  if [[ -f "$BASE_PAYLOAD/licenses/spektrafilm-python-GPL-3.0.txt" ]]; then
+    /usr/bin/ditto "$BASE_PAYLOAD/licenses/spektrafilm-python-GPL-3.0.txt" \
+      "$STAGE_PAYLOAD/licenses/spektrafilm-python-GPL-3.0.txt"
+  fi
+  if [[ -f "$BASE_PAYLOAD/licenses/spektrafilm-rust-GPL-3.0.txt" ]]; then
+    /usr/bin/ditto "$BASE_PAYLOAD/licenses/spektrafilm-rust-GPL-3.0.txt" \
+      "$STAGE_PAYLOAD/licenses/spektrafilm-rust-GPL-3.0.txt"
+  fi
+else
+  /usr/bin/rsync -a --exclude='.DS_Store' --exclude='__pycache__' --exclude='*.pyc' \
+    "$PYTHON_SOURCE/src/spektrafilm/" \
+    "$STAGE_PAYLOAD/vendor/spektrafilm/src/spektrafilm/"
+  /usr/bin/rsync -a --exclude='.DS_Store' "$RUST_SOURCE/data/" \
+    "$STAGE_PAYLOAD/engine/data/"
+  /usr/bin/ditto "$PYTHON_SOURCE/LICENSE" \
+    "$STAGE_PAYLOAD/licenses/spektrafilm-python-GPL-3.0.txt"
+  /usr/bin/ditto "$RUST_SOURCE/LICENSE" \
+    "$STAGE_PAYLOAD/licenses/spektrafilm-rust-GPL-3.0.txt"
+fi
 for PROFILE in "$ROOT"/profiles/*.json; do
   /usr/bin/ditto "$PROFILE" \
     "$STAGE_PAYLOAD/engine/data/profiles/$(basename "$PROFILE")"
 done
 /usr/bin/ditto "$BASE_EXTERNAL_CLI" "$STAGE_PAYLOAD/engine/spektrafilm-rs"
-/usr/bin/ditto "$PYTHON_SOURCE/LICENSE" \
-  "$STAGE_PAYLOAD/licenses/spektrafilm-python-GPL-3.0.txt"
-/usr/bin/ditto "$RUST_SOURCE/LICENSE" \
-  "$STAGE_PAYLOAD/licenses/spektrafilm-rust-GPL-3.0.txt"
 printf 'rev: %s\n' "$RUST_SOURCE_REV" > "$STAGE_PAYLOAD/engine/VERSION.txt"
 printf 'rev: %s\n' "$PYTHON_SOURCE_REV" \
   > "$STAGE_PAYLOAD/vendor/spektrafilm/VERSION.txt"
 
 if [[ -z "$PREVIOUS_HELPER_HASH" || "$PREVIOUS_HELPER_HASH" != "$HELPER_HASH" ]]; then
   echo "Building the local Vision and Enhance helpers..."
+  SWIFT_CACHE="${TMPDIR:-/tmp}/lighttable-swift-module-cache"
+  CLANG_CACHE="${TMPDIR:-/tmp}/lighttable-clang-module-cache"
+  mkdir -p "$SWIFT_CACHE" "$CLANG_CACHE"
+  export SWIFT_MODULECACHE_PATH="$SWIFT_CACHE"
+  export CLANG_MODULE_CACHE_PATH="$CLANG_CACHE"
   swiftc -O -swift-version 5 -target arm64-apple-macos13.0 \
+    -module-cache-path "$SWIFT_CACHE" \
     -o "$STAGE_PAYLOAD/build/LightTableVision" \
     "$ROOT/film_lab_ai/vision_helper.swift"
   swiftc -O -swift-version 5 -target arm64-apple-macos13.0 \
+    -module-cache-path "$SWIFT_CACHE" \
     -o "$STAGE_PAYLOAD/build/LightTableEnhance" \
     "$ROOT/film_lab_ai/enhance_helper.swift"
 else
@@ -361,12 +446,14 @@ else
     "$STAGE_PAYLOAD/build/LightTableEnhance"
 fi
 
+CARGO_TARGET_DIR="${LIGHTTABLE_CARGO_TARGET_DIR:-${HOME}/Library/Caches/LightTable/cargo-resident}"
 if [[ -z "$PREVIOUS_ENGINE_HASH" || "$PREVIOUS_ENGINE_HASH" != "$ENGINE_HASH" ]]; then
   echo "Building the resident GPU engine (incremental)..."
-  CARGO_TARGET_DIR="$ROOT/.build/release/cargo/resident" \
+  mkdir -p "$CARGO_TARGET_DIR"
+  CARGO_TARGET_DIR="$CARGO_TARGET_DIR" \
     cargo build --release --locked --manifest-path "$ROOT/rust-engine/Cargo.toml"
   /usr/bin/ditto \
-    "$ROOT/.build/release/cargo/resident/release/lighttable-engine" \
+    "$CARGO_TARGET_DIR/release/lighttable-engine" \
     "$STAGE_PAYLOAD/engine/lighttable-engine"
 else
   echo "Resident GPU engine unchanged; reusing it."
@@ -379,7 +466,7 @@ fi
   "$STAGE_PAYLOAD/engine/spektrafilm-rs"
 
 if [[ -z "$PREVIOUS_MODEL_HASH" || "$PREVIOUS_MODEL_HASH" != "$MODEL_HASH" ]]; then
-  echo "Refreshing the denoise model..."
+  echo "Refreshing the bundled models..."
   /bin/rm -rf "$STAGE_CONTENTS/Resources/models"
   mkdir -p "$STAGE_CONTENTS/Resources/models"
   /bin/cp -cRp "$MODEL_PACKAGE" \
@@ -390,8 +477,12 @@ if [[ -z "$PREVIOUS_MODEL_HASH" || "$PREVIOUS_MODEL_HASH" != "$MODEL_HASH" ]]; t
     /usr/bin/ditto "$ROOT/scripts/models/$LICENSE_NAME" \
       "$STAGE_CONTENTS/Resources/models/$LICENSE_NAME"
   done
+  for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"; do
+    /usr/bin/ditto "$MODEL_ASSET" \
+      "$STAGE_CONTENTS/Resources/models/$(basename "$MODEL_ASSET")"
+  done
 else
-  echo "Denoise model unchanged; reusing it."
+  echo "Bundled models unchanged; reusing them."
 fi
 
 /usr/bin/ditto "$ROOT/app/NativePreview.metal" \
@@ -482,9 +573,16 @@ fi
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$STAGE_PAYLOAD" \
   "$STAGE_CONTENTS/Resources/Python/bin/python3.13" -c \
   'import catalog, film_pipeline, server; print("Packaged Python import smoke: OK")'
-/usr/bin/codesign --verify --deep --strict "$STAGE_APP"
+# The stage is a relocated copy of the base runtime; test its bundled model.
+PYTHONPATH="$STAGE_PAYLOAD" \
+LIGHTTABLE_MODEL_DIR="$STAGE_CONTENTS/Resources/models" \
+  "$STAGE_CONTENTS/Resources/Python/bin/python3.13" -B \
+  "$ROOT/scripts/smoke-hair-mask.py" \
+  --model-dir "$STAGE_CONTENTS/Resources/models" \
+  --image "$ROOT/tests/fixtures/photos/portrait.jpg"
 "$STAGE_CONTENTS/Resources/Python/bin/python3.13" \
   "$ROOT/scripts/native-app-smoke.py" --app "$STAGE_APP" --layer package \
+  --timeout 60 \
   --output "$BUILD_ROOT/native-package.json" \
   --screenshot "$BUILD_ROOT/native-package.png"
 

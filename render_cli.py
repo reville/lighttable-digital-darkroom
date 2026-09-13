@@ -128,6 +128,7 @@ def main():
     # Kept in step with finish_export() in server.py: watermark after resize,
     # metadata after encode. The two paths must produce the same file.
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
+    out = export_workflow.apply_border(out, job.get("border"))
     metadata_policy = str(job.get("metadata", "all-except-location"))
     # Catalog exports name the original capture explicitly because ``src``
     # is usually an intermediate render TIFF; external edits pass the capture

@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -111,7 +112,7 @@
           "title": "Tinjau penyuntingan yang diterjemahkan",
           "paragraphs": [
             "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
-            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Tindakan ini tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
+            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Pindah dari Lightroom",
+      "category": "Getting started",
+      "summary": "Apa yang dibawa katalog Lightroom Classic dan sidecar XMP, apa yang tidak memiliki jalur impor, dan bagaimana kosakatanya berbeda.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrasi",
+        "migrasi",
+        "XMP",
+        "sidecar",
+        "preset",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Apa yang ikut terbawa",
+          "paragraphs": [
+            "Dari katalog Lightroom Classic: foto tetap di folder saat ini dan dirujuk, bukan disalin. Pengimpor membaca peringkat, tanda, label, dan bidang IPTC; kata kunci; koleksi dan koleksi pintar yang didukung; tumpukan; salinan virtual; pangkas dan pelurusan; pengaturan pengembangan kira-kira; dan, jika dipilih, riwayat penyuntingan. File .lrcat Anda tidak pernah diubah.",
+            "Dari sidecar XMP di samping foto Anda: peringkat bintang, tanda pilih dan tolak, label warna standar, kata kunci, dan bidang IPTC deskriptif. Folder ••• → Impor sidecar… juga dapat menerapkan pengaturan pengembangan dan pangkas jika Anda mengaktifkan opsi tersebut.",
+            "Kedua jalur memakai konverter yang sama, jadi sebuah pengaturan dipetakan dengan cara yang sama dari jalur mana pun: nada, pergeseran white balance, tekstur, kejernihan, dehaze, mixer warna, konversi hitam putih beserta mixer-nya, kurva titik, jumlah vignette, penajaman, dan pengurangan noise. Nilai di luar rentang LightTable, misalnya eksposur melebihi ±5 EV, dibatasi dan disebutkan dalam laporan."
+          ]
+        },
+        {
+          "title": "Apa yang tidak memiliki jalur impor",
+          "paragraphs": [
+            "Album cloud dan preset yang hanya tersimpan di aplikasi cloud tidak dapat dibaca. Sinkronkan dulu ke Lightroom Classic atau simpan preset sebagai file.",
+            "Masker AI dan penyuntingan generatif, Lens Blur, serta pengaturan Denoise adalah langkah render berpemilik. Semuanya dilaporkan sebagai dilewati, bukan didekati, begitu pula profil kamera, look LUT, masker lokal, penyembuhan, dan identitas profil lensa. Penyuntingan yang diimpor dimulai dengan Film mati agar pengaturan pengembangan hasil konversi tampil sendiri."
+          ]
+        },
+        {
+          "title": "Kosakata",
+          "paragraphs": [
+            "Koleksi tetap disebut koleksi di sini; album dari aplikasi cloud hanya masuk melalui katalog Lightroom Classic.",
+            "Tanda Pilih dan Tolak bekerja dengan cara yang sama, dan bilah bawah menampilkannya untuk foto yang dipilih.",
+            "Pengembangan di sini disebut Edit. Film mati secara default untuk foto baru dan foto impor; nyalakan saat Anda ingin perlakuan film di atas penyuntingan.",
+            "Profil kamera di Edit menampilkan profil Adobe DCP yang dipasang Camera Raw atau Lightroom di komputer ini, atau folder profil kamera yang dipilih di Pengaturan. Profil diterapkan secara kira-kira dan hanya pada pengembangan dengan Film mati."
+          ]
+        },
+        {
+          "title": "Impor preset Anda",
+          "paragraphs": [
+            "Preset → Kelola… → Impor… menerima preset .xmp dari Lightroom dan Camera Raw, preset .lrtemplate lama, dan gaya .costyle dari Capture One. Setelah impor katalog atau folder, penyiapan juga menawarkan Impor preset…. Setiap preset yang diimpor menunjukkan berapa banyak pengaturan yang dipetakan dan mana yang dilewati sebelum Anda menerapkannya."
+          ],
+          "steps": [
+            "Buka Preset, klik Kelola…, lalu klik Impor… dan pilih file preset atau, di aplikasi Mac, seluruh folder preset.",
+            "Tinjau laporan konversi, lalu terapkan preset dari Milik Anda."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Memulai"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Minta editor lain menyimpan metadatanya ke file XMP yang bersebelahan, lalu pilih Folder ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual mempertahankan metadata masing-masing.",
             "Metadata yang didukung mencakup rating bintang, tanda pilih/tolak, label warna standar, kata kunci datar dan hierarkis, serta bidang IPTC deskriptif. Nilai kosong yang eksplisit membersihkan bidang itu; nilai yang tidak ada membiarkannya tidak berubah. Label warna kustom yang tidak cocok dengan warna LightTable dilaporkan sebagai dilewati.",
-            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas tidak diterapkan oleh tindakan menu ini."
+            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut di dialog Impor sidecar."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Sembunyikan foto yang tidak dapat ditampilkan",
           "paragraphs": [
             "Saat kesalahan thumbnail terlihat di kisi, pilih Sembunyikan foto yang tidak dapat ditampilkan di samping ringkasan lokasi. Ini mengaktifkan sakelar yang sesuai di Filter, yang secara default mati dan pengaturannya disimpan antar sesi. Sakelar ini tidak disimpan dalam aturan koleksi pintar.",
+            "Di strip film, tautan ini muncul di bawah jumlah foto hanya ketika daftar saat ini berisi foto yang tidak dapat ditampilkan.",
             "Sakelar ini menyembunyikan foto yang diketahui tidak tersedia atau hanya ada di cloud serta foto dengan kegagalan thumbnail atau pratinjau yang telah terdeteksi. Kegagalan dekode lainnya ditemukan saat foto dimuat. Matikan sakelar, hapus chip filternya, atau pilih Bersihkan semua untuk menampilkan foto lagi. Coba lagi yang berhasil atau perubahan pada file asli menghapus kegagalan yang tercatat."
           ]
         },
@@ -1095,7 +1159,13 @@
         "otomatis",
         "histogram",
         "clipping",
-        "sebelum"
+        "sebelum",
+        "sampler warna",
+        "pengambil sampel warna",
+        "sampler",
+        "nilai rgb",
+        "pembacaan nilai",
+        "ukur"
       ],
       "sections": [
         {
@@ -1126,6 +1196,21 @@
             "Jika Auto mengatakan sedang menunggu pratinjau gambar, biarkan pratinjau dimuat lalu coba lagi.",
             "Menu scope juga menawarkan Waveform, RGB Parade, dan Vectorscope untuk memeriksa nada dan warna."
           ]
+        },
+        {
+          "title": "Ukur warna dengan sampler",
+          "paragraphs": [
+            "Sampler warna menampilkan nilai merah, hijau, dan biru (0–255) serta kecerahan, L*, dari hingga empat tempat pada foto. Nilai diperbarui saat Anda mengedit, sehingga Anda dapat memeriksa kartu abu-abu, basis film, atau warna kulit sambil menyesuaikan."
+          ],
+          "steps": [
+            "Klik tombol sampler di samping histogram.",
+            "Klik foto untuk menempatkan sampler. Tempatkan hingga empat.",
+            "Baca nilai di bawah histogram. Gunakan × untuk menghapus sampler."
+          ],
+          "tips": [
+            "Sampler membaca editan yang ditampilkan. Sampler hanya berlaku untuk sesi jendela saat ini dan tidak disimpan bersama foto.",
+            "Tekan Escape untuk berhenti menempatkan sampler."
+          ]
         }
       ],
       "related": [
@@ -1139,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Terapkan koreksi lensa dan aberasi kromatik",
       "category": "Editing",
-      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
+      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, koreksi aberasi kromatik, hapus fringe ungu dan hijau, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
       "keywords": [
         "lensa",
         "profil",
@@ -1148,6 +1233,9 @@
         "pencahayaan",
         "aberasi kromatik",
         "fringing",
+        "hapus fringe",
+        "fringe ungu",
+        "fringe hijau",
         "merah sian",
         "biru kuning",
         "optik"
@@ -1156,18 +1244,21 @@
         {
           "title": "Pilih dan verifikasi koreksi",
           "paragraphs": [
-            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia."
+            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia. Panel ini juga menyebutkan versi basis data lensa yang digunakan serta berapa banyak kamera dan lensa yang tercantum; basis data disertakan bersama pustaka lensa, bukan bersama LightTable.",
+            "Saat kamera dan lensa dalam metadata foto cocok persis dengan satu profil, Gunakan profil lensa yang cocok aktif begitu foto dibuka dan berlaku juga untuk thumbnail dan ekspor. Kecocokan yang disimpulkan atau ambigu tetap nonaktif. Pengaturan → Default Pengembangan → Terapkan profil lensa yang cocok secara otomatis mematikan perilaku ini; foto dengan pengaturan lensa tersimpan tetap mempertahankannya."
           ],
           "steps": [
             "Baca nama profil dan penjelasan kecocokan.",
-            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi dan Koreksi shading lensa sesuai kebutuhan.",
+            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi, Perbaiki pencahayaan lensa, dan Koreksi aberasi kromatik sesuai kebutuhan. Setiap sakelar independen, sehingga aberasi kromatik dapat dikoreksi tanpa mengubah geometri.",
             "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
-            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik."
+            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik.",
+            "Di bawah Hapus fringe, naikkan Ungu atau Hijau untuk menarik warna itu dari piksel sangat jenuh di samping tepi tajam. Slider awal hue dan akhir hue mengatur rentang hue yang ditangani setiap kontrol; awal di atas akhirnya melingkar melalui merah."
           ],
           "tips": [
             "Tidak ditemukan profil lensa yang tepat; kontrol distorsi dan perspektif manual tetap tersedia.",
-            "Kotak centang distorsi dan shading profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
+            "Kotak centang distorsi, shading, dan aberasi kromatik profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
             "Profil yang dipilih secara manual perlu diperiksa secara visual; pilihan itu tidak membuktikan bahwa profil tersebut cocok tepat.",
+            "Hapus fringe memperlakukan garis tepi subjek ungu atau hijau yang besar seperti fringe. Turunkan jumlahnya atau persempit rentang hue jika subjek kehilangan warna di tepinya.",
             "Koreksi lensa dan fringe tetap tidak merusak sepanjang ekspor."
           ]
         }
@@ -1313,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -1603,7 +1695,15 @@
         "hitam",
         "lapisan",
         "dodge",
-        "dodge"
+        "dodge",
+        "blur lensa",
+        "blur latar belakang",
+        "blur",
+        "bokeh",
+        "ruang tajam",
+        "luminositas",
+        "paduan luminositas",
+        "pertahankan warna"
       ],
       "sections": [
         {
@@ -1660,10 +1760,26 @@
           ]
         },
         {
+          "title": "Blur sebagian foto",
+          "paragraphs": [
+            "Blur lensa di bagian Efek pada masker melembutkan area yang dipilih seperti lensa yang tidak fokus. Radius blur bertambah seiring kekuatan masker, sehingga tepi yang dihaluskan atau rentang kedalaman memudar secara bertahap, bukan berhenti di garis tegas.",
+            "Blur diterapkan pada gambar akhir, setelah rendering film dan penyesuaian lain pada masker. Blur juga menghaluskan grain film di dalam area yang di-blur."
+          ],
+          "steps": [
+            "Buat masker Subjek lalu pilih Balikkan, atau masker Kedalaman untuk rentang jarak, atau gambar masker Radial lalu balikkan.",
+            "Perluas Efek dan naikkan Blur lensa. Tunggu pratinjau diperbarui sebelum menilainya.",
+            "Sempurnakan seleksi dengan Tambahkan, Kurangi, atau Kehalusan Tepi di bagian yang blur-nya meluber ke tepi tajam."
+          ],
+          "tips": [
+            "Hanya piksel yang dipilih yang berkontribusi pada blur, sehingga subjek yang tajam tidak meluber ke latar belakang yang di-blur. Periksa tepi halus seperti rambut pada 1:1."
+          ]
+        },
+        {
           "title": "Sesuaikan kurva nada lokal",
           "steps": [
             "Perluas Kurva Nada untuk masker terpilih dan pilih RGB, Merah, Hijau, atau Biru.",
             "Klik grafik untuk menambahkan titik, lalu seret titik tersebut. Menggerakkan titik ke atas mencerahkan keluarannya; menggerakkannya ke bawah menggelapkannya. Klik dua kali titik interior untuk menghapusnya.",
+            "Aktifkan Hanya luminositas untuk mengubah kecerahan tanpa menggeser warna atau saturasi.",
             "Gunakan Atur ulang kurva untuk mengatur ulang hanya saluran terpilih dari masker ini, atau Urungkan untuk membalikkan edit."
           ],
           "tips": [
@@ -1818,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Hapus bintik dan perhalus koreksi Heal atau Clone",
       "category": "Editing",
-      "summary": "Sapu gangguan dengan kuas, periksa visibilitas spot, dan pindahkan source atau target dari koreksi.",
+      "summary": "Hapus spot dan sapuan yang dilukis, bersihkan debu dan goresan di seluruh foto, serta sempurnakan koreksi Perbaiki atau Klon.",
       "keywords": [
         "hapus",
         "perbaiki",
@@ -1830,7 +1946,18 @@
         "visualisasikan spot",
         "sumber",
         "target",
-        "gangguan"
+        "gangguan",
+        "debu dan goresan",
+        "goresan",
+        "rambut",
+        "kabel",
+        "kuas",
+        "sapuan",
+        "isian",
+        "isian tekstur",
+        "isian sadar konten",
+        "pindaian film",
+        "noda"
       ],
       "sections": [
         {
@@ -1841,22 +1968,44 @@
           ],
           "steps": [
             "Pilih Hapus, Heal, atau Klon, lalu atur Ukuran, Bulu, dan Opasitas.",
-            "Klik bintik atau seret melintasi gangguan pada foto.",
+            "Untuk Hapus, pilih Spot untuk mengeklik atau menyeret koreksi bundar, atau Kuas untuk melukis di sepanjang goresan, rambut, atau kabel.",
+            "Untuk Hapus, pilih Isian. Cocokkan tekstur sekitar menyalin detail di dekatnya dari foto; Paduan halus memadukan tepi ke arah dalam dan cocok untuk area rata seperti langit.",
+            "Klik spot, seret melintasi gangguan, atau lukis sapuan pada foto.",
             "Untuk spot debu kecil, aktifkan Visualize Spots dan sesuaikan Threshold agar tepi lebih mudah diperiksa.",
             "Matikan Visualize Spots dan periksa foto yang sudah dikoreksi."
           ],
           "tips": [
-            "Memilih koreksi lalu memilih mode lain mengubah mode koreksi tersebut."
+            "Memilih koreksi lalu memilih mode lain mengubah mode koreksi tersebut.",
+            "Cocokkan tekstur sekitar menyalin piksel dari foto ini; fitur ini tidak pernah menghasilkan detail baru. Perubahan Isian berlaku untuk koreksi Hapus yang dipilih. Koreksi yang dibuat sebelum pilihan ini tersedia tetap menggunakan Paduan halus.",
+            "Satu sapuan kuas dapat memuat hingga 256 titik. Lepaskan, lalu lukis sapuan lain untuk melanjutkan."
+          ]
+        },
+        {
+          "title": "Hapus debu dan goresan di seluruh foto",
+          "paragraphs": [
+            "Debu dan goresan menemukan noda kecil yang sangat menonjol dari sekitarnya, seperti debu pada pindaian film, lalu mengisinya dengan piksel di dekatnya. Fitur ini bekerja pada seluruh foto sebagai satu koreksi di bagian atas daftar, sehingga koreksi berikutnya mengambil sampel dari gambar yang sudah dibersihkan.",
+            "Noda terbesar menentukan noda terlebar yang dihitung, sebagai proporsi dari sisi pendek foto. Sensitivitas menentukan seberapa besar noda harus berbeda dari sekitarnya. Nilai yang lebih tinggi menemukan noda yang lebih samar dan lebih mungkin menangkap detail halus."
+          ],
+          "steps": [
+            "Buka Hapus dan perluas Debu dan goresan.",
+            "Atur Noda terbesar sedikit lebih lebar daripada debu yang terlihat, dan biarkan Sensitivitas di 50% sebagai awal.",
+            "Klik Hapus Debu. Tampilkan noda terdeteksi menandai temuan dengan garis merah dan melaporkan jumlah noda yang ditemukan.",
+            "Perbesar pada rambut, bintang, pantulan cahaya di mata, dan teks. Jika ikut tertangkap, turunkan Sensitivitas atau Noda terbesar, atau turunkan Opasitas.",
+            "Nonaktifkan Tampilkan noda terdeteksi untuk menilai hasilnya."
+          ],
+          "tips": [
+            "Pilih koreksi Debu di daftar untuk mengubahnya nanti. Aktifkan koreksi ini membandingkan hasilnya, dan Hapus Koreksi menghapusnya.",
+            "Goresan panjang dan tipis ditemukan jika lebarnya di bawah Noda terbesar. Lukis goresan yang lebih lebar dengan kuas Hapus."
           ]
         },
         {
           "title": "Perhalus koreksi yang sudah ada",
           "paragraphs": [
-            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran pada gambar menunjukkan target yang dapat diedit dan, untuk Heal dan Clone, sumbernya.",
+            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran atau sapuan pada gambar menunjukkan target yang dapat diedit dan, untuk Perbaiki dan Klon, sumbernya.",
             "Perbesar untuk penempatan yang presisi. Garis luar lingkaran dan pin tetap tajam pada setiap level zoom; lingkaran terus menampilkan area foto yang sama."
           ],
           "steps": [
-            "Seret lingkaran target untuk memindahkan koreksi, atau pilih Move Target dan klik posisi barunya.",
+            "Seret lingkaran target atau sapuan yang dilukis untuk memindahkan koreksi, atau pilih Pindahkan Target lalu klik posisi barunya.",
             "Untuk Heal atau Clone, seret source circle ke area yang lebih baik. Refresh Source mencoba posisi source yang berbeda.",
             "Sesuaikan Feather atau Opacity jika tepi atau kekuatan koreksi perlu disempurnakan.",
             "Alihkan Enable this correction untuk membandingkan, atau gunakan Delete correction untuk menghapusnya."
@@ -1970,7 +2119,8 @@
         {
           "title": "Pilih orang atau area wajah",
           "paragraphs": [
-            "Orang menawarkan Orang, Kulit wajah, Mata, Alis, Bibir, Gigi, Rambut, dan Haluskan kulit. Kontrol ini memerlukan helper Vision di macOS 14 atau lebih baru dan disembunyikan di Linux dan Windows. Kulit wajah dan rambut diperkirakan, dan tidak ada identitas yang disimpulkan."
+            "People menawarkan Orang dan Rambut di setiap platform. Kulit wajah, Mata, Alis, Bibir, Gigi, dan Haluskan kulit memerlukan helper Vision di macOS 14 atau lebih baru. Kulit wajah diperkirakan, dan tidak ada identitas yang disimpulkan.",
+            "Rambut menggunakan model bawaan yang berjalan secara lokal dan memilih rambut di luar wajah, termasuk rambut sebahu. Periksa helai halus, highlight terang, wig, dan orang kecil di latar belakang; ini masih bisa terlewat. Build lama atau source tanpa model menggunakan perkiraan Vision sebelumnya jika tersedia. Masker tersimpan yang sudah ada mempertahankan pilihannya."
           ],
           "steps": [
             "Pilih Orang, lalu bagian yang ingin Anda sesuaikan.",
@@ -2010,7 +2160,8 @@
         {
           "title": "Netralisir cast warna",
           "paragraphs": [
-            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit."
+            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit.",
+            "Untuk original RAW, blok Keseimbangan putih tangkap berada di atasnya dengan Seperti diambil, Otomatis, preset, dan Kustom untuk suhu dalam kelvin dan tint kamera. Blok ini mengembangkan ulang data RAW dan bekerja dengan Film aktif atau nonaktif; disembunyikan untuk file yang sudah diproses."
           ],
           "steps": [
             "Buka Edit dan perluas Warna.",
@@ -2028,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2047,7 +2199,15 @@
         "biru",
         "kontras",
         "titik kontrol",
-        "kurva S"
+        "kurva S",
+        "eyedropper",
+        "titik hitam",
+        "titik putih",
+        "titik abu-abu",
+        "titik abu-abu",
+        "netral",
+        "cast warna",
+        "level"
       ],
       "sections": [
         {
@@ -2065,6 +2225,21 @@
           "tips": [
             "Gunakan beberapa titik dan bandingkan foto saat Anda bekerja; kurva kanal dapat menimbulkan cast warna yang kuat.",
             "Kurva yang disimpan atau diimpor mempertahankan tabel tersimpan persisnya sampai Anda mengeditnya. Aplikasi membangun ulang pegangan representatif untuk pengeditan, jadi penyesuaian pertama dapat membentuk ulang kurva yang diimpor melampaui titik yang Anda geser."
+          ]
+        },
+        {
+          "title": "Atur titik hitam, abu-abu, dan putih",
+          "paragraphs": [
+            "Eyedropper di bawah kurva titik mengatur kurva merah, hijau, dan biru berdasarkan satu tempat pada foto. Titik hitam membuat area sampel menjadi hitam, Titik putih membuatnya putih, dan Titik abu-abu membuatnya netral sambil mempertahankan kecerahannya. Ini berguna untuk menghilangkan cast warna dari hasil pindaian."
+          ],
+          "steps": [
+            "Buka Edit, perluas Kurva, lalu pilih Titik hitam, Titik abu-abu, atau Titik putih.",
+            "Klik area foto yang seharusnya hitam, abu-abu netral, atau putih.",
+            "Periksa kurva R, G, dan B, lalu sempurnakan atau atur ulang jika hasilnya terlalu kuat."
+          ],
+          "tips": [
+            "Titik hitam memerlukan area yang lebih gelap daripada abu-abu tengah, dan Titik putih memerlukan area yang lebih terang daripada abu-abu tengah. Tekan Escape untuk membatalkan eyedropper.",
+            "Eyedropper mengubah Kurva ke mode Titik karena eyedropper mengedit kurva kanal."
           ]
         },
         {
@@ -2434,7 +2609,7 @@
           "title": "Kontrol tangkap dan kontrol penyelesaian",
           "paragraphs": [
             "Camera EV dan Capture white balance bekerja sebelum eksposur film. Exposure dan Temp/Tint di panel Edit adalah penyesuaian akhir di tahap selanjutnya dalam alur kerja.",
-            "White balance tangkapan memerlukan original RAW. Untuk JPEG, HEIF, TIFF, atau file lain yang telah diproses, gunakan Edit Temp/Tint."
+            "Keseimbangan putih tangkap berada di bagian atas bagian Warna untuk original RAW dan bekerja dengan Film aktif atau nonaktif: pilih Seperti diambil, Otomatis, preset, atau Kustom untuk mengatur suhu dalam kelvin dan tint kamera. Untuk JPEG, HEIF, TIFF, atau file yang sudah diproses lainnya, blok ini disembunyikan; gunakan Edit Temp/Tint."
           ],
           "steps": [
             "Aktifkan Film, pilih stok, dan sesuaikan Kamera EV.",
@@ -2527,7 +2702,11 @@
         "kualitas",
         "ukuran penuh",
         "resolusi",
-        "preset"
+        "preset",
+        "bingkai",
+        "bingkai foto",
+        "matte",
+        "margin"
       ],
       "sections": [
         {
@@ -2540,6 +2719,17 @@
             "Buka Ekspor dan pilih preset di bagian atas.",
             "Atur Dimensi ke ukuran Penuh atau batas sisi terpanjang.",
             "Periksa Pratinjau keluaran: ukuran yang diekspor mencerminkan rotasi dan pangkasan, dan batas sisi panjang akan mengecilkan gambar yang lebih besar tanpa memperbesar yang lebih kecil."
+          ]
+        },
+        {
+          "title": "Tambahkan bingkai",
+          "paragraphs": [
+            "Bingkai di Lanjutan menambahkan margin polos berwarna putih, abu-abu, atau hitam di sekeliling setiap foto yang diekspor. Margin ditambahkan setelah pengubahan ukuran, sehingga lebarnya merupakan proporsi dari sisi panjang hasil akhir dan keluaran lebih besar daripada foto sebesar margin tersebut di setiap sisi."
+          ],
+          "steps": [
+            "Buka Ekspor dan perluas Lanjutan.",
+            "Pilih Tipis, Sedang, atau Lebar di Bingkai, lalu pilih Warna bingkai.",
+            "Periksa Pratinjau keluaran untuk dimensi akhir."
           ]
         },
         {
@@ -2663,7 +2853,10 @@
         "dinilai",
         "batch",
         "batal",
-        "progres"
+        "progres",
+        "lembar kontak",
+        "lembar cetak coba",
+        "cetak indeks"
       ],
       "sections": [
         {
@@ -2686,6 +2879,22 @@
             "Foto terpilih menggunakan foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka menggunakan foto aktif. Periksa jumlah foto dan nama di Ekspor sebelum mulai.",
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
             "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
+          ]
+        },
+        {
+          "title": "Buat lembar kontak",
+          "paragraphs": [
+            "Lembar Kontak… di Ekspor menata foto yang dipilih di bidang Foto pada satu JPEG berketerangan, dengan editan Anda diterapkan. Dapat memuat hingga 200 foto."
+          ],
+          "steps": [
+            "Buka Ekspor lalu atur Foto dan folder tujuan.",
+            "Klik Lembar Kontak… lalu pilih Kolom, Lebar lembar, Latar belakang, dan Judul.",
+            "Pilih keterangan: Nama file, Stok film, dan Rating.",
+            "Klik Buat Lembar. Dialog menampilkan progres, dan notifikasi memberi tahu jalur file yang disimpan."
+          ],
+          "tips": [
+            "Lembar disimpan dengan nama contact-sheet diikuti tanggal dan waktu. Foto yang tidak dapat dirender akan dilewati dan dihitung dalam notifikasi.",
+            "Pilih lebih banyak kolom jika pilihan yang besar membuat lembar terlalu tinggi untuk dibuat."
           ]
         }
       ],
@@ -2852,7 +3061,8 @@
         {
           "title": "Default untuk foto tanpa edit",
           "paragraphs": [
-            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan."
+            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan.",
+            "Terapkan profil lensa yang cocok secara otomatis, aktif secara default, menyalakan profil lensa untuk foto yang kamera dan lensanya cocok persis dengan satu profil dan pengaturan lensanya belum pernah disimpan. Matikan untuk membuka setiap foto dengan profil nonaktif."
           ],
           "steps": [
             "Buka Pengaturan → Default Develop.",
@@ -3285,5 +3495,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

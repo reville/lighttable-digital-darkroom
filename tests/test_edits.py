@@ -293,5 +293,113 @@ class LocalEditTests(unittest.TestCase):
         self.assertTrue(profile["hasDistortion"])
 
 
+def _full_selection(values):
+    return {"type": "subject", "opacity": 1.0, "grade": values,
+            "bitmap": {"width": 1, "height": 1, "data": base64.b64encode(b"\xff").decode()}}
+
+
+class RetouchAndLocalEffectTests(unittest.TestCase):
+    def setUp(self):
+        rng = np.random.default_rng(1)
+        self.clean = np.clip(0.45 + rng.normal(0, 0.02, (300, 400, 3)), 0, 1).astype(np.float32)
+
+    def test_new_retouch_fields_are_bounded_and_kept_per_mode(self):
+        dust, stroke, clone = edits.clean_heals([
+            {"mode": "dust", "sensitivity": 9, "size": -1, "points": [[0, 0], [1, 1]]},
+            {"mode": "remove", "fill": "texture", "points": [[0.1, 0.2], [2, -1], "bad"]},
+            {"mode": "clone", "fill": "patch", "points": [[0, 0], [1, 1]]},
+        ])
+        self.assertEqual((dust["sensitivity"], dust["size"]), (1.0, edits.DUST_SIZE_RANGE[0]))
+        self.assertNotIn("points", dust)
+        self.assertEqual(stroke["fill"], "smooth")
+        self.assertEqual(stroke["points"], [[0.1, 0.2], [1.0, 0.0]])
+        self.assertNotIn("fill", clone)
+        self.assertNotIn("points", clone)
+        legacy = edits.clean_heals([{"mode": "remove"}])[0]
+        self.assertEqual(legacy["fill"], "smooth")
+        self.assertNotIn("points", legacy)
+
+    def test_dust_removal_repairs_marks_and_leaves_clean_grain(self):
+        dusty = self.clean.copy()
+        rng = np.random.default_rng(4)
+        for y, x in rng.integers(20, 280, (25, 2)):
+            dusty[y - 2:y + 3, x - 2:x + 3] = 0.98
+        dusty[60:240, 200:202] = 0.05
+        spot = {"mode": "dust", "sensitivity": 0.5, "size": 0.01}
+        repaired = edits.apply_heals(dusty, [spot])
+        before = float(np.abs(dusty - self.clean).mean())
+        after = float(np.abs(repaired - self.clean).mean())
+        self.assertLess(after, before * 0.2)
+        defects, _ = edits.dust_defects(self.clean, 0.5, 0.01)
+        self.assertEqual(int(defects.sum()), 0)
+        np.testing.assert_allclose(edits.apply_heals(self.clean, [spot]), self.clean, atol=1e-6)
+
+    def test_dust_sensitivity_and_size_select_more_marks(self):
+        dusty = self.clean.copy()
+        dusty[100:104, 100:104] = 0.7
+        dusty[150:160, 250:260] = 0.95
+        counts = [int(edits.dust_defects(dusty, value, 0.01)[0].sum()) for value in (0.0, 1.0)]
+        self.assertLessEqual(counts[0], counts[1])
+        sizes = [int(edits.dust_defects(dusty, 0.5, value)[0].sum()) for value in (0.004, 0.02)]
+        self.assertLess(sizes[0], sizes[1])
+
+    def test_stroke_remove_covers_the_whole_path_with_either_fill(self):
+        damaged = self.clean.copy()
+        damaged[140:146, 40:360] = 0.0
+        stroke = {"id": "stroke", "mode": "remove", "radius": 0.02, "feather": 0.2,
+                  "points": [[0.1, 0.475], [0.9, 0.475]]}
+        region = (slice(140, 146), slice(50, 350))
+        for fill in ("patch", "smooth"):
+            repaired = edits.apply_heals(damaged, [dict(stroke, fill=fill)])
+            error = float(np.abs(repaired[region] - self.clean[region]).mean())
+            self.assertLess(error, 0.05, fill)
+        untouched = (slice(0, 100), slice(0, 400))
+        repaired = edits.apply_heals(damaged, [dict(stroke, fill="patch")])
+        np.testing.assert_array_equal(repaired[untouched], damaged[untouched])
+
+    def test_patch_fill_is_seeded_by_the_correction_identity(self):
+        damaged = self.clean.copy()
+        damaged[100:130, 150:200] = 1.0
+        spot = {"id": "a", "mode": "remove", "fill": "patch", "target": [0.44, 0.38],
+                "radius": 0.08, "feather": 0.3}
+        first = edits.apply_heals(damaged, [spot])
+        second = edits.apply_heals(damaged, [spot])
+        np.testing.assert_array_equal(first, second)
+        self.assertLess(float(first[115, 175].mean()), 0.7)
+
+    def test_lens_blur_softens_only_the_selection_and_grows_with_amount(self):
+        checker = np.zeros((120, 160, 3), dtype=np.float32)
+        checker[(np.indices((120, 160)).sum(axis=0) % 2) == 0] = 1.0
+        half = {"type": "radial", "center": [0.25, 0.5], "radius": 0.3, "feather": 0.0,
+                "grade": {"blur": 0.5}}
+        blurred = edits.apply_masks(checker, [half])
+        detail = lambda image: float(np.abs(np.diff(image[..., 0], axis=1)).mean())
+        self.assertLess(detail(blurred[40:80, 20:60]), 0.2)
+        np.testing.assert_array_equal(blurred[:, 130:], checker[:, 130:])
+        readings = [detail(edits.apply_masks(checker, [_full_selection({"blur": value})]))
+                    for value in (0.05, 0.3, 1.0)]
+        self.assertGreater(readings[0], readings[1])
+        self.assertGreaterEqual(readings[1], readings[2])
+        self.assertEqual(edits.clean_local_grade({"blur": 4})["blur"], 1.0)
+
+    def test_luminosity_curve_matches_rgb_curve_luminance_without_its_colour_shift(self):
+        ramp = np.tile(np.linspace(0, 1, 200, dtype=np.float32)[None, :, None], (20, 1, 3))
+        ramp[..., 0] *= 0.4
+        curve = (np.linspace(0, 1, 256) ** 0.5).tolist()
+        rgb = edits.apply_masks(ramp, [_full_selection({"curveL": curve})])
+        luminosity = edits.apply_masks(ramp, [_full_selection(
+            {"curveL": curve, "curveLuminosity": True})])
+        import grade
+        middle = (slice(None), slice(30, 170))
+        np.testing.assert_allclose((luminosity @ grade.LUMA)[middle],
+                                   (rgb @ grade.LUMA)[middle], atol=2e-3)
+        source_spread = (ramp[..., 1] - ramp[..., 0])[middle]
+        self.assertLess(float(np.abs((luminosity[..., 1] - luminosity[..., 0])[middle]
+                                     - source_spread).mean()),
+                        float(np.abs((rgb[..., 1] - rgb[..., 0])[middle] - source_spread).mean()))
+        self.assertTrue(edits.clean_local_grade({"curveLuminosity": True})["curveLuminosity"])
+        self.assertNotIn("curveLuminosity", edits.clean_local_grade({"curveLuminosity": "yes"}))
+
+
 if __name__ == "__main__":
     unittest.main()

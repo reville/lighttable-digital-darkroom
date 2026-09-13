@@ -130,6 +130,10 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     if (offer) {
       offer.hidden = !hasSidecars;
     }
+    // People arriving from another editor usually have presets too; the
+    // button reuses the ordinary preset import rather than a second flow.
+    const presets = el('setupImportPresets');
+    if (presets) presets.hidden = !['lightroom', 'folder'].includes(source);
     setPage('result');
     show(true);
   }
@@ -175,6 +179,13 @@ export function installFirstRunSetup({ el, post, sendNative, nativeBridge,
     sidecarOfferBtn.onclick = async () => {
       await finish('completed', resultSource);
       el('importSidecarsBtn')?.click();
+    };
+  }
+  const presetImportBtn = el('setupImportPresets');
+  if (presetImportBtn) {
+    presetImportBtn.onclick = async () => {
+      await finish('completed', resultSource);
+      el('presetImport')?.click();
     };
   }
   el('setupPhotos').onclick = () => { capabilities(); setPage('photos'); };

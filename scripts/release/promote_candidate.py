@@ -323,7 +323,33 @@ def created_draft_state(tag):
     return state
 
 
-def plan_or_publish(manifest_path, candidate, platform, apply):
+def release_notes_args(tag, version, notes_file=None):
+    """Return command line options for release notes, prepending human notes if staged."""
+    human_notes = None
+    if notes_file and Path(notes_file).is_file():
+        human_notes = Path(notes_file).read_text().strip()
+    else:
+        for candidate in (
+            ROOT / f'docs/releases/notes/{tag}.md',
+            ROOT / f'docs/releases/notes/v{version}.md',
+            ROOT / f'release/notes/v{version}.md',
+        ):
+            if candidate.is_file():
+                human_notes = candidate.read_text().strip()
+                break
+    if not human_notes:
+        return ['--generate-notes']
+    try:
+        response = json.loads(release.gh('api', f'repos/{release.REPOSITORY}/releases/generate-notes',
+                                         '-f', f'tag_name={tag}'))
+        generated = response.get('body', '').strip()
+    except Exception:
+        generated = ''
+    combined = f"{human_notes}\n\n{generated}".strip() if generated else human_notes
+    return ['--notes', combined]
+
+
+def plan_or_publish(manifest_path, candidate, platform, apply, notes_file=None):
     """Called only after artifact and external-proof verification succeeds."""
     manifest = release.read_json(manifest_path)
     tag = manifest.get('tag', 'v' + manifest['version'])
@@ -342,10 +368,11 @@ def plan_or_publish(manifest_path, candidate, platform, apply):
     else:
         if create_draft:
             options = ['--prerelease'] if '-beta.' in manifest['version'] else []
+            notes_opts = release_notes_args(tag, manifest['version'], notes_file=notes_file)
             # --verify-tag forbids synthesizing a source tag. A concurrent creation
             # fails safely; a later retry observes it and checks immutable assets.
             release.gh('release', 'create', tag, '--repo', release.REPOSITORY,
-                       '--verify-tag', '--draft', '--latest=false', '--generate-notes',
+                       '--verify-tag', '--draft', '--latest=false', *notes_opts,
                        '--title', 'LightTable ' + manifest['version'], *options)
             state = created_draft_state(tag)
             require(state is not None and state['isDraft']
@@ -397,7 +424,8 @@ def promote(args):
         require(not gates, '; '.join(gates))
         release.write_json(manifest_path, manifest)
         require(not args.advance_feed or (feed is not None and entry['update_owner'] == 'app'), 'This platform channel does not support app-owned updates')
-        result, state = plan_or_publish(manifest_path, candidate, args.platform, args.apply)
+        result, state = plan_or_publish(manifest_path, candidate, args.platform, args.apply,
+                                        notes_file=getattr(args, 'notes_file', None))
         result.update(ok=True, platform=args.platform, version=args.version, tag=tag,
                       source_revision=args.source_revision,
                       release_url=state.get('url'), published_release=not state['isDraft'],
@@ -433,6 +461,7 @@ def main(argv=None):
         parser.add_argument('--' + name, required=True)
     parser.add_argument('--manifest-run-id')
     parser.add_argument('--native-run-id')
+    parser.add_argument('--notes-file', help='Path to staged release notes markdown file')
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--make-public', action='store_true')
     parser.add_argument('--advance-feed', action='store_true')

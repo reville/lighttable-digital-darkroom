@@ -95,7 +95,11 @@ def exercised() -> dict[str, set[str]]:
             record({f"heal.mode.{heal.get('mode', 'heal')}"}, "export")
             record({f"heal.{field}" for field in heal
                     if field in ("radius", "feather", "opacity", "enabled")}, "export")
-            record({f"heal.{field}" for field in ("target", "source")
+            record({f"heal.{field}" for field in ("target", "source", "points")
+                    if field in heal}, "export")
+            if "fill" in heal:
+                record({f"heal.fill.{heal['fill']}"}, "export")
+            record({f"heal.dust.{field}" for field in ("sensitivity", "size")
                     if field in heal}, "export")
     film_cases = {**processing_reference.CASES, **processing_reference.BW_CASES}
     for overrides in film_cases.values():

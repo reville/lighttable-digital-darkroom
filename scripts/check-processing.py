@@ -38,6 +38,7 @@ def provenance():
         return result.stdout.strip()
     paths = ['film_pipeline.py', 'grade.py', 'edits.py', 'mask_raster.py', 'render_cli.py',
              'web/mask-raster.js', 'web/mask-shape.js', 'web/mask-curve.js',
+             'semantic_masks.py', 'film_lab_ai/hair_segmentation.py', 'film_lab_ai/hair_model_asset.py',
              'gpu_compute.py', 'merge_acceleration.py', 'merge_workflow.py',
              'color_pipeline.py', 'web/gl.js', 'app/NativePreview.swift', 'app/NativePreview.metal']
     paths += [str(path.relative_to(ROOT)) for path in (ROOT / 'tests').glob('*processing*') if path.is_file()]
