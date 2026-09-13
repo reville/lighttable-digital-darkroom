@@ -111,9 +111,14 @@ def merge_mapping(base: dict, patch: dict) -> dict:
 OPTICS_DEFAULTS = {
     "profileEnabled": False, "profileOverride": None,
     "profileDistortion": True, "profileVignette": True,
+    "profileChromatic": True,
     "flipHorizontal": False, "flipVertical": False, "distortion": 0.0,
     "vignette": 0.0, "vertical": 0.0, "horizontal": 0.0, "rotate": 0.0,
     "scale": 1.0,
+    "defringePurple": 0.0, "defringePurpleHueStart": 250.0,
+    "defringePurpleHueEnd": 330.0,
+    "defringeGreen": 0.0, "defringeGreenHueStart": 90.0,
+    "defringeGreenHueEnd": 150.0,
 }
 PRESET_LAYERED = ("masks", "heals")
 

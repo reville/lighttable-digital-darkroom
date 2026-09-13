@@ -9,7 +9,7 @@ export const TRANSFER_GROUPS = [
   ['tone', tr("Tone"), tr("Exposure, contrast, highlights, shadows and master curve")],
   ['color', tr("Color"), tr("White balance, HSL, color curves and grading")],
   ['detail', tr("Detail and effects"), tr("Sharpening, noise, clarity, texture and vignette")],
-  ['optics', tr("Lens corrections"), tr("Lens profile, distortion and chromatic aberration")],
+  ['optics', tr("Lens corrections"), tr("Lens profile, distortion, chromatic aberration and defringe")],
   ['crop', tr("Crop and geometry"), tr("Crop, rotation, flips and perspective")],
   ['masks', tr("Local masks"), tr("Replace local masks; detect AI selections on each photo")],
   ['heals', tr("Healing"), tr("Copy spot positions; use only with matching framing")],

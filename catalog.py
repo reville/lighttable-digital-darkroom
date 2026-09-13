@@ -49,7 +49,7 @@ import dam_filters
 import file_identity
 import media_availability
 
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 9  # 9: saved Whites values negated for the corrected control sign
 
 
 class CatalogVersionError(RuntimeError):
@@ -472,6 +472,59 @@ def _search_index_report(conn: sqlite3.Connection) -> dict:
         return {"ok": False, "images": images, "error": str(error)}
     return {"ok": stale == 0 and unindexed == 0, "images": images,
             "indexed": indexed, "stale": stale, "unindexed": unindexed}
+
+
+def _upgrade_saved_edits(conn: sqlite3.Connection, from_version: int) -> int:
+    """Rewrite every stored edit record as the current edit schema reads it.
+
+    Image states, version checkpoints and history steps all hold complete
+    recipes, and a recipe written under an older meaning of a control has
+    to be translated so the photo keeps its appearance. Returns the number
+    of rows rewritten. Runs inside the caller's migration transaction.
+    """
+    import zlib
+
+    import edit_schema
+
+    changed = 0
+    for row in conn.execute(
+            "SELECT image_id, grade_json, masks_json FROM image_state"
+            " WHERE grade_json IS NOT NULL OR masks_json IS NOT NULL").fetchall():
+        grade = _json_or(row["grade_json"])
+        masks = _json_or(row["masks_json"])
+        upgraded = edit_schema.upgrade_edit(
+            {"grade": grade, "masks": masks}, from_version)
+        if upgraded["grade"] == grade and upgraded["masks"] == masks:
+            continue
+        conn.execute(
+            "UPDATE image_state SET grade_json=?, masks_json=? WHERE image_id=?",
+            (None if row["grade_json"] is None
+             else json.dumps(upgraded["grade"], separators=(",", ":")),
+             None if row["masks_json"] is None
+             else json.dumps(upgraded["masks"], separators=(",", ":")),
+             row["image_id"]))
+        changed += 1
+    for row in conn.execute("SELECT id, state_json FROM versions").fetchall():
+        state = _json_or(row["state_json"])
+        upgraded = edit_schema.upgrade_edit(state, from_version)
+        if upgraded == state:
+            continue
+        conn.execute("UPDATE versions SET state_json=? WHERE id=?",
+                     (json.dumps(upgraded), row["id"]))
+        changed += 1
+    for row in conn.execute("SELECT id, state_blob FROM history").fetchall():
+        try:
+            state = json.loads(zlib.decompress(row["state_blob"]).decode("utf-8"))
+        except (TypeError, ValueError, UnicodeDecodeError, zlib.error):
+            continue
+        upgraded = edit_schema.upgrade_edit(state, from_version)
+        if upgraded == state:
+            continue
+        blob = zlib.compress(
+            json.dumps(upgraded, separators=(",", ":")).encode("utf-8"), 6)
+        conn.execute("UPDATE history SET state_blob=? WHERE id=?", (blob, row["id"]))
+        changed += 1
+    return changed
 
 
 def _rebuild_search_index(conn: sqlite3.Connection) -> int:
@@ -1030,6 +1083,8 @@ class Catalog:
                 state_columns = {row[1] for row in conn.execute("PRAGMA table_info(image_state)")}
                 if "preset_json" not in state_columns:
                     conn.execute("ALTER TABLE image_state ADD COLUMN preset_json TEXT")
+            if from_version < 9:
+                _upgrade_saved_edits(conn, 1)
             conn.execute(
                 "UPDATE meta SET value=? WHERE key='schema_version'",
                 (str(SCHEMA_VERSION),),

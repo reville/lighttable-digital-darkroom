@@ -57,6 +57,28 @@ class CameraProfileDevelopTests(unittest.TestCase):
                          color_pipeline.raw_decode_fingerprint(
                              {"camera_profile": "Missing Camera Adobe Standard.dcp"}))
 
+    def test_parallel_develop_matches_the_reference_with_a_profile(self):
+        kernels = color_pipeline._develop_kernels()
+        if kernels is None:
+            self.skipTest("needs numba")
+        codes = (_scene() * 65535.0).astype(np.uint16)
+        with tempfile.TemporaryDirectory() as folder:
+            curved = write_profile(Path(folder) / "Test Camera Standard.dcp",
+                                   tone_curve=[[0.0, 0.0], [0.5, 0.7], [1.0, 1.0]])
+            plain = write_profile(Path(folder) / "Test Camera Adobe Standard.dcp")
+            index = {curved.name: curved, plain.name: plain}
+            color_pipeline.CAMERA_PROFILE_RESOLVER = index.get
+            for path in (curved, plain):
+                params = fp.clean_params({"camera_profile": path.name})
+                for image in (codes, _scene()):
+                    for space in ("srgb", "display_p3"):
+                        self.assertEqual(
+                            color_pipeline._develop_with_kernels(
+                                kernels, image, params, "standard", space).tobytes(),
+                            color_pipeline._linear_prophoto_to_display_reference(
+                                image, params, "standard", space).tobytes(),
+                            f"{path.name} {image.dtype} {space}")
+
     def test_profile_tone_curve_replaces_the_built_in_curve(self):
         scene = _scene()
         with tempfile.TemporaryDirectory() as folder:

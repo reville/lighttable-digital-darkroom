@@ -42,8 +42,17 @@ def discard_surface(descriptor: dict) -> None:
         _libc().shm_unlink(name.encode("ascii"))
 
 
+# Pixel formats the worker publishes: sample dtype and bytes per pixel.
+SURFACE_FORMATS = {"rgb32f": (np.float32, 12), "rgb8": (np.uint8, 3)}
+
+
 def adopt_surface(descriptor: dict) -> np.ndarray:
-    """Adopt an immutable full-precision render, retaining all original f32 bits."""
+    """Adopt an immutable render, retaining every published sample bit.
+
+    ``rgb32f`` carries the full-precision film frame for the Python finisher;
+    ``rgb8`` carries the exact codes the engine's own JPEG encoder would have
+    received, so the export worker can encode them outside the engine gate.
+    """
     if not supported():
         raise OSError("shared export transport is unavailable on this platform")
     name = str(descriptor.get("name", ""))
@@ -56,10 +65,12 @@ def adopt_surface(descriptor: dict) -> np.ndarray:
     try:
         width, height = int(descriptor["width"]), int(descriptor["height"])
         row, length = int(descriptor["rowBytes"]), int(descriptor["length"])
-        if (width <= 0 or height <= 0 or row != width * 12
+        dtype, pixel_bytes = SURFACE_FORMATS.get(
+            str(descriptor.get("format")), (None, 0))
+        if (dtype is None or width <= 0 or height <= 0
+                or row != width * pixel_bytes
                 or length != row * height or length > MAX_SURFACE_BYTES
                 or descriptor.get("offset", 0) != 0
-                or descriptor.get("format") != "rgb32f"
                 or descriptor.get("byteOrder") != "native"):
             raise ValueError("invalid shared export layout")
         fd = libc.shm_open(encoded, os.O_RDONLY, 0)
@@ -69,7 +80,7 @@ def adopt_surface(descriptor: dict) -> np.ndarray:
         if os.fstat(fd).st_size < length:
             raise ValueError("shared export length exceeds allocation")
         mapping = mmap.mmap(fd, length, access=mmap.ACCESS_READ)
-        array = np.ndarray((height, width, 3), dtype=np.float32, buffer=mapping)
+        array = np.ndarray((height, width, 3), dtype=dtype, buffer=mapping)
         array.flags.writeable = False
         return array
     except Exception:

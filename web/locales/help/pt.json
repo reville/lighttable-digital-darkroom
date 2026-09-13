@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Aplique correções de lente e de aberração cromática",
       "category": "Editing",
-      "summary": "Use um perfil de lente correspondente ou selecionado manualmente, ou faça correções manuais quando um perfil exato não estiver disponível.",
+      "summary": "Use um perfil de lente correspondente ou selecionado manualmente, corrija a aberração cromática, remova franjas roxas e verdes, ou faça correções manuais quando um perfil exato não estiver disponível.",
       "keywords": [
         "lente",
         "perfil",
@@ -1148,6 +1148,9 @@
         "sombreamento",
         "aberração cromática",
         "franjas",
+        "remover franjas",
+        "franja roxa",
+        "franja verde",
         "vermelho ciano",
         "azul amarelo",
         "óptica"
@@ -1156,18 +1159,21 @@
         {
           "title": "Escolher e verificar uma correção",
           "paragraphs": [
-            "Expanda Correções de lente em Editar. O cartão de perfil explica a correspondência automática de câmera/lente e se há um perfil utilizável disponível."
+            "Expanda Correções de lente em Editar. O cartão de perfil explica a correspondência automática de câmera/lente e se há um perfil utilizável disponível. O painel também mostra a versão do banco de dados de lentes em uso e quantas câmeras e lentes ele lista; o banco de dados vem com a biblioteca de lentes, não com o LightTable.",
+            "Quando a câmera e a lente nos metadados da foto correspondem exatamente a um único perfil, Usar o perfil de lente correspondente fica ligado assim que a foto abre e vale também para miniaturas e exportações. Uma correspondência inferida ou ambígua permanece desligada. Ajustes → Padrões de revelação → Aplicar automaticamente o perfil de lente correspondente desativa esse comportamento; fotos com ajustes de lente salvos os mantêm de qualquer forma."
           ],
           "steps": [
             "Leia o nome do perfil e a explicação da correspondência.",
-            "Ative Usar perfil de lente correspondente quando houver um perfil disponível e depois escolha Corrigir distorção e Corrigir sombreamento da lente conforme necessário.",
+            "Ative Usar o perfil de lente correspondente quando houver um perfil disponível e depois escolha Corrigir distorção, Corrigir o sombreamento da lente e Corrigir aberração cromática conforme necessário. Cada chave é independente, então a aberração cromática pode ser corrigida sem alterar a geometria.",
             "Se necessário, escolha uma entrada diferente em Lens profile e compare a correção com o original.",
-            "Refine os controles manuais de Distorção e Vinheta. Para halos coloridos, ajuste Vermelho / Ciano e Azul / Amarelo em Aberração cromática."
+            "Refine os controles manuais de Distorção e Vinheta. Para halos coloridos, ajuste Vermelho / Ciano e Azul / Amarelo em Aberração cromática.",
+            "Em Remover franjas, aumente Roxo ou Verde para retirar essa cor de pixels muito saturados junto a bordas duras. Os controles de início e fim do matiz definem a faixa de matizes que cada controle trata; um início maior que o fim passa pelo vermelho."
           ],
           "tips": [
             "Quando não é encontrado um perfil de lente exato, os controles manuais de distorção e perspectiva ficam disponíveis.",
-            "As caixas de seleção de distorção e sombreamento do perfil ficam ativadas somente quando o perfil selecionado fornece essa correção e o perfil está ativado.",
+            "As caixas de seleção de distorção, sombreamento e aberração cromática do perfil ficam ativadas somente quando o perfil selecionado fornece essa correção e o perfil está ativado.",
             "Um perfil selecionado manualmente precisa de verificação visual; a seleção não estabelece que seja uma correspondência exata.",
+            "Remover franjas trata o contorno de um assunto grande roxo ou verde como uma franja. Reduza a quantidade ou estreite a faixa de matiz se um assunto perder cor na borda.",
             "As correções de lente e de franjas permanecem não destrutivas durante a exportação."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Neutralizar uma dominante de cor",
           "paragraphs": [
-            "A seção Cor em Editar contém Temp e Matiz, além de um conta-gotas de balanço de branco ao lado de Temp. Esses são os controles de acabamento do painel Editar."
+            "A seção Cor em Editar contém Temp e Matiz, além de um conta-gotas de balanço de branco ao lado de Temp. Esses são os controles de acabamento do painel Editar.",
+            "Para um original RAW, um bloco Balanço de branco da captura fica acima deles com Como capturado, Auto, predefinições e Personalizado para uma temperatura em kelvin e um matiz de captura. Ele revela novamente os dados RAW e funciona com Filme ligado ou desligado; fica oculto para arquivos processados."
           ],
           "steps": [
             "Abra Editar e expanda Cor.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Edição"
     },
@@ -2352,7 +2360,7 @@
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
             "Uma película de filme descreve o processo físico do filme. Uma predefinição de edição pode conter ajustes salvos mais amplos e também pode incluir configurações de Filme. O menu Saída dentro de Filme escolhe uma receita de digitalização ou impressão; ele não exporta um arquivo.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
           ],
           "tips": [
             "Se um filme não estiver disponível, ele pode exigir o mecanismo da GPU. A disponibilidade do mecanismo é mostrada em Ajustes → Desempenho."
@@ -2434,7 +2442,7 @@
           "title": "Controles de captura e controles de finalização",
           "paragraphs": [
             "EV da Câmera e balanço de branco da Captura atuam antes da exposição do filme. Exposição e Temp/Matiz no painel Editar são ajustes finais mais adiante no fluxo de trabalho.",
-            "O balanço de branco de captura requer um original RAW. Para um JPEG, HEIF, TIFF ou outro arquivo processado, use Editar Temp/Matiz."
+            "O balanço de branco da captura fica no topo da seção Cor para originais RAW e funciona com Filme ligado ou desligado: escolha Como capturado, Auto, uma predefinição ou Personalizado para definir uma temperatura em kelvin e um matiz de captura. Para JPEG, HEIF, TIFF ou outro arquivo processado, o bloco fica oculto; use Editar Temp/Matiz."
           ],
           "steps": [
             "Ative Filme, escolha um filme e ajuste a EV da Câmera.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Padrões para fotos sem edição",
           "paragraphs": [
-            "As predefinições padrão de revelação se aplicam apenas a fotos que ainda não têm edições salvas. Elas podem iniciar o Filme ativado, escolher um fluxo de trabalho e um perfil de revelação neutro, e aplicar uma predefinição padrão."
+            "As predefinições padrão de revelação se aplicam apenas a fotos que ainda não têm edições salvas. Elas podem iniciar o Filme ativado, escolher um fluxo de trabalho e um perfil de revelação neutro, e aplicar uma predefinição padrão.",
+            "Aplicar automaticamente o perfil de lente correspondente, ativado por padrão, liga o perfil de lente para fotos cuja câmera e lente correspondem exatamente a um único perfil e cujos ajustes de lente nunca foram salvos. Desative para abrir todas as fotos com o perfil desligado."
           ],
           "steps": [
             "Abra Configurações → Padrões de Revelação.",
@@ -3214,8 +3223,8 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
-            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas. Também é preparada uma pré-visualização padrão de cada RAW para que a foto abra sem esperar por uma decodificação completa.",
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
             "Ao mudar de foto com o zoom ampliado, o LightTable mostra imediatamente uma pré-visualização correspondente em cache, se disponível. Os detalhes mais nítidos são carregados em segundo plano e as fotos próximas são pré-carregadas para o seu nível de zoom.",
             "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

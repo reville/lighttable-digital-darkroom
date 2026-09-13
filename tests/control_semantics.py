@@ -404,6 +404,15 @@ COVERED_ELSEWHERE = {
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
     "optics.profileOverride":
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
+    "optics.profileChromatic":
+        "needs a matched lens profile; covered by tests/test_lens_matching.py",
+}
+# Defringe hue ranges only do something while an amount is raised.
+OPTICS_COMPANION: dict[str, dict] = {
+    "defringePurpleHueStart": {"defringePurple": 1.0},
+    "defringePurpleHueEnd": {"defringePurple": 1.0},
+    "defringeGreenHueStart": {"defringeGreen": 1.0},
+    "defringeGreenHueEnd": {"defringeGreen": 1.0},
 }
 
 CLIENT_DERIVED = {
@@ -414,18 +423,9 @@ CLIENT_DERIVED = {
 }
 
 # Verified defects, kept visible instead of blessed. Each entry states what
-# the control does today and why that is wrong; removing the inversion should
+# the control does today and why that is wrong; fixing the control should
 # make the matching claim pass and this entry must then be deleted.
-TRACKED_DEFECTS = {
-    "local.whites":
-        "Same inverted endpoint as grade.whites, reached through a mask.",
-    "grade.whites":
-        "Whites is inverted: the endpoint is 1 + whites * 0.35, so a positive "
-        "value lowers the white point and darkens the highlights. Blacks, in "
-        "the same block, lifts with a positive value, and every comparable "
-        "editor brightens on +Whites. Python, the WebGL shader and the Rust "
-        "engine all agree, so no parity gate can see it.",
-}
+TRACKED_DEFECTS: dict[str, str] = {}
 
 # Controls whose claim is inherently non-monotonic, with the reason.
 WRAPPING = {
@@ -462,6 +462,10 @@ CLAIMS.update({
                           "corrects horizontal converging lines"),
     "optics.vertical": (keystone("vertical"), +1,
                         "corrects vertical converging lines"),
+    "optics.defringePurple": (band_chroma("purple"), -1,
+                              "drains purple colour from hard edges"),
+    "optics.defringeGreen": (band_chroma("green"), -1,
+                             "drains green colour from hard edges"),
     "mask.opacity": (affected_strength, +1, "strengthens the masked edit"),
     "mask.radial.radius": (affected_area, +1, "grows the selected area"),
     "mask.radial.radiusX": (affected_area, +1, "widens the selected ellipse"),
@@ -479,6 +483,10 @@ WRAPPING.update({
     "mask.radial.angle": "rotates the ellipse; symmetric about zero",
     "optics.rotate": "rotates the frame; symmetric about zero",
     "optics.distortion": "barrel one way, pincushion the other",
+    "optics.defringePurpleHueStart": "hue arc start; wraps through red",
+    "optics.defringePurpleHueEnd": "hue arc end; wraps through red",
+    "optics.defringeGreenHueStart": "hue arc start; wraps through red",
+    "optics.defringeGreenHueEnd": "hue arc end; wraps through red",
 })
 
 
@@ -584,7 +592,10 @@ def _apply_local(base, name, value):
 
 def _apply_optics(base, name, value):
     sent = {} if value is OMIT else {name: value}
-    return edits.apply_manual_optics(base, edits.clean_optics(sent))
+    optics = edits.clean_optics({**_without(OPTICS_COMPANION.get(name, {}), name), **sent})
+    # The same base stage export runs: defringe, then manual geometry. No
+    # lens profile is supplied, so the profile switches are audited elsewhere.
+    return edits.apply_base(base, optics)
 
 
 # A mask that selects the left half, so a geometry or strength control has a
