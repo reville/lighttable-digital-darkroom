@@ -2387,6 +2387,11 @@ class Catalog:
             ids = self.image_ids_for_names(spec["names"])
             where.append("i.id IN (SELECT value FROM json_each(?))")
             params.append(json.dumps(ids))
+        if spec.get("hideUnavailable"):
+            # Originals the scan found offline, empty, or not yet downloaded.
+            where.append(
+                "COALESCE(f.availability,'local') NOT IN"
+                " ('cloud-only','unavailable','empty')")
         if isinstance(spec.get("excludeNames"), list) and spec["excludeNames"]:
             # Photos the browser has learned it cannot display are its
             # knowledge alone; it hands the names over rather than paging the

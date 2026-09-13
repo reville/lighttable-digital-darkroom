@@ -560,6 +560,17 @@ input[type=checkbox]:disabled { opacity:.4; }
 .library-tools label > span { margin:0; }
 .library-tools select { width:116px; }
 .library-tools .thumbnail-size-control { width:126px; }
+.library-tools .sort-direction { width:26px; min-width:26px; padding:0; font-size:13px; line-height:1; }
+.library-tools .sort-direction[aria-pressed="true"] { color:var(--ink); }
+/* A row the server view has not paged in yet keeps its slot and size. */
+.cell.placeholder, .thumb.placeholder { background:#1a1a1a; pointer-events:none; }
+.cell.placeholder::before, .thumb.placeholder::before {
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.035), transparent);
+  animation:placeholder-sheen 1.4s linear infinite;
+}
+@keyframes placeholder-sheen { from { transform:translateX(-100%); } to { transform:translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .cell.placeholder::before, .thumb.placeholder::before { animation:none; } }
 .library-tools #gridSize { min-width:70px; }
 .library-filter-btn { display:flex; align-items:center; gap:6px; white-space:nowrap; }
 .library-filter-btn svg { width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
