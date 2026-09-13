@@ -574,6 +574,7 @@
           "title": "Ukryj zdjęcia, których nie można wyświetlić",
           "paragraphs": [
             "Gdy w siatce jest widoczny błąd miniatury, wybierz Ukryj zdjęcia, których nie można wyświetlić obok podsumowania lokalizacji. Włącza to odpowiedni przełącznik w panelu Filtr. Jest on domyślnie wyłączony, a jego ustawienie jest zapisywane między sesjami. Ten przełącznik nie jest zapisywany w regułach kolekcji inteligentnych.",
+            "Na taśmie filmowej ten link pojawia się pod liczbą zdjęć tylko wtedy, gdy bieżąca lista zawiera zdjęcia, których nie można wyświetlić.",
             "Przełącznik ukrywa zdjęcia, o których wiadomo, że są niedostępne lub znajdują się tylko w chmurze, oraz zdjęcia z wykrytymi błędami miniatur lub podglądów. Inne błędy dekodowania są wykrywane podczas wczytywania zdjęć. Wyłącz przełącznik, usuń jego znacznik filtra lub wybierz Wyczyść wszystko, aby ponownie pokazać zdjęcia. Pomyślna operacja Spróbuj ponownie lub zmiana oryginału usuwa zapisany błąd."
           ]
         },
@@ -1970,7 +1971,8 @@
         {
           "title": "Wybierz osoby lub obszary twarzy",
           "paragraphs": [
-            "Osoby oferuje Osoba, Skóra twarzy, Oczy, Brwi, Usta, Zęby, Włosy i Wygładź skórę. Te elementy sterujące wymagają pomocnika Vision w macOS 14 lub nowszym i są ukryte w systemach Linux i Windows. Skóra twarzy i włosy są szacowane, a tożsamość nie jest wnioskowana."
+            "Osoby oferuje Person i Hair na każdej platformie. Face skin, Eyes, Eyebrows, Lips, Teeth i Soften skin wymagają pomocnika Vision w macOS 14 lub nowszym. Face skin jest szacowana i nie jest wnioskowana tożsamość.",
+            "Hair używa dołączonego modelu, który działa lokalnie i wybiera włosy poza twarzą, w tym włosy do ramion. Sprawdź cienkie pasma, jasne światła, peruki i małe osoby w tle; te elementy nadal mogą zostać pominięte. Starsze wersje lub kompilacje źródłowe bez modelu używają wcześniejszego oszacowania Vision, jeśli jest dostępne. Istniejące zapisane maski zachowują swoje zaznaczenia."
           ],
           "steps": [
             "Wybierz Osoby, a potem część, którą chcesz dostosować.",
@@ -2352,7 +2354,7 @@
           "paragraphs": [
             "Podglądy nośnika zawierają edycje bieżącego zdjęcia. Przeglądanie i zamykanie okna podglądu nie stosuje nośnika; wybranie podglądu już tak.",
             "Nośnik filmu opisuje fizyczny proces filmowy. Preset edycyjny może zawierać szerszy zestaw zapisanych korekt, a także może obejmować ustawienia Filmu. Menu Wyjście wewnątrz Film wybiera recepturę skanu lub wydruku; nie eksportuje pliku.",
-            "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne."
+            "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Gdy Film jest włączony, pierwsza klatka zdjęcia, którego nie ma w pamięci podręcznej, korzysta z podglądu osadzonego przez aparat; wkrótce zastępuje go dokładna konwersja, a do tego czasu stan pokazuje „Ulepszanie RAW…”. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne."
           ],
           "tips": [
             "Jeśli nośnik jest niedostępny, może to wymagać silnika GPU. Dostępność silnika jest pokazana w Ustawienia → Wydajność."
@@ -3214,8 +3216,8 @@
         {
           "title": "Sprawdź, co zakończyło renderowanie",
           "paragraphs": [
-            "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe.",
-            "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
+            "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe. Przygotowywany jest także standardowy podgląd każdego pliku RAW, dzięki czemu zdjęcie otwiera się bez czekania na pełne dekodowanie.",
+            "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Gdy Film jest włączony, pierwsza klatka zdjęcia, którego nie ma w pamięci podręcznej, korzysta z podglądu osadzonego przez aparat; wkrótce zastępuje go dokładna konwersja, a do tego czasu stan pokazuje „Ulepszanie RAW…”. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
             "Podczas przełączania zdjęć w powiększeniu LightTable od razu pokazuje pasujący podgląd z pamięci podręcznej, jeśli jest dostępny. Ostrzejsze szczegóły wczytują się w tle, a sąsiednie zdjęcia są wstępnie wczytywane zgodnie z poziomem powiększenia.",
             "Powiększanie zachowuje najostrzejszy dostępny podgląd podczas wczytywania dodatkowych szczegółów. Przy pomniejszaniu ten podgląd jest używany ponownie. W skali 1:1 sprawdź podpowiedź przycisku przed oceną drobnych szczegółów.",
             "Jeśli dymek podpowiedzi przycisku 1:1 informuje, że rozmiar piksela podglądu jest mniejszy niż źródło, widzisz mniejszy dostarczony podgląd. Automatyczna rozdzielczość dopasowuje się do wyświetlacza i zwiększa swoje zapotrzebowanie przy powiększonym oglądaniu; bardzo duże źródła mogą przekroczyć limit żądania podglądu.",
@@ -3285,5 +3287,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

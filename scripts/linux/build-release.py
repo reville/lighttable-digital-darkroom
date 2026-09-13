@@ -142,6 +142,9 @@ def main() -> None:
         run("uv", "--no-config", "pip", "sync", "--python", python, "--system",
             "--break-system-packages", "--only-binary", ":all:", ROOT / "packaging/runtime-linux.lock",
             env=environment)
+        # Keep network preparation outside the pure resource-staging function.
+        run(python, "-B", ROOT / "scripts/fetch-hair-model.py", "--into",
+            bundle / "Resources/models", env=environment)
         run(python, ROOT / "scripts/fetch-color-profiles.py",
             bundle / "Resources/LightTable/color-profiles", env=environment)
         for manifest, binary, destination in (
@@ -188,6 +191,12 @@ def main() -> None:
         relocated = build / "moved bundle with spaces" / "LightTable"
         relocated.parent.mkdir()
         bundle.rename(relocated)
+        hair_environment = dict(environment)
+        hair_environment["PYTHONPATH"] = str(relocated / "Resources/LightTable")
+        hair_environment["LIGHTTABLE_MODEL_DIR"] = str(relocated / "Resources/models")
+        run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-hair-mask.py",
+            "--model-dir", relocated / "Resources/models",
+            "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
         run(relocated / "Python/bin/python3", "-B", relocated / "runtime-smoke.py", relocated,
             env=environment)
         filename = f"LightTable-{args.version}-linux-{architecture}.tar.gz"

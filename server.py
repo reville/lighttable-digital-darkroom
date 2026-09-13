@@ -374,7 +374,7 @@ def open_catalog() -> "catalog_module.Catalog | None":
     if FOLDER.is_dir():
         PRIMARY_SOURCE_ID = CATALOG.add_source(FOLDER)
     SCANNER = catalog_scan.ScanService(CATALOG, render_busy=RENDER_LOCK.locked,
-                                       on_local_file=THUMB_WARMUP.enqueue)
+                                       on_local_file=_enqueue_scan_warmups)
     return CATALOG
 
 
@@ -2049,8 +2049,11 @@ _NEUTRAL_CACHE_MAX_BYTES = int(os.environ.get(
     "LIGHTTABLE_NEUTRAL_CACHE_BYTES", str(1536 * 1024 * 1024)))
 _NEUTRAL_PREVIEW_CACHE_MAX_BYTES = int(os.environ.get(
     "LIGHTTABLE_NEUTRAL_PREVIEW_CACHE_BYTES", str(512 * 1024 * 1024)))
+# Standard previews built at import live here too: about 5 MB per RAW at
+# 1100 px, so the tier needs room for a few hundred photos plus the larger
+# working-set inputs. The unified cache budget still scales it.
 _RUST_INPUT_CACHE_MAX_BYTES = int(os.environ.get(
-    "LIGHTTABLE_RUST_INPUT_CACHE_BYTES", str(512 * 1024 * 1024)))
+    "LIGHTTABLE_RUST_INPUT_CACHE_BYTES", str(2 * 1024 * 1024 * 1024)))
 _EXPORT_FILM_CACHE_MAX_BYTES = int(os.environ.get(
     "LIGHTTABLE_EXPORT_CACHE_BYTES", str(1024 * 1024 * 1024)))
 _EDIT_CACHE_MAX_BYTES = int(os.environ.get(
@@ -2438,8 +2441,7 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                         denoise_cancel=denoise_cancel))
                     display = color_pipeline.linear_prophoto_to_display(
                         linear, params, output_space=output_space)
-                    tf.imwrite(temporary,
-                               (display * 65535.0 + 0.5).astype(np.uint16))
+                    tf.imwrite(temporary, color_pipeline.to_uint16(display))
                 else:
                     platform_image.convert_processed_to_tiff(
                         src, temporary, app_root=APP, output_space=output_space)
@@ -2497,7 +2499,7 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
                    linear.shape) if identity is not None else None
             def develop():
                 display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
-                return (display * 65535.0 + 0.5).astype(np.uint16)
+                return color_pipeline.to_uint16(display)
             image = NEUTRAL_DISPLAY_CACHE.get_or_build(
                 key, develop, raw_decode_runtime.check_cancel)
     else:
@@ -2657,6 +2659,82 @@ def _thumbnail_backlog(source_id: int, after: int, limit: int):
 THUMB_WARMUP = thumbnail_warmup.ThumbnailWarmup(
     _warm_thumbnail, busy=lambda: RENDER_LOCK.locked(), refill=_thumbnail_backlog)
 atexit.register(THUMB_WARMUP.cancel)
+
+# The editor's first frame after navigation is a 1100 px request (the
+# browser's INTERACTIVE_PREVIEW_WIDTH). Preparing that accurate RAW input at
+# import, like Lightroom's standard previews, makes the first frame cost one
+# film render instead of a demosaic. Film renders stay on demand.
+STANDARD_PREVIEW_WIDTH = 1100
+
+
+def _standard_preview_busy() -> bool:
+    import raw_decode_runtime
+    return (RENDER_LOCK.locked() or raw_decode_runtime.decoder_busy()
+            or bool(RAW_REFINE_JOBS))
+
+
+def standard_preview_ready(name: str, state: dict | None = None) -> bool:
+    if not is_raw(name):
+        return True
+    params = (state or edited_thumbnail_state(name))["params"]
+    if params["profile_enabled"]:
+        return valid_tiff_cache(raw_preview_path(
+            name, STANDARD_PREVIEW_WIDTH, "full", params))
+    return neutral_preview_path(
+        name, STANDARD_PREVIEW_WIDTH, params["rotate"], params).exists()
+
+
+def accurate_input_ready(name: str, width: int, params: dict) -> bool:
+    """Whether a render at this width can start without a RAW demosaic."""
+    if not is_raw(name):
+        return True
+    cp = fp.clean_params(params)
+    if cp["profile_enabled"]:
+        return valid_tiff_cache(raw_preview_path(name, width, "full", cp))
+    return neutral_preview_path(name, width, cp["rotate"], cp).exists()
+
+
+def _warm_standard_preview(name: str):
+    """Build one photo's accurate 1100 px input; False asks for a retry."""
+    if not is_raw(name):
+        return True
+    if _standard_preview_busy():
+        return False
+    try:
+        guard_photo(name)
+        guard_local_photo(name)
+        state = edited_thumbnail_state(name)
+        if standard_preview_ready(name, state):
+            return True
+        params = state["params"]
+        import raw_decode_runtime
+        # Lowest admission priority, and the demosaic is not retained in
+        # memory: an import must not evict the photos being edited.
+        with raw_decode_runtime.cancellation(None, priority="prefetch"), \
+                raw_decode_runtime.unretained_pixels():
+            if params["profile_enabled"]:
+                build_raw_preview(name, STANDARD_PREVIEW_WIDTH, "full", params)
+            else:
+                build_neutral_preview(
+                    name, STANDARD_PREVIEW_WIDTH, params["rotate"], params)
+        return True
+    finally:
+        cat = catalog_handle()
+        if cat is not None:
+            cat.close()
+
+
+PREVIEW_WARMUP = thumbnail_warmup.ThumbnailWarmup(
+    _warm_standard_preview, busy=_standard_preview_busy,
+    refill=_thumbnail_backlog)
+atexit.register(PREVIEW_WARMUP.cancel)
+
+
+def _enqueue_scan_warmups(source_id: int, relpath: str) -> bool:
+    """Queue the source thumbnail first, then the standard preview."""
+    queued = THUMB_WARMUP.enqueue(source_id, relpath)
+    PREVIEW_WARMUP.enqueue(source_id, relpath)
+    return queued
 
 
 def _build_thumb(name: str, p: Path, max_pixel: int = 240) -> bytes:
@@ -4381,7 +4459,10 @@ def _render_preview(name: str, params: dict, width: int,
         else:
             arr = linear_for(name, width, params)
             preview_progress.advance(2)
-            out = fp.render(arr, params)
+            # The Python film engine runs numba parallel kernels too; two
+            # parallel regions entered at once abort the process.
+            with grade._PARALLEL_KERNEL_LOCK:
+                out = fp.render(arr, params)
             preview_progress.advance(3)
         ms = int((time.time() - t0) * 1000)
         if engine != "rs":
@@ -7348,6 +7429,13 @@ class Handler(BaseHTTPRequestHandler):
                                            or preview_grade_requires_bake(b.get("masks"))):
                     raise ValueError(T("viewport rendering requires unwarped source geometry"))
                 width = preview_width(b.get("w", 1100))
+                # A wide prefetch window only warms film renders whose accurate
+                # input already exists; it never queues a demosaic behind the
+                # photo the window is refining.
+                if b.get("prepared_only") is True and not accurate_input_ready(
+                        b["name"], width, b.get("params", {})):
+                    self._json({"cancelled": True, "reason": "input not prepared"})
+                    return
                 result = render_preview(
                     b["name"], b.get("params", {}), width,
                     b.get("engine", "rs"), client,
@@ -8188,6 +8276,7 @@ def main() -> None:
         except Exception:
             pass
         grade.warm_grade_jit()
+        color_pipeline.warm_develop_jit()
     timer = threading.Timer(0.75, warm_colour)
     timer.daemon = True
     timer.start()
@@ -8475,13 +8564,13 @@ def catalog_sources_action(body: dict) -> dict:
         if body.get("importState", True):
             # A folder that was edited before the catalog existed carries its
             # own state file; fold it in on first sight so nothing is lost.
-            catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
+            catalog_scan.scan_source(cat, source_id, on_local_file=_enqueue_scan_warmups)
             imported = catalog_scan.import_state_file(cat, source_id)
         elif SCANNER is not None:
             SCANNER.request(source_id)
         if body.get("foldersToCollections"):
             if not body.get("importState", True):
-                catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
+                catalog_scan.scan_source(cat, source_id, on_local_file=_enqueue_scan_warmups)
             cat.create_collections_for_source_folders(source_id)
         has_sidecars = False
         try:
@@ -8881,7 +8970,7 @@ def start_ingest(body: dict) -> dict:
             if cat is not None and destinations:
                 root = Path(request["destination"])
                 source_id = cat.add_source(root)
-                catalog_scan.scan_source(cat, source_id, on_local_file=THUMB_WARMUP.enqueue)
+                catalog_scan.scan_source(cat, source_id, on_local_file=_enqueue_scan_warmups)
         except Exception as error:  # noqa: BLE001
             with INGEST_LOCK:
                 INGEST["errors"].append({"error": str(error)})
@@ -9078,7 +9167,7 @@ def start_enhance(body: dict) -> dict:
         source, destination, mode, request=body.get("request"))
     cat = catalog_handle()
     if result.get("ok") and cat is not None and PRIMARY_SOURCE_ID is not None:
-        catalog_scan.scan_source(cat, PRIMARY_SOURCE_ID, on_local_file=THUMB_WARMUP.enqueue)
+        catalog_scan.scan_source(cat, PRIMARY_SOURCE_ID, on_local_file=_enqueue_scan_warmups)
     return result
 
 
