@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "हरा",
     "Green label": "हरा लेबल",
     "Greens": "Greens",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "फ़ोल्डर जोड़ने या दोबारा स्कैन करने पर ग्रिड के पूर्वावलोकन पृष्ठभूमि में तैयार होते हैं। पहले मूल तस्वीरों के बड़े पूर्वावलोकन दिखाई देते हैं; आपके संपादनों वाले पूर्वावलोकन तैयार होते ही उनकी जगह ले लेते हैं।",
     "Group and find people": "समूह बनाएँ और लोग ढूँढें",
     "Group photos into collections": "फ़ोटो को संग्रहों में समूहित करें",
     "Group similar faces and search names you add.": "मिलते-जुलते चेहरे समूहित करें और आपके द्वारा जोड़े गए नाम खोजें।",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW मूल फ़ाइलों को adjusted TIFFs के रूप में रेंडर किया जाना चाहिए। यदि चयन में कोई RAW फ़ाइल शामिल है, तो Processed original उपलब्ध नहीं होता। संसाधित फ़ोटो के लिए, वह विकल्प adjusted TIFF तैयार करने के बजाय मूल फ़ाइल खोलता है।",
     "RAW originals only.": "केवल RAW मूल।",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW फ़ोटो में Sensor noise reduction और Learned denoise नियंत्रण दिखाई दे सकते हैं। Learned denoise तब स्थानीय रूप से चलता है जब आप Apply denoise दबाते हैं; Strength हिलाने से यह तुरंत नहीं चलता।",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW फ़ोटो शुरू से LightTable की प्रोसेसिंग के साथ खुलती हैं, तब भी जब फ़िल्म बंद हो। कैश में न मौजूद पहली फ़ोटो को दिखाई देने में थोड़ा समय लग सकता है। प्रगति पट्टी पूरी हो चुकी प्रोसेसिंग के चरण दिखाती है और फ़ोटो दिखाई देने पर हट जाती है।",
     "RAW preview could not finish. Try the photo again.": "RAW पूर्वावलोकन पूरा नहीं हो सका। फ़ोटो को फिर से आज़माएँ।",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "कैमरा प्रोफ़ाइल",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (गायब)"
+    "{fileName} (missing)": "{fileName} (गायब)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW फ़ोटो शुरू से LightTable की प्रोसेसिंग के साथ खुलती हैं, तब भी जब फ़िल्म बंद हो। फ़िल्म चालू होने पर, कैश में न मौजूद फ़ोटो का पहला फ़्रेम कैमरे के एम्बेडेड प्रीव्यू का उपयोग करता है; थोड़ी देर बाद सटीक रूपांतरण उसकी जगह ले लेता है, और तब तक स्थिति में “RAW को परिष्कृत किया जा रहा है…” दिखता है। प्रगति पट्टी पूरी हो चुकी प्रोसेसिंग के चरण दिखाती है और फ़ोटो दिखाई देने पर हट जाती है।",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "फ़ोल्डर जोड़ने या दोबारा स्कैन करने पर ग्रिड के पूर्वावलोकन पृष्ठभूमि में तैयार होते हैं। पहले मूल तस्वीरों के बड़े पूर्वावलोकन दिखाई देते हैं; आपके संपादनों वाले पूर्वावलोकन तैयार होते ही उनकी जगह ले लेते हैं। हर RAW का एक मानक प्रीव्यू भी तैयार किया जाता है, ताकि फ़ोटो पूरे डिकोड की प्रतीक्षा किए बिना खुल सके।"
   },
   "plurals": {
     " · {count} paired file linked": {
