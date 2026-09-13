@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "편집 도구 모음에서 자르기를 엽니다. 종횡비에는 자유, 원본, 표준 비율, 사용자 지정이 있습니다. 자르기 표시에는 프레임과 남겨진 양이 표시됩니다.",
     "Open Edit and expand Color.": "편집을 열고 색상을 확장합니다.",
     "Open Edit and expand Curve.": "편집을 열고 곡선을 확장합니다.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "편집을 열고 라이트를 펼치세요. 노출은 전체 밝기를 변경하고, Highlights와 Shadows는 밝은 영역과 어두운 영역을 대상으로 조정할 수 있게 합니다. Whites와 Blacks는 톤 범위의 양 끝을 조정합니다. Contrast는 이들의 분리를 변경합니다.",
     "Open Export and choose Destination layout.": "내보내기를 열고 대상 레이아웃 선택.",
     "Open Export and choose a preset across the top.": "내보내기를 열고 상단에서 사전 설정을 선택하세요.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "폴더 ••• → 카탈로그 가져오기…을 열거나, 설정에서 Lightroom에서 가져오기를 선택하세요.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (없음)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 사진은 필름이 꺼져 있어도 처음부터 LightTable의 현상 결과로 표시됩니다. 필름이 켜져 있으면 캐시에 없는 사진의 첫 프레임에는 카메라에 내장된 미리보기가 사용되며, 곧 정확한 변환 결과로 대체됩니다. 그때까지 상태에는 “RAW 정제 중…”이 표시됩니다. 진행률 표시줄은 완료된 처리 단계를 표시하며 사진이 보이면 사라집니다.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "폴더를 추가하거나 다시 스캔하면 그리드 미리보기가 백그라운드에서 준비됩니다. 먼저 원본 사진의 큰 미리보기가 표시되고, 편집 내용이 반영된 미리보기가 준비되는 대로 교체됩니다. 각 RAW의 표준 미리보기도 준비되므로 전체 디코딩을 기다리지 않고 사진을 열 수 있습니다."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "폴더를 추가하거나 다시 스캔하면 그리드 미리보기가 백그라운드에서 준비됩니다. 먼저 원본 사진의 큰 미리보기가 표시되고, 편집 내용이 반영된 미리보기가 준비되는 대로 교체됩니다. 각 RAW의 표준 미리보기도 준비되므로 전체 디코딩을 기다리지 않고 사진을 열 수 있습니다.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "편집을 열고 라이트를 펼치세요. 노출은 전체 밝기를 변경하고, Highlights와 Shadows는 밝은 영역과 어두운 영역을 대상으로 조정할 수 있게 합니다. Whites와 Blacks는 톤 범위의 양 끝을 조정합니다. Whites를 올리면 가장 밝은 톤이 더 밝아지고, Blacks를 올리면 가장 어두운 톤이 들어 올려지며, 둘 중 하나를 내리면 그쪽 끝이 다시 되돌아갑니다. Contrast는 이들의 분리를 변경합니다."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -414,18 +414,9 @@ CLIENT_DERIVED = {
 }
 
 # Verified defects, kept visible instead of blessed. Each entry states what
-# the control does today and why that is wrong; removing the inversion should
+# the control does today and why that is wrong; fixing the control should
 # make the matching claim pass and this entry must then be deleted.
-TRACKED_DEFECTS = {
-    "local.whites":
-        "Same inverted endpoint as grade.whites, reached through a mask.",
-    "grade.whites":
-        "Whites is inverted: the endpoint is 1 + whites * 0.35, so a positive "
-        "value lowers the white point and darkens the highlights. Blacks, in "
-        "the same block, lifts with a positive value, and every comparable "
-        "editor brightens on +Whites. Python, the WebGL shader and the Rust "
-        "engine all agree, so no parity gate can see it.",
-}
+TRACKED_DEFECTS: dict[str, str] = {}
 
 # Controls whose claim is inherently non-monotonic, with the reason.
 WRAPPING = {

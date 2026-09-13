@@ -71,6 +71,7 @@ import media_formats  # noqa: E402
 import media_availability  # noqa: E402
 import file_identity  # noqa: E402
 import durable_io  # noqa: E402
+import edit_schema  # noqa: E402
 import launcher_control  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
@@ -707,10 +708,14 @@ def clean_preset(raw: dict) -> dict | None:
     name = " ".join(str(raw.get("name", "")).split()).strip()[:120]
     if not name:
         return None
+    # A preset saved, installed or imported before the current edit schema
+    # carries its values under the old meaning; translate them first.
+    raw = edit_schema.upgrade_record(raw)
     if raw.get("scope") == "look":
         preset_library.validate_look(raw)
         return {
             "id": str(raw.get("id") or secrets.token_hex(16))[:120],
+            "editSchema": edit_schema.EDIT_SCHEMA_VERSION,
             "name": name, "source": "lighttable", "presetType": "style",
             "scope": "look", "filmMode": raw["filmMode"],
             "includeFilm": raw["filmMode"] == "on",
@@ -754,6 +759,7 @@ def clean_preset(raw: dict) -> dict | None:
     notes = conversion.get("notes") if isinstance(conversion.get("notes"), list) else []
     return {
         "id": str(raw.get("id") or hashlib.md5(name.encode()).hexdigest())[:100],
+        "editSchema": edit_schema.EDIT_SCHEMA_VERSION,
         "name": name,
         "source": source,
         "presetType": preset_type,
@@ -880,6 +886,14 @@ def load_state() -> dict:
                 if not isinstance(loaded, dict):
                     raise ValueError(T("state root must be an object"))
                 loaded.setdefault("images", {})
+                # A file written under an older edit schema is translated
+                # once and written back, so its recipes keep their look and
+                # the next launch does not repeat the work.
+                loaded, upgraded = edit_schema.upgrade_state(loaded)
+                if upgraded:
+                    durable_io.atomic_write_json(path, loaded)
+                    stat = path.stat()
+                    stamp = (stat.st_mtime_ns, stat.st_size)
                 _STATE_CACHE = loaded
             except Exception:
                 # Preserve the last valid in-memory state if an external write
@@ -895,6 +909,7 @@ def write_state(state: dict) -> None:
     """Atomically replace state and refresh the process-local parsed copy."""
     global _STATE_CACHE_PATH, _STATE_CACHE_STAMP, _STATE_CACHE
     path = state_path()
+    state["editSchema"] = edit_schema.EDIT_SCHEMA_VERSION
     durable_io.atomic_write_json(path, state)
     stat = path.stat()
     _STATE_CACHE_PATH = path
@@ -3514,7 +3529,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 13  # scan levels correction and meter-anchored display-referred source expansion
+RENDER_CACHE_VERSION = 14  # Whites sign corrected: a positive value now brightens
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()

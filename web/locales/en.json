@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "plurals": {
     " · {count} paired file linked": {
@@ -2242,7 +2242,7 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.",
     "Open Edit and expand Color.": "Open Edit and expand Color.",
     "Open Edit and expand Curve.": "Open Edit and expand Curve.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.",
     "Open Export and choose Destination layout.": "Open Export and choose Destination layout.",
     "Open Export and choose a preset across the top.": "Open Export and choose a preset across the top.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.",

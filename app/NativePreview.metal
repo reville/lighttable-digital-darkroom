@@ -561,7 +561,7 @@ fragment float4 nativePreviewFragment(
     color = clamp(linearToSrgb(linear), 0.0, 1.0);
 
     if (whites != 0.0 || blacks != 0.0) {
-        float whitePoint = 1.0 + whites * 0.35;
+        float whitePoint = 1.0 - whites * 0.35;
         float blackPoint = blacks * -0.25;
         color = clamp((color - blackPoint) / max(whitePoint - blackPoint, 1e-4), 0.0, 1.0);
     }

@@ -28,6 +28,7 @@ from typing import Callable, Iterable
 
 import catalog as catalog_module
 import durable_io
+import edit_schema
 import dam_filters
 import file_identity
 import media_formats
@@ -646,6 +647,9 @@ def _import_state_file(cat: catalog_module.Catalog, source_id: int,
     if not isinstance(state, dict):
         return {"images": 0, "collections": 0, "stacks": 0, "virtual": 0,
                 "skipped": 0, "present": True, "error": "unreadable"}
+    # A file written by an older build carries its recipes under the edit
+    # schema of that build; read them as the catalog understands them.
+    state, _ = edit_schema.upgrade_state(state)
     images = state.get("images")
     images = images if isinstance(images, dict) else {}
 
@@ -855,7 +859,9 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
     try:
         candidate = json.loads(target.read_text())
         if isinstance(candidate, dict):
-            existing = candidate
+            # Entries an older build left in the file are translated before
+            # current rows are merged in, so one file never mixes schemas.
+            existing, _ = edit_schema.upgrade_state(candidate)
     except (OSError, UnicodeDecodeError, json.JSONDecodeError):
         pass
     pending = cat.connection.execute("SELECT 1 FROM meta WHERE key=?",
@@ -931,7 +937,7 @@ def mirror_state_file(cat: catalog_module.Catalog, source_id: int) -> bool:
     # image rows, but mirroring them must never erase unrelated portable data.
     payload = dict(existing)
     payload.update(images=images, virtualCopies=virtual_copies, mirroredAt=_iso(mirrored_at),
-                   mirroredRevision=mirrored_at)
+                   mirroredRevision=mirrored_at, editSchema=edit_schema.EDIT_SCHEMA_VERSION)
     try:
         if not existing:
             # A newly generated mirror has no legacy state left to adopt.

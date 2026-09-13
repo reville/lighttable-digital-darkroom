@@ -68,7 +68,7 @@
     "sections": [
       {
         "title": "Start with Light",
-        "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation."],
+        "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation."],
         "steps": ["Set Exposure for the main subject.", "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.", "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).", "Compare your result with the original using the before control, or hold B while the photo is active."],
         "tips": ["Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment."]
       },

@@ -1101,7 +1101,7 @@
         {
           "title": "Commencer avec la lumière",
           "paragraphs": [
-            "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale. Contraste modifie leur séparation."
+            "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale : augmentez Blancs pour éclaircir les tons les plus lumineux, augmentez Noirs pour relever les plus sombres, et diminuez l’un ou l’autre pour ramener cette extrémité en arrière. Contraste modifie leur séparation."
           ],
           "steps": [
             "Définir l’Exposition pour le sujet principal.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

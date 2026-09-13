@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Откройте Обрезка на панели инструментов редактирования. Соотношение сторон предлагает Свободно, Оригинал, стандартные пропорции и Пользовательский. На индикаторе обрезки показаны рамка и сохраненная часть.",
     "Open Edit and expand Color.": "Откройте Редактировать и разверните Цвет.",
     "Open Edit and expand Curve.": "Откройте Редактировать и разверните Кривая.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Откройте Edit и разверните Light. Exposure изменяет общую яркость; Highlights и Shadows позволяют настраивать светлые и темные области. Whites и Blacks регулируют концы тонального диапазона. Contrast изменяет их разделение.",
     "Open Export and choose Destination layout.": "Откройте Экспорт и выберите макет назначения.",
     "Open Export and choose a preset across the top.": "Откройте Экспорт и выберите пресет в верхней части.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Откройте Папки ••• → Импорт каталога… или выберите Импорт из Lightroom в программе настройки.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (отсутствует)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Фотографии RAW открываются с обработкой LightTable, даже когда режим «Плёнка» выключен. Если режим «Плёнка» включён, первый кадр фото, которого ещё нет в кэше, использует встроенный предпросмотр камеры; вскоре его заменяет точное преобразование, а до тех пор в статусе отображается «Уточнение RAW…». Индикатор выполнения показывает завершённые этапы обработки и исчезает, когда фото становится видимым.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками. Кроме того, для каждого RAW подготавливается стандартный предпросмотр, чтобы фото открывалось, не дожидаясь полного декодирования."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "При добавлении или повторном сканировании папок превью для сетки создаются в фоновом режиме. Сначала появляются крупные превью оригиналов; по мере готовности их заменяют превью с вашими правками. Кроме того, для каждого RAW подготавливается стандартный предпросмотр, чтобы фото открывалось, не дожидаясь полного декодирования.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Откройте Edit и разверните Light. Exposure изменяет общую яркость; Highlights и Shadows позволяют настраивать светлые и темные области. Whites и Blacks регулируют концы тонального диапазона: увеличьте Whites, чтобы осветлить самые яркие тона, увеличьте Blacks, чтобы приподнять самые темные, и уменьшите любой из них, чтобы вернуть этот край назад. Contrast изменяет их разделение."
   },
   "plurals": {
     " · {count} paired file linked": {

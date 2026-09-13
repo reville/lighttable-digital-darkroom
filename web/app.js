@@ -11441,6 +11441,12 @@ $('autoBtn').onclick = (event) => {
   acc = 0;
   for (let i = 255; i >= 0; i--) { acc += hist[i]; if (acc > cut) { hi = i; break; } }
   pushUndo();
+  // lo and hi are the 0.5% and 99.5% luma percentiles. A dark end that
+  // stops short of black gets a negative Blacks (which lowers the black
+  // point) and a bright end that stops short of white gets a positive
+  // Whites (which lowers the white point, brightening the top of the
+  // range), so both terms pull the histogram out to its endpoints. The
+  // sign convention is shared with grade.py and every shader.
   S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);
   S.grade.blacks = clamp(-(lo / 255) * 1.2, -1, 0.4);
   S.grade.whites = clamp((1 - hi / 255) * 1.2, -0.4, 1);

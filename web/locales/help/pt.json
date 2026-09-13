@@ -1101,7 +1101,7 @@
         {
           "title": "Começar com Claro",
           "paragraphs": [
-            "Abra Editar e expanda Claro. Exposição altera o brilho geral; Realces e Sombras permitem atingir regiões claras e escuras. Brancos e Pretos ajustam as extremidades da faixa tonal. Contraste altera a separação entre elas."
+            "Abra Editar e expanda Claro. Exposição altera o brilho geral; Realces e Sombras permitem atingir regiões claras e escuras. Brancos e Pretos ajustam as extremidades da faixa tonal: aumente Brancos para clarear os tons mais luminosos, aumente Pretos para levantar os mais escuros e reduza qualquer um deles para recuar essa extremidade. Contraste altera a separação entre elas."
           ],
           "steps": [
             "Defina a Exposição para o assunto principal.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

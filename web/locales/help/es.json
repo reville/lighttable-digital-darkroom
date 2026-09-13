@@ -1101,7 +1101,7 @@
         {
           "title": "Empezar con Luz",
           "paragraphs": [
-            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal. Contraste cambia su separación."
+            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal: suba Blancos para aclarar los tonos más luminosos, suba Negros para levantar los más oscuros y baje cualquiera de los dos para retraer ese extremo. Contraste cambia su separación."
           ],
           "steps": [
             "Configure Exposición para el sujeto principal.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

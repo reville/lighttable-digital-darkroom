@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Buka Crop di toolbar pengeditan. Rasio aspek menawarkan Free, Original, proporsi standar, dan Kustom. Tampilan crop menunjukkan bingkai dan jumlah yang dipertahankan.",
     "Open Edit and expand Color.": "Buka Edit dan perluas Warna.",
     "Open Edit and expand Curve.": "Buka Edit dan perluas Kurva.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal. Contrast mengubah pemisahan di antaranya.",
     "Open Export and choose Destination layout.": "Buka Ekspor dan pilih tata letak Tujuan.",
     "Open Export and choose a preset across the top.": "Buka Ekspor dan pilih preset di bagian atas.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Buka Folder ••• → Impor katalog…, atau pilih Impor dari Lightroom dalam penyiapan.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (hilang)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Saat Film aktif, bingkai pertama foto yang belum tersimpan di cache menggunakan pratinjau tersemat dari kamera; konversi yang akurat menggantikannya tak lama kemudian, dan hingga saat itu status menampilkan “Menyempurnakan RAW…”. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap. Pratinjau standar untuk setiap RAW juga disiapkan agar foto terbuka tanpa menunggu proses dekode penuh."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap. Pratinjau standar untuk setiap RAW juga disiapkan agar foto terbuka tanpa menunggu proses dekode penuh.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal: naikkan Whites untuk mencerahkan nada paling terang, naikkan Blacks untuk mengangkat nada paling gelap, dan turunkan salah satunya untuk menarik kembali ujung tersebut. Contrast mengubah pemisahan di antaranya."
   },
   "plurals": {
     " · {count} paired file linked": {

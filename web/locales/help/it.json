@@ -1101,7 +1101,7 @@
         {
           "title": "Inizia con Luce",
           "paragraphs": [
-            "Apri Modifica ed espandi Luce. Esposizione cambia la luminosità complessiva; Luci e Ombre ti permettono di intervenire sulle aree chiare e scure. Bianchi e Neri regolano le estremità dell’intervallo tonale. Contrasto modifica la loro separazione."
+            "Apri Modifica ed espandi Luce. Esposizione cambia la luminosità complessiva; Luci e Ombre ti permettono di intervenire sulle aree chiare e scure. Bianchi e Neri regolano le estremità dell’intervallo tonale: alza Bianchi per schiarire i toni più luminosi, alza Neri per sollevare quelli più scuri e abbassa uno dei due per riportare indietro quell’estremità. Contrasto modifica la loro separazione."
           ],
           "steps": [
             "Imposta Esposizione per il soggetto principale.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

@@ -323,7 +323,7 @@ void main() {
   c = clamp(linearToSrgb(lin), 0.0, 1.0);
 
   if (u_whites != 0.0 || u_blacks != 0.0) {
-    float w = 1.0 + u_whites * 0.35;
+    float w = 1.0 - u_whites * 0.35;
     float b = u_blacks * -0.25;
     c = clamp((c - b) / max(w - b, 1e-4), 0.0, 1.0);
   }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "संपादन टूलबार में Crop खोलें। Aspect ratio में Free, Original, मानक अनुपात, और Custom उपलब्ध हैं। crop readout फ्रेम और शेष रखी गई मात्रा दिखाता है।",
     "Open Edit and expand Color.": "Edit खोलें और Color का विस्तार करें.",
     "Open Edit and expand Curve.": "Edit खोलें और Curve का विस्तार करें.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Edit खोलें और Light को विस्तृत करें। Exposure समग्र चमक बदलता है; Highlights और Shadows आपको उज्ज्वल और अँधेरे क्षेत्रों को लक्षित करने देते हैं। Whites और Blacks टोनल सीमा के सिरों को समायोजित करते हैं। Contrast उनका अलगाव बदलता है।",
     "Open Export and choose Destination layout.": "Export खोलें और Destination layout चुनें।",
     "Open Export and choose a preset across the top.": "Export खोलें और ऊपर से कोई प्रीसेट चुनें।",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "फ़ोल्डर खोलें ••• → कैटलॉग आयात करें…, या सेटअप में Lightroom से आयात करें चुनें।",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (गायब)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW फ़ोटो शुरू से LightTable की प्रोसेसिंग के साथ खुलती हैं, तब भी जब फ़िल्म बंद हो। फ़िल्म चालू होने पर, कैश में न मौजूद फ़ोटो का पहला फ़्रेम कैमरे के एम्बेडेड प्रीव्यू का उपयोग करता है; थोड़ी देर बाद सटीक रूपांतरण उसकी जगह ले लेता है, और तब तक स्थिति में “RAW को परिष्कृत किया जा रहा है…” दिखता है। प्रगति पट्टी पूरी हो चुकी प्रोसेसिंग के चरण दिखाती है और फ़ोटो दिखाई देने पर हट जाती है।",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "फ़ोल्डर जोड़ने या दोबारा स्कैन करने पर ग्रिड के पूर्वावलोकन पृष्ठभूमि में तैयार होते हैं। पहले मूल तस्वीरों के बड़े पूर्वावलोकन दिखाई देते हैं; आपके संपादनों वाले पूर्वावलोकन तैयार होते ही उनकी जगह ले लेते हैं। हर RAW का एक मानक प्रीव्यू भी तैयार किया जाता है, ताकि फ़ोटो पूरे डिकोड की प्रतीक्षा किए बिना खुल सके।"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "फ़ोल्डर जोड़ने या दोबारा स्कैन करने पर ग्रिड के पूर्वावलोकन पृष्ठभूमि में तैयार होते हैं। पहले मूल तस्वीरों के बड़े पूर्वावलोकन दिखाई देते हैं; आपके संपादनों वाले पूर्वावलोकन तैयार होते ही उनकी जगह ले लेते हैं। हर RAW का एक मानक प्रीव्यू भी तैयार किया जाता है, ताकि फ़ोटो पूरे डिकोड की प्रतीक्षा किए बिना खुल सके।",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Edit खोलें और Light को विस्तृत करें। Exposure समग्र चमक बदलता है; Highlights और Shadows आपको उज्ज्वल और अँधेरे क्षेत्रों को लक्षित करने देते हैं। Whites और Blacks टोनल सीमा के सिरों को समायोजित करते हैं: सबसे उज्ज्वल टोन को चमकाने के लिए Whites बढ़ाएँ, सबसे गहरे टोन को उठाने के लिए Blacks बढ़ाएँ, और उस सिरे को वापस खींचने के लिए किसी को भी घटाएँ। Contrast उनका अलगाव बदलता है।"
   },
   "plurals": {
     " · {count} paired file linked": {

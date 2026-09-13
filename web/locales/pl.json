@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Otwórz Kadruj na pasku narzędzi edycji. Proporcje oferują Dowolny, Oryginalny, standardowe proporcje i Niestandardowy. Odczyt kadrowania pokazuje ramkę i zachowaną ilość.",
     "Open Edit and expand Color.": "Otwórz Edytuj i rozwiń Kolor.",
     "Open Edit and expand Curve.": "Otwórz Edytuj i rozwiń Krzywa.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego. Kontrast zmienia ich rozdzielenie.",
     "Open Export and choose Destination layout.": "Otwórz Eksportuj i wybierz układ docelowy.",
     "Open Export and choose a preset across the top.": "Otwórz Eksportuj i wybierz preset z górnego paska.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Otwórz Foldery ••• → Importuj katalog… lub wybierz Importuj z Lightroom w konfiguracji.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (brak)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Gdy Film jest włączony, pierwsza klatka zdjęcia, którego nie ma w pamięci podręcznej, korzysta z podglądu osadzonego przez aparat; wkrótce zastępuje go dokładna konwersja, a do tego czasu stan pokazuje „Ulepszanie RAW…”. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe. Przygotowywany jest także standardowy podgląd każdego pliku RAW, dzięki czemu zdjęcie otwiera się bez czekania na pełne dekodowanie."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe. Przygotowywany jest także standardowy podgląd każdego pliku RAW, dzięki czemu zdjęcie otwiera się bez czekania na pełne dekodowanie.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie."
   },
   "plurals": {
     " · {count} paired file linked": {

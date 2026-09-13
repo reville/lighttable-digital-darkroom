@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Mở Cắt xén trong thanh công cụ chỉnh sửa. Tỷ lệ khung hình cung cấp Tự do, Gốc, các tỷ lệ chuẩn, và Tùy chỉnh. Phần hiển thị cắt xén cho biết khung và lượng được giữ lại.",
     "Open Edit and expand Color.": "Mở Chỉnh sửa và mở rộng Màu sắc.",
     "Open Edit and expand Curve.": "Mở Chỉnh sửa và mở rộng Đường cong.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông. Contrast thay đổi độ tách biệt của chúng.",
     "Open Export and choose Destination layout.": "Mở Xuất và chọn bố cục Đích.",
     "Open Export and choose a preset across the top.": "Mở Xuất và chọn một thiết lập sẵn ở phía trên.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Mở Thư mục ••• → Nhập danh mục…, hoặc chọn Nhập từ Lightroom trong bước thiết lập.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (thiếu)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng. Ảnh xem trước tiêu chuẩn của mỗi ảnh RAW cũng được chuẩn bị sẵn để ảnh mở ra mà không phải chờ giải mã đầy đủ."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng. Ảnh xem trước tiêu chuẩn của mỗi ảnh RAW cũng được chuẩn bị sẵn để ảnh mở ra mà không phải chờ giải mã đầy đủ.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông: tăng Whites để làm sáng các tông sáng nhất, tăng Blacks để nâng các tông tối nhất, và giảm một trong hai để kéo đầu đó trở lại. Contrast thay đổi độ tách biệt của chúng."
   },
   "plurals": {
     " · {count} paired file linked": {

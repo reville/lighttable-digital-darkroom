@@ -1101,7 +1101,7 @@
         {
           "title": "光から始める",
           "paragraphs": [
-            "Edit を開き、Light を展開します。Exposure は全体の明るさを変えます。Highlights と Shadows で明るい領域と暗い領域を個別に調整できます。Whites と Blacks は階調の両端を調整します。Contrast はそれらの分離度を変えます。"
+            "Edit を開き、Light を展開します。Exposure は全体の明るさを変えます。Highlights と Shadows で明るい領域と暗い領域を個別に調整できます。Whites と Blacks は階調の両端を調整します。Whites を上げると最も明るい階調がさらに明るくなり、Blacks を上げると最も暗い階調が持ち上がります。どちらかを下げると、その端が元の方向へ戻ります。Contrast はそれらの分離度を変えます。"
           ],
           "steps": [
             "主被写体に露出を設定します。",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "ja",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

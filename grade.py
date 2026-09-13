@@ -467,7 +467,9 @@ if _HAS_NUMBA:
         gain_r = 1.0 + temp * 0.18 + tint * 0.06
         gain_g = 1.0 - tint * 0.12
         gain_b = 1.0 - temp * 0.18 + tint * 0.06
-        w_denom = max(1.0 + whites * 0.35 - (blacks * -0.25), 1e-4)
+        # Positive Whites lowers the white point so the brightest tones
+        # stretch up to white; positive Blacks lifts the black point.
+        w_denom = max(1.0 - whites * 0.35 - (blacks * -0.25), 1e-4)
         b_val = blacks * -0.25
         haze_val = dehaze * 0.12
         haze_denom = max(1.0 - haze_val, 0.2)
@@ -668,7 +670,9 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
         # --- display-referred stage --------------------------------------------
         if g["whites"] or g["blacks"]:
             # Move the endpoints, then renormalise so the range stays [0,1].
-            w = 1.0 + g["whites"] * 0.35
+            # Positive Whites lowers the white point (brightens the top of
+            # the range); positive Blacks raises the black point (lifts).
+            w = 1.0 - g["whites"] * 0.35
             b = g["blacks"] * -0.25
             c = np.clip((c - b) / max(w - b, 1e-4), 0.0, 1.0)
 
