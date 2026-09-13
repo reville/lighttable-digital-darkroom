@@ -96,5 +96,43 @@ class StandardPreviewWarmupTests(unittest.TestCase):
             self.assertTrue(server._standard_preview_busy())
 
 
+class PreparedOnlyPrefetchTests(unittest.TestCase):
+    def test_accurate_input_ready_checks_the_requested_width_and_mode(self):
+        film = {"profile_enabled": True, "rotate": 90}
+        with (
+            mock.patch.object(server, "is_raw", return_value=True),
+            mock.patch.object(server, "raw_preview_path") as raw_path,
+            mock.patch.object(server, "valid_tiff_cache", return_value=False),
+            mock.patch.object(server, "neutral_preview_path") as neutral_path,
+        ):
+            neutral_path.return_value.exists.return_value = True
+            self.assertFalse(server.accurate_input_ready("1:p.raf", 1100, film))
+            self.assertEqual(raw_path.call_args.args[:3], ("1:p.raf", 1100, "full"))
+            self.assertTrue(server.accurate_input_ready(
+                "1:p.raf", 1100, {"profile_enabled": False, "rotate": 90}))
+            self.assertEqual(neutral_path.call_args.args[:3], ("1:p.raf", 1100, 90))
+        self.assertTrue(server.accurate_input_ready("1:p.jpg", 1100, film))
+
+    def test_prepared_only_prefetch_is_refused_before_any_render_work(self):
+        for ready, rendered in ((False, 0), (True, 1)):
+            handler = server.Handler.__new__(server.Handler)
+            handler.path = "/api/render"
+            handler.headers = {}
+            handler._enforce_security = mock.Mock()
+            handler._json = mock.Mock()
+            handler._log_request = mock.Mock()
+            handler._body = lambda: dict(name="1:p.raf", w=1100, priority="prefetch",
+                                         prepared_only=True, params={})
+            with (
+                mock.patch.object(server, "accurate_input_ready", return_value=ready),
+                mock.patch.object(server, "render_preview", return_value={}) as render,
+                mock.patch.object(server, "apply_preview_edits", return_value={}),
+            ):
+                handler.do_POST()
+            self.assertEqual(render.call_count, rendered)
+            if not ready:
+                self.assertEqual(handler._json.call_args.args[0]["cancelled"], True)
+
+
 if __name__ == "__main__":
     unittest.main()

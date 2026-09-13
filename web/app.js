@@ -4596,6 +4596,12 @@ function prefetchState(im) {
 let prefetchTimer = null;
 let lastNavigationDirection = 1;
 
+// Small frames are one film render once the standard preview exists, so the
+// window reaches further ahead than behind. Full-width detail stays at one
+// neighbour each way: that pass needs its own input and a much larger render.
+const PREFETCH_AHEAD = 3;
+const PREFETCH_BEHIND = 1;
+
 async function prefetchImage(target, epoch, generation, detail = false) {
   const current = () => epoch === navigationGeneration && generation === S.seq;
   if (!target || !current()) return;
@@ -4614,6 +4620,8 @@ async function prefetchImage(target, epoch, generation, detail = false) {
       engine: $('engine').value,
       client: CLIENT_ID, generation, priority: 'prefetch',
       allow_draft: false,
+      // The small pass must not start a demosaic; the detail pass may.
+      ...(detail ? {} : { prepared_only: true }),
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
@@ -4633,15 +4641,22 @@ function prefetch() {
   const primary = ordered[visibleIndex + lastNavigationDirection];
   const secondary = ordered[visibleIndex - lastNavigationDirection];
   if (!primary && !secondary) return;
+  const small = [];
+  for (let step = 1; step <= Math.max(PREFETCH_AHEAD, PREFETCH_BEHIND); step++) {
+    if (step <= PREFETCH_AHEAD) small.push(ordered[visibleIndex + step * lastNavigationDirection]);
+    if (step <= PREFETCH_BEHIND) small.push(ordered[visibleIndex - step * lastNavigationDirection]);
+  }
 
   const epoch = navigationGeneration, generation = S.seq;
   prefetchTimer = setTimeout(async () => {
-    // Warm both useful first frames before larger work. Each step rechecks the
-    // photo and render generation so navigation, zoom, or edits stop the batch.
-    for (const detail of [false, true]) {
-      for (const target of [primary, secondary]) {
-        await prefetchImage(target, epoch, generation, detail);
-      }
+    // Warm the small first frames across the window before larger work. Each
+    // step rechecks the photo and render generation so navigation, zoom, or
+    // edits stop the batch.
+    for (const target of small) {
+      await prefetchImage(target, epoch, generation, false);
+    }
+    for (const target of [primary, secondary]) {
+      await prefetchImage(target, epoch, generation, true);
     }
   }, 80);
 }
