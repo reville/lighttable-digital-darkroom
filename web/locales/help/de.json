@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -111,7 +112,7 @@
           "title": "Übersetzte Bearbeitungen prüfen",
           "paragraphs": [
             "Develop-Einstellungen sind ungefähre Werte und können Lightrooms dargestellte Erscheinung nicht garantieren. Nicht unterstützte lokale Masken, Kameraprofiele, .lrcat-data-KI-Masken oder LUT-Nutzdaten sowie nicht unterstützte Regeln für intelligente Sammlungen werden als übersprungen gemeldet. Importierte Develop-Einstellungen schalten Film aus.",
-            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
+            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Entwicklungseinstellungen und Zuschnitt wendet sie nur an, wenn Sie diese Optionen einschalten. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Erste Schritte"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Umstieg von Lightroom",
+      "category": "Getting started",
+      "summary": "Was ein Lightroom-Classic-Katalog und XMP-Sidecars mitbringen, wofür es keinen Importweg gibt und wie sich die Begriffe unterscheiden.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "Migrieren",
+        "Migration",
+        "XMP",
+        "Sidecars",
+        "Vorgaben",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Was übernommen wird",
+          "paragraphs": [
+            "Aus einem Lightroom-Classic-Katalog: Fotos bleiben in ihren aktuellen Ordnern und werden referenziert, nicht kopiert. Der Importer liest Bewertungen, Markierungen, Etiketten und IPTC-Felder; Stichwörter; Sammlungen und unterstützte Smart-Sammlungen; Stapel; virtuelle Kopien; Zuschnitt und Begradigung; näherungsweise Entwicklungseinstellungen; und auf Wunsch den Bearbeitungsverlauf. Ihre .lrcat-Datei wird nie verändert.",
+            "Aus XMP-Sidecars neben Ihren Fotos: Sternebewertungen, Auswählen- und Ablehnen-Markierungen, Standard-Farbetiketten, Stichwörter und beschreibende IPTC-Felder. Ordner ••• → Sidecars importieren… kann auch Entwicklungseinstellungen und Zuschnitt anwenden, wenn Sie diese Optionen einschalten.",
+            "Beide Wege nutzen denselben Konverter, daher wird eine Einstellung auf beiden Wegen gleich abgebildet: Tonwerte, Weißabgleich-Verschiebungen, Textur, Klarheit, Dunst entfernen, der Farbmixer, die Schwarzweiß-Umwandlung mit ihrem Mixer, Punktkurven, Vignettenstärke, Schärfen und Rauschreduzierung. Ein Wert außerhalb des Bereichs von LightTable, etwa eine Belichtung jenseits von ±5 EV, wird begrenzt und im Bericht genannt."
+          ]
+        },
+        {
+          "title": "Wofür es keinen Importweg gibt",
+          "paragraphs": [
+            "Cloud-Alben und Vorgaben, die nur in der Cloud-App gespeichert sind, können nicht gelesen werden. Synchronisieren Sie sie zuerst in Lightroom Classic oder speichern Sie die Vorgaben als Dateien.",
+            "KI-Masken und generative Bearbeitungen, Objektivunschärfe und Entrauschen-Einstellungen sind proprietäre Renderschritte. Sie werden als übersprungen gemeldet statt angenähert, ebenso Kameraprofile, LUT-Looks, lokale Masken, Reparaturen und Objektivprofil-Kennungen. Importierte Bearbeitungen beginnen mit ausgeschaltetem Film, damit die umgewandelten Develop-Einstellungen für sich allein sichtbar sind."
+          ]
+        },
+        {
+          "title": "Begriffe",
+          "paragraphs": [
+            "Sammlungen heißen auch hier Sammlungen; die Alben der Cloud-App kommen nur über einen Lightroom-Classic-Katalog an.",
+            "Auswählen- und Ablehnen-Markierungen funktionieren gleich, und die untere Leiste zeigt sie für die ausgewählten Fotos.",
+            "Entwickeln heißt Bearbeiten. Film ist bei neuen und importierten Fotos standardmäßig aus; schalten Sie ihn ein, wenn Sie eine Filmbehandlung über der Bearbeitung möchten.",
+            "Kameraprofil in Bearbeiten listet die Adobe-DCP-Profile, die Camera Raw oder Lightroom auf diesem Computer installiert hat, oder den in den Einstellungen gewählten Ordner für Kameraprofile. Profile wirken näherungsweise und nur auf die Entwicklung bei ausgeschaltetem Film."
+          ]
+        },
+        {
+          "title": "Ihre Vorgaben importieren",
+          "paragraphs": [
+            "Vorgaben → Verwalten… → Importieren… akzeptiert .xmp-Vorgaben aus Lightroom und Camera Raw, ältere .lrtemplate-Vorgaben und Capture-One-Stile (.costyle). Nach einem Katalog- oder Ordnerimport bietet die Einrichtung ebenfalls Vorgaben importieren… an. Jede importierte Vorgabe zeigt vor dem Anwenden, wie viele Einstellungen abgebildet und welche übersprungen wurden."
+          ],
+          "steps": [
+            "Öffnen Sie Vorgaben, klicken Sie auf Verwalten…, dann auf Importieren… und wählen Sie die Vorgabendateien oder, in der Mac-App, einen ganzen Vorgabenordner.",
+            "Prüfen Sie den Umwandlungsbericht und wenden Sie die Vorgabe dann unter Deine an."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Bitten Sie das andere Programm, seine Metadaten in benachbarte XMP-Dateien zu speichern, und wählen Sie dann Ordner ••• → Sidecars importieren…. Die Aktion liest die Originale des Katalogs, einschließlich aller Seiten großer Bibliotheken mit bis zu 100.000 Fotos pro Import. Virtuelle Kopien behalten ihre eigenen Metadaten.",
             "Unterstützte Metadaten umfassen Sternbewertungen, Auswahl/Ablehnung-Markierungen, standardisierte Farblabel, flache und hierarchische Stichwörter sowie beschreibende IPTC-Felder. Ein explizit leerer Wert löscht dieses Feld; ein fehlender Wert lässt es unverändert. Benutzerdefinierte Farblabel, die keinem LightTable-Farbton entsprechen, werden als übersprungen gemeldet.",
-            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden durch diese Menüaktion nicht angewendet."
+            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden nur angewendet, wenn Sie diese Optionen im Dialog Sidecars importieren einschalten."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Fotos ausblenden, die nicht angezeigt werden können",
           "paragraphs": [
             "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Im Filmstreifen wird dieser Link unter der Fotoanzahl nur angezeigt, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können.",
             "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
           ]
         },
@@ -1101,7 +1165,7 @@
         {
           "title": "Mit Licht beginnen",
           "paragraphs": [
-            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an: Erhöhen Sie Weißtöne, um die hellsten Töne aufzuhellen, erhöhen Sie Schwarztöne, um die dunkelsten anzuheben, und verringern Sie einen der beiden Werte, um dieses Ende wieder zurückzunehmen. Kontrast verändert deren Trennung."
+            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an. Kontrast verändert deren Trennung."
           ],
           "steps": [
             "Belichtung für das Hauptmotiv festlegen.",
@@ -1313,7 +1377,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -3285,5 +3350,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
 }

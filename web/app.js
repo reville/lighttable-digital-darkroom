@@ -5123,6 +5123,8 @@ function recordPhotoDisplayState(im, failed, channel = 'thumbnail') {
 function syncUndisplayableLink() {
   const library = $('library');
   const link = $('hideUndisplayableLink');
+  $('filmstripHideUndisplayableLink').hidden = LIBRARY_FILTERS.hideUndisplayable()
+    || !visible().some(im => PHOTO_DISPLAY_STATUS.cannotDisplay(im));
   link.hidden = true;
   if (!library.classList.contains('show') || LIBRARY_FILTERS.hideUndisplayable()) return;
   const viewport = library.getBoundingClientRect();
@@ -5384,6 +5386,7 @@ function syncStripItem(element, im) {
 
 function renderStrip(fromScroll = false) {
   const list = visible();
+  syncUndisplayableLink();
   const host = $('strip');
   const itemPitch = stripItemPitch();
   const viewportCount = Math.max(1,

@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -111,7 +112,7 @@
           "title": "Przeglądaj przetłumaczone edycje",
           "paragraphs": [
             "Ustawienia wywoływania są przybliżone i nie mogą zagwarantować wyrenderowanego wyglądu Lightroom. Nieobsługiwane lokalne maski, profile aparatu, maski ai .lrcat-data lub pakiety LUT oraz nieobsługiwane reguły inteligentnej kolekcji są zgłaszane jako pominięte. Zaimportowane ustawienia wywoływania wyłączają Film.",
-            "Foldery ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Okno wyników pokazuje postęp, liczbę zastosowanych zmian, pominięte ustawienia i błędy."
+            "Foldery ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ustawienia wywoływania i kadrowanie stosuje tylko wtedy, gdy włączysz te opcje. Okno wyników pokazuje postęp, liczbę zastosowanych zmian, pominięte ustawienia i błędy."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Przechodzisz z Lightroom",
+      "category": "Getting started",
+      "summary": "Co przenosi katalog Lightroom Classic i sidecary XMP, co nie ma ścieżki importu i czym różni się słownictwo.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migruj",
+        "migracja",
+        "XMP",
+        "sidecary",
+        "presety",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Co zostaje przeniesione",
+          "paragraphs": [
+            "Z katalogu Lightroom Classic: zdjęcia pozostają w swoich obecnych folderach i są tylko wskazywane, nie kopiowane. Importer odczytuje oceny, flagi, etykiety i pola IPTC; słowa kluczowe; kolekcje i obsługiwane kolekcje inteligentne; stosy; kopie wirtualne; kadrowanie i prostowanie; przybliżone ustawienia wywoływania; a na życzenie także historię edycji. Plik .lrcat nigdy nie jest zmieniany.",
+            "Z sidecarów XMP obok zdjęć: oceny gwiazdkowe, flagi wyboru i odrzucenia, standardowe etykiety kolorów, słowa kluczowe i opisowe pola IPTC. Foldery ••• → Importuj sidecary… może też zastosować ustawienia wywoływania i kadrowanie, gdy włączysz te opcje.",
+            "Obie drogi używają tego samego konwertera, więc ustawienie jest odwzorowywane tak samo niezależnie od tego, którędy trafia: tonalność, przesunięcia balansu bieli, tekstura, przejrzystość, usuwanie zamglenia, mikser kolorów, konwersja do czerni i bieli z jej mikserem, krzywe punktowe, siła winiety, wyostrzanie i redukcja szumów. Wartość spoza zakresu LightTable, na przykład ekspozycja poza ±5 EV, jest ograniczana i wymieniana w raporcie."
+          ]
+        },
+        {
+          "title": "Co nie ma ścieżki importu",
+          "paragraphs": [
+            "Albumów w chmurze i presetów zapisanych tylko w aplikacji chmurowej nie można odczytać. Najpierw zsynchronizuj je z Lightroom Classic lub zapisz presety jako pliki.",
+            "Maski AI i edycje generatywne, rozmycie obiektywu oraz ustawienia odszumiania to zastrzeżone etapy renderowania. Są zgłaszane jako pominięte, a nie przybliżane, podobnie jak profile aparatu, looki LUT, maski lokalne, retusz i identyfikatory profili obiektywów. Zaimportowane edycje zaczynają z wyłączonym Film, aby przekonwertowane ustawienia wywoływania były widoczne same."
+          ]
+        },
+        {
+          "title": "Słownictwo",
+          "paragraphs": [
+            "Kolekcje to tutaj również kolekcje; albumy z aplikacji chmurowej trafiają tu tylko przez katalog Lightroom Classic.",
+            "Flagi Wybierz i Odrzuć działają tak samo, a dolny pasek pokazuje je dla zaznaczonych zdjęć.",
+            "Wywoływanie nazywa się tu Edytuj. Film jest domyślnie wyłączony dla nowych i zaimportowanych zdjęć; włącz go, gdy chcesz nałożyć obróbkę filmową na edycję.",
+            "Profil aparatu w Edytuj wyświetla profile Adobe DCP zainstalowane na tym komputerze przez Camera Raw lub Lightroom albo folder profili aparatu wybrany w Ustawieniach. Profile działają w przybliżeniu i tylko na wywoływanie z wyłączonym Film."
+          ]
+        },
+        {
+          "title": "Zaimportuj swoje presety",
+          "paragraphs": [
+            "Presety → Zarządzaj… → Importuj… przyjmuje presety .xmp z Lightroom i Camera Raw, starsze presety .lrtemplate oraz style .costyle z Capture One. Po imporcie katalogu lub folderu konfiguracja oferuje też Importuj presety…. Każdy zaimportowany preset pokazuje przed zastosowaniem, ile ustawień odwzorowano, a które pominięto."
+          ],
+          "steps": [
+            "Otwórz Presety, kliknij Zarządzaj…, a następnie Importuj… i wybierz pliki presetów lub, w aplikacji na Maca, cały folder z presetami.",
+            "Przejrzyj raport konwersji, a następnie zastosuj preset z sekcji Twoje."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Poproś inny edytor o zapisanie metadanych do sąsiednich plików XMP, a następnie wybierz Foldery ••• → Importuj sidecary…. Ta akcja odczytuje oryginały z katalogu, w tym wszystkie strony dużych bibliotek, do 100 000 zdjęć na jeden import. Wirtualne kopie zachowują własne metadane.",
             "Obsługiwane metadane obejmują oceny w gwiazdkach, znaczniki wybierz/odrzuć, standardowe etykiety kolorystyczne, płaskie i hierarchiczne słowa kluczowe oraz opisowe pola IPTC. Jawna pusta wartość czyści to pole; nieobecna wartość pozostawia je bez zmian. Niestandardowe etykiety kolorystyczne, które nie pasują do koloru LightTable, są zgłaszane jako pominięte.",
-            "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie nie są stosowane przez tę akcję menu."
+            "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie są stosowane tylko wtedy, gdy włączysz te opcje w oknie Importuj sidecary."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Ukryj zdjęcia, których nie można wyświetlić",
           "paragraphs": [
             "Gdy w siatce jest widoczny błąd miniatury, wybierz Ukryj zdjęcia, których nie można wyświetlić obok podsumowania lokalizacji. Włącza to odpowiedni przełącznik w panelu Filtr. Jest on domyślnie wyłączony, a jego ustawienie jest zapisywane między sesjami. Ten przełącznik nie jest zapisywany w regułach kolekcji inteligentnych.",
+            "Na taśmie filmowej ten link pojawia się pod liczbą zdjęć tylko wtedy, gdy bieżąca lista zawiera zdjęcia, których nie można wyświetlić.",
             "Przełącznik ukrywa zdjęcia, o których wiadomo, że są niedostępne lub znajdują się tylko w chmurze, oraz zdjęcia z wykrytymi błędami miniatur lub podglądów. Inne błędy dekodowania są wykrywane podczas wczytywania zdjęć. Wyłącz przełącznik, usuń jego znacznik filtra lub wybierz Wyczyść wszystko, aby ponownie pokazać zdjęcia. Pomyślna operacja Spróbuj ponownie lub zmiana oryginału usuwa zapisany błąd."
           ]
         },
@@ -1101,7 +1165,7 @@
         {
           "title": "Zacznij od Jasny",
           "paragraphs": [
-            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie."
+            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego. Kontrast zmienia ich rozdzielenie."
           ],
           "steps": [
             "Ustaw Ekspozycję dla głównego obiektu.",
@@ -1313,7 +1377,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edycja"
     },
@@ -3285,5 +3350,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
 }

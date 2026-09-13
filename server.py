@@ -8616,17 +8616,10 @@ def catalog_sources_action(body: dict) -> dict:
             if not body.get("importState", True):
                 catalog_scan.scan_source(cat, source_id, on_local_file=_enqueue_scan_warmups)
             cat.create_collections_for_source_folders(source_id)
-        has_sidecars = False
-        try:
-            with os.scandir(path) as it:
-                for entry in it:
-                    if entry.is_file() and entry.name.lower().endswith(".xmp"):
-                        has_sidecars = True
-                        break
-        except OSError:
-            pass
+        import xmp_sidecar
         return {"ok": True, "sourceId": source_id, "imported": imported,
-                "hasSidecars": has_sidecars, "sources": cat.sources()}
+                "hasSidecars": xmp_sidecar.folder_has_sidecars(path),
+                "sources": cat.sources()}
     if action == "remove":
         source_id = int(body["id"])
         if source_id == PRIMARY_SOURCE_ID:

@@ -31,6 +31,7 @@ GRADE_SCALARS = {
     "dehaze", "vignette", "vignetteSize", "vignetteFeather", "sharpness", "sharpenRadius", "sharpenDetail",
     "sharpenMasking", "luminanceNoise", "colorNoise",
     "chromaticAberrationRedCyan", "chromaticAberrationBlueYellow",
+    "monochrome",
 }
 SPECIAL_GRADE_KEYS = {"curveL", "curveR", "curveG", "curveB", "hsl"}
 
@@ -47,6 +48,36 @@ def _clamp(value: float | None, minimum: float, maximum: float,
            default: float = 0.0) -> float:
     number = default if value is None else value
     return round(max(minimum, min(maximum, number)), 4)
+
+
+def _grade_range(key: str) -> tuple[float, float]:
+    """The app's own slider range for a grade control, from grade.RANGES."""
+    from grade import RANGES
+    return RANGES.get(key, (-1.0, 1.0))
+
+
+def _clamp_reported(value: float | None, key: str, label: str,
+                    clamped: list, ignored: list, notes: list,
+                    default: float = 0.0) -> float:
+    """Clamp to the app range and record the change so it is never silent.
+
+    A preset can carry values the app's sliders cannot reach. The clamped
+    value is applied, and the report names the control, the source value,
+    and the range so the per-photo and per-preset reports show it.
+    """
+    minimum, maximum = _grade_range(key)
+    result = _clamp(value, minimum, maximum, default)
+    if value is not None and math.isfinite(value) and not minimum <= value <= maximum:
+        clamped.append({"control": key, "source": round(value, 4),
+                        "value": result, "min": minimum, "max": maximum})
+        ignored.append(f"{label} beyond {minimum:+g} to {maximum:+g} clamped to range")
+        notes.append(f"{label.capitalize()} {value:+.2f} is outside the app's "
+                     f"{minimum:+g} to {maximum:+g} range and was clamped to {result:+.2f}.")
+    return result
+
+
+def _xmp_flag(value) -> bool:
+    return str(value or "").strip().casefold() in {"true", "yes", "1"}
 
 
 def _safe_name(value, fallback: str = "Imported Preset") -> str:
@@ -224,11 +255,16 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
     Presets and per-image sidecars share this mapping.
 
     Returns ``{"grade": {...}, "mapped": int, "ignored": [str],
-    "notes": [str]}``.
+    "notes": [str], "clamped": [dict]}``. ``clamped`` lists controls whose
+    source value fell outside the app's range; the same event is named in
+    ``ignored`` so per-photo reports surface it.
     """
     attrs = attrs or {}
     curves = curves or {}
     grade: dict = {}
+    ignored: list[str] = []
+    clamped: list[dict] = []
+    notes = ["Control conversion is approximate because Adobe and LightTable use different render engines."]
     scale_100 = {
         "Contrast2012": "contrast", "Highlights2012": "highlights",
         "Shadows2012": "shadows", "Whites2012": "whites",
@@ -250,7 +286,8 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
                                    minimum, 1)
     exposure_key = "Exposure2012" if "Exposure2012" in attrs else "Exposure"
     if exposure_key in attrs:
-        grade["exposure"] = _clamp(_number(attrs[exposure_key]), -3, 3)
+        grade["exposure"] = _clamp_reported(_number(attrs[exposure_key]), "exposure",
+                                            "exposure", clamped, ignored, notes)
     if "Sharpness" in attrs:
         grade["sharpness"] = _clamp((_number(attrs["Sharpness"]) or 0) / 150.0, 0, 1)
     if "SharpenRadius" in attrs:
@@ -291,6 +328,22 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
                 values[short] = _clamp((_number(attrs[key]) or 0) / 100.0, -1, 1)
         if any(values.values()):
             hsl[lighttable] = values
+    # Black & white conversion: the app's B&W mixer reuses the eight HSL
+    # luminance values, and the source's colour luminance panel is inert
+    # while its own grey mixer is active, so the mixer values replace them.
+    gray_mixer_keys = {f"GrayMixer{adobe}" for adobe in colors}
+    if _xmp_flag(attrs.get("ConvertToGrayscale")):
+        grade["monochrome"] = 1.0
+        for adobe, lighttable in colors.items():
+            entry = hsl.get(lighttable, {})
+            entry.pop("l", None)
+            mixer = _clamp((_number(attrs.get(f"GrayMixer{adobe}")) or 0) / 100.0, -1, 1)
+            if mixer:
+                entry["l"] = mixer
+            if any(entry.values()):
+                hsl[lighttable] = entry
+            else:
+                hsl.pop(lighttable, None)
     if hsl:
         grade["hsl"] = hsl
 
@@ -323,6 +376,7 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
         "Exposure", "Exposure2012", "Sharpness", "SharpenRadius",
         "Temperature", "AsShotTemperature", "IncrementalTemperature",
         "Tint", "IncrementalTint", "PostCropVignetteAmount",
+        "ConvertToGrayscale", *gray_mixer_keys,
     }
     for adobe in colors:
         known.update({f"{prefix}{adobe}" for prefix in (
@@ -350,9 +404,6 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
             "CropConstrainToWarp", "UprightMode", "PerspectiveUpright",
         },
         "healing edits": {"RetouchAreas", "SpotRemoval"},
-        "black and white mixer": {
-            "ConvertToGrayscale", *{f"GrayMixer{color}" for color in colors},
-        },
         "camera calibration": {
             "ShadowTint", "RedHue", "RedSaturation", "GreenHue",
             "GreenSaturation", "BlueHue", "BlueSaturation",
@@ -363,7 +414,6 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
         },
         "white balance mode": {"WhiteBalance"},
     }
-    ignored = []
     grouped_keys = set()
     for label, keys in unsupported_groups.items():
         grouped_keys.update(keys)
@@ -424,13 +474,13 @@ def map_crs_settings(attrs: dict, curves: dict | None = None) -> dict:
         key for key, value in attrs.items()
         if key not in handled and _active_xmp_value(value)
     )
-    notes = ["Control conversion is approximate because Adobe and LightTable use different render engines."]
     mapped = [key for key in grade if key in GRADE_SCALARS | SPECIAL_GRADE_KEYS]
     return {
         "grade": grade,
         "mapped": len(mapped),
         "ignored": sorted(set(ignored)),
         "notes": notes,
+        "clamped": clamped,
     }
 
 
@@ -458,8 +508,12 @@ def import_capture_one(content: str, filename: str) -> dict:
     if not entries:
         raise ValueError("not a Capture One style")
     grade: dict = {}
+    ignored: list[str] = []
+    clamped: list[dict] = []
+    notes: list[str] = []
     if "Exposure" in entries:
-        grade["exposure"] = _clamp(_number(entries["Exposure"]), -3, 3)
+        grade["exposure"] = _clamp_reported(_number(entries["Exposure"]), "exposure",
+                                            "exposure", clamped, ignored, notes)
     scale_100 = {
         "Contrast": "contrast", "Saturation": "saturation",
         "Clarity": "clarity", "Structure": "texture",
@@ -515,9 +569,9 @@ def import_capture_one(content: str, filename: str) -> dict:
         "Name", "UUID", "StyleSource", "Exposure", "Temperature", "Tint",
         "UsmAmount", "UsmRadius", "UsmThreshold", "Vignetting",
     }
-    ignored = [key for key in entries if key not in known]
+    ignored.extend(key for key in entries if key not in known)
     name = entries.get("Name") or Path(filename).stem
-    return _preset(name, "capture-one", grade, ignored=ignored, notes=[
+    return _preset(name, "capture-one", grade, ignored=ignored, notes=notes + [
         "Capture One styles use engine-specific ranges; converted controls are approximate.",
     ])
 
@@ -637,6 +691,9 @@ def _xmp_attribute_lines(preset: dict) -> list[str]:
         values["Tint"] = str(round(float(grade.get("tint", 0)) * 150, 2))
     if "vignette" in included:
         values["PostCropVignetteAmount"] = str(round(-float(grade.get("vignette", 0)) * 100, 2))
+    monochrome = "monochrome" in included and float(grade.get("monochrome", 0) or 0) > 0.5
+    if "monochrome" in included:
+        values["ConvertToGrayscale"] = "True" if monochrome else "False"
     if "hsl" in included:
         names = {"red": "Red", "orange": "Orange", "yellow": "Yellow",
                  "green": "Green", "aqua": "Aqua", "blue": "Blue",
@@ -648,6 +705,9 @@ def _xmp_attribute_lines(preset: dict) -> list[str]:
                                   ("SaturationAdjustment", "s"),
                                   ("LuminanceAdjustment", "l")):
                 values[prefix + names[band]] = str(round(float(entry.get(short, 0)) * 100, 2))
+            if monochrome:
+                # The B&W mixer shares the luminance values with the colour mixer.
+                values["GrayMixer" + names[band]] = str(round(float(entry.get("l", 0)) * 100, 2))
     return [f'   crs:{key}="{html.escape(str(value), quote=True)}"'
             for key, value in values.items()]
 

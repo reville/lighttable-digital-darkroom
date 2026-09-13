@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "開始使用"
     },
@@ -111,7 +112,7 @@
           "title": "檢視翻譯後的編輯",
           "paragraphs": [
             "顯影設定是近似值，無法保證與 Lightroom 的渲染外觀一致。不支援的本機遮罩、相機描述檔、.lrcat-data AI 遮罩或 LUT 負載，以及不支援的智慧集合規則，會回報為已略過。匯入的顯影設定會關閉底片。",
-            "「資料夾」••• → 「匯入旁側檔案…」是一個獨立動作，用來讀取相鄰旁側檔案中的支援中繼資料。此動作不會套用顯影設定或裁切。其結果對話框會顯示進度、已套用數量、略過的設定以及錯誤。"
+            "「資料夾」••• → 「匯入旁側檔案…」是一個獨立動作，用來讀取相鄰旁側檔案中的支援中繼資料。只有開啟相應選項時，它才會套用顯影設定與裁切。其結果對話框會顯示進度、已套用數量、略過的設定以及錯誤。"
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "開始使用"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "開始使用"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "從 Lightroom 轉換過來",
+      "category": "Getting started",
+      "summary": "Lightroom Classic 目錄與 XMP 旁側檔案能帶來什麼、哪些內容沒有匯入途徑，以及詞彙有何不同。",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "移轉",
+        "移轉",
+        "XMP",
+        "旁側檔案",
+        "預設集",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "能帶來的內容",
+          "paragraphs": [
+            "來自 Lightroom Classic 目錄：照片保留在目前的資料夾中，以參照方式加入而非複製。匯入器會讀取評等、旗標、標籤和 IPTC 欄位；關鍵字；集合與支援的智慧集合；堆疊；虛擬副本；裁切與拉直；近似的顯影設定；以及在選擇時讀取編輯歷史記錄。你的 .lrcat 檔案永遠不會被更改。",
+            "來自照片旁的 XMP 旁側檔案：星級評等、選取與拒絕旗標、標準顏色標籤、關鍵字和描述性 IPTC 欄位。開啟相應選項後，「資料夾」••• → 「匯入旁側檔案…」也可以套用顯影設定與裁切。",
+            "兩條途徑使用同一個轉換器，因此無論設定從哪條途徑進來，對應方式都相同：色調、白平衡偏移、紋理、清晰度、去朦朧、顏色混合器、含混合器的黑白轉換、點曲線、暈影量、銳利化和降噪。超出 LightTable 範圍的值（例如曝光超過 ±5 EV）會被限制在範圍內並在報告中列出。"
+          ]
+        },
+        {
+          "title": "沒有匯入途徑的內容",
+          "paragraphs": [
+            "僅儲存在雲端應用程式中的雲端相簿與預設集無法讀取。請先將它們同步到 Lightroom Classic，或把預設集儲存為檔案。",
+            "AI 遮罩與生成式編輯、鏡頭模糊以及降噪設定屬於專有的算繪步驟。它們會回報為已略過而非近似處理，相機描述檔、LUT 風格、局部遮罩、修復和鏡頭描述檔識別也是如此。匯入的編輯會以底片關閉開始，讓轉換後的顯影設定單獨呈現。"
+          ]
+        },
+        {
+          "title": "詞彙對照",
+          "paragraphs": [
+            "集合在這裡同樣稱為集合；雲端應用程式的相簿只能透過 Lightroom Classic 目錄匯入。",
+            "選取與拒絕旗標的用法相同，底部列會顯示所選照片的旗標。",
+            "顯影在這裡稱為編輯。新照片與匯入的照片預設關閉底片；想在編輯之上疊加底片處理時再開啟它。",
+            "編輯中的相機描述檔會列出 Camera Raw 或 Lightroom 安裝在這部電腦上的 Adobe DCP 描述檔，或在設定中選擇的相機描述檔資料夾。描述檔以近似方式套用，且僅作用於底片關閉時的顯影。"
+          ]
+        },
+        {
+          "title": "匯入你的預設集",
+          "paragraphs": [
+            "預設集 → 管理… → 匯入… 接受 Lightroom 與 Camera Raw 的 .xmp 預設集、舊版 .lrtemplate 預設集以及 Capture One 的 .costyle 樣式。匯入目錄或資料夾之後，設定流程也會提供匯入預設集…。每個匯入的預設集都會在套用前顯示對應了多少設定以及略過了哪些設定。"
+          ],
+          "steps": [
+            "開啟預設集，按一下管理…，然後按一下匯入…並選擇預設集檔案；在 Mac 應用程式中也可以選擇整個預設集資料夾。",
+            "檢視轉換報告，然後從你的中套用該預設集。"
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "開始使用"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "請讓另一個編輯器將其中繼資料儲存到相鄰的 XMP 檔案，然後選擇「資料夾」••• → 「匯入旁側檔案…」。此動作會讀取目錄中的原始檔，包括大型資料庫中每次匯入最多 100,000 張相片的所有頁面。虛擬複本會保留各自的中繼資料。",
             "支援的中繼資料包括星等評分、選取/拒絕標記、標準色標籤、平面與階層式關鍵字，以及描述性的 IPTC 欄位。明確的空白值會清除此欄位；缺少的值則會維持不變。與 LightTable 色彩不符的自訂色標籤會回報為已略過。",
-            "匯入器會讀取支援的 Photo Mechanic 與 digiKam 中繼資料慣例。每個應用程式都有額外的慣例，因此在交換整個圖庫前，請先在兩個應用程式中檢視一小部分樣本。此選單動作不會套用顯影設定與裁切。"
+            "匯入器會讀取支援的 Photo Mechanic 與 digiKam 中繼資料慣例。每個應用程式都有額外的慣例，因此在交換整個圖庫前，請先在兩個應用程式中檢視一小部分樣本。只有在匯入旁側檔案對話框中開啟相應選項時，才會套用顯影設定與裁切。"
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "隱藏無法顯示的照片",
           "paragraphs": [
             "當格狀檢視中可見縮圖錯誤時，選擇位置摘要旁的「隱藏無法顯示的照片」。這會開啟「篩選」中的對應開關。該開關預設關閉，其設定會在工作階段之間儲存。 此開關不會儲存到智慧型集合規則中。",
+            "在膠卷帶中，只有當目前清單包含無法顯示的相片時，此連結才會出現在相片數量下方。",
             "此開關會隱藏已知無法使用或僅儲存於雲端的照片，以及已偵測到縮圖或預覽失敗的照片。其他解碼錯誤會在載入照片時發現。關閉開關、移除其篩選標籤或選擇「全部清除」即可再次顯示這些照片。成功「重試」或原始檔案變更後，記錄的失敗會被清除。"
           ]
         },
@@ -1101,7 +1165,7 @@
         {
           "title": "以亮部開始",
           "paragraphs": [
-            "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端：提高 Whites 可讓最亮的色調更亮，提高 Blacks 可提升最暗的色調，降低其中任一項則會把該端拉回。Contrast 會改變它們之間的分離程度。"
+            "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端。Contrast 會改變它們之間的分離程度。"
           ],
           "steps": [
             "為主要主體設定曝光。",
@@ -1313,7 +1377,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "編輯"
     },
@@ -3285,5 +3350,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
 }
