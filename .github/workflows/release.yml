@@ -1,4 +1,5 @@
 name: Release build
+run-name: Release build v${{ inputs.version }} (${{ inputs.platforms }}, macOS ${{ inputs.macos_channel }})
 
 on:
   workflow_dispatch:
@@ -78,9 +79,33 @@ jobs:
             *) echo 'Unknown platform selection' >&2; exit 1 ;;
           esac
 
+  translations:
+    # Public releases ship complete translations. Pull requests and main may
+    # carry pending strings; complete them with scripts/translate-locales.py first.
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements-runtime.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require complete catalogs and localized Help
+        run: |
+          python3 -m pip install --constraint requirements-runtime.lock numpy pillow
+          python3 scripts/localization.py check
+          python3 scripts/help_content.py check
+          python3 scripts/help_content.py localization-check
 
   macos:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.macos == 'true'
     runs-on: macos-15
     timeout-minutes: 120
@@ -134,13 +159,29 @@ jobs:
           security list-keychains -d user -s "$keychain"
           security set-key-partition-list -S apple-tool:,apple: -s -k "$APPLE_KEYCHAIN_PASSWORD" "$keychain"
           rm -f "$certificate"
-      - name: Install build tools and convert the pinned denoising model
+      - name: Identify the model conversion environment
+        id: model-environment
+        run: echo "image=${ImageOS:?}-${ImageVersion:?}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: converted-model
+        with:
+          path: |
+            scripts/models/denoise.mlpackage
+            scripts/models/models.json
+            scripts/models/SCUNet-CODE-LICENSE.txt
+            scripts/models/SCUNet-WEIGHTS-LICENSE.txt
+          key: denoise-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.model-environment.outputs.image }}-py311-${{ hashFiles('scripts/convert-models.py', 'scripts/fetch-models.py', 'scripts/models/*.py', 'scripts/models/requirements-convert.txt', 'scripts/ci/check-converted-model.py') }}
+      - name: Install build tools
+        run: brew install uv
+      - name: Convert the pinned denoising model on a cache miss
+        if: steps.converted-model.outputs.cache-hit != 'true'
         run: |
-          brew install uv
           uv venv --python 3.11 .build/model-conversion
           uv pip install --python .build/model-conversion/bin/python -r scripts/models/requirements-convert.txt
           .build/model-conversion/bin/python scripts/fetch-models.py
           .build/model-conversion/bin/python scripts/convert-models.py
+      - name: Verify the converted model before packaging
+        run: python3 scripts/ci/check-converted-model.py
       - name: Build the selected application channel
         env:
           LIGHTTABLE_VERSION: ${{ needs.prepare.outputs.macos_version }}
@@ -221,7 +262,7 @@ jobs:
           if [[ -f "$keychain" ]]; then security delete-keychain "$keychain"; fi
 
   windows:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.windows == 'true'
     permissions:
       actions: read
@@ -236,7 +277,7 @@ jobs:
     secrets: inherit
 
   linux-preflight:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.linux == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -259,7 +300,7 @@ jobs:
       source_ref: ${{ needs.prepare.outputs.source_ref }}
 
   summary:
-    needs: [prepare, macos, windows, linux]
+    needs: [prepare, translations, macos, windows, linux]
     if: always()
     runs-on: ubuntu-latest
     steps:

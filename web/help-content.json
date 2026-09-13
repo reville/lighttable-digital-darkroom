@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ]
     },
     {
@@ -110,7 +111,7 @@
           "title": "Review translated edits",
           "paragraphs": [
             "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-            "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
+            "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. It applies develop settings and crop only when you turn those options on. Its results dialog shows progress, applied counts, skipped settings, and errors."
           ]
         }
       ],
@@ -118,7 +119,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ]
     },
     {
@@ -157,6 +159,66 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ]
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Coming from Lightroom",
+      "category": "Getting started",
+      "summary": "What a Lightroom Classic catalog and XMP sidecars bring across, what has no import path, and how the vocabulary differs.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrate",
+        "migration",
+        "XMP",
+        "sidecars",
+        "presets",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "What comes across",
+          "paragraphs": [
+            "From a Lightroom Classic catalog: photos stay in their current folders and are referenced, not copied. The importer reads ratings, flags, labels, and IPTC fields; keywords; collections and supported smart collections; stacks; virtual copies; crop and straightening; approximate develop settings; and, when chosen, edit history. Your .lrcat file is never changed.",
+            "From XMP sidecars beside your photos: star ratings, pick and reject flags, standard colour labels, keywords, and descriptive IPTC fields. Folders ••• → Import sidecars… can also apply develop settings and crop when you turn those options on.",
+            "Both routes use the same converter, so a setting maps the same way whichever way it arrives: tone, white balance offsets, texture, clarity, dehaze, the colour mixer, black and white conversion with its mixer, point curves, vignette amount, sharpening, and noise reduction. A value outside LightTable’s range, such as exposure beyond ±5 EV, is clamped and named in the report."
+          ]
+        },
+        {
+          "title": "What has no import path",
+          "paragraphs": [
+            "Cloud albums and presets stored only in the cloud app cannot be read. Sync them into Lightroom Classic or save the presets as files first.",
+            "AI masks and generative edits, Lens Blur, and Denoise settings are proprietary rendering steps. They are reported as skipped rather than approximated, as are camera profiles, LUT looks, local masks, healing, and lens-profile identities. Imported edits start with Film off so the converted develop settings are shown on their own."
+          ]
+        },
+        {
+          "title": "Vocabulary",
+          "paragraphs": [
+            "Collections are collections here as well; the cloud app’s albums arrive only through a Lightroom Classic catalog.",
+            "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
+            "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
+            "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+          ]
+        },
+        {
+          "title": "Import your presets",
+          "paragraphs": [
+            "Presets → Manage… → Import… accepts Lightroom and Camera Raw .xmp presets, legacy .lrtemplate presets, and Capture One .costyle styles. After a catalog or folder import, setup also offers Import presets…. Each imported preset shows how many settings mapped and which were skipped before you apply it."
+          ],
+          "steps": [
+            "Open Presets, click Manage…, then Import… and choose the preset files or, in the Mac app, a whole preset folder.",
+            "Review the conversion report, then apply the preset from Yours."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ]
     },
     {
@@ -488,7 +550,7 @@
           "paragraphs": [
             "Ask the other editor to save its metadata to adjacent XMP files, then choose Folders ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
             "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
-            "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are not applied by this menu action."
+            "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are applied only when you turn those options on in the Import sidecars dialog."
           ]
         },
         {
@@ -1075,13 +1137,19 @@
         "auto",
         "histogram",
         "clipping",
-        "before"
+        "before",
+        "color sampler",
+        "colour sampler",
+        "sampler",
+        "rgb values",
+        "readout",
+        "measure"
       ],
       "sections": [
         {
           "title": "Start with Light",
           "paragraphs": [
-            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation."
+            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation."
           ],
           "steps": [
             "Set Exposure for the main subject.",
@@ -1106,6 +1174,21 @@
             "If Auto says it is waiting for the image preview, let the preview load and try again.",
             "The scope menu also offers Waveform, RGB Parade, and Vectorscope for inspecting tone and color."
           ]
+        },
+        {
+          "title": "Measure colours with samplers",
+          "paragraphs": [
+            "Colour samplers show the red, green, and blue values (0–255) and the lightness, L*, of up to four places in the photo. The readings update as you edit, so you can check a grey card, a film base, or skin tone while adjusting."
+          ],
+          "steps": [
+            "Click the sampler button beside the histogram.",
+            "Click the photo to place a sampler. Place up to four.",
+            "Read the values below the histogram. Use × to remove a sampler."
+          ],
+          "tips": [
+            "Samplers read the displayed edit. They belong to the current window session and are not saved with the photo.",
+            "Press Escape to stop placing samplers."
+          ]
         }
       ],
       "related": [
@@ -1118,7 +1201,7 @@
       "id": "editing-lens-corrections",
       "title": "Apply lens and chromatic-aberration corrections",
       "category": "Editing",
-      "summary": "Use a matched or manually selected lens profile, or make manual corrections when an exact profile is unavailable.",
+      "summary": "Use a matched or manually selected lens profile, correct chromatic aberration, remove purple and green fringes, or make manual corrections when an exact profile is unavailable.",
       "keywords": [
         "lens",
         "profile",
@@ -1127,6 +1210,9 @@
         "shading",
         "chromatic aberration",
         "fringing",
+        "defringe",
+        "purple fringe",
+        "green fringe",
         "red cyan",
         "blue yellow",
         "optics"
@@ -1135,18 +1221,21 @@
         {
           "title": "Choose and verify a correction",
           "paragraphs": [
-            "Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available."
+            "Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available. The panel also names the version of the lens database in use and how many cameras and lenses it lists; the database ships with the lens library rather than with LightTable.",
+            "When the camera and lens in the photo metadata exactly match one profile, Use matched lens profile is on as soon as the photo opens and applies to thumbnails and exports as well. An inferred or ambiguous match stays off. Settings → Develop Defaults → Apply matched lens profile automatically turns this behavior off; photos with saved lens settings keep them either way."
           ],
           "steps": [
             "Read the profile name and match explanation.",
-            "Enable Use matched lens profile when a profile is available, then choose Correct distortion and Correct lens shading as needed.",
+            "Enable Use matched lens profile when a profile is available, then choose Correct distortion, Correct lens shading, and Correct chromatic aberration as needed. Each switch is independent, so chromatic aberration can be corrected without changing the geometry.",
             "If necessary, choose a different entry in Lens profile and compare the correction against the original.",
-            "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration."
+            "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration.",
+            "Under Defringe, raise Purple or Green to drain that color from strongly saturated pixels beside hard edges. The hue start and hue end sliders set the range of hues each control treats; a start above its end wraps through red."
           ],
           "tips": [
             "No exact lens profile found leaves manual distortion and perspective controls available.",
-            "Profile distortion and shading checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.",
+            "Profile distortion, shading, and chromatic aberration checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.",
             "A manually selected profile needs visual checking; the selection does not establish that it is an exact match.",
+            "Defringe treats the outline of a large purple or green subject like a fringe. Lower the amount or narrow the hue range if a subject loses color along its edge.",
             "Lens and fringe corrections remain non-destructive through export."
           ]
         }
@@ -1291,7 +1380,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ]
     },
     {
@@ -1576,7 +1666,15 @@
         "blacks",
         "overlay",
         "dodge",
-        "burn"
+        "burn",
+        "lens blur",
+        "background blur",
+        "blur",
+        "bokeh",
+        "depth of field",
+        "luminosity",
+        "luminosity blend",
+        "preserve color"
       ],
       "sections": [
         {
@@ -1633,10 +1731,26 @@
           ]
         },
         {
+          "title": "Blur part of the photo",
+          "paragraphs": [
+            "Lens blur in a mask’s Effects section softens the selected area the way an out-of-focus lens does. The blur radius grows with the mask’s strength, so a feathered edge or a depth range falls off gradually instead of stopping at a hard line.",
+            "Blur is applied to the finished image, after film rendering and the mask’s other adjustments. It also smooths film grain inside the blurred area."
+          ],
+          "steps": [
+            "Create a Subject mask and choose Invert, or a Depth mask for a distance range, or draw a Radial mask and invert it.",
+            "Expand Effects and raise Lens blur. Wait for the preview update before judging it.",
+            "Refine the selection with Add, Subtract, or Feather where blur spills onto sharp edges."
+          ],
+          "tips": [
+            "Only selected pixels contribute to the blur, so a sharp subject does not smear into the blurred background. Check fine edges such as hair at 1:1."
+          ]
+        },
+        {
           "title": "Adjust a local tone curve",
           "steps": [
             "Expand Tone Curve for the selected mask and choose RGB, Red, Green, or Blue.",
             "Click the graph to add a point, then drag it. Moving a point up brightens its output; moving it down darkens it. Double-click an interior point to remove it.",
+            "Enable Luminosity only to change brightness without shifting colour or saturation.",
             "Use Reset curve to reset only the selected channel of this mask, or Undo to reverse an edit."
           ],
           "tips": [
@@ -1788,7 +1902,7 @@
       "id": "editing-remove-heal",
       "title": "Remove spots and refine Heal or Clone corrections",
       "category": "Editing",
-      "summary": "Paint over distractions, inspect spot visibility, and move the source or target of a correction.",
+      "summary": "Remove spots and painted strokes, clear dust and scratches across the photo, and refine Heal or Clone corrections.",
       "keywords": [
         "remove",
         "heal",
@@ -1800,7 +1914,18 @@
         "visualize spots",
         "source",
         "target",
-        "distraction"
+        "distraction",
+        "dust and scratches",
+        "scratch",
+        "hair",
+        "wire",
+        "brush",
+        "stroke",
+        "fill",
+        "texture fill",
+        "content-aware fill",
+        "film scan",
+        "marks"
       ],
       "sections": [
         {
@@ -1811,22 +1936,44 @@
           ],
           "steps": [
             "Choose Remove, Heal, or Clone, then set Size, Feather, and Opacity.",
-            "Click a spot or drag over a distraction in the photo.",
+            "For Remove, choose Spot to click or drag a round correction, or Brush to paint along a scratch, hair, or wire.",
+            "For Remove, choose Fill. Match surrounding texture copies nearby detail from the photo; Smooth blend blends the edges inward and suits even areas such as sky.",
+            "Click a spot, drag over a distraction, or paint a stroke in the photo.",
             "For small dust spots, enable Visualize Spots and adjust Threshold to make edges easier to inspect.",
             "Turn Visualize Spots off and inspect the corrected photograph."
           ],
           "tips": [
-            "Selecting a correction and choosing a different mode changes that correction’s mode."
+            "Selecting a correction and choosing a different mode changes that correction’s mode.",
+            "Match surrounding texture copies pixels from this photo; it never generates new detail. Fill changes apply to the selected Remove correction. Corrections made before this choice existed keep Smooth blend.",
+            "A brush stroke holds up to 256 points. Release and paint another stroke to continue."
+          ]
+        },
+        {
+          "title": "Remove dust and scratches across the photo",
+          "paragraphs": [
+            "Dust and scratches finds small marks that stand out sharply from their surroundings, such as dust on a film scan, and fills them from nearby pixels. It runs across the whole photo as one correction at the top of the list, so later corrections sample the cleaned image.",
+            "Largest mark sets the widest mark that counts, as a share of the photo’s short edge. Sensitivity sets how much a mark must differ from its surroundings. Higher values find fainter marks and are more likely to catch fine detail."
+          ],
+          "steps": [
+            "Open Remove and expand Dust and scratches.",
+            "Set Largest mark a little wider than the dust you can see, and leave Sensitivity at 50% to start.",
+            "Click Remove Dust. Show detected marks outlines what was found in red and reports how many marks it found.",
+            "Zoom in on hair, stars, catchlights, and text. If they are caught, lower Sensitivity or Largest mark, or lower Opacity.",
+            "Turn off Show detected marks to judge the result."
+          ],
+          "tips": [
+            "Select the Dust correction in the list to change it later. Enable this correction compares the result, and Delete Correction removes it.",
+            "Long thin scratches are found when their width is below Largest mark. Paint wider scratches with the Remove brush instead."
           ]
         },
         {
           "title": "Refine an existing correction",
           "paragraphs": [
-            "Select a correction in the list to show its controls. The on-image circles indicate the editable target and, for Heal and Clone, the source.",
+            "Select a correction in the list to show its controls. The on-image circles or strokes indicate the editable target and, for Heal and Clone, the source.",
             "Zoom in for precise placement. Circle outlines and pins stay sharp at every zoom level; the circles continue to show the same area of the photo."
           ],
           "steps": [
-            "Drag the target circle to reposition the correction, or choose Move Target and click its new position.",
+            "Drag the target circle or a painted stroke to reposition the correction, or choose Move Target and click its new position.",
             "For Heal or Clone, drag the source circle to a better area. Refresh Source tries a different source position.",
             "Adjust Feather or Opacity if the correction’s edge or strength needs refinement.",
             "Toggle Enable this correction to compare, or use Delete correction to remove it."
@@ -1978,7 +2125,8 @@
         {
           "title": "Neutralize a color cast",
           "paragraphs": [
-            "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls."
+            "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls.",
+            "For a RAW original, a Capture white balance block sits above them with As shot, Auto, presets, and Custom for a kelvin temperature and capture tint. It re-develops the RAW data and works with Film on or off; it is hidden for processed files."
           ],
           "steps": [
             "Open Edit and expand Color.",
@@ -1996,7 +2144,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ]
     },
     {
@@ -2014,7 +2163,15 @@
         "blue",
         "contrast",
         "control point",
-        "s curve"
+        "s curve",
+        "eyedropper",
+        "black point",
+        "white point",
+        "grey point",
+        "gray point",
+        "neutral",
+        "color cast",
+        "levels"
       ],
       "sections": [
         {
@@ -2032,6 +2189,21 @@
           "tips": [
             "Use a few points and compare the photo as you work; channel curves can introduce strong color casts.",
             "A stored or imported curve retains its exact saved table until you edit it. The app rebuilds representative handles for editing, so the first adjustment can reshape an imported curve beyond the point you move."
+          ]
+        },
+        {
+          "title": "Set black, grey, and white points",
+          "paragraphs": [
+            "The eyedroppers below the point curve set the red, green, and blue curves from a place in the photo. Black point makes the sampled area black, White point makes it white, and Grey point makes it neutral while keeping its brightness. This is useful for removing a colour cast from a scan."
+          ],
+          "steps": [
+            "Open Edit, expand Curve, and choose Black point, Grey point, or White point.",
+            "Click an area of the photo that should be black, neutral grey, or white.",
+            "Check the R, G, and B curves, then refine or reset them if the result is too strong."
+          ],
+          "tips": [
+            "Black point needs an area darker than middle grey, and White point needs one brighter than middle grey. Press Escape to cancel an eyedropper.",
+            "The eyedroppers switch Curve to Point mode because they edit the channel curves."
           ]
         },
         {
@@ -2394,7 +2566,7 @@
           "title": "Capture controls and finishing controls",
           "paragraphs": [
             "Camera EV and Capture white balance act before film exposure. Exposure and Temp/Tint in the Edit panel are finishing adjustments later in the workflow.",
-            "Capture white balance requires a RAW original. For a JPEG, HEIF, TIFF, or another processed file, use Edit Temp/Tint."
+            "Capture white balance sits at the top of the Color section for RAW originals and works with Film on or off: choose As shot, Auto, a preset, or Custom to set a kelvin temperature and capture tint. For a JPEG, HEIF, TIFF, or another processed file, the block is hidden; use Edit Temp/Tint."
           ],
           "steps": [
             "Turn on Film, choose a stock, and adjust Camera EV.",
@@ -2403,7 +2575,7 @@
             "For Custom, adjust Temperature and Capture tint."
           ],
           "tips": [
-            "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded."
+            "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve. Before filming, LightTable expands its brightness range while preserving the proportions of red, green, and blue, so this preparation does not exaggerate an existing color cast. Automatic scene metering keeps the same exposure reference. This approximates scene contrast; it cannot recover detail already lost in the processed photo. RAW files are scene light already and are not expanded."
           ]
         },
         {
@@ -2485,7 +2657,11 @@
         "quality",
         "full size",
         "resolution",
-        "preset"
+        "preset",
+        "border",
+        "frame",
+        "matte",
+        "margin"
       ],
       "sections": [
         {
@@ -2498,6 +2674,17 @@
             "Open Export and choose a preset across the top.",
             "Set Dimensions to Full size or a long-edge limit.",
             "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."
+          ]
+        },
+        {
+          "title": "Add a border",
+          "paragraphs": [
+            "Border in Advanced adds a plain white, grey, or black margin around each exported photo. The margin is added after resizing, so its width is a share of the delivered long edge and the output is larger than the photo by that margin on every side."
+          ],
+          "steps": [
+            "Open Export and expand Advanced.",
+            "Choose Thin, Medium, or Wide in Border, then choose Border colour.",
+            "Check Output preview for the final dimensions."
           ]
         },
         {
@@ -2618,7 +2805,10 @@
         "rated",
         "batch",
         "cancel",
-        "progress"
+        "progress",
+        "contact sheet",
+        "proof sheet",
+        "index print"
       ],
       "sections": [
         {
@@ -2641,6 +2831,22 @@
             "Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.",
             "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.",
             "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."
+          ]
+        },
+        {
+          "title": "Make a contact sheet",
+          "paragraphs": [
+            "Contact Sheet… in Export lays the photos chosen in the Photos field out on one captioned JPEG, with your edits applied. It can hold up to 200 photos."
+          ],
+          "steps": [
+            "Open Export and set Photos and the destination folder.",
+            "Click Contact Sheet… and choose Columns, Sheet width, Background, and a Title.",
+            "Choose captions: File name, Film stock, and Rating.",
+            "Click Make Sheet. The dialog reports progress, and a notification gives the saved file’s path."
+          ],
+          "tips": [
+            "The sheet is saved as contact-sheet followed by the date and time. A photo that cannot be rendered is skipped and counted in the notification.",
+            "Choose more columns if a large selection makes the sheet too tall to create."
           ]
         }
       ],
@@ -2803,7 +3009,8 @@
         {
           "title": "Defaults for unedited photos",
           "paragraphs": [
-            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."
+            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset.",
+            "Apply matched lens profile automatically, on by default, switches on the lens profile for photos whose camera and lens exactly match one profile and whose lens settings were never saved. Turn it off to open every photo with the profile off."
           ],
           "steps": [
             "Open Settings → Develop Defaults.",

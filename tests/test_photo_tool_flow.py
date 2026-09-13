@@ -7,6 +7,11 @@ import shutil
 import subprocess
 import unittest
 
+DEFRINGE_DEFAULTS = {
+    'defringePurple': 0, 'defringePurpleHueStart': 250, 'defringePurpleHueEnd': 330,
+    'defringeGreen': 0, 'defringeGreenHueStart': 90, 'defringeGreenHueEnd': 150,
+}
+
 ROOT = Path(__file__).resolve().parents[1]
 
 HARNESS = r"""
@@ -35,7 +40,7 @@ const syncGrade = noop, drawGrade = noop, syncCurveFromGrade = noop, syncHsl = n
 const renderKeywords = noop, renderVersions = noop, refreshLists = noop, updateUndoRedoButtons = noop;
 const normalizeFilmParams = value => cloneValue(value);
 const serializableMasks = () => cloneValue(S.masks);
-const refreshSpotVisualization = noop;
+const refreshSpotVisualization = noop, scheduleDustDetection = noop;
 const drawEditOverlay = noop, scheduleNativeMenuState = noop, savePrefs = noop;
 const renderEditItems = noop, syncOverlayCursorClass = noop;
 const nativePreviewActive = () => false;
@@ -336,7 +341,8 @@ console.log(JSON.stringify({pane:S.activePane,cropping:S.cropping,crop:S.crop,
                                              'flipHorizontal': False, 'flipVertical': False,
                                              'distortion': 0.25, 'profileOverride': None, 'profileEnabled': True,
                                              'profileDistortion': True, 'profileVignette': True,
-                                             'vignette': 0})
+                                             'profileChromatic': True, 'vignette': 0,
+                                             **DEFRINGE_DEFAULTS})
         self.assertEqual((result['ratio'], result['locked']), ('free', False))
         self.assertEqual(result['counts']['save'], 1)
 
@@ -361,7 +367,8 @@ console.log(JSON.stringify({pane:S.activePane,crop:S.crop,rotate:S.params.rotate
             'rotate': 4, 'vertical': 5, 'horizontal': 6, 'scale': 1.1,
             'flipHorizontal': True, 'flipVertical': True,
             'distortion': 0, 'vignette': 0, 'profileOverride': None, 'profileEnabled': False,
-            'profileDistortion': True, 'profileVignette': True,
+            'profileDistortion': True, 'profileVignette': True, 'profileChromatic': True,
+            **DEFRINGE_DEFAULTS,
         })
         self.assertEqual(result['grade'], {'exposure': 0.8, 'contrast': 0.2})
         self.assertTrue(result['propagationStopped'])

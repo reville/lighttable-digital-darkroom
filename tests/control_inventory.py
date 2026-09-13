@@ -212,6 +212,12 @@ def _local_controls() -> list[Control]:
                                 grade.DEFAULTS[key], low, high, cyclic=cyclic))
     for key in grade.CURVE_KEYS:
         controls.append(Control(f"local.{key}", "local", "curve", None))
+    for key in edits.LOCAL_EFFECT_KEYS:
+        low, high, cyclic, optional = _probe(edits.clean_local_grade, key)
+        default = edits.clean_local_grade({})[key]
+        controls.append(Control(f"local.{key}", "local", "number",
+                                default, low, high, cyclic=cyclic))
+    controls.append(Control("local.curveLuminosity", "local", "boolean", False))
     return controls
 
 
@@ -312,6 +318,17 @@ def _heal_controls() -> list[Control]:
     controls.append(Control("heal.enabled", "heal", "boolean", True))
     controls.append(Control("heal.target", "heal", "structure", None))
     controls.append(Control("heal.source", "heal", "structure", None))
+    controls.append(Control("heal.points", "heal", "structure", None))
+    for fill in _accepted(edits.clean_heals, "fill"):
+        controls.append(Control(f"heal.fill.{fill}", "heal", "structure", None))
+
+    def clean_dust(values):
+        return edits.clean_heals([{"mode": "dust", **values}])[0]
+
+    for key, default in edits.DUST_DEFAULTS.items():
+        low, high, cyclic, optional = _probe(clean_dust, key)
+        controls.append(Control(f"heal.dust.{key}", "heal", "number", default,
+                                low, high, cyclic=cyclic))
     return controls
 
 
@@ -371,6 +388,7 @@ def _film_controls() -> list[Control]:
 ELEMENT_CONTROL = {
     "healRadius": "heal.radius", "healFeather": "heal.feather",
     "healOpacity": "heal.opacity",
+    "healDustSensitivity": "heal.dust.sensitivity", "healDustSize": "heal.dust.size",
     "maskOpacity": "mask.opacity", "maskAngle": "mask.radial.angle",
     "maskRadiusX": "mask.radial.radiusX", "maskRadiusY": "mask.radial.radiusY",
     "maskShapeFeather": "mask.radial.feather",

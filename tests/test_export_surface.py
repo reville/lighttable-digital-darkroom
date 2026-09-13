@@ -44,6 +44,31 @@ def surface_for(pixels):
         libc.shm_unlink(name.encode())
 
 
+@contextmanager
+def rgb8_surface_for(codes):
+    """The worker's packed 8-bit export: tight rows, no padding."""
+    codes = np.ascontiguousarray(codes, dtype=np.uint8)
+    height, width = codes.shape[:2]
+    libc = export_surface._libc()
+    name = f"/lte-{os.getpid():x}-{uuid.uuid4().hex[:8]}"
+    fd = libc.shm_open(name.encode(), os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)
+    if fd < 0:
+        raise OSError("unable to create test shared export")
+    try:
+        os.ftruncate(fd, codes.nbytes)
+        with mmap.mmap(fd, codes.nbytes) as mapping:
+            mapping.write(codes.tobytes())
+    finally:
+        os.close(fd)
+    descriptor = {"name": name, "width": width, "height": height,
+                  "length": codes.nbytes, "rowBytes": width * 3,
+                  "offset": 0, "format": "rgb8", "byteOrder": "native"}
+    try:
+        yield descriptor
+    finally:
+        libc.shm_unlink(name.encode())
+
+
 @unittest.skipUnless(export_surface.supported(), "POSIX shared export transport")
 class ExportSurfaceTests(unittest.TestCase):
     def assert_unlinked(self, descriptor):
@@ -87,6 +112,26 @@ class ExportSurfaceTests(unittest.TestCase):
         with surface_for(pixels) as descriptor:
             actual = color_pipeline.as_float_rgb(export_surface.adopt_surface(descriptor))
         np.testing.assert_array_equal(actual, expected)
+
+    def test_rgb8_adoption_keeps_every_code_and_unlinks_name(self):
+        codes = np.arange(5 * 7 * 3, dtype=np.uint8).reshape(5, 7, 3)
+        codes[0, 0] = (0, 254, 255)
+        with rgb8_surface_for(codes) as descriptor:
+            adopted = export_surface.adopt_surface(descriptor)
+            self.assert_unlinked(descriptor)
+        self.assertEqual(adopted.dtype, np.uint8)
+        self.assertEqual(adopted.shape, (5, 7, 3))
+        self.assertFalse(adopted.flags.writeable)
+        np.testing.assert_array_equal(adopted, codes)
+
+    def test_rgb8_layout_must_match_its_format(self):
+        codes = np.zeros((2, 3, 3), dtype=np.uint8)
+        for change in ({"rowBytes": 36}, {"format": "rgb32f"},
+                       {"format": "rgba8"}, {"length": 20}):
+            with rgb8_surface_for(codes) as descriptor:
+                with self.assertRaises((ValueError, OSError)):
+                    export_surface.adopt_surface(dict(descriptor, **change))
+                self.assert_unlinked(descriptor)
 
     def test_rejects_bad_layouts_and_releases_valid_worker_names(self):
         for change in ({"length": 4}, {"width": -1}, {"rowBytes": 256},

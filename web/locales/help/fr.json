@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -111,7 +112,7 @@
           "title": "Vérifier les retouches traduites",
           "paragraphs": [
             "Les réglages de développement sont approximatifs et ne peuvent pas promettre l’apparence rendue de Lightroom. Les masques locaux non pris en charge, les profils d’appareil photo, les masques IA .lrcat-data ou les charges utiles LUT, ainsi que les règles de collection intelligente non prises en charge, sont signalés comme ignorés. Les réglages de développement importés désactivent Film.",
-            "Dossiers ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Cette action n’applique pas les réglages de développement ni le recadrage. La boîte de dialogue de résultats affiche la progression, les quantités appliquées, les réglages ignorés et les erreurs."
+            "Dossiers ••• → Importer les sidecars… est une action distincte pour lire les métadonnées prises en charge depuis les sidecars adjacents. Elle n’applique les réglages de développement et le recadrage que si vous activez ces options. La boîte de dialogue de résultats affiche la progression, les quantités appliquées, les réglages ignorés et les erreurs."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Premiers pas"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Venir de Lightroom",
+      "category": "Getting started",
+      "summary": "Ce qu’un catalogue Lightroom Classic et les sidecars XMP apportent, ce qui n’a pas de voie d’import et en quoi le vocabulaire diffère.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrer",
+        "migration",
+        "XMP",
+        "sidecars",
+        "préréglages",
+        "modèle Lightroom",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Ce qui est repris",
+          "paragraphs": [
+            "Depuis un catalogue Lightroom Classic : les photos restent dans leurs dossiers actuels et sont référencées, pas copiées. L’importateur lit les notes, marques, libellés et champs IPTC ; les mots-clés ; les collections et les collections dynamiques prises en charge ; les piles ; les copies virtuelles ; le recadrage et le redressement ; les réglages de développement approximatifs ; et, si vous le choisissez, l’historique des retouches. Votre fichier .lrcat n’est jamais modifié.",
+            "Depuis les sidecars XMP à côté de vos photos : notes en étoiles, marques de sélection et de rejet, libellés de couleur standard, mots-clés et champs IPTC descriptifs. Dossiers ••• → Importer les sidecars… peut aussi appliquer les réglages de développement et le recadrage si vous activez ces options.",
+            "Les deux voies utilisent le même convertisseur : un réglage est donc transposé de la même façon quelle que soit son origine : tonalité, décalages de balance des blancs, texture, clarté, correction du voile, mélangeur de couleurs, conversion noir et blanc avec son mélangeur, courbes par points, quantité de vignettage, netteté et réduction du bruit. Une valeur hors de la plage de LightTable, comme une exposition au-delà de ±5 EV, est limitée et nommée dans le rapport."
+          ]
+        },
+        {
+          "title": "Ce qui n’a pas de voie d’import",
+          "paragraphs": [
+            "Les albums cloud et les préréglages stockés uniquement dans l’application cloud ne peuvent pas être lus. Synchronisez-les d’abord dans Lightroom Classic ou enregistrez les préréglages sous forme de fichiers.",
+            "Les masques IA et les retouches génératives, le flou d’objectif et les réglages de réduction du bruit sont des étapes de rendu propriétaires. Ils sont signalés comme ignorés plutôt qu’approximés, tout comme les profils d’appareil photo, les looks LUT, les masques locaux, les corrections et les identités de profil d’objectif. Les retouches importées commencent avec Film désactivé afin que les réglages de développement convertis apparaissent seuls."
+          ]
+        },
+        {
+          "title": "Vocabulaire",
+          "paragraphs": [
+            "Les collections sont aussi des collections ici ; les albums de l’application cloud n’arrivent que par un catalogue Lightroom Classic.",
+            "Les marques Sélectionner et Rejeter fonctionnent de la même façon, et la barre inférieure les affiche pour les photos sélectionnées.",
+            "Développement s’appelle Modifier. Film est désactivé par défaut pour les photos nouvelles et importées ; activez-le quand vous voulez un traitement film par-dessus la retouche.",
+            "Profil d’appareil photo dans Modifier liste les profils Adobe DCP installés sur cet ordinateur par Camera Raw ou Lightroom, ou le dossier des profils d’appareil photo choisi dans les Réglages. Les profils s’appliquent de façon approximative et uniquement au développement avec Film désactivé."
+          ]
+        },
+        {
+          "title": "Importer vos préréglages",
+          "paragraphs": [
+            "Préréglages → Gérer… → Importer… accepte les préréglages .xmp de Lightroom et Camera Raw, les anciens préréglages .lrtemplate et les styles Capture One .costyle. Après l’import d’un catalogue ou d’un dossier, la configuration propose aussi Importer des préréglages…. Chaque préréglage importé indique combien de réglages ont été transposés et lesquels ont été ignorés avant que vous l’appliquiez."
+          ],
+          "steps": [
+            "Ouvrez Préréglages, cliquez sur Gérer…, puis sur Importer… et choisissez les fichiers de préréglages ou, dans l’application Mac, un dossier de préréglages entier.",
+            "Consultez le rapport de conversion, puis appliquez le préréglage depuis Vos."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Premiers pas"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Demandez à l’autre éditeur d’enregistrer ses métadonnées dans les fichiers XMP adjacents, puis choisissez Dossiers ••• → Importer les sidecars…. L’action lit les originaux du catalogue, y compris toutes les pages des grandes bibliothèques jusqu’à 100 000 photos par importation. Les copies virtuelles conservent leurs propres métadonnées.",
             "Les métadonnées prises en charge incluent les notes en étoiles, les marques choisir/rejeter, les étiquettes de couleur standard, les mots-clés plats et hiérarchiques, ainsi que les champs IPTC descriptifs. Une valeur vide explicite efface ce champ ; une valeur absente le laisse inchangé. Les étiquettes de couleur personnalisées qui ne correspondent pas à une couleur de LightTable sont signalées comme ignorées.",
-            "L'importateur lit les conventions de métadonnées prises en charge de Photo Mechanic et digiKam. Chaque application a des conventions supplémentaires, alors vérifiez un petit échantillon dans les deux applications avant d'échanger une bibliothèque entière. Les réglages de développement et le recadrage ne sont pas appliqués par cette action de menu."
+            "L'importateur lit les conventions de métadonnées prises en charge de Photo Mechanic et digiKam. Chaque application a des conventions supplémentaires, alors vérifiez un petit échantillon dans les deux applications avant d'échanger une bibliothèque entière. Les réglages de développement et le recadrage ne sont appliqués que si vous activez ces options dans la boîte de dialogue Importer les sidecars."
           ]
         },
         {
@@ -1096,13 +1159,19 @@
         "auto",
         "histogramme",
         "écrêtage",
-        "avant"
+        "avant",
+        "échantillonneur de couleur",
+        "échantillonneur de couleur",
+        "échantillonneur",
+        "valeurs RGB",
+        "mesure",
+        "mesurer"
       ],
       "sections": [
         {
           "title": "Commencer avec la lumière",
           "paragraphs": [
-            "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale. Contraste modifie leur séparation."
+            "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale : augmentez Blancs pour éclaircir les tons les plus lumineux, augmentez Noirs pour relever les plus sombres, et diminuez l’un ou l’autre pour ramener cette extrémité en arrière. Contraste modifie leur séparation."
           ],
           "steps": [
             "Définir l’Exposition pour le sujet principal.",
@@ -1127,6 +1196,21 @@
             "Si Auto indique qu’il attend l’aperçu de l’image, laissez l’aperçu se charger et réessayez.",
             "Le menu de la portée propose aussi Forme d’onde, Parade RGB et Vectorscope pour inspecter le ton et la couleur."
           ]
+        },
+        {
+          "title": "Mesurer les couleurs avec des échantillonneurs",
+          "paragraphs": [
+            "Les échantillonneurs de couleur affichent les valeurs de rouge, vert et bleu (0–255) et la clarté L* de quatre endroits au plus dans la photo. Les mesures se mettent à jour pendant l’édition : vous pouvez ainsi contrôler une charte grise, un support de film ou un ton chair tout en ajustant."
+          ],
+          "steps": [
+            "Cliquez sur le bouton d’échantillonneur à côté de l’histogramme.",
+            "Cliquez sur la photo pour placer un échantillonneur. Vous pouvez en placer jusqu’à quatre.",
+            "Lisez les valeurs sous l’histogramme. Utilisez × pour supprimer un échantillonneur."
+          ],
+          "tips": [
+            "Les échantillonneurs lisent la modification affichée. Ils appartiennent à la session de fenêtre en cours et ne sont pas enregistrés avec la photo.",
+            "Appuyez sur Escape pour arrêter de placer des échantillonneurs."
+          ]
         }
       ],
       "related": [
@@ -1140,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Appliquer les corrections d’objectif et d’aberration chromatique",
       "category": "Editing",
-      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
+      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, corrigez l’aberration chromatique, supprimez les franges violettes et vertes, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
       "keywords": [
         "objectif",
         "profil",
@@ -1149,6 +1233,9 @@
         "ombrage",
         "aberration chromatique",
         "franges",
+        "défrangeage",
+        "frange violette",
+        "frange verte",
         "rouge cyan",
         "bleu jaune",
         "optique"
@@ -1157,18 +1244,21 @@
         {
           "title": "Choisir et vérifier une correction",
           "paragraphs": [
-            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible."
+            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible. Le panneau indique aussi la version de la base de données d’objectifs utilisée et le nombre d’appareils et d’objectifs qu’elle répertorie ; la base de données est fournie avec la bibliothèque d’objectifs, pas avec LightTable.",
+            "Lorsque l’appareil et l’objectif des métadonnées de la photo correspondent exactement à un seul profil, Utiliser le profil d’objectif correspondant est activé dès l’ouverture de la photo et s’applique aussi aux vignettes et aux exports. Une correspondance déduite ou ambiguë reste désactivée. Réglages → Réglages de développement → Appliquer automatiquement le profil d’objectif correspondant désactive ce comportement ; les photos ayant des réglages d’objectif enregistrés les conservent dans tous les cas."
           ],
           "steps": [
             "Lire le nom du profil et l’explication de la correspondance.",
-            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion et Corriger l’ombre de l’objectif selon le besoin.",
+            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion, Corriger l’ombrage de l’objectif et Corriger l’aberration chromatique selon le besoin. Chaque interrupteur est indépendant : l’aberration chromatique peut être corrigée sans modifier la géométrie.",
             "Si nécessaire, choisissez une autre entrée dans Profil d’objectif et comparez la correction avec l’original.",
-            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique."
+            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique.",
+            "Sous Défrangeage, augmentez Violet ou Vert pour retirer cette couleur des pixels fortement saturés bordant les contours nets. Les curseurs de début et de fin de teinte définissent la plage de teintes traitée par chaque contrôle ; un début supérieur à sa fin passe par le rouge."
           ],
           "tips": [
             "Si aucun profil d’objectif exact n’est trouvé, les réglages manuels de distorsion et de perspective restent disponibles.",
-            "Les cases à cocher de distorsion et d’ombre du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
+            "Les cases Distorsion, Ombrage et Aberration chromatique du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
             "Un profil sélectionné manuellement nécessite une vérification visuelle ; la sélection n’établit pas qu’il s’agit d’une correspondance exacte.",
+            "Le défrangeage traite le contour d’un grand sujet violet ou vert comme une frange. Réduisez la quantité ou resserrez la plage de teintes si un sujet perd sa couleur le long de son bord.",
             "Les corrections de l’objectif et des franges restent non destructives jusqu’à l’export."
           ]
         }
@@ -1314,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Modification"
     },
@@ -1604,7 +1695,15 @@
         "noirs",
         "superposition",
         "densité+",
-        "densifier"
+        "densifier",
+        "flou d’objectif",
+        "flou d’arrière-plan",
+        "flou",
+        "bokeh",
+        "profondeur de champ",
+        "luminosité",
+        "fusion de luminosité",
+        "préserver la couleur"
       ],
       "sections": [
         {
@@ -1661,10 +1760,26 @@
           ]
         },
         {
+          "title": "Flouter une partie de la photo",
+          "paragraphs": [
+            "Flou d’objectif, dans la section Effets d’un masque, adoucit la zone sélectionnée comme le ferait un objectif flou. Le rayon du flou augmente avec l’intensité du masque : un contour progressif ou une plage de profondeur s’estompe donc graduellement au lieu de s’arrêter sur une ligne nette.",
+            "Le flou est appliqué à l’image finale, après le rendu du film et les autres réglages du masque. Il adoucit aussi le grain du film dans la zone floutée."
+          ],
+          "steps": [
+            "Créez un masque Sujet et choisissez Inverser, ou un masque Profondeur pour une plage de distances, ou tracez un masque Radial et inversez-le.",
+            "Développez Effets et augmentez Flou d’objectif. Attendez la mise à jour de l’aperçu avant de juger le résultat.",
+            "Affinez la sélection avec Ajouter, Soustraire ou Contour progressif là où le flou déborde sur des contours nets."
+          ],
+          "tips": [
+            "Seuls les pixels sélectionnés contribuent au flou : un sujet net ne bave donc pas dans l’arrière-plan flou. Vérifiez les contours fins comme les cheveux en 1:1."
+          ]
+        },
+        {
           "title": "Ajuster une courbe de tonalité locale",
           "steps": [
             "Développez Courbe de tonalité pour le masque sélectionné, puis choisissez RGB, Rouge, Vert ou Bleu.",
             "Cliquez sur le graphique pour ajouter un point, puis faites-le glisser. Le fait de monter un point éclaircit sa sortie ; le fait de l’abaisser l’assombrit. Double-cliquez un point intérieur pour le supprimer.",
+            "Activez Luminosité uniquement pour modifier la luminosité sans décaler la couleur ni la saturation.",
             "Utilisez Réinitialiser la courbe pour réinitialiser uniquement le canal sélectionné de ce masque, ou Annuler pour revenir sur une modification."
           ],
           "tips": [
@@ -1819,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Supprimez les taches et affinez les corrections Corriger ou Dupliquer",
       "category": "Editing",
-      "summary": "Peignez les éléments gênants, inspectez la visibilité des taches et déplacez la source ou la cible d’une correction.",
+      "summary": "Supprimez des taches et des traits peints, éliminez la poussière et les rayures sur toute la photo, et affinez les corrections Corriger ou Dupliquer.",
       "keywords": [
         "supprimer",
         "corriger",
@@ -1831,7 +1946,18 @@
         "visualiser les taches",
         "source",
         "cible",
-        "distraction"
+        "distraction",
+        "poussière et rayures",
+        "rayure",
+        "cheveux",
+        "fil",
+        "pinceau",
+        "trait",
+        "remplissage",
+        "remplissage de texture",
+        "remplissage selon le contenu",
+        "scan de film",
+        "défauts"
       ],
       "sections": [
         {
@@ -1842,22 +1968,44 @@
           ],
           "steps": [
             "Choisissez Supprimer, Corriger ou Dupliquer, puis définissez Taille, Contour progressif et Opacité.",
-            "Cliquez sur une tache ou faites glisser sur une distraction dans la photo.",
+            "Pour Supprimer, choisissez Tache pour cliquer ou faire glisser une correction ronde, ou Pinceau pour peindre le long d’une rayure, d’un cheveu ou d’un fil.",
+            "Pour Supprimer, choisissez Remplissage. Reproduire la texture environnante copie les détails voisins de la photo ; Fondu doux fond les bords vers l’intérieur et convient aux zones uniformes comme le ciel.",
+            "Cliquez sur une tache, faites glisser sur une distraction ou peignez un trait dans la photo.",
             "Pour les petites taches de poussière, activez Visualiser les taches et ajustez Seuil pour faciliter l’inspection des bords.",
             "Désactivez Visualiser les taches et inspectez la photographie corrigée."
           ],
           "tips": [
-            "Sélectionner une correction et choisir un mode différent modifie le mode de cette correction."
+            "Sélectionner une correction et choisir un mode différent modifie le mode de cette correction.",
+            "Reproduire la texture environnante copie des pixels de cette photo ; elle ne génère jamais de nouveaux détails. Les changements de Remplissage s’appliquent à la correction Supprimer sélectionnée. Les corrections créées avant l’ajout de ce choix conservent Fondu doux.",
+            "Un trait de pinceau contient jusqu’à 256 points. Relâchez et peignez un autre trait pour continuer."
+          ]
+        },
+        {
+          "title": "Supprimer la poussière et les rayures sur toute la photo",
+          "paragraphs": [
+            "Poussière et rayures détecte les petits défauts qui se détachent nettement de leur entourage, comme la poussière sur un scan de film, et les comble à partir des pixels voisins. La correction s’applique à toute la photo, en tête de liste, afin que les corrections suivantes échantillonnent l’image nettoyée.",
+            "Plus grand défaut définit la largeur maximale d’un défaut pris en compte, en proportion du petit côté de la photo. Sensibilité définit à quel point un défaut doit différer de son entourage. Des valeurs plus élevées trouvent des défauts plus discrets et risquent davantage de toucher les détails fins."
+          ],
+          "steps": [
+            "Ouvrir Supprimer et développer Poussière et rayures.",
+            "Réglez Plus grand défaut un peu au-dessus de la taille de la poussière visible et laissez Sensibilité à 50 % pour commencer.",
+            "Cliquez sur Supprimer la poussière. Afficher les défauts détectés entoure en rouge ce qui a été trouvé et indique le nombre de défauts trouvés.",
+            "Zoomez sur les cheveux, les étoiles, les reflets dans les yeux et le texte. S’ils sont touchés, baissez Sensibilité ou Plus grand défaut, ou réduisez Opacité.",
+            "Désactivez Afficher les défauts détectés pour juger le résultat."
+          ],
+          "tips": [
+            "Sélectionnez la correction Poussière dans la liste pour la modifier plus tard. Activer cette correction compare le résultat, et Supprimer la correction la supprime.",
+            "Les rayures longues et fines sont détectées si leur largeur est inférieure à Plus grand défaut. Peignez plutôt les rayures plus larges avec le pinceau de Supprimer."
           ]
         },
         {
           "title": "Affiner une correction existante",
           "paragraphs": [
-            "Sélectionnez une correction dans la liste pour afficher ses contrôles. Les cercles sur l’image indiquent la cible modifiable et, pour Heal et Clone, la source.",
+            "Sélectionnez une correction dans la liste pour afficher ses commandes. Les cercles ou traits sur l’image indiquent la cible modifiable et, pour Corriger et Dupliquer, la source.",
             "Agrandissez pour un placement précis. Les contours des cercles et les épingles restent nets à chaque niveau de zoom ; les cercles continuent d’afficher la même zone de la photo."
           ],
           "steps": [
-            "Faites glisser le cercle cible pour repositionner la correction, ou choisissez Déplacer la cible et cliquez sur sa nouvelle position.",
+            "Faites glisser le cercle cible ou un trait peint pour repositionner la correction, ou choisissez Déplacer la cible et cliquez sur sa nouvelle position.",
             "Pour Corriger ou Dupliquer, faites glisser le cercle source vers une meilleure zone. Rafraîchir la source essaie une autre position de source.",
             "Ajustez Contour progressif ou Opacité si le bord ou l’intensité de la correction doit être affinée.",
             "Basculez Activer cette correction pour comparer, ou utilisez Supprimer la correction pour la retirer."
@@ -2012,7 +2160,8 @@
         {
           "title": "Neutraliser une dominante de couleur",
           "paragraphs": [
-            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche."
+            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche.",
+            "Pour un original RAW, un bloc Balance des blancs de capture se trouve au-dessus, avec Telle que prise, Auto, des préréglages et Personnalisé pour une température en kelvins et une teinte de capture. Il redéveloppe les données RAW et fonctionne avec Film activé ou non ; il est masqué pour les fichiers traités."
           ],
           "steps": [
             "Ouvrir Modifier et développer Couleur.",
@@ -2030,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Modification"
     },
@@ -2049,7 +2199,15 @@
         "bleu",
         "contraste",
         "point de contrôle",
-        "courbe en S"
+        "courbe en S",
+        "pipette",
+        "point noir",
+        "point blanc",
+        "point gris",
+        "point gris",
+        "neutre",
+        "dominante de couleur",
+        "niveaux"
       ],
       "sections": [
         {
@@ -2067,6 +2225,21 @@
           "tips": [
             "Utilisez quelques points et comparez la photo au fur et à mesure ; les courbes de canal peuvent introduire de fortes dominantes de couleur.",
             "Une courbe enregistrée ou importée conserve sa table sauvegardée exacte jusqu’à ce que vous la modifiiez. L’application reconstruit des poignées représentatives pour l’édition, de sorte que le premier ajustement peut remodeler une courbe importée au-delà du point que vous déplacez."
+          ]
+        },
+        {
+          "title": "Définir les points noir, gris et blanc",
+          "paragraphs": [
+            "Les pipettes sous la courbe de points règlent les courbes rouge, verte et bleue à partir d’un endroit de la photo. Point noir rend la zone échantillonnée noire, Point blanc la rend blanche, et Point gris la rend neutre en conservant sa luminosité. C’est utile pour retirer une dominante de couleur d’un scan."
+          ],
+          "steps": [
+            "Ouvrir Modifier, développer Courbe et choisir Point noir, Point gris ou Point blanc.",
+            "Cliquez sur une zone de la photo qui devrait être noire, gris neutre ou blanche.",
+            "Vérifiez les courbes R, G et B, puis affinez-les ou réinitialisez-les si le résultat est trop marqué."
+          ],
+          "tips": [
+            "Point noir nécessite une zone plus sombre que le gris moyen, et Point blanc une zone plus claire que le gris moyen. Appuyez sur Escape pour annuler une pipette.",
+            "Les pipettes font passer Courbe en mode Point, car elles modifient les courbes des canaux."
           ]
         },
         {
@@ -2436,7 +2609,7 @@
           "title": "Contrôles de capture et contrôles de finition",
           "paragraphs": [
             "L’EV de l’appareil photo et la balance des blancs de Capture agissent avant l’exposition du film. L’exposition et Temp/Teinte dans le panneau Modifier sont des ajustements de finition effectués plus tard dans le flux de travail.",
-            "La balance des blancs de capture nécessite un original RAW. Pour un JPEG, HEIF, TIFF ou tout autre fichier traité, utilisez Modifier Temp/Teinte."
+            "La balance des blancs de capture se trouve en haut de la section Couleur pour les originaux RAW et fonctionne avec Film activé ou non : choisissez Telle que prise, Auto, un préréglage ou Personnalisé pour définir une température en kelvins et une teinte de capture. Pour un JPEG, HEIF, TIFF ou un autre fichier traité, le bloc est masqué ; utilisez Modifier Temp/Teinte."
           ],
           "steps": [
             "Activez Film, choisissez une pellicule et ajustez l’EV de l’Appareil photo.",
@@ -2529,7 +2702,11 @@
         "qualité",
         "taille réelle",
         "résolution",
-        "préréglage"
+        "préréglage",
+        "bordure",
+        "cadre",
+        "mat",
+        "marge"
       ],
       "sections": [
         {
@@ -2542,6 +2719,17 @@
             "Ouvrir Exporter et choisir un préréglage en haut.",
             "Définissez Dimensions sur taille Plein ou une limite du bord le plus long.",
             "Vérifiez Aperçu de sortie : la taille exportée tient compte de la rotation et du recadrage, et une limite sur le bord long réduit les images plus grandes sans agrandir les plus petites."
+          ]
+        },
+        {
+          "title": "Ajouter une bordure",
+          "paragraphs": [
+            "Bordure dans Avancé ajoute une marge unie blanche, grise ou noire autour de chaque photo exportée. La marge est ajoutée après le redimensionnement : sa largeur est donc une part du grand côté livré, et le fichier de sortie dépasse la photo de cette marge de chaque côté."
+          ],
+          "steps": [
+            "Ouvrir Exporter et développer Avancé.",
+            "Choisissez Fine, Moyenne ou Large dans Bordure, puis choisissez Couleur de bordure.",
+            "Vérifiez les dimensions finales dans Aperçu de sortie."
           ]
         },
         {
@@ -2665,7 +2853,10 @@
         "noté",
         "lot",
         "annuler",
-        "progression"
+        "progression",
+        "planche contact",
+        "planche d’épreuves",
+        "planche index"
       ],
       "sections": [
         {
@@ -2688,6 +2879,22 @@
             "Photos sélectionnées utilise les photos sélectionnées encore affichées par le dossier, la collection et les filtres actuels. Si aucune des photos sélectionnées n’est encore visible, il utilise la photo active. Vérifiez le nombre de photos et le nom dans Exporter avant de démarrer.",
             "Sélectionné uniquement, Noté 1+ et Tout sauf rejeté sélectionnent les photos fixes correspondantes du catalogue actif et peuvent inclure des photos en dehors de la collection ou du filtre affichés. Photos sélectionnées offre un contrôle explicite sur l’ensemble.",
             "Si un lot écrit vers plusieurs dossiers, Afficher dans le Finder affiche la première photo exportée avec succès. Le lien est absent lorsqu’aucune photo n’a été exportée. Utilisez Annuler l’exportation pour demander l’arrêt. Détails de l'export indique les nombres de terminés, ignorés et annulés, ainsi que les avertissements et les erreurs ; un avertissement peut se produire après qu’une photo a été écrite avec succès. Les clips vidéo ne sont pas rendus par le flux de travail d’exportation des photos fixes. Si un original change pendant que son exportation est en file d’attente ou en cours de rendu, cette photo échoue avec une erreur ; remettez-la en file d’attente après avoir vérifié l’original."
+          ]
+        },
+        {
+          "title": "Créer une planche contact",
+          "paragraphs": [
+            "Planche contact… dans Exporter dispose les photos choisies dans le champ Photos sur un seul JPEG légendé, avec vos modifications appliquées. Elle peut contenir jusqu’à 200 photos."
+          ],
+          "steps": [
+            "Ouvrir Exporter et définir Photos et le dossier de destination.",
+            "Cliquez sur Planche contact… et choisissez Colonnes, Largeur de la planche, Arrière-plan et un Titre.",
+            "Choisissez les légendes : Nom de fichier, Pellicule et Note.",
+            "Cliquez sur Créer la planche. La boîte de dialogue indique la progression, et une notification donne le chemin du fichier enregistré."
+          ],
+          "tips": [
+            "La planche est enregistrée sous le nom contact-sheet suivi de la date et de l’heure. Une photo qui ne peut pas être rendue est ignorée et comptée dans la notification.",
+            "Choisissez plus de colonnes si une grande sélection rend la planche trop haute pour être créée."
           ]
         }
       ],
@@ -2854,7 +3061,8 @@
         {
           "title": "Valeurs par défaut pour les photos non modifiées",
           "paragraphs": [
-            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut."
+            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut.",
+            "Appliquer automatiquement le profil d’objectif correspondant, activé par défaut, active le profil d’objectif pour les photos dont l’appareil et l’objectif correspondent exactement à un seul profil et dont les réglages d’objectif n’ont jamais été enregistrés. Désactivez-le pour ouvrir chaque photo avec le profil désactivé."
           ],
           "steps": [
             "Ouvrir Réglages → Paramètres par défaut de développement.",
@@ -3287,5 +3495,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -111,7 +112,7 @@
           "title": "Rivedi modifiche tradotte",
           "paragraphs": [
             "Le impostazioni Develop sono approssimative e non possono garantire l’aspetto renderizzato di Lightroom. Le maschere locali non supportate, i profili fotocamera, le maschere IA .lrcat-data o i payload LUT, e le regole delle raccolte intelligenti non supportate vengono segnalati come saltati. Le impostazioni Develop importate disattivano Film.",
-            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
+            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Applica le impostazioni di sviluppo e il ritaglio solo quando attivi quelle opzioni. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Per iniziare"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Se vieni da Lightroom",
+      "category": "Getting started",
+      "summary": "Cosa portano con sé un catalogo Lightroom Classic e i sidecar XMP, cosa non ha una via di importazione e come differisce il vocabolario.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migra",
+        "migrazione",
+        "XMP",
+        "sidecar",
+        "predefiniti",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Cosa viene trasferito",
+          "paragraphs": [
+            "Da un catalogo Lightroom Classic: le foto restano nelle cartelle attuali e vengono referenziate, non copiate. L’importatore legge valutazioni, contrassegni, etichette e campi IPTC; parole chiave; raccolte e raccolte dinamiche supportate; pile; copie virtuali; ritaglio e raddrizzamento; impostazioni di sviluppo approssimate; e, se scelto, la cronologia delle modifiche. Il file .lrcat non viene mai modificato.",
+            "Dai sidecar XMP accanto alle tue foto: valutazioni a stelle, contrassegni di selezione e rifiuto, etichette colore standard, parole chiave e campi IPTC descrittivi. Cartelle ••• → Importa sidecar… può anche applicare le impostazioni di sviluppo e il ritaglio quando attivi quelle opzioni.",
+            "Entrambe le vie usano lo stesso convertitore, quindi un’impostazione viene tradotta allo stesso modo da qualunque via arrivi: tono, scostamenti del bilanciamento del bianco, texture, chiarezza, rimozione foschia, il mixer colore, la conversione in bianco e nero con il suo mixer, curve a punti, quantità di vignettatura, nitidezza e riduzione del rumore. Un valore fuori dall’intervallo di LightTable, come un’esposizione oltre ±5 EV, viene limitato e indicato nel rapporto."
+          ]
+        },
+        {
+          "title": "Cosa non ha una via di importazione",
+          "paragraphs": [
+            "Gli album cloud e i predefiniti salvati solo nell’app cloud non possono essere letti. Sincronizzali prima in Lightroom Classic o salva i predefiniti come file.",
+            "Le maschere IA e le modifiche generative, la sfocatura obiettivo e le impostazioni di riduzione del rumore sono passaggi di rendering proprietari. Vengono segnalati come saltati anziché approssimati, così come i profili fotocamera, i look LUT, le maschere locali, le correzioni e le identità dei profili obiettivo. Le modifiche importate iniziano con Pellicola disattivata, così le impostazioni di sviluppo convertite vengono mostrate da sole."
+          ]
+        },
+        {
+          "title": "Vocabolario",
+          "paragraphs": [
+            "Le raccolte sono raccolte anche qui; gli album dell’app cloud arrivano solo tramite un catalogo Lightroom Classic.",
+            "I contrassegni Seleziona e Rifiuta funzionano allo stesso modo, e la barra inferiore li mostra per le foto selezionate.",
+            "Sviluppa si chiama Modifica. Pellicola è disattivata per impostazione predefinita nelle foto nuove e importate; attivala quando vuoi un trattamento pellicola sopra la modifica.",
+            "Profilo fotocamera in Modifica elenca i profili Adobe DCP che Camera Raw o Lightroom hanno installato su questo computer, oppure la cartella dei profili fotocamera scelta nelle Impostazioni. I profili si applicano in modo approssimato e solo allo sviluppo con Pellicola disattivata."
+          ]
+        },
+        {
+          "title": "Importa i tuoi predefiniti",
+          "paragraphs": [
+            "Predefiniti → Gestisci… → Importa… accetta predefiniti .xmp di Lightroom e Camera Raw, predefiniti .lrtemplate legacy e stili .costyle di Capture One. Dopo l’importazione di un catalogo o di una cartella, la configurazione offre anche Importa predefiniti…. Ogni predefinito importato mostra quante impostazioni sono state tradotte e quali saltate prima che tu lo applichi."
+          ],
+          "steps": [
+            "Apri Predefiniti, fai clic su Gestisci…, poi su Importa… e scegli i file dei predefiniti oppure, nell’app per Mac, un’intera cartella di predefiniti.",
+            "Esamina il rapporto di conversione, poi applica il predefinito da Tuo."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Chiedi all'altro editor di salvare i metadati nei file XMP adiacenti, quindi scegli Cartelle ••• → Importa sidecar…. L'azione legge gli originali del catalogo, incluse tutte le pagine delle librerie di grandi dimensioni fino a 100.000 foto per importazione. Le copie virtuali mantengono i propri metadati.",
             "I metadati supportati includono valutazioni a stelle, contrassegni seleziona/rifiuta, etichette colore standard, parole chiave piatte e gerarchiche e campi IPTC descrittivi. Un valore vuoto esplicito cancella quel campo; un valore assente lo lascia invariato. Le etichette colore personalizzate che non corrispondono a un colore di LightTable vengono segnalate come saltate.",
-            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio non vengono applicati da questa azione di menu."
+            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio vengono applicati solo quando attivi quelle opzioni nella finestra Importa sidecar."
           ]
         },
         {
@@ -1096,13 +1159,19 @@
         "automatico",
         "istogramma",
         "clipping",
-        "prima"
+        "prima",
+        "campionatore colore",
+        "campionatore colore",
+        "campionatore",
+        "valori RGB",
+        "lettura",
+        "misura"
       ],
       "sections": [
         {
           "title": "Inizia con Luce",
           "paragraphs": [
-            "Apri Modifica ed espandi Luce. Esposizione cambia la luminosità complessiva; Luci e Ombre ti permettono di intervenire sulle aree chiare e scure. Bianchi e Neri regolano le estremità dell’intervallo tonale. Contrasto modifica la loro separazione."
+            "Apri Modifica ed espandi Luce. Esposizione cambia la luminosità complessiva; Luci e Ombre ti permettono di intervenire sulle aree chiare e scure. Bianchi e Neri regolano le estremità dell’intervallo tonale: alza Bianchi per schiarire i toni più luminosi, alza Neri per sollevare quelli più scuri e abbassa uno dei due per riportare indietro quell’estremità. Contrasto modifica la loro separazione."
           ],
           "steps": [
             "Imposta Esposizione per il soggetto principale.",
@@ -1127,6 +1196,21 @@
             "Se Automatico dice che è in attesa dell'anteprima dell'immagine, lascia caricare l'anteprima e riprova.",
             "Il menu dello strumento offre anche Waveform, RGB Parade e Vettorscopio per ispezionare tono e colore."
           ]
+        },
+        {
+          "title": "Misura i colori con i campionatori",
+          "paragraphs": [
+            "I campionatori colore mostrano i valori di rosso, verde e blu (0–255) e la luminosità L* di un massimo di quattro punti della foto. Le letture si aggiornano mentre modifichi, così puoi controllare un cartoncino grigio, la base della pellicola o l’incarnato durante le regolazioni."
+          ],
+          "steps": [
+            "Fai clic sul pulsante del campionatore accanto all’istogramma.",
+            "Fai clic sulla foto per posizionare un campionatore. Puoi posizionarne fino a quattro.",
+            "Leggi i valori sotto l’istogramma. Usa × per rimuovere un campionatore."
+          ],
+          "tips": [
+            "I campionatori leggono la modifica visualizzata. Appartengono alla sessione della finestra corrente e non vengono salvati con la foto.",
+            "Premi Escape per smettere di posizionare campionatori."
+          ]
         }
       ],
       "related": [
@@ -1140,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Applica correzioni dell'obiettivo e delle aberrazioni cromatiche",
       "category": "Editing",
-      "summary": "Usa un profilo obiettivo abbinato o selezionato manualmente, oppure applica correzioni manuali quando non è disponibile un profilo esatto.",
+      "summary": "Usa un profilo obiettivo abbinato o selezionato manualmente, correggi l'aberrazione cromatica, rimuovi le frange viola e verdi, oppure applica correzioni manuali quando non è disponibile un profilo esatto.",
       "keywords": [
         "obiettivo",
         "profilo",
@@ -1149,6 +1233,9 @@
         "ombreggiatura",
         "aberrazione cromatica",
         "frange",
+        "rimozione frange",
+        "frangia viola",
+        "frangia verde",
         "rosso ciano",
         "blu giallo",
         "ottica"
@@ -1157,18 +1244,21 @@
         {
           "title": "Scegli e verifica una correzione",
           "paragraphs": [
-            "Espandi Correzioni obiettivo in Modifica. La scheda del profilo spiega l'abbinamento automatico fotocamera/obiettivo e se è disponibile un profilo utilizzabile."
+            "Espandi Correzioni dell'obiettivo in Modifica. La scheda del profilo spiega l'abbinamento automatico fotocamera/obiettivo e se è disponibile un profilo utilizzabile. Il pannello indica anche la versione del database obiettivi in uso e quante fotocamere e obiettivi elenca; il database è fornito con la libreria obiettivi, non con LightTable.",
+            "Quando fotocamera e obiettivo nei metadati della foto corrispondono esattamente a un solo profilo, Usa il profilo obiettivo abbinato è attivo non appena la foto si apre e vale anche per miniature ed esportazioni. Un abbinamento dedotto o ambiguo resta disattivato. Impostazioni → Predefiniti sviluppo → Applica automaticamente il profilo obiettivo abbinato disattiva questo comportamento; le foto con impostazioni obiettivo salvate le mantengono in ogni caso."
           ],
           "steps": [
             "Leggi il nome del profilo e la spiegazione dell'abbinamento.",
-            "Abilita Usa profilo obiettivo abbinato quando è disponibile un profilo, poi scegli Correggi distorsione e Correggi ombreggiatura obiettivo secondo necessità.",
+            "Abilita Usa il profilo obiettivo abbinato quando è disponibile un profilo, poi scegli Correggi distorsione, Correggi ombreggiatura obiettivo e Correggi aberrazione cromatica secondo necessità. Ogni interruttore è indipendente, quindi l'aberrazione cromatica può essere corretta senza modificare la geometria.",
             "Se necessario, scegli una voce diversa in Profilo obiettivo e confronta la correzione con l’originale.",
-            "Affina i controlli manuali di Distorsione e Vignettatura. Per le frange colorate, regola Rosso / Ciano e Blu / Giallo sotto Aberrazione cromatica."
+            "Affina i controlli manuali di Distorsione e Vignettatura. Per le frange colorate, regola Rosso / Ciano e Blu / Giallo sotto Aberrazione cromatica.",
+            "In Rimozione frange, alza Viola o Verde per togliere quel colore dai pixel molto saturi accanto ai bordi netti. I cursori di inizio e fine tonalità definiscono l'intervallo di tonalità trattato da ciascun controllo; un inizio superiore alla sua fine passa per il rosso."
           ],
           "tips": [
             "Se non viene trovato alcun profilo obiettivo esatto, restano disponibili i controlli manuali di distorsione e prospettiva.",
-            "Le caselle di controllo di correzione della distorsione e dell'ombreggiatura del profilo sono abilitate solo quando il profilo selezionato fornisce quella correzione e il profilo è abilitato.",
+            "Le caselle Distorsione, Ombreggiatura e Aberrazione cromatica del profilo sono abilitate solo quando il profilo selezionato fornisce quella correzione e il profilo è abilitato.",
             "Un profilo selezionato manualmente richiede un controllo visivo; la selezione non stabilisce che sia una corrispondenza esatta.",
+            "Rimozione frange tratta il contorno di un soggetto grande viola o verde come una frangia. Riduci la quantità o restringi l'intervallo di tonalità se un soggetto perde colore lungo il bordo.",
             "Le correzioni di obiettivo e frange restano non distruttive fino all'esportazione."
           ]
         }
@@ -1314,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Modifica"
     },
@@ -1604,7 +1695,15 @@
         "neri",
         "sovrapposizione",
         "schiarisci",
-        "Brucia"
+        "Brucia",
+        "sfocatura obiettivo",
+        "sfocatura sfondo",
+        "sfocatura",
+        "bokeh",
+        "profondità di campo",
+        "luminosità",
+        "fusione luminosità",
+        "mantieni colore"
       ],
       "sections": [
         {
@@ -1661,10 +1760,26 @@
           ]
         },
         {
+          "title": "Sfoca parte della foto",
+          "paragraphs": [
+            "Sfocatura obiettivo, nella sezione Effetti di una maschera, ammorbidisce l’area selezionata come un obiettivo fuori fuoco. Il raggio di sfocatura cresce con l’intensità della maschera, così un bordo sfumato o un intervallo di profondità digrada gradualmente invece di fermarsi su una linea netta.",
+            "La sfocatura viene applicata all’immagine finita, dopo il rendering della pellicola e le altre regolazioni della maschera. Attenua anche la grana della pellicola nell’area sfocata."
+          ],
+          "steps": [
+            "Crea una maschera Soggetto e scegli Inverti, oppure una maschera Profondità per un intervallo di distanze, oppure disegna una maschera Radiale e invertila.",
+            "Espandi Effetti e aumenta Sfocatura obiettivo. Attendi l’aggiornamento dell’anteprima prima di valutare il risultato.",
+            "Rifinisci la selezione con Aggiungi, Sottrai o Sfumatura dove la sfocatura invade i bordi nitidi."
+          ],
+          "tips": [
+            "Solo i pixel selezionati contribuiscono alla sfocatura, così un soggetto nitido non si spande nello sfondo sfocato. Controlla i bordi fini come i capelli a 1:1."
+          ]
+        },
+        {
           "title": "Regola una curva tono locale",
           "steps": [
             "Espandi Curva tono per la maschera selezionata e scegli RGB, Rosso, Verde o Blu.",
             "Fai clic sul grafico per aggiungere un punto, quindi trascinalo. Spostare un punto verso l'alto schiarisce il suo output; spostarlo verso il basso lo scurisce. Fai doppio clic su un punto interno per rimuoverlo.",
+            "Attiva Solo luminosità per cambiare la luminosità senza alterare colore o saturazione.",
             "Usa Reimposta curva per reimpostare solo il canale selezionato di questa maschera, oppure Annulla per invertire una modifica."
           ],
           "tips": [
@@ -1819,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Rimuovi le macchie e perfeziona le correzioni di Correggi o Clona",
       "category": "Editing",
-      "summary": "Dipingi sopra le distrazioni, controlla la visibilità del punto e sposta l’origine o la destinazione di una correzione.",
+      "summary": "Rimuovi macchie e pennellate, elimina polvere e graffi da tutta la foto e rifinisci le correzioni Correggi o Clona.",
       "keywords": [
         "rimuovi",
         "Correggi",
@@ -1831,7 +1946,18 @@
         "visualizza macchie",
         "origine",
         "destinazione",
-        "distrazione"
+        "distrazione",
+        "polvere e graffi",
+        "graffio",
+        "capelli",
+        "filo",
+        "pennello",
+        "pennellata",
+        "riempimento",
+        "riempimento texture",
+        "riempimento in base al contenuto",
+        "scansione pellicola",
+        "segni"
       ],
       "sections": [
         {
@@ -1842,22 +1968,44 @@
           ],
           "steps": [
             "Scegli Rimuovi, Correggi o Clona, quindi imposta Dimensione, Sfumatura e Opacità.",
-            "Fai clic su un punto oppure trascina su una distrazione nella foto.",
+            "Per Rimuovi, scegli Macchia per fare clic o trascinare una correzione rotonda, oppure Pennello per dipingere lungo un graffio, un capello o un filo.",
+            "Per Rimuovi, scegli Riempimento. Riproduci struttura circostante copia i dettagli vicini dalla foto; Fusione morbida fonde i bordi verso l’interno ed è adatta ad aree uniformi come il cielo.",
+            "Fai clic su una macchia, trascina su una distrazione o dipingi una pennellata nella foto.",
             "Per piccoli punti di polvere, attiva Visualizza punti e regola Soglia per rendere i bordi più facili da ispezionare.",
             "Disattiva Visualizza macchie e ispeziona la fotografia corretta."
           ],
           "tips": [
-            "Selezionare una correzione e scegliere una modalità diversa cambia la modalità di quella correzione."
+            "Selezionare una correzione e scegliere una modalità diversa cambia la modalità di quella correzione.",
+            "Riproduci struttura circostante copia pixel da questa foto; non genera mai nuovi dettagli. Le modifiche a Riempimento si applicano alla correzione Rimuovi selezionata. Le correzioni create prima che esistesse questa opzione mantengono Fusione morbida.",
+            "Una pennellata contiene fino a 256 punti. Rilascia e dipingi un’altra pennellata per continuare."
+          ]
+        },
+        {
+          "title": "Rimuovi polvere e graffi da tutta la foto",
+          "paragraphs": [
+            "Polvere e graffi trova piccoli segni che risaltano nettamente rispetto a ciò che li circonda, come la polvere su una scansione di pellicola, e li riempie con i pixel vicini. Agisce sull’intera foto come un’unica correzione in cima all’elenco, così le correzioni successive campionano l’immagine pulita.",
+            "Segno più grande imposta la larghezza massima di un segno da considerare, come frazione del lato corto della foto. Sensibilità imposta quanto un segno deve differire da ciò che lo circonda. Valori più alti trovano segni più deboli ed è più probabile che colpiscano dettagli fini."
+          ],
+          "steps": [
+            "Apri Rimuovi ed espandi Polvere e graffi.",
+            "Imposta Segno più grande un po’ più ampio della polvere visibile e lascia Sensibilità al 50% per iniziare.",
+            "Fai clic su Rimuovi polvere. Mostra segni rilevati contorna in rosso ciò che è stato trovato e indica quanti segni sono stati trovati.",
+            "Ingrandisci capelli, stelle, riflessi negli occhi e testo. Se vengono colpiti, abbassa Sensibilità o Segno più grande, oppure riduci Opacità.",
+            "Disattiva Mostra segni rilevati per valutare il risultato."
+          ],
+          "tips": [
+            "Seleziona la correzione Polvere nell’elenco per modificarla in seguito. Abilita questa correzione confronta il risultato ed Elimina correzione la rimuove.",
+            "I graffi lunghi e sottili vengono trovati quando la loro larghezza è inferiore a Segno più grande. Dipingi i graffi più larghi con il pennello di Rimuovi."
           ]
         },
         {
           "title": "Perfeziona una correzione esistente",
           "paragraphs": [
-            "Seleziona una correzione nell'elenco per mostrarne i controlli. I cerchi sull'immagine indicano il target modificabile e, per Correggi e Clona, la sorgente.",
+            "Seleziona una correzione nell’elenco per mostrarne i controlli. I cerchi o le pennellate sull’immagine indicano la destinazione modificabile e, per Correggi e Clona, la sorgente.",
             "Ingrandisci per un posizionamento preciso. I contorni dei cerchi e i pin restano nitidi a ogni livello di zoom; i cerchi continuano a mostrare la stessa area della foto."
           ],
           "steps": [
-            "Trascina il cerchio di destinazione per riposizionare la correzione, oppure scegli Sposta destinazione e fai clic sulla nuova posizione.",
+            "Trascina il cerchio destinazione o una pennellata per riposizionare la correzione, oppure scegli Sposta destinazione e fai clic sulla nuova posizione.",
             "Per Correggi o Clona, trascina il cerchio sorgente in un’area migliore. Aggiorna sorgente prova una diversa posizione sorgente.",
             "Regola Sfumatura o Opacità se il bordo o l'intensità della correzione necessita di rifinitura.",
             "Attiva Abilita questa correzione per confrontare, oppure usa Elimina correzione per rimuoverla."
@@ -2012,7 +2160,8 @@
         {
           "title": "Neutralizza una dominante cromatica",
           "paragraphs": [
-            "La sezione Colore in Modifica contiene Temp e Tinta, oltre a un contagocce del bilanciamento del bianco accanto a Temp. Questi sono i controlli di finitura del pannello Modifica."
+            "La sezione Colore in Modifica contiene Temp e Tinta, oltre a un contagocce del bilanciamento del bianco accanto a Temp. Questi sono i controlli di finitura del pannello Modifica.",
+            "Per un originale RAW, un blocco Bilanciamento del bianco acquisizione si trova sopra di essi con Come scattato, Auto, predefiniti e Personalizzato per una temperatura in kelvin e una tinta di acquisizione. Sviluppa di nuovo i dati RAW e funziona con Pellicola attiva o disattiva; è nascosto per i file elaborati."
           ],
           "steps": [
             "Apri Modifica ed espandi Colore.",
@@ -2030,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Modifica"
     },
@@ -2049,7 +2199,15 @@
         "blu",
         "contrasto",
         "punto di controllo",
-        "curva a S"
+        "curva a S",
+        "contagocce",
+        "punto nero",
+        "punto bianco",
+        "punto grigio",
+        "punto grigio",
+        "neutro",
+        "dominante cromatica",
+        "livelli"
       ],
       "sections": [
         {
@@ -2067,6 +2225,21 @@
           "tips": [
             "Usa pochi punti e confronta la foto mentre lavori; le curve dei canali possono introdurre forti dominanti di colore.",
             "Una curva salvata o importata conserva esattamente la propria tabella salvata finché non la modifichi. L’app ricostruisce maniglie rappresentative per la modifica, quindi il primo intervento può rimodellare una curva importata oltre il punto che sposti."
+          ]
+        },
+        {
+          "title": "Imposta punti nero, grigio e bianco",
+          "paragraphs": [
+            "I contagocce sotto la curva a punti impostano le curve rossa, verde e blu a partire da un punto della foto. Punto nero rende nera l’area campionata, Punto bianco la rende bianca e Punto grigio la rende neutra mantenendone la luminosità. È utile per rimuovere una dominante cromatica da una scansione."
+          ],
+          "steps": [
+            "Apri Modifica, espandi Curva e scegli Punto nero, Punto grigio o Punto bianco.",
+            "Fai clic su un’area della foto che dovrebbe essere nera, grigio neutro o bianca.",
+            "Controlla le curve R, G e B, quindi rifiniscile o reimpostale se il risultato è troppo forte."
+          ],
+          "tips": [
+            "Punto nero richiede un’area più scura del grigio medio e Punto bianco un’area più chiara del grigio medio. Premi Escape per annullare un contagocce.",
+            "I contagocce passano Curva alla modalità Punto perché modificano le curve dei canali."
           ]
         },
         {
@@ -2436,7 +2609,7 @@
           "title": "Controlli di acquisizione e controlli di rifinitura",
           "paragraphs": [
             "L'EV della fotocamera e il bilanciamento del bianco di acquisizione agiscono prima dell'esposizione della pellicola. Esposizione e Temp/Tinta nel pannello Modifica sono regolazioni finali nella fase successiva del flusso di lavoro.",
-            "Il bilanciamento del bianco di cattura richiede un originale raw. Per JPEG, HEIF, TIFF o un altro file elaborato, usa Modifica Temp/Tinta."
+            "Il bilanciamento del bianco acquisizione si trova in cima alla sezione Colore per gli originali RAW e funziona con Pellicola attiva o disattiva: scegli Come scattato, Auto, un predefinito o Personalizzato per impostare una temperatura in kelvin e una tinta di acquisizione. Per JPEG, HEIF, TIFF o un altro file elaborato il blocco è nascosto; usa Modifica Temp/Tinta."
           ],
           "steps": [
             "Attiva Pellicola, scegli una pellicola e regola EV della Fotocamera.",
@@ -2529,7 +2702,11 @@
         "qualità",
         "dimensione piena",
         "risoluzione",
-        "predefinito"
+        "predefinito",
+        "bordo",
+        "cornice",
+        "opaco",
+        "margine"
       ],
       "sections": [
         {
@@ -2542,6 +2719,17 @@
             "Apri Esporta e scegli un predefinito nella parte superiore.",
             "Imposta Dimensione su dimensioni Piene o su un limite del lato lungo.",
             "Controlla Anteprima output: la dimensione esportata riflette rotazione e ritaglio, e un limite sul lato lungo riduce le immagini più grandi senza ingrandire quelle più piccole."
+          ]
+        },
+        {
+          "title": "Aggiungi un bordo",
+          "paragraphs": [
+            "Bordo in Avanzate aggiunge un margine uniforme bianco, grigio o nero intorno a ogni foto esportata. Il margine viene aggiunto dopo il ridimensionamento, quindi la sua larghezza è una frazione del lato lungo consegnato e il file in uscita supera la foto di quel margine su ogni lato."
+          ],
+          "steps": [
+            "Apri Esporta ed espandi Avanzate.",
+            "Scegli Sottile, Medio o Largo in Bordo, quindi scegli Colore bordo.",
+            "Controlla Anteprima output per le dimensioni finali."
           ]
         },
         {
@@ -2665,7 +2853,10 @@
         "classificate",
         "lotto",
         "annulla",
-        "progresso"
+        "progresso",
+        "provino a contatto",
+        "foglio provini",
+        "stampa indice"
       ],
       "sections": [
         {
@@ -2688,6 +2879,22 @@
             "Foto selezionate usa le foto selezionate ancora mostrate dalla cartella, collezione e dai filtri correnti. Se nessuna parte della selezione rimane visibile, usa la foto attiva. Controlla il numero di foto e il nome in Esporta prima di avviare.",
             "Solo selezionati, Classificate 1+ e Tutti eccetto rifiutati selezionano le foto fisse corrispondenti dal catalogo attivo e possono includere foto al di fuori della raccolta o del filtro visualizzati. Foto selezionate offre un controllo esplicito sull’insieme.",
             "Se un lotto scrive in più cartelle, Mostra nel Finder mostra la prima foto esportata correttamente. Il collegamento è assente quando non è stata esportata alcuna foto. Usa Annulla esportazione per richiedere l’interruzione. Dettagli esportazione riporta i conteggi di completati, saltati e annullati, oltre a avvisi ed errori; un avviso può verificarsi dopo che una foto è stata scritta correttamente. Le clip video non vengono renderizzate dal flusso di lavoro di esportazione delle foto fisse. Se un originale cambia mentre la sua esportazione è in coda o in fase di rendering, quella foto non riesce con un errore; inseriscila di nuovo in coda dopo aver verificato l’originale."
+          ]
+        },
+        {
+          "title": "Crea un provino a contatto",
+          "paragraphs": [
+            "Provino a contatto… in Esporta dispone le foto scelte nel campo Foto su un unico JPEG con didascalie, con le tue modifiche applicate. Può contenere fino a 200 foto."
+          ],
+          "steps": [
+            "Apri Esporta e imposta Foto e la cartella di destinazione.",
+            "Fai clic su Provino a contatto… e scegli Colonne, Larghezza foglio, Sfondo e un Titolo.",
+            "Scegli le didascalie: Nome file, Pellicola e Valutazione.",
+            "Fai clic su Crea provino. La finestra di dialogo mostra l’avanzamento e una notifica indica il percorso del file salvato."
+          ],
+          "tips": [
+            "Il foglio viene salvato come contact-sheet seguito da data e ora. Una foto di cui non è possibile eseguire il rendering viene saltata e conteggiata nella notifica.",
+            "Scegli più colonne se una selezione ampia rende il foglio troppo alto da creare."
           ]
         }
       ],
@@ -2854,7 +3061,8 @@
         {
           "title": "Valori predefiniti per le foto non modificate",
           "paragraphs": [
-            "I valori predefiniti di sviluppo si applicano solo alle foto che non hanno già modifiche salvate. Possono avviare Pellicola attiva, scegliere un flusso di lavoro e un profilo di sviluppo neutro e applicare un predefinito di default."
+            "I valori predefiniti di sviluppo si applicano solo alle foto che non hanno già modifiche salvate. Possono avviare Pellicola attiva, scegliere un flusso di lavoro e un profilo di sviluppo neutro e applicare un predefinito di default.",
+            "Applica automaticamente il profilo obiettivo abbinato, attivo per impostazione predefinita, attiva il profilo obiettivo per le foto la cui fotocamera e il cui obiettivo corrispondono esattamente a un solo profilo e le cui impostazioni obiettivo non sono mai state salvate. Disattivalo per aprire ogni foto con il profilo disattivato."
           ],
           "steps": [
             "Apri Impostazioni → Predefiniti di sviluppo.",
@@ -3287,5 +3495,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

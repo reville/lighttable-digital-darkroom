@@ -222,6 +222,7 @@
             </div>
           </div>
           <canvas id="editOverlay" aria-label="Local edit overlay" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Local edit overlay&quot;}"></canvas>
+          <canvas id="samplerOverlay" aria-hidden="true"></canvas>
           <div id="viewerChrome" hidden>
             <div class="speed-hud" id="speedHud" hidden></div>
             <div class="render-badge" id="denoiseBadge" hidden data-i18n-text="{&quot;0&quot;:&quot;Denoising…&quot;}">Denoising…</div>
@@ -326,6 +327,7 @@
           <canvas id="hist" width="300" height="110"></canvas>
           <span class="hist-label hist-black" id="scopeLowLabel">0</span><span class="hist-label hist-white" id="scopeHighLabel">255</span>
           <button class="histogram-clip quiet icon-btn" id="clipBtn" title="Clipping warning (J)" aria-label="Clipping warning" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Clipping warning (J)&quot;,&quot;aria-label&quot;:&quot;Clipping warning&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 3 7 13H3z"/></svg></button>
+          <button class="histogram-sampler quiet icon-btn" id="samplerBtn" type="button" title="Colour samplers: click the photo to place up to four" aria-label="Colour samplers" aria-pressed="false" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Colour samplers: click the photo to place up to four&quot;,&quot;aria-label&quot;:&quot;Colour samplers&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="4.5"/><path d="M10 2.5v4M10 13.5v4M2.5 10h4M13.5 10h4"/></svg></button>
           <button class="scope-menu-button quiet compact" id="scopeMenuButton" type="button" aria-expanded="false" aria-controls="scopeMenu"><span id="scopeMenuLabel" data-i18n-text="{&quot;0&quot;:&quot;Histogram&quot;}">Histogram</span><span aria-hidden="true">⌄</span></button>
           <div class="scope-menu context-menu" id="scopeMenu" role="menu" aria-hidden="true">
             <button type="button" data-scope="histogram" aria-pressed="true" data-i18n-text="{&quot;0&quot;:&quot;Histogram&quot;}">Histogram</button>
@@ -334,6 +336,7 @@
             <button type="button" data-scope="vectorscope" aria-pressed="false" data-i18n-text="{&quot;0&quot;:&quot;Vectorscope&quot;}">Vectorscope</button>
           </div>
         </div>
+        <div class="sampler-readouts" id="samplerReadouts" aria-live="polite" hidden></div>
 
         <div class="treatment-wrap">
           <span class="treatment-label" data-i18n-text="{&quot;0&quot;:&quot;Treatment&quot;}">Treatment</span>
@@ -358,6 +361,14 @@
         <details class="sec" id="colorSection">
           <summary><span id="colorSectionLabel" data-i18n-text="{&quot;0&quot;:&quot;Color&quot;}">Color</span><a class="reset" href="#" data-reset="colour" title="Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset white balance, Vibrance, Saturation, Color Mixer, Point Color, and Color Grading&quot;}">Reset</a></summary>
           <div class="secbody">
+            <div id="captureWbBlock" hidden>
+              <label class="field-label" for="wb_mode" data-i18n-text="{&quot;0&quot;:&quot;Capture white balance&quot;}">Capture white balance</label><select id="wb_mode"><option value="as_shot" data-i18n-text="{&quot;0&quot;:&quot;As shot&quot;}">As shot</option><option value="auto" data-i18n-text="{&quot;0&quot;:&quot;Auto&quot;}">Auto</option><option value="daylight" data-i18n-text="{&quot;0&quot;:&quot;Daylight&quot;}">Daylight</option><option value="cloudy" data-i18n-text="{&quot;0&quot;:&quot;Cloudy · 6500 K&quot;}">Cloudy · 6500 K</option><option value="shade" data-i18n-text="{&quot;0&quot;:&quot;Shade · 7500 K&quot;}">Shade · 7500 K</option><option value="tungsten" data-i18n-text="{&quot;0&quot;:&quot;Tungsten · 2850 K&quot;}">Tungsten · 2850 K</option><option value="fluorescent" data-i18n-text="{&quot;0&quot;:&quot;Fluorescent · 3800 K&quot;}">Fluorescent · 3800 K</option><option value="flash" data-i18n-text="{&quot;0&quot;:&quot;Flash · 5500 K&quot;}">Flash · 5500 K</option><option value="custom" data-i18n-text="{&quot;0&quot;:&quot;Custom&quot;}">Custom</option></select>
+              <div id="wbCustom" hidden>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Temperature&quot;}">Temperature</span><input type="range" id="wb_temperature" min="2000" max="50000" step="50" value="5500"><span class="val" id="wb_temperatureV" data-i18n-text="{&quot;0&quot;:&quot;5500 K&quot;}">5500 K</span></div>
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Capture tint&quot;}">Capture tint</span><input type="range" id="wb_tint" min="-1" max="1" step="0.02" value="0"><span class="val" id="wb_tintV">0.00</span></div>
+              </div>
+              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Capture white balance re-develops the RAW original in kelvin, with or without Film. Temp and Tint below are finishing adjustments.&quot;}">Capture white balance re-develops the RAW original in kelvin, with or without Film. Temp and Tint below are finishing adjustments.</p>
+            </div>
             <div class="row row-with-action"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Temp&quot;}">Temp</span><input type="range" data-g="temp" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="temp">0.00</span><button class="quiet icon-btn row-action" id="wbBtn" type="button" title="Click a neutral area to set white balance" aria-label="White balance eyedropper" disabled data-i18n-attrs="{&quot;title&quot;:&quot;Click a neutral area to set white balance&quot;,&quot;aria-label&quot;:&quot;White balance eyedropper&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 15 8-8M11 5l4 4M4 16l3-.5-2.5-2.5z"/></svg></button></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Tint&quot;}">Tint</span><input type="range" data-g="tint" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="tint">0.00</span></div>
             <div class="row" id="colorVibranceRow"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Vibrance&quot;}">Vibrance</span><input type="range" data-g="vibrance" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="vibrance">0.00</span></div>
@@ -402,6 +413,11 @@
             <div id="pointCurveWrap">
               <div class="segmented curve-segments"><button class="curveCh on" data-ch="L" title="Edit the combined RGB tone curve" data-i18n-text="{&quot;0&quot;:&quot;RGB&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Edit the combined RGB tone curve&quot;}">RGB</button><button class="curveCh" data-ch="R" title="Edit the red channel curve" data-i18n-text="{&quot;0&quot;:&quot;R&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Edit the red channel curve&quot;}">R</button><button class="curveCh" data-ch="G" title="Edit the green channel curve" data-i18n-text="{&quot;0&quot;:&quot;G&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Edit the green channel curve&quot;}">G</button><button class="curveCh" data-ch="B" title="Edit the blue channel curve" data-i18n-text="{&quot;0&quot;:&quot;B&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Edit the blue channel curve&quot;}">B</button></div>
               <canvas id="curve" width="300" height="220"></canvas>
+              <div class="curve-pickers" role="group" aria-label="Curve eyedroppers" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Curve eyedroppers&quot;}">
+                <button type="button" class="quiet compact" data-curve-pick="black" id="curvePickBlack" aria-pressed="false" title="Click an area of the photo that should be black" data-i18n-text="{&quot;0&quot;:&quot;Black point&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Click an area of the photo that should be black&quot;}">Black point</button>
+                <button type="button" class="quiet compact" data-curve-pick="grey" id="curvePickGrey" aria-pressed="false" title="Click an area of the photo that should be neutral grey" data-i18n-text="{&quot;0&quot;:&quot;Grey point&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Click an area of the photo that should be neutral grey&quot;}">Grey point</button>
+                <button type="button" class="quiet compact" data-curve-pick="white" id="curvePickWhite" aria-pressed="false" title="Click an area of the photo that should be white" data-i18n-text="{&quot;0&quot;:&quot;White point&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Click an area of the photo that should be white&quot;}">White point</button>
+              </div>
             </div>
             <div id="parametricCurveWrap" hidden>
               <canvas id="paramCurveCanvas" width="300" height="140"></canvas>
@@ -467,20 +483,30 @@
         </details>
 
         <details class="sec" id="lensPane">
-          <summary><span data-i18n-text="{&quot;0&quot;:&quot;Lens corrections&quot;}">Lens corrections</span><button class="quiet compact section-reset-button" id="lensReset" type="button" title="Reset lens profile, distortion, vignetting, and chromatic aberration corrections" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset lens profile, distortion, vignetting, and chromatic aberration corrections&quot;}">Reset</button></summary>
+          <summary><span data-i18n-text="{&quot;0&quot;:&quot;Lens corrections&quot;}">Lens corrections</span><button class="quiet compact section-reset-button" id="lensReset" type="button" title="Reset lens profile, distortion, vignetting, chromatic aberration, and defringe corrections" data-i18n-text="{&quot;0&quot;:&quot;Reset&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Reset lens profile, distortion, vignetting, chromatic aberration, and defringe corrections&quot;}">Reset</button></summary>
           <div class="secbody">
-            <div class="lens-profile-card" id="lensProfileCard"><span class="status-dot"></span><div><strong id="lensProfileName" data-i18n-text="{&quot;0&quot;:&quot;Checking photo metadata…&quot;}">Checking photo metadata…</strong><span id="lensProfileDetail" data-i18n-text="{&quot;0&quot;:&quot;Automatic correction uses the bundled camera and lens database.&quot;}">Automatic correction uses the bundled camera and lens database.</span></div></div>
+            <div class="lens-profile-card" id="lensProfileCard"><span class="status-dot"></span><div><strong id="lensProfileName" data-i18n-text="{&quot;0&quot;:&quot;Checking photo metadata…&quot;}">Checking photo metadata…</strong><span id="lensProfileDetail"  data-i18n-text="{&quot;0&quot;:&quot;Automatic correction matches the photo metadata against the lens library’s database.&quot;}">Automatic correction matches the photo metadata against the lens library’s database.</span></div></div>
             <label class="field-label" for="lensProfileOverride" data-i18n-text="{&quot;0&quot;:&quot;Lens profile&quot;}">Lens profile</label>
             <select id="lensProfileOverride"><option value="" data-i18n-text="{&quot;0&quot;:&quot;Automatic from photo metadata&quot;}">Automatic from photo metadata</option></select>
             <p class="hint" id="lensProfileReason"></p>
+            <p class="hint" id="lensDatabaseNote" hidden></p>
             <label class="check-row"><input type="checkbox" id="lensProfileEnabled"><span data-i18n-text="{&quot;0&quot;:&quot;Use matched lens profile&quot;}">Use matched lens profile</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileDistortion" checked><span data-i18n-text="{&quot;0&quot;:&quot;Correct distortion&quot;}">Correct distortion</span></label>
             <label class="check-row nested-check"><input type="checkbox" id="lensProfileVignette" checked><span data-i18n-text="{&quot;0&quot;:&quot;Correct lens shading&quot;}">Correct lens shading</span></label>
+            <label class="check-row nested-check"><input type="checkbox" id="lensProfileChromatic" checked><span data-i18n-text="{&quot;0&quot;:&quot;Correct chromatic aberration&quot;}">Correct chromatic aberration</span></label>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Distortion&quot;}">Distortion</span><input type="range" data-optics="distortion" min="-1" max="1" step="0.01"><span class="val" data-opticsv="distortion">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Vignette&quot;}">Vignette</span><input type="range" data-optics="vignette" min="-1" max="1" step="0.01"><span class="val" data-opticsv="vignette">0.00</span></div>
             <div class="subheading" data-i18n-text="{&quot;0&quot;:&quot;Chromatic aberration&quot;}">Chromatic aberration</div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Red / Cyan&quot;}">Red / Cyan</span><input type="range" data-g="chromaticAberrationRedCyan" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="chromaticAberrationRedCyan">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Blue / Yellow&quot;}">Blue / Yellow</span><input type="range" data-g="chromaticAberrationBlueYellow" min="-1" max="1" step="0.01" value="0"><span class="val" data-gv="chromaticAberrationBlueYellow">0.00</span></div>
+            <div class="subheading" data-i18n-text="{&quot;0&quot;:&quot;Defringe&quot;}">Defringe</div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Purple&quot;}">Purple</span><input type="range" data-optics="defringePurple" min="0" max="1" step="0.01"><span class="val" data-opticsv="defringePurple">0.00</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Purple hue start&quot;}">Purple hue start</span><input type="range" data-optics="defringePurpleHueStart" min="0" max="360" step="1"><span class="val" data-opticsv="defringePurpleHueStart">250°</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Purple hue end&quot;}">Purple hue end</span><input type="range" data-optics="defringePurpleHueEnd" min="0" max="360" step="1"><span class="val" data-opticsv="defringePurpleHueEnd">330°</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Green&quot;}">Green</span><input type="range" data-optics="defringeGreen" min="0" max="1" step="0.01"><span class="val" data-opticsv="defringeGreen">0.00</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Green hue start&quot;}">Green hue start</span><input type="range" data-optics="defringeGreenHueStart" min="0" max="360" step="1"><span class="val" data-opticsv="defringeGreenHueStart">90°</span></div>
+            <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Green hue end&quot;}">Green hue end</span><input type="range" data-optics="defringeGreenHueEnd" min="0" max="360" step="1"><span class="val" data-opticsv="defringeGreenHueEnd">150°</span></div>
+            <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Defringe desaturates strongly coloured pixels along hard edges whose hue falls inside each range. A hue start above its end wraps through red.&quot;}">Defringe desaturates strongly coloured pixels along hard edges whose hue falls inside each range. A hue start above its end wraps through red.</p>
             <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Lens and fringe corrections remain non-destructive through export.&quot;}">Lens and fringe corrections remain non-destructive through export.</p>
           </div>
         </details>
@@ -591,12 +617,21 @@
                 <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Saturation&quot;}">Saturation</span><input type="range" data-local="saturation" min="-1" max="1" step="0.01"><span class="val" data-localv="saturation">0.00</span></div>
               </div>
             </details>
+            <details class="sec local-sec" id="maskEffectsSection">
+              <summary><span data-i18n-text="{&quot;0&quot;:&quot;Effects&quot;}">Effects</span></summary>
+              <div class="secbody">
+                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Lens blur&quot;}">Lens blur</span><input type="range" data-local="blur" min="0" max="1" step="0.01"><span class="val" data-localv="blur">0.00</span></div>
+                <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Blur grows with the mask’s strength, so feathered edges fall off gradually. To blur a background, select the subject or a depth range and invert the mask.&quot;}">Blur grows with the mask’s strength, so feathered edges fall off gradually. To blur a background, select the subject or a depth range and invert the mask.</p>
+              </div>
+            </details>
             <details class="sec local-sec">
               <summary><span data-i18n-text="{&quot;0&quot;:&quot;Tone Curve&quot;}">Tone Curve</span></summary>
               <div class="secbody">
                 <label class="field-label" for="maskCurveChannel" data-i18n-text="{&quot;0&quot;:&quot;Channel&quot;}">Channel</label>
                 <select id="maskCurveChannel"><option value="L" data-i18n-text="{&quot;0&quot;:&quot;RGB&quot;}">RGB</option><option value="R" data-i18n-text="{&quot;0&quot;:&quot;Red&quot;}">Red</option><option value="G" data-i18n-text="{&quot;0&quot;:&quot;Green&quot;}">Green</option><option value="B" data-i18n-text="{&quot;0&quot;:&quot;Blue&quot;}">Blue</option></select>
                 <canvas id="maskCurve" width="256" height="256" style="display:block;width:100%;height:auto"></canvas>
+                <label class="check-row"><input type="checkbox" id="maskCurveLuminosity"><span data-i18n-text="{&quot;0&quot;:&quot;Luminosity only&quot;}">Luminosity only</span></label>
+                <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Changes brightness without shifting colour or saturation.&quot;}">Changes brightness without shifting colour or saturation.</p>
                 <button id="maskCurveReset" type="button" class="quiet full" data-i18n-text="{&quot;0&quot;:&quot;Reset curve&quot;}">Reset curve</button>
               </div>
             </details>
@@ -633,6 +668,14 @@
             <button id="healToolClone" type="button" aria-pressed="false" title="Copy detail from a source area onto the target" data-i18n-attrs="{&quot;title&quot;:&quot;Copy detail from a source area onto the target&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="7" cy="11" r="4"/><circle cx="13" cy="7" r="4"/></svg><span data-i18n-text="{&quot;0&quot;:&quot;Clone&quot;}">Clone</span></button>
           </div>
           <p class="hint tool-instruction" id="healInstruction" data-i18n-text="{&quot;0&quot;:&quot;Click or drag over a distraction. Heal and Clone choose a source automatically.&quot;}">Click or drag over a distraction. Heal and Clone choose a source automatically.</p>
+          <div class="heal-remove-options" id="healRemoveOptions">
+            <div class="segmented heal-shape" role="group" aria-label="Remove shape" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Remove shape&quot;}">
+              <button type="button" id="healShapeSpot" class="on" aria-pressed="true" title="Click to remove a spot; drag to set its size" data-i18n-text="{&quot;0&quot;:&quot;Spot&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Click to remove a spot; drag to set its size&quot;}">Spot</button>
+              <button type="button" id="healShapeBrush" aria-pressed="false" title="Paint along a scratch, hair, or wire" data-i18n-text="{&quot;0&quot;:&quot;Brush&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Paint along a scratch, hair, or wire&quot;}">Brush</button>
+            </div>
+            <label class="field-label" for="healFill" data-i18n-text="{&quot;0&quot;:&quot;Fill&quot;}">Fill</label>
+            <select id="healFill"><option value="patch" data-i18n-text="{&quot;0&quot;:&quot;Match surrounding texture&quot;}">Match surrounding texture</option><option value="smooth" data-i18n-text="{&quot;0&quot;:&quot;Smooth blend&quot;}">Smooth blend</option></select>
+          </div>
           <div class="spot-visualize-control">
             <label class="check-row"><input type="checkbox" id="healVisualize"><span data-i18n-text="{&quot;0&quot;:&quot;Visualize Spots&quot;}">Visualize Spots</span></label>
             <div class="row" id="healVisualizeRow" hidden><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Threshold&quot;}">Threshold</span><input type="range" id="healVisualizeThreshold" min="0" max="1" step="0.01" value="0.55"><span class="val" id="healVisualizeThresholdV">55%</span></div>
@@ -641,6 +684,17 @@
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Feather&quot;}">Feather</span><input type="range" id="healFeather" min="0" max="1" step="0.01"><span class="val" id="healFeatherV">65%</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Opacity&quot;}">Opacity</span><input type="range" id="healOpacity" min="0" max="1" step="0.01"><span class="val" id="healOpacityV">100%</span></div>
 </div>
+          <details class="sec local-sec heal-dust" id="healDustSection">
+            <summary><span data-i18n-text="{&quot;0&quot;:&quot;Dust and scratches&quot;}">Dust and scratches</span></summary>
+            <div class="secbody">
+              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Finds small marks that stand out sharply from their surroundings and fills them from nearby pixels. Check fine detail such as hair, stars, and text before keeping the result.&quot;}">Finds small marks that stand out sharply from their surroundings and fills them from nearby pixels. Check fine detail such as hair, stars, and text before keeping the result.</p>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Sensitivity&quot;}">Sensitivity</span><input type="range" id="healDustSensitivity" min="0" max="1" step="0.01" value="0.5"><span class="val" id="healDustSensitivityV">50%</span></div>
+              <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Largest mark&quot;}">Largest mark</span><input type="range" id="healDustSize" min="0.001" max="0.02" step="0.001" value="0.004"><span class="val" id="healDustSizeV">0.4%</span></div>
+              <label class="check-row"><input type="checkbox" id="healDustShow"><span data-i18n-text="{&quot;0&quot;:&quot;Show detected marks&quot;}">Show detected marks</span></label>
+              <p class="hint" id="healDustResult" aria-live="polite"></p>
+              <button class="primary-btn full" id="healDustApply" type="button" data-i18n-text="{&quot;0&quot;:&quot;Remove Dust&quot;}">Remove Dust</button>
+            </div>
+          </details>
           <div class="edit-item-list" id="healList"></div>
           <div id="healControls" hidden>
             <div class="selected-tool-header">
@@ -673,19 +727,13 @@
               <label class="check-row"><input type="checkbox" id="auto_exposure" checked><span data-i18n-text="{&quot;0&quot;:&quot;Meter scene automatically&quot;}">Meter scene automatically</span></label>
               <details class="film-advanced"><summary data-i18n-text="{&quot;0&quot;:&quot;Capture &amp; processing&quot;}">Capture &amp; processing</summary><div class="film-advanced-body">
               <label class="field-label" for="workflow_mode" data-i18n-text="{&quot;0&quot;:&quot;Workflow&quot;}">Workflow</label><select id="workflow_mode"><option value="authentic" data-i18n-text="{&quot;0&quot;:&quot;Authentic · linked physical defaults&quot;}">Authentic · linked physical defaults</option><option value="creative" data-i18n-text="{&quot;0&quot;:&quot;Creative · preserve overrides&quot;}">Creative · preserve overrides</option></select>
-              <label class="field-label" for="wb_mode" data-i18n-text="{&quot;0&quot;:&quot;Capture white balance&quot;}">Capture white balance</label><select id="wb_mode"><option value="as_shot" data-i18n-text="{&quot;0&quot;:&quot;As shot&quot;}">As shot</option><option value="auto" data-i18n-text="{&quot;0&quot;:&quot;Auto&quot;}">Auto</option><option value="daylight" data-i18n-text="{&quot;0&quot;:&quot;Daylight&quot;}">Daylight</option><option value="cloudy" data-i18n-text="{&quot;0&quot;:&quot;Cloudy · 6500 K&quot;}">Cloudy · 6500 K</option><option value="shade" data-i18n-text="{&quot;0&quot;:&quot;Shade · 7500 K&quot;}">Shade · 7500 K</option><option value="tungsten" data-i18n-text="{&quot;0&quot;:&quot;Tungsten · 2850 K&quot;}">Tungsten · 2850 K</option><option value="fluorescent" data-i18n-text="{&quot;0&quot;:&quot;Fluorescent · 3800 K&quot;}">Fluorescent · 3800 K</option><option value="flash" data-i18n-text="{&quot;0&quot;:&quot;Flash · 5500 K&quot;}">Flash · 5500 K</option><option value="custom" data-i18n-text="{&quot;0&quot;:&quot;Custom&quot;}">Custom</option></select>
-              <p class="hint" id="wbProcessedNote" hidden data-i18n-text="{&quot;0&quot;:&quot;Capture white balance requires a RAW original. Use Edit Temp/Tint for a processed file.&quot;}">Capture white balance requires a RAW original. Use Edit Temp/Tint for a processed file.</p>
-              <div id="wbCustom" hidden>
-                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Temperature&quot;}">Temperature</span><input type="range" id="wb_temperature" min="2000" max="50000" step="50" value="5500"><span class="val" id="wb_temperatureV" data-i18n-text="{&quot;0&quot;:&quot;5500 K&quot;}">5500 K</span></div>
-                <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Capture tint&quot;}">Capture tint</span><input type="range" id="wb_tint" min="-1" max="1" step="0.02" value="0"><span class="val" id="wb_tintV">0.00</span></div>
-              </div>
               <div id="paperField"><label class="field-label" for="paper" data-i18n-text="{&quot;0&quot;:&quot;Paper&quot;}">Paper</label><select id="paper"></select></div>
               <label class="check-row" id="paperLockRow"><input type="checkbox" id="paper_locked"><span data-i18n-text="{&quot;0&quot;:&quot;Lock paper when stock changes&quot;}">Lock paper when stock changes</span></label>
               <p class="hint" id="directScanNote" hidden data-i18n-text="{&quot;0&quot;:&quot;Direct transparency scan · no print stage&quot;}">Direct transparency scan · no print stage</p>
               <div id="developmentTimeField" hidden><label class="field-label" for="development_time" data-i18n-text="{&quot;0&quot;:&quot;Development&quot;}">Development</label><select id="development_time"></select></div>
               <div id="printDevelopmentTimeField" hidden><label class="field-label" for="print_development_time" data-i18n-text="{&quot;0&quot;:&quot;Print development&quot;}">Print development</label><select id="print_development_time"></select></div>
               <div class="row row-long"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Development contrast&quot;}">Development contrast</span><input type="range" id="gamma" min="0.5" max="1.5" step="0.05" value="1"><span class="val" id="gammaV">1.00</span></div>
-              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Camera EV and capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls.&quot;}">Camera EV and capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls.</p>
+              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Camera EV and the Color panel’s Capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls.&quot;}">Camera EV and the Color panel’s Capture white balance act before film exposure. Edit-panel Exposure and Temp/Tint are creative finishing controls.</p>
               </div></details>
             </div>
           </div>
@@ -1113,6 +1161,7 @@
         <button class="primary-btn" id="setupImportSidecars" data-i18n-text="{&quot;0&quot;:&quot;Import sidecars…&quot;}">Import sidecars…</button>
       </div>
       <button class="accent-btn" id="setupDone" data-i18n-text="{&quot;0&quot;:&quot;Start editing&quot;}">Start editing</button>
+      <button class="quiet" id="setupImportPresets" hidden data-i18n-text="{&quot;0&quot;:&quot;Import presets…&quot;}">Import presets…</button>
     </div>
     <p class="setup-error" id="setupError" role="alert"></p>
     <footer class="setup-footer"><button id="setupBack" hidden data-i18n-text="{&quot;0&quot;:&quot;‹ Back&quot;}">‹ Back</button><button id="setupLater" data-i18n-text="{&quot;0&quot;:&quot;Set up later&quot;}">Set up later</button></footer>
@@ -1247,6 +1296,7 @@
           <h2 data-i18n-text="{&quot;0&quot;:&quot;Develop Defaults&quot;}">Develop Defaults</h2><p class="settings-intro" data-i18n-text="{&quot;0&quot;:&quot;Applied only to photos that do not already have saved edits.&quot;}">Applied only to photos that do not already have saved edits.</p>
           <div class="settings-group settings-fields">
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Start with Film enabled&quot;}">Start with Film enabled</strong><small data-i18n-text="{&quot;0&quot;:&quot;New photos open in the physical film workflow.&quot;}">New photos open in the physical film workflow.</small></span><input type="checkbox" id="newPhotoFilmEnabled"></label>
+            <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Apply matched lens profile automatically&quot;}">Apply matched lens profile automatically</strong><small data-i18n-text="{&quot;0&quot;:&quot;A photo whose camera and lens exactly match a profile in the lens database opens with the correction on.&quot;}">A photo whose camera and lens exactly match a profile in the lens database opens with the correction on.</small></span><input type="checkbox" id="newPhotoLensProfile"></label>
             <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Workflow&quot;}">Workflow</span><select id="newPhotoWorkflow"><option value="authentic" data-i18n-text="{&quot;0&quot;:&quot;Authentic · linked physical defaults&quot;}">Authentic · linked physical defaults</option><option value="creative" data-i18n-text="{&quot;0&quot;:&quot;Creative · preserve overrides&quot;}">Creative · preserve overrides</option></select></label>
             <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Neutral develop profile&quot;}">Neutral develop profile</span><select id="newPhotoDevelopProfile"><option value="standard" data-i18n-text="{&quot;0&quot;:&quot;Standard&quot;}">Standard</option><option value="linear" data-i18n-text="{&quot;0&quot;:&quot;Linear&quot;}">Linear</option></select></label>
             <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Default preset&quot;}">Default preset</span><select id="newPhotoPreset"><option value="" data-i18n-text="{&quot;0&quot;:&quot;None&quot;}">None</option></select></label>
@@ -1442,14 +1492,36 @@
       <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;Metadata&quot;}">Metadata</span><select id="modalExMetadata"><option value="all-except-location" data-i18n-text="{&quot;0&quot;:&quot;All except location&quot;}">All except location</option><option value="all" data-i18n-text="{&quot;0&quot;:&quot;All metadata&quot;}">All metadata</option><option value="copyright" data-i18n-text="{&quot;0&quot;:&quot;Copyright only&quot;}">Copyright only</option><option value="none" data-i18n-text="{&quot;0&quot;:&quot;No metadata&quot;}">No metadata</option></select></label>
  <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;Recipe sidecar&quot;}">Recipe sidecar</span><select id="modalExSidecar"><option value="true" data-i18n-text="{&quot;0&quot;:&quot;Write beside exported photo&quot;}">Write beside exported photo</option><option value="false" data-i18n-text="{&quot;0&quot;:&quot;Do not write&quot;}">Do not write</option></select></label>
  <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;File timestamp&quot;}">File timestamp</span><select id="modalExPreserveCaptureTime"><option value="false" data-i18n-text="{&quot;0&quot;:&quot;Time of export&quot;}">Time of export</option><option value="true" data-i18n-text="{&quot;0&quot;:&quot;Original capture time&quot;}">Original capture time</option></select></label>
- <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;If capture timezone is missing&quot;}">If capture timezone is missing</span><select id="modalExCaptureTimePolicy"><option value="require-offset" data-i18n-text="{&quot;0&quot;:&quot;Keep export time and report a warning&quot;}">Keep export time and report a warning</option><option value="local" data-i18n-text="{&quot;0&quot;:&quot;Use this computer’s local timezone&quot;}">Use this computer’s local timezone</option></select></label><p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.&quot;}">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
+ <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;If capture timezone is missing&quot;}">If capture timezone is missing</span><select id="modalExCaptureTimePolicy"><option value="require-offset" data-i18n-text="{&quot;0&quot;:&quot;Keep export time and report a warning&quot;}">Keep export time and report a warning</option><option value="local" data-i18n-text="{&quot;0&quot;:&quot;Use this computer’s local timezone&quot;}">Use this computer’s local timezone</option></select></label><label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;Border&quot;}">Border</span><select id="modalExBorder"><option value="0" data-i18n-text="{&quot;0&quot;:&quot;No border&quot;}">No border</option><option value="0.02" data-i18n-text="{&quot;0&quot;:&quot;Thin · 2% of the long edge&quot;}">Thin · 2% of the long edge</option><option value="0.05" data-i18n-text="{&quot;0&quot;:&quot;Medium · 5% of the long edge&quot;}">Medium · 5% of the long edge</option><option value="0.1" data-i18n-text="{&quot;0&quot;:&quot;Wide · 10% of the long edge&quot;}">Wide · 10% of the long edge</option></select></label>
+ <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;Border colour&quot;}">Border colour</span><select id="modalExBorderTone"><option value="1" data-i18n-text="{&quot;0&quot;:&quot;White&quot;}">White</option><option value="0.5" data-i18n-text="{&quot;0&quot;:&quot;Grey&quot;}">Grey</option><option value="0" data-i18n-text="{&quot;0&quot;:&quot;Black&quot;}">Black</option></select></label><p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.&quot;}">Filename fields: {filename}, {stock}, {date}, {rating}, {sequence}.</p>
       </div></details>
     </div>
 
     <div class="modal-actions export-modal-actions">
+      <button type="button" class="quiet export-contact-sheet" id="exportModalContactSheet" data-i18n-text="{&quot;0&quot;:&quot;Contact Sheet…&quot;}">Contact Sheet…</button>
       <button type="button" id="exportModalCancel" data-i18n-text="{&quot;0&quot;:&quot;Cancel&quot;}">Cancel</button>
       <button type="button" class="accent-btn" id="exportModalRun" data-i18n-text="{&quot;0&quot;:&quot;Export 1 Photo&quot;}">Export 1 Photo</button>
     </div>
+  </div>
+</div>
+<div class="modal-backdrop" id="contactSheetDialog" aria-hidden="true">
+  <div class="modal contact-sheet-modal" role="dialog" aria-modal="true" aria-labelledby="contactSheetTitle">
+    <strong id="contactSheetTitle" data-i18n-text="{&quot;0&quot;:&quot;Contact Sheet&quot;}">Contact Sheet</strong>
+    <p class="hint" id="contactSheetSummary"></p>
+    <div class="export-settings-grid">
+      <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Columns&quot;}">Columns</span><select id="contactSheetColumns"><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="8">8</option></select></label>
+      <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Sheet width&quot;}">Sheet width</span><select id="contactSheetWidth"><option value="2400" data-i18n-text="{&quot;0&quot;:&quot;2400 px&quot;}">2400 px</option><option value="3600" selected data-i18n-text="{&quot;0&quot;:&quot;3600 px&quot;}">3600 px</option><option value="4800" data-i18n-text="{&quot;0&quot;:&quot;4800 px&quot;}">4800 px</option></select></label>
+      <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Background&quot;}">Background</span><select id="contactSheetBackground"><option value="white" data-i18n-text="{&quot;0&quot;:&quot;White&quot;}">White</option><option value="grey" data-i18n-text="{&quot;0&quot;:&quot;Grey&quot;}">Grey</option><option value="black" data-i18n-text="{&quot;0&quot;:&quot;Black&quot;}">Black</option></select></label>
+      <label class="field"><span data-i18n-text="{&quot;0&quot;:&quot;Title&quot;}">Title</span><input id="contactSheetTitleInput" maxlength="80" spellcheck="false"></label>
+      <fieldset class="field full-width contact-sheet-captions"><legend data-i18n-text="{&quot;0&quot;:&quot;Captions&quot;}">Captions</legend>
+        <label class="check-row"><input type="checkbox" id="contactSheetCaptionFilename" checked><span data-i18n-text="{&quot;0&quot;:&quot;File name&quot;}">File name</span></label>
+        <label class="check-row"><input type="checkbox" id="contactSheetCaptionStock" checked><span data-i18n-text="{&quot;0&quot;:&quot;Film stock&quot;}">Film stock</span></label>
+        <label class="check-row"><input type="checkbox" id="contactSheetCaptionRating"><span data-i18n-text="{&quot;0&quot;:&quot;Rating&quot;}">Rating</span></label>
+      </fieldset>
+    </div>
+    <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;The sheet is saved as a JPEG in the export destination folder.&quot;}">The sheet is saved as a JPEG in the export destination folder.</p>
+    <p class="hint" id="contactSheetStatus" aria-live="polite"></p>
+    <div class="modal-actions"><button type="button" id="contactSheetCancel" data-i18n-text="{&quot;0&quot;:&quot;Cancel&quot;}">Cancel</button><button type="button" class="accent-btn" id="contactSheetRun" data-i18n-text="{&quot;0&quot;:&quot;Make Sheet&quot;}">Make Sheet</button></div>
   </div>
 </div>
 <div class="modal-backdrop" id="exportResultDialog" aria-hidden="true"><div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="exportResultTitle"><strong id="exportResultTitle" data-i18n-text="{&quot;0&quot;:&quot;Export details&quot;}">Export details</strong><pre id="exportResultText" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:60vh;overflow:auto"></pre><div class="modal-actions"><button id="exportResultClose" data-i18n-text="{&quot;0&quot;:&quot;Done&quot;}">Done</button></div></div></div>

@@ -33,6 +33,7 @@ MASTER_SETTINGS = """s = {
 \tHasCrop = true,
 \tProcessVersion = "11.0",
 \tConvertToGrayscale = true,
+\tGrainAmount = 20,
 }"""
 
 COPY_SETTINGS = """s = {
@@ -382,8 +383,13 @@ class FullImportTests(ImportFixture):
         self.assertAlmostEqual(state["optics"]["rotate"], 2.5, places=5)
         self.assertIs(state["params"]["profile_enabled"], False)
 
+    def test_black_and_white_conversion_is_applied_not_skipped(self):
+        state = self.catalog.state_for(self.image("a.jpg"))
+        self.assertEqual(state["grade"]["monochrome"], 1.0)
+        self.assertNotIn("black and white mixer", self.result["skipped"])
+
     def test_unsupported_develop_operations_are_named(self):
-        self.assertIn("black and white mixer", self.result["skipped"])
+        self.assertIn("grain effect", self.result["skipped"])
 
     def test_an_image_without_settings_keeps_its_params(self):
         state = self.catalog.state_for(self.image("sub/b.dng"))
@@ -748,6 +754,15 @@ class DevelopMapperTests(unittest.TestCase):
     def test_settings_that_do_not_convert_are_reported(self):
         self.assertIsNone(catalog_import._develop_from_lua(""))
         self.assertIsNone(catalog_import._develop_from_lua("s = {}"))
+
+    def test_an_exposure_beyond_the_app_range_is_clamped_and_reported(self):
+        from grade import RANGES
+        low, high = RANGES["exposure"]
+        patch = catalog_import._develop_from_lua(
+            's = {\n\tExposure2012 = 8.5,\n}')
+        self.assertEqual(patch["grade"]["exposure"], high)
+        self.assertIn(f"exposure beyond {low:+g} to {high:+g} clamped to range",
+                      patch["ignored"])
 
     def test_a_straighten_beyond_range_is_named_not_clipped(self):
         patch = catalog_import._develop_from_lua(

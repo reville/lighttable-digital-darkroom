@@ -102,6 +102,53 @@ class LightroomImportTests(unittest.TestCase):
         self.assertEqual(preset["conversion"]["ignored"],
                          ["embedded profile or look"])
 
+    def test_black_and_white_conversion_maps_to_monochrome_and_the_mixer(self):
+        preset = preset_io.import_lightroom(
+            '<rdf:Description crs:ConvertToGrayscale="True" '
+            'crs:GrayMixerRed="-30" crs:GrayMixerBlue="45" crs:GrayMixerGreen="0" '
+            'crs:HueAdjustmentBlue="10" crs:LuminanceAdjustmentBlue="-80" '
+            'crs:LuminanceAdjustmentYellow="20" />',
+            "silver.xmp",
+        )
+        grade = preset["grade"]
+        self.assertEqual(grade["monochrome"], 1.0)
+        self.assertEqual(grade["hsl"]["red"], {"l": -0.3})
+        # The grey mixer replaces the colour luminance panel, which is inert in B&W.
+        self.assertEqual(grade["hsl"]["blue"], {"h": 0.1, "l": 0.45})
+        self.assertNotIn("yellow", grade["hsl"])
+        self.assertNotIn("green", grade["hsl"])
+        self.assertIn("monochrome", preset["includedGrade"])
+        self.assertEqual(preset["conversion"]["ignored"], [])
+        self.assertEqual(preset["conversion"]["mapped"], 2)
+
+    def test_grey_mixer_values_are_inert_while_colour_treatment_is_on(self):
+        preset = preset_io.import_lightroom(
+            '<rdf:Description crs:ConvertToGrayscale="False" '
+            'crs:GrayMixerRed="-30" crs:LuminanceAdjustmentRed="25" />',
+            "colour.xmp",
+        )
+        self.assertNotIn("monochrome", preset["grade"])
+        self.assertEqual(preset["grade"]["hsl"]["red"], {"l": 0.25})
+        self.assertEqual(preset["conversion"]["ignored"], [])
+
+    def test_exposure_uses_the_apps_range_and_reports_clamping(self):
+        from grade import RANGES
+        low, high = RANGES["exposure"]
+        preset = preset_io.import_lightroom(
+            '<rdf:Description crs:Exposure2012="+4.50" />', "bright.xmp")
+        self.assertEqual(preset["grade"]["exposure"], 4.5)
+        self.assertEqual(preset["conversion"]["ignored"], [])
+        preset = preset_io.import_lightroom(
+            '<rdf:Description crs:Exposure2012="+7.25" />', "blown.xmp")
+        self.assertEqual(preset["grade"]["exposure"], high)
+        self.assertEqual(preset["conversion"]["ignored"],
+                         [f"exposure beyond {low:+g} to {high:+g} clamped to range"])
+        self.assertTrue(any("+7.25" in note for note in preset["conversion"]["notes"]))
+        converted = preset_io.map_crs_settings({"Exposure2012": "-9"})
+        self.assertEqual(converted["grade"]["exposure"], low)
+        self.assertEqual(converted["clamped"], [{
+            "control": "exposure", "source": -9.0, "value": low, "min": low, "max": high}])
+
     def test_old_process_version_exposure_and_curve_import(self):
         preset = preset_io.import_lightroom(
             '<rdf:Description crs:Exposure="-0.4">'
@@ -123,6 +170,14 @@ class CaptureOneImportTests(unittest.TestCase):
         self.assertEqual(preset["grade"]["texture"], 0.3)
         self.assertEqual(preset["grade"]["sharpness"], 0.5)
         self.assertIn("FilmCurve", preset["conversion"]["ignored"])
+
+    def test_style_exposure_beyond_the_app_range_is_reported(self):
+        from grade import RANGES
+        preset = preset_io.import_capture_one(
+            '<SL><E K="Exposure" V="-6.5" /><E K="Name" V="Deep" /></SL>', "deep.costyle")
+        self.assertEqual(preset["grade"]["exposure"], RANGES["exposure"][0])
+        self.assertTrue(any(item.startswith("exposure beyond")
+                            for item in preset["conversion"]["ignored"]))
 
     def test_imports_costylepack_archive(self):
         archive = io.BytesIO()
@@ -171,6 +226,16 @@ class PresetExportTests(unittest.TestCase):
         style_name, _, style = preset_io.export_capture_one(self.preset)
         self.assertTrue(xmp_name.endswith(".xmp"))
         self.assertIn("crs:Exposure2012", xmp)
+        self.assertNotIn("crs:ConvertToGrayscale", xmp)
+        mono = dict(self.preset, grade={**self.preset["grade"], "monochrome": 1,
+                                        "hsl": {"red": {"l": -0.3}}},
+                    includedGrade=[*self.preset["includedGrade"], "monochrome", "hsl"])
+        _, _, mono_xmp = preset_io.export_lightroom(mono)
+        self.assertIn('crs:ConvertToGrayscale="True"', mono_xmp)
+        self.assertIn('crs:GrayMixerRed="-30.0"', mono_xmp)
+        round_trip = preset_io.import_lightroom(mono_xmp, "mono.xmp")
+        self.assertEqual(round_trip["grade"]["monochrome"], 1.0)
+        self.assertEqual(round_trip["grade"]["hsl"]["red"]["l"], -0.3)
         self.assertTrue(style_name.endswith(".costyle"))
         self.assertIn('K="Exposure"', style)
 

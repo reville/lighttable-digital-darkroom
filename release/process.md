@@ -215,3 +215,95 @@ partial release resume, immutable manifests, blocked platform isolation,
 credential-presence policy, independent successful jobs, byte-preserving candidate
 preparation and deterministic archive generation. They do not claim a real public
 promotion or native updater run.
+
+## Agent release operation
+
+Use subagents for bounded independent work: run the full tests, review changed
+code and error handling with the PR review toolkit, and audit website/package
+metadata or release receipts. Give each agent an exact source revision, narrow
+scope, output limit and stopping condition. Return counts, evidence paths and
+first relevant failures instead of full logs. Keep source/version decisions,
+credential handling, external publication and final verification with the main
+agent. Avoid duplicating passing checks for the same revision.
+
+Record selected source, version, tags and workflow run IDs once in the release
+receipt. Reuse successful candidate and preparation artifacts for retries. Bind
+CI to the pull request and consume completion events; do not create polling
+agents or recurring release monitors. Run independent preparation and review
+work in parallel while keeping the existing shared publication lock.
+
+### Resumable operator commands
+
+Use `scripts/release/orchestrate.py` from the tagged source for one stage at a
+time. It records exact run IDs, inputs and source in an atomic state file;
+repeating an identical command reports the recorded run instead of dispatching
+again. It validates the tag, workflow, source and preparation input identity.
+It never searches for a recent preparation or polls GitHub.
+
+```sh
+python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
+  --state .build/release-state.json --stage build --macos-channel beta --apply
+# After the original build finishes, download and hash its exact Windows installer.
+python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
+  --state .build/release-state.json --stage vm --installer-sha256 SHA256 --apply
+python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
+  --state .build/release-state.json --stage prepare --platform windows-x64 --apply
+python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
+  --state .build/release-state.json --stage verify --platform windows-x64 --apply
+python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
+  --state .build/release-state.json --stage promote --platform windows-x64 \
+  --make-public --advance-feed --apply
+```
+
+Run the prepare/verify/promote stages separately for each selected platform.
+For macOS use `--platform macos-arm64 --macos-channel beta` and, if necessary,
+`--macos-version VERSION-beta.N`; manual beta promotion has no `--advance-feed`.
+Without `--apply`, dispatch stages only print their validated plan. `--stage
+status` reads recorded IDs once. A missing run URL leaves a pending intent:
+inspect the workflow on GitHub, then repeat the exact command with
+`--record-run-id ID --apply`. Recovery verifies the source, workflow and input
+summary before saving. Never guess an ID or remove a lock while another operator
+is using it. Failed recorded stages need explicit investigation and a deliberate
+new state file for a retry; no automatic failure loop is provided.
+
+After promotion, retain each workflow's `result.json`. The distribution helper
+requires those completed public proofs and defaults to local staging:
+
+```sh
+python3 scripts/release/publish-distribution.py --version VERSION \
+  --macos-version VERSION-beta.1 --all \
+  --promotion-result windows-result.json --promotion-result macos-result.json \
+  --output .build/distribution/result.json
+# Add --apply --push --dispatch-npm to publish the cask, upload npm assets,
+# and dispatch npm/Scoop. These outcomes remain dispatched until verified.
+python3 scripts/release/generate-receipt.py --version VERSION \
+  --manifest verified-release-manifest.json \
+  --promotion-result linux-result.json --promotion-result windows-result.json \
+  --promotion-result macos-result.json \
+  --distribution-result .build/distribution/result.json \
+  --output release-receipt.md
+```
+
+The publisher checks public artifact sizes and hashes against promotion results,
+reuses matching npm uploads, refuses differing immutable bytes, and stages the
+npm package in a temporary repository layout with its own license. Homebrew uses
+an isolated clone and verifies the remote cask after push. Preserve the output
+file when resuming: dispatched/published channels are skipped. An uncertain
+dispatch requires reconciling the recorded intent with GitHub before retrying.
+Use one operator per distribution output directory.
+
+The receipt generator is offline. Missing or partial proofs remain unverified
+or blocked; dispatch alone never means a package channel is published. Record
+independent npm registry, Scoop bucket and live website evidence after checking
+them. Website deployment and the canonical manifest commit remain explicit steps.
+
+### Reuse expensive build inputs
+
+The unit workflow caches the two exact reference-runtime commits, rejects dirty
+or wrong-origin cache entries, and verifies detached source identities before
+use. macOS release builds cache the converted model by conversion scripts,
+weights, licenses, Python version and runner image. A cache hit still verifies
+model metadata, package bytes and licenses; no broad fallback key is used. A
+corrupt cache fails closed: remove that cache entry before retrying. Release
+translation and preparation environments reuse pip download caches keyed by
+their dependency inputs. Native acceptance and signing checks still run.

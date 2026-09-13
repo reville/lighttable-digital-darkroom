@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -111,7 +112,7 @@
           "title": "Xem lại các chỉnh sửa đã dịch",
           "paragraphs": [
             "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
-            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng thiết lập phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
+            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này chỉ áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Chuyển từ Lightroom",
+      "category": "Getting started",
+      "summary": "Danh mục Lightroom Classic và sidecar XMP mang sang được gì, thứ gì không có đường nhập, và thuật ngữ khác nhau ra sao.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "di chuyển",
+        "di chuyển dữ liệu",
+        "XMP",
+        "sidecar",
+        "thiết lập sẵn",
+        "mẫu LR",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Những gì được mang sang",
+          "paragraphs": [
+            "Từ danh mục Lightroom Classic: ảnh vẫn ở thư mục hiện tại và được tham chiếu, không sao chép. Trình nhập đọc xếp hạng, cờ, nhãn và trường IPTC; từ khóa; bộ sưu tập và bộ sưu tập thông minh được hỗ trợ; ngăn xếp; bản sao ảo; cắt xén và làm thẳng; thiết lập phát triển gần đúng; và lịch sử chỉnh sửa nếu chọn. Tệp .lrcat của bạn không bao giờ bị thay đổi.",
+            "Từ sidecar XMP cạnh ảnh của bạn: xếp hạng sao, cờ chọn và từ chối, nhãn màu chuẩn, từ khóa và các trường IPTC mô tả. Thư mục ••• → Nhập sidecar… cũng có thể áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó.",
+            "Cả hai đường đều dùng cùng một bộ chuyển đổi, nên một cài đặt được ánh xạ giống nhau dù đến theo đường nào: tông, độ lệch cân bằng trắng, kết cấu, độ rõ, khử mờ sương, bộ trộn màu, chuyển đổi đen trắng cùng bộ trộn của nó, đường cong điểm, lượng vignette, làm nét và giảm nhiễu. Giá trị nằm ngoài phạm vi của LightTable, chẳng hạn phơi sáng vượt ±5 EV, sẽ bị giới hạn và được nêu tên trong báo cáo."
+          ]
+        },
+        {
+          "title": "Những gì không có đường nhập",
+          "paragraphs": [
+            "Không thể đọc album đám mây và thiết lập sẵn chỉ lưu trong ứng dụng đám mây. Hãy đồng bộ chúng vào Lightroom Classic hoặc lưu thiết lập sẵn thành tệp trước.",
+            "Mặt nạ AI và chỉnh sửa tạo sinh, Lens Blur và các cài đặt Denoise là những bước kết xuất độc quyền. Chúng được báo là đã bỏ qua thay vì ước lượng, cũng như hồ sơ máy ảnh, look LUT, mặt nạ cục bộ, sửa lỗi và định danh hồ sơ ống kính. Các chỉnh sửa đã nhập bắt đầu với Phim tắt để các cài đặt phát triển đã chuyển đổi hiển thị riêng."
+          ]
+        },
+        {
+          "title": "Thuật ngữ",
+          "paragraphs": [
+            "Bộ sưu tập ở đây cũng là bộ sưu tập; album của ứng dụng đám mây chỉ vào được qua danh mục Lightroom Classic.",
+            "Cờ Chọn và Từ chối hoạt động giống nhau, và thanh dưới cùng hiển thị chúng cho các ảnh đã chọn.",
+            "Phát triển ở đây gọi là Chỉnh sửa. Phim mặc định tắt với ảnh mới và ảnh đã nhập; bật lên khi bạn muốn phủ hiệu ứng phim lên trên chỉnh sửa.",
+            "Hồ sơ máy ảnh trong Chỉnh sửa liệt kê các hồ sơ Adobe DCP mà Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc thư mục hồ sơ máy ảnh đã chọn trong Cài đặt. Hồ sơ được áp dụng gần đúng và chỉ cho phát triển khi Phim tắt."
+          ]
+        },
+        {
+          "title": "Nhập thiết lập sẵn của bạn",
+          "paragraphs": [
+            "Thiết lập sẵn → Quản lý… → Nhập… chấp nhận thiết lập sẵn .xmp của Lightroom và Camera Raw, thiết lập sẵn .lrtemplate cũ và style .costyle của Capture One. Sau khi nhập danh mục hoặc thư mục, phần thiết lập cũng đưa ra Nhập thiết lập sẵn…. Mỗi thiết lập sẵn đã nhập cho biết bao nhiêu cài đặt được ánh xạ và cài đặt nào bị bỏ qua trước khi bạn áp dụng."
+          ],
+          "steps": [
+            "Mở Thiết lập sẵn, bấm Quản lý…, rồi bấm Nhập… và chọn các tệp thiết lập sẵn hoặc, trong ứng dụng Mac, cả một thư mục thiết lập sẵn.",
+            "Xem lại báo cáo chuyển đổi, rồi áp dụng thiết lập sẵn từ Của bạn."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Hãy yêu cầu trình chỉnh sửa khác lưu siêu dữ liệu của nó vào các tệp XMP liền kề, rồi chọn Thư mục ••• → Nhập sidecar…. Thao tác này đọc các bản gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100,000 ảnh cho mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
             "Siêu dữ liệu được hỗ trợ gồm xếp hạng sao, cờ chọn/từ chối, nhãn màu chuẩn, từ khóa phẳng và phân cấp, cùng các trường IPTC mô tả. Một giá trị rỗng rõ ràng sẽ xóa trường đó; một giá trị không có sẽ giữ nguyên không đổi. Các nhãn màu tùy chỉnh không khớp với màu của LightTable sẽ được báo là bị bỏ qua.",
-            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Cài đặt phát triển và cắt xén không được áp dụng bởi thao tác menu này."
+            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Thiết lập phát triển và cắt xén chỉ được áp dụng khi bạn bật các tùy chọn đó trong hộp thoại Nhập sidecar."
           ]
         },
         {
@@ -1096,13 +1159,19 @@
         "tự động",
         "biểu đồ histogram",
         "cắt xén",
-        "trước khi"
+        "trước khi",
+        "bộ lấy mẫu màu",
+        "bộ lấy mẫu màu",
+        "bộ lấy mẫu",
+        "giá trị RGB",
+        "số đo",
+        "đo lường"
       ],
       "sections": [
         {
           "title": "Bắt đầu với Sáng",
           "paragraphs": [
-            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông. Contrast thay đổi độ tách biệt của chúng."
+            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông: tăng Whites để làm sáng các tông sáng nhất, tăng Blacks để nâng các tông tối nhất, và giảm một trong hai để kéo đầu đó trở lại. Contrast thay đổi độ tách biệt của chúng."
           ],
           "steps": [
             "Đặt Phơi sáng cho đối tượng chính.",
@@ -1127,6 +1196,21 @@
             "Nếu Tự động báo đang chờ bản xem trước hình ảnh, hãy để bản xem trước tải xong rồi thử lại.",
             "Menu scope cũng cung cấp Waveform, RGB Parade và Vectorscope để kiểm tra tông và màu."
           ]
+        },
+        {
+          "title": "Đo màu bằng bộ lấy mẫu",
+          "paragraphs": [
+            "Bộ lấy mẫu màu hiển thị giá trị đỏ, xanh lá và xanh dương (0–255) cùng độ sáng L* của tối đa bốn vị trí trong ảnh. Các số đo cập nhật khi bạn chỉnh sửa, nên bạn có thể kiểm tra thẻ xám, nền phim hoặc tông da trong lúc điều chỉnh."
+          ],
+          "steps": [
+            "Nhấp nút bộ lấy mẫu bên cạnh biểu đồ histogram.",
+            "Nhấp vào ảnh để đặt một bộ lấy mẫu. Đặt tối đa bốn bộ.",
+            "Đọc các giá trị bên dưới biểu đồ histogram. Dùng × để xóa một bộ lấy mẫu."
+          ],
+          "tips": [
+            "Bộ lấy mẫu đọc bản chỉnh sửa đang hiển thị. Chúng thuộc về phiên cửa sổ hiện tại và không được lưu cùng ảnh.",
+            "Nhấn Escape để dừng đặt bộ lấy mẫu."
+          ]
         }
       ],
       "related": [
@@ -1140,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Áp dụng các hiệu chỉnh ống kính và quang sai màu",
       "category": "Editing",
-      "summary": "Dùng hồ sơ ống kính đã khớp hoặc chọn thủ công, hoặc thực hiện hiệu chỉnh thủ công khi không có hồ sơ chính xác.",
+      "summary": "Dùng hồ sơ ống kính đã khớp hoặc chọn thủ công, hiệu chỉnh quang sai màu, loại bỏ viền màu tím và xanh lá, hoặc thực hiện hiệu chỉnh thủ công khi không có hồ sơ chính xác.",
       "keywords": [
         "ống kính",
         "hồ sơ",
@@ -1149,6 +1233,9 @@
         "đổ bóng",
         "quang sai màu",
         "viền màu",
+        "khử viền màu",
+        "viền màu tím",
+        "viền màu xanh lá",
         "đỏ lục lam",
         "xanh dương vàng",
         "quang học"
@@ -1157,18 +1244,21 @@
         {
           "title": "Chọn và xác minh một hiệu chỉnh",
           "paragraphs": [
-            "Mở rộng Lens corrections trong Chỉnh sửa. Thẻ hồ sơ giải thích sự khớp tự động giữa máy ảnh/ống kính và việc có sẵn một hồ sơ dùng được hay không."
+            "Mở rộng Hiệu chỉnh ống kính trong Chỉnh sửa. Thẻ hồ sơ giải thích sự khớp tự động giữa máy ảnh/ống kính và việc có sẵn một hồ sơ dùng được hay không. Bảng này cũng nêu phiên bản cơ sở dữ liệu ống kính đang dùng và số máy ảnh, ống kính được liệt kê; cơ sở dữ liệu đi kèm thư viện ống kính chứ không phải LightTable.",
+            "Khi máy ảnh và ống kính trong siêu dữ liệu ảnh khớp chính xác với một hồ sơ, Dùng hồ sơ ống kính đã khớp được bật ngay khi mở ảnh và cũng áp dụng cho hình thu nhỏ và xuất. Khớp suy luận hoặc không rõ ràng vẫn tắt. Cài đặt → Mặc định phát triển → Tự động áp dụng hồ sơ ống kính đã khớp sẽ tắt hành vi này; ảnh có cài đặt ống kính đã lưu vẫn giữ nguyên trong mọi trường hợp."
           ],
           "steps": [
             "Đọc tên hồ sơ và phần giải thích khớp.",
-            "Bật Use matched lens profile khi có hồ sơ, rồi chọn Correct distortion và Correct lens shading khi cần.",
+            "Bật Dùng hồ sơ ống kính đã khớp khi có hồ sơ, rồi chọn Hiệu chỉnh biến dạng, Chỉnh sửa đổ bóng ống kính và Hiệu chỉnh quang sai màu khi cần. Mỗi công tắc độc lập, nên có thể hiệu chỉnh quang sai màu mà không thay đổi hình học.",
             "Nếu cần, chọn một mục khác trong Lens profile và so sánh chỉnh sửa với bản gốc.",
-            "Tinh chỉnh các điều khiển thủ công Distortion và Vignette. Với viền màu, điều chỉnh Red / Cyan và Blue / Yellow trong Chromatic aberration."
+            "Tinh chỉnh các điều khiển thủ công Distortion và Vignette. Với viền màu, điều chỉnh Red / Cyan và Blue / Yellow trong Chromatic aberration.",
+            "Trong Khử viền màu, tăng Tím hoặc Xanh lá để rút màu đó khỏi các điểm ảnh bão hòa mạnh cạnh các cạnh sắc nét. Thanh trượt bắt đầu và kết thúc sắc độ đặt khoảng sắc độ mà mỗi điều khiển xử lý; điểm bắt đầu lớn hơn điểm kết thúc sẽ vòng qua màu đỏ."
           ],
           "tips": [
             "Không tìm thấy hồ sơ ống kính khớp chính xác thì các điều khiển méo hình và phối cảnh thủ công vẫn khả dụng.",
-            "Các ô chọn profile distortion và shading chỉ được bật khi hồ sơ đã chọn cung cấp hiệu chỉnh đó và hồ sơ đang được bật.",
+            "Các ô chọn biến dạng, đổ bóng và quang sai màu của hồ sơ chỉ được bật khi hồ sơ đã chọn cung cấp hiệu chỉnh đó và hồ sơ đang được bật.",
             "Một hồ sơ được chọn thủ công cần được kiểm tra bằng mắt; việc chọn không xác lập rằng nó là khớp chính xác.",
+            "Khử viền màu coi đường viền của một chủ thể lớn màu tím hoặc xanh lá như một viền màu. Giảm mức hoặc thu hẹp khoảng sắc độ nếu chủ thể mất màu dọc theo cạnh.",
             "Hiệu chỉnh ống kính và quang sai viền vẫn không phá hủy qua quá trình xuất."
           ]
         }
@@ -1314,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -1604,7 +1695,15 @@
         "đen",
         "lớp phủ",
         "né sáng",
-        "đốt cháy"
+        "đốt cháy",
+        "làm mờ ống kính",
+        "làm mờ hậu cảnh",
+        "làm mờ",
+        "bokeh",
+        "độ sâu trường ảnh",
+        "độ sáng",
+        "hòa trộn độ sáng",
+        "giữ nguyên màu"
       ],
       "sections": [
         {
@@ -1661,10 +1760,26 @@
           ]
         },
         {
+          "title": "Làm mờ một phần ảnh",
+          "paragraphs": [
+            "Làm mờ ống kính trong mục Hiệu ứng của mặt nạ làm mềm vùng đã chọn giống như một ống kính bị lệch nét. Bán kính làm mờ tăng theo cường độ của mặt nạ, nên mép đã làm mềm hoặc dải độ sâu sẽ nhạt dần thay vì dừng lại ở một đường cứng.",
+            "Hiệu ứng làm mờ được áp dụng cho ảnh hoàn chỉnh, sau khi kết xuất phim và các điều chỉnh khác của mặt nạ. Nó cũng làm mịn hạt phim bên trong vùng bị làm mờ."
+          ],
+          "steps": [
+            "Tạo mặt nạ Đối tượng rồi chọn Đảo ngược, hoặc dùng mặt nạ Độ sâu cho một dải khoảng cách, hoặc vẽ mặt nạ Hình tròn rồi đảo ngược nó.",
+            "Mở rộng Hiệu ứng và tăng Làm mờ ống kính. Đợi bản xem trước cập nhật rồi mới đánh giá.",
+            "Tinh chỉnh vùng chọn bằng Thêm, Trừ hoặc Làm mềm mép ở những nơi hiệu ứng làm mờ tràn lên các mép sắc nét."
+          ],
+          "tips": [
+            "Chỉ các điểm ảnh được chọn mới góp vào hiệu ứng làm mờ, nên đối tượng sắc nét không bị lem vào hậu cảnh mờ. Hãy kiểm tra các mép mảnh như tóc ở tỷ lệ 1:1."
+          ]
+        },
+        {
           "title": "Điều chỉnh đường cong tông cục bộ",
           "steps": [
             "Mở rộng Đường cong tông cho mặt nạ đã chọn và chọn RGB, Đỏ, Xanh lá hoặc Xanh dương.",
             "Bấm vào đồ thị để thêm một điểm, rồi kéo nó. Di chuyển điểm lên sẽ làm sáng đầu ra của nó; di chuyển xuống sẽ làm tối nó. Bấm đúp vào một điểm bên trong để xóa nó.",
+            "Bật Chỉ độ sáng để thay đổi độ sáng mà không làm lệch màu hoặc độ bão hòa.",
             "Dùng Đặt lại đường cong để chỉ đặt lại kênh đã chọn của mặt nạ này, hoặc Hoàn tác để đảo ngược một chỉnh sửa."
           ],
           "tips": [
@@ -1819,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Xóa các vết bẩn và tinh chỉnh các chỉnh sửa bằng Heal hoặc Clone",
       "category": "Editing",
-      "summary": "Sơn lên các chi tiết gây xao lãng, kiểm tra độ hiện rõ của vết sửa, và di chuyển nguồn hoặc mục tiêu của một chỉnh sửa.",
+      "summary": "Xóa các chấm và nét đã tô, làm sạch bụi và vết xước trên toàn bộ ảnh, và tinh chỉnh các hiệu chỉnh Chữa hoặc Nhân bản.",
       "keywords": [
         "xóa bỏ",
         "chữa",
@@ -1831,7 +1946,18 @@
         "hiển thị điểm bụi",
         "nguồn",
         "mục tiêu",
-        "làm xao nhãng"
+        "làm xao nhãng",
+        "bụi và vết xước",
+        "vết xước",
+        "tóc",
+        "dây điện",
+        "cọ",
+        "nét vẽ",
+        "lấp đầy",
+        "lấp đầy kết cấu",
+        "tô lấp theo nội dung",
+        "bản quét phim",
+        "vết"
       ],
       "sections": [
         {
@@ -1842,22 +1968,44 @@
           ],
           "steps": [
             "Chọn Remove, Heal, hoặc Clone, rồi đặt Kích thước, Làm mềm mép, và Độ mờ.",
-            "Nhấp vào một vết hoặc kéo qua một chi tiết gây phân tâm trong ảnh.",
+            "Với Xóa bỏ, chọn Chấm để nhấp hoặc kéo tạo một hiệu chỉnh hình tròn, hoặc Cọ để tô dọc theo vết xước, sợi tóc hoặc dây điện.",
+            "Với Xóa bỏ, hãy chọn Lấp đầy. Khớp kết cấu xung quanh sao chép chi tiết lân cận từ ảnh; Hòa trộn mượt hòa các mép vào trong và phù hợp với vùng đồng đều như bầu trời.",
+            "Nhấp vào một chấm, kéo qua một chi tiết gây phân tâm hoặc tô một nét trong ảnh.",
             "Với các đốm bụi nhỏ, bật Visualize Spots và chỉnh Threshold để làm cho biên dễ kiểm tra hơn.",
             "Tắt Visualize Spots và kiểm tra bức ảnh đã được sửa."
           ],
           "tips": [
-            "Chọn một hiệu chỉnh và chọn một chế độ khác sẽ thay đổi chế độ của hiệu chỉnh đó."
+            "Chọn một hiệu chỉnh và chọn một chế độ khác sẽ thay đổi chế độ của hiệu chỉnh đó.",
+            "Khớp kết cấu xung quanh chỉ sao chép điểm ảnh từ ảnh này; tính năng này không bao giờ tạo ra chi tiết mới. Thay đổi Lấp đầy áp dụng cho hiệu chỉnh Xóa bỏ đang chọn. Các hiệu chỉnh được tạo trước khi có lựa chọn này vẫn giữ Hòa trộn mượt.",
+            "Một nét cọ chứa tối đa 256 điểm. Hãy nhả ra và tô một nét khác để tiếp tục."
+          ]
+        },
+        {
+          "title": "Xóa bụi và vết xước trên toàn bộ ảnh",
+          "paragraphs": [
+            "Bụi và vết xước tìm các vết nhỏ nổi bật rõ so với xung quanh, chẳng hạn bụi trên bản quét phim, rồi lấp chúng bằng các điểm ảnh lân cận. Tính năng này chạy trên toàn bộ ảnh như một hiệu chỉnh ở đầu danh sách, nên các hiệu chỉnh sau lấy mẫu từ ảnh đã được làm sạch.",
+            "Vết lớn nhất đặt độ rộng tối đa của một vết được tính, theo tỷ lệ cạnh ngắn của ảnh. Độ nhạy đặt mức khác biệt mà một vết phải có so với xung quanh. Giá trị cao hơn tìm được các vết mờ nhạt hơn nhưng cũng dễ bắt nhầm chi tiết nhỏ hơn."
+          ],
+          "steps": [
+            "Mở Xóa bỏ và mở rộng Bụi và vết xước.",
+            "Để bắt đầu, đặt Vết lớn nhất rộng hơn một chút so với bụi bạn thấy, và giữ Độ nhạy ở 50%.",
+            "Nhấp Xóa bụi. Hiện các vết phát hiện được sẽ viền đỏ những gì đã tìm thấy và cho biết số vết tìm được.",
+            "Phóng to vào tóc, sao, điểm sáng trong mắt và chữ. Nếu chúng bị bắt nhầm, hãy giảm Độ nhạy hoặc Vết lớn nhất, hoặc giảm Độ mờ.",
+            "Tắt Hiện các vết phát hiện được để đánh giá kết quả."
+          ],
+          "tips": [
+            "Chọn hiệu chỉnh Bụi trong danh sách để thay đổi sau này. Dùng Bật chỉnh sửa này để so sánh kết quả và Xóa hiệu chỉnh để xóa nó.",
+            "Các vết xước dài và mảnh được tìm thấy khi độ rộng của chúng nhỏ hơn Vết lớn nhất. Hãy tô các vết xước rộng hơn bằng cọ Xóa bỏ."
           ]
         },
         {
           "title": "Tinh chỉnh một hiệu chỉnh hiện có",
           "paragraphs": [
-            "Chọn một hiệu chỉnh trong danh sách để hiện các điều khiển của nó. Các vòng tròn trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Heal và Clone, nguồn.",
+            "Chọn một hiệu chỉnh trong danh sách để hiển thị các điều khiển của nó. Các vòng tròn hoặc nét trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Chữa và Nhân bản, cả vùng nguồn.",
             "Phóng to để đặt chính xác. Các đường viền hình tròn và các ghim vẫn sắc nét ở mọi mức thu phóng; các hình tròn tiếp tục hiển thị cùng một vùng của ảnh."
           ],
           "steps": [
-            "Kéo vòng tròn mục tiêu để đổi vị trí chỉnh sửa, hoặc chọn Move Target và nhấp vào vị trí mới của nó.",
+            "Kéo vòng tròn mục tiêu hoặc nét đã tô để đổi vị trí hiệu chỉnh, hoặc chọn Di chuyển mục tiêu và nhấp vào vị trí mới của nó.",
             "Với Heal hoặc Clone, kéo vòng tròn nguồn đến một vùng tốt hơn. Refresh Source thử một vị trí nguồn khác.",
             "Điều chỉnh Làm mềm mép hoặc Độ mờ nếu mép hoặc cường độ của hiệu chỉnh cần tinh chỉnh.",
             "Chuyển Bật hiệu chỉnh này để so sánh, hoặc dùng Xóa hiệu chỉnh để loại bỏ nó."
@@ -2012,7 +2160,8 @@
         {
           "title": "Trung hòa ám màu",
           "paragraphs": [
-            "Mục Color trong Chỉnh sửa chứa Temp và Tint, cùng một ống nhỏ giọt cân bằng trắng bên cạnh Temp. Đây là các điều khiển hoàn thiện của bảng Chỉnh sửa."
+            "Mục Color trong Chỉnh sửa chứa Temp và Tint, cùng một ống nhỏ giọt cân bằng trắng bên cạnh Temp. Đây là các điều khiển hoàn thiện của bảng Chỉnh sửa.",
+            "Với bản gốc RAW, khối Cân bằng trắng khi chụp nằm phía trên với Như khi chụp, Tự động, các thiết lập sẵn và Tùy chỉnh cho nhiệt độ theo kelvin và sắc thái máy ảnh. Khối này phát triển lại dữ liệu RAW và hoạt động khi Film bật hoặc tắt; bị ẩn với tệp đã xử lý."
           ],
           "steps": [
             "Mở Chỉnh sửa và mở rộng Màu sắc.",
@@ -2030,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -2049,7 +2199,15 @@
         "xanh dương",
         "tương phản",
         "điểm điều khiển",
-        "đường cong s"
+        "đường cong s",
+        "ống nhỏ giọt",
+        "điểm đen",
+        "điểm trắng",
+        "điểm xám",
+        "điểm xám",
+        "trung tính",
+        "ám màu",
+        "levels"
       ],
       "sections": [
         {
@@ -2067,6 +2225,21 @@
           "tips": [
             "Dùng vài điểm và so sánh ảnh trong khi làm; các đường cong kênh có thể tạo ra ám màu mạnh.",
             "Đường cong đã lưu hoặc đã nhập sẽ giữ nguyên bảng đã lưu chính xác cho đến khi bạn chỉnh sửa nó. Ứng dụng dựng lại các tay nắm đại diện để chỉnh sửa, vì vậy điều chỉnh đầu tiên có thể làm thay đổi một đường cong đã nhập vượt quá điểm bạn kéo."
+          ]
+        },
+        {
+          "title": "Đặt điểm đen, xám và trắng",
+          "paragraphs": [
+            "Các ống nhỏ giọt bên dưới đường cong điểm đặt các đường cong đỏ, xanh lá và xanh dương từ một vị trí trong ảnh. Điểm đen làm vùng lấy mẫu thành đen, Điểm trắng làm nó thành trắng, và Điểm xám làm nó trung tính mà vẫn giữ độ sáng. Điều này hữu ích để loại bỏ ám màu khỏi bản quét."
+          ],
+          "steps": [
+            "Mở Chỉnh sửa, mở rộng Đường cong và chọn Điểm đen, Điểm xám hoặc Điểm trắng.",
+            "Nhấp vào vùng trong ảnh cần thành màu đen, xám trung tính hoặc trắng.",
+            "Kiểm tra các đường cong R, G và B, rồi tinh chỉnh hoặc đặt lại nếu kết quả quá mạnh."
+          ],
+          "tips": [
+            "Điểm đen cần một vùng tối hơn xám trung bình, còn Điểm trắng cần một vùng sáng hơn xám trung bình. Nhấn Escape để hủy ống nhỏ giọt.",
+            "Các ống nhỏ giọt chuyển Đường cong sang chế độ Điểm vì chúng chỉnh sửa các đường cong kênh."
           ]
         },
         {
@@ -2436,7 +2609,7 @@
           "title": "Các điều khiển chụp và điều khiển hoàn thiện",
           "paragraphs": [
             "EV của Máy ảnh và cân bằng trắng Chụp tác động trước phơi sáng phim. Phơi sáng và Temp/Tint trong bảng Chỉnh sửa là các điều chỉnh hoàn thiện ở giai đoạn sau của quy trình.",
-            "Cân bằng trắng chụp yêu cầu một bản gốc RAW. Với JPEG, HEIF, TIFF hoặc tệp đã xử lý khác, dùng Chỉnh sửa Temp/Tint."
+            "Cân bằng trắng khi chụp nằm ở đầu phần Màu cho bản gốc RAW và hoạt động khi Film bật hoặc tắt: chọn Như khi chụp, Tự động, một thiết lập sẵn hoặc Tùy chỉnh để đặt nhiệt độ theo kelvin và sắc thái máy ảnh. Với JPEG, HEIF, TIFF hoặc tệp đã xử lý khác, khối này bị ẩn; dùng Edit Temp/Tint."
           ],
           "steps": [
             "Bật Phim, chọn một phim, và điều chỉnh EV Máy ảnh.",
@@ -2529,7 +2702,11 @@
         "chất lượng",
         "kích thước đầy đủ",
         "độ phân giải",
-        "thiết lập sẵn"
+        "thiết lập sẵn",
+        "viền",
+        "khung",
+        "mờ",
+        "lề"
       ],
       "sections": [
         {
@@ -2542,6 +2719,17 @@
             "Mở Xuất và chọn một thiết lập sẵn ở phía trên.",
             "Đặt Kích thước thành cỡ Đầy đủ hoặc giới hạn cạnh dài.",
             "Kiểm tra Output preview: kích thước xuất phản ánh xoay và cắt xén, và giới hạn cạnh dài sẽ giảm kích thước ảnh lớn hơn mà không phóng to ảnh nhỏ hơn."
+          ]
+        },
+        {
+          "title": "Thêm viền",
+          "paragraphs": [
+            "Viền trong Nâng cao thêm một lề trơn màu trắng, xám hoặc đen quanh mỗi ảnh được xuất. Lề được thêm sau khi đổi kích thước, nên độ rộng của nó là một tỷ lệ của cạnh dài khi xuất, và ảnh đầu ra lớn hơn ảnh đúng bằng lề đó ở mỗi cạnh."
+          ],
+          "steps": [
+            "Mở Xuất và mở rộng Nâng cao.",
+            "Chọn Mỏng, Vừa hoặc Rộng trong Viền, rồi chọn Màu viền.",
+            "Kiểm tra Bản xem trước đầu ra để biết kích thước cuối cùng."
           ]
         },
         {
@@ -2665,7 +2853,10 @@
         "đã gắn sao",
         "lô",
         "hủy",
-        "tiến trình"
+        "tiến trình",
+        "bảng ảnh thu nhỏ",
+        "bản in thử",
+        "bản in chỉ mục"
       ],
       "sections": [
         {
@@ -2688,6 +2879,22 @@
             "Ảnh đã chọn sử dụng các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ sử dụng ảnh đang hoạt động. Kiểm tra số lượng ảnh và tên trong Xuất trước khi bắt đầu.",
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
             "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
+          ]
+        },
+        {
+          "title": "Tạo bảng ảnh thu nhỏ",
+          "paragraphs": [
+            "Bảng ảnh thu nhỏ… trong Xuất sắp xếp các ảnh đã chọn trong trường Ảnh lên một tệp JPEG có chú thích, với các chỉnh sửa của bạn được áp dụng. Bảng có thể chứa tối đa 200 ảnh."
+          ],
+          "steps": [
+            "Mở Xuất và đặt Ảnh cùng thư mục đích đến.",
+            "Nhấp Bảng ảnh thu nhỏ… và chọn Số cột, Chiều rộng bảng, Nền và Tiêu đề.",
+            "Chọn chú thích: Tên tệp, Loại phim và Xếp hạng.",
+            "Nhấp Tạo bảng. Hộp thoại sẽ báo tiến độ và một thông báo sẽ cho biết đường dẫn của tệp đã lưu."
+          ],
+          "tips": [
+            "Bảng được lưu với tên contact-sheet kèm theo ngày và giờ. Ảnh không thể kết xuất sẽ bị bỏ qua và được đếm trong thông báo.",
+            "Chọn nhiều cột hơn nếu lựa chọn lớn khiến bảng quá cao để tạo."
           ]
         }
       ],
@@ -2854,7 +3061,8 @@
         {
           "title": "Mặc định cho ảnh chưa chỉnh sửa",
           "paragraphs": [
-            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định."
+            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định.",
+            "Tự động áp dụng hồ sơ ống kính đã khớp, bật theo mặc định, sẽ bật hồ sơ ống kính cho các ảnh có máy ảnh và ống kính khớp chính xác với một hồ sơ và chưa từng lưu cài đặt ống kính. Tắt để mở mọi ảnh với hồ sơ đã tắt."
           ],
           "steps": [
             "Mở Cài đặt → Mặc định chỉnh sửa.",
@@ -3287,5 +3495,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }
