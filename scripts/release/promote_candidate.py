@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
 import zipfile
@@ -306,6 +307,22 @@ def release_state(tag):
             'publishedAt': value.get('published_at'), 'url': value.get('html_url'), 'tagName': tag}
 
 
+# The releases listing can briefly omit a just-created draft (release-promote run
+# 34730115761). Only absence is retried; listing errors and metadata mismatches
+# still fail immediately. Five reads over at most 15 seconds of waiting.
+DRAFT_READ_DELAYS = (1, 2, 4, 8)
+
+
+def created_draft_state(tag):
+    state = release_state(tag)
+    for delay in DRAFT_READ_DELAYS:
+        if state is not None:
+            break
+        time.sleep(delay)
+        state = release_state(tag)
+    return state
+
+
 def plan_or_publish(manifest_path, candidate, platform, apply):
     """Called only after artifact and external-proof verification succeeds."""
     manifest = release.read_json(manifest_path)
@@ -330,7 +347,7 @@ def plan_or_publish(manifest_path, candidate, platform, apply):
             release.gh('release', 'create', tag, '--repo', release.REPOSITORY,
                        '--verify-tag', '--draft', '--latest=false', '--generate-notes',
                        '--title', 'LightTable ' + manifest['version'], *options)
-            state = release_state(tag)
+            state = created_draft_state(tag)
             require(state is not None and state['isDraft']
                     and state['isPrerelease'] is ('-beta.' in manifest['version']),
                     'New draft metadata did not match the verified candidate')
