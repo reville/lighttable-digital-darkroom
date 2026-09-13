@@ -3,3 +3,6 @@
 cryptography==50.0.1
 cffi==2.1.1
 pycparser==3.0
+# CPU-only onnxruntime for the Enhance denoise model (scripts/convert-models.py
+# --format onnx); macOS uses Core ML instead and does not need this.
+onnxruntime==1.30.0

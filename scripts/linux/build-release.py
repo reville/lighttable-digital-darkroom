@@ -147,6 +147,21 @@ def main() -> None:
             bundle / "Resources/models", env=environment)
         run(python, ROOT / "scripts/fetch-color-profiles.py",
             bundle / "Resources/LightTable/color-profiles", env=environment)
+        # The denoise model is converted locally (scripts/convert-models.py
+        # --format onnx), never fetched at build time; a missing artefact is
+        # a hard failure rather than a silently denoise-less Linux release.
+        onnx_root = ROOT / "scripts/models/onnx"
+        if not (onnx_root / "denoise.onnx").is_file() or not (onnx_root / "models.json").is_file():
+            raise SystemExit(
+                "Missing converted denoise model; run scripts/fetch-models.py and "
+                "scripts/convert-models.py --format onnx")
+        (bundle / "Resources/models").mkdir(parents=True, exist_ok=True)
+        for asset in ("denoise.onnx", "models.json",
+                     "SCUNet-CODE-LICENSE.txt", "SCUNet-WEIGHTS-LICENSE.txt"):
+            source_asset = onnx_root / asset
+            if not source_asset.is_file():
+                raise SystemExit(f"Missing model asset: {source_asset}")
+            shutil.copy2(source_asset, bundle / "Resources/models" / asset)
         for manifest, binary, destination in (
             (ROOT / "rust-engine/Cargo.toml", "lighttable-engine", bundle / "Resources/LightTable/engine/lighttable-engine"),
             (ROOT / "windows-shell/Cargo.toml", "lighttable-desktop-shell", bundle / "bin/lighttable-desktop-shell"),
@@ -195,6 +210,9 @@ def main() -> None:
         hair_environment["PYTHONPATH"] = str(relocated / "Resources/LightTable")
         hair_environment["LIGHTTABLE_MODEL_DIR"] = str(relocated / "Resources/models")
         run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-hair-mask.py",
+            "--model-dir", relocated / "Resources/models",
+            "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
+        run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-denoise.py",
             "--model-dir", relocated / "Resources/models",
             "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
         run(relocated / "Python/bin/python3", "-B", relocated / "runtime-smoke.py", relocated,

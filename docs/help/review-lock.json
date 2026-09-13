@@ -129,10 +129,10 @@
       }
     },
     "editing-detail-effects-enhance": {
-      "content": "49911d9d38fd2ceaf03c72fb033100ed2b6683610df8c2d67b8139dce6bd03e8",
+      "content": "00f0ebcf363b75500cd194b3ff37b340c175369fb2d49d3b56c12c91592ef22e",
       "sources": {
         "app/main.swift": "952d0770242c55886923697d44239234733563e083ae4c97e3e94afa0a0a1e52",
-        "enhance_workflow.py": "12299f0db88b931aa70e8535b94e0e9e89da20421ec078519619507becf83ee9",
+        "enhance_workflow.py": "5db2724c0f2aa8aa96d27782045dbd178b7e24d6af6ae486144cdf7a1d92e270",
         "web/app.js": "615682aca72a12648ad7508aacb226c594db5586508141f408b98e405ca2e78a",
         "web/enhance-panel.js": "62928471d5879d995e1a62f854c8be11c75402459c4fe76cc0cca30f39c74a4f",
         "web/index.html": "af1a1b5386bf6fbddb2c629489a793e352cb43360522efec7689702431bc5c6c"

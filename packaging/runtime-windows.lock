@@ -3,6 +3,11 @@ ai-edge-litert==2.2.0
 backports.strenum==1.2.8
 # tqdm requires Colorama on Windows.
 colorama==0.4.6
+# DirectML execution provider for the Enhance denoise model
+# (scripts/convert-models.py --format onnx); falls back to its bundled CPU
+# provider when no compatible GPU/driver is present. macOS uses Core ML
+# instead and does not need this.
+onnxruntime-directml==1.24.4
 colour-science==0.4.7
 contourpy==1.3.3
 cycler==0.12.1

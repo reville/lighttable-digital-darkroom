@@ -25,6 +25,7 @@ scripts/models/*.mlpackage/
 scripts/models/*.mlmodelc/
 scripts/models/models.json
 scripts/models/SCUNet-*-LICENSE.txt
+scripts/models/onnx/
 /bench/results/
 *.xcuserstate
 xcuserdata/
