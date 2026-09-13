@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "সবুজ",
     "Green label": "সবুজ লেবেল",
     "Greens": "সবুজ",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "ফোল্ডার যোগ করলে বা আবার স্ক্যান করলে গ্রিডের প্রিভিউ পটভূমিতে তৈরি হয়। প্রথমে মূল ছবির বড় প্রিভিউ দেখা যায়; আপনার সম্পাদনাসহ প্রিভিউ তৈরি হলে সেগুলোর জায়গায় দেখানো হয়।",
     "Group and find people": "মানুষদের গ্রুপ করুন এবং খুঁজুন",
     "Group photos into collections": "ফটোকে সংগ্রহে গোষ্ঠীবদ্ধ করুন",
     "Group similar faces and search names you add.": "মিল থাকা মুখগুলো গ্রুপ করুন এবং আপনি যে নাম যোগ করেন তা অনুসন্ধান করুন।",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW মূল ফাইলগুলো adjusted TIFF হিসেবে render করতে হবে। নির্বাচনটিতে RAW ফাইল থাকলে Processed original অনুপলব্ধ। প্রসেসড ফটোর জন্য, ওই বিকল্পটি adjusted TIFF প্রস্তুত না করে মূল ফাইলটি খোলে।",
     "RAW originals only.": "শুধু RAW মূলগুলো।",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW photo-তে Sensor noise reduction এবং Learned denoise নিয়ন্ত্রণ দেখা যেতে পারে। Apply denoise চাপলে Learned denoise localভাবে চলে; Strength সরালে এটি সরাসরি চলে না।",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW ছবি শুরু থেকেই LightTable-এর প্রসেসিংসহ খোলে, এমনকি ফিল্ম বন্ধ থাকলেও। ক্যাশে না থাকা প্রথম ছবিটি দেখাতে কিছুক্ষণ লাগতে পারে। অগ্রগতি বার সম্পন্ন হওয়া প্রসেসিং ধাপ দেখায় এবং ছবি দেখা গেলে অদৃশ্য হয়ে যায়।",
     "RAW preview could not finish. Try the photo again.": "RAW পূর্বরূপ সম্পন্ন করা যায়নি। ফটোটি আবার চেষ্টা করুন।",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "ক্যামেরা প্রোফাইল",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (অনুপস্থিত)"
+    "{fileName} (missing)": "{fileName} (অনুপস্থিত)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW ছবি শুরু থেকেই LightTable-এর প্রসেসিংসহ খোলে, এমনকি ফিল্ম বন্ধ থাকলেও। ফিল্ম চালু থাকলে ক্যাশে না থাকা ছবির প্রথম ফ্রেমে ক্যামেরার অন্তর্নির্মিত প্রিভিউ ব্যবহৃত হয়; কিছুক্ষণ পরে সঠিক রূপান্তর সেটি প্রতিস্থাপন করে, আর ততক্ষণ স্ট্যাটাসে “RAW পরিশোধিত করা হচ্ছে…” দেখায়। অগ্রগতি বার সম্পন্ন হওয়া প্রসেসিং ধাপ দেখায় এবং ছবি দেখা গেলে অদৃশ্য হয়ে যায়।",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "ফোল্ডার যোগ করলে বা আবার স্ক্যান করলে গ্রিডের প্রিভিউ পটভূমিতে তৈরি হয়। প্রথমে মূল ছবির বড় প্রিভিউ দেখা যায়; আপনার সম্পাদনাসহ প্রিভিউ তৈরি হলে সেগুলোর জায়গায় দেখানো হয়। প্রতিটি RAW-এর একটি স্ট্যান্ডার্ড প্রিভিউও তৈরি করা হয়, যাতে পুরো ডিকোড শেষ হওয়ার অপেক্ষা ছাড়াই ছবিটি খোলে।"
   },
   "plurals": {
     " · {count} paired file linked": {

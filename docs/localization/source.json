@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "pluralsDigest": "48cbd3ff74f519cc3776cc3d829ff2c99c4f684f8c4a8c0631d2c20d1c50b6b6",
   "pluralPairs": [
     {
@@ -1637,7 +1637,7 @@
     "Green",
     "Green label",
     "Greens",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.",
     "Group and find people",
     "Group photos into collections",
     "Group similar faces and search names you add.",
@@ -2542,7 +2542,7 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.",
     "RAW originals only.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.",
     "RAW preview could not finish. Try the photo again.",
     "RAW → JPEG",
     "RGB",
