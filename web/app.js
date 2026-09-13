@@ -2147,8 +2147,29 @@ function nativeEditsPayload(baked = S.baseEditsBaked) {
   };
 }
 
+// The Metal shader applies this many Heal and Clone spots live. Remove uses
+// CPU biharmonic inpainting, and a spot whose source patch or Heal annulus
+// reads pixels an earlier spot already changed needs the ordered CPU result,
+// so those bake a corrected base on the server. Keep the rule identical to
+// server.py native_base_edits_required.
+const MAX_LIVE_HEALS = 16;
+
+function healReadsEarlierHeal(spot, earlier) {
+  const reach = (spot.radius ?? 0.04) + (earlier.radius ?? 0.04);
+  const near = (point) => Math.hypot(
+    point[0] - earlier.target[0], point[1] - earlier.target[1]) < reach;
+  return near(spot.source) || (spot.mode === 'heal' && near(spot.target));
+}
+
+function healsRequireBake(heals = S.heals) {
+  const enabled = (heals || []).filter((spot) => spot.enabled !== false);
+  if (enabled.length > MAX_LIVE_HEALS) return true;
+  return enabled.some((spot, index) => spot.mode === 'remove'
+    || enabled.slice(0, index).some((earlier) => healReadsEarlierHeal(spot, earlier)));
+}
+
 function nativeBaseRequiresBake() {
-  return !!S.optics.profileEnabled || S.heals.some((spot) => spot.enabled !== false);
+  return !!S.optics.profileEnabled || healsRequireBake();
 }
 
 /* ---------------------------------------------------------- local tools */
@@ -2970,6 +2991,8 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
         spot, start: point, rect };
     }
     syncHealPanel(); drawEditOverlay();
+    // The new spot reaches Metal in the same coalesced frame as the overlay.
+    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3019,6 +3042,8 @@ $('editOverlay').addEventListener('pointermove', (event) => {
       if (radius > 0.008) gesture.spot.radius = clamp(radius, 0.005, 0.25);
     }
     drawEditOverlay();
+    // A moved spot shares the overlay's animation frame; the WebGL fallback
+    // only redraws the overlay until the gesture ends.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });

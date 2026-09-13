@@ -4538,10 +4538,39 @@ def _preview_source_bytes(result: dict, name: str, width: int,
     return orig_jpeg(name, width, rotate)
 
 
+# The Metal preview applies this many Heal and Clone spots live. Keep the rule
+# identical to web/app.js nativeBaseRequiresBake.
+MAX_LIVE_HEALS = 16
+
+
+def _heal_reads_earlier_heal(spot: dict, earlier: dict) -> bool:
+    """Whether a spot samples pixels an earlier spot already changed.
+
+    Normalised distances shrink at most by min(width, height), so comparing
+    against the summed radii is conservative for any aspect ratio.
+    """
+    reach = spot["radius"] + earlier["radius"]
+
+    def near(point):
+        return math.hypot(point[0] - earlier["target"][0],
+                          point[1] - earlier["target"][1]) < reach
+
+    return near(spot["source"]) or (spot["mode"] == "heal" and near(spot["target"]))
+
+
+def heals_require_bake(heals=None) -> bool:
+    """Remove inpaints on the CPU; chained spots need the ordered CPU result."""
+    enabled = [spot for spot in edits.clean_heals(heals) if spot["enabled"]]
+    if len(enabled) > MAX_LIVE_HEALS:
+        return True
+    return any(spot["mode"] == "remove"
+               or any(_heal_reads_earlier_heal(spot, earlier) for earlier in enabled[:index])
+               for index, spot in enumerate(enabled))
+
+
 def native_base_edits_required(optics=None, heals=None) -> bool:
-    """Retouch sources must include earlier corrections, exactly as in export."""
-    return (edits.clean_optics(optics)["profileEnabled"]
-            or any(spot["enabled"] for spot in edits.clean_heals(heals)))
+    """Lens-profile remaps and CPU-only retouches bake the corrected base."""
+    return edits.clean_optics(optics)["profileEnabled"] or heals_require_bake(heals)
 
 
 def preview_grade_requires_bake(masks=None) -> bool:
@@ -4590,8 +4619,8 @@ def _native_corrected_preview(result: dict, name: str, width: int,
             adjusted = edits.apply_masks(grade.apply(adjusted, cleaned_grade), cleaned_masks)
         write_native_surface(surface, adjusted)
         # Publish metadata last, matching the ordinary render bundle contract.
-        durable_io.atomic_write_json(metadata, {"baseEditsBaked": True},
-                                     indent=None, keep_backup=False)
+        # This is disposable, reproducible cache: no fsync on the hot path.
+        durable_io.cache_write_json(metadata, {"baseEditsBaked": True})
         prune_render_cache_throttled(surface.parent, _RENDER_CACHE_MAX_BYTES)
     response = {field: value for field, value in result.items()
                 if field not in {"img", "native", "helper", "key"}}
