@@ -109,8 +109,12 @@ def main():
         out.astype(np.float32), job.get("optics"), job.get("heals"),
         job.get("lensProfile"))
     if not grade_mod.is_identity(g):
-        out = np.clip(grade_mod.apply_accelerated(out.astype(np.float32), g),
-                      0, 1).astype(np.float32)
+        # A wide-gamut source carries a tone-only grade (checked above); the
+        # tone stage decodes the delivered transfer function itself.
+        out = np.clip(grade_mod.apply_accelerated(
+            out.astype(np.float32), g,
+            encoding=color_pipeline.grade_encoding(input_space)),
+            0, 1).astype(np.float32)
     out = edits_mod.apply_masks(out, job.get("masks"), accelerated=True)
 
     if crop:

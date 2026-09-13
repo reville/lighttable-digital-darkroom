@@ -160,6 +160,98 @@ class GradeEffectsTests(unittest.TestCase):
             grade._HAS_NUMBA = original
         np.testing.assert_allclose(actual, expected, rtol=2e-5, atol=2e-5)
 
+    @unittest.skipUnless(grade._HAS_NUMBA, "Numba is not installed")
+    def test_numba_tone_shoulder_matches_numpy_fallback(self):
+        """A recipe with headroom exercises the extended range and shoulder."""
+        settings = {
+            "exposure": 0.7, "highlights": 0.3, "shadows": 0.4,
+            "whites": 0.4, "blacks": -0.2, "contrast": 0.5,
+        }
+        original = grade._HAS_NUMBA
+        try:
+            grade._HAS_NUMBA = False
+            expected = grade.apply(self.image, settings)
+            grade._HAS_NUMBA = True
+            actual = grade.apply(self.image, settings)
+        finally:
+            grade._HAS_NUMBA = original
+        np.testing.assert_allclose(actual, expected, rtol=2e-5, atol=2e-5)
+
+    def test_tone_stage_keeps_over_range_tones_for_whites_to_recover(self):
+        ramp = np.linspace(0.5, 1.0, 64, dtype=np.float32)
+        image = np.repeat(ramp[None, :, None], 3, axis=2)
+        pushed = grade.apply(image, {"exposure": 1.0, "whites": -1.0})[0, :, 0]
+        # One stop up sends the top of the ramp past white; Whites -100
+        # divides the extended signal back down, so the ramp still rises.
+        self.assertTrue(np.all(np.diff(pushed) > 0))
+        np.testing.assert_allclose(pushed, ramp, atol=0.03)
+        # The same recipe on a clipped white lands back on white.
+        self.assertGreater(float(pushed[-1]), 0.97)
+
+    def test_tone_shoulder_is_an_exact_identity_without_headroom(self):
+        image = np.linspace(0, 1, 32, dtype=np.float32)[None, :, None].repeat(3, axis=2)
+        for recipe in ({"exposure": -0.4}, {"highlights": -0.5}, {"whites": -0.3},
+                       {"contrast": 0.6}, {"blacks": 0.2}):
+            with self.subTest(recipe=recipe):
+                self.assertEqual(grade.tone_knee(recipe), 1.0)
+                out = grade.apply(image, recipe)
+                self.assertLessEqual(float(out.max()), 1.0)
+        self.assertLess(grade.tone_knee({"exposure": 0.5}), 1.0)
+        self.assertLess(grade.tone_knee({"whites": 0.5}), 1.0)
+        self.assertLess(grade.tone_knee({"highlights": 0.5}), 1.0)
+        # A pushed white stays white for practical purposes.
+        white = np.ones((1, 1, 3), dtype=np.float32)
+        self.assertGreater(float(grade.apply(white, {"exposure": 1.0}).min()), 0.97)
+        self.assertGreater(float(grade.apply(white, {"exposure": 3.0}).min()), 0.94)
+
+    def test_tone_stage_is_continuous_at_the_first_slider_step(self):
+        """The shoulder must not jump in when a slider leaves zero."""
+        image = np.linspace(0, 1, 64, dtype=np.float32)[None, :, None].repeat(3, axis=2)
+        for key in ("exposure", "whites", "highlights"):
+            with self.subTest(key=key):
+                nudged = grade.apply(image, {key: 0.01})
+                self.assertLess(float(np.abs(nudged - image).max()), 0.02)
+
+    def test_tone_only_recipes_are_recognised(self):
+        self.assertTrue(grade.is_tone_only({"exposure": 0.3, "contrast": -0.2}))
+        self.assertTrue(grade.is_tone_only({"whites": 0.2, "blacks": 0.1,
+                                            "highlights": -0.4, "shadows": 0.3}))
+        self.assertFalse(grade.is_tone_only({}))
+        self.assertFalse(grade.is_tone_only({"exposure": 0.3, "temp": 0.1}))
+        self.assertFalse(grade.is_tone_only({"exposure": 0.3, "saturation": 0.1}))
+        self.assertFalse(grade.is_tone_only({"exposure": 0.3, "vignette": 0.1}))
+        self.assertFalse(grade.is_tone_only({"exposure": 0.3, "monochrome": 1}))
+        self.assertFalse(grade.is_tone_only({
+            "exposure": 0.3, "hsl": {"red": {"s": 0.2}}}))
+
+    def test_tone_stage_decodes_the_prophoto_transfer_function(self):
+        """The same linear light graded in ROMM and sRGB encodings agrees."""
+        linear = np.linspace(0.001, 0.9, 96, dtype=np.float64)[None, :, None].repeat(3, axis=2)
+        linear[..., 1] *= 0.8
+        linear[..., 2] *= 0.6
+        srgb = np.where(linear <= 0.0031308, linear * 12.92,
+                        1.055 * linear ** (1 / 2.4) - 0.055).astype(np.float32)
+        romm = np.where(linear < 1 / 512, linear * 16, linear ** (1 / 1.8)).astype(np.float32)
+        recipe = {"exposure": 0.6, "highlights": -0.4, "shadows": 0.3,
+                  "whites": 0.2, "blacks": -0.15, "contrast": 0.3}
+        original = grade._HAS_NUMBA
+        for use_numba in ((False, True) if grade._HAS_NUMBA else (False,)):
+            with self.subTest(numba=use_numba):
+                try:
+                    grade._HAS_NUMBA = use_numba
+                    via_srgb = grade.apply(srgb, recipe)
+                    via_romm = grade.apply(romm, recipe, encoding="romm")
+                finally:
+                    grade._HAS_NUMBA = original
+                back_srgb = np.where(via_srgb <= 0.04045, via_srgb / 12.92,
+                                     ((via_srgb + 0.055) / 1.055) ** 2.4)
+                back_romm = np.where(via_romm < 0.03125, via_romm / 16.0, via_romm ** 1.8)
+                np.testing.assert_allclose(back_romm, back_srgb, atol=2e-5, rtol=1e-4)
+        with self.assertRaises(ValueError):
+            grade.apply(romm, {"exposure": 0.3, "temp": 0.2}, encoding="romm")
+        with self.assertRaises(ValueError):
+            grade.apply(romm, {"exposure": 0.3}, encoding="lab")
+
     def test_detail_defaults_remain_an_identity_even_with_nonzero_radius(self):
         cleaned = grade.clean({})
         self.assertEqual(cleaned["sharpenRadius"], 1.0)
