@@ -33,9 +33,9 @@ import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMask
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
 import { MAX_HEAL_POINTS,
-  LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
+  LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, DEFRINGE_KEYS, MAX_MASKS, MAX_MASK_COMPONENTS,
   MAX_TOTAL_MASK_POINTS, MAX_HEALS, LINEAR_MIN_SPAN,
-  normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
+  normalizeMasks, normalizeHeals, normalizeOptics, defringeActive, localToolLabel,
 } from '/web/editor-panels.js';
 import {
   photoMatchesQuery as matchesPhotoQuery,
@@ -294,7 +294,8 @@ function nativeMenuState() {
         .some((key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
     hasMasks: S.masks.length > 0,
     hasHealing: S.heals.length > 0,
-    hasLensCorrections: ['profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette'].some(
+    hasLensCorrections: ['profileEnabled', 'profileDistortion', 'profileVignette', 'profileChromatic',
+      'distortion', 'vignette', ...DEFRINGE_KEYS].some(
       (key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
     canStack: targets.length >= 2,
     canUnstack: targets.some((item) => !!stackForImage(item.name)),
@@ -923,7 +924,7 @@ function syncControls() {
   $('learnedDenoiseStrengthV').textContent = Number(
     S.params.learned_denoise_strength ?? 0.6).toFixed(2);
   if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
-  $('wbProcessedNote').hidden = rawInput;
+  $('captureWbBlock').hidden = !rawInput;
   $('wbCustom').hidden = !rawInput || S.params.wb_mode !== 'custom';
   $('wb_mode').disabled = !rawInput;
   $('browseFilmStocks').disabled = !cur();
@@ -2173,8 +2174,29 @@ function nativeEditsPayload(baked = S.baseEditsBaked) {
   };
 }
 
+// The Metal shader applies this many Heal and Clone spots live. Remove uses
+// CPU biharmonic inpainting, and a spot whose source patch or Heal annulus
+// reads pixels an earlier spot already changed needs the ordered CPU result,
+// so those bake a corrected base on the server. Keep the rule identical to
+// server.py native_base_edits_required.
+const MAX_LIVE_HEALS = 16;
+
+function healReadsEarlierHeal(spot, earlier) {
+  const reach = (spot.radius ?? 0.04) + (earlier.radius ?? 0.04);
+  const near = (point) => Math.hypot(
+    point[0] - earlier.target[0], point[1] - earlier.target[1]) < reach;
+  return near(spot.source) || (spot.mode === 'heal' && near(spot.target));
+}
+
+function healsRequireBake(heals = S.heals) {
+  const enabled = (heals || []).filter((spot) => spot.enabled !== false);
+  if (enabled.length > MAX_LIVE_HEALS) return true;
+  return enabled.some((spot, index) => spot.mode === 'remove'
+    || enabled.slice(0, index).some((earlier) => healReadsEarlierHeal(spot, earlier)));
+}
+
 function nativeBaseRequiresBake() {
-  return !!S.optics.profileEnabled || S.heals.some((spot) => spot.enabled !== false);
+  return !!S.optics.profileEnabled || defringeActive(S.optics) || healsRequireBake();
 }
 
 /* ---------------------------------------------------------- local tools */
@@ -2424,15 +2446,34 @@ function syncOpticsPanel() {
   $('lensProfileEnabled').disabled = !profile;
   $('lensProfileDistortion').checked = !!S.optics.profileDistortion;
   $('lensProfileVignette').checked = !!S.optics.profileVignette;
+  $('lensProfileChromatic').checked = !!S.optics.profileChromatic;
   $('lensFlipHorizontal').setAttribute('aria-pressed', String(!!S.optics.flipHorizontal));
   $('lensFlipVertical').setAttribute('aria-pressed', String(!!S.optics.flipVertical));
   $('lensProfileDistortion').disabled = !profile || !S.optics.profileEnabled || !profile.hasDistortion;
   $('lensProfileVignette').disabled = !profile || !S.optics.profileEnabled || !profile.hasVignette;
+  $('lensProfileChromatic').disabled = !profile || !S.optics.profileEnabled || !profile.hasTca;
+  syncLensDatabaseNote();
   document.querySelectorAll('[data-optics]').forEach((input) => {
     const key = input.dataset.optics;
     input.value = S.optics[key];
-    document.querySelector(`[data-opticsv="${key}"]`).textContent = (+S.optics[key]).toFixed(2);
+    document.querySelector(`[data-opticsv="${key}"]`).textContent = formatOpticsValue(key, S.optics[key]);
   });
+}
+
+function formatOpticsValue(key, value) {
+  return /Hue(Start|End)$/.test(key) ? `${Math.round(+value)}°` : (+value).toFixed(2);
+}
+
+// The lens panel names the database it actually consults. Nothing is vendored
+// with the app: the version and record counts arrive from the server.
+function syncLensDatabaseNote() {
+  const note = $('lensDatabaseNote');
+  const database = S.lensDatabase;
+  note.hidden = !database?.available;
+  if (database?.available) {
+    note.textContent = tr("Lens database {version} · {cameras} cameras · {lenses} lenses",
+      { version: database.version, cameras: database.cameras, lenses: database.lenses });
+  }
 }
 
 function addMask(type) {
@@ -2974,10 +3015,11 @@ $('lensProfileOverride').onchange = () => {
   S.optics.profileEnabled = !!S.lensProfile;
   syncOpticsPanel(); saveState(); refreshBaseEdits();
 };
-for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette']) {
+for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette', 'lensProfileChromatic']) {
   $(id).onchange = () => {
     pushUndo();
-    const key = { lensProfileEnabled: 'profileEnabled', lensProfileDistortion: 'profileDistortion', lensProfileVignette: 'profileVignette' }[id];
+    const key = { lensProfileEnabled: 'profileEnabled', lensProfileDistortion: 'profileDistortion',
+      lensProfileVignette: 'profileVignette', lensProfileChromatic: 'profileChromatic' }[id];
     S.optics[key] = $(id).checked; syncOpticsPanel(); saveState(); refreshBaseEdits();
   };
 }
@@ -2993,7 +3035,7 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
   input.addEventListener('pointerdown', pushUndo);
   input.addEventListener('input', () => {
     S.optics[input.dataset.optics] = +input.value;
-    document.querySelector(`[data-opticsv="${input.dataset.optics}"]`).textContent = (+input.value).toFixed(2);
+    document.querySelector(`[data-opticsv="${input.dataset.optics}"]`).textContent = formatOpticsValue(input.dataset.optics, +input.value);
     syncCropPanel();
     refreshBaseEdits(true);
   });
@@ -3002,7 +3044,8 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
 $('lensReset').onclick = (event) => {
   event.stopPropagation();
   pushUndo();
-  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
+  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'profileChromatic',
+    'distortion', 'vignette', ...Object.keys(OPTICS_DEFAULTS).filter((name) => name.startsWith('defringe'))]) {
     S.optics[key] = OPTICS_DEFAULTS[key];
   }
   delete S.grade.chromaticAberrationRedCyan;
@@ -3135,6 +3178,8 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
         spot, start: point, rect };
     }
     syncHealPanel(); drawEditOverlay();
+    // The new spot reaches Metal in the same coalesced frame as the overlay.
+    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3202,6 +3247,8 @@ $('editOverlay').addEventListener('pointermove', (event) => {
       if (radius > 0.008) gesture.spot.radius = clamp(radius, 0.005, 0.25);
     }
     drawEditOverlay();
+    // A moved spot shares the overlay's animation frame; the WebGL fallback
+    // only redraws the overlay until the gesture ends.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
@@ -5030,6 +5077,10 @@ function saveState(immediate = false) {
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
   editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
+  // The catalog flags any saved blob as an edit; mirror it so defaults for
+  // never-saved photos stop applying to this one from now on.
+  im.hasEdits = true;
+  im.opticsSaved = true;
   if (wasEdited !== photoHasEdits(im)) {
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
@@ -7085,6 +7136,10 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
     masks: normalizeMasks(im.masks),
     heals: normalizeHeals(im.heals),
     optics: normalizeOptics(im.optics),
+    // The server says whether lens state was ever saved; a payload without
+    // the flag (a recovered draft) counts as saved when it carries optics.
+    opticsSaved: typeof im.opticsSaved === 'boolean' ? im.opticsSaved
+      : !!im.optics && Object.keys(im.optics).length > 0,
   };
 }
 
@@ -7391,15 +7446,19 @@ async function loadRawCameraDefault(name, hadSavedParams) {
 }
 
 const _lensProfileCache = new Map();
+/* A photo that has never saved lens state opens with the matched profile on
+ * when the server says the match is exact and Develop Defaults allow it. The
+ * server applies the same rule to thumbnails, exports, and CLI renders, so a
+ * saved edit, including one that switched the profile off, is never overridden. */
+function lensProfileStartsEnabled(match) {
+  return !!match?.autoEnabled && !S.optics.profileOverride && !cur()?.opticsSaved;
+}
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
       const cached = _lensProfileCache.get(name);
       S.lensProfile = cached.profile;
-      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
-          cached.found && cached.reason === "Exact camera and lens metadata match.") {
-        S.optics.profileEnabled = true;
-      }
+      if (lensProfileStartsEnabled(cached)) S.optics.profileEnabled = true;
       syncOpticsPanel();
     }
     return;
@@ -7410,10 +7469,7 @@ async function loadLensProfile(name) {
     _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
-      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
-          result.found && result.reason === "Exact camera and lens metadata match.") {
-        S.optics.profileEnabled = true;
-      }
+      if (lensProfileStartsEnabled(result)) S.optics.profileEnabled = true;
       syncOpticsPanel();
     }
   } catch (_) {
@@ -8149,7 +8205,7 @@ async function initializeEditRecovery(data) {
       const image = S.images.find(item => item.name === record.name);
       if (image) Object.assign(image, normalizeLibraryImage({
         ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
-        recoverySourceKey: record.payload.sourceKey,
+        opticsSaved: true, recoverySourceKey: record.payload.sourceKey,
       }, true));
     }
   } else {
@@ -8190,6 +8246,8 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.filmDefaults = d.defaults;
   S.newPhotoGradeDefaults = d.gradeDefaults || GRADE_DEFAULTS;
   S.rawGradeDefaults = d.rawGradeDefaults || S.rawGradeDefaults;
+  S.lensProfileDefault = d.lensProfileDefault !== false;
+  S.lensDatabase = d.lensDatabase || S.lensDatabase || null;
   S.grainBaselines = d.stocks.grainBaselines || {};
   S.profiles = Array.isArray(d.profiles) ? d.profiles : [];
   S.profileById = Object.fromEntries(S.profiles.map((profile) =>
@@ -11931,6 +11989,12 @@ $('autoBtn').onclick = (event) => {
   acc = 0;
   for (let i = 255; i >= 0; i--) { acc += hist[i]; if (acc > cut) { hi = i; break; } }
   pushUndo();
+  // lo and hi are the 0.5% and 99.5% luma percentiles. A dark end that
+  // stops short of black gets a negative Blacks (which lowers the black
+  // point) and a bright end that stops short of white gets a positive
+  // Whites (which lowers the white point, brightening the top of the
+  // range), so both terms pull the histogram out to its endpoints. The
+  // sign convention is shared with grade.py and every shader.
   S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);
   S.grade.blacks = clamp(-(lo / 255) * 1.2, -1, 0.4);
   S.grade.whites = clamp((1 - hi / 255) * 1.2, -0.4, 1);
@@ -13052,6 +13116,8 @@ installSettings({
     if (!data) return;
     S.filmDefaults = data.defaults || S.filmDefaults;
     S.newPhotoGradeDefaults = data.gradeDefaults || S.newPhotoGradeDefaults;
+    S.lensProfileDefault = data.lensProfileDefault !== false;
+    _lensProfileCache.clear();
     clearEditedThumbnails();
     _stripKey = _gridKey = '';
     refreshLists();

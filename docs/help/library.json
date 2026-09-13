@@ -71,7 +71,8 @@
     "related": [
       "browse-folders",
       "import-from-card",
-      "views-and-selection"
+      "views-and-selection",
+      "coming-from-lightroom"
     ],
     "sources": [
       {
@@ -1372,7 +1373,7 @@
         "title": "Review translated edits",
         "paragraphs": [
           "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-          "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. That action does not apply develop settings or crop. Its results dialog shows progress, applied counts, skipped settings, and errors."
+          "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. It applies develop settings and crop only when you turn those options on. Its results dialog shows progress, applied counts, skipped settings, and errors."
         ]
       }
     ],
@@ -1380,7 +1381,8 @@
       "add-photos",
       "collections",
       "metadata-and-keywords",
-      "xmp-interchange"
+      "xmp-interchange",
+      "coming-from-lightroom"
     ],
     "sources": [
       {
@@ -1422,6 +1424,108 @@
     ]
   },
   {
+    "id": "coming-from-lightroom",
+    "title": "Coming from Lightroom",
+    "category": "Getting started",
+    "summary": "What a Lightroom Classic catalog and XMP sidecars bring across, what has no import path, and how the vocabulary differs.",
+    "keywords": [
+      "Lightroom",
+      "Lightroom Classic",
+      "migrate",
+      "migration",
+      "XMP",
+      "sidecars",
+      "presets",
+      "lrtemplate",
+      "Capture One"
+    ],
+    "sections": [
+      {
+        "title": "What comes across",
+        "paragraphs": [
+          "From a Lightroom Classic catalog: photos stay in their current folders and are referenced, not copied. The importer reads ratings, flags, labels, and IPTC fields; keywords; collections and supported smart collections; stacks; virtual copies; crop and straightening; approximate develop settings; and, when chosen, edit history. Your .lrcat file is never changed.",
+          "From XMP sidecars beside your photos: star ratings, pick and reject flags, standard colour labels, keywords, and descriptive IPTC fields. Folders ••• → Import sidecars… can also apply develop settings and crop when you turn those options on.",
+          "Both routes use the same converter, so a setting maps the same way whichever way it arrives: tone, white balance offsets, texture, clarity, dehaze, the colour mixer, black and white conversion with its mixer, point curves, vignette amount, sharpening, and noise reduction. A value outside LightTable’s range, such as exposure beyond ±5 EV, is clamped and named in the report."
+        ]
+      },
+      {
+        "title": "What has no import path",
+        "paragraphs": [
+          "Cloud albums and presets stored only in the cloud app cannot be read. Sync them into Lightroom Classic or save the presets as files first.",
+          "AI masks and generative edits, Lens Blur, and Denoise settings are proprietary rendering steps. They are reported as skipped rather than approximated, as are camera profiles, LUT looks, local masks, healing, and lens-profile identities. Imported edits start with Film off so the converted develop settings are shown on their own."
+        ]
+      },
+      {
+        "title": "Vocabulary",
+        "paragraphs": [
+          "Collections are collections here as well; the cloud app’s albums arrive only through a Lightroom Classic catalog.",
+          "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
+          "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
+          "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+        ]
+      },
+      {
+        "title": "Import your presets",
+        "paragraphs": [
+          "Presets → Manage… → Import… accepts Lightroom and Camera Raw .xmp presets, legacy .lrtemplate presets, and Capture One .costyle styles. After a catalog or folder import, setup also offers Import presets…. Each imported preset shows how many settings mapped and which were skipped before you apply it."
+        ],
+        "steps": [
+          "Open Presets, click Manage…, then Import… and choose the preset files or, in the Mac app, a whole preset folder.",
+          "Review the conversion report, then apply the preset from Yours."
+        ]
+      }
+    ],
+    "related": [
+      "import-lightroom-catalog",
+      "xmp-interchange",
+      "editing-presets",
+      "add-photos",
+      "film-getting-started"
+    ],
+    "sources": [
+      {
+        "path": "catalog_import.py",
+        "anchor": "\"filmOff\": True,"
+      },
+      {
+        "path": "catalog_import.py",
+        "anchor": "_skip(result, \"masks and AI data\")"
+      },
+      {
+        "path": "preset_io.py",
+        "anchor": "grade[\"monochrome\"] = 1.0"
+      },
+      {
+        "path": "preset_io.py",
+        "anchor": "def _clamp_reported("
+      },
+      {
+        "path": "xmp_sidecar.py",
+        "anchor": "def folder_has_sidecars("
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "develop: optDevelop ? optDevelop.checked : false,"
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "accept=\".ltpreset,.xmp,.lrtemplate,.costyle,.costylepack,.zip,.json\""
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "Applied approximately, to the Film-off develop only."
+      },
+      {
+        "path": "web/first-run.js",
+        "anchor": "el('presetImport')?.click();"
+      },
+      {
+        "path": "server.py",
+        "anchor": "params[\"profile_enabled\"] = configured.get(\"filmEnabled\") is True"
+      }
+    ]
+  },
+  {
     "id": "xmp-interchange",
     "title": "Exchange metadata through XMP sidecars",
     "category": "Library",
@@ -1441,7 +1545,7 @@
         "paragraphs": [
           "Ask the other editor to save its metadata to adjacent XMP files, then choose Folders ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
           "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
-          "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are not applied by this menu action."
+          "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are applied only when you turn those options on in the Import sidecars dialog."
         ]
       },
       {

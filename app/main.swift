@@ -2647,6 +2647,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             && isDir.boolValue
     }
 
+    /// Whether the folder or any subfolder holds an .xmp sidecar. Mirrors
+    /// `xmp_sidecar.folder_has_sidecars`: stops at the first hit, skips hidden
+    /// items and packages, and gives up after a bounded number of folders so
+    /// a huge archive cannot stall the setup flow.
+    private func folderHasSidecars(_ path: String, maxDirectories: Int = 2000) -> Bool {
+        let keys: [URLResourceKey] = [.isDirectoryKey, .isRegularFileKey, .isSymbolicLinkKey]
+        guard let walk = FileManager.default.enumerator(
+            at: URL(fileURLWithPath: path), includingPropertiesForKeys: keys,
+            options: [.skipsHiddenFiles, .skipsPackageDescendants]) else { return false }
+        var visited = 1
+        for case let item as URL in walk {
+            guard let values = try? item.resourceValues(forKeys: Set(keys)) else { continue }
+            if values.isSymbolicLink == true {
+                walk.skipDescendants()
+                continue
+            }
+            if values.isDirectory == true {
+                visited += 1
+                if visited > maxDirectories { return false }
+            } else if values.isRegularFile == true,
+                      item.pathExtension.lowercased() == "xmp" {
+                return true
+            }
+        }
+        return false
+    }
+
     private func loadSources() -> [FolderSource] {
         if let data = UserDefaults.standard.data(forKey: "folderSources"),
            let saved = try? JSONDecoder().decode([FolderSource].self, from: data) {
@@ -2896,7 +2923,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         case "setupChooseFolder":
             if let picked = pickFolder(title: L("Choose your first photo folder")) {
                 addSource(picked)
-                pendingSetupFolderEvent = ["type": "setupFolderSelected", "path": picked]
+                // The web setup page offers a sidecar import only when told
+                // sidecars exist; the server's own answer never reaches this
+                // path because the folder is launched, not posted.
+                pendingSetupFolderEvent = ["type": "setupFolderSelected", "path": picked,
+                                           "hasSidecars": folderHasSidecars(picked)]
                 launch(folder: picked)
             } else {
                 sendEvent(["type": "setupFolderCancelled"])

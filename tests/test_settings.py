@@ -173,7 +173,7 @@ class SettingsTests(unittest.TestCase):
         self.assertNotIn('id="newPhotoFilmEnabledSidebar"', html)
         self.assertNotIn("FILM_DEFAULT_CHECKBOX_IDS", settings)
         self.assertIn(
-            "for (const id of ['newPhotoFilmEnabled', 'newPhotoWorkflow'",
+            "for (const id of ['newPhotoFilmEnabled', 'newPhotoLensProfile', 'newPhotoWorkflow'",
             settings)
         before_settings = html.split('id="settingsDialog"', 1)[0]
         self.assertNotIn('class="shortcut-details"', before_settings)
