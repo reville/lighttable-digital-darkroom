@@ -2174,8 +2174,8 @@ function nativeEditsPayload(baked = S.baseEditsBaked) {
   };
 }
 
-// The Metal shader applies this many Heal and Clone spots live. Remove uses
-// CPU biharmonic inpainting, and a spot whose source patch or Heal annulus
+// The Metal shader applies this many Heal and Clone spots live. Remove and
+// whole-photo dust removal run on the CPU, and a spot whose source patch or Heal annulus
 // reads pixels an earlier spot already changed needs the ordered CPU result,
 // so those bake a corrected base on the server. Keep the rule identical to
 // server.py native_base_edits_required.
@@ -2191,7 +2191,7 @@ function healReadsEarlierHeal(spot, earlier) {
 function healsRequireBake(heals = S.heals) {
   const enabled = (heals || []).filter((spot) => spot.enabled !== false);
   if (enabled.length > MAX_LIVE_HEALS) return true;
-  return enabled.some((spot, index) => spot.mode === 'remove'
+  return enabled.some((spot, index) => spot.mode === 'remove' || spot.mode === 'dust'
     || enabled.slice(0, index).some((earlier) => healReadsEarlierHeal(spot, earlier)));
 }
 

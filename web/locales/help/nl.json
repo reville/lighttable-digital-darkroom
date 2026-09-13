@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -111,7 +112,7 @@
           "title": "Vertaalde bewerkingen beoordelen",
           "paragraphs": [
             "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
-            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Die actie past geen ontwikkelinstellingen of bijsnijden toe. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
+            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Ontwikkelinstellingen en bijsnijden past die alleen toe als je die opties inschakelt. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Overstappen van Lightroom",
+      "category": "Getting started",
+      "summary": "Wat een Lightroom Classic-catalogus en XMP-sidecars meebrengen, wat geen importroute heeft en hoe de woordenschat verschilt.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migreren",
+        "migratie",
+        "XMP",
+        "sidecars",
+        "voorinstellingen",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Wat meekomt",
+          "paragraphs": [
+            "Uit een Lightroom Classic-catalogus: foto's blijven in hun huidige mappen en worden verwezen, niet gekopieerd. De importeur leest waarderingen, markeringen, labels en IPTC-velden; trefwoorden; collecties en ondersteunde slimme collecties; stapels; virtuele kopieën; bijsnijden en rechtzetten; benaderde ontwikkelinstellingen; en, als je dat kiest, de bewerkingsgeschiedenis. Je .lrcat-bestand wordt nooit gewijzigd.",
+            "Uit XMP-sidecars naast je foto's: sterwaarderingen, kies- en afwijsmarkeringen, standaard kleurlabels, trefwoorden en beschrijvende IPTC-velden. Mappen ••• → Sidecars importeren… kan ook ontwikkelinstellingen en bijsnijden toepassen als je die opties inschakelt.",
+            "Beide routes gebruiken dezelfde omzetter, dus een instelling wordt op dezelfde manier vertaald, hoe die ook binnenkomt: toon, witbalansverschuivingen, textuur, helderheid, nevel verwijderen, de kleurmixer, zwart-witconversie met zijn mixer, puntcurven, vignethoeveelheid, verscherping en ruisonderdrukking. Een waarde buiten het bereik van LightTable, zoals belichting voorbij ±5 EV, wordt begrensd en in het rapport genoemd."
+          ]
+        },
+        {
+          "title": "Wat geen importroute heeft",
+          "paragraphs": [
+            "Cloudalbums en voorinstellingen die alleen in de cloud-app zijn opgeslagen, kunnen niet worden gelezen. Synchroniseer ze eerst naar Lightroom Classic of sla de voorinstellingen als bestanden op.",
+            "AI-maskers en generatieve bewerkingen, lensvervaging en ruisonderdrukkingsinstellingen zijn eigen renderstappen. Ze worden als overgeslagen gemeld in plaats van benaderd, net als cameraprofielen, LUT-looks, lokale maskers, retouches en lensprofiel-identiteiten. Geïmporteerde bewerkingen beginnen met Film uit, zodat de omgezette ontwikkelinstellingen op zichzelf zichtbaar zijn."
+          ]
+        },
+        {
+          "title": "Woordenlijst",
+          "paragraphs": [
+            "Collecties heten hier ook collecties; de albums van de cloud-app komen alleen binnen via een Lightroom Classic-catalogus.",
+            "Kies- en afwijsmarkeringen werken hetzelfde, en de onderste balk toont ze voor de geselecteerde foto's.",
+            "Ontwikkelen heet hier Bewerken. Film staat standaard uit voor nieuwe en geïmporteerde foto's; zet het aan als je een filmbehandeling boven op de bewerking wilt.",
+            "Cameraprofiel in Bewerken toont de Adobe DCP-profielen die Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of de map met cameraprofielen die in Instellingen is gekozen. Profielen werken bij benadering en alleen op de ontwikkeling met Film uit."
+          ]
+        },
+        {
+          "title": "Je voorinstellingen importeren",
+          "paragraphs": [
+            "Voorinstellingen → Beheren… → Importeren… accepteert .xmp-voorinstellingen van Lightroom en Camera Raw, oudere .lrtemplate-voorinstellingen en Capture One .costyle-stijlen. Na een catalogus- of mapimport biedt de installatie ook Voorinstellingen importeren… aan. Elke geïmporteerde voorinstelling toont hoeveel instellingen zijn vertaald en welke zijn overgeslagen voordat je hem toepast."
+          ],
+          "steps": [
+            "Open Voorinstellingen, klik op Beheren… en daarna op Importeren… en kies de voorinstellingsbestanden of, in de Mac-app, een hele map met voorinstellingen.",
+            "Bekijk het conversierapport en pas de voorinstelling daarna toe vanuit Jouw."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Vraag de andere editor om de metagegevens op te slaan in naastliggende XMP-bestanden en kies daarna Mappen ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
             "Ondersteunde metagegevens zijn onder meer sterbeoordelingen, kies/afwijzen-markeringen, standaard kleurlabels, platte en hiërarchische trefwoorden en beschrijvende IPTC-velden. Een expliciete lege waarde wist dat veld; een ontbrekende waarde laat het ongewijzigd. Aangepaste kleurlabels die niet overeenkomen met een LightTable-kleur worden gerapporteerd als overgeslagen.",
-            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelingsinstellingen en bijsnijden worden niet toegepast door deze menubewerking."
+            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelinstellingen en bijsnijden worden alleen toegepast als je die opties inschakelt in het dialoogvenster Sidecars importeren."
           ]
         },
         {
@@ -1108,7 +1171,7 @@
         {
           "title": "Begin met Licht",
           "paragraphs": [
-            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan. Contrast wijzigt hun scheiding."
+            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding."
           ],
           "steps": [
             "Stel Belichting in voor het hoofdonderwerp.",
@@ -1161,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Pas lenscorrecties en correcties voor chromatische aberratie toe",
       "category": "Editing",
-      "summary": "Gebruik een afgestemd of handmatig geselecteerd lensprofiel, of voer handmatige correcties uit wanneer een exact profiel niet beschikbaar is.",
+      "summary": "Gebruik een afgestemd of handmatig geselecteerd lensprofiel, corrigeer chromatische aberratie, verwijder paarse en groene kleurranden, of voer handmatige correcties uit wanneer een exact profiel niet beschikbaar is.",
       "keywords": [
         "lens",
         "profiel",
@@ -1170,6 +1233,9 @@
         "schaduwen",
         "chromatische aberratie",
         "kleurverschuiving aan de randen",
+        "kleurranden verwijderen",
+        "paarse kleurrand",
+        "groene kleurrand",
         "rood cyaan",
         "blauw geel",
         "optiek"
@@ -1178,18 +1244,21 @@
         {
           "title": "Kies en controleer een correctie",
           "paragraphs": [
-            "Vouw Lenscorrecties uit in Bewerken. De profielkaart verklaart de automatische camera/lensmatch en of een bruikbaar profiel beschikbaar is."
+            "Vouw Lenscorrecties uit in Bewerken. De profielkaart verklaart de automatische camera/lensmatch en of een bruikbaar profiel beschikbaar is. Het paneel noemt ook de versie van de gebruikte lensdatabase en hoeveel camera's en lenzen deze bevat; de database wordt met de lensbibliotheek meegeleverd, niet met LightTable.",
+            "Wanneer camera en lens in de fotometadata exact met één profiel overeenkomen, staat Het overeenkomende lensprofiel gebruiken aan zodra de foto opent en geldt dit ook voor miniaturen en exports. Een afgeleide of dubbelzinnige match blijft uit. Instellingen → Ontwikkelstandaarden → Overeenkomend lensprofiel automatisch toepassen schakelt dit gedrag uit; foto's met opgeslagen lensinstellingen behouden die hoe dan ook."
           ],
           "steps": [
             "Lees de profielnaam en de uitleg van de overeenkomst.",
-            "Schakel Gebruik afgestemd lensprofiel in wanneer een profiel beschikbaar is, en kies daarna Corrigeer vervorming en Corrigeer lensschaduw indien nodig.",
+            "Schakel Het overeenkomende lensprofiel gebruiken in wanneer een profiel beschikbaar is, en kies daarna naar wens Vervorming corrigeren, Lensschaduwen corrigeren en Chromatische aberratie corrigeren. Elke schakelaar is onafhankelijk, dus chromatische aberratie kan worden gecorrigeerd zonder de geometrie te wijzigen.",
             "Kies indien nodig een andere vermelding in Lensprofiel en vergelijk de correctie met het origineel.",
-            "Verfijn de handmatige bedieningselementen voor Vervorming en Vignettering. Voor kleurfranjes past u Rood / Cyaan en Blauw / Geel aan onder Chromatische aberratie."
+            "Verfijn de handmatige bedieningselementen voor Vervorming en Vignettering. Voor kleurfranjes past u Rood / Cyaan en Blauw / Geel aan onder Chromatische aberratie.",
+            "Verhoog onder Kleurranden verwijderen Paars of Groen om die kleur weg te halen uit sterk verzadigde pixels naast harde randen. De schuifregelaars voor begin en einde van de tint bepalen het tintbereik dat elke regelaar behandelt; een begin boven het einde loopt door rood heen."
           ],
           "tips": [
             "Als er geen exact lensprofiel is gevonden, blijven handmatige vervormings- en perspectiefbedieningen beschikbaar.",
-            "De selectievakjes voor profielvervorming en schaduwen zijn alleen ingeschakeld wanneer het geselecteerde profiel die correctie biedt en het profiel is ingeschakeld.",
+            "De selectievakjes voor profielvervorming, schaduwen en chromatische aberratie zijn alleen ingeschakeld wanneer het geselecteerde profiel die correctie biedt en het profiel is ingeschakeld.",
             "Een handmatig geselecteerd profiel moet visueel worden gecontroleerd; de selectie bewijst niet dat het een exacte overeenkomst is.",
+            "Kleurranden verwijderen behandelt de omtrek van een groot paars of groen onderwerp als een kleurrand. Verlaag de hoeveelheid of versmal het tintbereik als een onderwerp kleur verliest langs de rand.",
             "Lens- en franjecorrecties blijven non-destructief tot aan export."
           ]
         }
@@ -1335,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -2090,7 +2160,8 @@
         {
           "title": "Een kleurzweem neutraliseren",
           "paragraphs": [
-            "De sectie Kleur in Bewerken bevat Temp en Tint, plus een witbalans-pipet naast Temp. Dit zijn de afwerkingsbedieningselementen van het Bewerken-paneel."
+            "De sectie Kleur in Bewerken bevat Temp en Tint, plus een witbalans-pipet naast Temp. Dit zijn de afwerkingsbedieningselementen van het Bewerken-paneel.",
+            "Bij een RAW-origineel staat daarboven een blok Witbalans van opname met Zoals opgenomen, Auto, voorinstellingen en Aangepast voor een temperatuur in kelvin en een opnametint. Het ontwikkelt de RAW-gegevens opnieuw en werkt met Film aan of uit; bij verwerkte bestanden is het verborgen."
           ],
           "steps": [
             "Open Bewerken en vouw Kleur uit.",
@@ -2108,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -2537,7 +2609,7 @@
           "title": "Opnamebediening en afwerkingsbediening",
           "paragraphs": [
             "Camera-EV en opname-witbalans werken vóór filmexposure. Belichting en Temp/Tint in het paneel Bewerken zijn latere afwerkingsaanpassingen in de workflow.",
-            "Opname-witbalans vereist een RAW-origineel. Gebruik voor een JPEG, HEIF, TIFF of een ander bewerkt bestand Bewerken Temp/Tint."
+            "De opname-witbalans staat bovenaan de sectie Kleur voor RAW-originelen en werkt met Film aan of uit: kies Zoals opgenomen, Auto, een voorinstelling of Aangepast om een temperatuur in kelvin en een opnametint in te stellen. Bij JPEG, HEIF, TIFF of een ander verwerkt bestand is het blok verborgen; gebruik Bewerken Temp/Tint."
           ],
           "steps": [
             "Schakel Film in, kies een film en pas Camera EV aan.",
@@ -2989,7 +3061,8 @@
         {
           "title": "Standaarden voor onbewerkte foto's",
           "paragraphs": [
-            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen."
+            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen.",
+            "Overeenkomend lensprofiel automatisch toepassen, standaard ingeschakeld, zet het lensprofiel aan voor foto's waarvan camera en lens exact met één profiel overeenkomen en waarvan de lensinstellingen nooit zijn opgeslagen. Schakel het uit om elke foto met het profiel uit te openen."
           ],
           "steps": [
             "Open Instellingen → Ontwikkel-standaarden.",
@@ -3422,5 +3495,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
+  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445"
 }

@@ -4642,11 +4642,11 @@ def _heal_reads_earlier_heal(spot: dict, earlier: dict) -> bool:
 
 
 def heals_require_bake(heals=None) -> bool:
-    """Remove inpaints on the CPU; chained spots need the ordered CPU result."""
+    """Remove and dust removal run on the CPU; chained spots need the ordered CPU result."""
     enabled = [spot for spot in edits.clean_heals(heals) if spot["enabled"]]
     if len(enabled) > MAX_LIVE_HEALS:
         return True
-    return any(spot["mode"] == "remove"
+    return any(spot["mode"] in ("remove", "dust")
                or any(_heal_reads_earlier_heal(spot, earlier) for earlier in enabled[:index])
                for index, spot in enumerate(enabled))
 
