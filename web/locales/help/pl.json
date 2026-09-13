@@ -637,6 +637,7 @@
           "title": "Ukryj zdjęcia, których nie można wyświetlić",
           "paragraphs": [
             "Gdy w siatce jest widoczny błąd miniatury, wybierz Ukryj zdjęcia, których nie można wyświetlić obok podsumowania lokalizacji. Włącza to odpowiedni przełącznik w panelu Filtr. Jest on domyślnie wyłączony, a jego ustawienie jest zapisywane między sesjami. Ten przełącznik nie jest zapisywany w regułach kolekcji inteligentnych.",
+            "Na taśmie filmowej ten link pojawia się pod liczbą zdjęć tylko wtedy, gdy bieżąca lista zawiera zdjęcia, których nie można wyświetlić.",
             "Przełącznik ukrywa zdjęcia, o których wiadomo, że są niedostępne lub znajdują się tylko w chmurze, oraz zdjęcia z wykrytymi błędami miniatur lub podglądów. Inne błędy dekodowania są wykrywane podczas wczytywania zdjęć. Wyłącz przełącznik, usuń jego znacznik filtra lub wybierz Wyczyść wszystko, aby ponownie pokazać zdjęcia. Pomyślna operacja Spróbuj ponownie lub zmiana oryginału usuwa zapisany błąd."
           ]
         },
@@ -3349,5 +3350,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
 }

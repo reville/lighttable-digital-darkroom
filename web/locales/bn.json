@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4",
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1524,6 +1524,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "সংকীর্ণ Linux উইন্ডোতে, লাইব্রেরি দেখান বা লুকান লাইব্রেরিটিকে ড্রয়ার হিসেবে খোলে। উইন্ডো বড় করলে স্বাভাবিক পাশাপাশি-থাকা বিন্যাস ফিরে আসে। Hyprland-এ, LightTable সরানো, টাইল করা, আকার পরিবর্তন করা, বা বন্ধ করার জন্য কম্পোজিটরের উইন্ডো শর্টকাট ব্যবহার করুন।",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "সংকীর্ণ Linux উইন্ডোতে, লাইব্রেরি খুলতে উপরের বাম দিকে লাইব্রেরি দেখান বা লুকান ব্যবহার করুন। ফোল্ডার বেছে নেওয়ার পরে ফটো দেখার জন্য বেশি জায়গা রাখতে একই বোতামে এটি বন্ধ করুন।",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Curve graph-এ, অনুভূমিক দিকটি গাঢ় input tone থেকে উজ্জ্বল input tone-এর দিকে যায়। কোনো বিন্দু ওপরে সরালে তার output বাড়ে; নিচে সরালে কমে। RGB সম্মিলিত curve সামঞ্জস্য করে, আর R, G, এবং B পৃথক channel-কে প্রভাবিত করে।",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "ফিল্মস্ট্রিপে, বর্তমান তালিকায় এমন ফটো থাকলেই এই লিঙ্কটি ফটো সংখ্যার নিচে দেখায়, যেগুলো প্রদর্শন করা যায় না।",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "গ্রিড ও ফিল্মস্ট্রিপে, থাম্বনেইল পাওয়া যাচ্ছে না বার্তাটি কেন থাম্বনেইল ব্যর্থ হয়েছে তা দেখায় এবং পাওয়া গেলে ত্রুটি নির্ণয়ের বিবরণও দেখায়। সমস্যাটি ঠিক করার পরে, আবার চেষ্টা করুন বেছে নিন।",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "macOS অ্যাপে, ফটো এবং অ্যালবাম ব্রাউজ করতে সাইডবারে Apple Photos খুলুন। জিজ্ঞাসা করা হলে Photos অ্যাক্সেস অনুমতি দিন। এই উৎস Windows এবং Linux-এ লুকানো থাকে।",
     "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.": "macOS অ্যাপে, ফাইল → Apple Photos থেকে আমদানি করুন… অথবা ফটো সেটআপ-এ কয়েকটি নির্বাচন করুন… ব্যবহার করুন। বর্তমান ফরম্যাট Photos-এর সরবরাহ করা উপস্থাপনাটি রেখে দেয়; সামঞ্জস্যপূর্ণ ব্যাপকভাবে পাঠযোগ্য একটি ফরম্যাট চায়। এই নির্বাচিত উপস্থাপনাগুলিতে Photos-এর সম্পাদনা অন্তর্ভুক্ত থাকতে পারে এবং এগুলি পুরো লাইব্রেরির মূল ফাইল আমদানির থেকে আলাদা।",

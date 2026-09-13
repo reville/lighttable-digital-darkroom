@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4",
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1524,6 +1524,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "在较窄的 Linux 窗口中，“显示或隐藏资料库”会将资料库以抽屉形式打开。展开窗口可恢复正常的并排布局。在 Hyprland 上，请使用合成器的窗口快捷键移动、平铺、调整大小或关闭 LightTable。",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "在较窄的 Linux 窗口中，使用左上角的“显示或隐藏资料库”打开资料库抽屉。在选择文件夹后，可再次使用同一按钮关闭它，为照片留出更多空间。",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "在 Curve 图中，水平方向从较暗的输入色调延伸到较亮的输入色调。上移一个点会提高其输出；下移会降低其输出。RGB 调整合并曲线，而 R、G 和 B 影响各自的通道。",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "在胶片带中，仅当当前列表包含无法显示的照片时，此链接才会出现在照片数量下方。",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "在网格和胶片条中，“缩略图不可用”会显示缩略图失败的原因，并在有诊断信息时一并显示。解决问题后，选择“重试”。",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "在 macOS 应用中，打开侧边栏中的 Apple 照片以浏览照片和相册。按提示允许 Photos 访问。此来源在 Windows 和 Linux 上隐藏。",
     "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.": "在 macOS 应用中，请使用“文件 → 从 Apple 照片导入…”或在照片设置中使用“选择几个…”。“当前格式”保留照片提供的表示形式；“兼容”会请求一种广泛可读的格式。这些所选表示形式可以包含照片编辑内容，并且与整个资料库的原始文件导入是分开的。",

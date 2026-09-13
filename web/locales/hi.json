@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4",
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1524,6 +1524,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "संकीर्ण Linux विंडो में, लाइब्रेरी दिखाएँ या छिपाएँ लाइब्रेरी को ड्रॉअर के रूप में खोलता है। विंडो को बड़ा करने पर सामान्य साथ-साथ लेआउट बहाल हो जाता है। Hyprland पर, LightTable को स्थानांतरित करने, टाइल करने, आकार बदलने, या बंद करने के लिए कंपोज़िटर के विंडो शॉर्टकट्स का उपयोग करें।",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "संकीर्ण Linux विंडो में, लाइब्रेरी दिखाएँ या छिपाएँ का उपयोग ऊपरी बाएँ करें ताकि लाइब्रेरी ड्रॉअर खुल जाए। फ़ोल्डर चुनने के बाद अधिक फ़ोटो स्थान छोड़ने के लिए इसे उसी बटन से बंद करें।",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Curve ग्राफ़ में, क्षैतिज दिशा गहरे input tones से उज्ज्वल input tones तक जाती है। किसी बिंदु को ऊपर ले जाने से उसका output बढ़ता है; नीचे ले जाने से घटता है। RGB संयुक्त curve को समायोजित करता है, जबकि R, G, और B अलग-अलग channels को प्रभावित करते हैं।",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "फ़िल्मस्ट्रिप में, यह लिंक फ़ोटो संख्या के नीचे केवल तभी दिखाई देता है जब वर्तमान सूची में ऐसी फ़ोटो हों जिन्हें प्रदर्शित नहीं किया जा सकता।",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "ग्रिड और फ़िल्मस्ट्रिप में, थंबनेल उपलब्ध नहीं है संदेश बताता है कि थंबनेल क्यों विफल हुआ और उपलब्ध होने पर मिले निदान का विवरण भी दिखाता है। समस्या ठीक करने के बाद, फिर से कोशिश करें चुनें।",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "macOS ऐप में, फ़ोटो और एल्बम ब्राउज़ करने के लिए साइडबार में Apple Photos खोलें। पूछे जाने पर Photos एक्सेस अनुमति दें। यह स्रोत Windows और Linux पर छिपा होता है।",
     "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.": "macOS ऐप में, फ़ाइल → Apple Photos से आयात करें… का उपयोग करें या फ़ोटो सेटअप में कुछ चुनें… का उपयोग करें. वर्तमान प्रारूप Photos द्वारा दी गई अभिव्यक्ति को बनाए रखता है; संगत व्यापक रूप से पठनीय प्रारूप का अनुरोध करता है. ये चयनित अभिव्यक्तियाँ Photos संपादन शामिल कर सकती हैं और पूरी लाइब्रेरी की मूल फ़ाइलों के आयात से अलग होती हैं.",

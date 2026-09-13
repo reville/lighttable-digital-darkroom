@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4",
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1524,6 +1524,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "في نافذة Linux ضيقة، يفتح إظهار المكتبة أو إخفاؤها المكتبة كدرج. يؤدي توسيع النافذة إلى استعادة التخطيط المعتاد المتجاور. على Hyprland، استخدم اختصارات النافذة الخاصة بالمُركّب لتحريك LightTable أو تثبيته أو تغيير حجمه أو إغلاقه.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "في نافذة Linux ضيقة، استخدم إظهار المكتبة أو إخفاؤها في أعلى اليسار لفتح درج المكتبة. أغلقه بالزر نفسه بعد اختيار مجلد لتوفير مساحة أكبر للصورة.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "في رسم Curve، يتجه الاتجاه الأفقي من نغمات الإدخال الأغمق إلى نغمات الإدخال الأفتح. يؤدي تحريك نقطة إلى الأعلى إلى رفع خرجها؛ وتحريكها إلى الأسفل يخفضه. يضبط RGB المنحنى المجمّع، بينما يؤثر R وG وB في القنوات الفردية.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "في شريط الفيلم، يظهر هذا الرابط أسفل عدد الصور فقط عندما تحتوي القائمة الحالية على صور لا يمكن عرضها.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "في الشبكة وشريط الفيلم، توضح رسالة «الصورة المصغرة غير متاحة» سبب فشل الصورة المصغرة، وتتضمن معلومات التشخيص الواردة عند توفرها. بعد تصحيح المشكلة، اختر «إعادة المحاولة».",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "في تطبيق macOS، افتح صور Apple في الشريط الجانبي لاستعراض الصور والألبومات. اسمح بالوصول إلى الصور عند الطلب. هذا المصدر مخفي في Windows وLinux.",
     "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.": "في تطبيق macOS، استخدم الملف → استيراد من Apple Photos… أو اختر بعضًا… في إعداد الصورة. يحتفظ التنسيق الحالي بالتمثيل الذي توفره Photos؛ أما المتوافق فيطلب تنسيقًا قابلاً للقراءة على نطاق واسع. يمكن أن تتضمن هذه التمثيلات المحددة تعديلات Photos، وهي منفصلة عن الاستيراد الأصلي للمكتبة الكاملة.",

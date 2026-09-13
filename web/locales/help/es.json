@@ -637,6 +637,7 @@
           "title": "Ocultar fotos que no se pueden mostrar",
           "paragraphs": [
             "Cuando veas un error de miniatura en la cuadrícula, elige Ocultar fotos que no se pueden mostrar junto al resumen de ubicación. Esto activa el interruptor correspondiente en Filtro, que está desactivado de forma predeterminada y se guarda entre sesiones. Este interruptor no se guarda en las reglas de las colecciones inteligentes.",
+            "En la tira de película, este enlace aparece debajo del recuento de fotos solo cuando la lista actual contiene fotos que no se pueden mostrar.",
             "El interruptor oculta las fotos que se sabe que no están disponibles o que solo están en la nube, y aquellas cuyas miniaturas o vistas previas han fallado. Otros errores de decodificación se detectan al cargar las fotos. Desactiva el interruptor, elimina su etiqueta o elige Borrar todo para volver a mostrar las fotos. Un Reintentar exitoso o un cambio en el original borra el error registrado."
           ]
         },
@@ -3349,5 +3350,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac"
 }

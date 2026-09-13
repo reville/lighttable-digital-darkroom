@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4",
+  "sourceDigest": "8e1c074d12c21e84929d98d310964180968df93cec7cef7ce2b86ed7a733b4ac",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1524,6 +1524,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "Trong cửa sổ Linux hẹp, Hiện hoặc ẩn thư viện mở thư viện dưới dạng một ngăn kéo. Mở rộng cửa sổ sẽ khôi phục bố cục song song thông thường. Trên Hyprland, dùng các phím tắt cửa sổ của compositor để di chuyển, xếp ô, thay đổi kích thước hoặc đóng LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "Trong cửa sổ Linux hẹp, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái để mở ngăn thư viện. Đóng nó bằng cùng nút đó sau khi chọn một thư mục để có thêm chỗ cho ảnh.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Trong đồ thị Curve, hướng ngang đi từ tông đầu vào tối hơn đến tông đầu vào sáng hơn. Di chuyển một điểm lên sẽ tăng đầu ra của nó; di chuyển xuống sẽ giảm nó. RGB điều chỉnh đường cong kết hợp, còn R, G và B ảnh hưởng đến từng kênh riêng lẻ.",
+    "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa các ảnh không thể hiển thị.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "Trong ứng dụng macOS, mở Apple Photos trong thanh bên để duyệt ảnh và album. Cho phép truy cập Photos khi được hỏi. Nguồn này bị ẩn trên Windows và Linux.",
     "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.": "Trong ứng dụng macOS, dùng Tệp → Nhập từ Ảnh Apple… hoặc Chọn vài mục… trong thiết lập Ảnh. Định dạng hiện tại giữ nguyên biểu diễn do Ảnh cung cấp; Tương thích yêu cầu một định dạng có thể đọc rộng rãi. Những biểu diễn đã chọn này có thể bao gồm các chỉnh sửa trong Ảnh và tách biệt với toàn bộ quá trình nhập ảnh gốc của thư viện.",
