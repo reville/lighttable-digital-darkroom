@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "أخضر",
     "Green label": "تسمية خضراء",
     "Greens": "الأخضر",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة.",
     "Group and find people": "تجميع الأشخاص والعثور عليهم",
     "Group photos into collections": "تجميع الصور في مجموعات",
     "Group similar faces and search names you add.": "اجمع الوجوه المتشابهة وابحث عن الأسماء التي تضيفها.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "يجب عرض أصول RAW الأصلية كملفات TIFF معدلة. لا يكون Processed original متاحًا إذا كان التحديد يتضمن ملف RAW. وبالنسبة إلى الصور المعالجة، فإن ذلك الخيار يفتح الأصل بدلًا من إعداد ملف TIFF معدّل.",
     "RAW originals only.": "نسخ RAW الأصلية فقط.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "يمكن أن تعرض صور RAW عناصر التحكم في تقليل ضوضاء المستشعر وإزالة الضوضاء المتعلمة. تعمل إزالة الضوضاء المتعلمة محليًا عند الضغط على تطبيق إزالة الضوضاء؛ ولا يؤدي تحريك الشدة إلى تشغيلها مباشرة.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "تُفتح صور RAW بمعالجة LightTable، حتى عند إيقاف وضع الفيلم. قد يستغرق ظهور أول صورة غير مخزنة مؤقتًا لحظة. يعرض شريط التقدم مراحل المعالجة المكتملة ويختفي عند ظهور الصورة.",
     "RAW preview could not finish. Try the photo again.": "تعذر إكمال معاينة RAW. حاول مع الصورة مرة أخرى.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "ملف الكاميرا الشخصي",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (مفقود)"
+    "{fileName} (missing)": "{fileName} (مفقود)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "تُفتح صور RAW بمعالجة LightTable، حتى عند إيقاف وضع الفيلم. عند تشغيل وضع الفيلم، يستخدم الإطار الأول لصورة غير مخزنة مؤقتًا المعاينة المضمّنة في الكاميرا؛ ويحل التحويل الدقيق محلها بعد قليل، وتعرض الحالة «جارٍ تحسين RAW…» حتى ذلك الحين. يعرض شريط التقدم مراحل المعالجة المكتملة ويختفي عند ظهور الصورة.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة. كما يتم إعداد معاينة قياسية لكل ملف RAW حتى تُفتح الصورة دون انتظار فك الترميز الكامل."
   },
   "plurals": {
     " · {count} paired file linked": {

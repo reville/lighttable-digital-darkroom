@@ -72,6 +72,15 @@ test('prefetch warms both neighbors before detail, using their own dimensions an
   assert.equal(app.loads.length, 4);
 });
 
+test('prefetch is no longer held back while the current RAW is still refining', async () => {
+  const app = prefetchHarness();
+  // The old refining flag returned before scheduling any neighbour work.
+  app.context.prefetch(true);
+  await app.run();
+  assert.equal(app.calls.length, 4, 'neighbours warm behind a draft first frame');
+  assert.doesNotMatch(source, /prefetch\(m\.refining/);
+});
+
 test('navigation or edits during prefetch stop the remaining work and stale native preload', async () => {
   for (const cancel of [app => app.navigationGeneration++, app => app.S.seq++]) {
     const app = prefetchHarness();

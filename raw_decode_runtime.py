@@ -15,6 +15,8 @@ class RawDecodeCancelled(RenderCancelled):
 
 _cancelled = ContextVar("raw_decode_cancelled", default=None)
 _priority = ContextVar("raw_decode_priority", default="interactive")
+_retain = ContextVar("raw_decode_retain", default=None)
+_retain_pixels = ContextVar("raw_decode_retain_pixels", default=True)
 _decode_gate = PriorityGate()
 
 
@@ -32,15 +34,53 @@ def cancellation(check, *, priority=None):
         _priority.reset(priority_token)
 
 
+@contextmanager
+def retained(keep):
+    """Keep a superseded decode alive while keep() reports a live consumer.
+
+    A prefetch is cancelled by the very navigation it anticipated: the new
+    request bumps the generation, the old decode is marked stale, and the new
+    request would start the same demosaic from scratch. While another request
+    waits on this decode, its result is still wanted, so cancellation is
+    deferred until the pixels are published.
+    """
+    token = _retain.set(keep)
+    try:
+        yield
+    finally:
+        _retain.reset(token)
+
+
+@contextmanager
+def unretained_pixels():
+    """Decode without displacing the working set from the process-wide cache."""
+    token = _retain_pixels.set(False)
+    try:
+        yield
+    finally:
+        _retain_pixels.reset(token)
+
+
+def retain_pixels():
+    return bool(_retain_pixels.get())
+
+
+def _stale(check, keep):
+    return bool(check and check()) and not (keep and keep())
+
+
 def check_cancel():
-    check = _cancelled.get()
-    if check and check():
+    if _stale(_cancelled.get(), _retain.get()):
         raise RawDecodeCancelled("RAW decode superseded or cancelled")
 
 
 def is_cancelled():
-    check = _cancelled.get()
-    return bool(check and check())
+    return _stale(_cancelled.get(), _retain.get())
+
+
+def decoder_busy():
+    """True while a demosaic holds the admission slot or one is queued."""
+    return _decode_gate.locked()
 
 
 @contextmanager
@@ -67,7 +107,8 @@ def interruptible(raw, decoder):
     its native object. Older wheels retain the ordinary completion fallback.
     """
     check_cancel()
-    check = _cancelled.get()
+    # Context variables do not follow the monitor thread; capture both hooks.
+    check, keep = _cancelled.get(), _retain.get()
     finished = threading.Event()
     monitor = None
     if check and getattr(decoder, "LIGHTTABLE_RAW_CANCEL", 0) == 1:
@@ -76,7 +117,7 @@ def interruptible(raw, decoder):
             for _ in range(30000):
                 if finished.wait(0.02):
                     return
-                if check():
+                if _stale(check, keep):
                     raw.request_cancel()
                     return
         monitor = threading.Thread(target=watch, name="lighttable-raw-cancel", daemon=True)

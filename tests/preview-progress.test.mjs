@@ -419,7 +419,36 @@ test('cold navigation requests accurate small pixels and warm full-size navigati
     await app.render(0, {width: 2200, requestedWidth: 2200, phase: 'navigation'});
     assert.equal(app.PERF.renders[0].width, cachedWidth || 1100);
     assert.equal(app.requests.length, cachedWidth ? 0 : 1);
-    if (!cachedWidth) assert.equal(app.requests[0].allow_draft, false);
+    if (!cachedWidth) assert.equal(app.requests[0].allow_draft, true, 'a cold opening may show the camera draft first');
     else assert.equal(app.PERF.renders[0].phase, 'settled');
   }
+});
+
+test('a cold RAW opening shows the draft at once, refines it, and warms neighbours behind it', async () => {
+  const prefetches = [];
+  const app = renderHarness({ prefetch: () => prefetches.push(true) });
+  app.S.renderState = 'pending'; app.S.presentedPhotoName = 'previous.dng';
+  app.S.previewDetail = { name: 'previous.dng', refining: false };
+  const rendered = app.render(0, { width: 2200, requestedWidth: 2200, phase: 'navigation' });
+  await tick();
+  assert.equal(app.requests[0].width, 1100);
+  assert.equal(app.requests[0].allowDraft, true, 'navigation is the one request allowed to draft');
+  assert.deepEqual(app.displays, [1], 'the draft is displayed because nothing accurate is on screen');
+  app.finishPaint(); await tick();
+  assert.equal(app.progress.at(-1), 'done', 'progress hides on the draft, not on the demosaic');
+  assert.deepEqual(app.requests.slice(1).map(r => r.path), Array(4).fill('/api/refine'));
+  assert.ok(app.requests.slice(1).every(r => r.width === 2200 && r.generation === 1));
+  app.finishDecode(); await tick();
+  const refinement = app.requests.at(-1);
+  assert.equal(refinement.path, '/api/render');
+  assert.equal(refinement.allowDraft, false, 'the accurate pass never asks for a draft');
+  assert.equal(refinement.width, 2200);
+  app.finishPaint(); await rendered;
+  assert.equal(prefetches.length, 2, 'neighbours warm after the draft and again after refinement');
+});
+
+test('an interactive pass on a visible photo still refuses a draft', async () => {
+  const app = renderHarness();
+  await Promise.race([app.render(0, { width: 1100, requestedWidth: 2200, phase: 'interactive' }), tick()]);
+  assert.equal(app.requests[0].allowDraft, false);
 });

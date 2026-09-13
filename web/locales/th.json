@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "สีเขียว",
     "Green label": "ป้ายสีเขียว",
     "Greens": "สีเขียว",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "เมื่อคุณเพิ่มหรือสแกนโฟลเดอร์อีกครั้ง ระบบจะเตรียมภาพตัวอย่างในตารางอยู่เบื้องหลัง โดยจะแสดงภาพตัวอย่างขนาดใหญ่จากต้นฉบับก่อน แล้วแทนที่ด้วยภาพตัวอย่างที่มีการแก้ไขของคุณเมื่อพร้อม",
     "Group and find people": "จัดกลุ่มและค้นหาผู้คน",
     "Group photos into collections": "จัดกลุ่มภาพถ่ายเป็นคอลเลกชัน",
     "Group similar faces and search names you add.": "จัดกลุ่มใบหน้าที่คล้ายกันและค้นหาชื่อที่คุณเพิ่ม",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "ต้นฉบับ RAW ต้องถูกเรนเดอร์เป็น TIFF ที่ปรับแล้ว Processed original จะไม่พร้อมใช้งานหากการเลือกมีไฟล์ RAW สำหรับภาพที่ประมวลผลแล้ว ตัวเลือกนั้นจะเปิดต้นฉบับแทนที่จะเตรียม TIFF ที่ปรับแล้ว",
     "RAW originals only.": "เฉพาะต้นฉบับ RAW เท่านั้น.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "ภาพ RAW สามารถแสดงการควบคุม Sensor noise reduction และ Learned denoise ได้ Learned denoise ทำงานในเครื่องเมื่อคุณกด Apply denoise; การเลื่อน Strength จะไม่ทำให้มันทำงานแบบสด",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "ภาพ RAW จะเปิดด้วยผลการประมวลผลของ LightTable ตั้งแต่แรก แม้จะปิดฟิล์มอยู่ก็ตาม ภาพแรกที่ยังไม่ได้เก็บในแคชอาจใช้เวลาสักครู่จึงจะแสดง แถบความคืบหน้าจะแสดงขั้นตอนการประมวลผลที่เสร็จแล้ว และหายไปเมื่อภาพปรากฏ",
     "RAW preview could not finish. Try the photo again.": "พรีวิว RAW ไม่สามารถเสร็จสิ้นได้ ลองภาพถ่ายนี้อีกครั้ง",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "โปรไฟล์กล้อง",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (หายไป)"
+    "{fileName} (missing)": "{fileName} (หายไป)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "ภาพ RAW จะเปิดด้วยผลการประมวลผลของ LightTable ตั้งแต่แรก แม้จะปิดฟิล์มอยู่ก็ตาม เมื่อเปิดฟิล์ม เฟรมแรกของภาพที่ยังไม่ได้เก็บในแคชจะใช้ภาพตัวอย่างที่ฝังมาจากกล้อง จากนั้นการแปลงที่แม่นยำจะเข้ามาแทนที่ในไม่ช้า และสถานะจะแสดง “กำลังปรับ RAW…” จนกว่าจะเสร็จ แถบความคืบหน้าจะแสดงขั้นตอนการประมวลผลที่เสร็จแล้ว และหายไปเมื่อภาพปรากฏ",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "เมื่อคุณเพิ่มหรือสแกนโฟลเดอร์อีกครั้ง ระบบจะเตรียมภาพตัวอย่างในตารางอยู่เบื้องหลัง โดยจะแสดงภาพตัวอย่างขนาดใหญ่จากต้นฉบับก่อน แล้วแทนที่ด้วยภาพตัวอย่างที่มีการแก้ไขของคุณเมื่อพร้อม นอกจากนี้ยังเตรียมภาพตัวอย่างมาตรฐานของ RAW แต่ละภาพไว้ด้วย เพื่อให้เปิดภาพได้โดยไม่ต้องรอการถอดรหัสแบบเต็ม"
   },
   "plurals": {
     " · {count} paired file linked": {

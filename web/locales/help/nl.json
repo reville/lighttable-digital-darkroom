@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
             "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
           ],
           "tips": [
             "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
@@ -3214,8 +3214,8 @@
         {
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
-            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering.",
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
             "Als je ingezoomd van foto wisselt, toont LightTable direct een overeenkomend voorbeeld uit de cache, als dat beschikbaar is. Scherpere details worden op de achtergrond geladen en nabijgelegen foto’s worden vooraf geladen voor je zoomniveau.",
             "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }
