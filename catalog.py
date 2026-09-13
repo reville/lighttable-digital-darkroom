@@ -68,7 +68,9 @@ SORT_FIELDS = {
     "name": "f.filename COLLATE NOCASE",
     "rating": "s.rating",
     "status": "s.status",
-    "label": "s.label",
+    "label": ("CASE COALESCE(s.label,'none') WHEN 'none' THEN 0 WHEN 'red' THEN 1"
+              " WHEN 'yellow' THEN 2 WHEN 'green' THEN 3 WHEN 'blue' THEN 4"
+              " WHEN 'purple' THEN 5 ELSE 6 END"),
     "added": "i.created_at",
     "size": "f.size",
 }
@@ -138,6 +140,7 @@ CREATE INDEX IF NOT EXISTS files_hash ON files(header_hash);
 CREATE INDEX IF NOT EXISTS files_folder ON files(folder_id);
 CREATE INDEX IF NOT EXISTS files_source_missing ON files(source_id, missing);
 CREATE INDEX IF NOT EXISTS files_capture ON files(capture_time);
+CREATE INDEX IF NOT EXISTS files_pair_stem ON files(source_id, lower(substr(relpath,1,length(relpath)-length(ext))));
 
 CREATE TABLE IF NOT EXISTS capture_overrides (
     file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,
@@ -2365,10 +2368,21 @@ class Catalog:
                 params.append(bound)
             query_text = " ".join(str(flt.get("query", "")).split())
             if query_text:
-                where.append(
-                    "i.id IN (SELECT image_id FROM image_search"
-                    " WHERE image_search MATCH ?)")
+                search_clause = ("i.id IN (SELECT image_id FROM image_search"
+                                 " WHERE image_search MATCH ?)")
                 params.append(_fts_query(query_text))
+                also = spec.get("searchAlsoIds") if flt is spec.get("filter") else None
+                if isinstance(also, (list, tuple)) and also:
+                    search_clause = (f"({search_clause} OR i.id IN"
+                                     " (SELECT value FROM json_each(?)))")
+                    params.append(json.dumps([int(v) for v in also]))
+                where.append(search_clause)
+        if isinstance(spec.get("names"), list):
+            # An explicit name list: the browser resolves a full-view selection
+            # it never loaded into rows for marking, without paging everything.
+            ids = self.image_ids_for_names(spec["names"])
+            where.append("i.id IN (SELECT value FROM json_each(?))")
+            params.append(json.dumps(ids))
         sort = spec.get("sort") if isinstance(spec.get("sort"), dict) else {}
         field = SORT_FIELDS.get(str(sort.get("field", "capture")),
                                 SORT_FIELDS["capture"])
@@ -2389,9 +2403,43 @@ class Catalog:
                 " JOIN sources src ON src.id=f.source_id"
                 " LEFT JOIN image_state s ON s.image_id=i.id"
                 " LEFT JOIN capture_overrides ct ON ct.file_id=f.id")
-        base = joins + f" WHERE {clause}"
-        total = self.connection.execute(
-            f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
+        if spec.get("countsOnly"):
+            # Sidebar tallies for a scope. The browser used to count its
+            # loaded rows, which only agreed with the catalog once every row
+            # had been paged in.
+            counts = {"all": 0, "pending": 0, "approved": 0, "skipped": 0,
+                      "rated": 0}
+            for row in self.connection.execute(
+                    "SELECT COALESCE(s.status,'pending') AS status,"
+                    " COUNT(*) AS n, SUM(COALESCE(s.rating,0)>0) AS rated"
+                    f"{joins} WHERE {clause} GROUP BY 1", params).fetchall():
+                status = row["status"] if row["status"] in STATUS_VALUES else "pending"
+                counts[status] += int(row["n"])
+                counts["all"] += int(row["n"])
+                counts["rated"] += int(row["rated"] or 0)
+            return {"total": counts["all"], "counts": counts, "items": []}
+        hiding = self._hidden_member_ctes(spec, joins, clause)
+        if hiding:
+            # The matched CTE binds the filter clause first; the pair rules
+            # that follow it bind after, so the parameter order must match.
+            cte, params = hiding[0] + " page AS (", params + hiding[1]
+            base = joins + " JOIN result ON result.id=i.id"
+            total = self.connection.execute(
+                f"{hiding[0].rstrip(',')} SELECT COUNT(*) AS n FROM result",
+                params).fetchone()["n"]
+        else:
+            cte = "WITH page AS ("
+            base = joins + f" WHERE {clause}"
+            total = self.connection.execute(
+                f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
+        pair_column = (
+            f", (SELECT f2.relpath FROM files f2 WHERE f2.source_id=f.source_id"
+            f" AND f2.id!=f.id AND f2.missing=0 AND {_stem('f2')}={_stem('f')}"
+            " AND (f2.kind='raw')!=(f.kind='raw')"
+            " AND (f2.kind='raw' OR lower(f2.ext) IN ('.jpg','.jpeg'))"
+            " AND (f.kind='raw' OR lower(f.ext) IN ('.jpg','.jpeg'))"
+            " AND i.virtual=0 LIMIT 1) AS pair_relpath"
+            if spec.get("pairView") in ("raw", "jpeg", "both") else "")
         # The edit blobs are pulled in the same statement when asked for.
         # Fetching them per image turned one page of the grid into hundreds of
         # round trips, which is what made a large library feel unopenable.
@@ -2408,7 +2456,7 @@ class Catalog:
             except (TypeError, ValueError):
                 limit = 100000
             rows = self.connection.execute(
-                f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+                f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
                 "SELECT i.id, i.copy_ident, f.relpath, f.source_id "
                 f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
                 (*params, limit, offset)).fetchall()
@@ -2424,12 +2472,13 @@ class Catalog:
             except (TypeError, ValueError):
                 limit = 100000
             rows = self.connection.execute(
-                f"SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?",
+                f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+                "SELECT page.id FROM page",
                 (*params, limit, offset)).fetchall()
             return {"total": int(total), "offset": offset, "limit": limit,
                     "ids": [row["id"] for row in rows], "items": []}
         rows = self.connection.execute(
-            f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+            f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
             " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
@@ -2444,7 +2493,7 @@ class Catalog:
             "  OR s.crop_json IS NOT NULL OR s.masks_json IS NOT NULL"
             "  OR s.heals_json IS NOT NULL OR s.optics_json IS NOT NULL)"
             " AS has_edits"
-            f"{blobs}"
+            f"{blobs}{pair_column}"
             f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
             (*params, limit, offset)).fetchall()
         items = [_item(row) for row in rows]
@@ -2466,6 +2515,100 @@ class Catalog:
                 item["captureTimeOverride"] = row["capture_time_override"]
         return {"total": int(total), "offset": offset, "limit": limit,
                 "items": items}
+
+    def image_ids_for_names(self, names: Sequence[str]) -> list[int]:
+        """Resolve qualified names to image ids in a few statements.
+
+        A full-view selection can hold every name in the catalog; resolving
+        them one by one turned a batch mark into thousands of round trips.
+        """
+        ids: list[int] = []
+        seen: set[int] = set()
+        wanted = []
+        for name in names:
+            source_id, relpath, copy_ident = parse_name(str(name))
+            if source_id is None:
+                continue
+            wanted.append([int(source_id), relpath, copy_ident])
+        for start in range(0, len(wanted), 2000):
+            chunk = wanted[start:start + 2000]
+            rows = self.connection.execute(
+                "SELECT i.id FROM json_each(?) j"
+                " JOIN files f ON f.source_id=json_extract(j.value,'$[0]')"
+                "  AND f.relpath=json_extract(j.value,'$[1]')"
+                " JOIN images i ON i.file_id=f.id"
+                "  AND ((json_extract(j.value,'$[2]') IS NULL AND i.copy_ident IS NULL)"
+                "   OR i.copy_ident=json_extract(j.value,'$[2]'))",
+                (json.dumps(chunk),)).fetchall()
+            for row in rows:
+                if row["id"] not in seen:
+                    seen.add(row["id"])
+                    ids.append(int(row["id"]))
+        return ids
+
+    def _hidden_member_ctes(self, spec: dict, joins: str,
+                            clause: str) -> tuple[str, list] | None:
+        """CTEs that drop the hidden half of a RAW+JPEG pair and collapsed
+        stack members from the matched set, so totals, paging, and Select All
+        agree with what the grid shows.
+
+        Both rules are evaluated inside the filtered set, the way the browser
+        did it over loaded rows: a JPEG only hides behind a RAW that is itself
+        in the view, and a collapsed stack shows its first member still in the
+        view rather than disappearing when its cover is filtered out.
+        """
+        pair_view = spec.get("pairView")
+        if pair_view not in ("raw", "jpeg"):
+            pair_view = None
+        collapse = bool(spec.get("collapseStacks")) and bool(
+            self.connection.execute(
+                "SELECT 1 FROM stacks WHERE collapsed=1 LIMIT 1").fetchone())
+        if not pair_view and not collapse:
+            return None
+        params: list[Any] = []
+        parts = [
+            "WITH matched AS (SELECT i.id AS id, i.virtual AS virtual,"
+            " f.source_id AS source_id, f.relpath AS relpath, f.kind AS kind,"
+            f" lower(f.ext) AS ext, {_stem('f')} AS stem"
+            f"{joins} WHERE {clause})"]
+        shown = "matched"
+        if pair_view:
+            preferred = []
+            for name in spec.get("pairOverrides") or []:
+                source_id, relpath, copy_ident = parse_name(str(name))
+                if source_id is None or copy_ident:
+                    continue
+                stem = relpath.rsplit(".", 1)[0].lower() if "." in relpath.rsplit("/", 1)[-1] else relpath.lower()
+                preferred.append(
+                    "WHEN m.source_id=? AND m.stem=? THEN m.relpath!=?")
+                params.extend([int(source_id), stem, relpath])
+            params.append(1 if pair_view == "raw" else 0)
+            parts.append(
+                "members AS (SELECT * FROM matched WHERE virtual=0"
+                " AND (kind='raw' OR (kind='processed' AND ext IN ('.jpg','.jpeg')))),"
+                " pair_groups AS (SELECT source_id, stem FROM members"
+                " GROUP BY source_id, stem HAVING COUNT(*)=2 AND SUM(kind='raw')=1),"
+                " pair_hidden AS (SELECT m.id AS id FROM members m"
+                " JOIN pair_groups g ON g.source_id=m.source_id AND g.stem=m.stem"
+                " WHERE CASE " + " ".join(preferred)
+                + " ELSE (m.kind='raw')!=? END),"
+                " shown AS (SELECT id FROM matched"
+                " WHERE id NOT IN (SELECT id FROM pair_hidden))")
+            shown = "shown"
+        if collapse:
+            parts.append(
+                "stack_hidden AS (SELECT si.image_id AS id FROM stack_images si"
+                " JOIN stacks st ON st.id=si.stack_id"
+                f" JOIN {shown} m ON m.id=si.image_id WHERE st.collapsed=1"
+                " AND EXISTS (SELECT 1 FROM stack_images s2"
+                f" JOIN {shown} m2 ON m2.id=s2.image_id"
+                " WHERE s2.stack_id=si.stack_id AND (s2.position < si.position"
+                " OR (s2.position=si.position AND s2.image_id < si.image_id)))),"
+                f" result AS (SELECT id FROM {shown}"
+                " WHERE id NOT IN (SELECT id FROM stack_hidden))")
+        else:
+            parts.append(f"result AS (SELECT id FROM {shown})")
+        return ", ".join(parts) + ",", params
 
     def _keywords_for_many(self, image_ids: Sequence[int]) -> dict[int, list]:
         """Keywords for a page of images in one statement."""
@@ -2993,6 +3136,12 @@ class _WriteTransaction:
         return False
 
 
+def _stem(alias: str) -> str:
+    """The expression behind `files_pair_stem`; queries must spell it the same
+    way for SQLite to use the index."""
+    return f"lower(substr({alias}.relpath,1,length({alias}.relpath)-length({alias}.ext)))"
+
+
 def _fts_query(text: str) -> str:
     """Turn free text into a safe FTS5 prefix query.
 
@@ -3058,6 +3207,8 @@ def _item(row: sqlite3.Row) -> dict:
         **{public: dam_filters.positive_number(row[column])
            for _, column, public in dam_filters.EXPOSURE_FIELDS},
         "hasEdits": bool(row["has_edits"]),
+        "pair": (qualified_name(source_id, _text_or(row["pair_relpath"]))
+                 if "pair_relpath" in row.keys() and row["pair_relpath"] else None),
         "size": _int_or(row["size"], 0, minimum=0),
     }
 
