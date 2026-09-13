@@ -20,6 +20,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PINS = json.loads((ROOT / "packaging/linux/runtime.json").read_text())
+APP_VERSION = re.search(r'^VERSION = "([^"]+)"$', (ROOT / "app_version.py").read_text(),
+                        re.MULTILINE).group(1)
 
 
 def run(*arguments: str | Path, **kwargs) -> str:
@@ -85,7 +87,7 @@ def stage_resources(project: Path, python_source: Path, rust_source: Path, bundl
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default=os.environ.get("LIGHTTABLE_VERSION", "0.1.0"))
+    parser.add_argument("--version", default=os.environ.get("LIGHTTABLE_VERSION", APP_VERSION))
     parser.add_argument("--output-dir", type=Path, default=ROOT / "dist")
     parser.add_argument("--experimental-aarch64", action="store_true",
                         help="Build an explicitly experimental native ARM64 validation package")

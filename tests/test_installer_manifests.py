@@ -215,6 +215,24 @@ class InstallerManifestTests(unittest.TestCase):
         manifest = json.loads((self.output / "scoop/bucket/lighttable.json").read_text())
         self.assertEqual(manifest["license"], 'A "quoted": license')
 
+    def test_linux_generates_rpm_and_deb_recipes(self):
+        artifact = self.artifacts / "LightTable-0.5.0-linux-x86_64.tar.gz"
+        revision = "a" * 40
+        linux_fixture(artifact, manifest={"version": "0.5.0", "source_revision": revision,
+                                         "source_dirty": False})
+        self.generate("--channels", "rpm", "deb", "--source-revision", revision, version="0.5.0")
+        self.assertTrue((self.output / "rpm/SPECS/lighttable.spec").is_file())
+        self.assertTrue((self.output / "rpm/SOURCES/app.lighttable.LightTable.desktop").is_file())
+        self.assertTrue((self.output / "deb/DEBIAN/control").is_file())
+        self.assertTrue((self.output / "deb/DEBIAN/postinst").is_file())
+        self.assertTrue((self.output / "deb/DEBIAN/prerm").is_file())
+        rpm_spec = (self.output / "rpm/SPECS/lighttable.spec").read_text()
+        self.assertIn("Name:           lighttable\n", rpm_spec)
+        self.assertIn("Version:        0.5.0\n", rpm_spec)
+        deb_control = (self.output / "deb/DEBIAN/control").read_text()
+        self.assertIn("Package: lighttable\n", deb_control)
+        self.assertIn("Version: 0.5.0-1\n", deb_control)
+
 
 if __name__ == "__main__":
     unittest.main()

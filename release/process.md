@@ -4,6 +4,15 @@ A release has one immutable source cutoff and independently verified platform
 artifacts. A blocked Windows or store channel does not prevent an accepted Linux
 or macOS channel from progressing. No recurring release scheduler is required.
 
+Set the version before tagging. `app_version.py` is the one release version:
+About, the local API, the command client and every build without an explicit
+version read it. Run `python3 scripts/release/set-version.py X.Y.Z` (it also
+updates the Xcode project), merge that change, and tag `vX.Y.Z` from the merged
+source. The build workflow refuses a tag whose `app_version.py` disagrees, and the
+unit tests fail once the recorded release manifest or npm metadata is ahead of it.
+Per-channel package records such as the Flatpak metainfo and the Arch recipe are
+updated when that channel publishes.
+
 The manual build, preparation and promotion workflows have separate jobs:
 
 1. **Build:** select platforms and the existing immutable release tag. Run the
