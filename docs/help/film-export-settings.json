@@ -172,8 +172,13 @@
     "sections": [
       {
         "title": "Formats and presets",
-        "paragraphs": ["The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."],
+        "paragraphs": ["The export dialog offers JPEG, PNG, and TIFF. TIFF defaults to 16-bit; choose 8-bit TIFF depth in Advanced for a smaller archive file. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. PNG and HEIF always encode at 8-bit. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."],
         "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]
+      },
+      {
+        "title": "Custom size, resolution, and output sharpening",
+        "paragraphs": ["Custom size in Advanced replaces the Dimensions preset with any resize rule: long edge, short edge, fit within a width and height, megapixels, or a percent of the original. Enlarge smaller photos to fit allows the rule to upsize a smaller source; otherwise a photo already at or under the requested size exports unchanged. Resolution (ppi) writes only the resolution metadata tag read by print and page-layout software; it never changes the pixel dimensions.", "Sharpen for applies output sharpening after resizing, matched to how the file will be viewed: Screen for on-screen viewing, or Matte paper/Glossy paper for printing. Sharpen amount (Low/Standard/High) sets its strength. Print sharpening scales its radius with Resolution (ppi), so the same physical sharpening halo holds at any print size.", "Limit JPEG file size to (KB) lowers JPEG quality automatically until the file fits the limit or the quality floor is reached; a warning explains when the limit could not be met."],
+        "steps": ["Open Export and expand Advanced.", "Choose Custom size and enter the resize rule's value, or leave it at Use Dimensions above to keep the simple preset.", "Choose Sharpen for and Sharpen amount if the export needs output sharpening.", "For a JPEG with a hard size budget, set Limit JPEG file size to (KB)."]
       },
       {
         "title": "Add a border",
@@ -190,7 +195,11 @@
       {"path": "web/app.js", "anchor": "const EXPORT_MODAL_PRESETS = {"},
       {"path": "web/index.html", "anchor": "TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile."},
       {"path": "web/index.html", "anchor": "Wide-gamut Develop exports preserve source colors when only Light adjustments are applied. Film rendering and Develop exports with color, detail, or local adjustments are limited to sRGB colors."}, {"path": "color_pipeline.py", "anchor": "def wide_develop_edits_supported(job: dict) -> bool:"},
-      {"path": "export_workflow.py", "anchor": "if long_edge and max(width, height) > int(long_edge):"},
+      {"path": "export_workflow.py", "anchor": "SIZE_MODES = (\"full\", \"long-edge\", \"fit\", \"short-edge\", \"megapixels\", \"percent\")"},
+      {"path": "export_workflow.py", "anchor": "def sharpen_parameters(sharpen, resolution_ppi=None) -> dict | None:"},
+      {"path": "color_pipeline.py", "anchor": "def encode_jpeg_within(image, quality: int, max_bytes: int | None,"},
+      {"path": "web/index.html", "anchor": "id=\"modalExSizeMode\""},
+      {"path": "web/app.js", "anchor": "function exportModalSizing() {"},
       {"path": "web/app.js", "anchor": "$('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';"},
       {"path": "web/index.html", "anchor": "id=\"modalExBorder\""},
       {"path": "export_workflow.py", "anchor": "def apply_border(rgb, spec):"}

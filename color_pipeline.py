@@ -1258,13 +1258,18 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
                       metadata_source: Path | str | None = None,
                       metadata_policy: str = "none",
                       metadata_fields: dict | None = None,
-                      warnings: list[str] | None = None) -> tuple[int, int]:
+                      warnings: list[str] | None = None,
+                      resolution_ppi: int | None = None,
+                      max_bytes: int | None = None) -> tuple[int, int]:
     """Encode tagged RGB, retaining 16 bits for TIFF.
 
     ``input_space`` describes the supplied pixels; it is sRGB for film and
     adjusted renders, or the selected space for unadjusted Develop exports.
+    ``resolution_ppi`` stamps the container's density tag (JFIF, pHYs, or TIFF
+    resolution). ``max_bytes`` bounds a JPEG by searching lower qualities.
     """
     destination = Path(destination)
+    ppi = int(resolution_ppi) if resolution_ppi else None
     output_space = normalise_output_space(output_space)
     converted = convert_output_space(as_float_rgb(image_srgb), output_space,
                                      input_space=input_space)
@@ -1279,8 +1284,9 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
         if profile:
             # 34675 is the TIFF InterColorProfile tag; type 7 is UNDEFINED.
             extras.append((34675, 7, len(profile), profile, False))
+        density = {"resolution": (ppi, ppi), "resolutionunit": "INCH"} if ppi else {}
         tifffile.imwrite(destination, encoded, photometric="rgb",
-                         metadata=None, extratags=extras)
+                         metadata=None, extratags=extras, **density)
     elif fmt in ("heif", "heic"):
         helper = Path(os.environ.get(
             "LIGHTTABLE_VISION_HELPER",
@@ -1325,9 +1331,64 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
         encoded = (converted * 255.0 + 0.5).astype(np.uint8)
         image = Image.fromarray(encoded, "RGB")
         kwargs = {"icc_profile": profile} if profile else {}
+        if ppi:
+            kwargs["dpi"] = (ppi, ppi)
         if fmt == "png":
             image.save(destination, "PNG", **kwargs)
         else:
-            image.save(destination, "JPEG", quality=int(quality),
-                       subsampling=1, **kwargs)
+            encoded_jpeg, used_quality = encode_jpeg_within(
+                image, int(quality), max_bytes, **kwargs)
+            if max_bytes and len(encoded_jpeg) > int(max_bytes) and warnings is not None:
+                warnings.append(T(
+                    "The file-size limit could not be met at quality {quality}; "
+                    "the export is {size} KB.",
+                    quality=str(used_quality),
+                    size=str(-(-len(encoded_jpeg) // 1024))))
+            destination.write_bytes(encoded_jpeg)
     return width, height
+
+
+JPEG_QUALITY_FLOOR = 40
+MAX_JPEG_SIZE_ENCODES = 6
+
+
+def encode_jpeg_within(image, quality: int, max_bytes: int | None,
+                       **kwargs) -> tuple[bytes, int]:
+    """Encode a JPEG at ``quality``, then binary-search lower qualities to fit.
+
+    At most ``MAX_JPEG_SIZE_ENCODES`` encodes run, and quality never drops below
+    ``JPEG_QUALITY_FLOOR``; the best fitting encode wins, or the floor encode
+    when nothing fits so the caller can warn instead of failing.
+    """
+    def encode(value: int) -> bytes:
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG", quality=int(value), subsampling=1, **kwargs)
+        return buffer.getvalue()
+
+    quality = max(1, min(100, int(quality)))
+    data = encode(quality)
+    if not max_bytes or len(data) <= int(max_bytes):
+        return data, quality
+    limit = int(max_bytes)
+    low, high = JPEG_QUALITY_FLOOR, quality - 1
+    best: tuple[bytes, int] | None = None
+    smallest = (data, quality)
+    encodes = 1
+    while low <= high and encodes < MAX_JPEG_SIZE_ENCODES:
+        middle = (low + high) // 2
+        candidate = encode(middle)
+        encodes += 1
+        if len(candidate) < len(smallest[0]):
+            smallest = (candidate, middle)
+        if len(candidate) <= limit:
+            best = (candidate, middle)
+            low = middle + 1
+        else:
+            high = middle - 1
+    if best is not None:
+        return best
+    if smallest[1] > JPEG_QUALITY_FLOOR and encodes < MAX_JPEG_SIZE_ENCODES + 1:
+        floor = encode(JPEG_QUALITY_FLOOR)
+        if len(floor) < len(smallest[0]):
+            smallest = (floor, JPEG_QUALITY_FLOOR)
+    return smallest

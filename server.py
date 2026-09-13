@@ -4819,7 +4819,8 @@ MERGE = {"running": False, "mode": "", "progress": 0, "total": 0,
          "timings": {}, "output": "", "error": ""}
 MERGE_LOCK = threading.Lock()
 MERGE_POOL = ThreadPoolExecutor(max_workers=1)
-MERGE_MAX_EDGE = int(os.environ.get("LIGHTTABLE_MERGE_MAX_EDGE", "6000"))
+# 0 means full resolution, bounded only by the memory-aware merge plan.
+MERGE_MAX_EDGE = int(os.environ.get("LIGHTTABLE_MERGE_MAX_EDGE", "0") or 0)
 DENOISE = {"running": False, "name": "", "progress": 0, "total": 0,
            "error": "", "cancelled": False, "done": False}
 DENOISE_LOCK = threading.Lock()
@@ -5040,7 +5041,11 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         y1 = min(height, y0 + max(1, int(round(crop["h"] * height))))
         out = np.ascontiguousarray(out[y0:y1, x0:x1])
 
-    out = color_pipeline.resize_float(out, job.get("longEdge"))
+    out = color_pipeline.resize_float_to_size(
+        out, export_workflow.resize_target(out.shape[1], out.shape[0], job))
+    # Output sharpening follows the resize so its radius is in delivered pixels.
+    out = export_workflow.output_sharpen(out, export_workflow.sharpen_parameters(
+        job.get("sharpen"), job.get("resolutionPpi")))
     # The mark is applied after resizing so it scales with the delivered image
     # rather than being enlarged or shrunk with the pixels beneath it.
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
@@ -5055,10 +5060,23 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=policy if is_heif else "none",
         metadata_fields=metadata_fields if is_heif else None,
-        warnings=job.setdefault("warnings", []))
+        warnings=job.setdefault("warnings", []),
+        resolution_ppi=job.get("resolutionPpi"),
+        max_bytes=export_max_bytes(job))
     if not is_heif:
         embed_export_metadata(dst, job)
     return size
+
+
+def export_max_bytes(job: dict) -> int | None:
+    """The JPEG size bound, in bytes; other formats ignore the limit."""
+    if str(job.get("format", "jpeg")).lower() not in ("jpeg", "jpg"):
+        return None
+    try:
+        kilobytes = int(job.get("maxFileKb") or 0)
+    except (TypeError, ValueError):
+        return None
+    return kilobytes * 1024 if kilobytes > 0 else None
 
 
 def export_metadata_fields(name: str, *, state: dict | None = None) -> dict:
@@ -5098,9 +5116,14 @@ def embed_export_metadata(dst: Path, job: dict) -> bool:
     the recipe so a web JPEG and an archive master can differ.
     """
     policy, source, fields = _export_metadata_payload(job)
-    if policy == "none":
-        return False
     warnings = job.setdefault("warnings", [])
+    ppi = job.get("resolutionPpi")
+    if policy == "none":
+        if ppi:
+            platform_image.write_resolution(dst, ppi, warnings=warnings)
+        return False
+    if ppi:
+        fields = dict(fields, resolutionPpi=ppi)
     before = len(warnings)
     succeeded = platform_image.write_metadata(
         dst, source, policy, fields, warnings=warnings)
@@ -5122,6 +5145,13 @@ def rust_direct_export_supported(job: dict) -> bool:
         return False
     if export_workflow.clean_border(job.get("border"))["enabled"]:
         return False
+    # The bounded-quality size search re-encodes with Pillow, so a file-size
+    # limit finishes on the Python path.
+    if export_max_bytes(job):
+        return False
+    # Output sharpening runs the identical unsharp-mask taps in the resident
+    # engine (rust-engine/src/export.rs `output_sharpen`), so it stays on the
+    # Rust delivery path; only the file-size search above forces Python.
     # Rust reproduces geometric and bitmap masks. Brush rasterization still
     # uses Pillow's Gaussian stroke contract and therefore stays on Python.
     # Radial ellipses/rotation, collapsed linear gradients, and the adjustable
@@ -5308,6 +5338,9 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "masks": edits.clean_masks(job.get("masks")),
             "crop": clean_crop(job.get("crop")),
             "long_edge": job.get("longEdge"),
+            "resize": export_workflow.rust_resize_request(job),
+            "sharpen": export_workflow.sharpen_parameters(
+                job.get("sharpen"), job.get("resolutionPpi")),
         }
         try:
             metrics = _direct_export_render(name, params, request, dst, job)
@@ -6217,7 +6250,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "opticsSaved": e.get("opticsSaved", bool(e.get("optics"))),
             "format": recipe["format"],
             "quality": recipe["quality"],
-            "longEdge": recipe["longEdge"],
+            **{key: recipe[key] for key in export_workflow.SIZING_KEYS},
+            "sharpen": recipe["sharpen"],
+            "maxFileKb": recipe["maxFileKb"],
+            "bitDepth": recipe["bitDepth"],
             "engine": opts.get("engine", "rs"),
             "outputSpace": color_pipeline.normalise_output_space(
                 recipe["outputSpace"]),
@@ -6322,8 +6358,7 @@ def preview_export(opts: dict) -> dict:
         width, height = export_source_dimensions(name)
         width, height = export_workflow.output_dimensions(
             width, height, rotate=fp.clean_params(job["params"])["rotate"],
-            crop=job.get("crop"), long_edge=job.get("longEdge"),
-            border=job.get("border"))
+            crop=job.get("crop"), sizing=job, border=job.get("border"))
         sample.update(width=width, height=height, dimensionsExact=True)
     except Exception:  # Header support can differ from the full decoder.
         sample["dimensionsNote"] = "Dimensions will be available after rendering."
@@ -6376,14 +6411,28 @@ def _merge_source_path(name: str, st: dict) -> Path:
     return neutral_tiff_for(name, entry.get("params") or default_params)
 
 
-def _load_merge_source(source: Path) -> np.ndarray:
+def _load_merge_source(source: Path, edge: int | None = None) -> np.ndarray:
     return color_pipeline.resize_float(
-        color_pipeline.load_float_rgb(source), MERGE_MAX_EDGE)
+        color_pipeline.load_float_rgb(source), edge)
+
+
+def merge_input_plan(mode: str, names: list[str]) -> dict:
+    """Size merge inputs against available memory; the env cap still applies."""
+    import merge_plan
+
+    dimensions = []
+    for name in names:
+        try:
+            dimensions.append(export_source_dimensions(name))
+        except Exception:  # noqa: BLE001 - unknown geometry means no reduction
+            continue
+    return merge_plan.plan_input_edge(
+        mode, dimensions, hard_cap=MERGE_MAX_EDGE or None)
 
 
 def _merge_source(name: str, st: dict) -> np.ndarray:
     """Compatibility helper for tests and direct callers."""
-    return _load_merge_source(_merge_source_path(name, st))
+    return _load_merge_source(_merge_source_path(name, st), MERGE_MAX_EDGE or None)
 
 
 def _run_merge(mode: str, names: list[str], output: Path) -> None:
@@ -6429,7 +6478,9 @@ def _run_merge(mode: str, names: list[str], output: Path) -> None:
         for index, name in enumerate(names, 1):
             sources.append(_merge_source_path(name, st))
             report_progress("preparing", index, len(names))
-        loaders = [lambda path=path: _load_merge_source(path)
+        with MERGE_LOCK:
+            input_edge = MERGE.get("inputEdge")
+        loaders = [lambda path=path: _load_merge_source(path, input_edge)
                    for path in sources]
         if mode == "hdr":
             result = merge_workflow.hdr_merge(loaders, progress=report_progress)
@@ -6494,6 +6545,7 @@ def start_merge(body: dict) -> dict:
         raise ValueError(T("{mode} merge needs 2 to {limit} distinct originals", mode=f'{mode}', limit=f'{limit}'))
     for name in names:
         src_path(name)
+    plan = merge_input_plan(mode, names)
     with MERGE_LOCK:
         if MERGE["running"]:
             return {"error": T("a merge is already running")}
@@ -6507,11 +6559,24 @@ def start_merge(body: dict) -> dict:
         MERGE.update(running=True, mode=mode, progress=0, total=len(names),
                      phase="preparing", phaseProgress=0,
                      phaseTotal=len(names), alignmentInliers=0,
-                     elapsedSeconds=0.0, timings={}, output="", error="")
+                     elapsedSeconds=0.0, timings={}, output="", error="",
+                     inputEdge=plan["edge"], effectiveEdge=plan["effectiveEdge"],
+                     inputNotice=plan["notice"] or "")
         MERGE["jobId"] = JOBS.create(
             f"merge.{mode}", total=len(names), state="running")["id"]
     MERGE_POOL.submit(_run_merge, mode, names, output)
-    return {"queued": len(names), "mode": mode}
+    return {"queued": len(names), "mode": mode, "inputEdge": plan["edge"],
+            "effectiveEdge": plan["effectiveEdge"], "inputNotice": plan["notice"] or ""}
+
+
+def preview_merge(body: dict) -> dict:
+    """Report the input size a merge would use, without starting one."""
+    mode = str(body.get("mode", "hdr"))
+    if mode not in ("hdr", "panorama", "focus"):
+        raise ValueError(T("unknown merge mode"))
+    names = list(dict.fromkeys(
+        library_workflow.source_name(str(name)) for name in body.get("names", [])))
+    return dict(merge_input_plan(mode, names), mode=mode, names=names)
 
 
 class PreviewPregenQueue:
@@ -8343,6 +8408,8 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/export":
                 result = start_export(self._body())
                 self._json(result, 409 if result.get("error") else 200)
+            elif u.path == "/api/merge/preview":
+                self._json(preview_merge(self._body()))
             elif u.path == "/api/heal/dust-detect":
                 self._json(detect_dust(self._body()))
             elif u.path == "/api/contact-sheet":

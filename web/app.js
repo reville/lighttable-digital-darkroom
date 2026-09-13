@@ -9865,18 +9865,77 @@ function exportModalOptions() {
     ...(which === 'selected' ? { names: transferTargets().map((im) => im.name) } : {}),
     format: $('modalExFormat').value,
     quality: +$('modalExQuality').value,
-    longEdge: $('modalExSize').value ? +$('modalExSize').value : null,
+    ...exportModalSizing(),
     outputSpace: $('modalExColorSpace').value,
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
     border: exportModalBorder(),
+    sharpen: exportModalSharpen(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
   };
 }
 
 function exportModalBorder() {
   const size = +$('modalExBorder').value || 0;
   return { enabled: size > 0, size: size || 0.03, tone: +$('modalExBorderTone').value };
+}
+
+// The Dimensions dropdown covers full size and the common long-edge presets.
+// Custom size overrides it with any other resize rule; "" keeps the dropdown
+// in charge, matching the legacy longEdge-only recipe shape when unset.
+function exportModalSizing() {
+  const mode = $('modalExSizeMode').value;
+  const noEnlarge = !$('modalExEnlarge').checked;
+  const resolutionPpi = +$('modalExPpi').value || null;
+  if (!mode) {
+    const longEdge = $('modalExSize').value ? +$('modalExSize').value : null;
+    return {
+      sizeMode: longEdge ? 'long-edge' : 'full', longEdge,
+      maxWidth: null, maxHeight: null, shortEdge: null, megapixels: null, percent: null,
+      noEnlarge, resolutionPpi,
+    };
+  }
+  const value = +$('modalExSizeValue').value || null;
+  return {
+    sizeMode: mode,
+    longEdge: mode === 'long-edge' ? value : null,
+    shortEdge: mode === 'short-edge' ? value : null,
+    maxWidth: mode === 'fit' ? value : null,
+    maxHeight: mode === 'fit' ? (+$('modalExSizeHeight').value || null) : null,
+    megapixels: mode === 'megapixels' ? value : null,
+    percent: mode === 'percent' ? value : null,
+    noEnlarge, resolutionPpi,
+  };
+}
+
+function exportModalSharpen() {
+  return { target: $('modalExSharpenTarget').value, amount: $('modalExSharpenAmount').value };
+}
+
+const EXPORT_SIZE_VALUE_LABELS = {
+  'long-edge': tr("Long edge (px)"), 'short-edge': tr("Short edge (px)"),
+  fit: tr("Max width (px)"), megapixels: tr("Megapixels"), percent: tr("Percent of original"),
+};
+
+function updateExportModalSizeMode() {
+  const mode = $('modalExSizeMode').value;
+  $('modalExSizeValueRow').hidden = !mode;
+  $('modalExSizeHeightField').hidden = mode !== 'fit';
+  $('modalExSize').disabled = !!mode;
+  if (mode) $('modalExSizeValueLabel').textContent = EXPORT_SIZE_VALUE_LABELS[mode] || tr("Value");
+}
+
+function updateExportModalFormatRows() {
+  const format = $('modalExFormat').value;
+  $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes(format) ? '' : 'none';
+  $('modalExMaxFileRow').hidden = format !== 'jpeg';
+  $('modalExBitDepthRow').hidden = format !== 'tif';
+}
+
+function updateExportModalSharpenRow() {
+  $('modalExSharpenAmountRow').hidden = $('modalExSharpenTarget').value === 'none';
 }
 
 function nearestOptionValue(select, value) {
@@ -9951,7 +10010,7 @@ function applyExportPreset(presetKey) {
   $('modalExQuality').value = p.quality;
   $('modalExQualityV').textContent = p.quality;
   $('modalExColorSpace').value = p.colorSpace;
-  $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes(p.format) ? '' : 'none';
+  updateExportModalFormatRows();
   scheduleExportPreview();
 }
 
@@ -10021,6 +10080,23 @@ function openExportModal() {
   $('modalExBorderTone').value = nearestOptionValue($('modalExBorderTone'), recipeBorder?.tone ?? 1);
   for (const key of EXPORT_EXTRA_FIELDS) $('modalEx' + key).value = $('ex' + key).value;
   syncExportDestination('modalEx');
+
+  const advancedModes = ['short-edge', 'fit', 'megapixels', 'percent'];
+  const recipeSizeMode = advancedModes.includes(EXPORT_RECIPE_EXTRAS.sizeMode) ? EXPORT_RECIPE_EXTRAS.sizeMode : '';
+  $('modalExSizeMode').value = recipeSizeMode;
+  $('modalExSizeValue').value = recipeSizeMode
+    ? (EXPORT_RECIPE_EXTRAS.shortEdge || EXPORT_RECIPE_EXTRAS.maxWidth
+      || EXPORT_RECIPE_EXTRAS.megapixels || EXPORT_RECIPE_EXTRAS.percent || '') : '';
+  $('modalExSizeHeight').value = recipeSizeMode === 'fit' ? (EXPORT_RECIPE_EXTRAS.maxHeight || '') : '';
+  $('modalExEnlarge').checked = EXPORT_RECIPE_EXTRAS.noEnlarge === false;
+  $('modalExPpi').value = EXPORT_RECIPE_EXTRAS.resolutionPpi || '';
+  $('modalExSharpenTarget').value = EXPORT_RECIPE_EXTRAS.sharpen?.target || 'none';
+  $('modalExSharpenAmount').value = EXPORT_RECIPE_EXTRAS.sharpen?.amount || 'standard';
+  $('modalExMaxFileKb').value = EXPORT_RECIPE_EXTRAS.maxFileKb || '';
+  $('modalExBitDepth').value = EXPORT_RECIPE_EXTRAS.bitDepth === 8 ? '8' : '16';
+  updateExportModalSizeMode();
+  updateExportModalFormatRows();
+  updateExportModalSharpenRow();
 
   const thumbEl = $('exportTargetThumb');
   if (thumbEl) {
@@ -10102,13 +10178,18 @@ document.querySelectorAll('.export-preset-pill').forEach((pill) => {
       $('modalExQualityV').textContent = $('modalExQuality').value;
     }
     if (id === 'modalExFormat') {
-      $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';
+      updateExportModalFormatRows();
     }
   });
 });
 
+$('modalExSizeMode').addEventListener('change', updateExportModalSizeMode);
+$('modalExSharpenTarget').addEventListener('change', updateExportModalSharpenRow);
+
 ['modalExFormat', 'modalExSize', 'modalExQuality', 'modalExColorSpace',
   'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision', 'modalExBorder', 'modalExBorderTone',
+  'modalExSizeMode', 'modalExSizeValue', 'modalExSizeHeight', 'modalExEnlarge', 'modalExPpi',
+  'modalExSharpenTarget', 'modalExSharpenAmount', 'modalExMaxFileKb', 'modalExBitDepth',
   ...EXPORT_EXTRA_FIELDS.map((key) => 'modalEx' + key)].forEach((id) => {
   $(id).addEventListener('input', scheduleExportPreview);
   $(id).addEventListener('change', scheduleExportPreview);
@@ -10140,7 +10221,12 @@ $('exportModalRun').onclick = async () => {
   $('exFilenameTemplate').value = $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}';
   $('exCollision').value = $('modalExCollision').value;
   for (const key of EXPORT_EXTRA_FIELDS) $('ex' + key).value = $('modalEx' + key).value;
-  EXPORT_RECIPE_EXTRAS = { ...EXPORT_RECIPE_EXTRAS, border: exportModalBorder() };
+  EXPORT_RECIPE_EXTRAS = {
+    ...EXPORT_RECIPE_EXTRAS, border: exportModalBorder(), sharpen: exportModalSharpen(),
+    ...exportModalSizing(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
+  };
   savePrefs();
   closeExportModal();
   await runExport({
@@ -10149,12 +10235,15 @@ $('exportModalRun').onclick = async () => {
     names,
     format: $('modalExFormat').value,
     quality: +$('modalExQuality').value,
-    longEdge: $('modalExSize').value ? +$('modalExSize').value : null,
+    ...exportModalSizing(),
     outputSpace: $('modalExColorSpace').value,
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
     border: exportModalBorder(),
+    sharpen: exportModalSharpen(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
   });
 };
 

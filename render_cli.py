@@ -79,7 +79,6 @@ def main():
     rotate = float(fp.clean_params(params)["rotate"])
     fmt = job.get("format", "jpeg")
     quality = int(job.get("quality", 92))
-    long_edge = job.get("longEdge")
     warnings = job.setdefault("warnings", [])
     color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
 
@@ -124,9 +123,12 @@ def main():
         y1 = min(h, y0 + max(1, int(round(crop["h"] * h))))
         out = np.ascontiguousarray(out[y0:y1, x0:x1])
 
-    out = color_pipeline.resize_float(out, long_edge)
-    # Kept in step with finish_export() in server.py: watermark after resize,
-    # metadata after encode. The two paths must produce the same file.
+    out = color_pipeline.resize_float_to_size(
+        out, export_workflow.resize_target(out.shape[1], out.shape[0], job))
+    # Kept in step with finish_export() in server.py: sharpen and watermark
+    # after resize, metadata after encode. The two paths must produce the same file.
+    out = export_workflow.output_sharpen(out, export_workflow.sharpen_parameters(
+        job.get("sharpen"), job.get("resolutionPpi")))
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
     out = export_workflow.apply_border(out, job.get("border"))
     metadata_policy = str(job.get("metadata", "all-except-location"))
@@ -144,14 +146,23 @@ def main():
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=metadata_policy if is_heif else "none",
         metadata_fields=(job.get("metadataFields") or {}) if is_heif else None,
-        warnings=warnings)
+        warnings=warnings,
+        resolution_ppi=job.get("resolutionPpi"),
+        max_bytes=(int(job["maxFileKb"]) * 1024
+                   if str(fmt).lower() in ("jpeg", "jpg") and job.get("maxFileKb")
+                   else None))
+    ppi = job.get("resolutionPpi")
     if metadata_policy != "none" and not is_heif:
         before = len(warnings)
+        fields = dict(job.get("metadataFields") or {})
+        if ppi:
+            fields["resolutionPpi"] = ppi
         succeeded = platform_image.write_metadata(
-            dst, metadata_source, metadata_policy,
-            job.get("metadataFields") or {}, warnings=warnings)
+            dst, metadata_source, metadata_policy, fields, warnings=warnings)
         if not succeeded and len(warnings) == before:
             warnings.append("Requested metadata could not be saved.")
+    elif ppi and not is_heif:
+        platform_image.write_resolution(dst, ppi, warnings=warnings)
     print(json.dumps({"ok": True, "path": str(dst), "width": width,
                       "height": height, "seconds": time.time() - t0,
                       "warnings": warnings}))

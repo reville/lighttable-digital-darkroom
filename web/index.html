@@ -1461,6 +1461,71 @@
         <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Wide-gamut Develop exports preserve source colors when only Light adjustments are applied. Film rendering and Develop exports with color, detail, or local adjustments are limited to sRGB colors.&quot;}">Wide-gamut Develop exports preserve source colors when only Light adjustments are applied. Film rendering and Develop exports with color, detail, or local adjustments are limited to sRGB colors.</p>
       </label>
 
+      <label class="field">
+        <span data-i18n-text="{&quot;0&quot;:&quot;Custom size&quot;}">Custom size</span>
+        <select id="modalExSizeMode">
+          <option value="" selected data-i18n-text="{&quot;0&quot;:&quot;Use Dimensions above&quot;}">Use Dimensions above</option>
+          <option value="long-edge" data-i18n-text="{&quot;0&quot;:&quot;Long edge (px)&quot;}">Long edge (px)</option>
+          <option value="short-edge" data-i18n-text="{&quot;0&quot;:&quot;Short edge (px)&quot;}">Short edge (px)</option>
+          <option value="fit" data-i18n-text="{&quot;0&quot;:&quot;Fit within width × height&quot;}">Fit within width × height</option>
+          <option value="megapixels" data-i18n-text="{&quot;0&quot;:&quot;Megapixels&quot;}">Megapixels</option>
+          <option value="percent" data-i18n-text="{&quot;0&quot;:&quot;Percent of original&quot;}">Percent of original</option>
+        </select>
+        <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Overrides Dimensions above when set to anything other than “Use Dimensions above”.&quot;}">Overrides Dimensions above when set to anything other than “Use Dimensions above”.</p>
+      </label>
+
+      <div class="field" id="modalExSizeValueRow" hidden>
+        <label><span id="modalExSizeValueLabel" data-i18n-text="{&quot;0&quot;:&quot;Value&quot;}">Value</span>
+          <input type="number" id="modalExSizeValue" min="1" step="1" inputmode="decimal">
+        </label>
+        <label id="modalExSizeHeightField" hidden><span data-i18n-text="{&quot;0&quot;:&quot;Max height (px)&quot;}">Max height (px)</span>
+          <input type="number" id="modalExSizeHeight" min="1" step="1" inputmode="numeric">
+        </label>
+      </div>
+
+      <label class="field check-row">
+        <input type="checkbox" id="modalExEnlarge">
+        <span data-i18n-text="{&quot;0&quot;:&quot;Enlarge smaller photos to fit&quot;}">Enlarge smaller photos to fit</span>
+      </label>
+
+      <label class="field">
+        <span data-i18n-text="{&quot;0&quot;:&quot;Resolution (ppi)&quot;}">Resolution (ppi)</span>
+        <input type="number" id="modalExPpi" min="1" step="1" inputmode="numeric" placeholder="300">
+        <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Writes only the resolution metadata tag; pixel dimensions are unchanged.&quot;}">Writes only the resolution metadata tag; pixel dimensions are unchanged.</p>
+      </label>
+
+      <label class="field">
+        <span data-i18n-text="{&quot;0&quot;:&quot;Sharpen for&quot;}">Sharpen for</span>
+        <select id="modalExSharpenTarget">
+          <option value="none" selected data-i18n-text="{&quot;0&quot;:&quot;None&quot;}">None</option>
+          <option value="screen" data-i18n-text="{&quot;0&quot;:&quot;Screen&quot;}">Screen</option>
+          <option value="matte" data-i18n-text="{&quot;0&quot;:&quot;Matte paper&quot;}">Matte paper</option>
+          <option value="glossy" data-i18n-text="{&quot;0&quot;:&quot;Glossy paper&quot;}">Glossy paper</option>
+        </select>
+      </label>
+
+      <label class="field" id="modalExSharpenAmountRow" hidden>
+        <span data-i18n-text="{&quot;0&quot;:&quot;Sharpen amount&quot;}">Sharpen amount</span>
+        <select id="modalExSharpenAmount">
+          <option value="low" data-i18n-text="{&quot;0&quot;:&quot;Low&quot;}">Low</option>
+          <option value="standard" selected data-i18n-text="{&quot;0&quot;:&quot;Standard&quot;}">Standard</option>
+          <option value="high" data-i18n-text="{&quot;0&quot;:&quot;High&quot;}">High</option>
+        </select>
+      </label>
+
+      <label class="field" id="modalExMaxFileRow">
+        <span data-i18n-text="{&quot;0&quot;:&quot;Limit JPEG file size to (KB)&quot;}">Limit JPEG file size to (KB)</span>
+        <input type="number" id="modalExMaxFileKb" min="20" step="1" inputmode="numeric" placeholder="No limit">
+      </label>
+
+      <label class="field" id="modalExBitDepthRow" hidden>
+        <span data-i18n-text="{&quot;0&quot;:&quot;TIFF depth&quot;}">TIFF depth</span>
+        <select id="modalExBitDepth">
+          <option value="16" selected data-i18n-text="{&quot;0&quot;:&quot;16-bit&quot;}">16-bit</option>
+          <option value="8" data-i18n-text="{&quot;0&quot;:&quot;8-bit&quot;}">8-bit</option>
+        </select>
+      </label>
+
       <label class="field full-width"><span data-i18n-text="{&quot;0&quot;:&quot;Destination layout&quot;}">Destination layout</span><select id="modalExDestinationMode"><option value="fixed" data-i18n-text="{&quot;0&quot;:&quot;One destination folder&quot;}">One destination folder</option><option value="original-folder-relative" data-i18n-text="{&quot;0&quot;:&quot;Subfolder beside each original&quot;}">Subfolder beside each original</option><option value="preserve-source-hierarchy" data-i18n-text="{&quot;0&quot;:&quot;Keep source folder hierarchy&quot;}">Keep source folder hierarchy</option></select></label><label class="field full-width">
         <span data-i18n-text="{&quot;0&quot;:&quot;Destination folder&quot;}">Destination folder</span>
         <div class="path-field">

@@ -132,9 +132,14 @@ class MergeStartTests(CatalogServerTestCase):
             result = server.start_merge({
                 "mode": "panorama", "names": ["a.jpg", "sub/b.jpg"],
             })
-            self.assertEqual(result, {"queued": 2, "mode": "panorama"})
+            self.assertEqual(result["queued"], 2)
+            self.assertEqual(result["mode"], "panorama")
+            self.assertIn("inputEdge", result)
+            self.assertIn("effectiveEdge", result)
+            self.assertIn("inputNotice", result)
             self.assertEqual(server.MERGE["phase"], "preparing")
             self.assertEqual(server.MERGE["phaseTotal"], 2)
+            self.assertEqual(server.MERGE["effectiveEdge"], result["effectiveEdge"])
             submit.assert_called_once()
 
 class StateRoutingTests(CatalogServerTestCase):

@@ -64,6 +64,8 @@ struct Request {
     masks: Option<serde_json::Value>,
     crop: Option<serde_json::Value>,
     long_edge: Option<u32>,
+    resize: Option<serde_json::Value>,
+    sharpen: Option<serde_json::Value>,
 }
 
 fn default_command() -> String {
@@ -396,7 +398,8 @@ impl Engine {
         let load_ms = millis(load_started.elapsed());
 
         if request.viewport.is_some() && (request.grade.is_some() || request.masks.is_some()
-            || request.crop.is_some() || request.long_edge.is_some()) {
+            || request.crop.is_some() || request.long_edge.is_some()
+            || request.resize.is_some() || request.sharpen.is_some()) {
             bail!("viewport rendering requires an unbaked native preview");
         }
         let mut plan = request.viewport.map(|viewport| region::plan(viewport, image.width, image.height,
@@ -529,7 +532,8 @@ impl Engine {
         let native_only = native_output.is_some() && output.is_none()
             && !request.export_shared && !request.export_rgb8
             && request.grade.is_none() && request.masks.is_none()
-            && request.crop.is_none() && request.long_edge.is_none();
+            && request.crop.is_none() && request.long_edge.is_none()
+            && request.resize.is_none() && request.sharpen.is_none();
         let packed = if native_only {
             pipeline.process_resident_native(render_image, backend,
                 film_key.as_deref(), metered_ev,
@@ -569,6 +573,8 @@ impl Engine {
             || request.masks.is_some()
             || request.crop.is_some()
             || request.long_edge.is_some()
+            || request.resize.is_some()
+            || request.sharpen.is_some()
         {
             let mut remaining_grade = request.grade.as_ref();
             if let Some(grade) = remaining_grade.filter(|g| !export::grade_is_identity(g)) {
@@ -578,7 +584,7 @@ impl Engine {
                     grade_gpu = true;
                 }
             }
-            let processed = export::postprocess(
+            let processed = export::finish(
                 width,
                 height,
                 samples,
@@ -586,6 +592,8 @@ impl Engine {
                 request.masks.as_ref(),
                 request.crop.as_ref(),
                 request.long_edge,
+                request.resize.as_ref(),
+                request.sharpen.as_ref(),
             )?;
             width = processed.width;
             height = processed.height;

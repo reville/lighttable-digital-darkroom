@@ -305,7 +305,7 @@
         "title": "Start a merge in the Mac app",
         "paragraphs": ["Photo Merge uses a neutral render of each original and creates a new 16-bit TIFF in LightTable Merges. Apply your final look, crop, and local adjustments to the merged result. The source originals remain available."],
         "steps": ["Select at least two distinct originals in the library. Multiple virtual copies of one original count as one source.", "Choose Photo → Photo Merge… in the Mac menu.", "Choose HDR · exposure fusion, Panorama · feature aligned, or Focus stack · sharpness fused.", "Optionally enter a Result name, then click Merge.", "Watch the preparation, alignment, blending, and saving progress. When the app reports completion and refreshes the library, open the TIFF in LightTable Merges and inspect it."],
-        "tips": ["Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.", "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.", "If a merge reports an error, read the specific message and correct the input selection before trying again."]
+        "tips": ["Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.", "Merge inputs default to full resolution. If the sequence would need more memory than the machine can spare, LightTable automatically reduces every input to a smaller long edge and shows the effective size before you start; a fixed limit can also be set with the LIGHTTABLE_MERGE_MAX_EDGE environment variable.", "If a merge reports an error, read the specific message and correct the input selection before trying again."]
       },
       {
         "title": "Choose suitable inputs",
@@ -322,7 +322,8 @@
       {"path": "server.py", "anchor": "return neutral_tiff_for(name, entry.get(\"params\") or default_params)"},
       {"path": "server.py", "anchor": "folder = FOLDER / \"LightTable Merges\""},
       {"path": "server.py", "anchor": "\"outputSpace\": \"prophoto\", \"bitDepth\": 16,"},
-      {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"6000\"))"},
+      {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"0\") or 0)"},
+      {"path": "merge_plan.py", "anchor": "default is now full resolution, bounded by an estimate of the float32 working"},
       {"path": "server.py", "anchor": "return {\"error\": T(\"a merge is already running\")}"},
       {"path": "merge_workflow.py", "anchor": "Align and exposure-fuse 2-9 bracketed, display-referred frames."},
       {"path": "merge_workflow.py", "anchor": "HDR inputs must have matching dimensions"},
