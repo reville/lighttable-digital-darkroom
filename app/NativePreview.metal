@@ -170,10 +170,82 @@ float3 sampleEditedNeighbor(texture2d<float> image, texture2d<float> fallback, s
                               grade, texel, redCyan, blueYellow);
 }
 
+// Heal mode matches colour like the CPU reference: the copied patch is shifted
+// by the mean difference between the target and source annuli (0.72–1.0 of
+// the radius). One threadgroup per spot reduces those means before the
+// display pass so the fragment shader reads a constant per spot.
+kernel void healRingMeans(
+    texture2d<float> image [[texture(0)]],
+    texture2d<float> fallback [[texture(1)]],
+    sampler linearSampler [[sampler(0)]],
+    constant GradeUniforms &grade [[buffer(0)]],
+    constant HealUniform *heals [[buffer(1)]],
+    device float4 *shifts [[buffer(2)]],
+    uint spotIndex [[threadgroup_position_in_grid]],
+    uint threadIndex [[thread_index_in_threadgroup]],
+    uint threadCount [[threads_per_threadgroup]],
+    uint lane [[thread_index_in_simdgroup]],
+    uint simdIndex [[simdgroup_index_in_threadgroup]],
+    uint simdCount [[simdgroups_per_threadgroup]]) {
+    threadgroup float4 partialTarget[32];
+    threadgroup float4 partialSource[32];
+    HealUniform spot = heals[spotIndex];
+    float2 texel = grade.tone3.zw;
+    float redCyan = grade.detail1.z;
+    float blueYellow = grade.detail1.w;
+    float2 dimensions = float2(image.get_width(), image.get_height()) / grade.sourceRegion.xy;
+    float minimum = max(min(dimensions.x, dimensions.y), 1.0);
+    // Pixel-index conventions follow the CPU reference: integer centres and a
+    // radius of at least one pixel.
+    float radius = max(spot.settings.x * minimum, 1.0);
+    float2 centre = spot.points.xy * (dimensions - 1.0);
+    float2 offset = (spot.points.zw - spot.points.xy) * (dimensions - 1.0);
+    int2 low = max(int2(floor(centre - radius - 1.0)), int2(0));
+    int2 high = min(int2(ceil(centre + radius + 1.0)), int2(dimensions) - 1);
+    int2 span = high - low + 1;
+    float4 target = 0.0;
+    float4 source = 0.0;
+    bool healMode = spot.settings.w >= 1.5 && spot.settings.w < 2.5;
+    if (healMode && all(span > 0)) {
+        uint total = uint(span.x) * uint(span.y);
+        for (uint index = threadIndex; index < total; index += threadCount) {
+            int2 pixel = low + int2(index % uint(span.x), index / uint(span.x));
+            float2 position = float2(pixel);
+            float distance = length(position - centre) / radius;
+            if (distance < 0.72 || distance > 1.0) continue;
+            float2 targetUV = (position + 0.5) / dimensions;
+            float2 sourceUV = (position + offset + 0.5) / dimensions;
+            target += float4(sampleEditedSource(image, fallback, linearSampler, targetUV,
+                grade, texel, redCyan, blueYellow), 1.0);
+            source += float4(sampleEditedSource(image, fallback, linearSampler, sourceUV,
+                grade, texel, redCyan, blueYellow), 1.0);
+        }
+    }
+    target = simd_sum(target);
+    source = simd_sum(source);
+    if (lane == 0) {
+        partialTarget[simdIndex] = target;
+        partialSource[simdIndex] = source;
+    }
+    threadgroup_barrier(mem_flags::mem_threadgroup);
+    if (threadIndex == 0) {
+        float4 targetSum = 0.0;
+        float4 sourceSum = 0.0;
+        for (uint index = 0; index < simdCount; index++) {
+            targetSum += partialTarget[index];
+            sourceSum += partialSource[index];
+        }
+        shifts[spotIndex] = targetSum.w > 0.0 && sourceSum.w > 0.0
+            ? float4(targetSum.rgb / targetSum.w - sourceSum.rgb / sourceSum.w, 0.0)
+            : float4(0.0);
+    }
+}
+
 float3 applyHeals(float3 color, float2 uv,
                   texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
                   constant GradeUniforms &grade,
                   constant HealUniform *heals,
+                  constant float4 *healShifts,
                   float2 texel, float redCyan, float blueYellow) {
     float2 dimensions = float2(image.get_width(), image.get_height()) / grade.sourceRegion.xy;
     float minimum = max(min(dimensions.x, dimensions.y), 1.0);
@@ -204,6 +276,11 @@ float3 applyHeals(float3 color, float2 uv,
             replacement = sampleEditedSource(
                 image, fallback, linearSampler, uv + source - target,
                 grade, texel, redCyan, blueYellow);
+            // Heal (mode 2) adds the annulus colour match reduced by
+            // healRingMeans; Clone (mode 3) copies the source unchanged.
+            if (spot.settings.w < 2.5) {
+                replacement = clamp(replacement + healShifts[index].rgb, 0.0, 1.0);
+            }
         }
         color = mix(color, replacement, clamp(weight, 0.0, 1.0));
     }
@@ -450,7 +527,8 @@ fragment float4 nativePreviewFragment(
     sampler linearSampler [[sampler(0)]],
     constant GradeUniforms &grade [[buffer(0)]],
     constant HealUniform *heals [[buffer(1)]],
-    constant LocalUniform *locals [[buffer(2)]]) {
+    constant LocalUniform *locals [[buffer(2)]],
+    constant float4 *healShifts [[buffer(3)]]) {
     float2 uv = input.uv * grade.viewport.xy + grade.viewport.zw;
     if (grade.compare.x > 0.0 && uv.x <= grade.compare.x) {
         return float4(
@@ -482,7 +560,7 @@ fragment float4 nativePreviewFragment(
     float3 color = sampleEditedSource(
         image, fallback, linearSampler, uv, grade, texel, redCyan, blueYellow);
     color = applyHeals(
-        color, uv, image, fallback, linearSampler, grade, heals,
+        color, uv, image, fallback, linearSampler, grade, heals, healShifts,
         texel, redCyan, blueYellow);
 
     if (luminanceNoise != 0.0 || colorNoise != 0.0) {
