@@ -19,6 +19,10 @@ UPSTREAM = {
                   "commit": "458a24475ae03ec52f0fac4fea786120ef5a503f", "tag": "v1.18.0"},
     "opencv-python-headless": {"type": "git", "url": "https://github.com/opencv/opencv-python.git",
                                "commit": "b83046cda41133f1bf2e73e99dba16a1248f103a", "tag": "93"},
+    "ai-edge-litert": {"type": "git", "url": "https://github.com/google-ai-edge/LiteRT.git",
+                       "commit": "145c7523ff08d5e57ab5c582141775eea47da9c7", "tag": "v2.2.0"},
+    "flatbuffers": {"type": "git", "url": "https://github.com/google/flatbuffers.git",
+                    "commit": "7e163021e59cca4f8e1e35a7c828b5c6b7915953", "tag": "v25.12.19"},
 }
 
 

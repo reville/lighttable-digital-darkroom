@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Pinned asset identity shared by offline inference and build preparation."""
 
 MODEL_FILE = "selfie_multiclass_256x256.tflite"

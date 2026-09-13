@@ -9,3 +9,5 @@
 packaging/*.patch -whitespace
 # Content-addressed upstream notices must preserve their exact original bytes.
 packaging/snap/native-licenses/objects/* -text -whitespace
+# Hash-pinned model license text must keep its exact bytes on every platform.
+film_lab_ai/licenses/*.txt -text -whitespace

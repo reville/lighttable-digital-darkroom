@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Offline hair selection using Google's Apache-2.0 SelfieMulticlass model.
 
 Assets are prepared by fetch-hair-model.py during builds. Inference never
