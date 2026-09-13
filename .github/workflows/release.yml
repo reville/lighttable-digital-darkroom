@@ -78,9 +78,31 @@ jobs:
             *) echo 'Unknown platform selection' >&2; exit 1 ;;
           esac
 
+  translations:
+    # Public releases ship complete translations. Pull requests and main may
+    # carry pending strings; complete them with scripts/translate-locales.py first.
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require complete catalogs and localized Help
+        run: |
+          python3 -m pip install --constraint requirements-runtime.lock numpy pillow
+          python3 scripts/localization.py check
+          python3 scripts/help_content.py check
+          python3 scripts/help_content.py localization-check
 
   macos:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.macos == 'true'
     runs-on: macos-15
     timeout-minutes: 120
@@ -221,7 +243,7 @@ jobs:
           if [[ -f "$keychain" ]]; then security delete-keychain "$keychain"; fi
 
   windows:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.windows == 'true'
     permissions:
       actions: read
@@ -236,7 +258,7 @@ jobs:
     secrets: inherit
 
   linux-preflight:
-    needs: prepare
+    needs: [prepare, translations]
     if: needs.prepare.outputs.linux == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -259,7 +281,7 @@ jobs:
       source_ref: ${{ needs.prepare.outputs.source_ref }}
 
   summary:
-    needs: [prepare, macos, windows, linux]
+    needs: [prepare, translations, macos, windows, linux]
     if: always()
     runs-on: ubuntu-latest
     steps:

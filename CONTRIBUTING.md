@@ -146,6 +146,26 @@ tests does not establish that a native window or a rendered photo looks right.
 For changes to image math, keep the relevant CPU, WebGL, Metal, and Rust paths
 consistent and check both preview and export.
 
+### Which checks run when
+
+A pull request runs a light tier chosen from the files it touches by
+`scripts/ci/change-scope.py`: the cross-platform unit suite without the
+resident engine and pixel gates, the help and localization checks, and the
+installer tests when packaging changed. Touching the image pipeline
+(`grade.py`, `edits.py`, `rust-engine/`, `web/gl.js`, `app/`, goldens, and the
+other paths listed in the script) adds the engine build and pixel gates.
+Touching the Windows or Linux hosts, packaging, or the shared runtime modules
+adds those host jobs. Documentation-only changes run only the help job. Add the
+`ci:full` label to run everything on a pull request. Every push to `main`,
+manual dispatch, and release build runs the full tier, so a regression the
+light tier misses is caught on `main` before a release. A required job that is
+skipped counts as passing.
+
+Translations may lag behind new English strings between releases: the
+`--allow-pending` checks that CI runs on pull requests and `main` validate the
+translations that exist and report the missing ones, while the release build
+requires complete catalogs. See [localization](docs/localization/README.md).
+
 ## Windows and Linux
 
 Windows has a Rust desktop shell and packaging workflow. Follow

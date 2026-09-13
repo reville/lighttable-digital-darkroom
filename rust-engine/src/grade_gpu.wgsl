@@ -94,7 +94,7 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
         c = bounded(select(1.055 * pow(linear, vec3<f32>(1.0 / 2.4)) - vec3<f32>(0.055),
             linear * 12.92, linear <= vec3<f32>(0.0031308)));
         if p[6] != 0.0 || p[7] != 0.0 {
-            let white = 1.0 + p[6] * 0.35; let black = p[7] * -0.25;
+            let white = 1.0 - p[6] * 0.35; let black = p[7] * -0.25;
             c = bounded((c - vec3<f32>(black)) / max(white - black, 1e-4));
         }
         if p[3] > 0.0 { c = bounded(c + (c * c * (vec3<f32>(3.0) - 2.0 * c) - c) * p[3]); }

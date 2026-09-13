@@ -199,6 +199,7 @@ DESTRUCTIVE_ROUTES = {
 def schema(options: dict | None = None) -> dict:
     options = options or {}
     grade = options.get("grade") or {}
+    optics = options.get("optics") or {}
     params = options.get("params") or {}
     labels = options.get("labels") or ["none", "red", "yellow", "green",
                                         "blue", "purple"]
@@ -286,7 +287,14 @@ def schema(options: dict | None = None) -> dict:
                     "crop": {"type": ["object", "null"]},
                     "masks": {"type": "array"},
                     "heals": {"type": "array"},
-                    "optics": {"type": "object", "properties": {"profileOverride": {"$ref": "#/$defs/lensProfileOverride"}}},
+                    "optics": {"type": "object", "properties": {
+                        "profileOverride": {"$ref": "#/$defs/lensProfileOverride"},
+                        **{key: ({"type": "boolean"} if isinstance(default, bool)
+                                 else {"type": "number",
+                                       "minimum": (optics.get("ranges") or {}).get(key, [-1, 1])[0],
+                                       "maximum": (optics.get("ranges") or {}).get(key, [-1, 1])[1]})
+                           for key, default in (optics.get("defaults") or {}).items()
+                           if key != "profileOverride"}}},
                     "keywords": {"type": "array", "items": {"type": "string"}},
                     "versions": {"type": "array"},
                 },
