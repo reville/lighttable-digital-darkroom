@@ -132,7 +132,11 @@ def as_float_rgb(image: np.ndarray) -> np.ndarray:
     array = np.asarray(image)
     if array.ndim != 3 or array.shape[2] < 3:
         raise ValueError(T("expected an HxWx3 RGB image"))
-    array = array[..., :3]
+    return _unit_float32(array[..., :3])
+
+
+def _unit_float32(array: np.ndarray) -> np.ndarray:
+    """:func:`as_float_rgb`'s conversion, for any array shape."""
     if np.issubdtype(array.dtype, np.integer):
         maximum = float(np.iinfo(array.dtype).max)
         array = array.astype(np.float32) / maximum
@@ -535,11 +539,30 @@ def linear_prophoto_to_display(
     and keeps per-channel curves from shifting hue. A wider output retains
     the same extended sRGB tone rendering, converting to the requested gamut
     before its first gamut clip.
-    """
-    import colour
 
+    With numba available the rendering runs in parallel kernels that produce
+    the same bits as :func:`_linear_prophoto_to_display_reference`, which
+    stays the implementation without numba and the definition of the output.
+    """
     profile = (_normalise_develop_profile(develop_profile)
                if develop_profile is not None else develop_profile_for(params))
+    try:
+        kernels = _develop_kernels()
+        if kernels is not None:
+            return _develop_with_kernels(
+                kernels, image, params, profile, output_space)
+    except Exception:  # noqa: BLE001 - the reference renders the same pixels
+        pass
+    return _linear_prophoto_to_display_reference(
+        image, params, profile, output_space)
+
+
+def _linear_prophoto_to_display_reference(
+        image: np.ndarray, params: dict | None, profile: str,
+        output_space: str) -> np.ndarray:
+    """The colour-science Develop rendering that the kernels reproduce."""
+    import colour
+
     linear = as_float_rgb(image)
     prophoto = colour.RGB_COLOURSPACES["ProPhoto RGB"]
     srgb = colour.RGB_COLOURSPACES["sRGB"]
@@ -576,12 +599,363 @@ def linear_prophoto_to_display(
     return convert_output_space(encoded, output_space)
 
 
+@functools.lru_cache(maxsize=1)
+def _prophoto_to_srgb_matrix() -> np.ndarray:
+    """The Bradford-adapted matrix ``colour.RGB_to_RGB`` applies above."""
+    import colour
+    return np.ascontiguousarray(colour.matrix_RGB_to_RGB(
+        colour.RGB_COLOURSPACES["ProPhoto RGB"],
+        colour.RGB_COLOURSPACES["sRGB"], "Bradford"), dtype=np.float64)
+
+
+@functools.lru_cache(maxsize=1)
+def _develop_kernels():
+    """Parallel Develop kernels, or None without numba.
+
+    Every channel repeats the float64 operations of the reference in their
+    order: ``np.matmul`` accumulates a matrix row from zero, left to right,
+    and ``eotf_inverse_sRGB`` selects its branch on the matrixed value and
+    calls the same libm ``pow``. Without fast-math LLVM may not contract or
+    reorder that arithmetic, so the rendering is bit-identical, which
+    ``tests/test_color_pipeline.py`` checks against the reference.
+    """
+    import grade
+    if not grade._HAS_NUMBA:
+        return None
+    import numba
+    from types import SimpleNamespace
+
+    @numba.njit(inline="always")
+    def matrix_row(matrix, channel, r, g, b):
+        value = 0.0
+        value += matrix[channel, 0] * r
+        value += matrix[channel, 1] * g
+        value += matrix[channel, 2] * b
+        return value
+
+    @numba.njit(inline="always")
+    def encode_srgb(value):
+        # eotf_inverse_sRGB; the power branch only sees positive values.
+        if value <= 0.0031308:
+            return value * 12.92
+        return 1.055 * value ** (1.0 / 2.4) - 0.055
+
+    @numba.njit(inline="always")
+    def decode_srgb(value, threshold):
+        # eotf_sRGB, whose threshold is eotf_inverse_sRGB(0.0031308).
+        if threshold >= value:
+            return value / 12.92
+        return ((value + 0.055) / 1.055) ** 2.4
+
+    @numba.njit(inline="always")
+    def encode_romm(value, threshold):
+        # cctf_encoding_ROMMRGB at its default 8-bit code-value scale.
+        if threshold > value:
+            encoded = value * 16.0 * 255.0
+        else:
+            encoded = value ** (1.0 / 1.8) * 255.0
+        return encoded / 255.0
+
+    @numba.njit(inline="always")
+    def encode_channel(matrix, channel, r, g, b):
+        return encode_srgb(matrix_row(matrix, channel, r, g, b))
+
+    @numba.njit(inline="always")
+    def clip_unit(value):
+        # np.clip's comparisons: NaN and -0.0 pass through unchanged.
+        if value < 0.0:
+            return 0.0
+        if value > 1.0:
+            return 1.0
+        return value
+
+    @numba.njit(parallel=True)
+    def encode_codes(codes, table, matrix, out, clip):
+        height, width = codes.shape[:2]
+        for y in numba.prange(height):
+            for x in range(width):
+                r = np.float64(table[codes[y, x, 0]])
+                g = np.float64(table[codes[y, x, 1]])
+                b = np.float64(table[codes[y, x, 2]])
+                for channel in range(3):
+                    value = encode_channel(matrix, channel, r, g, b)
+                    out[y, x, channel] = clip_unit(value) if clip else value
+
+    @numba.njit(parallel=True)
+    def encode_values(values, matrix, out, clip):
+        height, width = values.shape[:2]
+        for y in numba.prange(height):
+            for x in range(width):
+                r = np.float64(values[y, x, 0])
+                g = np.float64(values[y, x, 1])
+                b = np.float64(values[y, x, 2])
+                for channel in range(3):
+                    value = encode_channel(matrix, channel, r, g, b)
+                    out[y, x, channel] = clip_unit(value) if clip else value
+
+    @numba.njit(parallel=True)
+    def deliver(encoded, scale, target, matrix, decode_threshold,
+                romm_threshold, out):
+        # convert_output_space(encoded * scale, ...) for the targets of
+        # _delivery_transform: 0 bounds sRGB, 1 re-encodes a gamut with the
+        # sRGB curve, 2 re-encodes ProPhoto with the ROMM curve.
+        height, width = encoded.shape[:2]
+        for y in numba.prange(height):
+            for x in range(width):
+                if target == 0:
+                    for channel in range(3):
+                        out[y, x, channel] = clip_unit(
+                            encoded[y, x, channel] * scale)
+                    continue
+                r = decode_srgb(encoded[y, x, 0] * scale, decode_threshold)
+                g = decode_srgb(encoded[y, x, 1] * scale, decode_threshold)
+                b = decode_srgb(encoded[y, x, 2] * scale, decode_threshold)
+                for channel in range(3):
+                    value = matrix_row(matrix, channel, r, g, b)
+                    if target == 1:
+                        value = encode_srgb(value)
+                    else:
+                        value = encode_romm(value, romm_threshold)
+                    out[y, x, channel] = clip_unit(value)
+
+    @numba.njit(parallel=True)
+    def count_at_least(encoded, threshold, row_counts):
+        # row_counts[y] = (values at or above threshold, NaNs) for row y.
+        # Per-row slots instead of a prange reduction, which numba's parfor
+        # pass cannot analyse alongside the per-row counters.
+        height, width = encoded.shape[:2]
+        for y in numba.prange(height):
+            count = 0
+            nans = 0
+            for x in range(width):
+                for channel in range(3):
+                    value = encoded[y, x, channel]
+                    if np.isnan(value):
+                        nans += 1
+                    elif (value if value > 0.0 else 0.0) >= threshold:
+                        count += 1
+            row_counts[y, 0] = count
+            row_counts[y, 1] = nans
+
+    @numba.njit(parallel=True)
+    def gather_at_least(encoded, threshold, offsets, out):
+        height, width = encoded.shape[:2]
+        for y in numba.prange(height):
+            index = offsets[y]
+            for x in range(width):
+                for channel in range(3):
+                    value = encoded[y, x, channel]
+                    # np.maximum(value, 0.0), which also turns -0.0 into 0.0.
+                    value = value if value > 0.0 else 0.0
+                    if value >= threshold:
+                        out[index] = value
+                        index += 1
+
+    return SimpleNamespace(
+        lock=grade._PARALLEL_KERNEL_LOCK, encode_codes=encode_codes,
+        encode_values=encode_values, deliver=deliver,
+        count_at_least=count_at_least, gather_at_least=gather_at_least)
+
+
+def warm_develop_jit() -> None:
+    """Compile the kernels a 16-bit RAW develop uses before the first open.
+
+    Compiling runs no parallel region, so it happens outside the kernel lock
+    and never holds up a grade render while the application starts.
+    """
+    try:
+        kernels = _develop_kernels()
+        if kernels is None:
+            return
+        import numba
+        from numba import types
+
+        def array(dtype, ndim):
+            return numba.typeof(np.zeros((1,) * ndim, dtype=dtype))
+
+        codes, table = array(np.uint16, 3), array(np.float32, 1)
+        matrix, encoded = array(np.float64, 2), array(np.float64, 3)
+        display, counts = array(np.float32, 3), array(np.int64, 2)
+        offsets, candidates = array(np.int64, 1), array(np.float64, 1)
+        kernels.encode_codes.compile((codes, table, matrix, encoded, types.boolean))
+        kernels.encode_codes.compile((codes, table, matrix, display, types.boolean))
+        kernels.deliver.compile((encoded, types.float64, types.int64, matrix,
+                                 types.float64, types.float64, display))
+        kernels.count_at_least.compile((encoded, types.float64, counts))
+        kernels.gather_at_least.compile((encoded, types.float64, offsets, candidates))
+    except Exception:  # noqa: BLE001 - warming is an optimisation only
+        pass
+
+
+def _develop_source(image: np.ndarray) -> tuple[np.ndarray, np.ndarray | None]:
+    """Develop input as ``(codes, table)`` or ``(as_float_rgb(image), None)``.
+
+    For 8- and 16-bit input the table holds :func:`as_float_rgb` of every
+    code value, so ``table[codes]`` is exactly the converted image without
+    materialising it.
+    """
+    array = np.asarray(image)
+    if (array.ndim == 3 and array.shape[2] >= 3
+            and array.dtype in (np.dtype(np.uint8), np.dtype(np.uint16))):
+        levels = np.arange(np.iinfo(array.dtype).max + 1, dtype=array.dtype)
+        table = as_float_rgb(np.repeat(levels[None, :, None], 3, axis=2))[0, :, 0]
+        return np.ascontiguousarray(array[..., :3]), np.ascontiguousarray(table)
+    return np.ascontiguousarray(as_float_rgb(array)), None
+
+
+def _develop_white_point(encoded: np.ndarray, kernels, *,
+                         min_values: int = 1 << 20,
+                         sample_stride: int = 97) -> float:
+    """``float(np.percentile(np.maximum(encoded, 0.0), 99.5))``, exactly.
+
+    numpy copies and partitions every value of a full-resolution frame, but
+    its "linear" percentile only depends on the two order statistics either
+    side of the virtual index ``(n - 1) * 0.995``. A strided sample picks a
+    threshold that keeps roughly the brightest 1%; the kernels count and
+    gather just those, and everything left out ranks below every candidate,
+    so the ranks shift by the number left out. A NaN, or a sample that kept
+    too few, falls back to numpy itself.
+    """
+    count = encoded.size
+    if count < min_values or not encoded.flags.c_contiguous:
+        return float(np.percentile(np.maximum(encoded, 0.0), 99.5))
+    sample = np.maximum(encoded.reshape(-1)[::sample_stride], 0.0)
+    position = sample.size - 1 - sample.size // 100
+    threshold = float(np.partition(sample, position)[position])
+    row_counts = np.zeros((encoded.shape[0], 2), dtype=np.int64)
+    with kernels.lock:
+        kernels.count_at_least(encoded, threshold, row_counts)
+    virtual = (count - 1) * (99.5 / 100)
+    lower_rank = int(virtual)
+    skipped = count - int(row_counts[:, 0].sum())
+    if row_counts[:, 1].any() or lower_rank < skipped:
+        return float(np.percentile(np.maximum(encoded, 0.0), 99.5))
+    offsets = np.zeros(encoded.shape[0], dtype=np.int64)
+    np.cumsum(row_counts[:-1, 0], out=offsets[1:])
+    candidates = np.empty(count - skipped, dtype=np.float64)
+    with kernels.lock:
+        kernels.gather_at_least(encoded, threshold, offsets, candidates)
+    rank = lower_rank - skipped
+    candidates.partition((rank, rank + 1))
+    lower = float(candidates[rank])
+    upper = float(candidates[rank + 1])
+    # numpy's _lerp, which interpolates from the upper neighbour past the
+    # midpoint; matching it keeps the rounding identical.
+    gamma = virtual - lower_rank
+    difference = upper - lower
+    if gamma >= 0.5:
+        return upper - difference * (1 - gamma)
+    return lower + difference * gamma
+
+
+def _develop_with_kernels(kernels, image: np.ndarray, params: dict | None,
+                          profile: str, output_space: str) -> np.ndarray:
+    """:func:`_linear_prophoto_to_display_reference` on the parallel kernels.
+
+    Everything the reference does before its gamut matrix, from the integer
+    conversion through the exposure gain and the base curve, depends on one
+    channel's value alone. With integer input it is evaluated by the same
+    numpy calls on the table of code values instead of on the frame, and a
+    kernel looks each channel up. Only a camera profile, which mixes
+    channels, needs the frame converted first.
+    """
+    output_space = normalise_output_space(output_space)
+    matrix = _prophoto_to_srgb_matrix()
+    codes, table = _develop_source(image)
+    shape = codes.shape[:2] + (3,)
+
+    def encode(values, table, out):
+        # A float32 destination is the delivered sRGB rendering, bounded as
+        # convert_output_space bounds it; float64 keeps extended code values.
+        clip = out.dtype == np.float32
+        with kernels.lock:
+            if table is None:
+                kernels.encode_values(values, matrix, out, clip)
+            else:
+                kernels.encode_codes(values, table, matrix, out, clip)
+        return out
+
+    def deliver(encoded, scale):
+        transform = _delivery_transform(output_space)
+        if transform is None:
+            np.multiply(encoded, scale, out=encoded)
+            return convert_output_space(encoded, output_space)
+        display = np.empty(shape, dtype=np.float32)
+        with kernels.lock:
+            kernels.deliver(encoded, scale, *transform, display)
+        return display
+
+    encoded = encode(codes, table, np.empty(shape, dtype=np.float64))
+    white = _develop_white_point(encoded, kernels)
+    normalise = np.isfinite(white) and white > 0
+    if profile == "linear":
+        # Multiplying by exactly 1.0 leaves every value's bits unchanged.
+        return deliver(encoded, min(4.0, 0.96 / white) if normalise else 1.0)
+
+    gain = (float(_srgb_decode(min(0.96, 4.0 * white)) / _srgb_decode(white))
+            if normalise else None)
+    curve = standard_base_curve() if profile == "standard" else soft_base_curve()
+
+    def expose(linear):
+        if gain is None:
+            return linear
+        return np.clip(linear * np.float32(gain), 0.0, 1.0)
+
+    if table is not None and not _camera_profile_identity(params):
+        table = np.interp(expose(table), standard_base_curve_domain(),
+                          curve).astype(np.float32)
+        values = codes
+    else:
+        linear = expose(table[codes] if table is not None else codes)
+        linear, profile_has_curve = apply_camera_profile(linear, params)
+        if not profile_has_curve:
+            linear = np.interp(linear, standard_base_curve_domain(),
+                               curve).astype(np.float32)
+        values = np.ascontiguousarray(linear, dtype=np.float32)
+        table = None
+    if output_space == "srgb":
+        del encoded
+        return encode(values, table, np.empty(shape, dtype=np.float32))
+    return deliver(encode(values, table, encoded), 1.0)
+
+
+@functools.lru_cache(maxsize=4)
+def _delivery_transform(output_space: str):
+    """Kernel arguments reproducing ``convert_output_space`` from sRGB.
+
+    ``(target, matrix, sRGB decode threshold, ROMM threshold)``, or None
+    when the destination's transfer functions are not the ones the kernel
+    implements, in which case colour-science converts.
+    """
+    import colour
+    from colour.models.rgb.transfer_functions import (
+        cctf_encoding_ROMMRGB, eotf_inverse_sRGB, eotf_sRGB)
+
+    if output_space == "srgb":
+        return 0, np.eye(3), 0.0, 0.0
+    source = colour.RGB_COLOURSPACES[COLOUR_SPACE_NAMES["srgb"]]
+    destination = colour.RGB_COLOURSPACES[COLOUR_SPACE_NAMES[output_space]]
+    if destination.cctf_encoding is eotf_inverse_sRGB:
+        target = 1
+    elif destination.cctf_encoding is cctf_encoding_ROMMRGB:
+        target = 2
+    else:
+        return None
+    if source.cctf_decoding is not eotf_sRGB:
+        return None
+    # The same default CAT and the same expressions the colour functions use.
+    matrix = np.ascontiguousarray(
+        colour.matrix_RGB_to_RGB(source, destination, "CAT02"), dtype=np.float64)
+    return (target, matrix, float(eotf_inverse_sRGB(0.0031308)),
+            float(16 ** (1.8 / (1 - 1.8))))
+
+
 def decode_raw_display(path: Path | str, params: dict | None = None,
                        **decode_options) -> np.ndarray:
     """Decode RAW with the selected capture settings to encoded 16-bit sRGB."""
     linear = decode_raw(path, params, **decode_options)
     display = linear_prophoto_to_display_srgb(linear, params)
-    return (display * 65535.0 + 0.5).astype(np.uint16)
+    return to_uint16(display)
 
 
 _EMBEDDED_PREVIEWS: OrderedDict[tuple, np.ndarray] = OrderedDict()
@@ -697,22 +1071,72 @@ def resize_float_to_size(image: np.ndarray,
     remains in mode ``F`` and the results are stacked without an 8-bit
     round-trip. ``reducing_gap`` uses a cheap reduction before the final
     Lanczos pass for large camera originals.
+
+    Each channel is converted, resampled and bounded on its own thread;
+    Pillow and numpy release the GIL for that work, and every step is
+    per channel, so the result is the one a single thread produces.
     """
-    source = as_float_rgb(image)
+    array = np.asarray(image)
+    if array.ndim != 3 or array.shape[2] < 3:
+        raise ValueError(T("expected an HxWx3 RGB image"))
     width = max(1, int(size[0]))
     height = max(1, int(size[1]))
-    if source.shape[1] == width and source.shape[0] == height:
-        return source
-    channels = [
-        np.asarray(
-            Image.fromarray(source[..., channel], mode="F").resize(
-                (width, height), Image.Resampling.LANCZOS, reducing_gap=3.0),
-            dtype=np.float32,
-        )
-        for channel in range(3)
-    ]
-    return np.clip(np.stack(channels, axis=2), 0.0, 1.0).astype(
-        np.float32, copy=False)
+    if array.shape[1] == width and array.shape[0] == height:
+        return as_float_rgb(array)
+    resized = np.empty((height, width, 3), dtype=np.float32)
+
+    def resize_channel(channel: int) -> None:
+        plane = Image.fromarray(_unit_float32(array[..., channel]), mode="F")
+        resized[..., channel] = np.clip(np.asarray(
+            plane.resize((width, height), Image.Resampling.LANCZOS,
+                         reducing_gap=3.0),
+            dtype=np.float32), 0.0, 1.0)
+
+    list(_pixel_pool().map(resize_channel, range(3)))
+    return resized
+
+
+_PIXEL_WORKERS = max(3, min(8, os.cpu_count() or 1))
+
+
+@functools.lru_cache(maxsize=1)
+def _pixel_pool():
+    """Threads for per-channel and per-band numpy and Pillow work.
+
+    Work submitted here must not itself wait on this pool.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    return ThreadPoolExecutor(max_workers=_PIXEL_WORKERS,
+                              thread_name_prefix="lighttable-pixels")
+
+
+def run_row_bands(rows: int, render_band) -> None:
+    """Call ``render_band(start, stop)`` over bands of ``range(rows)`` in parallel.
+
+    For per-pixel numpy, Pillow or SciPy work that writes only its own rows:
+    those libraries release the GIL, and the bands together give exactly the
+    result of one call over every row.
+    """
+    step = max(1, -(-rows // _PIXEL_WORKERS))
+    bands = [(start, min(rows, start + step)) for start in range(0, rows, step)]
+    if len(bands) == 1:
+        render_band(*bands[0])
+        return
+    list(_pixel_pool().map(lambda band: render_band(*band), bands))
+
+
+def to_uint16(image: np.ndarray) -> np.ndarray:
+    """``(image * 65535.0 + 0.5).astype(np.uint16)`` on parallel row bands."""
+    image = np.asarray(image)
+    if image.ndim < 2 or image.size < (1 << 22):
+        return (image * 65535.0 + 0.5).astype(np.uint16)
+    out = np.empty(image.shape, dtype=np.uint16)
+
+    def quantise_band(start: int, stop: int) -> None:
+        out[start:stop] = (image[start:stop] * 65535.0 + 0.5).astype(np.uint16)
+
+    run_row_bands(image.shape[0], quantise_band)
+    return out
 
 
 def resize_float_width(image: np.ndarray, max_width: int | None) -> np.ndarray:
@@ -740,6 +1164,10 @@ def convert_output_space(image_srgb: np.ndarray, output_space: str, *,
     input_space = normalise_output_space(input_space)
     if output_space == input_space:
         return np.clip(image_srgb, 0.0, 1.0).astype(np.float32)
+    if input_space == "srgb":
+        converted = _convert_from_srgb_with_kernels(image_srgb, output_space)
+        if converted is not None:
+            return converted
     import colour
 
     converted = colour.RGB_to_RGB(
@@ -750,6 +1178,31 @@ def convert_output_space(image_srgb: np.ndarray, output_space: str, *,
         apply_cctf_encoding=True,
     )
     return np.clip(converted, 0.0, 1.0).astype(np.float32)
+
+
+def _convert_from_srgb_with_kernels(image: np.ndarray,
+                                    output_space: str) -> np.ndarray | None:
+    """:func:`convert_output_space` from sRGB on the parallel kernel.
+
+    The same bits as the colour-science conversion below, which remains the
+    path for small images, other shapes and input spaces, or when the kernel
+    is unavailable. Returns None to request that path.
+    """
+    array = np.asarray(image)
+    if (array.ndim != 3 or array.shape[2] != 3 or array.size < (1 << 20)
+            or array.dtype not in (np.dtype(np.float32), np.dtype(np.float64))):
+        return None
+    kernels = _develop_kernels()
+    transform = _delivery_transform(output_space) if kernels is not None else None
+    if transform is None:
+        return None
+    converted = np.empty(array.shape, dtype=np.float32)
+    try:
+        with kernels.lock:
+            kernels.deliver(np.ascontiguousarray(array), 1.0, *transform, converted)
+    except Exception:  # noqa: BLE001 - colour-science converts the same pixels
+        return None
+    return converted
 
 
 def wide_develop_edits_supported(job: dict) -> bool:
