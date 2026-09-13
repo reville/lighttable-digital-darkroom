@@ -51,7 +51,7 @@
       "sources": {
         "app/DiagnosticReports.swift": "51761d6c278bbf391efad4495ebbad51c9581c6633427c8f6c64a6eae671b2ae",
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
-        "catalog_scan.py": "a7798d85a3b802768bf39004ae11509e9f30fb8ea609da3f75df2fa3c8db628f",
+        "catalog_scan.py": "ae97bbd30fd70987235fefab1ca07bc54fda6c4a3a30b1a25dab1fea6f1854db",
         "fatal_diagnostics.py": "314dad62d3b0096b2bcbd59502b529b12f4ea96b5fc1f3fd7d9261b2dfe4486d",
         "file_identity.py": "22ef5596a7a096f3b79039957aabd07250b96b8422b0c03e3345f1a7a92501bb",
         "platform_paths.py": "d98508dd1e8af44df97a9652a8ae8525c0e73d705f6befa8170620ad83e0439c",
@@ -93,7 +93,7 @@
       "content": "a94cf3edb0403756d16cc7e0b65d24374451e2322e6de012d1ed2232c5db591e",
       "sources": {
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/edit-transfer.js": "768afe5a493987fc44e20cc50a71a0c45da3464827f32792983e0ca1796034a0",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31",
@@ -118,7 +118,7 @@
       "content": "49911d9d38fd2ceaf03c72fb033100ed2b6683610df8c2d67b8139dce6bd03e8",
       "sources": {
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
-        "enhance_workflow.py": "c850d24fa997a40f464f4aed40c6bb7e78ddd8d271e605f3cef4d3b7a0b58982",
+        "enhance_workflow.py": "12299f0db88b931aa70e8535b94e0e9e89da20421ec078519619507becf83ee9",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/enhance-panel.js": "62928471d5879d995e1a62f854c8be11c75402459c4fe76cc0cca30f39c74a4f",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
@@ -182,7 +182,7 @@
       "sources": {
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
         "merge_workflow.py": "1645759c959111d306622837f1a048973f7b1c1bcb877fa5e3c9c9e4d70dabd9",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
       }
@@ -195,7 +195,7 @@
         "preset_library.py": "751779c9f3eb00a3ed02be4f69f9bb546a043c06d385832e228744ee3571fb8c",
         "preset_submission.py": "6f56eeb58611560e99ad9d8644388a1a8fe804e636c6181b2b8e9f2cd8d72995",
         "presets/builtin.json": "d82181ddb5d522736dcb626d29bd41da3b5478e9a7182a69798224bed844f713",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31",
         "web/numeric-controls.js": "2a636746cdc7ed8a6307edba404d0ad9102fd4d66662e09b72a56e1502a43f76",
@@ -263,7 +263,7 @@
     "export-photos": {
       "content": "eee4673a39ad76c0d276d7ab4790509d55aaa0c7fbadd8f403f44d22372cc4da",
       "sources": {
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
       }
@@ -338,7 +338,7 @@
       "sources": {
         "catalog.py": "a799aef6e2a2cae67f12cfc77bef8a2635e7976218ee8b49d5b844be3ecb70b4",
         "ingest_workflow.py": "b1b7ed3c79a7491a5c3e6a15cef15e08ec3964dd7b2e4ff112b33fc836254079",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
       }
@@ -347,7 +347,7 @@
       "content": "2ae84dc8451d88564bff7704fd70ef29b90f1b6561548b6c5e571750da593a2b",
       "sources": {
         "catalog_import.py": "f1f0e6b3c85c69d7d7e38ffe30c6e2bbb0b757838f0bd9c1be54e8e6a5488b25",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
       }
@@ -377,7 +377,7 @@
         "film_lab_ai/face_models.py": "5057b36c1d3439589bd93355e9f22fde3a51de7ff06928feef38021b9f724b70",
         "film_lab_ai/face_service.py": "ebb535423089602bfeb73360c6d297b01b5a3dc87ea5b395c12f4b783a313c02",
         "film_lab_ai/face_store.py": "7c47381bf4917abca8f36628d8fed175ade496305f8594f69e815d59b61ce9b5",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/library.js": "8a821cb08fdc1bdf8d25cbeb0ce3d84a596e56dce3b557c84b07ab390ce6d584",
         "web/people.css": "34134f69e1d5e2afbd015776f76c4dea211333fba413ab0181ee157908f5a00f",
         "web/people.js": "82bf9f2310f2950f7b45d4e8c5fa371eb066f10229257ec4b6ac5f904afc8b81"
@@ -391,7 +391,7 @@
         "grade.py": "a85f069c327e2d8c0fa1392cb9f0626627c3958b673e381cc85be35541895e66",
         "media_availability.py": "d95a52401f51850d6291b24cb400c9094a78524983592cdf576933f7fbfa7dc1",
         "merge_acceleration.py": "01eabeadffe67c97a12d3887dfbc3e0107f7e84383d4fab947f2aa7ad8345baf",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/gl.js": "71a9356c296b968466e6073fa9172a2b4cf949f6579086c3f55f1ae2ae9b9ecb",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31",
@@ -428,14 +428,14 @@
       "content": "daaceff084a4ad855923488dee5cc8d576d8ea63730c5ff3f89c071a3045cffb",
       "sources": {
         "ingest_workflow.py": "b1b7ed3c79a7491a5c3e6a15cef15e08ec3964dd7b2e4ff112b33fc836254079",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817"
       }
     },
     "search-filter-sort": {
       "content": "057234d2fce0f450f71f590d2f94dea06ca2309cf5699f4a3a08e29d285ea50a",
       "sources": {
-        "catalog_scan.py": "a7798d85a3b802768bf39004ae11509e9f30fb8ea609da3f75df2fa3c8db628f",
+        "catalog_scan.py": "ae97bbd30fd70987235fefab1ca07bc54fda6c4a3a30b1a25dab1fea6f1854db",
         "dam_filters.py": "ebc638ba6c44fb1b38f1ea48bbf7a5b3c2a4073a60a4e6b9d0928578a79ca08f",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31",
@@ -506,7 +506,7 @@
       "content": "235dbc5ee95d42c2cacb56cc92dc960469fd67f917bba02c123b13ff5a1b6e9f",
       "sources": {
         "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
         "windows-shell/src/main.rs": "2cc138e76b35146e57043d56217709344b366234cc11ec46f7254c2ae68bd3e8"
       }
@@ -533,7 +533,7 @@
     "xmp-interchange": {
       "content": "f261c55f26a9b517649449b3fd8834ee8ac9c868c80507867bb0d5e1118d2c49",
       "sources": {
-        "server.py": "8f34887ea9e7a49059052f3b0ee73b006dd995ab1188a16671251a738887a5eb",
+        "server.py": "1970ad9ac3a1709ef78fc0adf579580a5a94f95c15f5dea4bffc78da304442f3",
         "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
         "xmp_sidecar.py": "037302972759023a01eb59439473f24c334b86517b6df9c6a6a9f724665981dc"
       }

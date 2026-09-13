@@ -3752,8 +3752,12 @@ class RustEngineClient:
         return bool(self.render({"command": "probe_input", "input_cache_key": key})
                     .get("input_cache_hit"))
 
-    def warm(self) -> None:
-        """Compile the real GPU pipelines and spectral LUT before first open."""
+    def warm(self, *, export: bool = False) -> None:
+        """Compile the real GPU pipelines and spectral LUT before first open.
+
+        ``export`` also runs one export-shaped request so the grade shader and
+        shared RGB8 output path are compiled for the first real export.
+        """
         if not self.binary:
             return
         previous = getattr(RENDER_CONTEXT, "priority", "export")
@@ -3780,6 +3784,21 @@ class RustEngineClient:
                                  "data_dir": str(RUST_DATA), "film": pair[0],
                                  "paper": pair[1], "scan_film": pair[0] in fp.POSITIVE_STOCKS,
                                  "params": fp.rust_params_json(cp)})
+                if export:
+                    cp = pairs[0]
+                    request = {"input": str(source), "data_dir": str(RUST_DATA),
+                               "film": cp["stock"], "paper": cp["paper"],
+                               "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
+                               "params": fp.rust_params_json(cp),
+                               "grade": grade.clean({"exposure": 0.01}), "quality": 92}
+                    if export_surface.supported() and DEFERRED_EXPORT_ENCODE:
+                        result = self.render(dict(request, export_rgb8=True))
+                        descriptor = result.get("export_shared")
+                        if isinstance(descriptor, dict):
+                            export_surface.discard_surface(descriptor)
+                    else:
+                        self.render(dict(request, output=str(output.with_suffix(".jpg"))))
+                        output.with_suffix(".jpg").unlink(missing_ok=True)
             finally:
                 source.unlink(missing_ok=True)
                 output.unlink(missing_ok=True)
@@ -3794,6 +3813,21 @@ atexit.register(RUST_ENGINE.close)
 BACKGROUND_RENDER_LOCK = PriorityGate(reentrant=True)
 BACKGROUND_ENGINE = RustEngineClient(RUST_WORKER_BIN, lock=BACKGROUND_RENDER_LOCK)
 atexit.register(BACKGROUND_ENGINE.close)
+
+
+def warm_resident_engines() -> None:
+    """Compile both resident engines' GPU pipelines before the first request.
+
+    The preview engine warms first because the first open is what the user is
+    waiting for. The background engine (exports, prefetch, edited thumbnails)
+    then compiles the same film pipeline plus the export grade shader, so the
+    first export no longer pays a cold GPU start on top of its RAW decode.
+    ``LIGHTTABLE_WARM_BACKGROUND_ENGINE=0`` keeps the old behaviour for
+    before/after measurements.
+    """
+    RUST_ENGINE.warm()
+    if os.environ.get("LIGHTTABLE_WARM_BACKGROUND_ENGINE", "1") != "0":
+        BACKGROUND_ENGINE.warm(export=True)
 _LAST_WARM_PAIR = None
 
 
@@ -4652,7 +4686,31 @@ def close_export_cache():
 
 
 atexit.register(close_export_cache)
-EXPORT_POOL = ThreadPoolExecutor(max_workers=2)
+
+
+def export_worker_count() -> int:
+    """Concurrent export workers, sized from the machine.
+
+    Each worker pipelines one photo: RAW decode still passes through its single
+    admission slot and the GPU render through the background engine gate, so
+    extra workers overlap decode, GPU work, JPEG encoding, ICC and metadata
+    rather than multiplying demosaics. ``LIGHTTABLE_EXPORT_WORKERS`` overrides
+    the count for benchmarks.
+    """
+    configured = os.environ.get("LIGHTTABLE_EXPORT_WORKERS", "")
+    if configured.strip():
+        try:
+            return max(1, min(8, int(configured)))
+        except ValueError:
+            pass
+    return min(4, max(2, (os.cpu_count() or 2) // 4))
+
+
+EXPORT_WORKERS = export_worker_count()
+EXPORT_POOL = ThreadPoolExecutor(max_workers=EXPORT_WORKERS)
+# JPEG encoding of direct exports happens here, in the export worker, from the
+# engine's shared RGB8 result; "0" keeps the encoder inside the engine process.
+DEFERRED_EXPORT_ENCODE = os.environ.get("LIGHTTABLE_DEFERRED_ENCODE", "1") != "0"
 MERGE = {"running": False, "mode": "", "progress": 0, "total": 0,
          "phase": "", "phaseProgress": 0, "phaseTotal": 0,
          "alignmentInliers": 0, "elapsedSeconds": 0.0,
@@ -4673,6 +4731,121 @@ EXTERNAL_EDIT_POOL = ThreadPoolExecutor(max_workers=1)
 def cancel_denoise_job() -> None:
     with DENOISE_LOCK:
         DENOISE["cancelled"] = True
+
+
+# Learned-denoise preload: compile and load the Core ML model once, at idle,
+# after the first RAW opens, so the first real denoise does not pay the
+# roughly thirty-second first compile. States: idle, scheduled, waiting,
+# running, done, unavailable, skipped, cancelled, failed.
+DENOISE_PRELOAD = {"state": "idle", "reason": "", "seconds": 0.0}
+DENOISE_PRELOAD_LOCK = threading.Lock()
+DENOISE_PRELOAD_CANCEL = threading.Event()
+DENOISE_PRELOAD_IDLE_WAIT = float(os.environ.get("LIGHTTABLE_DENOISE_PRELOAD_WAIT", "300"))
+
+
+def _denoise_preload_busy() -> bool:
+    """True while interaction, decoding, exports or a real denoise are active."""
+    import raw_decode_runtime
+    with DENOISE_LOCK:
+        denoise_running = bool(DENOISE["running"])
+    with EXPORT_LOCK:
+        export_running = bool(EXPORT.get("running"))
+    return (RENDER_LOCK.locked() or BACKGROUND_RENDER_LOCK.locked()
+            or raw_decode_runtime.decoder_busy() or bool(RAW_REFINE_JOBS)
+            or denoise_running or export_running or UPDATES.blocked)
+
+
+def _denoise_preload_state(state: str, reason: str = "", seconds: float | None = None) -> dict:
+    with DENOISE_PRELOAD_LOCK:
+        DENOISE_PRELOAD.update(state=state, reason=reason)
+        if seconds is not None:
+            DENOISE_PRELOAD["seconds"] = round(seconds, 3)
+        return dict(DENOISE_PRELOAD)
+
+
+def denoise_preload_status() -> dict:
+    with DENOISE_PRELOAD_LOCK:
+        return dict(DENOISE_PRELOAD)
+
+
+def schedule_denoise_preload(*, reason: str = "raw-open") -> bool:
+    """Queue the one-time idle preload; False when it is not applicable or already queued."""
+    if (sys.platform != "darwin" or SAFE_MODE
+            or os.environ.get("LIGHTTABLE_DENOISE_PRELOAD", "1") == "0"):
+        return False
+    with DENOISE_PRELOAD_LOCK:
+        if DENOISE_PRELOAD["state"] != "idle":
+            return False
+        DENOISE_PRELOAD.update(state="scheduled", reason=reason)
+    threading.Thread(target=_denoise_preload_worker, daemon=True,
+                     name="lighttable-denoise-preload").start()
+    return True
+
+
+def cancel_denoise_preload(*, only_waiting: bool = False) -> bool:
+    """Stop the preload; with ``only_waiting`` a compile already running finishes.
+
+    A user denoise queued behind a running preload reuses its compiled model,
+    so killing the helper mid-compile would only cost that user the compile
+    twice. Shutdown cancels unconditionally.
+    """
+    with DENOISE_PRELOAD_LOCK:
+        state = DENOISE_PRELOAD["state"]
+    if state in ("idle", "done", "unavailable", "skipped", "cancelled", "failed"):
+        return False
+    if only_waiting and state == "running":
+        return False
+    DENOISE_PRELOAD_CANCEL.set()
+    return True
+
+
+def _denoise_preload_worker(*, busy=None, preload=None, wait_seconds=None,
+                            poll: float = 0.5, settle: float = 2.0) -> dict:
+    """Wait for idle, then run the preload through the single denoise worker.
+
+    The helper runs in DENOISE_POOL so a user denoise started meanwhile is
+    serialised behind it rather than compiling the model a second time in
+    parallel; the idle wait itself never occupies that pool.
+    """
+    busy = busy if busy is not None else _denoise_preload_busy
+    wait_seconds = DENOISE_PRELOAD_IDLE_WAIT if wait_seconds is None else wait_seconds
+    started = time.monotonic()
+    try:
+        import enhance_workflow
+        preload = preload if preload is not None else enhance_workflow.preload_denoise
+        report = enhance_workflow.capabilities()
+        if not report.get("modes", {}).get("denoise"):
+            return _denoise_preload_state("unavailable", report.get("reason", ""))
+        _denoise_preload_state("waiting")
+        deadline = time.monotonic() + wait_seconds
+        # Let the navigation that triggered this settle before probing.
+        if DENOISE_PRELOAD_CANCEL.wait(settle):
+            return _denoise_preload_state("cancelled")
+        while busy():
+            if time.monotonic() >= deadline:
+                return _denoise_preload_state("skipped", "never idle")
+            if DENOISE_PRELOAD_CANCEL.wait(poll):
+                return _denoise_preload_state("cancelled")
+        if DENOISE_PRELOAD_CANCEL.is_set():
+            return _denoise_preload_state("cancelled")
+        with UPDATES.background_work() as allowed:
+            if not allowed:
+                return _denoise_preload_state("skipped", "update in progress")
+            _denoise_preload_state("running")
+            result = DENOISE_POOL.submit(
+                preload, cancel=DENOISE_PRELOAD_CANCEL).result()
+        if DENOISE_PRELOAD_CANCEL.is_set():
+            return _denoise_preload_state("cancelled", seconds=time.monotonic() - started)
+        return _denoise_preload_state(
+            "done" if result.get("ok") else "failed", str(result.get("error", "")),
+            seconds=time.monotonic() - started)
+    except Exception as error:  # a warm-up must never surface as a failure
+        return _denoise_preload_state(
+            "cancelled" if DENOISE_PRELOAD_CANCEL.is_set() else "failed", str(error),
+            seconds=time.monotonic() - started)
+
+
+atexit.register(cancel_denoise_preload)
 
 
 def sync_job_status(status: dict, *, progress_key: str = "done",
@@ -4966,6 +5139,47 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
                 phase_ms=phases)
 
 
+def _direct_export_render(name: str, params: dict, request: dict,
+                          dst: Path, job: dict) -> dict:
+    """Render a parity-safe JPEG export, encoding outside the engine gate.
+
+    The engine quantises the finished frame to the same 8-bit codes its own
+    encoder would receive and shares them as RGB8; this worker then encodes
+    with libjpeg-turbo using the engine encoder's settings (libjpeg quality
+    scaling of the standard tables, 4:4:4 chroma, standard Huffman tables)
+    while the engine is already free for the next photo or a preview. Windows,
+    older workers and shared-memory failures keep the in-engine encoder.
+    """
+    if export_surface.supported() and DEFERRED_EXPORT_ENCODE:
+        try:
+            metrics = _resident_render_full(name, params, dict(request, export_rgb8=True))
+        except RenderCancelled:
+            raise
+        except Exception as error:  # noqa: BLE001 - one retry on the established path
+            return dict(_resident_render_full(name, params, dict(request, output=str(dst))),
+                        export_transport="engine-jpeg", encode_fallback=type(error).__name__)
+        descriptor = metrics.get("export_shared")
+        if isinstance(descriptor, dict):
+            try:
+                pixels = export_surface.adopt_surface(descriptor)
+            except Exception:
+                export_surface.discard_surface(descriptor)
+                raise
+            try:
+                with export_phase(job, "encode"):
+                    Image.fromarray(pixels, "RGB").save(
+                        dst, "JPEG", quality=int(request.get("quality", 92)),
+                        subsampling=0)
+            finally:
+                del pixels
+            return dict(metrics, export_transport="shared-memory-rgb8")
+        # An older resident worker ignores export_rgb8 and writes nothing.
+        return dict(_resident_render_full(name, params, dict(request, output=str(dst))),
+                    export_transport="engine-jpeg", encode_fallback="NoSharedExport")
+    metrics = _resident_render_full(name, params, dict(request, output=str(dst)))
+    return dict(metrics, export_transport="engine-jpeg")
+
+
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     # Check before a renderer spends work or creates any untagged output.
     profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
@@ -4975,7 +5189,6 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     direct_error = None
     if rust_direct_export_supported(job):
         request = {
-            "output": str(dst),
             "data_dir": str(RUST_DATA), "film": cp["stock"],
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
@@ -4989,7 +5202,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "long_edge": job.get("longEdge"),
         }
         try:
-            metrics = _resident_render_full(name, params, request)
+            metrics = _direct_export_render(name, params, request, dst, job)
             job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
             with export_phase(job, "icc"):
                 platform_image.embed_jpeg_icc(dst, profile)
@@ -5333,7 +5546,7 @@ def export_would_replace_original(destination: Path, source_name: str) -> bool:
 
 
 class ExportBatch:
-    """Keep only two workers active; this batch owns its status until cleanup."""
+    """Keep only EXPORT_WORKERS workers active; this batch owns its status until cleanup."""
     def __init__(self, items, destination):
         self.items = iter(items)
         self.lock = threading.RLock()
@@ -5913,8 +6126,8 @@ def start_export(opts: dict) -> dict:
         batch.status["jobId"] = record["id"]
         EXPORT.clear()
         EXPORT.update(batch.status)
-    batch.dispatch()
-    batch.dispatch()
+    for _ in range(EXPORT_WORKERS):
+        batch.dispatch()
     return {"queued": len(items), "destination": str(destination), "jobId": record["id"]}
 
 
@@ -7459,6 +7672,8 @@ class Handler(BaseHTTPRequestHandler):
                         grade_values=b.get("grade"), masks=b.get("masks"))
                 if not result.get("cancelled") and not result.get("error"):
                     publish_preview_progress(client, generation, b["name"], 4)
+                    if is_raw(b["name"]):
+                        schedule_denoise_preload()
                 self._json(result)
             elif u.path == "/api/mask/semantic":
                 b = self._body()
@@ -8265,7 +8480,7 @@ def main() -> None:
         name="lighttable-maintenance",
     ).start()
     if RUST_WORKER_BIN and not SAFE_MODE:
-        threading.Thread(target=RUST_ENGINE.warm, daemon=True,
+        threading.Thread(target=warm_resident_engines, daemon=True,
                          name="rust-engine-warmup").start()
     # Importing the optional colour-science dependency can take hundreds of
     # milliseconds. Warm it after the port is live so the first Develop open
@@ -9213,6 +9428,10 @@ def start_denoise(body: dict) -> dict:
             "reason", "Learned denoise is unavailable")}
     params = fp.clean_params(body.get("params") or {})
     params["learned_denoise"] = True
+    # This denoise compiles the model itself; a preload still waiting for
+    # idle would only duplicate that work. A preload already compiling is
+    # left to finish because this job is queued behind it and reuses it.
+    cancel_denoise_preload(only_waiting=True)
     with DENOISE_LOCK:
         if DENOISE["running"]:
             return {"ok": False, "error": T("A denoise is already running")}

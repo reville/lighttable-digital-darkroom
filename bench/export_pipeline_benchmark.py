@@ -15,6 +15,12 @@ Starts the app tree with an isolated cache/catalog, then measures:
 Environment switches the server honours (``LIGHTTABLE_EXPORT_WORKERS``,
 ``LIGHTTABLE_DEFERRED_ENCODE``, ``LIGHTTABLE_WARM_BACKGROUND_ENGINE``) pass
 through from the caller, so a before/after pair is two invocations.
+
+Film simulation is opt-in for new photos, so an unedited batch would export
+through the Python ``render_cli.py`` worker rather than the resident engine.
+``--film on`` (the default) writes the isolated preferences so every photo
+starts with Film enabled and the batch exercises the resident JPEG path;
+``--film off`` measures the Python worker path instead.
 """
 
 from __future__ import annotations
@@ -146,6 +152,8 @@ def main() -> int:
                         help="seconds after the scan for the startup warm-up to finish")
     parser.add_argument("--all-formats", action="store_true",
                         help="include non-RAW originals in the batch")
+    parser.add_argument("--film", choices=("on", "off"), default="on",
+                        help="new-photo default: Film on (resident engine) or off (Python worker)")
     parser.add_argument("--skip-preview-probe", action="store_true")
     parser.add_argument("--timeout", type=float, default=900)
     parser.add_argument("--output", type=Path, required=True)
@@ -165,6 +173,9 @@ def main() -> int:
     started = time.perf_counter()
     env = server_environment(args.photos.resolve(), args.port, cache_root)
     env["LIGHTTABLE_INSTANCE_DIR"] = str(work / "instances")
+    cache_root.mkdir(parents=True, exist_ok=True)
+    Path(env["LIGHTTABLE_PREFS_FILE"]).write_text(json.dumps(
+        {"newPhotoDefaults": {"filmEnabled": args.film == "on"}}))
     process = subprocess.Popen(
         [str(python), str(app_root / "server.py")], cwd=app_root,
         env=env, stdout=log_handle, stderr=subprocess.STDOUT)
@@ -178,7 +189,7 @@ def main() -> int:
         # the background engine's own cold start rather than a shared one.
         time.sleep(args.warm_wait)
         names = batch_names(initial["images"], args.count, not args.all_formats)
-        params = dict(initial["defaults"])
+        params = dict(initial["defaults"], profile_enabled=args.film == "on")
         job = {"params": params, "grade": {"exposure": 0.15, "contrast": 0.2},
                "crop": None, "format": "jpeg", "quality": args.quality,
                "longEdge": None, "engine": "rs"}
@@ -200,6 +211,7 @@ def main() -> int:
             "platform": platform.platform(),
             "cpu_count": os.cpu_count(),
             "photo_folder": str(args.photos.resolve()),
+            "film": args.film,
             "names": names,
             "environment": {key: value for key, value in os.environ.items()
                             if key.startswith("LIGHTTABLE_")},

@@ -14,7 +14,7 @@ from unittest import mock
 
 import numpy as np
 import tifffile
-from PIL import Image, ImageCms
+from PIL import Image, ImageCms, JpegImagePlugin
 
 import color_pipeline
 import film_pipeline
@@ -102,39 +102,134 @@ class ExportParityTests(unittest.TestCase):
             self.assertEqual(metrics["input_transport"], "tiff-fallback")
             self.assertEqual(metrics["input_fallback"], "PermissionError")
 
+    DIRECT_JOB = {
+        "grade": {"exposure": 0.2}, "masks": [],
+        "crop": None, "optics": {}, "heals": [],
+        "format": "jpeg", "quality": 92,
+        "outputSpace": "srgb", "longEdge": None,
+        "watermark": {"enabled": False}, "metadata": "none",
+    }
+
+    def direct_job(self):
+        return dict(self.DIRECT_JOB, params=dict(server.fp.DEFAULT_PARAMS))
+
     def test_direct_jpeg_path_finishes_in_rust_and_embeds_profile(self):
+        """With deferred encoding off, the engine writes the JPEG itself."""
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "delivery.jpg"
             profile = ImageCms.ImageCmsProfile(
                 ImageCms.createProfile("sRGB")).tobytes()
+            seen = []
 
             def render(_name, _params, request):
+                seen.append(dict(request))
                 Image.new("RGB", (8, 6), (20, 40, 60)).save(
                     request["output"], "JPEG")
                 return {"width": 8, "height": 6, "total_ms": 3.0}
 
-            job = {
-                "params": dict(server.fp.DEFAULT_PARAMS),
-                "grade": {"exposure": 0.2}, "masks": [],
-                "crop": None, "optics": {}, "heals": [],
-                "format": "jpeg", "quality": 92,
-                "outputSpace": "srgb", "longEdge": None,
-                "watermark": {"enabled": False}, "metadata": "none",
-            }
             with mock.patch.object(server, "_resident_render_full",
                                    side_effect=render), \
+                    mock.patch.object(server, "DEFERRED_EXPORT_ENCODE", False), \
                     mock.patch.object(server, "expansion_anchor_for",
                                       return_value=None), \
                     mock.patch.object(server.color_pipeline, "icc_bytes",
                                       return_value=profile), \
                     mock.patch.object(server, "finish_export") as finish:
                 result = server.export_with_resident_engine(
-                    "frame.jpg", output, job)
+                    "frame.jpg", output, self.direct_job())
             finish.assert_not_called()
             self.assertTrue(result["direct_export"])
+            self.assertEqual(result["export_transport"], "engine-jpeg")
+            self.assertEqual(len(seen), 1)
+            self.assertNotIn("export_rgb8", seen[0])
             with Image.open(output) as image:
                 self.assertEqual(image.size, (8, 6))
                 self.assertEqual(image.info["icc_profile"], profile)
+
+    @unittest.skipUnless(os.name == "posix", "POSIX shared memory transport")
+    def test_direct_jpeg_encodes_shared_rgb8_outside_the_engine(self):
+        """The engine shares 8-bit codes; the worker encodes them itself."""
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "delivery.jpg"
+            profile = ImageCms.ImageCmsProfile(
+                ImageCms.createProfile("sRGB")).tobytes()
+            seen = []
+            descriptor = {"name": "/lte-1-1", "width": 8, "height": 6,
+                          "rowBytes": 24, "length": 144, "offset": 0,
+                          "format": "rgb8", "byteOrder": "native"}
+            codes = np.full((6, 8, 3), (20, 40, 60), dtype=np.uint8)
+            codes.flags.writeable = False
+
+            def render(_name, _params, request):
+                seen.append(dict(request))
+                return {"width": 8, "height": 6, "total_ms": 3.0,
+                        "export_shared": dict(descriptor),
+                        "phase_ms": {"engine": 2.0}}
+
+            with mock.patch.object(server, "_resident_render_full",
+                                   side_effect=render), \
+                    mock.patch.object(server, "DEFERRED_EXPORT_ENCODE", True), \
+                    mock.patch.object(server.export_surface, "adopt_surface",
+                                      return_value=codes) as adopt, \
+                    mock.patch.object(server, "expansion_anchor_for",
+                                      return_value=None), \
+                    mock.patch.object(server.color_pipeline, "icc_bytes",
+                                      return_value=profile), \
+                    mock.patch.object(server, "finish_export") as finish:
+                result = server.export_with_resident_engine(
+                    "frame.jpg", output, self.direct_job())
+            finish.assert_not_called()
+            adopt.assert_called_once_with(descriptor)
+            self.assertTrue(result["direct_export"])
+            self.assertEqual(result["export_transport"], "shared-memory-rgb8")
+            self.assertEqual(len(seen), 1)
+            self.assertTrue(seen[0]["export_rgb8"])
+            self.assertNotIn("output", seen[0])
+            self.assertIn("encode", result["phase_ms"])
+            self.assertIn("engine", result["phase_ms"])
+            with Image.open(output) as image:
+                self.assertEqual(image.size, (8, 6))
+                self.assertEqual(image.info["icc_profile"], profile)
+                # 4:4:4 chroma: the layout the engine's own encoder writes.
+                self.assertEqual(JpegImagePlugin.get_sampling(image), 0)
+                pixel = image.convert("RGB").getpixel((3, 3))
+                self.assertLessEqual(max(abs(a - b) for a, b in
+                                         zip(pixel, (20, 40, 60))), 2, pixel)
+
+    @unittest.skipUnless(os.name == "posix", "POSIX shared memory transport")
+    def test_direct_jpeg_keeps_engine_encoder_when_sharing_fails(self):
+        """A shared-memory failure retries once with the engine's encoder."""
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "delivery.jpg"
+            profile = ImageCms.ImageCmsProfile(
+                ImageCms.createProfile("sRGB")).tobytes()
+            seen = []
+
+            def render(_name, _params, request):
+                seen.append(dict(request))
+                if request.get("export_rgb8"):
+                    raise RuntimeError("shared export transport is unavailable")
+                Image.new("RGB", (4, 2), (1, 2, 3)).save(request["output"], "JPEG")
+                return {"width": 4, "height": 2, "total_ms": 3.0}
+
+            with mock.patch.object(server, "_resident_render_full",
+                                   side_effect=render), \
+                    mock.patch.object(server, "DEFERRED_EXPORT_ENCODE", True), \
+                    mock.patch.object(server, "expansion_anchor_for",
+                                      return_value=None), \
+                    mock.patch.object(server.color_pipeline, "icc_bytes",
+                                      return_value=profile), \
+                    mock.patch.object(server, "finish_export") as finish:
+                result = server.export_with_resident_engine(
+                    "frame.jpg", output, self.direct_job())
+            finish.assert_not_called()
+            self.assertTrue(result["direct_export"])
+            self.assertEqual(result["export_transport"], "engine-jpeg")
+            self.assertEqual(result["encode_fallback"], "RuntimeError")
+            self.assertEqual([("export_rgb8" in r, "output" in r) for r in seen],
+                             [(True, False), (False, True)])
+            with Image.open(output) as image:
+                self.assertEqual(image.size, (4, 2))
 
     def test_direct_export_failure_returns_to_precision_path(self):
         with tempfile.TemporaryDirectory() as directory:
