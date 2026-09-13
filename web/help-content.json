@@ -435,12 +435,21 @@
             "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
             "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
           ]
+        },
+        {
+          "title": "Reconnect a moved or offline source",
+          "paragraphs": [
+            "A source that went offline — a drive unplugged, a folder renamed or moved outside LightTable — shows Locate… instead of Rescan. Choosing it and picking the folder's new location checks a sample of the catalog's own photos there by content, not just name, before moving the source; edits, ratings, and collections stay attached to the same rows. It refuses a folder whose files do not match.",
+            "Folders ••• → Locate missing photos… searches one chosen folder for files matching any of the catalog's currently missing photos by content, wherever they ended up, and relinks the matches. It reports how many it relinked and how many it could not find there.",
+            "Show only missing photos, under the source list, filters the library down to photos the catalog currently cannot find, so you can review or export the list before hunting for the originals."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ]
     },
     {
@@ -737,20 +746,25 @@
       "id": "collections",
       "title": "Group photos into collections",
       "category": "Library",
-      "summary": "Create named groups without moving the original files.",
+      "summary": "Create nested collection groups, reorder them, and build a fast, temporary set with the Quick Collection.",
       "keywords": [
         "collection",
         "album",
         "organize",
         "group",
         "selected",
-        "delete collection"
+        "delete collection",
+        "nested collection",
+        "collection set",
+        "quick collection",
+        "rename collection",
+        "reorder"
       ],
       "sections": [
         {
           "title": "Create and add photos",
           "paragraphs": [
-            "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+            "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk. Collections work only with a catalog; folder mode keeps the flat, unnested list it always had."
           ],
           "steps": [
             "Select the photos you want to group.",
@@ -760,16 +774,28 @@
           ]
         },
         {
+          "title": "Nest, rename, and reorder",
+          "paragraphs": [
+            "Collections can hold other collections. The + on a collection row creates a new collection inside it; a triangle appears once it has children and toggles whether they are shown. Rename with the pencil icon. The up and down arrows move a collection within its current siblings; the left arrow on a nested collection moves it back to the top level. Order is saved and reopens the same way next time."
+          ]
+        },
+        {
           "title": "Delete a collection",
           "paragraphs": [
-            "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+            "The × beside a collection deletes it and everything nested inside it. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+          ]
+        },
+        {
+          "title": "The Quick Collection",
+          "paragraphs": [
+            "The Quick Collection is one persistent collection for building a set fast while culling, without naming anything first. Press Cmd+B (bare B is already before/after) with photos selected to add them, or press it again on the same selection to remove them. The × on its row clears it entirely. It behaves like any regular collection otherwise: add photos to it manually, or open it to review and remove individual photos."
           ]
         },
         {
           "title": "Folders and collections",
           "paragraphs": [
             "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
-            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections. Importing a Lightroom Classic catalog maps its collection sets onto this same nesting."
           ]
         }
       ],
@@ -1817,7 +1843,7 @@
           ],
           "tips": [
             "Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.",
-            "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.",
+            "Merge inputs default to full resolution. If the sequence would need more memory than the machine can spare, LightTable automatically reduces every input to a smaller long edge and shows the effective size before you start; a fixed limit can also be set with the LIGHTTABLE_MERGE_MAX_EDGE environment variable.",
             "If a merge reports an error, read the specific message and correct the input selection before trying again."
           ]
         },
@@ -2683,13 +2709,27 @@
         {
           "title": "Formats and presets",
           "paragraphs": [
-            "The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.",
+            "The export dialog offers JPEG, PNG, and TIFF. TIFF defaults to 16-bit; choose 8-bit TIFF depth in Advanced for a smaller archive file. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. PNG and HEIF always encode at 8-bit. The quality slider applies to JPEG and HEIF.",
             "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."
           ],
           "steps": [
             "Open Export and choose a preset across the top.",
             "Set Dimensions to Full size or a long-edge limit.",
             "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."
+          ]
+        },
+        {
+          "title": "Custom size, resolution, and output sharpening",
+          "paragraphs": [
+            "Custom size in Advanced replaces the Dimensions preset with any resize rule: long edge, short edge, fit within a width and height, megapixels, or a percent of the original. Enlarge smaller photos to fit allows the rule to upsize a smaller source; otherwise a photo already at or under the requested size exports unchanged. Resolution (ppi) writes only the resolution metadata tag read by print and page-layout software; it never changes the pixel dimensions.",
+            "Sharpen for applies output sharpening after resizing, matched to how the file will be viewed: Screen for on-screen viewing, or Matte paper/Glossy paper for printing. Sharpen amount (Low/Standard/High) sets its strength. Print sharpening scales its radius with Resolution (ppi), so the same physical sharpening halo holds at any print size.",
+            "Limit JPEG file size to (KB) lowers JPEG quality automatically until the file fits the limit or the quality floor is reached; a warning explains when the limit could not be met."
+          ],
+          "steps": [
+            "Open Export and expand Advanced.",
+            "Choose Custom size and enter the resize rule's value, or leave it at Use Dimensions above to keep the simple preset.",
+            "Choose Sharpen for and Sharpen amount if the export needs output sharpening.",
+            "For a JPEG with a hard size budget, set Limit JPEG file size to (KB)."
           ]
         },
         {

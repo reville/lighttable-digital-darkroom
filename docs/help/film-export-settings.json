@@ -446,7 +446,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "const targets = linkedMetadataTargets(visible());"
+        "anchor": "CULL_BATCH.apply(linkedMetadataTargets(visible().filter(Boolean))"
       },
       {
         "path": "web/cull-similarity.js",

@@ -5,6 +5,10 @@
       "other": " · {count} paired files linked"
     },
     {
+      "one": "Added {count} photo to Quick Collection",
+      "other": "Added {count} photos to Quick Collection"
+    },
+    {
       "one": "Contact sheet saved to {path}. {count} photo was skipped.",
       "other": "Contact sheet saved to {path}. {count} photos were skipped."
     },
@@ -61,8 +65,20 @@
       "other": "Rejected {count} photos"
     },
     {
+      "one": "Relinked {count} photo; {unmatched} not found there.",
+      "other": "Relinked {count} photos; {unmatched} not found there."
+    },
+    {
+      "one": "Relinked; {count} photo verified by content and {sampled} sampled.",
+      "other": "Relinked; {count} photos verified by content and {sampled} sampled."
+    },
+    {
       "one": "Removed generated masks from {count} photo",
       "other": "Removed generated masks from {count} photos"
+    },
+    {
+      "one": "Removed {count} photo from Quick Collection",
+      "other": "Removed {count} photos from Quick Collection"
     },
     {
       "one": "Restored {count} capture. You can also restore capture-time steps in History.",
