@@ -150,7 +150,7 @@
     "editing-masks-ai": {
       "content": "780fc7020bdb34f907b75c2da5d0f785c2647330d245722fedf1c48541050143",
       "sources": {
-        "film_lab_ai/hair_segmentation.py": "81f35d99980f1cb4bfc1a33c8c6350df3c4f35c3dc853476cf0561d82f627316",
+        "film_lab_ai/hair_segmentation.py": "ba2aa87a6391e135df0687f600ebde9f5984d274c168216062c7eff34b4a3f86",
         "semantic_masks.py": "540865f7effeea5104f729ea76b3bc241ce9add2046c3da811b74b8292395ecd",
         "web/app.js": "809b0507c5c21778eedb653a563f1bb6a5f4eaa6cee03197b4dc74e36b0fbf61",
         "web/index.html": "6942e6a2a95eb9705f3618db536c8f94c95bd10fc5d942ea22d398165c92b358"
