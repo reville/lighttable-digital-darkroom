@@ -32,10 +32,10 @@ import { installCaptureTime, captureSortValue } from '/web/capture-time.js';
 import { TRANSFER_GROUPS, transferChoices, transferPatch, regenerateTransferMasks,
   cropGeometry, restoreCropGeometry } from '/web/edit-transfer.js';
 import { pairKey, indexPairs, pairViewPreference, collapsePairs, pairedTargets } from '/web/photo-pairs.js';
-import {
-  LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, MAX_MASKS, MAX_MASK_COMPONENTS,
+import { MAX_HEAL_POINTS,
+  LOCAL_GRADE_DEFAULTS, OPTICS_DEFAULTS, DEFRINGE_KEYS, MAX_MASKS, MAX_MASK_COMPONENTS,
   MAX_TOTAL_MASK_POINTS, MAX_HEALS, LINEAR_MIN_SPAN,
-  normalizeMasks, normalizeHeals, normalizeOptics, localToolLabel,
+  normalizeMasks, normalizeHeals, normalizeOptics, defringeActive, localToolLabel,
 } from '/web/editor-panels.js';
 import {
   photoMatchesQuery as matchesPhotoQuery,
@@ -98,6 +98,8 @@ import { createStrokeRasterCache, autoMaskValues } from '/web/mask-raster.js';
 import { linearHandleAt, editLinear, radialHandles, radialHandleAt, editRadial } from '/web/mask-shape.js';
 import { editOverlayCursor, healHandleAt as findHealHandle, installCanvasHandleCursor } from '/web/edit-cursor.js';
 import { installMaskCurve } from '/web/mask-curve.js';
+import { sampleCurveTable, invertCurveTable, curveSampleProblem, neutralLevel, isIdentityTable, curveHandles } from '/web/curve-sampling.js';
+import { MAX_SAMPLERS, samplerReading, addSampler } from '/web/color-readout.js';
 import { createGridLayout, gridRowNeighbour, visibleGridPositions, automaticPreviewWidth, createSummaryCache } from '/web/view-performance.js';
 import { bindThumbnailErrors } from '/web/thumbnail-errors.js';
 import { createPhotoDisplayStatus } from '/web/photo-display-status.js';
@@ -292,7 +294,8 @@ function nativeMenuState() {
         .some((key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
     hasMasks: S.masks.length > 0,
     hasHealing: S.heals.length > 0,
-    hasLensCorrections: ['profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette'].some(
+    hasLensCorrections: ['profileEnabled', 'profileDistortion', 'profileVignette', 'profileChromatic',
+      'distortion', 'vignette', ...DEFRINGE_KEYS].some(
       (key) => S.optics[key] !== OPTICS_DEFAULTS[key]),
     canStack: targets.length >= 2,
     canUnstack: targets.some((item) => !!stackForImage(item.name)),
@@ -921,7 +924,7 @@ function syncControls() {
   $('learnedDenoiseStrengthV').textContent = Number(
     S.params.learned_denoise_strength ?? 0.6).toFixed(2);
   if (!rawInput) $('rawCameraDefaultStatus').textContent = tr("RAW originals only.");
-  $('wbProcessedNote').hidden = rawInput;
+  $('captureWbBlock').hidden = !rawInput;
   $('wbCustom').hidden = !rawInput || S.params.wb_mode !== 'custom';
   $('wb_mode').disabled = !rawInput;
   $('browseFilmStocks').disabled = !cur();
@@ -1412,6 +1415,7 @@ function drawHistogram() {
   else if (scopeMode === 'parade') drawWaveformScope(ctx, cv, sample, true);
   else if (scopeMode === 'vectorscope') drawVectorscope(ctx, cv, sample);
   else drawHistogramScope(ctx, cv, sample);
+  updateSamplerReadouts();
 }
 
 document.querySelectorAll('[data-scope]').forEach((button) => {
@@ -1982,11 +1986,33 @@ function drawEditOverlayNow() {
         (S.maskRefineMode === 'subtract' || S.overlayAltKey) ? '#ff9c9c' : '#fff');
     }
   } else if (S.activePane === 'healPane') {
+    if ($('healDustShow')?.checked && S.dustDetection?.name === cur()?.name && S.dustDetection.image.complete) {
+      ctx.save(); ctx.globalAlpha = 0.9;
+      ctx.drawImage(S.dustDetection.image, 0, 0, surface.width, surface.height);
+      ctx.restore();
+    }
     for (const spot of S.localPinsVisible ? S.heals : []) {
+      if (spot.mode === 'dust') continue;
       const selected = spot.id === S.selectedHealId;
       const tx = spot.target[0] * surface.width, ty = spot.target[1] * surface.height;
       const sx = spot.source[0] * surface.width, sy = spot.source[1] * surface.height;
       const radius = spot.radius * Math.min(surface.width, surface.height);
+      if (Array.isArray(spot.points) && spot.points.length > 1) {
+        ctx.save();
+        ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath();
+        spot.points.forEach(([x, y], index) => {
+          if (index) ctx.lineTo(x * surface.width, y * surface.height);
+          else ctx.moveTo(x * surface.width, y * surface.height);
+        });
+        ctx.strokeStyle = selected ? 'rgba(75,156,245,.3)' : 'rgba(160,160,160,.22)';
+        ctx.lineWidth = radius * 2; ctx.stroke();
+        ctx.strokeStyle = selected ? '#fff' : 'rgba(255,255,255,.62)';
+        ctx.lineWidth = selected ? 2.2 : 1.25; ctx.stroke();
+        ctx.restore();
+        continue;
+      }
       ctx.save();
       ctx.globalAlpha = spot.enabled === false ? 0.35 : 1;
       ctx.lineWidth = selected ? 2.2 : 1.25;
@@ -2023,7 +2049,7 @@ const previewFrameScheduler = createFrameScheduler((work) => {
   if (work.visualization && nativePreviewActive()) {
     postNative('nativeSpotVisualization', spotVisualization());
   }
-  if (work.overlay) drawEditOverlayNow();
+  if (work.overlay) { drawSamplerOverlay(); drawEditOverlayNow(); }
 });
 
 function drawEditOverlay() {
@@ -2143,12 +2169,34 @@ function refreshSpotVisualization() {
 function nativeEditsPayload(baked = S.baseEditsBaked) {
   return {
     optics: baked ? OPTICS_DEFAULTS : (S.optics || OPTICS_DEFAULTS),
-    heals: baked ? [] : (S.heals || []).filter((spot) => spot.enabled !== false).slice(0, 16),
+    heals: baked ? [] : (S.heals || []).filter((spot) => spot.enabled !== false
+      && spot.mode !== 'dust' && !(spot.points?.length > 1)).slice(0, 16),
   };
 }
 
+// The Metal shader applies this many Heal and Clone spots live. Remove and
+// whole-photo dust removal run on the CPU, and a spot whose source patch or Heal annulus
+// reads pixels an earlier spot already changed needs the ordered CPU result,
+// so those bake a corrected base on the server. Keep the rule identical to
+// server.py native_base_edits_required.
+const MAX_LIVE_HEALS = 16;
+
+function healReadsEarlierHeal(spot, earlier) {
+  const reach = (spot.radius ?? 0.04) + (earlier.radius ?? 0.04);
+  const near = (point) => Math.hypot(
+    point[0] - earlier.target[0], point[1] - earlier.target[1]) < reach;
+  return near(spot.source) || (spot.mode === 'heal' && near(spot.target));
+}
+
+function healsRequireBake(heals = S.heals) {
+  const enabled = (heals || []).filter((spot) => spot.enabled !== false);
+  if (enabled.length > MAX_LIVE_HEALS) return true;
+  return enabled.some((spot, index) => spot.mode === 'remove' || spot.mode === 'dust'
+    || enabled.slice(0, index).some((earlier) => healReadsEarlierHeal(spot, earlier)));
+}
+
 function nativeBaseRequiresBake() {
-  return !!S.optics.profileEnabled || S.heals.some((spot) => spot.enabled !== false);
+  return !!S.optics.profileEnabled || defringeActive(S.optics) || healsRequireBake();
 }
 
 /* ---------------------------------------------------------- local tools */
@@ -2185,7 +2233,7 @@ function renderEditItems(kind) {
         S.maskCreateOpen = false;
       } else {
         S.selectedHealId = item.id;
-        S.healToolMode = item.mode;
+        if (item.mode !== 'dust') S.healToolMode = item.mode;
       }
       isMask ? syncMaskPanel() : syncHealPanel();
       drawEditOverlay();
@@ -2298,6 +2346,7 @@ function syncMaskPanel() {
     input.value = mask.grade[key] ?? 0;
     document.querySelector(`[data-localv="${key}"]`).textContent = fmtG(mask.grade[key] ?? 0);
   });
+  $('maskCurveLuminosity').checked = !!mask.grade.curveLuminosity;
   if (S.maskRefineMode === 'subtract') $('maskInstruction').textContent = tr("Paint over areas to subtract from this mask.");
   else if (S.maskRefineMode === 'intersect') $('maskInstruction').textContent = tr("Paint the only area this mask should retain.");
   else if (S.maskRefineMode === 'add') $('maskInstruction').textContent = tr("Paint over areas to add to this mask. Hold Option to subtract.");
@@ -2312,22 +2361,47 @@ function syncHealPanel() {
   renderEditItems('heal');
   $('healReset').disabled = !photoReadyForEditing() || !S.heals.length;
   const spot = selectedHeal();
+  const dust = spot?.mode === 'dust';
   for (const mode of ['remove', 'heal', 'clone']) {
     $(`healTool${mode[0].toUpperCase()}${mode.slice(1)}`).setAttribute(
-      'aria-pressed', String(S.healToolMode === mode));
+      'aria-pressed', String(!dust && S.healToolMode === mode));
+  }
+  $('healRemoveOptions').hidden = dust || S.healToolMode !== 'remove';
+  for (const shape of ['spot', 'brush']) {
+    const button = $(`healShape${shape[0].toUpperCase()}${shape.slice(1)}`);
+    button.classList.toggle('on', S.healShape === shape);
+    button.setAttribute('aria-pressed', String(S.healShape === shape));
+  }
+  $('healFill').value = spot?.mode === 'remove' ? (spot.fill || 'smooth') : S.healFill;
+  const dustValues = dust ? spot : S.dustBrush;
+  $('healDustSensitivity').value = dustValues.sensitivity;
+  $('healDustSize').value = dustValues.size;
+  $('healDustSensitivityV').textContent = `${Math.round(dustValues.sensitivity * 100)}%`;
+  $('healDustSizeV').textContent = `${(dustValues.size * 100).toFixed(1)}%`;
+  $('healDustApply').textContent = S.heals.some((item) => item.mode === 'dust')
+    ? tr("Update Dust Removal") : tr("Remove Dust");
+  if (dust) $('healDustSection').open = true;
+  for (const id of ['healRadius', 'healFeather']) {
+    const row = $(id).closest?.('.row');
+    if (row) row.hidden = dust;
   }
   $('healControls').hidden = !spot;
-  if (spot) Object.assign(S.healBrush, { radius: spot.radius, feather: spot.feather, opacity: spot.opacity });
-  const brush = spot || S.healBrush;
+  if (spot && !dust) Object.assign(S.healBrush, { radius: spot.radius, feather: spot.feather, opacity: spot.opacity });
+  const brush = spot && !dust ? spot : S.healBrush;
   for (const [id, key] of [['healRadius', 'radius'], ['healFeather', 'feather'], ['healOpacity', 'opacity']]) {
     $(id).value = brush[key];
     $(id + 'V').textContent = `${Math.round(brush[key] * 100)}%`;
   }
+  const painting = S.healToolMode === 'remove' && S.healShape === 'brush';
   if (!spot) {
-    $('healInstruction').textContent = tr("Click or drag over a distraction. Heal and Clone choose a source automatically.");
+    $('healInstruction').textContent = painting
+      ? tr("Paint over a scratch, hair, or wire to remove it.")
+      : tr("Click or drag over a distraction. Heal and Clone choose a source automatically.");
     syncOverlayCursorClass(); return;
   }
-  $('healSelectedName').textContent = tr('{tool} Correction', {tool: localToolLabel(spot.mode)});
+  $('healSelectedName').textContent = dust ? tr("Dust and Scratches")
+    : tr('{tool} Correction', {tool: localToolLabel(spot.mode)});
+  $('healReposition').hidden = dust;
   $('healVisible').checked = spot.enabled !== false;
   $('healRadius').value = spot.radius;
   $('healFeather').value = spot.feather;
@@ -2335,9 +2409,11 @@ function syncHealPanel() {
   $('healRadiusV').textContent = `${Math.round(spot.radius * 100)}%`;
   $('healFeatherV').textContent = `${Math.round(spot.feather * 100)}%`;
   $('healOpacityV').textContent = `${Math.round(spot.opacity * 100)}%`;
-  $('healRefresh').hidden = spot.mode === 'remove';
-  $('healSourceHint').hidden = spot.mode === 'remove';
-  if (!S.editGesture) $('healInstruction').textContent = spot.mode === 'remove' ? tr("Click or drag to add another removal. Drag a circle to reposition it.") : tr("Click or drag to add another correction. Drag the target or source circle to refine it.");
+  $('healRefresh').hidden = !['heal', 'clone'].includes(spot.mode);
+  $('healSourceHint').hidden = !['heal', 'clone'].includes(spot.mode);
+  if (!S.editGesture && dust) $('healInstruction').textContent = tr("Dust removal runs across the whole photo. Adjust Sensitivity and Largest mark, then check fine detail.");
+  else if (!S.editGesture && painting) $('healInstruction').textContent = tr("Paint over a scratch, hair, or wire to remove it.");
+  else if (!S.editGesture) $('healInstruction').textContent = spot.mode === 'remove' ? tr("Click or drag to add another removal. Drag a circle to reposition it.") : tr("Click or drag to add another correction. Drag the target or source circle to refine it.");
   syncOverlayCursorClass();
 }
 
@@ -2370,15 +2446,34 @@ function syncOpticsPanel() {
   $('lensProfileEnabled').disabled = !profile;
   $('lensProfileDistortion').checked = !!S.optics.profileDistortion;
   $('lensProfileVignette').checked = !!S.optics.profileVignette;
+  $('lensProfileChromatic').checked = !!S.optics.profileChromatic;
   $('lensFlipHorizontal').setAttribute('aria-pressed', String(!!S.optics.flipHorizontal));
   $('lensFlipVertical').setAttribute('aria-pressed', String(!!S.optics.flipVertical));
   $('lensProfileDistortion').disabled = !profile || !S.optics.profileEnabled || !profile.hasDistortion;
   $('lensProfileVignette').disabled = !profile || !S.optics.profileEnabled || !profile.hasVignette;
+  $('lensProfileChromatic').disabled = !profile || !S.optics.profileEnabled || !profile.hasTca;
+  syncLensDatabaseNote();
   document.querySelectorAll('[data-optics]').forEach((input) => {
     const key = input.dataset.optics;
     input.value = S.optics[key];
-    document.querySelector(`[data-opticsv="${key}"]`).textContent = (+S.optics[key]).toFixed(2);
+    document.querySelector(`[data-opticsv="${key}"]`).textContent = formatOpticsValue(key, S.optics[key]);
   });
+}
+
+function formatOpticsValue(key, value) {
+  return /Hue(Start|End)$/.test(key) ? `${Math.round(+value)}°` : (+value).toFixed(2);
+}
+
+// The lens panel names the database it actually consults. Nothing is vendored
+// with the app: the version and record counts arrive from the server.
+function syncLensDatabaseNote() {
+  const note = $('lensDatabaseNote');
+  const database = S.lensDatabase;
+  note.hidden = !database?.available;
+  if (database?.available) {
+    note.textContent = tr("Lens database {version} · {cameras} cameras · {lenses} lenses",
+      { version: database.version, cameras: database.cameras, lenses: database.lenses });
+  }
 }
 
 function addMask(type) {
@@ -2689,6 +2784,13 @@ function sampleMaskColorArea(start, end) {
   toast(tr("Mask color range sampled from area"));
   return true;
 }
+$('maskCurveLuminosity').onchange = () => {
+  const mask = selectedMask(); if (!mask) return;
+  pushUndo();
+  if ($('maskCurveLuminosity').checked) mask.grade.curveLuminosity = true;
+  else delete mask.grade.curveLuminosity;
+  drawGrade(); saveState();
+};
 document.querySelectorAll('[data-local]').forEach((input) => {
   input.addEventListener('pointerdown', pushUndo);
   input.addEventListener('input', () => {
@@ -2734,9 +2836,12 @@ function setHealToolMode(mode) {
   if (!['remove', 'heal', 'clone'].includes(mode)) return;
   const spot = selectedHeal();
   S.healToolMode = mode;
-  if (spot && spot.mode !== mode) {
+  if (spot?.mode === 'dust') S.selectedHealId = null;
+  else if (spot && spot.mode !== mode) {
     pushUndo();
     spot.mode = mode;
+    if (mode === 'remove') spot.fill = spot.fill || S.healFill;
+    else { delete spot.points; delete spot.fill; }
     if (mode === 'remove') spot.source = [...spot.target];
     else if (spot.source[0] === spot.target[0] && spot.source[1] === spot.target[1]) {
       spot.source = automaticHealSource(spot.target);
@@ -2750,7 +2855,7 @@ for (const mode of ['remove', 'heal', 'clone']) {
   $(`healTool${mode[0].toUpperCase()}${mode.slice(1)}`).onclick = () => setHealToolMode(mode);
 }
 $('healReposition').onclick = () => {
-  const spot = selectedHeal(); if (!spot) return;
+  const spot = selectedHeal(); if (!spot || spot.mode === 'dust') return;
   S.editGesture = { type: 'heal-place-target', id: S.selectedHealId };
   $('healInstruction').textContent = tr("Click the new target position.");
   syncOverlayCursorClass();
@@ -2772,7 +2877,7 @@ $('healVisible').onchange = () => {
   pushUndo(); spot.enabled = $('healVisible').checked; syncHealPanel(); saveState(); refreshBaseEdits();
 };
 $('healRefresh').onclick = () => {
-  const spot = selectedHeal(); if (!spot || spot.mode === 'remove') return;
+  const spot = selectedHeal(); if (!spot || !['heal', 'clone'].includes(spot.mode)) return;
   pushUndo();
   const dx = spot.source[0] - spot.target[0], dy = spot.source[1] - spot.target[1];
   const distance = Math.max(0.08, Math.hypot(dx, dy));
@@ -2789,6 +2894,102 @@ $('healVisualizeThreshold').addEventListener('input', () => {
   $('healVisualizeThresholdV').textContent = `${Math.round(+$('healVisualizeThreshold').value * 100)}%`;
   refreshSpotVisualization();
 });
+function shiftStroke(spot, dx, dy) {
+  if (!Array.isArray(spot.points)) return;
+  spot.points = spot.points.map(([x, y]) => [clamp(x + dx, 0, 1), clamp(y + dy, 0, 1)]);
+}
+
+function dustCorrection() {
+  const spot = selectedHeal();
+  return spot?.mode === 'dust' ? spot : S.heals.find((item) => item.mode === 'dust') || null;
+}
+
+function scheduleDustDetection(delay = 350) {
+  clearTimeout(S.dustDetectTimer);
+  if (!$('healDustShow').checked) return;
+  S.dustDetectTimer = setTimeout(detectDustNow, delay);
+}
+
+async function detectDustNow() {
+  const photo = cur();
+  if (!photo || S.activePane !== 'healPane') return;
+  const spot = dustCorrection();
+  const settings = spot || S.dustBrush;
+  const index = spot ? S.heals.indexOf(spot) : S.heals.length;
+  const prior = S.heals.slice(0, index).filter((item) => item.enabled !== false && item.mode !== 'dust');
+  const generation = ++S.dustDetectGeneration;
+  $('healDustResult').textContent = tr("Finding marks…");
+  let result;
+  try {
+    result = await api('/api/heal/dust-detect', { name: photo.name, heals: prior,
+      sensitivity: settings.sensitivity, size: settings.size, w: 1600 });
+  } catch (error) {
+    result = { error: String(error?.message || error) };
+  }
+  if (generation !== S.dustDetectGeneration || cur()?.name !== photo.name) return;
+  if (result.error) { $('healDustResult').textContent = result.error; return; }
+  $('healDustResult').textContent = trn("{count} mark found", "{count} marks found", result.count);
+  const image = new Image();
+  image.onload = () => {
+    if (generation !== S.dustDetectGeneration) return;
+    S.dustDetection = { name: photo.name, image };
+    drawEditOverlay();
+  };
+  image.src = `data:image/png;base64,${result.overlay.data}`;
+}
+
+$('healDustApply').onclick = () => {
+  if (!photoReadyForEditing()) return;
+  let spot = dustCorrection();
+  if (!spot && S.heals.length >= MAX_HEALS) return toast(tr("Up to 50 corrections can be active"));
+  const values = { sensitivity: +$('healDustSensitivity').value, size: +$('healDustSize').value };
+  pushUndo();
+  if (spot) Object.assign(spot, values, { enabled: true });
+  else {
+    spot = { id: editId('heal'), mode: 'dust', enabled: true, target: [0.5, 0.5],
+      source: [0.5, 0.5], radius: 0.04, feather: 0.65, opacity: 1, ...values };
+    // Dust removal runs first, so later corrections sample cleaned pixels.
+    S.heals.unshift(spot);
+  }
+  S.selectedHealId = spot.id;
+  $('healDustShow').checked = true;
+  syncHealPanel(); saveState(); refreshBaseEdits();
+  detectDustNow();
+};
+for (const [id, key] of [['healDustSensitivity', 'sensitivity'], ['healDustSize', 'size']]) {
+  $(id).addEventListener('pointerdown', () => { if (selectedHeal()?.mode === 'dust') pushUndo(); });
+  $(id).addEventListener('input', () => {
+    const spot = selectedHeal();
+    const target = spot?.mode === 'dust' ? spot : S.dustBrush;
+    target[key] = +$(id).value;
+    $(id + 'V').textContent = key === 'size'
+      ? `${(target.size * 100).toFixed(1)}%` : `${Math.round(target.sensitivity * 100)}%`;
+    scheduleDustDetection();
+  });
+  $(id).addEventListener('change', () => {
+    if (selectedHeal()?.mode === 'dust') { saveState(); refreshBaseEdits(true); }
+  });
+}
+$('healDustShow').onchange = () => {
+  if ($('healDustShow').checked) detectDustNow();
+  else { clearTimeout(S.dustDetectTimer); S.dustDetectGeneration++; }
+  drawEditOverlay();
+};
+for (const shape of ['spot', 'brush']) {
+  $(`healShape${shape[0].toUpperCase()}${shape.slice(1)}`).onclick = () => {
+    S.healShape = shape;
+    if (S.healToolMode !== 'remove') setHealToolMode('remove');
+    syncHealPanel(); drawEditOverlay();
+  };
+}
+$('healFill').onchange = () => {
+  S.healFill = $('healFill').value;
+  const spot = selectedHeal();
+  if (spot?.mode === 'remove' && spot.fill !== S.healFill) {
+    pushUndo(); spot.fill = S.healFill; saveState(); refreshBaseEdits();
+  }
+};
+
 for (const id of ['healRadius', 'healFeather', 'healOpacity']) {
   const rememberUndo = () => { if (selectedHeal()) pushUndo(); };
   $(id).addEventListener('pointerdown', rememberUndo);
@@ -2814,10 +3015,11 @@ $('lensProfileOverride').onchange = () => {
   S.optics.profileEnabled = !!S.lensProfile;
   syncOpticsPanel(); saveState(); refreshBaseEdits();
 };
-for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette']) {
+for (const id of ['lensProfileEnabled', 'lensProfileDistortion', 'lensProfileVignette', 'lensProfileChromatic']) {
   $(id).onchange = () => {
     pushUndo();
-    const key = { lensProfileEnabled: 'profileEnabled', lensProfileDistortion: 'profileDistortion', lensProfileVignette: 'profileVignette' }[id];
+    const key = { lensProfileEnabled: 'profileEnabled', lensProfileDistortion: 'profileDistortion',
+      lensProfileVignette: 'profileVignette', lensProfileChromatic: 'profileChromatic' }[id];
     S.optics[key] = $(id).checked; syncOpticsPanel(); saveState(); refreshBaseEdits();
   };
 }
@@ -2833,7 +3035,7 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
   input.addEventListener('pointerdown', pushUndo);
   input.addEventListener('input', () => {
     S.optics[input.dataset.optics] = +input.value;
-    document.querySelector(`[data-opticsv="${input.dataset.optics}"]`).textContent = (+input.value).toFixed(2);
+    document.querySelector(`[data-opticsv="${input.dataset.optics}"]`).textContent = formatOpticsValue(input.dataset.optics, +input.value);
     syncCropPanel();
     refreshBaseEdits(true);
   });
@@ -2842,7 +3044,8 @@ document.querySelectorAll('[data-optics]').forEach((input) => {
 $('lensReset').onclick = (event) => {
   event.stopPropagation();
   pushUndo();
-  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'distortion', 'vignette']) {
+  for (const key of ['profileOverride', 'profileEnabled', 'profileDistortion', 'profileVignette', 'profileChromatic',
+    'distortion', 'vignette', ...Object.keys(OPTICS_DEFAULTS).filter((name) => name.startsWith('defringe'))]) {
     S.optics[key] = OPTICS_DEFAULTS[key];
   }
   delete S.grade.chromaticAberrationRedCyan;
@@ -2942,6 +3145,7 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
       if (!spot) { S.editGesture = null; syncOverlayCursorClass(); return; }
       pushUndo();
       const offset = [spot.source[0] - spot.target[0], spot.source[1] - spot.target[1]];
+      shiftStroke(spot, point[0] - spot.target[0], point[1] - spot.target[1]);
       spot.target = point;
       spot.source = spot.mode === 'remove' ? [...point] :
         [clamp(point[0] + offset[0], 0, 1), clamp(point[1] + offset[1], 0, 1)];
@@ -2958,18 +3162,24 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
     if (hit) {
       S.selectedHealId = hit.spot.id; S.healToolMode = hit.spot.mode;
       S.editGesture = { type: `heal-move-${hit.handle}`, pointerId: event.pointerId,
-        spot: hit.spot, rect };
+        spot: hit.spot, rect, last: point };
     } else {
+      if (!['remove', 'heal', 'clone'].includes(S.healToolMode)) S.healToolMode = 'remove';
+      const painting = S.healToolMode === 'remove' && S.healShape === 'brush';
       const spot = {
         id: editId('heal'), mode: S.healToolMode, enabled: true, target: point,
         source: S.healToolMode === 'remove' ? [...point] : automaticHealSource(point),
         ...S.healBrush,
+        ...(S.healToolMode === 'remove' ? { fill: S.healFill } : {}),
+        ...(painting ? { points: [point] } : {}),
       };
       S.heals.push(spot); S.selectedHealId = spot.id;
-      S.editGesture = { type: 'heal-create', pointerId: event.pointerId,
+      S.editGesture = { type: painting ? 'heal-stroke' : 'heal-create', pointerId: event.pointerId,
         spot, start: point, rect };
     }
     syncHealPanel(); drawEditOverlay();
+    // The new spot reaches Metal in the same coalesced frame as the overlay.
+    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3010,15 +3220,35 @@ $('editOverlay').addEventListener('pointermove', (event) => {
     S.maskTextureDirty = true; drawGrade();
   } else if (S.activePane === 'healPane') {
     if (gesture.type === 'heal-move-source') gesture.spot.source = point;
-    else if (gesture.type === 'heal-move-target') {
+    else if (gesture.type === 'heal-move-target' && Array.isArray(gesture.spot.points)) {
+      const last = gesture.last || point;
+      shiftStroke(gesture.spot, point[0] - last[0], point[1] - last[1]);
+      gesture.spot.target = gesture.spot.points[0];
+      gesture.spot.source = [...gesture.spot.target];
+      gesture.last = point;
+    } else if (gesture.type === 'heal-move-target') {
       gesture.spot.target = point;
       if (gesture.spot.mode === 'remove') gesture.spot.source = [...point];
+    } else if (gesture.type === 'heal-stroke') {
+      const points = gesture.spot.points;
+      const previous = points.at(-1);
+      const moved = Math.hypot((point[0] - previous[0]) * rect.width,
+        (point[1] - previous[1]) * rect.height) / Math.max(1, Math.min(rect.width, rect.height));
+      if (moved > Math.max(0.002, gesture.spot.radius * 0.3)) {
+        if (points.length < MAX_HEAL_POINTS) points.push(point);
+        else if (!gesture.pointLimitShown) {
+          gesture.pointLimitShown = true;
+          toast(tr('This stroke has reached its point limit. Release and paint another stroke to continue.'));
+        }
+      }
     } else if (gesture.type === 'heal-create') {
       const radius = Math.hypot((point[0] - gesture.start[0]) * rect.width,
         (point[1] - gesture.start[1]) * rect.height) / Math.min(rect.width, rect.height);
       if (radius > 0.008) gesture.spot.radius = clamp(radius, 0.005, 0.25);
     }
     drawEditOverlay();
+    // A moved spot shares the overlay's animation frame; the WebGL fallback
+    // only redraws the overlay until the gesture ends.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
@@ -3037,8 +3267,11 @@ function finishEditGesture(event) {
     return;
   }
   const wasMask = S.activePane === 'maskPane';
+  const finished = S.editGesture;
   S.editGesture = null;
   if ($('editOverlay').hasPointerCapture(event.pointerId)) $('editOverlay').releasePointerCapture(event.pointerId);
+  // A click with the Remove brush is an ordinary spot.
+  if (finished.type === 'heal-stroke' && (finished.spot.points?.length || 0) < 2) delete finished.spot.points;
   if (wasMask) {
     syncMaskPanel();
     // Replace the provisional 256px channel with the full packed texture once
@@ -3797,7 +4030,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
-      allow_draft: false,
+      // Opening a photo shows the embedded-camera draft through the film
+      // pipeline at once and refines it; every later request for a photo that
+      // is already on screen asks for accurate pixels only, so no draft is
+      // computed that could not be displayed.
+      allow_draft: phase === 'navigation',
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3956,6 +4193,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       // creates a second temporary film result that will soon be replaced.
       const refinementRequest = { name: im.name, params: { ...request.params },
         w: requestedWidth, client: CLIENT_ID, generation: my };
+      // Neighbours start warming behind the draft; the decode gate keeps this
+      // photo's refinement ahead of their demosaics.
+      prefetch();
       const ready = await waitForRawRefinement({
         request: () => api('/api/refine', refinementRequest),
         isCurrent: () => my === S.seq && cur()?.name === im.name,
@@ -3982,7 +4222,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
-    prefetch(m.refining || phase === 'interactive');
+    // Neighbours start warming behind the first frame; the decode gate keeps
+    // this photo's refinement ahead of their demosaics.
+    prefetch();
   } catch (e) {
     const failedAt = performance.now();
     if (my === S.seq) automaticPreviewRequest = null;
@@ -4587,6 +4829,12 @@ function prefetchState(im) {
 let prefetchTimer = null;
 let lastNavigationDirection = 1;
 
+// Small frames are one film render once the standard preview exists, so the
+// window reaches further ahead than behind. Full-width detail stays at one
+// neighbour each way: that pass needs its own input and a much larger render.
+const PREFETCH_AHEAD = 3;
+const PREFETCH_BEHIND = 1;
+
 async function prefetchImage(target, epoch, generation, detail = false) {
   const current = () => epoch === navigationGeneration && generation === S.seq;
   if (!target || !current()) return;
@@ -4605,6 +4853,8 @@ async function prefetchImage(target, epoch, generation, detail = false) {
       engine: $('engine').value,
       client: CLIENT_ID, generation, priority: 'prefetch',
       allow_draft: false,
+      // The small pass must not start a demosaic; the detail pass may.
+      ...(detail ? {} : { prepared_only: true }),
       native: nativePreviewActive(),
     };
     const key = renderRequestKey(target, request);
@@ -4616,24 +4866,30 @@ async function prefetchImage(target, epoch, generation, detail = false) {
   } catch (_) { /* A speculative miss must not interrupt navigation. */ }
 }
 
-function prefetch(refining = false) {
+function prefetch() {
   clearTimeout(prefetchTimer);
-  if (refining) return;
   const ordered = visible();
   const visibleIndex = ordered.indexOf(cur());
   if (visibleIndex < 0) return;
   const primary = ordered[visibleIndex + lastNavigationDirection];
   const secondary = ordered[visibleIndex - lastNavigationDirection];
   if (!primary && !secondary) return;
+  const small = [];
+  for (let step = 1; step <= Math.max(PREFETCH_AHEAD, PREFETCH_BEHIND); step++) {
+    if (step <= PREFETCH_AHEAD) small.push(ordered[visibleIndex + step * lastNavigationDirection]);
+    if (step <= PREFETCH_BEHIND) small.push(ordered[visibleIndex - step * lastNavigationDirection]);
+  }
 
   const epoch = navigationGeneration, generation = S.seq;
   prefetchTimer = setTimeout(async () => {
-    // Warm both useful first frames before larger work. Each step rechecks the
-    // photo and render generation so navigation, zoom, or edits stop the batch.
-    for (const detail of [false, true]) {
-      for (const target of [primary, secondary]) {
-        await prefetchImage(target, epoch, generation, detail);
-      }
+    // Warm the small first frames across the window before larger work. Each
+    // step rechecks the photo and render generation so navigation, zoom, or
+    // edits stop the batch.
+    for (const target of small) {
+      await prefetchImage(target, epoch, generation, false);
+    }
+    for (const target of [primary, secondary]) {
+      await prefetchImage(target, epoch, generation, true);
     }
   }, 80);
 }
@@ -4821,6 +5077,10 @@ function saveState(immediate = false) {
     keywords: im.keywords || [], versions: im.versions || [] };
   if (im.stateLoadEdits) Object.assign(im.stateLoadEdits, cloneValue(state));
   editSaveQueue.enqueue(im.name, { state, history, sourceKey: im.recoverySourceKey || null }, { immediate });
+  // The catalog flags any saved blob as an edit; mirror it so defaults for
+  // never-saved photos stop applying to this one from now on.
+  im.hasEdits = true;
+  im.opticsSaved = true;
   if (wasEdited !== photoHasEdits(im)) {
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
@@ -5075,6 +5335,8 @@ function recordPhotoDisplayState(im, failed, channel = 'thumbnail') {
 function syncUndisplayableLink() {
   const library = $('library');
   const link = $('hideUndisplayableLink');
+  $('filmstripHideUndisplayableLink').hidden = LIBRARY_FILTERS.hideUndisplayable()
+    || !visible().some(im => PHOTO_DISPLAY_STATUS.cannotDisplay(im));
   link.hidden = true;
   if (!library.classList.contains('show') || LIBRARY_FILTERS.hideUndisplayable()) return;
   const viewport = library.getBoundingClientRect();
@@ -5336,6 +5598,7 @@ function syncStripItem(element, im) {
 
 function renderStrip(fromScroll = false) {
   const list = visible();
+  syncUndisplayableLink();
   const host = $('strip');
   const itemPitch = stripItemPitch();
   const viewportCount = Math.max(1,
@@ -6379,7 +6642,7 @@ function switchPane(id, { fromCompare = false } = {}) {
   if (compareEditingBlocked()) setCompareActive(false);
   else syncCompareControl();
   if (id === 'maskPane') syncMaskPanel();
-  if (id === 'healPane') syncHealPanel();
+  if (id === 'healPane') { syncHealPanel(); scheduleDustDetection(0); }
   if (id === 'editPane') syncOpticsPanel();
   if (id === 'infoPane') METADATA?.refresh(cur()?.name, true);
   if (id === 'historyPane') HISTORY?.refresh(cur()?.name, true);
@@ -6873,6 +7136,10 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
     masks: normalizeMasks(im.masks),
     heals: normalizeHeals(im.heals),
     optics: normalizeOptics(im.optics),
+    // The server says whether lens state was ever saved; a payload without
+    // the flag (a recovered draft) counts as saved when it carries optics.
+    opticsSaved: typeof im.opticsSaved === 'boolean' ? im.opticsSaved
+      : !!im.optics && Object.keys(im.optics).length > 0,
   };
 }
 
@@ -6927,6 +7194,10 @@ function showCurrentImage(im) {
   S.pointColorPick = false; S.maskColorPick = false; S.wbPick = false;
   $('wbBtn').classList.remove('on');
   $('cmp').classList.remove('wb-picking', 'color-picking');
+  setCurvePick(null, false); setSamplerMode(false, false);
+  S.dustDetection = null; S.dustDetectGeneration++;
+  $('healDustResult').textContent = '';
+  updateSamplerReadouts(); drawSamplerOverlay();
   restoreCropChoices(im.cropChoices);
   Object.assign(S, photoUndo.activate(im.name));
   updateUndoRedoButtons();
@@ -7175,15 +7446,19 @@ async function loadRawCameraDefault(name, hadSavedParams) {
 }
 
 const _lensProfileCache = new Map();
+/* A photo that has never saved lens state opens with the matched profile on
+ * when the server says the match is exact and Develop Defaults allow it. The
+ * server applies the same rule to thumbnails, exports, and CLI renders, so a
+ * saved edit, including one that switched the profile off, is never overridden. */
+function lensProfileStartsEnabled(match) {
+  return !!match?.autoEnabled && !S.optics.profileOverride && !cur()?.opticsSaved;
+}
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
     if (cur()?.name === name) {
       const cached = _lensProfileCache.get(name);
       S.lensProfile = cached.profile;
-      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
-          cached.found && cached.reason === "Exact camera and lens metadata match.") {
-        S.optics.profileEnabled = true;
-      }
+      if (lensProfileStartsEnabled(cached)) S.optics.profileEnabled = true;
       syncOpticsPanel();
     }
     return;
@@ -7194,10 +7469,7 @@ async function loadLensProfile(name) {
     _lensProfileCache.set(name, { ...result, profile });
     if (cur()?.name === name) {
       S.lensProfile = profile;
-      if (!S.optics.profileOverride && (!cur()?.optics || !cur()?.hasEdits) &&
-          result.found && result.reason === "Exact camera and lens metadata match.") {
-        S.optics.profileEnabled = true;
-      }
+      if (lensProfileStartsEnabled(result)) S.optics.profileEnabled = true;
       syncOpticsPanel();
     }
   } catch (_) {
@@ -7933,7 +8205,7 @@ async function initializeEditRecovery(data) {
       const image = S.images.find(item => item.name === record.name);
       if (image) Object.assign(image, normalizeLibraryImage({
         ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
-        recoverySourceKey: record.payload.sourceKey,
+        opticsSaved: true, recoverySourceKey: record.payload.sourceKey,
       }, true));
     }
   } else {
@@ -7956,7 +8228,10 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
       if (heif) { heif.disabled = true; heif.hidden = true; }
       if (select.value === 'heif') select.value = 'jpeg';
     }
-    for (const id of ['maskAddPeople', 'maskSoftenSkin']) $(id).hidden = true;
+    $('maskSoftenSkin').hidden = true;
+    document.querySelectorAll('[data-person-part]').forEach((button) => {
+      button.hidden = !['person', 'hair'].includes(button.dataset.personPart);
+    });
   }
   FIRST_RUN?.setLibrary(d);
   S.rootFolder = d.folder;
@@ -7971,6 +8246,8 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.filmDefaults = d.defaults;
   S.newPhotoGradeDefaults = d.gradeDefaults || GRADE_DEFAULTS;
   S.rawGradeDefaults = d.rawGradeDefaults || S.rawGradeDefaults;
+  S.lensProfileDefault = d.lensProfileDefault !== false;
+  S.lensDatabase = d.lensDatabase || S.lensDatabase || null;
   S.grainBaselines = d.stocks.grainBaselines || {};
   S.profiles = Array.isArray(d.profiles) ? d.profiles : [];
   S.profileById = Object.fromEntries(S.profiles.map((profile) =>
@@ -8641,7 +8918,7 @@ function syncPhotoActions() {
     $(id).inert = !ready;
   }
   for (const id of ['resetEdit', 'autoBtn', 'zoomFit', 'zoom1', 'beforeBtn',
-    'wbBtn', 'clipBtn', 'versionCreate']) {
+    'wbBtn', 'clipBtn', 'samplerBtn', 'versionCreate']) {
     $(id).disabled = !ready;
   }
   $('maskReset').disabled = !ready || !S.masks.length;
@@ -9115,7 +9392,20 @@ function exportModalOptions() {
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
+    border: exportModalBorder(),
   };
+}
+
+function exportModalBorder() {
+  const size = +$('modalExBorder').value || 0;
+  return { enabled: size > 0, size: size || 0.03, tone: +$('modalExBorderTone').value };
+}
+
+function nearestOptionValue(select, value) {
+  const options = [...select.options].map((option) => option.value)
+    .filter((item) => select.id !== 'modalExBorder' || +item > 0);
+  return options.reduce((best, item) =>
+    Math.abs(+item - value) < Math.abs(+best - value) ? item : best, options[0]);
 }
 
 function scheduleExportPreview() {
@@ -9234,6 +9524,10 @@ function openExportModal() {
   if ($('exDestination')?.value) $('modalExDestination').value = $('exDestination').value;
   if ($('exFilenameTemplate')?.value) $('modalExFilenameTemplate').value = $('exFilenameTemplate').value;
   if ($('exCollision')?.value) $('modalExCollision').value = $('exCollision').value;
+  const recipeBorder = EXPORT_RECIPE_EXTRAS.border;
+  $('modalExBorder').value = recipeBorder?.enabled
+    ? nearestOptionValue($('modalExBorder'), +recipeBorder.size || 0.03) : '0';
+  $('modalExBorderTone').value = nearestOptionValue($('modalExBorderTone'), recipeBorder?.tone ?? 1);
   for (const key of EXPORT_EXTRA_FIELDS) $('modalEx' + key).value = $('ex' + key).value;
   syncExportDestination('modalEx');
 
@@ -9325,7 +9619,7 @@ document.querySelectorAll('.export-preset-pill').forEach((pill) => {
 });
 
 ['modalExFormat', 'modalExSize', 'modalExQuality', 'modalExColorSpace',
-  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision',
+  'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision', 'modalExBorder', 'modalExBorderTone',
   ...EXPORT_EXTRA_FIELDS.map((key) => 'modalEx' + key)].forEach((id) => {
   $(id).addEventListener('input', scheduleExportPreview);
   $(id).addEventListener('change', scheduleExportPreview);
@@ -9357,6 +9651,7 @@ $('exportModalRun').onclick = async () => {
   $('exFilenameTemplate').value = $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}';
   $('exCollision').value = $('modalExCollision').value;
   for (const key of EXPORT_EXTRA_FIELDS) $('ex' + key).value = $('modalEx' + key).value;
+  EXPORT_RECIPE_EXTRAS = { ...EXPORT_RECIPE_EXTRAS, border: exportModalBorder() };
   savePrefs();
   closeExportModal();
   await runExport({
@@ -9370,7 +9665,112 @@ $('exportModalRun').onclick = async () => {
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
+    border: exportModalBorder(),
   });
+};
+
+/* ------------------------------------------------------- contact sheet */
+let contactSheetJob = null;
+let contactSheetTimer = 0;
+
+function contactSheetNames() {
+  const which = $('modalExWhich').value;
+  if (which === 'selected') {
+    const targets = transferTargets();
+    return targets.length ? targets.map((im) => im.name) : (cur() ? [cur().name] : []);
+  }
+  return S.images.filter((im) => which === 'approved' ? im.status === 'approved'
+    : which === 'rated' ? (im.rating || 0) >= 1 : im.status !== 'skipped').map((im) => im.name);
+}
+
+function openContactSheetDialog() {
+  const names = contactSheetNames();
+  const tooMany = names.length > 200;
+  $('contactSheetSummary').textContent = trn("{count} photo from the export selection",
+    "{count} photos from the export selection", names.length);
+  if (!contactSheetJob) {
+    $('contactSheetStatus').textContent = tooMany
+      ? tr("A contact sheet can hold up to {count} photos", {count: 200}) : '';
+  }
+  $('contactSheetRun').disabled = !names.length || tooMany || !!contactSheetJob;
+  $('contactSheetDialog').classList.add('on');
+  $('contactSheetDialog').setAttribute('aria-hidden', 'false');
+  $('contactSheetColumns').focus();
+}
+
+function closeContactSheetDialog() {
+  $('contactSheetDialog').classList.remove('on');
+  $('contactSheetDialog').setAttribute('aria-hidden', 'true');
+}
+
+function finishContactSheet() {
+  contactSheetJob = null;
+  clearTimeout(contactSheetTimer);
+  $('contactSheetCancel').textContent = tr("Cancel");
+  $('contactSheetRun').disabled = false;
+}
+
+async function pollContactSheet() {
+  clearTimeout(contactSheetTimer);
+  const ident = contactSheetJob;
+  if (!ident) return;
+  let job = null;
+  try {
+    job = await fetch(`/api/jobs/${ident}`).then((response) => response.json());
+  } catch {
+    job = null;
+  }
+  if (ident !== contactSheetJob) return;
+  if (!job || job.error) {
+    finishContactSheet();
+    $('contactSheetStatus').textContent = job?.error || tr("Contact sheet failed");
+    return;
+  }
+  if (job.state === 'running' || job.state === 'queued') {
+    $('contactSheetStatus').textContent = tr("Rendering {done} of {total}…", {done: job.progress, total: job.total});
+    contactSheetTimer = setTimeout(pollContactSheet, 600);
+    return;
+  }
+  finishContactSheet();
+  const skipped = (job.errors || []).length;
+  if (job.state === 'done') {
+    closeContactSheetDialog();
+    toast(skipped
+      ? trn("Contact sheet saved to {path}. {count} photo was skipped.",
+        "Contact sheet saved to {path}. {count} photos were skipped.", skipped, {path: job.result.path})
+      : tr("Contact sheet saved to {path}", {path: job.result.path}));
+  } else {
+    $('contactSheetStatus').textContent = job.state === 'cancelled'
+      ? tr("Contact sheet stopped") : (job.errors?.at(-1) || tr("Contact sheet failed"));
+  }
+}
+
+$('exportModalContactSheet').onclick = openContactSheetDialog;
+$('contactSheetCancel').onclick = async () => {
+  if (!contactSheetJob) { closeContactSheetDialog(); return; }
+  await api(`/api/jobs/${contactSheetJob}/cancel`, {});
+  $('contactSheetStatus').textContent = tr("Stopping…");
+};
+$('contactSheetRun').onclick = async () => {
+  const names = contactSheetNames();
+  if (!names.length || contactSheetJob) return;
+  if (!await saveState(true)) return;
+  const captions = [['contactSheetCaptionFilename', 'filename'], ['contactSheetCaptionStock', 'stock'],
+    ['contactSheetCaptionRating', 'rating']].filter(([id]) => $(id).checked).map(([, key]) => key);
+  const result = await api('/api/contact-sheet', {
+    names, captions,
+    columns: +$('contactSheetColumns').value,
+    width: +$('contactSheetWidth').value,
+    background: $('contactSheetBackground').value,
+    title: $('contactSheetTitleInput').value.trim(),
+    destination: $('modalExDestination').value.trim() || 'film-exports',
+  });
+  if (result.error) { $('contactSheetStatus').textContent = result.error; return; }
+  contactSheetJob = result.jobId;
+  $('contactSheetRun').disabled = true;
+  $('contactSheetCancel').textContent = tr("Stop");
+  $('contactSheetStatus').textContent = tr("Rendering {done} of {total}…", {done: 0, total: result.total});
+  pollContactSheet();
 };
 
 $('exportBtn').onclick = openExportModal;
@@ -10030,6 +10430,17 @@ document.addEventListener('keydown', (e) => {
   if (e.shiftKey && !e.altKey && e.key.toLowerCase() === 'e') {
     e.preventDefault();
     openExportModal();
+    return;
+  }
+
+  if (e.key === 'Escape' && $('contactSheetDialog')?.classList.contains('on')) {
+    e.preventDefault();
+    closeContactSheetDialog();
+    return;
+  }
+  if (e.key === 'Escape' && (S.curvePick || S.samplerMode)) {
+    e.preventDefault();
+    setCurvePick(null); setSamplerMode(false);
     return;
   }
 
@@ -11213,7 +11624,7 @@ function syncPointColor() {
     if (output) output.textContent = ['range', 'hueShift'].includes(key) ? `${Math.round(current[key])}°` : fmtG(current[key]);
   });
   $('pointColorSample').classList.toggle('on', S.pointColorPick);
-  $('cmp').classList.toggle('color-picking', S.pointColorPick);
+  syncPickingCursor();
 }
 
 $('pointColorSelect').onchange = () => {
@@ -11395,6 +11806,166 @@ $('clipBtn').onclick = () => {
   toast(S.clip ? tr("Clipping warning active") : tr("Clipping warning off"));
 };
 
+/* ------------------------------------------- curve eyedroppers, samplers */
+function syncPickingCursor() {
+  $('cmp').classList.toggle('color-picking', !!(S.pointColorPick || S.curvePick || S.samplerMode));
+}
+
+function clearOtherPickers(keep) {
+  if (S.wbPick) { S.wbPick = false; $('wbBtn').classList.remove('on'); $('cmp').classList.remove('wb-picking'); }
+  if (S.pointColorPick) { S.pointColorPick = false; syncPointColor(); }
+  if (S.maskColorPick) { S.maskColorPick = false; $('maskColorSample').classList.remove('on'); }
+  if (keep !== 'curve') setCurvePick(null, false);
+  if (keep !== 'sampler') setSamplerMode(false, false);
+}
+
+function setCurvePick(kind, announce = true) {
+  S.curvePick = kind && cur() ? kind : null;
+  if (S.curvePick && announce) clearOtherPickers('curve');
+  document.querySelectorAll('[data-curve-pick]').forEach((button) => {
+    const on = button.dataset.curvePick === S.curvePick;
+    button.classList.toggle('on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  syncPickingCursor();
+  if (!announce) return;
+  if (S.curvePick) setCompareActive(false);
+  syncCompareControl(); syncPreviewBackend();
+  if (S.curvePick) toast(S.curvePick === 'black' ? tr("Click an area that should be black")
+    : S.curvePick === 'white' ? tr("Click an area that should be white")
+      : tr("Click an area that should be neutral grey"));
+}
+document.querySelectorAll('[data-curve-pick]').forEach((button) => {
+  button.onclick = (event) => {
+    event.stopPropagation();
+    setCurvePick(S.curvePick === button.dataset.curvePick ? null : button.dataset.curvePick);
+  };
+});
+
+function applyCurvePick(u, v) {
+  const kind = S.curvePick;
+  if (!kind || !S.gl) return toast(tr("Color sampling: waiting for image preview…"));
+  refreshWebGLSamplingSurface();
+  // A baked preview already contains every curve; undo the channel tables.
+  const baked = S.gradeEditsBaked;
+  const px = S.gl.samplePixel(u, v, { channelCurves: baked });
+  if (!px) return toast(tr("Color sampling: waiting for image preview…"));
+  let rgb = [px[0] / 255, px[1] / 255, px[2] / 255];
+  if (baked) rgb = rgb.map((value, index) => invertCurveTable(S.grade[['curveR', 'curveG', 'curveB'][index]], value));
+  const problem = curveSampleProblem(kind, rgb);
+  if (problem) return toast(problem === 'too-bright' ? tr("Choose a darker area") : tr("Choose a brighter area"));
+  pushUndo();
+  if (S.curveMode !== 'point') $('curveModePoint').click();
+  const level = neutralLevel(rgb);
+  // Write the tables directly: re-interpolating a few handles would bend
+  // the whole channel instead of moving only the sampled value.
+  ['R', 'G', 'B'].forEach((channel, index) => {
+    const key = `curve${channel}`;
+    const table = sampleCurveTable(S.grade[key], kind, rgb[index], level);
+    if (isIdentityTable(table)) delete S.grade[key];
+    else S.grade[key] = table;
+    S.curve[channel] = curveHandles(S.grade[key]);
+  });
+  drawCurve(); drawGrade(); saveState();
+  setCurvePick(null);
+  toast(kind === 'black' ? tr("Black point set") : kind === 'white' ? tr("White point set") : tr("Grey point set"));
+}
+
+function currentSamplers() {
+  return S.samplers?.get(cur()?.name) || [];
+}
+
+function setSamplerMode(on, announce = true) {
+  S.samplerMode = Boolean(on) && !!cur() && currentSamplers().length < MAX_SAMPLERS;
+  if (S.samplerMode && announce) clearOtherPickers('sampler');
+  $('samplerBtn').classList.toggle('on', S.samplerMode);
+  $('samplerBtn').setAttribute('aria-pressed', String(S.samplerMode));
+  syncPickingCursor();
+  if (!announce) return;
+  if (S.samplerMode) setCompareActive(false);
+  syncCompareControl(); syncPreviewBackend();
+  if (S.samplerMode) toast(tr("Click the photo to place up to four colour samplers"));
+  else if (on && currentSamplers().length >= MAX_SAMPLERS) toast(tr("Up to four colour samplers can be placed"));
+}
+$('samplerBtn').onclick = (event) => {
+  event.stopPropagation();
+  setSamplerMode(!S.samplerMode);
+};
+
+function placeSampler(u, v) {
+  const name = cur()?.name;
+  if (!name) return;
+  const next = addSampler(currentSamplers(), u, v);
+  S.samplers.set(name, next);
+  if (next.length >= MAX_SAMPLERS) setSamplerMode(false, false);
+  updateSamplerReadouts(true);
+  drawSamplerOverlay();
+}
+
+function updateSamplerReadouts(refresh = false) {
+  const host = $('samplerReadouts');
+  if (!host) return;
+  const list = currentSamplers();
+  host.hidden = !list.length;
+  host.replaceChildren();
+  if (!list.length) return;
+  if (refresh) refreshWebGLSamplingSurface();
+  list.forEach((sampler, index) => {
+    const reading = S.gl ? samplerReading(S.gl.samplePixel(sampler.u, sampler.v)) : null;
+    const row = document.createElement('div');
+    row.className = 'sampler-row';
+    const badge = document.createElement('span');
+    badge.className = 'sampler-index';
+    badge.textContent = String(index + 1);
+    const values = document.createElement('span');
+    values.className = 'sampler-values';
+    values.textContent = reading ? `R ${reading.r}  G ${reading.g}  B ${reading.b}` : '—';
+    const light = document.createElement('span');
+    light.className = 'sampler-light';
+    light.textContent = reading ? `L* ${reading.l}` : '';
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'quiet icon-btn sampler-remove';
+    remove.textContent = '×';
+    remove.title = tr("Remove sampler");
+    remove.setAttribute('aria-label', tr("Remove sampler {number}", {number: index + 1}));
+    remove.onclick = () => {
+      S.samplers.set(cur()?.name, currentSamplers().filter((_, item) => item !== index));
+      updateSamplerReadouts(true);
+      drawSamplerOverlay();
+    };
+    row.append(badge, values, light, remove);
+    host.appendChild(row);
+  });
+}
+
+function drawSamplerOverlay() {
+  const overlay = $('samplerOverlay');
+  const canvas = $('cv');
+  if (!overlay || !canvas) return;
+  const list = currentSamplers();
+  const geometry = list.length && canvas.width && canvas.height && S.viewMode === 'detail'
+    ? screenOverlayGeometry(canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
+      $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
+  const surface = prepareScreenOverlay(overlay, geometry);
+  if (!surface) return;
+  const { ctx } = surface;
+  list.forEach(({ u, v }, index) => {
+    const x = u * surface.width, y = v * surface.height;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2);
+    ctx.moveTo(x - 12, y); ctx.lineTo(x - 4, y); ctx.moveTo(x + 4, y); ctx.lineTo(x + 12, y);
+    ctx.moveTo(x, y - 12); ctx.lineTo(x, y - 4); ctx.moveTo(x, y + 4); ctx.lineTo(x, y + 12);
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,.65)'; ctx.stroke();
+    ctx.lineWidth = 1.4; ctx.strokeStyle = '#f2d36b'; ctx.stroke();
+    ctx.font = '600 11px system-ui, sans-serif';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,.75)';
+    ctx.strokeText(String(index + 1), x + 9, y - 9);
+    ctx.fillStyle = '#f2d36b'; ctx.fillText(String(index + 1), x + 9, y - 9);
+    ctx.restore();
+  });
+}
+
 /* ------------------------------------------------------------ auto tone */
 $('autoBtn').onclick = (event) => {
   event.stopPropagation();
@@ -11418,6 +11989,12 @@ $('autoBtn').onclick = (event) => {
   acc = 0;
   for (let i = 255; i >= 0; i--) { acc += hist[i]; if (acc > cut) { hi = i; break; } }
   pushUndo();
+  // lo and hi are the 0.5% and 99.5% luma percentiles. A dark end that
+  // stops short of black gets a negative Blacks (which lowers the black
+  // point) and a bright end that stops short of white gets a positive
+  // Whites (which lowers the white point, brightening the top of the
+  // range), so both terms pull the histogram out to its endpoints. The
+  // sign convention is shared with grade.py and every shader.
   S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);
   S.grade.blacks = clamp(-(lo / 255) * 1.2, -1, 0.4);
   S.grade.whites = clamp((1 - hi / 255) * 1.2, -0.4, 1);
@@ -11431,6 +12008,7 @@ $('wbBtn').onclick = (event) => {
   event.stopPropagation();
   S.wbPick = !S.wbPick;
   if (S.wbPick) {
+    setCurvePick(null, false); setSamplerMode(false, false);
     S.pointColorPick = false; S.maskColorPick = false;
     $('maskColorSample').classList.remove('on');
     syncPointColor();
@@ -11443,7 +12021,7 @@ $('wbBtn').onclick = (event) => {
   if (S.wbPick) toast(tr("Click a neutral grey area"));
 };
 function handleCanvasSample(e) {
-  if (!S.maskColorPick && !S.pointColorPick && !S.wbPick) return;
+  if (!S.maskColorPick && !S.pointColorPick && !S.wbPick && !S.curvePick && !S.samplerMode) return;
   if (e.target.closest('#cropLayer, #editOverlay, .cmp-bar, #compareSnap')) return;
   const cv = $('cv'), r = cv.getBoundingClientRect();
   if (!r.width || !r.height) return;
@@ -11477,6 +12055,11 @@ function handleCanvasSample(e) {
     toast(tr("Point color sampled"));
     return;
   }
+  // The canvas and its frame both listen; handle each click once.
+  if (e.darkroomSampleHandled) return;
+  e.darkroomSampleHandled = true;
+  if (S.curvePick) { applyCurvePick(u, v); return; }
+  if (S.samplerMode) { placeSampler(u, v); return; }
   if (!S.wbPick) return;
   refreshWebGLSamplingSurface();
   const px = S.gl && S.gl.samplePixel(u, v);
@@ -12533,6 +13116,8 @@ installSettings({
     if (!data) return;
     S.filmDefaults = data.defaults || S.filmDefaults;
     S.newPhotoGradeDefaults = data.gradeDefaults || S.newPhotoGradeDefaults;
+    S.lensProfileDefault = data.lensProfileDefault !== false;
+    _lensProfileCache.clear();
     clearEditedThumbnails();
     _stripKey = _gridKey = '';
     refreshLists();
@@ -12567,17 +13152,27 @@ APPLE_PHOTOS = installApplePhotosBrowser({
   el: $, sendNative, nativeBridge,
   onImported: async (path) => {
     if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
-    const result = await api('/api/catalog/sources', {action: 'add', path, importState: false});
+    const result = await api('/api/catalog/sources', {action: 'add', path, importState: true});
     if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
     await reloadLibrary();
   },
   onViewImported: async (path) => {
     if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    if (typeof LIBRARY_FILTERS?.clear === 'function') LIBRARY_FILTERS.clear();
+    if ($('search')) $('search').value = '';
+    S.activeCollection = '';
+    if (S.cull) S.cull.review = 'all';
     S.includeSubfolders = true;
-    $('includeSubfolders').checked = true;
+    if ($('includeSubfolders')) $('includeSubfolders').checked = true;
     S.activeFolders[path] = '';
+    S.activeFolder = '';
     await savePrefs();
-    if (S.rootFolder === path) { await reloadLibrary(); selectFolder(''); }
-    else sendNative('selectSource', {path});
+    if (S.rootFolder === path) {
+      await reloadLibrary();
+      selectFolder('');
+      refreshFilteredView();
+    } else {
+      postNative('selectSource', {path});
+    }
   },
 });

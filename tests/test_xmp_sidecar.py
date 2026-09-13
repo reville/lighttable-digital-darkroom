@@ -294,6 +294,16 @@ class EditPatchTests(unittest.TestCase):
         self.assertIn("embedded profile or look", patch["ignored"])
         self.assertEqual(patch["mapped"], len(patch["grade"]) + 2)
 
+    def test_an_exposure_beyond_the_app_range_is_named_in_the_report(self):
+        from grade import RANGES
+        low, high = RANGES["exposure"]
+        parsed = xmp_sidecar.parse(ATTRIBUTE_XMP.replace('crs:Exposure2012="+0.75"',
+                                                          'crs:Exposure2012="+6.0"'))
+        patch = xmp_sidecar.as_edit_patch(parsed)
+        self.assertEqual(patch["grade"]["exposure"], high)
+        self.assertIn(f"exposure beyond {low:+g} to {high:+g} clamped to range",
+                      patch["ignored"])
+
     def test_crop_is_applied_rather_than_reported_as_skipped(self):
         patch = xmp_sidecar.as_edit_patch(xmp_sidecar.parse(ATTRIBUTE_XMP))
         self.assertNotIn("geometry or crop", patch["ignored"])
@@ -586,6 +596,33 @@ class ExternalEditTests(unittest.TestCase):
         with mock.patch.object(xmp_sidecar, "merge_sidecar", side_effect=racing_merge):
             self.assertFalse(xmp_sidecar.write_sidecar(self.source, {"rating": 2}))
         self.assertEqual(self.target.read_text(), external)
+
+
+class FolderSidecarDetectionTests(unittest.TestCase):
+    def test_finds_a_sidecar_in_a_nested_folder_and_ignores_empty_trees(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "2024" / "trip").mkdir(parents=True)
+            (root / "2024" / "trip" / "IMG_0001.CR2").write_bytes(b"raw")
+            self.assertFalse(xmp_sidecar.folder_has_sidecars(root))
+            (root / "2024" / "trip" / "IMG_0001.XMP").write_text("<x/>")
+            self.assertTrue(xmp_sidecar.folder_has_sidecars(root))
+
+    def test_hidden_folders_are_skipped_and_the_walk_is_bounded(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / ".cache").mkdir()
+            (root / ".cache" / "thumb.xmp").write_text("<x/>")
+            self.assertFalse(xmp_sidecar.folder_has_sidecars(root))
+            for index in range(5):
+                (root / f"folder{index}").mkdir()
+            (root / "folder4" / "deep").mkdir()
+            (root / "folder4" / "deep" / "photo.xmp").write_text("<x/>")
+            # Root plus five folders exhausts a budget of six before the
+            # nested folder is opened; a larger budget reaches it.
+            self.assertFalse(xmp_sidecar.folder_has_sidecars(root, max_directories=6))
+            self.assertTrue(xmp_sidecar.folder_has_sidecars(root, max_directories=7))
+            self.assertFalse(xmp_sidecar.folder_has_sidecars(root / "missing"))
 
 
 if __name__ == "__main__":

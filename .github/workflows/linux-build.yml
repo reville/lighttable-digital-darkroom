@@ -37,6 +37,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  scope:
+    # Decide which checks this change needs; see scripts/ci/change-scope.py.
+    # Pushes, dispatches, and release calls always run everything.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      full: ${{ steps.scope.outputs.full }}
+      docs_only: ${{ steps.scope.outputs.docs_only }}
+      pixel: ${{ steps.scope.outputs.pixel }}
+      windows: ${{ steps.scope.outputs.windows }}
+      linux: ${{ steps.scope.outputs.linux }}
+      installers: ${{ steps.scope.outputs.installers }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/ci
+      - id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          PULL_REQUEST: ${{ github.event.pull_request.number }}
+          LABELS: ${{ github.event_name == 'pull_request' && join(github.event.pull_request.labels.*.name, ',') || '' }}
+        run: |
+          changed="$RUNNER_TEMP/changed-files.txt"
+          : > "$changed"
+          if [[ "$EVENT" == pull_request ]]; then
+            # An unreadable file list falls back to the full tier.
+            gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST/files" \
+              --jq '.[].filename' > "$changed" || : > "$changed"
+          fi
+          python3 scripts/ci/change-scope.py --event "$EVENT" --labels "$LABELS" \
+            < "$changed" | tee -a "$GITHUB_OUTPUT"
+
   capture-linux:
     name: Capture native Linux screenshots
     if: github.event_name == 'workflow_dispatch' && inputs.capture_screenshots
@@ -93,7 +126,9 @@ jobs:
           if-no-files-found: warn
 
   package:
-    if: ${{ !inputs.capture_screenshots }}
+    needs: scope
+    # Pull requests that leave the Linux host, packaging, and shared runtime modules alone skip this job.
+    if: ${{ !inputs.capture_screenshots && (github.event_name != 'pull_request' || needs.scope.outputs.linux == 'true') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:

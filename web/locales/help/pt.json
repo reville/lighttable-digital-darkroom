@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -111,7 +112,7 @@
           "title": "Revisar edições traduzidas",
           "paragraphs": [
             "As configurações de Desenvolver são aproximadas e não podem garantir a aparência renderizada do Lightroom. Máscaras locais sem suporte, perfis de câmera, máscaras de IA do .lrcat-data ou cargas úteis de LUT, e regras de coleção inteligente sem suporte são relatadas como ignoradas. As configurações de desenvolvimento importadas desativam Filme.",
-            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
+            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Ela aplica configurações de revelação e corte apenas quando você ativa essas opções. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Primeiros passos"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Vindo do Lightroom",
+      "category": "Getting started",
+      "summary": "O que um catálogo do Lightroom Classic e sidecars XMP trazem, o que não tem caminho de importação e como o vocabulário difere.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrar",
+        "migração",
+        "XMP",
+        "sidecars",
+        "predefinições",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "O que é trazido",
+          "paragraphs": [
+            "De um catálogo do Lightroom Classic: as fotos permanecem nas pastas atuais e são referenciadas, não copiadas. O importador lê classificações, marcações, rótulos e campos IPTC; palavras-chave; coleções e coleções inteligentes compatíveis; pilhas; cópias virtuais; corte e alinhamento; configurações de revelação aproximadas; e, se escolhido, o histórico de edição. Seu arquivo .lrcat nunca é alterado.",
+            "De sidecars XMP ao lado das suas fotos: classificações por estrelas, marcações de escolha e rejeição, rótulos de cor padrão, palavras-chave e campos IPTC descritivos. Pastas ••• → Importar sidecars… também pode aplicar configurações de revelação e corte quando você ativa essas opções.",
+            "Os dois caminhos usam o mesmo conversor, então uma configuração é mapeada da mesma forma por qualquer via: tom, deslocamentos de balanço de branco, textura, clareza, remoção de neblina, o misturador de cores, a conversão em preto e branco com seu misturador, curvas por pontos, quantidade de vinheta, nitidez e redução de ruído. Um valor fora do intervalo do LightTable, como exposição além de ±5 EV, é limitado e nomeado no relatório."
+          ]
+        },
+        {
+          "title": "O que não tem caminho de importação",
+          "paragraphs": [
+            "Álbuns na nuvem e predefinições guardadas apenas no app na nuvem não podem ser lidos. Sincronize-os primeiro no Lightroom Classic ou salve as predefinições como arquivos.",
+            "Máscaras de IA e edições generativas, desfoque de lente e configurações de redução de ruído são etapas de renderização proprietárias. Elas são relatadas como ignoradas em vez de aproximadas, assim como perfis de câmera, looks LUT, máscaras locais, correções e identidades de perfil de lente. As edições importadas começam com Filme desativado para que as configurações de revelação convertidas apareçam sozinhas."
+          ]
+        },
+        {
+          "title": "Vocabulário",
+          "paragraphs": [
+            "Coleções também são coleções aqui; os álbuns do app na nuvem só chegam por meio de um catálogo do Lightroom Classic.",
+            "As marcações Escolher e Rejeitar funcionam da mesma forma, e a barra inferior as mostra para as fotos selecionadas.",
+            "Revelar se chama Editar. Filme fica desativado por padrão em fotos novas e importadas; ative-o quando quiser um tratamento de filme sobre a edição.",
+            "Perfil de câmera em Editar lista os perfis DCP da Adobe que o Camera Raw ou o Lightroom instalaram neste computador, ou a pasta de perfis de câmera escolhida em Configurações. Os perfis se aplicam de forma aproximada e apenas à revelação com Filme desativado."
+          ]
+        },
+        {
+          "title": "Importe suas predefinições",
+          "paragraphs": [
+            "Predefinições → Gerenciar… → Importar… aceita predefinições .xmp do Lightroom e do Camera Raw, predefinições .lrtemplate antigas e estilos .costyle do Capture One. Após importar um catálogo ou uma pasta, a configuração também oferece Importar predefinições…. Cada predefinição importada mostra quantas configurações foram mapeadas e quais foram ignoradas antes de você aplicá-la."
+          ],
+          "steps": [
+            "Abra Predefinições, clique em Gerenciar… e depois em Importar… e escolha os arquivos de predefinição ou, no app para Mac, uma pasta inteira de predefinições.",
+            "Revise o relatório de conversão e depois aplique a predefinição em Seus."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Peça ao outro editor para salvar os metadados em arquivos XMP adjacentes e, em seguida, escolha Pastas ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes com até 100.000 fotos por importação. As cópias virtuais mantêm seus próprios metadados.",
             "Os metadados compatíveis incluem avaliações por estrelas, marcas de selecionar/rejeitar, rótulos de cor padrão, palavras-chave planas e hierárquicas e campos descritivos IPTC. Um valor vazio explícito limpa esse campo; um valor ausente o deixa inalterado. Rótulos de cor personalizados que não correspondem a uma cor do LightTable são informados como ignorados.",
-            "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte não são aplicados por esta ação de menu."
+            "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte são aplicados apenas quando você ativa essas opções na caixa de diálogo Importar sidecars."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Ocultar fotos que não podem ser exibidas",
           "paragraphs": [
             "Quando um erro de miniatura estiver visível na grade, escolha Ocultar fotos que não podem ser exibidas ao lado do resumo da localização. Isso ativa a opção correspondente em Filtro, que vem desativada por padrão e é salva entre sessões. Esta opção não é salva nas regras de coleções inteligentes.",
+            "Na tira de filme, este link aparece abaixo da contagem de fotos somente quando a lista atual contém fotos que não podem ser exibidas.",
             "A opção oculta fotos identificadas como indisponíveis ou armazenadas apenas na nuvem e fotos com falhas de miniatura ou prévia já detectadas. Outras falhas de decodificação são descobertas à medida que as fotos carregam. Desative a opção, remova seu marcador de filtro ou escolha Limpar tudo para mostrar as fotos novamente. Um Tentar novamente bem-sucedido ou uma alteração no original apaga a falha registrada."
           ]
         },
@@ -1095,13 +1159,19 @@
         "automático",
         "histograma",
         "recorte",
-        "antes"
+        "antes",
+        "amostrador de cor",
+        "amostrador de cor",
+        "amostrador",
+        "valores RGB",
+        "leitura",
+        "medir"
       ],
       "sections": [
         {
           "title": "Começar com Claro",
           "paragraphs": [
-            "Abra Editar e expanda Claro. Exposição altera o brilho geral; Realces e Sombras permitem atingir regiões claras e escuras. Brancos e Pretos ajustam as extremidades da faixa tonal. Contraste altera a separação entre elas."
+            "Abra Editar e expanda Claro. Exposição altera o brilho geral; Realces e Sombras permitem atingir regiões claras e escuras. Brancos e Pretos ajustam as extremidades da faixa tonal: aumente Brancos para clarear os tons mais luminosos, aumente Pretos para levantar os mais escuros e reduza qualquer um deles para recuar essa extremidade. Contraste altera a separação entre elas."
           ],
           "steps": [
             "Defina a Exposição para o assunto principal.",
@@ -1126,6 +1196,21 @@
             "Se Automático disser que está aguardando a pré-visualização da imagem, deixe a pré-visualização carregar e tente novamente.",
             "O menu de scope também oferece Waveform, RGB Parade e Vectorscope para inspecionar tom e cor."
           ]
+        },
+        {
+          "title": "Medir cores com amostradores",
+          "paragraphs": [
+            "Os amostradores de cor mostram os valores de vermelho, verde e azul (0–255) e a luminosidade L* de até quatro pontos da foto. As leituras são atualizadas enquanto você edita, para que você possa conferir um cartão cinza, a base do filme ou o tom de pele durante os ajustes."
+          ],
+          "steps": [
+            "Clique no botão de amostrador ao lado do histograma.",
+            "Clique na foto para posicionar um amostrador. Posicione até quatro.",
+            "Leia os valores abaixo do histograma. Use × para remover um amostrador."
+          ],
+          "tips": [
+            "Os amostradores leem a edição exibida. Eles pertencem à sessão atual da janela e não são salvos com a foto.",
+            "Pressione Escape para parar de posicionar amostradores."
+          ]
         }
       ],
       "related": [
@@ -1139,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Aplique correções de lente e de aberração cromática",
       "category": "Editing",
-      "summary": "Use um perfil de lente correspondente ou selecionado manualmente, ou faça correções manuais quando um perfil exato não estiver disponível.",
+      "summary": "Use um perfil de lente correspondente ou selecionado manualmente, corrija a aberração cromática, remova franjas roxas e verdes, ou faça correções manuais quando um perfil exato não estiver disponível.",
       "keywords": [
         "lente",
         "perfil",
@@ -1148,6 +1233,9 @@
         "sombreamento",
         "aberração cromática",
         "franjas",
+        "remover franjas",
+        "franja roxa",
+        "franja verde",
         "vermelho ciano",
         "azul amarelo",
         "óptica"
@@ -1156,18 +1244,21 @@
         {
           "title": "Escolher e verificar uma correção",
           "paragraphs": [
-            "Expanda Correções de lente em Editar. O cartão de perfil explica a correspondência automática de câmera/lente e se há um perfil utilizável disponível."
+            "Expanda Correções de lente em Editar. O cartão de perfil explica a correspondência automática de câmera/lente e se há um perfil utilizável disponível. O painel também mostra a versão do banco de dados de lentes em uso e quantas câmeras e lentes ele lista; o banco de dados vem com a biblioteca de lentes, não com o LightTable.",
+            "Quando a câmera e a lente nos metadados da foto correspondem exatamente a um único perfil, Usar o perfil de lente correspondente fica ligado assim que a foto abre e vale também para miniaturas e exportações. Uma correspondência inferida ou ambígua permanece desligada. Ajustes → Padrões de revelação → Aplicar automaticamente o perfil de lente correspondente desativa esse comportamento; fotos com ajustes de lente salvos os mantêm de qualquer forma."
           ],
           "steps": [
             "Leia o nome do perfil e a explicação da correspondência.",
-            "Ative Usar perfil de lente correspondente quando houver um perfil disponível e depois escolha Corrigir distorção e Corrigir sombreamento da lente conforme necessário.",
+            "Ative Usar o perfil de lente correspondente quando houver um perfil disponível e depois escolha Corrigir distorção, Corrigir o sombreamento da lente e Corrigir aberração cromática conforme necessário. Cada chave é independente, então a aberração cromática pode ser corrigida sem alterar a geometria.",
             "Se necessário, escolha uma entrada diferente em Lens profile e compare a correção com o original.",
-            "Refine os controles manuais de Distorção e Vinheta. Para halos coloridos, ajuste Vermelho / Ciano e Azul / Amarelo em Aberração cromática."
+            "Refine os controles manuais de Distorção e Vinheta. Para halos coloridos, ajuste Vermelho / Ciano e Azul / Amarelo em Aberração cromática.",
+            "Em Remover franjas, aumente Roxo ou Verde para retirar essa cor de pixels muito saturados junto a bordas duras. Os controles de início e fim do matiz definem a faixa de matizes que cada controle trata; um início maior que o fim passa pelo vermelho."
           ],
           "tips": [
             "Quando não é encontrado um perfil de lente exato, os controles manuais de distorção e perspectiva ficam disponíveis.",
-            "As caixas de seleção de distorção e sombreamento do perfil ficam ativadas somente quando o perfil selecionado fornece essa correção e o perfil está ativado.",
+            "As caixas de seleção de distorção, sombreamento e aberração cromática do perfil ficam ativadas somente quando o perfil selecionado fornece essa correção e o perfil está ativado.",
             "Um perfil selecionado manualmente precisa de verificação visual; a seleção não estabelece que seja uma correspondência exata.",
+            "Remover franjas trata o contorno de um assunto grande roxo ou verde como uma franja. Reduza a quantidade ou estreite a faixa de matiz se um assunto perder cor na borda.",
             "As correções de lente e de franjas permanecem não destrutivas durante a exportação."
           ]
         }
@@ -1313,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edição"
     },
@@ -1603,7 +1695,15 @@
         "pretos",
         "sobreposição",
         "subexpor",
-        "queimar"
+        "queimar",
+        "desfoque de lente",
+        "desfoque de fundo",
+        "desfoque",
+        "bokeh",
+        "profundidade de campo",
+        "luminosidade",
+        "mesclagem de luminosidade",
+        "preservar cor"
       ],
       "sections": [
         {
@@ -1660,10 +1760,26 @@
           ]
         },
         {
+          "title": "Desfocar parte da foto",
+          "paragraphs": [
+            "Desfoque de lente, na seção Efeitos de uma máscara, suaviza a área selecionada como uma lente fora de foco. O raio do desfoque aumenta com a intensidade da máscara, então uma borda suavizada ou uma faixa de profundidade diminui gradualmente em vez de parar em uma linha dura.",
+            "O desfoque é aplicado à imagem finalizada, após a renderização do filme e os outros ajustes da máscara. Ele também suaviza a granulação do filme dentro da área desfocada."
+          ],
+          "steps": [
+            "Crie uma máscara de Assunto e escolha Inverter, ou uma máscara de Profundidade para uma faixa de distância, ou desenhe uma máscara Radial e inverta-a.",
+            "Expanda Efeitos e aumente Desfoque de lente. Aguarde a atualização da pré-visualização antes de avaliar o resultado.",
+            "Refine a seleção com Adicionar, Subtrair ou Suavizar bordas onde o desfoque invadir bordas nítidas."
+          ],
+          "tips": [
+            "Somente os pixels selecionados contribuem para o desfoque, então um assunto nítido não se espalha pelo plano de fundo desfocado. Confira bordas finas, como cabelo, em 1:1."
+          ]
+        },
+        {
           "title": "Ajuste uma curva de tom local",
           "steps": [
             "Expanda Curva de Tom para a máscara selecionada e escolha RGB, Vermelho, Verde ou Azul.",
             "Clique no gráfico para adicionar um ponto e depois arraste-o. Mover um ponto para cima clareia sua saída; movê-lo para baixo escurece. Clique duas vezes em um ponto interno para removê-lo.",
+            "Ative Somente luminosidade para alterar o brilho sem mudar a cor ou a saturação.",
             "Use Redefinir curva para redefinir apenas o canal selecionado desta máscara, ou Desfazer para reverter uma edição."
           ],
           "tips": [
@@ -1818,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Remova manchas e refine as correções de Corrigir ou Clonar",
       "category": "Editing",
-      "summary": "Pinte sobre distrações, inspecione a visibilidade da mancha e mova a origem ou o destino de uma correção.",
+      "summary": "Remova manchas e traços pintados, elimine poeira e arranhões da foto inteira e refine correções de Corrigir ou Clonar.",
       "keywords": [
         "remover",
         "corrigir",
@@ -1830,7 +1946,18 @@
         "visualizar manchas",
         "origem",
         "destino",
-        "distração"
+        "distração",
+        "poeira e arranhões",
+        "arranhão",
+        "cabelo",
+        "fio",
+        "pincel",
+        "traço",
+        "preenchimento",
+        "preenchimento de textura",
+        "preenchimento sensível ao conteúdo",
+        "digitalização de filme",
+        "marcas"
       ],
       "sections": [
         {
@@ -1841,22 +1968,44 @@
           ],
           "steps": [
             "Escolha Remover, Corrigir ou Clonar e depois defina Tamanho, Suavizar bordas e Opacidade.",
-            "Clique em uma mancha ou arraste sobre uma distração na foto.",
+            "Em Remover, escolha Mancha para clicar ou arrastar uma correção redonda, ou Pincel para pintar ao longo de um arranhão, fio de cabelo ou cabo.",
+            "Em Remover, escolha Preenchimento. Combinar textura ao redor copia detalhes próximos da foto; Mesclagem suave mescla as bordas para dentro e é adequada para áreas uniformes, como o céu.",
+            "Clique em uma mancha, arraste sobre uma distração ou pinte um traço na foto.",
             "Para pequenas manchas de poeira, ative Visualize Spots e ajuste Threshold para tornar as bordas mais fáceis de inspecionar.",
             "Desative Visualizar Manchas e inspecione a fotografia corrigida."
           ],
           "tips": [
-            "Selecionar uma correção e escolher um modo diferente altera o modo dessa correção."
+            "Selecionar uma correção e escolher um modo diferente altera o modo dessa correção.",
+            "Combinar textura ao redor copia pixels desta foto; nunca gera novos detalhes. As alterações em Preenchimento se aplicam à correção de Remover selecionada. Correções feitas antes de esta opção existir mantêm Mesclagem suave.",
+            "Um traço de pincel comporta até 256 pontos. Solte e faça outro traço para continuar."
+          ]
+        },
+        {
+          "title": "Remover poeira e arranhões da foto inteira",
+          "paragraphs": [
+            "Poeira e arranhões encontra pequenas marcas que se destacam nitidamente do entorno, como poeira em uma digitalização de filme, e as preenche com pixels próximos. Atua na foto inteira como uma única correção no topo da lista, para que as correções seguintes usem a imagem limpa como amostra.",
+            "Maior marca define a marca mais larga considerada, como fração do lado menor da foto. Sensibilidade define o quanto uma marca precisa se diferenciar do entorno. Valores mais altos encontram marcas mais fracas e têm mais chance de atingir detalhes finos."
+          ],
+          "steps": [
+            "Abra Remover e expanda Poeira e arranhões.",
+            "Defina Maior marca um pouco acima da poeira visível e deixe Sensibilidade em 50% para começar.",
+            "Clique em Remover poeira. Mostrar marcas detectadas contorna em vermelho o que foi encontrado e informa quantas marcas foram encontradas.",
+            "Amplie cabelos, estrelas, reflexos nos olhos e texto. Se forem atingidos, diminua Sensibilidade ou Maior marca, ou reduza Opacidade.",
+            "Desative Mostrar marcas detectadas para avaliar o resultado."
+          ],
+          "tips": [
+            "Selecione a correção Poeira na lista para alterá-la depois. Ativar esta correção compara o resultado, e Excluir Correção a remove.",
+            "Arranhões longos e finos são encontrados quando a largura deles fica abaixo de Maior marca. Pinte arranhões mais largos com o pincel de Remover."
           ]
         },
         {
           "title": "Refinar uma correção existente",
           "paragraphs": [
-            "Selecione uma correção na lista para mostrar seus controles. Os círculos na imagem indicam o destino editável e, para Corrigir e Clonar, a origem.",
+            "Selecione uma correção na lista para mostrar os controles dela. Os círculos ou traços na imagem indicam o destino editável e, em Corrigir e Clonar, a origem.",
             "Amplie para posicionamento preciso. Os contornos circulares e os pinos permanecem nítidos em todos os níveis de zoom; os círculos continuam mostrando a mesma área da foto."
           ],
           "steps": [
-            "Arraste o círculo de destino para reposicionar a correção ou escolha Move Target e clique na nova posição.",
+            "Arraste o círculo de destino ou um traço pintado para reposicionar a correção, ou escolha Mover destino e clique na nova posição.",
             "Para Heal ou Clone, arraste o círculo de origem para uma área melhor. Refresh Source tenta uma posição de origem diferente.",
             "Ajuste Suavizar bordas ou Opacidade se a borda ou a intensidade da correção precisarem de refinamento.",
             "Alterne Ativar esta correção para comparar, ou use Excluir correção para removê-la."
@@ -1970,7 +2119,8 @@
         {
           "title": "Selecionar pessoas ou regiões faciais",
           "paragraphs": [
-            "Pessoas oferece Pessoa, Pele do rosto, Olhos, Sobrancelhas, Lábios, Dentes, Cabelo e Suavizar pele. Esses controles exigem o auxiliar Vision no macOS 14 ou posterior e ficam ocultos no Linux e Windows. Pele do rosto e cabelo são estimados, e nenhuma identidade é inferida."
+            "Pessoas oferece Pessoa e Cabelo em todas as plataformas. Pele do rosto, Olhos, Sobrancelhas, Lábios, Dentes e Suavizar pele exigem o auxiliar Vision no macOS 14 ou posterior. A pele do rosto é estimada, e nenhuma identidade é inferida.",
+            "Cabelo usa um modelo incluído que é executado localmente e seleciona cabelo além do rosto, incluindo cabelo na altura dos ombros. Inspecione fios finos, realces brilhantes, perucas e pessoas pequenas ao fundo; eles ainda podem ser perdidos. Compilações mais antigas ou da origem sem o modelo usam a estimativa Vision anterior quando disponível. Máscaras salvas existentes mantêm suas seleções."
           ],
           "steps": [
             "Escolha Pessoas e depois a parte que você quer ajustar.",
@@ -2010,7 +2160,8 @@
         {
           "title": "Neutralizar uma dominante de cor",
           "paragraphs": [
-            "A seção Cor em Editar contém Temp e Matiz, além de um conta-gotas de balanço de branco ao lado de Temp. Esses são os controles de acabamento do painel Editar."
+            "A seção Cor em Editar contém Temp e Matiz, além de um conta-gotas de balanço de branco ao lado de Temp. Esses são os controles de acabamento do painel Editar.",
+            "Para um original RAW, um bloco Balanço de branco da captura fica acima deles com Como capturado, Auto, predefinições e Personalizado para uma temperatura em kelvin e um matiz de captura. Ele revela novamente os dados RAW e funciona com Filme ligado ou desligado; fica oculto para arquivos processados."
           ],
           "steps": [
             "Abra Editar e expanda Cor.",
@@ -2028,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Edição"
     },
@@ -2047,7 +2199,15 @@
         "azul",
         "contraste",
         "Ponto de controle",
-        "curva S"
+        "curva S",
+        "conta-gotas",
+        "ponto preto",
+        "ponto branco",
+        "ponto cinza",
+        "ponto cinza",
+        "neutro",
+        "dominante de cor",
+        "níveis"
       ],
       "sections": [
         {
@@ -2065,6 +2225,21 @@
           "tips": [
             "Use alguns pontos e compare a foto enquanto trabalha; curvas de canal podem introduzir fortes dominantes de cor.",
             "Uma curva armazenada ou importada mantém sua tabela salva exata até que você a edite. O app reconstrói alças representativas para edição, então o primeiro ajuste pode remodelar uma curva importada além do ponto que você mover."
+          ]
+        },
+        {
+          "title": "Definir pontos preto, cinza e branco",
+          "paragraphs": [
+            "Os conta-gotas abaixo da curva de pontos definem as curvas vermelha, verde e azul a partir de um ponto da foto. Ponto preto deixa a área amostrada preta, Ponto branco a deixa branca e Ponto cinza a deixa neutra, mantendo o brilho. Isso é útil para remover uma dominante de cor de uma digitalização."
+          ],
+          "steps": [
+            "Abra Editar, expanda Curva e escolha Ponto preto, Ponto cinza ou Ponto branco.",
+            "Clique em uma área da foto que deva ser preta, cinza neutro ou branca.",
+            "Confira as curvas R, G e B e depois refine-as ou redefina-as se o resultado estiver forte demais."
+          ],
+          "tips": [
+            "Ponto preto precisa de uma área mais escura que o cinza médio, e Ponto branco precisa de uma mais clara que o cinza médio. Pressione Escape para cancelar um conta-gotas.",
+            "Os conta-gotas mudam Curva para o modo Ponto porque editam as curvas de canal."
           ]
         },
         {
@@ -2352,7 +2527,7 @@
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
             "Uma película de filme descreve o processo físico do filme. Uma predefinição de edição pode conter ajustes salvos mais amplos e também pode incluir configurações de Filme. O menu Saída dentro de Filme escolhe uma receita de digitalização ou impressão; ele não exporta um arquivo.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
           ],
           "tips": [
             "Se um filme não estiver disponível, ele pode exigir o mecanismo da GPU. A disponibilidade do mecanismo é mostrada em Ajustes → Desempenho."
@@ -2434,7 +2609,7 @@
           "title": "Controles de captura e controles de finalização",
           "paragraphs": [
             "EV da Câmera e balanço de branco da Captura atuam antes da exposição do filme. Exposição e Temp/Matiz no painel Editar são ajustes finais mais adiante no fluxo de trabalho.",
-            "O balanço de branco de captura requer um original RAW. Para um JPEG, HEIF, TIFF ou outro arquivo processado, use Editar Temp/Matiz."
+            "O balanço de branco da captura fica no topo da seção Cor para originais RAW e funciona com Filme ligado ou desligado: escolha Como capturado, Auto, uma predefinição ou Personalizado para definir uma temperatura em kelvin e um matiz de captura. Para JPEG, HEIF, TIFF ou outro arquivo processado, o bloco fica oculto; use Editar Temp/Matiz."
           ],
           "steps": [
             "Ative Filme, escolha um filme e ajuste a EV da Câmera.",
@@ -2527,7 +2702,11 @@
         "qualidade",
         "tamanho completo",
         "resolução",
-        "predefinição"
+        "predefinição",
+        "borda",
+        "moldura",
+        "fosco",
+        "margem"
       ],
       "sections": [
         {
@@ -2540,6 +2719,17 @@
             "Abra Exportar e escolha uma predefinição na parte superior.",
             "Defina Dimensões como Tamanho completo ou um limite para o lado maior.",
             "Verifique a Pré-visualização de saída: o tamanho exportado reflete rotação e corte, e um limite na borda longa reduz imagens maiores sem ampliar as menores."
+          ]
+        },
+        {
+          "title": "Adicionar uma borda",
+          "paragraphs": [
+            "Borda em Avançado adiciona uma margem simples branca, cinza ou preta ao redor de cada foto exportada. A margem é adicionada após o redimensionamento, então sua largura é uma fração do lado maior entregue e a saída fica maior que a foto por essa margem em cada lado."
+          ],
+          "steps": [
+            "Abra Exportar e expanda Avançado.",
+            "Escolha Fina, Média ou Larga em Borda e depois escolha Cor da borda.",
+            "Confira as dimensões finais em Pré-visualização da saída."
           ]
         },
         {
@@ -2663,7 +2853,10 @@
         "com avaliação",
         "lote",
         "cancelar",
-        "progresso"
+        "progresso",
+        "folha de contato",
+        "folha de provas",
+        "folha índice"
       ],
       "sections": [
         {
@@ -2686,6 +2879,22 @@
             "Fotos selecionadas usa as fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele usa a foto ativa. Verifique a contagem de fotos e o nome em Exportar antes de iniciar.",
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
             "Se um lote gravar em várias pastas, Mostrar no Finder revela a primeira foto exportada com sucesso. O link não está presente quando nenhuma foto foi exportada. Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original for alterado enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falha com um erro; coloque-a na fila novamente depois de verificar o original."
+          ]
+        },
+        {
+          "title": "Criar uma folha de contato",
+          "paragraphs": [
+            "Folha de contato… em Exportar organiza as fotos escolhidas no campo Fotos em um único JPEG com legendas, com suas edições aplicadas. Ela comporta até 200 fotos."
+          ],
+          "steps": [
+            "Abra Exportar e defina Fotos e a pasta de destino.",
+            "Clique em Folha de contato… e escolha Colunas, Largura da folha, Plano de fundo e um Título.",
+            "Escolha as legendas: Nome do arquivo, Filme e Avaliação.",
+            "Clique em Criar folha. A caixa de diálogo mostra o progresso, e uma notificação informa o caminho do arquivo salvo."
+          ],
+          "tips": [
+            "A folha é salva como contact-sheet seguido da data e da hora. Uma foto que não pode ser renderizada é ignorada e contada na notificação.",
+            "Escolha mais colunas se uma seleção grande deixar a folha alta demais para ser criada."
           ]
         }
       ],
@@ -2852,7 +3061,8 @@
         {
           "title": "Padrões para fotos sem edição",
           "paragraphs": [
-            "As predefinições padrão de revelação se aplicam apenas a fotos que ainda não têm edições salvas. Elas podem iniciar o Filme ativado, escolher um fluxo de trabalho e um perfil de revelação neutro, e aplicar uma predefinição padrão."
+            "As predefinições padrão de revelação se aplicam apenas a fotos que ainda não têm edições salvas. Elas podem iniciar o Filme ativado, escolher um fluxo de trabalho e um perfil de revelação neutro, e aplicar uma predefinição padrão.",
+            "Aplicar automaticamente o perfil de lente correspondente, ativado por padrão, liga o perfil de lente para fotos cuja câmera e lente correspondem exatamente a um único perfil e cujos ajustes de lente nunca foram salvos. Desative para abrir todas as fotos com o perfil desligado."
           ],
           "steps": [
             "Abra Configurações → Padrões de Revelação.",
@@ -3214,8 +3424,8 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
-            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas. Também é preparada uma pré-visualização padrão de cada RAW para que a foto abra sem esperar por uma decodificação completa.",
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
             "Ao mudar de foto com o zoom ampliado, o LightTable mostra imediatamente uma pré-visualização correspondente em cache, se disponível. Os detalhes mais nítidos são carregados em segundo plano e as fotos próximas são pré-carregadas para o seu nível de zoom.",
             "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
@@ -3285,5 +3495,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

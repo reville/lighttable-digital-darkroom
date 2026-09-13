@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -111,7 +112,7 @@
           "title": "Vertaalde bewerkingen beoordelen",
           "paragraphs": [
             "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
-            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Die actie past geen ontwikkelinstellingen of bijsnijden toe. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
+            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Ontwikkelinstellingen en bijsnijden past die alleen toe als je die opties inschakelt. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Overstappen van Lightroom",
+      "category": "Getting started",
+      "summary": "Wat een Lightroom Classic-catalogus en XMP-sidecars meebrengen, wat geen importroute heeft en hoe de woordenschat verschilt.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migreren",
+        "migratie",
+        "XMP",
+        "sidecars",
+        "voorinstellingen",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Wat meekomt",
+          "paragraphs": [
+            "Uit een Lightroom Classic-catalogus: foto's blijven in hun huidige mappen en worden verwezen, niet gekopieerd. De importeur leest waarderingen, markeringen, labels en IPTC-velden; trefwoorden; collecties en ondersteunde slimme collecties; stapels; virtuele kopieën; bijsnijden en rechtzetten; benaderde ontwikkelinstellingen; en, als je dat kiest, de bewerkingsgeschiedenis. Je .lrcat-bestand wordt nooit gewijzigd.",
+            "Uit XMP-sidecars naast je foto's: sterwaarderingen, kies- en afwijsmarkeringen, standaard kleurlabels, trefwoorden en beschrijvende IPTC-velden. Mappen ••• → Sidecars importeren… kan ook ontwikkelinstellingen en bijsnijden toepassen als je die opties inschakelt.",
+            "Beide routes gebruiken dezelfde omzetter, dus een instelling wordt op dezelfde manier vertaald, hoe die ook binnenkomt: toon, witbalansverschuivingen, textuur, helderheid, nevel verwijderen, de kleurmixer, zwart-witconversie met zijn mixer, puntcurven, vignethoeveelheid, verscherping en ruisonderdrukking. Een waarde buiten het bereik van LightTable, zoals belichting voorbij ±5 EV, wordt begrensd en in het rapport genoemd."
+          ]
+        },
+        {
+          "title": "Wat geen importroute heeft",
+          "paragraphs": [
+            "Cloudalbums en voorinstellingen die alleen in de cloud-app zijn opgeslagen, kunnen niet worden gelezen. Synchroniseer ze eerst naar Lightroom Classic of sla de voorinstellingen als bestanden op.",
+            "AI-maskers en generatieve bewerkingen, lensvervaging en ruisonderdrukkingsinstellingen zijn eigen renderstappen. Ze worden als overgeslagen gemeld in plaats van benaderd, net als cameraprofielen, LUT-looks, lokale maskers, retouches en lensprofiel-identiteiten. Geïmporteerde bewerkingen beginnen met Film uit, zodat de omgezette ontwikkelinstellingen op zichzelf zichtbaar zijn."
+          ]
+        },
+        {
+          "title": "Woordenlijst",
+          "paragraphs": [
+            "Collecties heten hier ook collecties; de albums van de cloud-app komen alleen binnen via een Lightroom Classic-catalogus.",
+            "Kies- en afwijsmarkeringen werken hetzelfde, en de onderste balk toont ze voor de geselecteerde foto's.",
+            "Ontwikkelen heet hier Bewerken. Film staat standaard uit voor nieuwe en geïmporteerde foto's; zet het aan als je een filmbehandeling boven op de bewerking wilt.",
+            "Cameraprofiel in Bewerken toont de Adobe DCP-profielen die Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of de map met cameraprofielen die in Instellingen is gekozen. Profielen werken bij benadering en alleen op de ontwikkeling met Film uit."
+          ]
+        },
+        {
+          "title": "Je voorinstellingen importeren",
+          "paragraphs": [
+            "Voorinstellingen → Beheren… → Importeren… accepteert .xmp-voorinstellingen van Lightroom en Camera Raw, oudere .lrtemplate-voorinstellingen en Capture One .costyle-stijlen. Na een catalogus- of mapimport biedt de installatie ook Voorinstellingen importeren… aan. Elke geïmporteerde voorinstelling toont hoeveel instellingen zijn vertaald en welke zijn overgeslagen voordat je hem toepast."
+          ],
+          "steps": [
+            "Open Voorinstellingen, klik op Beheren… en daarna op Importeren… en kies de voorinstellingsbestanden of, in de Mac-app, een hele map met voorinstellingen.",
+            "Bekijk het conversierapport en pas de voorinstelling daarna toe vanuit Jouw."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Vraag de andere editor om de metagegevens op te slaan in naastliggende XMP-bestanden en kies daarna Mappen ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
             "Ondersteunde metagegevens zijn onder meer sterbeoordelingen, kies/afwijzen-markeringen, standaard kleurlabels, platte en hiërarchische trefwoorden en beschrijvende IPTC-velden. Een expliciete lege waarde wist dat veld; een ontbrekende waarde laat het ongewijzigd. Aangepaste kleurlabels die niet overeenkomen met een LightTable-kleur worden gerapporteerd als overgeslagen.",
-            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelingsinstellingen en bijsnijden worden niet toegepast door deze menubewerking."
+            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelinstellingen en bijsnijden worden alleen toegepast als je die opties inschakelt in het dialoogvenster Sidecars importeren."
           ]
         },
         {
@@ -574,6 +637,7 @@
           "title": "Foto’s verbergen die niet kunnen worden weergegeven",
           "paragraphs": [
             "Als er een miniatuurfout zichtbaar is in het raster, kies je Foto’s verbergen die niet kunnen worden weergegeven naast de locatie-informatie. Dit schakelt de bijbehorende schakelaar in Filter in. Die staat standaard uit en de instelling wordt tussen sessies bewaard. Deze schakelaar wordt niet opgeslagen in de regels van slimme collecties.",
+            "In de filmstrip verschijnt deze link onder het aantal foto's alleen wanneer de huidige lijst foto's bevat die niet kunnen worden weergegeven.",
             "De schakelaar verbergt foto’s waarvan bekend is dat ze niet beschikbaar zijn of alleen in de cloud staan, en foto’s met vastgestelde fouten in miniaturen of voorvertoningen. Andere decodeerfouten worden ontdekt wanneer foto’s laden. Zet de schakelaar uit, verwijder de filterchip of kies Alles wissen om de foto’s weer te tonen. Een geslaagde poging via Opnieuw proberen of een gewijzigd origineel wist de vastgelegde fout."
           ]
         },
@@ -1095,13 +1159,19 @@
         "automatisch",
         "histogram",
         "clipping",
-        "voor"
+        "voor",
+        "kleurmeetpunt",
+        "kleurpipet",
+        "meetpunt",
+        "rgb-waarden",
+        "meetwaarde",
+        "meten"
       ],
       "sections": [
         {
           "title": "Begin met Licht",
           "paragraphs": [
-            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan. Contrast wijzigt hun scheiding."
+            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding."
           ],
           "steps": [
             "Stel Belichting in voor het hoofdonderwerp.",
@@ -1126,6 +1196,21 @@
             "Als Automatisch zegt dat het wacht op het afbeeldingsvoorbeeld, laat dan het voorbeeld laden en probeer het opnieuw.",
             "Het scopemenu biedt ook Waveform, RGB Parade en Vectorscope om toon en kleur te inspecteren."
           ]
+        },
+        {
+          "title": "Kleuren meten met meetpunten",
+          "paragraphs": [
+            "Kleurmeetpunten tonen de rode, groene en blauwe waarden (0–255) en de lichtheid, L*, van maximaal vier plekken in de foto. De waarden worden bijgewerkt terwijl je bewerkt, zodat je tijdens het aanpassen een grijskaart, een filmbasis of een huidtint kunt controleren."
+          ],
+          "steps": [
+            "Klik op de meetpuntknop naast het histogram.",
+            "Klik op de foto om een meetpunt te plaatsen. Je kunt er maximaal vier plaatsen.",
+            "Lees de waarden onder het histogram af. Gebruik × om een meetpunt te verwijderen."
+          ],
+          "tips": [
+            "Meetpunten lezen de weergegeven bewerking. Ze horen bij de sessie van het huidige venster en worden niet met de foto opgeslagen.",
+            "Druk op Escape om te stoppen met het plaatsen van meetpunten."
+          ]
         }
       ],
       "related": [
@@ -1139,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Pas lenscorrecties en correcties voor chromatische aberratie toe",
       "category": "Editing",
-      "summary": "Gebruik een afgestemd of handmatig geselecteerd lensprofiel, of voer handmatige correcties uit wanneer een exact profiel niet beschikbaar is.",
+      "summary": "Gebruik een afgestemd of handmatig geselecteerd lensprofiel, corrigeer chromatische aberratie, verwijder paarse en groene kleurranden, of voer handmatige correcties uit wanneer een exact profiel niet beschikbaar is.",
       "keywords": [
         "lens",
         "profiel",
@@ -1148,6 +1233,9 @@
         "schaduwen",
         "chromatische aberratie",
         "kleurverschuiving aan de randen",
+        "kleurranden verwijderen",
+        "paarse kleurrand",
+        "groene kleurrand",
         "rood cyaan",
         "blauw geel",
         "optiek"
@@ -1156,18 +1244,21 @@
         {
           "title": "Kies en controleer een correctie",
           "paragraphs": [
-            "Vouw Lenscorrecties uit in Bewerken. De profielkaart verklaart de automatische camera/lensmatch en of een bruikbaar profiel beschikbaar is."
+            "Vouw Lenscorrecties uit in Bewerken. De profielkaart verklaart de automatische camera/lensmatch en of een bruikbaar profiel beschikbaar is. Het paneel noemt ook de versie van de gebruikte lensdatabase en hoeveel camera's en lenzen deze bevat; de database wordt met de lensbibliotheek meegeleverd, niet met LightTable.",
+            "Wanneer camera en lens in de fotometadata exact met één profiel overeenkomen, staat Het overeenkomende lensprofiel gebruiken aan zodra de foto opent en geldt dit ook voor miniaturen en exports. Een afgeleide of dubbelzinnige match blijft uit. Instellingen → Ontwikkelstandaarden → Overeenkomend lensprofiel automatisch toepassen schakelt dit gedrag uit; foto's met opgeslagen lensinstellingen behouden die hoe dan ook."
           ],
           "steps": [
             "Lees de profielnaam en de uitleg van de overeenkomst.",
-            "Schakel Gebruik afgestemd lensprofiel in wanneer een profiel beschikbaar is, en kies daarna Corrigeer vervorming en Corrigeer lensschaduw indien nodig.",
+            "Schakel Het overeenkomende lensprofiel gebruiken in wanneer een profiel beschikbaar is, en kies daarna naar wens Vervorming corrigeren, Lensschaduwen corrigeren en Chromatische aberratie corrigeren. Elke schakelaar is onafhankelijk, dus chromatische aberratie kan worden gecorrigeerd zonder de geometrie te wijzigen.",
             "Kies indien nodig een andere vermelding in Lensprofiel en vergelijk de correctie met het origineel.",
-            "Verfijn de handmatige bedieningselementen voor Vervorming en Vignettering. Voor kleurfranjes past u Rood / Cyaan en Blauw / Geel aan onder Chromatische aberratie."
+            "Verfijn de handmatige bedieningselementen voor Vervorming en Vignettering. Voor kleurfranjes past u Rood / Cyaan en Blauw / Geel aan onder Chromatische aberratie.",
+            "Verhoog onder Kleurranden verwijderen Paars of Groen om die kleur weg te halen uit sterk verzadigde pixels naast harde randen. De schuifregelaars voor begin en einde van de tint bepalen het tintbereik dat elke regelaar behandelt; een begin boven het einde loopt door rood heen."
           ],
           "tips": [
             "Als er geen exact lensprofiel is gevonden, blijven handmatige vervormings- en perspectiefbedieningen beschikbaar.",
-            "De selectievakjes voor profielvervorming en schaduwen zijn alleen ingeschakeld wanneer het geselecteerde profiel die correctie biedt en het profiel is ingeschakeld.",
+            "De selectievakjes voor profielvervorming, schaduwen en chromatische aberratie zijn alleen ingeschakeld wanneer het geselecteerde profiel die correctie biedt en het profiel is ingeschakeld.",
             "Een handmatig geselecteerd profiel moet visueel worden gecontroleerd; de selectie bewijst niet dat het een exacte overeenkomst is.",
+            "Kleurranden verwijderen behandelt de omtrek van een groot paars of groen onderwerp als een kleurrand. Verlaag de hoeveelheid of versmal het tintbereik als een onderwerp kleur verliest langs de rand.",
             "Lens- en franjecorrecties blijven non-destructief tot aan export."
           ]
         }
@@ -1313,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -1603,7 +1695,15 @@
         "zwartwaarden",
         "overlay",
         "doordrukken",
-        "doordrukken"
+        "doordrukken",
+        "lensonscherpte",
+        "achtergrond onscherp",
+        "vervagen",
+        "bokeh",
+        "scherptediepte",
+        "luminositeit",
+        "luminositeitsmenging",
+        "kleur behouden"
       ],
       "sections": [
         {
@@ -1660,10 +1760,26 @@
           ]
         },
         {
+          "title": "Een deel van de foto onscherp maken",
+          "paragraphs": [
+            "Lensonscherpte in de sectie Effecten van een masker verzacht het geselecteerde gebied zoals een onscherp objectief dat doet. De onscherpteradius groeit met de sterkte van het masker, zodat een rand met vervaging of een dieptebereik geleidelijk afloopt in plaats van bij een harde lijn te stoppen.",
+            "Onscherpte wordt toegepast op het voltooide beeld, na de filmrendering en de andere aanpassingen van het masker. Ook filmkorrel in het onscherpe gebied wordt gladder."
+          ],
+          "steps": [
+            "Maak een Onderwerp-masker en kies Omkeren, of een Diepte-masker voor een afstandsbereik, of teken een Radiaal-masker en keer het om.",
+            "Vouw Effecten uit en verhoog Lensonscherpte. Wacht op de voorvertoningsupdate voordat je het beoordeelt.",
+            "Verfijn de selectie met Toevoegen, Aftrekken of Vervaging waar de onscherpte over scherpe randen loopt."
+          ],
+          "tips": [
+            "Alleen geselecteerde pixels dragen bij aan de onscherpte, zodat een scherp onderwerp niet uitloopt in de onscherpe achtergrond. Controleer fijne randen zoals haar op 1:1."
+          ]
+        },
+        {
           "title": "Pas een lokale tooncurve aan",
           "steps": [
             "Vouw Tooncurve uit voor het geselecteerde masker en kies RGB, Rood, Groen of Blauw.",
             "Klik op de grafiek om een punt toe te voegen en sleep het vervolgens. Als u een punt omhoog verplaatst, wordt de uitvoer lichter; als u het omlaag verplaatst, wordt deze donkerder. Dubbelklik op een tussenpunt om het te verwijderen.",
+            "Schakel Alleen luminositeit in om de helderheid te wijzigen zonder kleur of verzadiging te verschuiven.",
             "Gebruik Curve opnieuw instellen om alleen het geselecteerde kanaal van dit masker opnieuw in te stellen, of Ongedaan maken om een bewerking terug te draaien."
           ],
           "tips": [
@@ -1818,7 +1934,7 @@
       "id": "editing-remove-heal",
       "title": "Verwijder vlekken en verfijn Heal- of Clone-correcties",
       "category": "Editing",
-      "summary": "Schilder over storende elementen, inspecteer de zichtbaarheid van de retouche en verplaats de bron of het doel van een correctie.",
+      "summary": "Verwijder vlekken en geschilderde streken, wis stof en krassen in de hele foto en verfijn Retoucheren- of Kloon-correcties.",
       "keywords": [
         "verwijderen",
         "retoucheren",
@@ -1830,7 +1946,18 @@
         "vlekken visualiseren",
         "bron",
         "doel",
-        "afleiding"
+        "afleiding",
+        "stof en krassen",
+        "kras",
+        "haar",
+        "draad",
+        "penseel",
+        "streek",
+        "vulling",
+        "textuurvulling",
+        "inhoudsbewuste vulling",
+        "filmscan",
+        "defecten"
       ],
       "sections": [
         {
@@ -1841,22 +1968,44 @@
           ],
           "steps": [
             "Kies Verwijderen, Heal of Clone en stel vervolgens Grootte, Vervaging en Dekking in.",
-            "Klik op een vlek of sleep over een afleiding in de foto.",
+            "Kies bij Verwijderen Vlek om een ronde correctie te klikken of te slepen, of Penseel om langs een kras, haar of draad te schilderen.",
+            "Kies bij Verwijderen een Vulling. Omringende textuur overnemen kopieert nabijgelegen detail uit de foto; Zachte overgang laat de randen naar binnen overvloeien en past bij egale gebieden zoals lucht.",
+            "Klik op een vlek, sleep over een afleiding of schilder een streek in de foto.",
             "Voor kleine stofvlekken schakel je Vlekken visualiseren in en pas je Drempel aan om randen makkelijker te inspecteren.",
             "Schakel Vlekken visualiseren uit en inspecteer de gecorrigeerde foto."
           ],
           "tips": [
-            "Als je een correctie selecteert en een andere modus kiest, verandert de modus van die correctie."
+            "Als je een correctie selecteert en een andere modus kiest, verandert de modus van die correctie.",
+            "Omringende textuur overnemen kopieert pixels uit deze foto; het genereert nooit nieuw detail. Wijzigingen in Vulling gelden voor de geselecteerde Verwijderen-correctie. Correcties die zijn gemaakt voordat deze keuze bestond, behouden Zachte overgang.",
+            "Een penseelstreek bevat maximaal 256 punten. Laat los en schilder een nieuwe streek om verder te gaan."
+          ]
+        },
+        {
+          "title": "Stof en krassen in de hele foto verwijderen",
+          "paragraphs": [
+            "Stof en krassen vindt kleine defecten die scherp afsteken tegen hun omgeving, zoals stof op een filmscan, en vult ze met pixels uit de omgeving. Het werkt op de hele foto als één correctie bovenaan de lijst, zodat latere correcties het opgeschoonde beeld gebruiken.",
+            "Grootste defect bepaalt het breedste defect dat meetelt, als aandeel van de korte zijde van de foto. Gevoeligheid bepaalt hoeveel een defect moet afwijken van de omgeving. Hogere waarden vinden zwakkere defecten en pakken eerder fijne details mee."
+          ],
+          "steps": [
+            "Open Verwijderen en vouw Stof en krassen uit.",
+            "Stel Grootste defect iets breder in dan het stof dat je ziet en laat Gevoeligheid om te beginnen op 50% staan.",
+            "Klik op Stof verwijderen. Gedetecteerde defecten tonen omlijnt in rood wat is gevonden en meldt hoeveel defecten er zijn gevonden.",
+            "Zoom in op haar, sterren, lichtreflexen in ogen en tekst. Als die worden meegenomen, verlaag dan Gevoeligheid of Grootste defect, of verlaag Dekking.",
+            "Schakel Gedetecteerde defecten tonen uit om het resultaat te beoordelen."
+          ],
+          "tips": [
+            "Selecteer de correctie Stof in de lijst om deze later te wijzigen. Deze correctie inschakelen vergelijkt het resultaat en Correctie verwijderen verwijdert de correctie.",
+            "Lange dunne krassen worden gevonden als hun breedte kleiner is dan Grootste defect. Schilder bredere krassen weg met het penseel van Verwijderen."
           ]
         },
         {
           "title": "Een bestaande correctie verfijnen",
           "paragraphs": [
-            "Selecteer een correctie in de lijst om de bedieningselementen weer te geven. De cirkels op de afbeelding geven het bewerkbare doel aan en, voor Retoucheren en Kloon, de bron.",
+            "Selecteer een correctie in de lijst om de bedieningselementen weer te geven. De cirkels of streken op de afbeelding geven het bewerkbare doel aan en, voor Retoucheren en Kloon, de bron.",
             "Zoom in voor nauwkeurige plaatsing. Cirkels en pinnen blijven op elk zoomniveau scherp; de cirkels blijven hetzelfde gebied van de foto tonen."
           ],
           "steps": [
-            "Sleep de doelcirkel om de correctie te verplaatsen, of kies Doel verplaatsen en klik op de nieuwe positie.",
+            "Sleep de doelcirkel of een geschilderde streek om de correctie te verplaatsen, of kies Doel verplaatsen en klik op de nieuwe positie.",
             "Sleep voor Retoucheren of Kloon de broncirkel naar een beter gebied. Bron vernieuwen probeert een andere bronpositie.",
             "Pas Vervaging of Dekking aan als de rand of sterkte van de correctie verfijning nodig heeft.",
             "Schakel Inschakelen van deze correctie om te vergelijken, of gebruik Correctie verwijderen om deze te verwijderen."
@@ -1970,7 +2119,8 @@
         {
           "title": "Personen of gezichtsgebieden selecteren",
           "paragraphs": [
-            "Personen biedt Persoon, Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden, Haar en Huid verzachten. Deze bedieningselementen vereisen de Vision-helper op macOS 14 of nieuwer en zijn verborgen op Linux en Windows. Gezichtshuid en haar worden geschat en er wordt geen identiteit afgeleid."
+            "Personen biedt Persoon en Haar op elk platform. Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden en Huid verzachten vereisen de Vision-helper op macOS 14 of later. Gezichtshuid wordt geschat en er wordt geen identiteit afgeleid.",
+            "Haar gebruikt een meegeleverd model dat lokaal draait en haar selecteert buiten het gezicht, inclusief haar tot op de schouders. Controleer fijne haarstrengen, heldere hooglichten, pruiken en kleine personen op de achtergrond; deze kunnen nog steeds worden gemist. Oudere versies of bron-builds zonder het model gebruiken de eerdere Vision-schatting wanneer beschikbaar. Bestaande opgeslagen maskers behouden hun selecties."
           ],
           "steps": [
             "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
@@ -2010,7 +2160,8 @@
         {
           "title": "Een kleurzweem neutraliseren",
           "paragraphs": [
-            "De sectie Kleur in Bewerken bevat Temp en Tint, plus een witbalans-pipet naast Temp. Dit zijn de afwerkingsbedieningselementen van het Bewerken-paneel."
+            "De sectie Kleur in Bewerken bevat Temp en Tint, plus een witbalans-pipet naast Temp. Dit zijn de afwerkingsbedieningselementen van het Bewerken-paneel.",
+            "Bij een RAW-origineel staat daarboven een blok Witbalans van opname met Zoals opgenomen, Auto, voorinstellingen en Aangepast voor een temperatuur in kelvin en een opnametint. Het ontwikkelt de RAW-gegevens opnieuw en werkt met Film aan of uit; bij verwerkte bestanden is het verborgen."
           ],
           "steps": [
             "Open Bewerken en vouw Kleur uit.",
@@ -2028,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -2047,7 +2199,15 @@
         "blauw",
         "contrast",
         "Controlepunt",
-        "S-kromme"
+        "S-kromme",
+        "pipet",
+        "zwartpunt",
+        "witpunt",
+        "grijspunt",
+        "grijspunt",
+        "neutraal",
+        "kleurzweem",
+        "niveaus"
       ],
       "sections": [
         {
@@ -2065,6 +2225,21 @@
           "tips": [
             "Gebruik een paar punten en vergelijk de foto terwijl je werkt; kanaalkrommen kunnen sterke kleurzweem veroorzaken.",
             "Een opgeslagen of geïmporteerde kromme behoudt zijn exact opgeslagen tabel totdat u deze bewerkt. De app bouwt representatieve handgrepen opnieuw op voor bewerking, zodat de eerste aanpassing een geïmporteerde kromme kan hervormen voorbij het punt dat u verplaatst."
+          ]
+        },
+        {
+          "title": "Zwart-, grijs- en witpunt instellen",
+          "paragraphs": [
+            "De pipetten onder de puntkromme stellen de rode, groene en blauwe krommen in op basis van een plek in de foto. Zwartpunt maakt het gemeten gebied zwart, Witpunt maakt het wit en Grijspunt maakt het neutraal met behoud van de helderheid. Dit is handig om een kleurzweem uit een scan te verwijderen."
+          ],
+          "steps": [
+            "Open Bewerken, vouw Kromme uit en kies Zwartpunt, Grijspunt of Witpunt.",
+            "Klik op een gebied in de foto dat zwart, neutraal grijs of wit moet zijn.",
+            "Controleer de R-, G- en B-krommen en verfijn of herstel ze als het resultaat te sterk is."
+          ],
+          "tips": [
+            "Zwartpunt heeft een gebied nodig dat donkerder is dan middengrijs, en Witpunt een gebied dat lichter is dan middengrijs. Druk op Escape om een pipet te annuleren.",
+            "De pipetten zetten Kromme in de modus Punt, omdat ze de kanaalkrommen bewerken."
           ]
         },
         {
@@ -2352,7 +2527,7 @@
           "paragraphs": [
             "Filmvoorvertoningen bevatten de bewerkingen van de huidige foto. Bladeren door en het sluiten van het voorvertoningsvenster past geen film toe; het kiezen van een voorvertoning wel.",
             "Een filmsoort beschrijft het fysieke filmproces. Een bewerkingsvoorinstelling kan bredere opgeslagen aanpassingen bevatten en kan ook Film-instellingen omvatten. Het menu Uitvoer binnen Film kiest een scan- of afdrukrecept; het exporteert geen bestand.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is."
           ],
           "tips": [
             "Als een film niet beschikbaar is, kan de GPU-engine vereist zijn. De beschikbaarheid van de engine wordt weergegeven in Instellingen → Prestaties."
@@ -2434,7 +2609,7 @@
           "title": "Opnamebediening en afwerkingsbediening",
           "paragraphs": [
             "Camera-EV en opname-witbalans werken vóór filmexposure. Belichting en Temp/Tint in het paneel Bewerken zijn latere afwerkingsaanpassingen in de workflow.",
-            "Opname-witbalans vereist een RAW-origineel. Gebruik voor een JPEG, HEIF, TIFF of een ander bewerkt bestand Bewerken Temp/Tint."
+            "De opname-witbalans staat bovenaan de sectie Kleur voor RAW-originelen en werkt met Film aan of uit: kies Zoals opgenomen, Auto, een voorinstelling of Aangepast om een temperatuur in kelvin en een opnametint in te stellen. Bij JPEG, HEIF, TIFF of een ander verwerkt bestand is het blok verborgen; gebruik Bewerken Temp/Tint."
           ],
           "steps": [
             "Schakel Film in, kies een film en pas Camera EV aan.",
@@ -2527,7 +2702,11 @@
         "kwaliteit",
         "volledige grootte",
         "resolutie",
-        "voorinstelling"
+        "voorinstelling",
+        "rand",
+        "kader",
+        "mat",
+        "marge"
       ],
       "sections": [
         {
@@ -2540,6 +2719,17 @@
             "Open Exporteren en kies bovenaan een voorinstelling.",
             "Stel Afmetingen in op Volledige grootte of een limiet voor de lange zijde.",
             "Controleer Uitvoervoorvertoning: de geëxporteerde grootte weerspiegelt rotatie en bijsnijden, en een limiet voor de lange zijde verkleint grotere afbeeldingen zonder kleinere te vergroten."
+          ]
+        },
+        {
+          "title": "Een rand toevoegen",
+          "paragraphs": [
+            "Rand in Geavanceerd voegt een effen witte, grijze of zwarte marge toe rond elke geëxporteerde foto. De marge wordt na het schalen toegevoegd, dus de breedte is een aandeel van de geleverde lange zijde en het resultaat is aan elke kant met die marge groter dan de foto."
+          ],
+          "steps": [
+            "Open Exporteren en vouw Geavanceerd uit.",
+            "Kies Smal, Middel of Breed in Rand en kies daarna Randkleur.",
+            "Controleer Uitvoervoorbeeld voor de uiteindelijke afmetingen."
           ]
         },
         {
@@ -2663,7 +2853,10 @@
         "beoordeeld",
         "batch",
         "annuleren",
-        "voortgang"
+        "voortgang",
+        "contactblad",
+        "proefblad",
+        "indexprint"
       ],
       "sections": [
         {
@@ -2686,6 +2879,22 @@
             "Geselecteerde foto’s gebruikt geselecteerde foto’s die nog steeds worden weergegeven door de huidige map, collectie en filters. Als geen enkele foto van de selectie nog in beeld is, gebruikt het de actieve foto. Controleer het aantal foto’s en de naam in Exporteren voordat u start. ",
             "Alleen Gekozen, Beoordeeld 1+ en Alles behalve afgewezen selecteren overeenkomende stilstaande foto’s uit de actieve catalogus, en kunnen foto’s buiten de weergegeven verzameling of filter opnemen. Geselecteerde foto’s biedt expliciete controle over de set.",
             "Als een batch naar meerdere mappen schrijft, toont Weergeven in Finder de eerst succesvol geëxporteerde foto. De koppeling ontbreekt wanneer er geen foto’s zijn geëxporteerd. Gebruik Export annuleren om een stopverzoek te doen. Exportdetails rapporteert de aantallen voltooid, overgeslagen en geannuleerd, plus waarschuwingen en fouten; een waarschuwing kan optreden nadat een foto succesvol is weggeschreven. Videoclips worden niet gerenderd door de exportworkflow voor stilstaande foto’s. Als een origineel verandert terwijl de export ervan in de wachtrij staat of wordt gerenderd, mislukt die foto met een fout; zet hem opnieuw in de wachtrij nadat je het origineel hebt gecontroleerd."
+          ]
+        },
+        {
+          "title": "Een contactblad maken",
+          "paragraphs": [
+            "Contactblad… in Exporteren plaatst de foto's die in het veld Foto's zijn gekozen op één JPEG met bijschriften, met je bewerkingen toegepast. Er passen maximaal 200 foto's op."
+          ],
+          "steps": [
+            "Open Exporteren en stel Foto's en de bestemmingsmap in.",
+            "Klik op Contactblad… en kies Kolommen, Bladbreedte, Achtergrond en een Titel.",
+            "Kies bijschriften: Bestandsnaam, Filmtype en Beoordeling.",
+            "Klik op Blad maken. Het dialoogvenster toont de voortgang en een melding geeft het pad van het opgeslagen bestand."
+          ],
+          "tips": [
+            "Het blad wordt opgeslagen als contact-sheet gevolgd door de datum en tijd. Een foto die niet kan worden gerenderd, wordt overgeslagen en in de melding meegeteld.",
+            "Kies meer kolommen als een grote selectie het blad te hoog maakt om aan te maken."
           ]
         }
       ],
@@ -2852,7 +3061,8 @@
         {
           "title": "Standaarden voor onbewerkte foto's",
           "paragraphs": [
-            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen."
+            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen.",
+            "Overeenkomend lensprofiel automatisch toepassen, standaard ingeschakeld, zet het lensprofiel aan voor foto's waarvan camera en lens exact met één profiel overeenkomen en waarvan de lensinstellingen nooit zijn opgeslagen. Schakel het uit om elke foto met het profiel uit te openen."
           ],
           "steps": [
             "Open Instellingen → Ontwikkel-standaarden.",
@@ -3214,8 +3424,8 @@
         {
           "title": "Controleer wat klaar is met renderen",
           "paragraphs": [
-            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn.",
-            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+            "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering.",
+            "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
             "Als je ingezoomd van foto wisselt, toont LightTable direct een overeenkomend voorbeeld uit de cache, als dat beschikbaar is. Scherpere details worden op de achtergrond geladen en nabijgelegen foto’s worden vooraf geladen voor je zoomniveau.",
             "Bij het inzoomen blijft de scherpste beschikbare voorvertoning zichtbaar terwijl meer detail wordt geladen. Bij het uitzoomen wordt die voorvertoning opnieuw gebruikt. Controleer bij 1:1 de tooltip van de knop voordat u fijne details beoordeelt.",
             "Als de knop 1:1 in de tooltip meldt dat een voorbeeldpixelgrootte kleiner is dan de bron, zie je een kleiner geleverd voorbeeld. Automatische resolutie past zich aan je weergave aan en verhoogt de aanvraag voor ingezoomd bekijken; zeer grote bronnen kunnen de limiet voor voorbeeldverzoeken overschrijden.",
@@ -3285,5 +3495,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

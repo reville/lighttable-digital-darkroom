@@ -91,7 +91,7 @@ class SchemaMergeTests(unittest.TestCase):
                     state = migrated.state_for(20)
                     self.assertEqual(state["rating"], 5)
                     self.assertEqual(migrated.keywords_for(20), ["Birds > Heron"])
-                    self.assertEqual(migrated.stats()["schema"], 8)
+                    self.assertEqual(migrated.stats()["schema"], catalog.SCHEMA_VERSION)
                     self.assertEqual(migrated.query({"filter":{"query":"Heron"}})["total"], 1)
                     if variant == "identity":
                         self.assertEqual(row["content_hash"], "verified-digest")

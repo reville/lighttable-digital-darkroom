@@ -283,8 +283,14 @@ def smoke_environment(
             "LIGHTTABLE_NATIVE_JOURNEY_EXPORT_DIR": str(temporary / "exports"),
             "LIGHTTABLE_NATIVE_JOURNEY_SCREENSHOT": str(screenshot),
             "LIGHTTABLE_NATIVE_JOURNEY_IMAGES": json.dumps(image_names),
-            "MPLCONFIGDIR": str(temporary / "matplotlib"),
-            "NUMBA_CACHE_DIR": str(temporary / "numba"),
+            "MPLCONFIGDIR": os.environ.get(
+                "LIGHTTABLE_SMOKE_MPLCONFIGDIR",
+                str(Path.home() / "Library" / "Caches" / "LightTable" / "matplotlib"),
+            ),
+            "NUMBA_CACHE_DIR": os.environ.get(
+                "LIGHTTABLE_SMOKE_NUMBA_CACHE",
+                str(Path.home() / "Library" / "Caches" / "LightTable" / "smoke-numba"),
+            ),
             "PYTHONDONTWRITEBYTECODE": "1",
         }
     )

@@ -25,12 +25,34 @@ pub struct SharedExport {
 
 #[cfg(unix)]
 pub fn publish(width: u32, height: u32, samples: &[f32]) -> Result<SharedExport> {
+    let row_bytes = (width as usize).checked_mul(12).context("export row overflow")?;
+    if samples.len().checked_mul(4) != Some(row_bytes.saturating_mul(height as usize)) {
+        bail!("invalid or oversized shared export");
+    }
+    publish_bytes(width, height, row_bytes, bytemuck::cast_slice(samples), "rgb32f")
+}
+
+/// Share the exact 8-bit codes the in-engine JPEG encoder would receive.
+///
+/// The server encodes these with libjpeg-turbo in its export worker, outside
+/// the engine's admission gate, so encoding no longer serialises the GPU
+/// stream. Tightly packed RGB rows, no padding.
+#[cfg(unix)]
+pub fn publish_rgb8(width: u32, height: u32, codes: &[u8]) -> Result<SharedExport> {
+    let row_bytes = (width as usize).checked_mul(3).context("export row overflow")?;
+    if codes.len() != row_bytes.saturating_mul(height as usize) {
+        bail!("invalid or oversized shared export");
+    }
+    publish_bytes(width, height, row_bytes, codes, "rgb8")
+}
+
+#[cfg(unix)]
+fn publish_bytes(width: u32, height: u32, row_bytes: usize, bytes: &[u8],
+                 format: &'static str) -> Result<SharedExport> {
     use std::sync::atomic::{AtomicU64, Ordering};
     static NEXT: AtomicU64 = AtomicU64::new(0);
-    let row_bytes = (width as usize).checked_mul(12).context("export row overflow")?;
     let length = row_bytes.checked_mul(height as usize).context("export size overflow")?;
-    if width == 0 || height == 0 || length > MAX_BYTES
-        || samples.len().checked_mul(4) != Some(length) {
+    if width == 0 || height == 0 || length > MAX_BYTES || bytes.len() != length {
         bail!("invalid or oversized shared export");
     }
     let name = format!("/lte-{:x}-{:x}", std::process::id(), NEXT.fetch_add(1, Ordering::Relaxed));
@@ -47,11 +69,11 @@ pub fn publish(width: u32, height: u32, samples: &[f32]) -> Result<SharedExport>
             return Err(std::io::Error::last_os_error()).context("mapping shared export");
         }
         unsafe {
-            std::ptr::copy_nonoverlapping(samples.as_ptr().cast::<u8>(), address.cast::<u8>(), length);
+            std::ptr::copy_nonoverlapping(bytes.as_ptr(), address.cast::<u8>(), length);
             libc::munmap(address, length);
         }
         Ok(SharedExport { name, length, offset: 0, width, height, row_bytes,
-            format: "rgb32f", byte_order: "native" })
+            format, byte_order: "native" })
     })();
     unsafe {
         libc::close(fd);
@@ -62,6 +84,11 @@ pub fn publish(width: u32, height: u32, samples: &[f32]) -> Result<SharedExport>
 
 #[cfg(not(unix))]
 pub fn publish(_width: u32, _height: u32, _samples: &[f32]) -> Result<SharedExport> {
+    bail!("shared export transport is unavailable on this platform")
+}
+
+#[cfg(not(unix))]
+pub fn publish_rgb8(_width: u32, _height: u32, _codes: &[u8]) -> Result<SharedExport> {
     bail!("shared export transport is unavailable on this platform")
 }
 
@@ -95,5 +122,29 @@ mod tests {
         assert!(publish(0, 1, &[]).is_err());
         assert!(publish(2, 1, &[0.0; 3]).is_err());
         assert!(publish(u32::MAX, u32::MAX, &[]).is_err());
+        assert!(publish_rgb8(0, 1, &[]).is_err());
+        assert!(publish_rgb8(2, 1, &[0; 5]).is_err());
+        assert!(publish_rgb8(u32::MAX, u32::MAX, &[]).is_err());
+    }
+
+    #[test]
+    fn shares_packed_rgb8_codes_exactly() {
+        let codes = [0_u8, 1, 2, 253, 254, 255, 7, 8, 9];
+        let surface = publish_rgb8(3, 1, &codes).unwrap();
+        assert_eq!(surface.row_bytes, 9);
+        assert_eq!(surface.format, "rgb8");
+        let name = std::ffi::CString::new(surface.name).unwrap();
+        unsafe {
+            let fd = libc::shm_open(name.as_ptr(), libc::O_RDONLY, 0);
+            assert!(fd >= 0);
+            let address = libc::mmap(std::ptr::null_mut(), surface.length,
+                libc::PROT_READ, libc::MAP_SHARED, fd, 0);
+            assert_ne!(address, libc::MAP_FAILED);
+            libc::close(fd);
+            assert_eq!(libc::shm_unlink(name.as_ptr()), 0);
+            let actual = std::slice::from_raw_parts(address.cast::<u8>(), codes.len());
+            assert_eq!(actual, &codes);
+            libc::munmap(address, surface.length);
+        }
     }
 }
