@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "version": "0.6.2",
+  "version": "0.7.0",
   "platforms": {
     "win32-x64": {
-      "sha256": "32d8b8d32affba2c29c901a1a7b1c35ee072051ebb06a8fe70270a3be0590842"
+      "sha256": "db67325485842ddbce78462e821fc130a99255d74b23d67217f9de18cfdb61d1"
     }
   }
 }
