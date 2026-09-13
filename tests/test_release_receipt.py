@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 import copy, importlib.util, json, unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
