@@ -301,9 +301,9 @@
       }
     },
     "film-exposure-and-processing": {
-      "content": "162ad2e12b533926dbfd4423d27dbfe4b051a463d02abe43d3e44c9af925d468",
+      "content": "271b2f39aa195de5c5635acd567eed11e0d69aee0726155e6f3df5eb42ca5489",
       "sources": {
-        "film_tuning.py": "03d2a167c9692c8801f833ba7f58925b9c5d56686ecb886529677170a2d9f0a8",
+        "film_tuning.py": "75d45818814ad39e6f78fd76532002607d86ada911615779d3ff5bfeed081236",
         "web/app.js": "615682aca72a12648ad7508aacb226c594db5586508141f408b98e405ca2e78a",
         "web/film-browser.js": "32aa70a3e562e39928020a280b04716f1dd7f93b27c4cf541cb4fa1f6e0b2c6e",
         "web/index.html": "af1a1b5386bf6fbddb2c629489a793e352cb43360522efec7689702431bc5c6c"
@@ -312,7 +312,7 @@
     "film-getting-started": {
       "content": "001af2d8e7f18fbe3684a35f12a7281212ad150f37b85f7098d90208b7a3a9ff",
       "sources": {
-        "film_tuning.py": "03d2a167c9692c8801f833ba7f58925b9c5d56686ecb886529677170a2d9f0a8",
+        "film_tuning.py": "75d45818814ad39e6f78fd76532002607d86ada911615779d3ff5bfeed081236",
         "web/app.js": "615682aca72a12648ad7508aacb226c594db5586508141f408b98e405ca2e78a",
         "web/film-browser.js": "32aa70a3e562e39928020a280b04716f1dd7f93b27c4cf541cb4fa1f6e0b2c6e",
         "web/index.html": "af1a1b5386bf6fbddb2c629489a793e352cb43360522efec7689702431bc5c6c",

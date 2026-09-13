@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "21efc49f606c3d2060552773a03e5747888f957b432e903927a86ae0e1cbaecd",
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3",
   "pluralPairs": [
     {
@@ -360,7 +360,7 @@
     "8 GB",
     "8 bit",
     "900 px",
-    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded.",
+    "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve. Before filming, LightTable expands its brightness range while preserving the proportions of red, green, and blue, so this preparation does not exaggerate an existing color cast. Automatic scene metering keeps the same exposure reference. This approximates scene contrast; it cannot recover detail already lost in the processed photo. RAW files are scene light already and are not expanded.",
     "A RAW original cannot be edited in place; send an adjusted TIFF",
     "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.",
     "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.",

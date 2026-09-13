@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 //! Versioned LightTable interpretation of the source before spectral filming.
 //! Keep this operation in sync with `film_tuning.prepare_input`. It works on
-//! linear ProPhoto input, preserves its luminance, and leaves colors outside
-//! the linear-sRGB yellow-green sector untouched.
+//! linear ProPhoto input. Display expansion preserves RGB ratios; the separate
+//! yellow-green interpretation preserves luminance and leaves other hues alone.
 
 use anyhow::{Result, bail};
 use rayon::prelude::*;
@@ -18,10 +18,9 @@ pub struct Specification {
     pub version: u32,
     pub green_amount: f64,
     pub input_cctf_decoding: bool,
-    /// Power applied to processed (display-referred) sources around middle
-    /// grey before filming, so a finished JPEG's compressed highlights and
-    /// lifted shadows go back to scene proportions. Zero leaves the input
-    /// alone; RAW decodes always send zero.
+    /// Power applied to linear luminance in processed sources before filming.
+    /// A shared RGB gain approximates scene contrast while preserving channel
+    /// ratios. Zero leaves the input alone; RAW decodes always send zero.
     #[serde(default)]
     pub display_expansion: f64,
     /// Linear luminance the expansion pivots on. The application measures it
@@ -108,12 +107,14 @@ fn prepare_pixel(mut linear: [f64; 3], spec: Specification) -> [f64; 3] {
         }
     }
     if spec.display_expansion > 0.0 {
-        for channel in &mut linear {
-            // Anchored at middle grey, so exposure is unchanged and highlights
-            // are free to exceed 1.0. Non-positive values are left alone.
-            if *channel > 0.0 {
-                let anchor = spec.display_expansion_anchor;
-                *channel = anchor * (channel.max(0.0) / anchor).powf(spec.display_expansion);
+        // Y'/Y expressed without division by near-black luminance. Scale
+        // signed channels together; retain highlights above display white.
+        let luminance = dot(linear, PROPHOTO_Y);
+        if luminance > 0.0 {
+            let gain = (luminance / spec.display_expansion_anchor)
+                .powf(spec.display_expansion - 1.0);
+            for channel in &mut linear {
+                *channel *= gain;
             }
         }
     }
@@ -204,9 +205,9 @@ mod tests {
         };
         let cases: [([f32; 3], [f64; 3]); 4] = [
             ([0.18, 0.18, 0.18], [0.18000000715255737; 3]),
-            ([1.0, 0.5, 0.05], [3.9425933361053467, 1.1322126388549805, 0.01794436201453209]),
-            ([0.0, -0.01, 0.02], [0.0, -0.009999999776482582, 0.003448545467108488]),
-            ([0.36, 0.09, 0.72], [0.6267964243888855, 0.05169142782688141, 2.1826319694519043]),
+            ([1.0, 0.5, 0.05], [2.7725584506988525, 1.3862792253494263, 0.13862793147563934]),
+            ([0.0, -0.01, 0.02], [0.0, -0.009999999776482582, 0.019999999552965164]),
+            ([0.36, 0.09, 0.72], [0.340384304523468, 0.085096076130867, 0.680768609046936]),
         ];
         for (pixel, expected) in cases {
             // prepare_input feeds prepare_pixel float32-rounded values.
@@ -228,6 +229,41 @@ mod tests {
         let held = prepare_pixel([0.42, 0.42, 0.42], anchored);
         assert!(held.iter().all(|v| (v - 0.42).abs() < 1e-12));
         assert!(Specification { display_expansion_anchor: 0.0, ..spec() }.validate().is_err());
+    }
+
+    #[test]
+    fn expansion_preserves_signed_rgb_ratios_and_handles_black() {
+        let expanded = Specification { green_amount: 0.0, display_expansion: 1.8, ..spec() };
+        for pixel in [
+            [0.8, 0.4, 0.2], [0.2, 0.8, 0.1], [0.1, 0.2, 0.9],
+            [0.45, 0.2, 0.08], [2.0, 0.1, 0.05], [-0.01, 0.1, 0.05],
+            [0.1, -0.01, 0.05], [1e-30, 2e-30, 3e-30],
+        ] {
+            let actual = prepare_pixel(pixel, expanded);
+            assert!(actual.iter().all(|v| v.is_finite()));
+            for c in 0..3 {
+                assert!((actual[c] / actual[1] - pixel[c] / pixel[1]).abs() < 1e-12);
+            }
+            let y = dot(pixel, PROPHOTO_Y);
+            let expected_y = MIDDLE_GREY_LINEAR * (y / MIDDLE_GREY_LINEAR).powf(1.8);
+            assert!((dot(actual, PROPHOTO_Y) - expected_y).abs() < 1e-12);
+        }
+        assert_eq!(prepare_pixel([0.0; 3], expanded), [0.0; 3]);
+        let negative_y = [0.0, -0.01, 0.02];
+        assert_eq!(prepare_pixel(negative_y, expanded), negative_y);
+    }
+
+    #[test]
+    fn expansion_decodes_romm_before_preserving_linear_ratios() {
+        let expanded = Specification { green_amount: 0.0, display_expansion: 1.8, ..spec() };
+        for pixel in [[0.001, 0.002, 0.001], [0.45, 0.2, 0.08], [0.05, 0.2, 0.35]] {
+            let encoded = pixel.map(|v: f64| if v < 1.0 / 512.0 { v * 16.0 } else { v.powf(1.0 / 1.8) });
+            let expected = prepare_pixel(pixel, expanded);
+            let actual = prepare_pixel(encoded, Specification { input_cctf_decoding: true, ..expanded });
+            for c in 0..3 {
+                assert!((actual[c] - expected[c]).abs() < 1e-12);
+            }
+        }
     }
 
     #[test]
