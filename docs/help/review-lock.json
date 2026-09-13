@@ -30,12 +30,15 @@
       }
     },
     "browse-folders": {
-      "content": "adad5fd0f7d571ac3e11bd2ec2005da6630e2096c0ea6a75d9f3ed1d6be82b0e",
+      "content": "bee261a8c6a2325d67cd97346438152d1379fb0fcbb447946cd6be9fe485054c",
       "sources": {
-        "app/main.swift": "293ad54260ecb1a58087345aeaec7379739f8b96c915a29870c0c0af12c67735",
-        "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
-        "web/catalog-ui.js": "623a52dfb3912386040d52873c9d3fd19c3da8abd77c4d8394d67ed830b30817",
-        "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
+        "app/main.swift": "578d21d64096026657a1892b4427d621aaf75613a845be391cb2e9d7413e3ad3",
+        "catalog.py": "3a9c0497b9ec3a37fc1381a8748d78c49d9c54993688f6f63400c4577f0c0e9e",
+        "catalog_scan.py": "353da6585da575477aaa07b89fcc6393931c0c0251d229d43b361e192848d3d3",
+        "server.py": "ac23324f46865676ac963ccd63036a636a73912bd56f490a57e0d02e4892def2",
+        "web/app.js": "da018ce851bba91947feab24d59f428372e3be4bc8ac68a2f30bdeb2424a0de2",
+        "web/catalog-ui.js": "cfa90778c85924df1219a33493e460ee5ec4d5e5e4440c2eccb92af1e38882d3",
+        "web/index.html": "91fc2a3a622ed56890a8ce031b5323e9812763053a058379df110162eaee5e8f"
       }
     },
     "capture-time": {
@@ -62,10 +65,12 @@
       }
     },
     "collections": {
-      "content": "a6dafa73e5cd5457fed03f0737e71b18006f95f634a835567340e91647f2ef41",
+      "content": "29ca4128163a286650b594ba4a14b1b7a68cc7c71e565e57e63edab0451e6f97",
       "sources": {
-        "web/app.js": "56beea819ff790591d90cd4a1a81ce25512b8c1f6bcaa723cdfff70038ac39d4",
-        "web/index.html": "23a88b63ff518119e5874b1efdda9004ba9b09ec319562f58aa71c62ea1d0a31"
+        "app/main.swift": "578d21d64096026657a1892b4427d621aaf75613a845be391cb2e9d7413e3ad3",
+        "catalog.py": "3a9c0497b9ec3a37fc1381a8748d78c49d9c54993688f6f63400c4577f0c0e9e",
+        "web/app.js": "da018ce851bba91947feab24d59f428372e3be4bc8ac68a2f30bdeb2424a0de2",
+        "web/index.html": "91fc2a3a622ed56890a8ce031b5323e9812763053a058379df110162eaee5e8f"
       }
     },
     "colour-labels": {

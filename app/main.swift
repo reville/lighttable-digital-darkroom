@@ -3831,6 +3831,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             return ready
         case "addToCollection":
             return menuBool("canAddToCollection")
+        case "toggleQuickCollection":
+            return menuBool("canUseQuickCollection")
         case "virtualCopy":
             return hasPhoto
         case "deleteVirtualCopy":
@@ -4003,6 +4005,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                       modifiers: [.command, .option])
         addEditorItem(libraryMenu, title: L("Add Selected to Collection"),
                       command: "addToCollection")
+        // Bare "b" already toggles before/after in both key schemes (see
+        // KEY_SCHEMES in web/labels.js), so the Quick Collection sits on
+        // Cmd+B, which no other menu item here claims.
+        addEditorItem(libraryMenu, title: L("Toggle Quick Collection"),
+                      command: "toggleQuickCollection", key: "b")
         libraryMenu.addItem(.separator())
         addEditorItem(libraryMenu, title: L("Create Virtual Copy…"),
                       command: "virtualCopy", key: "'")

@@ -235,6 +235,7 @@
   "The update was cancelled because LightTable did not finish closing. Reopen LightTable after its background work finishes.",
   "The update was cancelled. LightTable remains open.",
   "This album is no longer available. Refresh Apple Photos and choose another album.",
+  "Toggle Quick Collection",
   "Trash requires an absolute photo path",
   "Try Again",
   "Try Again in Safe Mode",

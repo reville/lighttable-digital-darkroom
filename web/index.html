@@ -813,7 +813,7 @@
         </div>
       </section>
 
-      <section id="catalogSupport" hidden><span id="catalogSummary">—</span><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div></section>
+      <section id="catalogSupport" hidden><span id="catalogSummary">—</span><label class="check-row" id="catalogMissingRow" hidden><input type="checkbox" id="catalogMissingOnly"><span data-i18n-text="{&quot;0&quot;:&quot;Show only missing photos&quot;}">Show only missing photos</span></label><div class="source-list" id="catalogSources">—</div><div id="importReport" class="exif"></div><div id="catalogMaintenance" class="exif"></div></section>
 
       <section class="panel-pane" id="infoPane">
         <div class="panel-title"><div><strong data-i18n-text="{&quot;0&quot;:&quot;Info&quot;}">Info</strong><span data-i18n-text="{&quot;0&quot;:&quot;Photo details and metadata&quot;}">Photo details and metadata</span></div></div><p class="hint pair-note" id="pairedMetadataNote" hidden></p>
@@ -905,6 +905,7 @@
   <div class="menu-separator" role="separator"></div>
   <button id="catalogBackup" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Back up catalog…&quot;}">Back up catalog…</button>
   <button id="catalogDuplicates" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Find duplicates&quot;}">Find duplicates</button>
+  <button id="catalogLocateMissing" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Locate missing photos…&quot;}">Locate missing photos…</button>
   <button id="ingestOpen" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Import from card…&quot;}">Import from card…</button>
   <button id="watchOpen" role="menuitem" data-i18n-text="{&quot;0&quot;:&quot;Watch folder…&quot;}">Watch folder…</button>
 </div>
@@ -1196,6 +1197,19 @@
     <div class="modal-actions"><button id="nameDialogCancel" data-i18n-text="{&quot;0&quot;:&quot;Cancel&quot;}">Cancel</button><button class="accent-btn" id="nameDialogSave" data-i18n-text="{&quot;0&quot;:&quot;Save&quot;}">Save</button></div>
   </div>
 </div>
+<div class="modal-backdrop" id="locateDialog" aria-hidden="true">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="locateTitle">
+    <strong id="locateTitle" data-i18n-text="{&quot;0&quot;:&quot;Locate&quot;}">Locate</strong>
+    <p class="hint" id="locateHint"></p>
+    <div class="ingest-row">
+      <label class="field grow"><span data-i18n-text="{&quot;0&quot;:&quot;Folder&quot;}">Folder</span><input id="locatePath" type="text" placeholder="Choose a folder" data-i18n-attrs="{&quot;placeholder&quot;:&quot;Choose a folder&quot;}"></label>
+      <button id="locateChoose" class="quiet compact" data-i18n-text="{&quot;0&quot;:&quot;Choose…&quot;}">Choose…</button>
+    </div>
+    <div class="ingest-status" id="locateStatus" role="status"></div>
+    <div class="modal-actions"><button id="locateCancel" data-i18n-text="{&quot;0&quot;:&quot;Cancel&quot;}">Cancel</button><button class="accent-btn" id="locateRun" data-i18n-text="{&quot;0&quot;:&quot;Locate&quot;}">Locate</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="externalEditDialog" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="externalEditTitle">
     <strong id="externalEditTitle" data-i18n-text="{&quot;0&quot;:&quot;Edit in another app&quot;}">Edit in another app</strong>
