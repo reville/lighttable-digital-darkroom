@@ -85,6 +85,20 @@ try {
       this.processingSourceURL = image.currentSrc || image.src;
       return setImage.call(this, image, ...args);
     };
+    // The browser path may upload the engine's packed RGBA surface instead of
+    // a JPEG. Remember the surface URL the app fetched so the frame can be
+    // matched to its source the same way.
+    const setImageFromRaw = GradeRenderer.prototype.setImageFromRaw;
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = function(resource, ...args) {
+      const url = typeof resource === 'string' ? resource : resource?.url;
+      if (url && /\/api\/render\/native\b/.test(url)) window.__processingLastRawURL = new URL(url, location.href).href;
+      return nativeFetch(resource, ...args);
+    };
+    GradeRenderer.prototype.setImageFromRaw = function(...args) {
+      this.processingSourceURL = window.__processingLastRawURL || this.processingSourceURL;
+      return setImageFromRaw.call(this, ...args);
+    };
     window.processingFrames = 0;
     function captureFrame() {
       if (this.canvas.id !== 'cv' || !this.ready) return;
@@ -122,18 +136,18 @@ try {
   const waitForRecipe = async (name, recipe) => {
     const render = await page.evaluate(() => __lightTablePerf.renders.at(-1));
     const response = await page.request.post(config.baseUrl + '/api/render', {
-      data:{name, ...recipe, w:render.width, engine:render.engine, native:false}, timeout:120000});
+      data:{name, ...recipe, w:render.width, engine:render.engine, native:false, raw:true}, timeout:120000});
     if (!response.ok()) throw Error(await response.text());
     const base = await response.json();
-    if (!base.img) throw Error('Expected browser source surface');
-    const source = new URL(base.img, config.baseUrl).href;
+    const sources = [base.img, base.native?.url].filter(Boolean).map(u => new URL(u, config.baseUrl).href);
+    if (!sources.length) throw Error('Expected browser source surface');
     const grade = {exposure:0, sharpness:0, ...(base.gradeEditsBaked ? {} : recipe.grade)};
     // A navigation or prior edit can complete on the same photo while the
     // requested recipe is pending. Match the texture actually uploaded by the
     // app, then verify the finishing grade applied to that particular source.
-    await page.waitForFunction(({source, grade}) => processingFrame.sourceURL === source &&
+    await page.waitForFunction(({sources, grade}) => sources.includes(processingFrame.sourceURL) &&
       Object.entries(grade).every(([key, value]) =>
-        Math.abs(processingFrame.grade[key] - value) < 0.0001), {source, grade}, {timeout:120000});
+        Math.abs(processingFrame.grade[key] - value) < 0.0001), {sources, grade}, {timeout:120000});
   };
   const captureBefore = async (test, frame, name) => {
     await page.evaluate(() => document.activeElement?.blur());
