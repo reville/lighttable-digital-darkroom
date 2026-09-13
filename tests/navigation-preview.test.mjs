@@ -42,7 +42,7 @@ function prefetchHarness() {
   const context = {
     S: {seq: 5, zoomMode: '100', zoom: 6, params: {}, targetPixelScale: 1},
     navigationGeneration: 3, CLIENT_ID: 'test', GRADE_DEFAULTS: {}, OPTICS_DEFAULTS: {},
-    INTERACTIVE_PREVIEW_WIDTH: 1100, window: {devicePixelRatio: 1},
+    INTERACTIVE_PREVIEW_WIDTH: 1100, PREFETCH_AHEAD: 3, PREFETCH_BEHIND: 1, window: {devicePixelRatio: 1},
     $: id => id === 'zoomwrap' ? {clientWidth: 1000, clientHeight: 800}
       : {value: id === 'pw' ? 'auto' : 'rs'},
     cur: () => photos[1], visible: () => photos, previewCrop: () => null,
@@ -67,6 +67,8 @@ test('prefetch warms both neighbors before detail, using their own dimensions an
     ['next.dng', 1100], ['previous.dng', 1100], ['next.dng', 5000], ['previous.dng', 6000],
   ]);
   assert.ok(app.calls.every(r => r.allow_draft === false && r.priority === 'prefetch'));
+  assert.deepEqual(app.calls.map(r => r.prepared_only), [true, true, undefined, undefined],
+    'small frames never start a demosaic; the detail pass may');
   assert.equal(app.calls[0].grade.exposure, 1);
   assert.equal(app.calls[0].masks[0].grade.texture, 1);
   assert.equal(app.loads.length, 4);
@@ -116,4 +118,27 @@ test('native viewport detail stays in the background after a navigation preview 
   app.scheduleViewportRegionRender(); pending.shift()();
   assert.equal(renders[0].background, true);
   assert.equal(renders[0].width, 6000);
+});
+
+test('the small pass reaches three ahead and one behind in the navigation direction', async () => {
+  const app = prefetchHarness();
+  const extra = [
+    {name: 'far-back.dng', width: 4000, height: 6000},
+    ...app.photos,
+    {name: 'ahead-2.dng', width: 4000, height: 6000},
+    {name: 'ahead-3.dng', width: 4000, height: 6000},
+    {name: 'ahead-4.dng', width: 4000, height: 6000},
+  ];
+  app.context.visible = () => extra;
+  await app.run();
+  assert.deepEqual(app.calls.map(r => [r.name, r.w]), [
+    ['next.dng', 1100], ['previous.dng', 1100], ['ahead-2.dng', 1100], ['ahead-3.dng', 1100],
+    ['next.dng', 5000], ['previous.dng', 6000],
+  ]);
+  app.calls.length = 0;
+  vm.runInNewContext('lastNavigationDirection = -1;', app.context);
+  await app.run();
+  // Reversing direction only fetches the one photo the earlier window missed;
+  // the rest are served from the presentation cache without HTTP.
+  assert.deepEqual(app.calls.map(r => [r.name, r.w, r.prepared_only]), [['far-back.dng', 1100, true]]);
 });
