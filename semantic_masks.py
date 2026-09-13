@@ -366,6 +366,35 @@ def _person_parts(source_path: Path, helper: Path, provider=None,
             root_context.cleanup()
 
 
+def _learned_person_mask(image: np.ndarray) -> np.ndarray | None:
+    """Try the cross-platform LiteRT person model; None if unusable or empty.
+
+    Returns None (not a zero mask) both when the model/runtime is
+    unavailable and when it confidently finds no person, so callers can
+    distinguish "use the generic heuristic instead" from "a real result".
+    """
+    from film_lab_ai.subject_segmentation import person_mask, SubjectModelUnavailable
+    try:
+        mask = person_mask(image)
+    except SubjectModelUnavailable:
+        return None
+    if not np.any(mask):
+        return None
+    return _finish(mask, _working_image(image, MAX_PART_EDGE), strength=0.5)
+
+
+def _person_mask_fallback(image: np.ndarray) -> tuple[np.ndarray, str]:
+    """Route a person request to the runtime's person class before guessing.
+
+    Only when no learned model is available (or it finds no person) do we
+    fall back to the generic centred-saliency heuristic used for "subject".
+    """
+    learned = _learned_person_mask(image)
+    if learned is not None:
+        return learned, "local-person-segmentation"
+    return subject_mask(image), "local-segmentation"
+
+
 def generate(image: np.ndarray, kind: str, point: tuple[float, float] | None = None,
              *, source_path: Path | None = None,
              vision_helper: Path | None = None,
@@ -387,19 +416,19 @@ def generate(image: np.ndarray, kind: str, point: tuple[float, float] | None = N
     if kind in PERSON_PARTS:
         if not source_path or not vision_helper:
             if kind == "person":
-                return subject_mask(image), "local-segmentation"
+                return _person_mask_fallback(image)
             raise ValueError(PEOPLE_MASK_UNAVAILABLE)
         try:
             masks, summary = _person_parts(
                 source_path, vision_helper, vision_provider, parts_cache)
         except ValueError:
             if kind == "person":
-                return subject_mask(image), "local-segmentation"
+                return _person_mask_fallback(image)
             raise
         mask = masks.get(kind)
         if mask is None or not np.any(mask):
             if kind == "person":
-                return subject_mask(image), "local-segmentation"
+                return _person_mask_fallback(image)
             raise ValueError(f"No {kind.replace('-', ' ')} found")
         provider = "vision-estimated" if kind in ("face-skin", "hair") \
             else str(summary.get("provider", "vision"))
@@ -411,6 +440,9 @@ def generate(image: np.ndarray, kind: str, point: tuple[float, float] | None = N
         if vision is not None and np.any(vision):
             return vision, "vision"
     if kind == "subject":
+        learned = _learned_person_mask(image)
+        if learned is not None:
+            return learned, "local-person-segmentation"
         return subject_mask(image), "local-segmentation"
     if kind == "sky":
         return sky_mask(image), "local-segmentation"

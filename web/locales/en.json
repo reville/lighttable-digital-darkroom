@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "21efc49f606c3d2060552773a03e5747888f957b432e903927a86ae0e1cbaecd",
+  "sourceDigest": "f56b93e00d8ce50c7f7ba0d0aa324713fd61b516995390005fca7874b8d04e38",
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3",
   "plurals": {
     " · {count} paired file linked": {
@@ -2160,7 +2160,7 @@
     "Mask batch stopped": "Mask batch stopped",
     "Mask color range sampled": "Mask color range sampled",
     "Mask color range sampled from area": "Mask color range sampled from area",
-    "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.": "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.",
+    "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally on every platform; available methods and precision depend on the selection type and platform.": "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally on every platform; available methods and precision depend on the selection type and platform.",
     "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo.": "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo.",
     "Mask tone curve": "Mask tone curve",
     "Mask {number}": "Mask {number}",
@@ -2505,6 +2505,7 @@
     "Person": "Person",
     "Person name": "Person name",
     "Person to merge with": "Person to merge with",
+    "Person uses the same bundled local model on Windows and Linux (and on Mac when the Vision helper is unavailable) to trace a person's outline directly, rather than an image-based estimate. If it does not find a person, Person falls back to that estimate instead of leaving the selection empty.": "Person uses the same bundled local model on Windows and Linux (and on Mac when the Vision helper is unavailable) to trace a person's outline directly, rather than an image-based estimate. If it does not find a person, Person falls back to that estimate instead of leaving the selection empty.",
     "Perspective": "Perspective",
     "Photo": "Photo",
     "Photo / Square Grid": "Photo / Square Grid",
@@ -3297,7 +3298,7 @@
     "Subject": "Subject",
     "Subject sharpness": "Subject sharpness",
     "Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.": "Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.",
-    "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.": "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.",
+    "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. On Windows and Linux, Subject uses the same bundled local model as Person when it finds a person in the photo, and otherwise falls back to an image-based estimate. Fine boundaries still need inspection and painted refinement.": "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. On Windows and Linux, Subject uses the same bundled local model as Person when it finds a person in the photo, and otherwise falls back to an image-based estimate. Fine boundaries still need inspection and painted refinement.",
     "Submission package prepared. Review its examples and rights notes, then complete the submission form.": "Submission package prepared. Review its examples and rights notes, then complete the submission form.",
     "Submission preparation excludes photo-specific corrections. Inspect the resulting look before sharing it.": "Submission preparation excludes photo-specific corrections. Inspect the resulting look before sharing it.",
     "Subtract": "Subtract",

@@ -164,10 +164,11 @@
       }
     },
     "editing-masks-ai": {
-      "content": "780fc7020bdb34f907b75c2da5d0f785c2647330d245722fedf1c48541050143",
+      "content": "1697b5e4a5362f32826b966966fd49d5e533b8b8b9a90b67cc6d4d8cfa8cf74d",
       "sources": {
         "film_lab_ai/hair_segmentation.py": "ba2aa87a6391e135df0687f600ebde9f5984d274c168216062c7eff34b4a3f86",
-        "semantic_masks.py": "540865f7effeea5104f729ea76b3bc241ce9add2046c3da811b74b8292395ecd",
+        "film_lab_ai/subject_segmentation.py": "c8272b3a1acc75b48514758d0c21be00bb5153e3186dc65ff20edc7157cbfbf2",
+        "semantic_masks.py": "08bacb65f5a32815a5bff596515127aecfb0965fb0d05d265ac9b82f8db96fd9",
         "web/app.js": "615682aca72a12648ad7508aacb226c594db5586508141f408b98e405ca2e78a",
         "web/index.html": "af1a1b5386bf6fbddb2c629489a793e352cb43360522efec7689702431bc5c6c"
       }
