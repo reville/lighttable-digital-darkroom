@@ -41,6 +41,7 @@ OPTICS_DEFAULTS = {
     "profileOverride": None,
     "profileDistortion": True,
     "profileVignette": True,
+    "profileChromatic": True,
     "flipHorizontal": False,
     "flipVertical": False,
     "distortion": 0.0,
@@ -49,7 +50,28 @@ OPTICS_DEFAULTS = {
     "horizontal": 0.0,
     "rotate": 0.0,
     "scale": 1.0,
+    # Defringe desaturates high-saturation pixels along strong edges whose hue
+    # falls inside each range. A range whose start exceeds its end wraps
+    # through 0 degrees, so magenta-to-red fringes remain reachable.
+    "defringePurple": 0.0,
+    "defringePurpleHueStart": 250.0,
+    "defringePurpleHueEnd": 330.0,
+    "defringeGreen": 0.0,
+    "defringeGreenHueStart": 90.0,
+    "defringeGreenHueEnd": 150.0,
 }
+# Numeric travel for the CLI schema and strict validation, mirrored by the
+# slider bounds in web/index.html.
+OPTICS_RANGES = {
+    "distortion": (-1.0, 1.0), "vignette": (-1.0, 1.0),
+    "vertical": (-1.0, 1.0), "horizontal": (-1.0, 1.0),
+    "rotate": (-15.0, 15.0), "scale": (1.0, 1.6),
+    "defringePurple": (0.0, 1.0), "defringePurpleHueStart": (0.0, 360.0),
+    "defringePurpleHueEnd": (0.0, 360.0),
+    "defringeGreen": (0.0, 1.0), "defringeGreenHueStart": (0.0, 360.0),
+    "defringeGreenHueEnd": (0.0, 360.0),
+}
+DEFRINGE_KEYS = ("defringePurple", "defringeGreen")
 def _finite(value, default=0.0) -> float:
     try:
         result = float(value)
@@ -303,10 +325,15 @@ def clean_optics(value) -> dict:
     raw = value if isinstance(value, dict) else {}
     result = dict(OPTICS_DEFAULTS)
     for key in ("profileEnabled", "profileDistortion", "profileVignette",
-                "flipHorizontal", "flipVertical"):
+                "profileChromatic", "flipHorizontal", "flipVertical"):
         result[key] = bool(raw.get(key, OPTICS_DEFAULTS[key]))
     for key in ("distortion", "vignette", "vertical", "horizontal"):
         result[key] = _clamp(raw.get(key), -1.0, 1.0, OPTICS_DEFAULTS[key])
+    for key in DEFRINGE_KEYS:
+        result[key] = _clamp(raw.get(key), 0.0, 1.0, 0.0)
+        for edge in ("HueStart", "HueEnd"):
+            result[key + edge] = _clamp(raw.get(key + edge), 0.0, 360.0,
+                                        OPTICS_DEFAULTS[key + edge])
     override = raw.get("profileOverride")
     if isinstance(override, dict):
         keys = ("cameraMaker", "cameraModel", "lensMaker", "lensModel")
@@ -317,9 +344,26 @@ def clean_optics(value) -> dict:
     return result
 
 
+def defringe_is_active(value) -> bool:
+    optics = clean_optics(value)
+    return any(optics[key] > 0.0 for key in DEFRINGE_KEYS)
+
+
+def optics_requires_bake(value) -> bool:
+    """Corrections that only the CPU reference path can apply.
+
+    The native preview applies bounded manual geometry itself; a lens profile
+    remap and defringe are baked into the cached base image instead, exactly
+    as in export.
+    """
+    optics = clean_optics(value)
+    return optics["profileEnabled"] or defringe_is_active(optics)
+
+
 def optics_is_identity(value) -> bool:
     optics = clean_optics(value)
     return (not optics["profileEnabled"]
+            and not defringe_is_active(optics)
             and not optics["flipHorizontal"]
             and not optics["flipVertical"]
             and all(abs(optics[key] - OPTICS_DEFAULTS[key]) < 1e-7
@@ -608,7 +652,8 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
     """Explain automatic matching and offer explicit compatible profile choices."""
     metadata = metadata or {}
     maker, model = str(metadata.get("Make", "")), str(metadata.get("Model", ""))
-    result = {"found": False, "profile": None, "reason": "Camera model is missing from the photo metadata.", "candidates": []}
+    result = {"found": False, "profile": None, "reason": "Camera model is missing from the photo metadata.",
+              "candidates": [], "confident": False}
     if not model:
         return result
     try:
@@ -659,15 +704,20 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
             if lens_name:
                 lenses = database.find_lenses(camera, lens=str(lens_name), loose_search=False)
                 reason = "Exact camera and lens metadata match."
+                confident = True
                 if not lenses:
                     lenses = [lens for lens in database.find_lenses(camera, lens=str(lens_name), loose_search=True)
                               if lens.score >= 40]
                     reason = "One compatible lens name match. Verify the correction against the original."
+                    confident = False
                 lenses = [lens for lens in lenses if compatible(lens)]
                 lenses = list({(lens.maker, lens.model): lens for lens in lenses}.values())
             else:
+                # The body alone does not say which lens was mounted, so a
+                # single compatible profile is an inference, not a match.
                 lenses = candidates if focal > 0 else []
                 reason = "Only one camera-compatible profile matches the recorded focal length."
+                confident = False
             if len(lenses) != 1:
                 result["reason"] = ("Multiple lens profiles fit this photo; automatic correction is off. Select the lens used below."
                                     if len(lenses) > 1 else "No unambiguous camera, lens and focal-length match. Select a compatible profile or use manual controls.")
@@ -675,7 +725,10 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
         profile = spec(lenses[0])
         profile["manualOverride"] = bool(override)
         profile["matchReason"] = reason
-        result.update(found=True, profile=profile, reason=reason)
+        # Only the camera and lens named in the metadata can switch the
+        # correction on by itself; every other route needs a person to agree.
+        result.update(found=True, profile=profile, reason=reason,
+                      confident=not override and confident)
         return result
     except Exception:
         result["reason"] = "The bundled lens database could not be read. Manual controls remain available."
@@ -684,6 +737,28 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
 
 def lens_profile_for(metadata: dict | None, override=None) -> dict | None:
     return lens_match_for(metadata, override)["profile"]
+
+
+@lru_cache(maxsize=1)
+def lens_database_info() -> dict:
+    """What the lens matcher actually consults, for the lens panel copy.
+
+    No database is vendored with the app: the profiles come from the lens
+    library bundled with its Python binding, so the version and record counts
+    are read at runtime rather than claimed in copy.
+    """
+    try:
+        import lensfunpy
+        database = _lens_database()
+        version = ".".join(str(part) for part in
+                           tuple(lensfunpy.lensfun_version)[:3])
+        return {"available": True, "version": version,
+                "binding": str(getattr(lensfunpy, "__version__", "")),
+                "cameras": len(database.cameras),
+                "lenses": len(database.lenses)}
+    except Exception:
+        return {"available": False, "version": "", "binding": "",
+                "cameras": 0, "lenses": 0}
 
 
 def _resolve_lens_profile(spec):
@@ -714,10 +789,14 @@ def apply_lens_profile(image: np.ndarray, optics: dict, spec) -> np.ndarray:
     height, width = image.shape[:2]
     flags = 0
     if optics["profileDistortion"]:
-        flags |= lensfunpy.ModifyFlags.DISTORTION | lensfunpy.ModifyFlags.TCA \
-            | lensfunpy.ModifyFlags.SCALE
+        flags |= lensfunpy.ModifyFlags.DISTORTION | lensfunpy.ModifyFlags.SCALE
+    if optics["profileChromatic"]:
+        # Lateral chromatic aberration is its own per-channel remap, so it can
+        # be corrected without touching the geometry, and vice versa.
+        flags |= lensfunpy.ModifyFlags.TCA
     if optics["profileVignette"]:
         flags |= lensfunpy.ModifyFlags.VIGNETTING
+    remap = optics["profileDistortion"] or optics["profileChromatic"]
     modifier = lensfunpy.Modifier(lens, float(camera.crop_factor), width, height)
     modifier.initialize(
         _finite(spec.get("focal"), lens.min_focal),
@@ -728,7 +807,7 @@ def apply_lens_profile(image: np.ndarray, optics: dict, spec) -> np.ndarray:
     source = np.ascontiguousarray(image.astype(np.float32).copy())
     if optics["profileVignette"]:
         modifier.apply_color_modification(source)
-    if optics["profileDistortion"]:
+    if remap:
         coordinates = modifier.apply_subpixel_geometry_distortion()
         if coordinates is not None:
             source = np.stack([
@@ -788,10 +867,106 @@ def apply_manual_optics(image: np.ndarray, optics: dict) -> np.ndarray:
     return np.clip(warped, 0.0, 1.0).astype(np.float32)
 
 
+def _box_mean(values: np.ndarray, radius: int) -> np.ndarray:
+    """Mean over a (2r+1)² window with edge clamping, via summed areas."""
+    padded = np.pad(values, [(radius, radius), (radius, radius)]
+                    + [(0, 0)] * (values.ndim - 2), mode="edge")
+    total = np.cumsum(np.cumsum(padded, axis=0, dtype=np.float64), axis=1)
+    total = np.pad(total, [(1, 0), (1, 0)] + [(0, 0)] * (values.ndim - 2))
+    size = 2 * radius + 1
+    height, width = values.shape[:2]
+    window = (total[size:size + height, size:size + width]
+              - total[:height, size:size + width]
+              - total[size:size + height, :width]
+              + total[:height, :width])
+    return (window / float(size * size)).astype(np.float32)
+
+
+def _hue_membership(hue: np.ndarray, start: float, end: float,
+                    softness: float = 15.0) -> np.ndarray:
+    """1 inside the arc from start to end (clockwise), fading out over
+    ``softness`` degrees on either side. start > end wraps through 0."""
+    span = (end - start) % 360.0
+    if span == 0.0 and abs(end - start) >= 360.0:
+        return np.ones_like(hue)
+    offset = (hue - start) % 360.0
+    inside = offset <= span
+    # Angular distance to the nearest end of the arc for pixels outside it.
+    outside = np.minimum(offset - span, 360.0 - offset)
+    return np.where(inside, 1.0, 1.0 - _smoothstep(0.0, softness, outside)
+                    ).astype(np.float32)
+
+
+def apply_defringe(image: np.ndarray, optics: dict) -> np.ndarray:
+    """Suppress purple and green fringes along high-contrast edges.
+
+    A fringe pixel is strongly saturated, sits next to a strong luminance
+    edge, and has a hue inside the chosen range. Such pixels take the colour
+    of their non-fringe neighbourhood at their own brightness, which removes
+    the false colour without leaving grey halos; where every neighbour is a
+    fringe the pixel simply desaturates. The same code runs for the cached
+    preview base and for export, so both agree pixel for pixel.
+    """
+    optics = clean_optics(optics)
+    targets = [(optics[key], optics[key + "HueStart"], optics[key + "HueEnd"])
+               for key in DEFRINGE_KEYS if optics[key] > 0.0]
+    if not targets or image.ndim != 3 or image.shape[2] < 3:
+        return image
+    source = np.clip(image[..., :3].astype(np.float32), 0.0, 1.0)
+    red, green, blue = source[..., 0], source[..., 1], source[..., 2]
+    highest = np.max(source, axis=2)
+    chroma = highest - np.min(source, axis=2)
+    saturation = chroma / np.maximum(highest, 1e-4)
+    safe_chroma = np.maximum(chroma, 1e-6)
+    hue = np.where(
+        highest == red, (green - blue) / safe_chroma,
+        np.where(highest == green, 2.0 + (blue - red) / safe_chroma,
+                 4.0 + (red - green) / safe_chroma)) * 60.0
+    hue = np.where(chroma > 1e-6, hue % 360.0, 0.0).astype(np.float32)
+    luma = (0.2126 * red + 0.7152 * green + 0.0722 * blue).astype(np.float32)
+    gradient_y, gradient_x = np.gradient(luma)
+    edge = np.hypot(gradient_x, gradient_y).astype(np.float32)
+    # Fringes sit a few pixels beside the edge that caused them, so the edge
+    # weight is spread over a small neighbourhood before it gates the pixel.
+    spread = edge.copy()
+    for shift_y in (-2, -1, 0, 1, 2):
+        for shift_x in (-2, -1, 0, 1, 2):
+            if shift_y or shift_x:
+                spread = np.maximum(spread, np.roll(
+                    np.roll(edge, shift_y, axis=0), shift_x, axis=1))
+    edge_weight = _smoothstep(0.04, 0.2, spread)
+    saturation_weight = _smoothstep(0.12, 0.4, saturation)
+    membership = np.zeros_like(luma)
+    weight = np.zeros_like(luma)
+    for amount, start, end in targets:
+        member = _hue_membership(hue, start, end)
+        membership = np.maximum(membership, member)
+        weight = np.maximum(weight, amount * member)
+    weight = weight * edge_weight * saturation_weight
+    if not np.any(weight > 1e-4):
+        return image
+    # Neighbourhood colour, excluding fringe-hued pixels, at this pixel's
+    # brightness. Averaging in a 5×5 window keeps the result local.
+    keep = (1.0 - membership)[..., None]
+    neighbour = _box_mean(source * keep, 2)
+    coverage = _box_mean(keep, 2)
+    neighbour_luma = (0.2126 * neighbour[..., 0] + 0.7152 * neighbour[..., 1]
+                      + 0.0722 * neighbour[..., 2])
+    valid = (coverage[..., 0] > 0.05) & (neighbour_luma > 1e-4)
+    scale = np.where(valid, luma / np.maximum(neighbour_luma, 1e-4), 0.0)
+    target = np.where(valid[..., None], neighbour * scale[..., None], luma[..., None])
+    target = np.clip(target, 0.0, 1.0)
+    output = source + weight[..., None] * (target - source)
+    if image.shape[2] > 3:
+        output = np.concatenate([output, image[..., 3:]], axis=2)
+    return np.clip(output, 0.0, 1.0).astype(np.float32)
+
+
 def apply_base(image: np.ndarray, optics=None, heals=None,
                lens_profile=None) -> np.ndarray:
     cleaned_optics = clean_optics(optics)
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
     output = apply_lens_profile(output, cleaned_optics, lens_profile)
+    output = apply_defringe(output, cleaned_optics)
     output = apply_manual_optics(output, cleaned_optics)
     return apply_heals(output, heals)

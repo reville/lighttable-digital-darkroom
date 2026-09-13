@@ -542,7 +542,9 @@ def entry_for(st, name):
         "crop": e.get("crop"),
         "masks": edits.clean_masks(e.get("masks")),
         "heals": edits.clean_heals(e.get("heals")),
-        "optics": edits.clean_optics(e.get("optics")),
+        # An empty object means lens state was never saved, so renderers can
+        # still apply the Develop Defaults lens profile (default_optics_for).
+        "optics": edits.clean_optics(e["optics"]) if e.get("optics") else {},
         "keywords": clean_keywords(e.get("keywords", [])),
         "versions": clean_versions(e.get("versions", [])),
         "provenance": e.get("provenance"),
@@ -596,6 +598,44 @@ def default_grade_for(name: str, default_grade: dict) -> dict:
     if is_raw(name):
         return {**default_grade, **RAW_GRADE_DEFAULTS}
     return dict(default_grade)
+
+
+def lens_profile_default_enabled() -> bool:
+    """Develop Defaults: apply a confidently matched lens profile by itself."""
+    configured = load_preferences().get("newPhotoDefaults")
+    configured = configured if isinstance(configured, dict) else {}
+    return configured.get("lensProfileAuto") is not False
+
+
+def lens_match_for_photo(name: str) -> dict:
+    """The lens match plus whether it switches the correction on unasked.
+
+    Only an exact camera and lens metadata match qualifies, and only while
+    the Develop Defaults preference allows it. An ambiguous match keeps the
+    correction off and lists its candidates for a manual choice.
+    """
+    match = edits.lens_match_for(exif_for(name))
+    match["autoEnabled"] = bool(match.get("confident")) and lens_profile_default_enabled()
+    return match
+
+
+def default_optics_for(name: str, saved_optics) -> dict:
+    """The lens state a photo renders with.
+
+    Saved lens edits are returned exactly as cleaned. A photo that has never
+    saved lens state starts with the matched profile enabled when the match
+    is confident, so thumbnails, exports, and command-line renders agree with
+    the editor without writing anything to the catalog.
+    """
+    if isinstance(saved_optics, dict) and saved_optics:
+        return edits.clean_optics(saved_optics)
+    optics = edits.clean_optics(None)
+    if lens_profile_default_enabled():
+        try:
+            optics["profileEnabled"] = bool(lens_match_for_photo(name).get("autoEnabled"))
+        except Exception:
+            optics["profileEnabled"] = False
+    return optics
 
 
 def effective_new_photo_defaults() -> tuple[dict, dict]:
@@ -1197,7 +1237,7 @@ def catalog_entry_for(name: str) -> dict:
         "crop": state.get("crop"),
         "masks": edits.clean_masks(state.get("masks")),
         "heals": edits.clean_heals(state.get("heals")),
-        "optics": edits.clean_optics(state.get("optics")),
+        "optics": edits.clean_optics(state["optics"]) if state.get("optics") else {},
         "keywords": clean_keywords(state.get("keywords", [])),
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
@@ -2710,7 +2750,7 @@ def edited_thumbnail_state(name: str) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": edits.clean_optics(entry.get("optics")),
+        "optics": default_optics_for(name, entry.get("optics")),
     }
 
 
@@ -4444,7 +4484,7 @@ def _preview_source_bytes(result: dict, name: str, width: int,
 
 def native_base_edits_required(optics=None, heals=None) -> bool:
     """Retouch sources must include earlier corrections, exactly as in export."""
-    return (edits.clean_optics(optics)["profileEnabled"]
+    return (edits.optics_requires_bake(optics)
             or any(spot["enabled"] for spot in edits.clean_heals(heals)))
 
 
@@ -5018,7 +5058,7 @@ def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": edits.clean_optics(entry.get("optics")),
+        "optics": default_optics_for(name, entry.get("optics")),
         "format": "tif", "quality": 100, "outputSpace": output_space,
         "longEdge": None, "watermark": {"enabled": False},
         "metadata": "all", "metadataFields": export_metadata_fields(name),
@@ -5604,7 +5644,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
                 "crop": item.get("crop"),
                 "masks": item.get("masks") or [],
                 "heals": edits.clean_heals(item.get("heals")),
-                "optics": edits.clean_optics(item.get("optics")),
+                "optics": default_optics_for(item["name"], item.get("optics")),
                 "keywords": clean_keywords(item.get("keywords", [])),
                 "provenance": item.get("provenance"),
             }
@@ -5683,7 +5723,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "crop": e["crop"],
             "masks": e["masks"],
             "heals": e["heals"],
-            "optics": e["optics"],
+            "optics": default_optics_for(n, e["optics"]),
             "format": recipe["format"],
             "quality": recipe["quality"],
             "longEdge": recipe["longEdge"],
@@ -6400,6 +6440,8 @@ def options_payload() -> dict:
                   "curveKeys": grade.CURVE_KEYS,
                   "hslBands": grade.HSL_BANDS,
                   "advancedKeys": grade.ADVANCED_KEYS},
+        "optics": {"defaults": edits.OPTICS_DEFAULTS,
+                   "ranges": edits.OPTICS_RANGES},
         "labels": list(LABEL_VALUES),
         "statuses": list(catalog_module.STATUS_VALUES),
         "maskKinds": ["brush", "linear", "radial", "subject", "sky",
@@ -6493,6 +6535,7 @@ def _program_render_state(body: dict) -> tuple[str, dict, int]:
     stored = catalog_entry_for(name)
     supplied = body.get("state") if isinstance(body.get("state"), dict) else {}
     state = dict(stored)
+    state["optics"] = default_optics_for(name, stored.get("optics"))
     state.update(supplied)
     width = max(64, min(8000, int(body.get("w", 1400))))
     return name, state, width
@@ -7012,6 +7055,8 @@ class Handler(BaseHTTPRequestHandler):
                     "hasExif": True,
                     "gradeDefaults": default_grade,
                     "rawGradeDefaults": RAW_GRADE_DEFAULTS,
+                    "lensProfileDefault": lens_profile_default_enabled(),
+                    "lensDatabase": edits.lens_database_info(),
                     "cameraProfileFolder": str(camera_profile_folder() or ""),
                     "aiIndex": AI_INDEX.status() if AI_INDEX else None,
                     "platform": sys.platform,
@@ -7126,7 +7171,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/exif":
                 self._json(exif_for(q["name"]))
             elif u.path == "/api/lens-profile":
-                self._json(edits.lens_match_for(exif_for(q["name"])))
+                self._json(lens_match_for_photo(q["name"]))
             elif u.path == "/api/raw-default":
                 if not is_raw(q["name"]):
                     self._json({"settings": None, "label": "Processed image",
