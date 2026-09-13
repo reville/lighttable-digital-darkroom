@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Prepare the pinned offline hair model for source tests and release builds.
 
 No photo is opened or uploaded. Runtime inference never calls this downloader.

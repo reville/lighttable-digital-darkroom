@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Keep model assets and real inference in each relocated package gate."""
 
 from __future__ import annotations

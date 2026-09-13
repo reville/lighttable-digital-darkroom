@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Model contracts and full-image integration; no download required for unit tests."""
 import hashlib
 import os

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
 """Exercise the actual packaged offline hair interpreter and pinned model."""
 from __future__ import annotations
 
