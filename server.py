@@ -671,7 +671,26 @@ def effective_new_photo_defaults() -> tuple[dict, dict]:
     develop_profile = str(configured.get("developProfile", ""))
     if develop_profile in ("standard", "linear"):
         params["developProfile"] = develop_profile
+    params["camera_profile"] = default_camera_profile_name(configured)
     return fp.clean_params(params), grade.clean(default_grade)
+
+
+def default_camera_profile_name(configured: dict | None = None) -> str:
+    """Develop Defaults: the camera profile a never-edited RAW starts with.
+
+    The bundled LightTable Standard look unless the preference chooses the
+    built-in analytic curve. Saved edits keep whatever they saved, so this
+    changes nothing already rendered. ``DEFAULT_PARAMS`` stays empty for
+    the same reason.
+    """
+    import camera_profile
+    if configured is None:
+        configured = load_preferences().get("newPhotoDefaults")
+        configured = configured if isinstance(configured, dict) else {}
+    choice = str(configured.get("cameraProfile", "standard") or "standard")
+    if choice == "builtin":
+        return ""
+    return camera_profile.BUNDLED_STANDARD_NAME
 
 
 def configured_backup_directory(cat) -> Path:
@@ -2504,7 +2523,9 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                         name, params, denoise_status=denoise_status,
                         denoise_cancel=denoise_cancel))
                     display = color_pipeline.linear_prophoto_to_display(
-                        linear, params, output_space=output_space)
+                        linear, params, output_space=output_space,
+                        capture_temperature=color_pipeline.capture_temperature_for(
+                            src, params))
                     tf.imwrite(temporary, color_pipeline.to_uint16(display))
                 else:
                     platform_image.convert_processed_to_tiff(
@@ -2562,7 +2583,10 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
             key = (identity, color_pipeline.raw_decode_fingerprint(params),
                    linear.shape) if identity is not None else None
             def develop():
-                display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+                display = color_pipeline.linear_prophoto_to_display_srgb(
+                    linear, params,
+                    capture_temperature=color_pipeline.capture_temperature_for(
+                        src_path(name), params))
                 return color_pipeline.to_uint16(display)
             image = NEUTRAL_DISPLAY_CACHE.get_or_build(
                 key, develop, raw_decode_runtime.check_cancel)
@@ -3106,19 +3130,32 @@ def image_mean_luminance(name: str) -> float:
 
 
 
-# Camera profiles are read from the user's own Adobe Camera Raw or Lightroom
-# installation, never bundled: Adobe's profiles are Adobe's. The folder is a
-# preference; when it is empty the platform's standard location is used if
-# it exists. Files are found by bare name so an edit never stores a path.
-CAMERA_PROFILE_DEFAULT_FOLDERS = (
-    [Path("/Library/Application Support/Adobe/CameraRaw/CameraProfiles"),
-     Path.home() / "Library/Application Support/Adobe/CameraRaw/CameraProfiles"]
-    if sys.platform == "darwin" else
-    [Path(os.environ.get("ProgramData", r"C:\ProgramData")) / "Adobe/CameraRaw/CameraProfiles",
-     Path(os.environ.get("APPDATA", str(Path.home()))) / "Adobe/CameraRaw/CameraProfiles"]
-    if os.name == "nt" else [])
+# Camera profiles come from a folder of the user's own .dcp files; the only
+# bundled one is the modelled LightTable Standard look, which needs no folder.
+# The folder is a preference (``cameraProfileFolder``); when it is empty the
+# first existing default is used: LightTable's own CameraProfiles folder in
+# its data directory on every platform (the XDG data home on Linux,
+# %LOCALAPPDATA% on Windows, Application Support on macOS), then the
+# locations Adobe Camera Raw and Lightroom install their DCP profiles to on
+# macOS and Windows. Files are found by bare name so an edit never stores a
+# path.
+def camera_profile_default_folders() -> list[Path]:
+    folders = [platform_paths.data_directory() / "CameraProfiles"]
+    if sys.platform == "darwin":
+        folders += [
+            Path("/Library/Application Support/Adobe/CameraRaw/CameraProfiles"),
+            Path.home() / "Library/Application Support/Adobe/CameraRaw/CameraProfiles"]
+    elif os.name == "nt":
+        folders += [
+            Path(os.environ.get("ProgramData", r"C:\ProgramData")) / "Adobe/CameraRaw/CameraProfiles",
+            Path(os.environ.get("APPDATA", str(Path.home()))) / "Adobe/CameraRaw/CameraProfiles"]
+    return folders
+
+
+CAMERA_PROFILE_DEFAULT_FOLDERS = camera_profile_default_folders()
 _CAMERA_PROFILE_INDEX: dict = {}
 _CAMERA_PROFILE_INDEX_LOCK = threading.Lock()
+_CAMERA_PROFILE_IDENTITIES: dict = {}
 
 
 def camera_profile_folder() -> Path | None:
@@ -3127,7 +3164,7 @@ def camera_profile_folder() -> Path | None:
     if configured:
         folder = Path(configured).expanduser()
         return folder if folder.is_dir() else None
-    for folder in CAMERA_PROFILE_DEFAULT_FOLDERS:
+    for folder in camera_profile_default_folders():
         if folder.is_dir():
             return folder
     return None
@@ -3185,19 +3222,56 @@ def camera_profile_index() -> dict[str, Path]:
 
 
 def resolve_camera_profile(name: str) -> Path | None:
+    import camera_profile
     clean = fp.camera_profile_name(name)
-    return camera_profile_index().get(clean) if clean else None
+    if not clean:
+        return None
+    bundled = camera_profile.bundled_profile_path(clean)
+    if bundled is not None:
+        return bundled
+    return camera_profile_index().get(clean)
 
 
 color_pipeline.CAMERA_PROFILE_RESOLVER = resolve_camera_profile
 
 
+def camera_profile_identity(path: Path) -> dict:
+    """The name and camera tags of a profile file, parsed once per version."""
+    import camera_profile
+    try:
+        stat = path.stat()
+    except OSError:
+        return {"name": None, "cameraModel": None}
+    key = (str(path), stat.st_size, stat.st_mtime_ns)
+    with _CAMERA_PROFILE_INDEX_LOCK:
+        cached = _CAMERA_PROFILE_IDENTITIES.get(key)
+    if cached is None:
+        cached = camera_profile.profile_identity(path)
+        with _CAMERA_PROFILE_INDEX_LOCK:
+            if len(_CAMERA_PROFILE_IDENTITIES) > 8000:
+                _CAMERA_PROFILE_IDENTITIES.clear()
+            _CAMERA_PROFILE_IDENTITIES[key] = cached
+    return cached
+
+
+def _profile_text_key(text) -> str:
+    return " ".join(str(text or "").split()).casefold()
+
+
 def camera_profiles_for(name: str) -> dict:
-    """The profiles in the folder that name this photo's camera model."""
+    """The bundled look plus the folder's profiles that name this camera.
+
+    A file matches when the camera model appears in its file name, in its
+    UniqueCameraModel tag, or in its ProfileName tag. The tags are read
+    from the file header only, so scanning a large folder stays cheap.
+    """
+    import camera_profile
     folder = camera_profile_folder()
+    bundled = {"file": camera_profile.BUNDLED_STANDARD_NAME,
+               "name": camera_profile.BUNDLED_STANDARD_LABEL, "bundled": True}
     result = {"folder": str(folder) if folder else "",
               "available": folder is not None, "raw": is_raw(name),
-              "camera": "", "profiles": []}
+              "camera": "", "profiles": [bundled]}
     if not is_raw(name) or folder is None:
         return result
     identity = raw_camera_identity(name)
@@ -3215,8 +3289,18 @@ def camera_profiles_for(name: str) -> dict:
             look = stem[stem.index(model) + len(model):].strip(" -_")
             matches.append({"file": file_name, "name": look.title() or file_name[:-4],
                             "adobe": "adobe standard" in stem, "path": str(path)})
+            continue
+        tags = camera_profile_identity(path)
+        camera_tag = _profile_text_key(tags.get("cameraModel"))
+        profile_tag = _profile_text_key(tags.get("name"))
+        if model in camera_tag or model in profile_tag:
+            label = tags.get("name") or file_name[:-4]
+            matches.append({"file": file_name, "name": label,
+                            "adobe": "adobe standard" in profile_tag,
+                            "path": str(path)})
     matches.sort(key=lambda item: (not item["adobe"], item["name"].lower()))
-    result["profiles"] = [{"file": item["file"], "name": item["name"]} for item in matches[:40]]
+    result["profiles"] += [{"file": item["file"], "name": item["name"]}
+                           for item in matches[:40]]
     return result
 
 
@@ -3578,7 +3662,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 15  # Film input expansion now preserves RGB ratios
+RENDER_CACHE_VERSION = 16  # Never-edited RAW photos develop with LightTable Standard
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()

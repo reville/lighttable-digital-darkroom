@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Tests for camera_profile, exercising the real reader on real .dcp bytes.
 
-Every profile used here is synthesised in the test by hand-assembling a TIFF
-header and one IFD of metadata tags — the same shape as a shipped ``.dcp``,
-which carries no image data. Nothing is mocked, no fixture files are read and
-nothing touches the network.
+Every profile used here is synthesised by ``camera_profile_write`` into a
+TIFF header and one IFD of metadata tags — the same shape as a shipped
+``.dcp``, which carries no image data. Nothing is mocked, no fixture files
+are read and nothing touches the network.
 """
 from __future__ import annotations
 
 import colorsys
-import struct
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,138 +19,17 @@ import camera_profile
 
 
 # --- .dcp synthesis -------------------------------------------------------
+#
+# The writer lives in camera_profile_write so the bundled look and these
+# tests are built by the same code; the names are re-exported for the other
+# test modules that import them from here.
 
-ASCII = 2
-SHORT = 3
-LONG = 4
-SRATIONAL = 10
-FLOAT = 11
-
-
-def ascii_tag(text: str) -> tuple[int, int, bytes]:
-    payload = text.encode("utf-8") + b"\x00"
-    return (ASCII, len(payload), payload)
-
-
-def short_tag(values, byteorder: str = "<") -> tuple[int, int, bytes]:
-    values = list(values)
-    return (SHORT, len(values),
-            struct.pack(f"{byteorder}{len(values)}H", *values))
-
-
-def long_tag(values, byteorder: str = "<") -> tuple[int, int, bytes]:
-    values = list(values)
-    return (LONG, len(values),
-            struct.pack(f"{byteorder}{len(values)}I", *values))
-
-
-def float_tag(values, byteorder: str = "<") -> tuple[int, int, bytes]:
-    array = np.asarray(list(values), dtype=f"{byteorder}f4")
-    return (FLOAT, int(array.size), array.tobytes())
-
-
-def srational_tag(values, byteorder: str = "<",
-                  denominator: int = 1000000) -> tuple[int, int, bytes]:
-    values = list(values)
-    pairs: list[int] = []
-    for value in values:
-        pairs.extend((int(round(value * denominator)), denominator))
-    return (SRATIONAL, len(values),
-            struct.pack(f"{byteorder}{len(pairs)}i", *pairs))
-
-
-def build_tiff(tags: dict, byteorder: str = "<") -> bytes:
-    """Assemble a TIFF header plus one IFD holding only ``tags``.
-
-    ``tags`` maps a tag code to a ``(type, count, payload)`` triple. The IFD
-    has no strip offsets and no byte counts, exactly like a camera profile.
-    """
-    magic = b"II" if byteorder == "<" else b"MM"
-    header = struct.pack(f"{byteorder}2sHI", magic, 42, 8)
-    entries = sorted(tags.items())
-    data_offset = 8 + 2 + len(entries) * 12 + 4
-    directory = b""
-    blobs = b""
-    for code, (kind, count, payload) in entries:
-        if len(payload) <= 4:
-            value = payload + b"\x00" * (4 - len(payload))
-        else:
-            value = struct.pack(f"{byteorder}I", data_offset + len(blobs))
-            blobs += payload
-            if len(blobs) % 2:
-                blobs += b"\x00"
-        directory += struct.pack(f"{byteorder}HHI", code, kind, count) + value
-    return (header
-            + struct.pack(f"{byteorder}H", len(entries))
-            + directory
-            + struct.pack(f"{byteorder}I", 0)
-            + blobs)
-
-
-def grid_bytes(hue_divisions: int, sat_divisions: int, value_divisions: int,
-               triple, byteorder: str = "<"):
-    """Build a hue/sat grid, value slowest then hue then saturation fastest.
-
-    ``triple`` is called with (hue index, sat index, value index) and returns
-    (hue shift in degrees, saturation scale, value scale).
-    """
-    values: list[float] = []
-    for value_index in range(value_divisions):
-        for hue_index in range(hue_divisions):
-            for sat_index in range(sat_divisions):
-                values.extend(triple(hue_index, sat_index, value_index))
-    return float_tag(values, byteorder)
-
+from camera_profile_write import (  # noqa: E402,F401
+    ASCII, SHORT, LONG, SRATIONAL, FLOAT, ascii_tag, short_tag, long_tag,
+    float_tag, srational_tag, build_tiff, grid_bytes, profile_tags,
+    write_profile)
 
 T = camera_profile
-
-
-def profile_tags(*, name="Film Lab Test Profile", copyright_text=None,
-                 hue_sat_dims=None, hue_sat_map=None, hue_sat_map_2=None,
-                 look_dims=None, look_table=None, tone_curve=None,
-                 illuminant1=17, illuminant2=None, colour_matrix=None,
-                 forward_matrix=None, embed_policy=1, signature=None,
-                 byteorder="<") -> dict:
-    tags: dict = {}
-    if name is not None:
-        tags[T.TAG_PROFILE_NAME] = ascii_tag(name)
-    if copyright_text is not None:
-        tags[T.TAG_PROFILE_COPYRIGHT] = ascii_tag(copyright_text)
-    if signature is not None:
-        tags[T.TAG_PROFILE_CALIBRATION_SIGNATURE] = ascii_tag(signature)
-    if hue_sat_dims is not None:
-        tags[T.TAG_PROFILE_HUE_SAT_MAP_DIMS] = long_tag(
-            hue_sat_dims, byteorder)
-    if hue_sat_map is not None:
-        tags[T.TAG_PROFILE_HUE_SAT_MAP_DATA_1] = hue_sat_map
-    if hue_sat_map_2 is not None:
-        tags[T.TAG_PROFILE_HUE_SAT_MAP_DATA_2] = hue_sat_map_2
-    if look_dims is not None:
-        tags[T.TAG_PROFILE_LOOK_TABLE_DIMS] = long_tag(look_dims, byteorder)
-    if look_table is not None:
-        tags[T.TAG_PROFILE_LOOK_TABLE_DATA] = look_table
-    if tone_curve is not None:
-        tags[T.TAG_PROFILE_TONE_CURVE] = float_tag(
-            np.asarray(tone_curve, dtype=np.float64).ravel(), byteorder)
-    if illuminant1 is not None:
-        tags[T.TAG_CALIBRATION_ILLUMINANT_1] = short_tag(
-            [illuminant1], byteorder)
-    if illuminant2 is not None:
-        tags[T.TAG_CALIBRATION_ILLUMINANT_2] = short_tag(
-            [illuminant2], byteorder)
-    if colour_matrix is not None:
-        tags[T.TAG_COLOR_MATRIX_1] = srational_tag(colour_matrix, byteorder)
-    if forward_matrix is not None:
-        tags[T.TAG_FORWARD_MATRIX_1] = srational_tag(forward_matrix, byteorder)
-    if embed_policy is not None:
-        tags[T.TAG_PROFILE_EMBED_POLICY] = long_tag([embed_policy], byteorder)
-    return tags
-
-
-def write_profile(path: Path, byteorder: str = "<", **kwargs) -> Path:
-    path.write_bytes(build_tiff(
-        profile_tags(byteorder=byteorder, **kwargs), byteorder))
-    return path
 
 
 def hsv_of(pixel) -> tuple[float, float, float]:
@@ -337,7 +215,9 @@ class ProfileSummaryTests(unittest.TestCase):
             summary = camera_profile.profile_summary(path)
 
         self.assertTrue(summary["ok"])
-        self.assertTrue(summary["approximate"])
+        # Everything this file carries is applied, so nothing is approximate.
+        self.assertFalse(summary["approximate"])
+        self.assertEqual(summary["unsupported"], [])
         self.assertEqual(summary["name"], "Portra Look")
         self.assertEqual(summary["copyright"], "(c) somebody")
         self.assertEqual(summary["illuminant1Name"], "Standard light A")
@@ -351,13 +231,29 @@ class ProfileSummaryTests(unittest.TestCase):
         self.assertTrue(summary["hasForwardMatrix1"])
         self.assertEqual(summary["hueSatDims"], (6, 2, 1))
         self.assertEqual(summary["lookDims"], (4, 2, 1))
+        self.assertFalse(summary["bundled"])
+        self.assertIn("dng specification", summary["notes"].lower())
 
-        unsupported = " ".join(summary["unsupported"]).lower()
-        self.assertIn("dual-illuminant", unsupported)
-        self.assertIn("forward-matrix", unsupported)
-        self.assertIn("colour-matrix", unsupported)
-        self.assertIn("look-table", unsupported)
-        self.assertIn("approximate", summary["notes"].lower())
+    def test_summary_names_what_a_file_carries_that_is_not_applied(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_profile(
+                Path(directory) / "odd.dcp",
+                name="Odd",
+                hue_sat_dims=(6, 2, 1),
+                hue_sat_map=grid_bytes(6, 2, 1, lambda h, s, v: (0.0, 1.0, 1.0)),
+                hue_sat_map_2=grid_bytes(6, 2, 1, lambda h, s, v: (5.0, 1.0, 1.0)),
+                illuminant1=17,
+                colour_matrix_2=[0.8, -0.2, -0.05, -0.3, 1.2, 0.1, 0.02, -0.15, 0.7],
+                look_dims=(4, 2, 1),
+                look_table=grid_bytes(4, 2, 1, lambda h, s, v: (0.0, 1.05, 1.0)),
+                look_encoding=7,
+            )
+            summary = camera_profile.profile_summary(path)
+        self.assertTrue(summary["approximate"])
+        unsupported = " ".join(summary["unsupported"])
+        self.assertIn("ColorMatrix2 without ColorMatrix1", unsupported)
+        self.assertIn("ProfileHueSatMapData2 without CalibrationIlluminant2", unsupported)
+        self.assertIn("ProfileLookTableEncoding value 7", unsupported)
 
     def test_summary_falls_back_to_the_file_stem_for_an_unnamed_profile(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -410,7 +306,7 @@ class ListProfilesTests(unittest.TestCase):
 
         good = [entry for entry in found if entry.get("ok")]
         self.assertEqual(len(good), 2)
-        self.assertTrue(all(entry["approximate"] for entry in good))
+        self.assertFalse(any(entry["approximate"] for entry in good))
 
     def test_missing_folder_raises_profile_error(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -657,6 +553,132 @@ class ApplyProfileTests(unittest.TestCase):
     def test_rejects_a_profile_that_is_not_a_dict_or_path(self):
         with self.assertRaises(camera_profile.ProfileError):
             camera_profile.apply_profile(SAMPLE_PIXELS, 42)
+
+
+class ProfileIdentityTests(unittest.TestCase):
+    def test_reads_name_and_camera_tags_from_the_header_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for order in ("<", ">"):
+                path = write_profile(
+                    Path(directory) / f"tagged-{order == '<'}.dcp", byteorder=order,
+                    name="Portrait Look", camera_model="NIKON D7100",
+                    hue_sat_dims=(6, 2, 1),
+                    hue_sat_map=grid_bytes(6, 2, 1, lambda h, s, v: (0.0, 1.0, 1.0),
+                                           byteorder=order),
+                    tone_curve=[[0.0, 0.0], [1.0, 1.0]])
+                self.assertEqual(camera_profile.profile_identity(path),
+                                 {"name": "Portrait Look", "cameraModel": "NIKON D7100"})
+                full = camera_profile.read_profile(path)
+                self.assertEqual(full["cameraModel"], "NIKON D7100")
+            bare = write_profile(Path(directory) / "bare.dcp", name=None,
+                                 tone_curve=[[0.0, 0.0], [1.0, 1.0]])
+            self.assertEqual(camera_profile.profile_identity(bare),
+                             {"name": None, "cameraModel": None})
+            garbage = Path(directory) / "garbage.dcp"
+            garbage.write_bytes(b"II*\x00\xff\xff\xff\xff")
+            self.assertEqual(camera_profile.profile_identity(garbage),
+                             {"name": None, "cameraModel": None})
+            self.assertEqual(camera_profile.profile_identity(Path(directory) / "absent.dcp"),
+                             {"name": None, "cameraModel": None})
+
+    def test_bundled_profile_resolves_by_its_bare_name_only(self):
+        path = camera_profile.bundled_profile_path("LightTable Standard.dcp")
+        self.assertIsNotNone(path)
+        self.assertTrue(path.is_file())
+        self.assertEqual(camera_profile.bundled_profile_path(" lighttable  standard.DCP "), path)
+        self.assertIsNone(camera_profile.bundled_profile_path("Other.dcp"))
+        self.assertIsNone(camera_profile.bundled_profile_path(""))
+        self.assertTrue(camera_profile.is_bundled_name("LightTable Standard.dcp"))
+        self.assertFalse(camera_profile.is_bundled_name("LightTable Standard"))
+        self.assertTrue(camera_profile.profile_summary(path)["bundled"])
+
+
+class TableEncodingTests(unittest.TestCase):
+    def test_identity_table_is_identity_in_both_encodings(self):
+        table = grid_bytes(6, 3, 2, lambda h, s, v: (0.0, 1.0, 1.0))
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_profile(Path(directory) / "identity.dcp",
+                                 hue_sat_dims=(6, 3, 2), hue_sat_map=table)
+            grid = camera_profile.read_profile(path)["hueSatMap1"]
+        for encoding in (camera_profile.ENCODING_LINEAR, camera_profile.ENCODING_SRGB):
+            np.testing.assert_allclose(
+                camera_profile.apply_hue_sat_map(SAMPLE_PIXELS, grid, (6, 3, 2), encoding),
+                SAMPLE_PIXELS, atol=2e-6)
+
+    def test_srgb_encoding_looks_the_table_up_on_encoded_values(self):
+        # Value scale 0.5 only in the upper half of the value axis: linear and
+        # sRGB-encoded lookups reach different grid cells for a dim pixel.
+        table = grid_bytes(1, 1, 4, lambda h, s, v: (0.0, 1.0, 0.5 if v >= 2 else 1.0))
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_profile(Path(directory) / "value.dcp",
+                                 hue_sat_dims=(1, 1, 4), hue_sat_map=table)
+            grid = camera_profile.read_profile(path)["hueSatMap1"]
+        dim = np.asarray([[[0.2, 0.2, 0.2]]], dtype=np.float32)
+        linear = camera_profile.apply_hue_sat_map(dim, grid, (1, 1, 4), 0)
+        encoded = camera_profile.apply_hue_sat_map(dim, grid, (1, 1, 4), 1)
+        # Linear lookup: value 0.2 sits in the unscaled first third.
+        np.testing.assert_allclose(linear, dim, atol=1e-6)
+        # sRGB lookup: 0.2 encodes to 0.48, inside the scaled upper cells.
+        self.assertLess(float(encoded[0, 0, 0]), 0.2)
+        # The profile's own encoding tag selects the same behaviour.
+        profile = {"hueSatDims": (1, 1, 4), "hueSatMap1": grid, "hueSatMapEncoding": 1}
+        np.testing.assert_allclose(camera_profile.apply_profile(dim, profile), encoded, atol=1e-6)
+        # An undefined encoding value reads as linear.
+        profile["hueSatMapEncoding"] = 9
+        np.testing.assert_allclose(camera_profile.apply_profile(dim, profile), linear, atol=1e-6)
+
+
+class ProfileOrderTests(unittest.TestCase):
+    """The stages run in DNG order: map, exposure, offset, look, curve."""
+
+    def test_exposure_runs_between_the_hue_sat_map_and_the_look_table(self):
+        # The map scales value by 0.5 only above value 0.5; the look does the
+        # same. A pixel at 0.8 exposed by 0.5 shows which side of the
+        # exposure each table saw it on.
+        halve_bright = grid_bytes(1, 1, 3, lambda h, s, v: (0.0, 1.0, 0.5 if v == 2 else 1.0))
+        with tempfile.TemporaryDirectory() as directory:
+            path = write_profile(Path(directory) / "order.dcp",
+                                 hue_sat_dims=(1, 1, 3), hue_sat_map=halve_bright,
+                                 look_dims=(1, 1, 3), look_table=halve_bright)
+            profile = camera_profile.read_profile(path)
+        pixel = np.asarray([[[0.8, 0.8, 0.8]]], dtype=np.float32)
+        result = camera_profile.apply_profile(pixel, profile, expose=lambda x: x * 0.5)
+        # Map sees 0.8: interpolated scale at value 0.8 (between cells 1 and
+        # 2) is 1 - 0.6 * 0.5 = 0.7, giving 0.56. Exposure halves it to 0.28.
+        # The look sees 0.28, in the unscaled lower cells: unchanged.
+        np.testing.assert_allclose(result, 0.28, atol=1e-5)
+
+    def test_baseline_exposure_offset_is_a_linear_gain_after_exposure(self):
+        profile = {"baselineExposureOffset": 1.0}
+        pixel = np.asarray([[[0.3, 0.1, 0.2]]], dtype=np.float32)
+        np.testing.assert_allclose(camera_profile.apply_profile(pixel, profile), pixel * 2.0, atol=1e-6)
+        np.testing.assert_allclose(
+            camera_profile.apply_profile(pixel, profile, expose=lambda x: x * 0.5), pixel, atol=1e-6)
+        np.testing.assert_allclose(
+            camera_profile.apply_baseline_exposure_offset(pixel, -1.0), pixel * 0.5, atol=1e-6)
+        np.testing.assert_allclose(
+            camera_profile.apply_baseline_exposure_offset(pixel * 3.0, 1.0),
+            np.clip(pixel * 6.0, 0.0, 1.0), atol=1e-6)
+
+    def test_strength_zero_still_applies_the_callers_exposure(self):
+        profile = {"toneCurve": np.asarray([[0.0, 0.0], [0.5, 0.9], [1.0, 1.0]], dtype=np.float32)}
+        result = camera_profile.apply_profile(
+            SAMPLE_PIXELS, profile, strength=0.0, expose=lambda x: x * 0.25)
+        np.testing.assert_allclose(result, SAMPLE_PIXELS * 0.25, atol=1e-6)
+
+    def test_dual_illuminant_tables_blend_at_the_daylight_default_without_a_temperature(self):
+        profile = {
+            "hueSatDims": (1, 1, 1),
+            "hueSatMap1": np.array([[[[0.0, 1.0, 1.0]]]], dtype=np.float32),
+            "hueSatMap2": np.array([[[[60.0, 1.0, 1.0]]]], dtype=np.float32),
+            "illuminant1": 17, "illuminant2": 21,
+        }
+        red = np.array([[[1.0, 0.0, 0.0]]], dtype=np.float32)
+        implicit = camera_profile.apply_profile(red, profile)
+        explicit = camera_profile.apply_profile(
+            red, profile, temperature=camera_profile.DEFAULT_TABLE_TEMPERATURE)
+        np.testing.assert_allclose(implicit, explicit, atol=1e-6)
+        self.assertFalse(np.allclose(implicit, red))
 
 
 if __name__ == "__main__":

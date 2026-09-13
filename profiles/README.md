@@ -21,3 +21,22 @@ Regenerate the tracked JSON with:
 ```sh
 ../.venv/bin/python build_kodak_tmax_p3200.py
 ```
+
+## LightTable Standard camera look
+
+`lighttable_standard.dcp` is the bundled default camera profile for
+never-edited RAW photos: a modelled generic look, not a measurement of any
+camera and not derived from any other profile. `build_lighttable_standard.py`
+holds the complete definition as numeric targets (a tone curve landing scene
+middle grey at display code 0.52 with a rolled-off shoulder, and a modest
+hue/saturation map) and expands them into the DNG profile tables. It carries
+no colour matrices, so the decoder's camera calibration stays in charge.
+`tests/test_lighttable_standard_profile.py` checks the tracked file matches
+the script byte for byte. See `docs/camera-profiles.md` for how profiles are
+applied.
+
+Regenerate the tracked file with:
+
+```sh
+../.venv/bin/python build_lighttable_standard.py
+```

@@ -151,7 +151,7 @@ console.log(JSON.stringify([800, 3000, 6000, undefined].map(width =>
             mock.patch.object(server, "src_path", return_value=Path("frame.dng")),
             mock.patch.object(server.color_pipeline, "decode_raw", return_value=pixels),
             mock.patch.object(server.color_pipeline, "linear_prophoto_to_display_srgb",
-                              side_effect=lambda image, params: image),
+                              side_effect=lambda image, params, **_: image),
             mock.patch.object(server, "raw_display", side_effect=AssertionError("camera thumbnail")),
         ):
             for rotation, dimensions in ((0, (1920, 1280)), (90, (1280, 1920))):

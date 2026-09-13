@@ -137,9 +137,12 @@ and Feather values; setting Vignette to zero turns the effect off.
 
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
 before film; processing stays floating point until the final encoder. A RAW
-starts with capture sharpening and colour noise reduction, and its Film-off
-develop can use a camera profile from your own Adobe Camera Raw or Lightroom
-installation, applied approximately and never bundled. Export
+starts with capture sharpening and colour noise reduction. Its Film-off
+develop starts from the bundled LightTable Standard look, a modelled generic
+rendition, or from a DCP camera profile in your own profile folder, applied
+following the DNG specification: the profile's colour matrices replace the
+decoder's at the RAW decode and its tables and tone curve shape the develop.
+See `docs/camera-profiles.md`. Export
 JPEG, PNG, macOS HEIF, or true RGB16 TIFF with an embedded ICC profile for sRGB,
 Display P3, or ProPhoto RGB.
 
