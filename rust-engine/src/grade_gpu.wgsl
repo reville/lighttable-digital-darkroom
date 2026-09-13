@@ -51,6 +51,51 @@ fn hsv_to_rgb(hsv: vec3<f32>) -> vec3<f32> {
         default: { return vec3<f32>(v, low, q); }
     }
 }
+// The tone stage of grade.py, unclipped: Exposure and the luminance-masked
+// Highlights and Shadows in linear light, then the sRGB curve continued
+// above white, Whites/Blacks and Contrast on that extended signal, and a
+// soft shoulder whose knee opens with the headroom the sliders create. Kept
+// identical in grade.py, web/gl.js, NativePreview.metal and export.rs.
+fn tone_knee(exposure: f32, highlights: f32, whites: f32, blacks: f32) -> f32 {
+    let peak = exp2(max(exposure, 0.0)) * (1.0 + 0.85 * max(highlights, 0.0));
+    var top = select(1.055 * pow(peak, 1.0 / 2.4) - 0.055, peak * 12.92, peak <= 0.0031308);
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35; let black = blacks * -0.25;
+        top = (top - black) / max(white - black, 1e-4);
+    }
+    let excess = max(top - 1.0, 0.0);
+    return 1.0 - 0.15 * (1.0 - exp(-2.0 * excess));
+}
+fn tone_stage(c: vec3<f32>, exposure: f32, highlights: f32, shadows: f32,
+    whites: f32, blacks: f32, contrast: f32) -> vec3<f32> {
+    var linear = select(pow((c + vec3<f32>(0.055)) / 1.055, vec3<f32>(2.4)), c / 12.92,
+        c <= vec3<f32>(0.04045)) * exp2(exposure);
+    let y = max(dot(linear, LUMA), 0.0);
+    if highlights != 0.0 { linear *= 1.0 + highlights * 0.85 * pow(clamp((y - 0.35) / 0.65, 0.0, 1.0), 1.2); }
+    if shadows != 0.0 { linear *= 1.0 + shadows * 1.5 * pow(clamp((0.45 - y) / 0.45, 0.0, 1.0), 1.2); }
+    linear = max(linear, vec3<f32>(0.0));
+    var t = select(1.055 * pow(linear, vec3<f32>(1.0 / 2.4)) - vec3<f32>(0.055),
+        linear * 12.92, linear <= vec3<f32>(0.0031308));
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35; let black = blacks * -0.25;
+        t = (t - vec3<f32>(black)) / max(white - black, 1e-4);
+    }
+    if contrast > 0.0 {
+        let one = vec3<f32>(1.0);
+        let shaped = select(min(one + (t - one) * (t - one), t),
+            t * t * (vec3<f32>(3.0) - 2.0 * t), t <= one);
+        t += (shaped - t) * contrast;
+    } else if contrast < 0.0 {
+        t = vec3<f32>(0.5) + (t - vec3<f32>(0.5)) * (1.0 + contrast * 0.8);
+    }
+    t = max(t, vec3<f32>(0.0));
+    let knee = tone_knee(exposure, highlights, whites, blacks);
+    if knee < 1.0 {
+        let width = 1.0 - knee;
+        t = min(t, vec3<f32>(knee)) + width * (1.0 - exp(-max(t - vec3<f32>(knee), vec3<f32>(0.0)) / width));
+    }
+    return bounded(t);
+}
 fn curve(value: f32, table: u32) -> f32 {
     let position = clamp(value, 0.0, 1.0) * 255.0;
     let lower = u32(floor(position)); let upper = min(lower + 1u, 255u);
@@ -85,20 +130,7 @@ fn main(@builtin(global_invocation_id) id: vec3<u32>) {
         c = bounded(c + shaped * p[16] * 1.8 * mask);
     }
     if p[24] != 0.0 {
-        var linear = select(pow((c + vec3<f32>(0.055)) / 1.055, vec3<f32>(2.4)), c / 12.92,
-            c <= vec3<f32>(0.04045)) * exp2(p[2]);
-        let y = max(dot(linear, LUMA), 0.0);
-        if p[4] != 0.0 { linear *= 1.0 + p[4] * 0.85 * pow(clamp((y - 0.35) / 0.65, 0.0, 1.0), 1.2); }
-        if p[5] != 0.0 { linear *= 1.0 + p[5] * 1.5 * pow(clamp((0.45 - y) / 0.45, 0.0, 1.0), 1.2); }
-        linear = max(linear, vec3<f32>(0.0));
-        c = bounded(select(1.055 * pow(linear, vec3<f32>(1.0 / 2.4)) - vec3<f32>(0.055),
-            linear * 12.92, linear <= vec3<f32>(0.0031308)));
-        if p[6] != 0.0 || p[7] != 0.0 {
-            let white = 1.0 - p[6] * 0.35; let black = p[7] * -0.25;
-            c = bounded((c - vec3<f32>(black)) / max(white - black, 1e-4));
-        }
-        if p[3] > 0.0 { c = bounded(c + (c * c * (vec3<f32>(3.0) - 2.0 * c) - c) * p[3]); }
-        else if p[3] < 0.0 { c = bounded(vec3<f32>(0.5) + (c - vec3<f32>(0.5)) * (1.0 + p[3] * 0.8)); }
+        c = tone_stage(c, p[2], p[4], p[5], p[6], p[7], p[3]);
         if p[14] != 0.0 {
             let haze = p[14] * 0.12;
             c = bounded((c - vec3<f32>(haze)) / max(1.0 - haze, 0.2));

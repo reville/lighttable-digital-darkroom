@@ -277,6 +277,105 @@ fn apply_color_grading(pixel: &mut [f32], settings: &Value) {
     }
 }
 
+/// Where the highlight shoulder of the tone stage begins, in encoded units.
+///
+/// Mirrors `grade.tone_knee`: the knee opens with the headroom the recipe
+/// creates above white, so a recipe that cannot exceed 1.0 keeps a hard
+/// clip and an untouched white stays white.
+pub(crate) fn tone_knee(exposure: f32, highlights: f32, whites: f32, blacks: f32) -> f32 {
+    let peak = 2.0_f32.powf(exposure.max(0.0)) * (1.0 + 0.85 * highlights.max(0.0));
+    let mut top = if peak <= 0.0031308 {
+        peak * 12.92
+    } else {
+        1.055 * peak.powf(1.0 / 2.4) - 0.055
+    };
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35;
+        let black = blacks * -0.25;
+        top = (top - black) / (white - black).max(1e-4);
+    }
+    let excess = (top - 1.0).max(0.0);
+    1.0 - 0.15 * (1.0 - (-2.0 * excess).exp())
+}
+
+/// The tone stage of `grade.py`, unclipped: Exposure and the luminance-masked
+/// Highlights and Shadows in linear light, then the sRGB curve continued
+/// above white, Whites/Blacks and Contrast on that extended signal, and a
+/// soft shoulder above `knee`. Kept identical in grade.py, web/gl.js,
+/// NativePreview.metal and grade_gpu.wgsl.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn tone_stage(
+    pixel: &mut [f32],
+    exposure: f32,
+    highlights: f32,
+    shadows: f32,
+    whites: f32,
+    blacks: f32,
+    contrast: f32,
+    knee: f32,
+) {
+    for channel in pixel.iter_mut() {
+        *channel = if *channel <= 0.04045 {
+            *channel / 12.92
+        } else {
+            ((*channel + 0.055) / 1.055).powf(2.4)
+        } * 2.0_f32.powf(exposure);
+    }
+    let linear_luma = luma(pixel).max(0.0);
+    if highlights != 0.0 {
+        let mask = ((linear_luma - 0.35) / 0.65).clamp(0.0, 1.0).powf(1.2);
+        for channel in pixel.iter_mut() {
+            *channel *= 1.0 + highlights * 0.85 * mask;
+        }
+    }
+    if shadows != 0.0 {
+        let mask = ((0.45 - linear_luma) / 0.45).clamp(0.0, 1.0).powf(1.2);
+        for channel in pixel.iter_mut() {
+            *channel *= 1.0 + shadows * 1.5 * mask;
+        }
+    }
+    for channel in pixel.iter_mut() {
+        let linear = channel.max(0.0);
+        *channel = if linear <= 0.0031308 {
+            linear * 12.92
+        } else {
+            1.055 * linear.powf(1.0 / 2.4) - 0.055
+        };
+    }
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35;
+        let black = blacks * -0.25;
+        let range = (white - black).max(1e-4);
+        for channel in pixel.iter_mut() {
+            *channel = (*channel - black) / range;
+        }
+    }
+    if contrast > 0.0 {
+        for channel in pixel.iter_mut() {
+            let t = *channel;
+            let shaped = if t <= 1.0 {
+                t * t * (3.0 - 2.0 * t)
+            } else {
+                (1.0 + (t - 1.0) * (t - 1.0)).min(t)
+            };
+            *channel = t + (shaped - t) * contrast;
+        }
+    } else if contrast < 0.0 {
+        for channel in pixel.iter_mut() {
+            *channel = 0.5 + (*channel - 0.5) * (1.0 + contrast * 0.8);
+        }
+    }
+    let width = 1.0 - knee;
+    for channel in pixel.iter_mut() {
+        let t = channel.max(0.0);
+        *channel = clamp(if knee < 1.0 {
+            t.min(knee) + width * (1.0 - (-(t - knee).max(0.0) / width).exp())
+        } else {
+            t
+        });
+    }
+}
+
 pub(crate) fn grade_is_identity(grade: &Value) -> bool {
     // Vignette size and feather only shape a nonzero amount, so they do not
     // affect identity on their own.
@@ -473,57 +572,13 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
     let legacy_vignette = vignette_size == 0.5 && vignette_feather == 1.0;
     let vignette_outer = 0.25 + 1.5 * vignette_size;
     let vignette_width = vignette_outer * vignette_feather.max(0.01);
+    let knee = tone_knee(exposure, highlights, whites, blacks);
 
     samples
         .par_chunks_mut(3)
         .enumerate()
         .for_each(|(index, pixel)| {
-            for channel in pixel.iter_mut() {
-                *channel = if *channel <= 0.04045 {
-                    *channel / 12.92
-                } else {
-                    ((*channel + 0.055) / 1.055).powf(2.4)
-                } * 2.0_f32.powf(exposure);
-            }
-            let linear_luma = luma(pixel).max(0.0);
-            if highlights != 0.0 {
-                let mask = ((linear_luma - 0.35) / 0.65).clamp(0.0, 1.0).powf(1.2);
-                for channel in pixel.iter_mut() {
-                    *channel *= 1.0 + highlights * 0.85 * mask;
-                }
-            }
-            if shadows != 0.0 {
-                let mask = ((0.45 - linear_luma) / 0.45).clamp(0.0, 1.0).powf(1.2);
-                for channel in pixel.iter_mut() {
-                    *channel *= 1.0 + shadows * 1.5 * mask;
-                }
-            }
-            for channel in pixel.iter_mut() {
-                let linear = channel.max(0.0);
-                *channel = clamp(if linear <= 0.0031308 {
-                    linear * 12.92
-                } else {
-                    1.055 * linear.powf(1.0 / 2.4) - 0.055
-                });
-            }
-            if whites != 0.0 || blacks != 0.0 {
-                let white = 1.0 - whites * 0.35;
-                let black = blacks * -0.25;
-                let range = (white - black).max(1e-4);
-                for channel in pixel.iter_mut() {
-                    *channel = clamp((*channel - black) / range);
-                }
-            }
-            if contrast > 0.0 {
-                for channel in pixel.iter_mut() {
-                    let smooth = *channel * *channel * (3.0 - 2.0 * *channel);
-                    *channel = clamp(*channel + (smooth - *channel) * contrast);
-                }
-            } else if contrast < 0.0 {
-                for channel in pixel.iter_mut() {
-                    *channel = clamp(0.5 + (*channel - 0.5) * (1.0 + contrast * 0.8));
-                }
-            }
+            tone_stage(pixel, exposure, highlights, shadows, whites, blacks, contrast, knee);
             if dehaze != 0.0 {
                 let haze = dehaze * 0.12;
                 let denominator = (1.0 - haze).max(0.2);

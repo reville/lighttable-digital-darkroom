@@ -100,6 +100,9 @@ absent from product menus and Help.
 Browser sessions use a separate popup; Windows and Linux desktop shells retain
 the existing inline tester under Ctrl-D.
 
+For fixed-snapshot personal installations and build receipts, see
+[personal builds](docs/personal-builds.md).
+
 ## Tests
 
 From the prepared checkout, run the Python unit and contract suite and the

@@ -841,6 +841,111 @@ def audit(control: Control) -> Finding:
                    values=[values[index] for index in order])
 
 
+# ------------------------------------------------------------------ tone stage
+
+# The tone controls are defined on scene-linear light, so their claims are
+# checked there as well: the encoded readings above can hold while the
+# linear model behind them is wrong, and the other way round.
+
+
+def _decode(image):
+    return np.where(image <= 0.04045, image / 12.92,
+                    ((image + 0.055) / 1.055) ** 2.4)
+
+
+def _linear_luma(image):
+    return _decode(image) @ LUMA
+
+
+def linear_mean(image, base):
+    return float(_linear_luma(image).mean())
+
+
+def linear_highlight_mean(image, base):
+    select = _luma(base) > 0.75
+    return float(_linear_luma(image)[select].mean())
+
+
+def linear_shadow_mean(image, base):
+    select = _luma(base) < 0.25
+    return float(_linear_luma(image)[select].mean())
+
+
+def linear_white_point(image, base):
+    return float(np.percentile(_linear_luma(image), 99.5))
+
+
+def linear_black_point(image, base):
+    return float(np.percentile(_linear_luma(image), 0.5))
+
+
+def log_exposure_spread(image, base):
+    """Standard deviation of log2 exposure: contrast in photographic stops."""
+    return float(np.log2(np.maximum(_linear_luma(image), 1e-4)).std())
+
+
+TONE_LINEAR_CLAIMS: dict[str, tuple] = {
+    "exposure": (linear_mean, +1, "raises scene-linear brightness"),
+    "highlights": (linear_highlight_mean, +1,
+                   "raises the linear light of the already-bright tones"),
+    "shadows": (linear_shadow_mean, +1,
+                "raises the linear light of the already-dark tones"),
+    "whites": (linear_white_point, +1, "raises the linear white point"),
+    "blacks": (linear_black_point, +1, "raises the linear black point"),
+    "contrast": (log_exposure_spread, +1, "widens the spread of log exposure"),
+}
+
+
+def audit_tone_linear(name: str) -> Finding:
+    key = f"tone.linear.{name}"
+    control = next((c for c in controls() if c.key == f"grade.{name}"), None)
+    if control is None:
+        return Finding(key, "unaudited", f"grade.{name} is not in the inventory")
+    base = audit_target()
+    values = control.sweep()
+    renders = [grade.apply(base, {name: value}) for value in values]
+    metric, direction, sentence = TONE_LINEAR_CLAIMS[name]
+    readings = [metric(render, base) for render in renders]
+    if _monotone(readings, direction):
+        return Finding(key, "directional", "claim holds across the sweep in linear light",
+                       sentence, metric.__name__, readings, values)
+    return Finding(key, "contradicted",
+                   f"{metric.__name__} did not move "
+                   f"{'up' if direction > 0 else 'down'} across the sweep",
+                   sentence, metric.__name__, readings, values)
+
+
+def audit_tone_headroom() -> Finding:
+    """Tones pushed past white by Exposure survive for Whites to bring back.
+
+    The top ramp of the target runs 0..1. One stop of Exposure sends its
+    upper part above white; with a hard clip the ramp would end in a
+    plateau that Whites could only dim. The unclipped stage keeps the order
+    of those tones, so lowering Whites restores a rising ramp.
+    """
+    key = "tone.headroom"
+    base = audit_target()
+    # The first row of the target is the clean 0..1 luma ramp (later rows in
+    # the band carry the sharpening edge and its white plateau).
+    row = base[0, :, 0]
+    bright = (row > 0.6) & (row < 0.999)
+    rendered = grade.apply(base, {"exposure": 1.0, "whites": -1.0})[0, :, 0]
+    steps = np.diff(rendered[bright])
+    spread = float(rendered[bright].max() - rendered[bright].min())
+    readings = [float(rendered[bright].min()), float(rendered[bright].max())]
+    if np.all(steps >= 0) and np.count_nonzero(steps > 1e-4) >= 0.9 * steps.size \
+            and spread > 0.5 * float(row[bright].max() - row[bright].min()):
+        return Finding(key, "directional",
+                       "the bright ramp still rises after +1 EV and Whites -100",
+                       "keeps tones above white for Whites to bring back",
+                       "bright_ramp_range", readings, [1.0, -1.0])
+    return Finding(key, "contradicted",
+                   "the bright ramp flattened: over-range tones were clipped "
+                   "before Whites could bring them back",
+                   "keeps tones above white for Whites to bring back",
+                   "bright_ramp_range", readings, [1.0, -1.0])
+
+
 ALL_SURFACES = ("grade", "hsl", "pointColor", "colorGrading",
                 "parametricCurve", "local", "optics", "mask", "heal")
 
@@ -858,6 +963,9 @@ def run(surfaces=None) -> list[Finding]:
                  if key.startswith("mask.type.")]
     findings += [audit_mask_combine(key.rsplit(".", 1)[1]) for key in sorted(known)
                  if key.startswith("mask.combine.")]
+    if surfaces is None or "grade" in surfaces:
+        findings += [audit_tone_linear(name) for name in TONE_LINEAR_CLAIMS]
+        findings.append(audit_tone_headroom())
     return findings
 
 

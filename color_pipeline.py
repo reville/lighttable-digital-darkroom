@@ -48,15 +48,15 @@ COLOUR_SPACE_NAMES = {
 }
 
 SRGB_LIMITED_EXPORT_WARNING = (
-    "This export uses sRGB-limited colors: film rendering and adjusted "
-    "Develop images do not yet retain colors outside sRGB. "
-    "The requested output profile is embedded.")
+    "This export uses sRGB-limited colors: film rendering, color and detail "
+    "adjustments, masks, retouching and watermarks do not yet retain colors "
+    "outside sRGB. The requested output profile is embedded.")
 
 
 def srgb_limited_export_warning() -> str:
-    return T("This export uses sRGB-limited colors: film rendering and adjusted "
-             "Develop images do not yet retain colors outside sRGB. "
-             "The requested output profile is embedded.")
+    return T("This export uses sRGB-limited colors: film rendering, color and detail "
+             "adjustments, masks, retouching and watermarks do not yet retain colors "
+             "outside sRGB. The requested output profile is embedded.")
 
 RAW_WB_MODES = {
     "as_shot", "auto", "daylight", "cloudy", "shade", "tungsten", "fluorescent", "flash", "custom"
@@ -1205,19 +1205,28 @@ def _convert_from_srgb_with_kernels(image: np.ndarray,
     return converted
 
 
+def grade_encoding(output_space: str | None) -> str:
+    """The transfer function :func:`grade.apply` must decode for this space."""
+    return "romm" if normalise_output_space(output_space) == "prophoto" else "srgb"
+
+
 def wide_develop_edits_supported(job: dict) -> bool:
     """Whether only gamut-independent Develop operations were requested.
 
-    The current grade, local edit and watermark implementations are defined
-    in bounded sRGB. Feeding P3/ProPhoto values to them would silently change
-    the previewed look. Rotation, crop and resize operate on the selected
-    encoded output and are safe on this path.
+    The tone stage of the grade (Exposure, Highlights, Shadows, Whites,
+    Blacks, Contrast) is defined on linear light and on the transfer
+    function alone, so it renders the same look in the delivered P3 or
+    ProPhoto encoding. Every other grade control, the local edits and the
+    watermark are defined in bounded sRGB; feeding P3/ProPhoto values to
+    them would silently change the previewed look. Rotation, crop and resize
+    operate on the selected encoded output and are safe on this path.
     """
     import edits
     import export_workflow
     import grade
 
-    return (grade.is_identity(job.get("grade") or {})
+    recipe = job.get("grade") or {}
+    return ((grade.is_identity(recipe) or grade.is_tone_only(recipe))
             and edits.base_edits_are_identity(job.get("optics"), job.get("heals"))
             and not any(mask["enabled"] for mask in edits.clean_masks(job.get("masks")))
             and not export_workflow.clean_watermark(job.get("watermark"))["enabled"])

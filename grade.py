@@ -6,6 +6,15 @@ exported file agree. Any change to one must be made in the other; the order
 of operations below is the contract.
 
 Input and output are float arrays in [0,1], display-referred sRGB.
+
+The tone stage (Exposure, Highlights, Shadows, Whites, Blacks, Contrast) is
+the exception: it decodes the display values to scene-linear light, works
+there without clipping, rolls the over-range highlights off through a soft
+shoulder, and encodes again. Everything after it (Dehaze, Temp/Tint,
+Saturation, HSL, curves, vignette) stays display-referred. The exact model is
+documented in docs/processing-correctness.md under "Tone working space" and
+must be reproduced by web/gl.js, rust-engine/src/grade_gpu.wgsl,
+rust-engine/src/export.rs and app/NativePreview.metal.
 """
 from __future__ import annotations
 
@@ -69,6 +78,62 @@ RANGES = {
 }
 
 LUMA = np.array([0.2126, 0.7152, 0.0722])
+
+# The controls the scene-linear tone stage owns. They are the only grade
+# controls defined independently of the display primaries, which is what
+# lets a wide-gamut export keep them (see is_tone_only and
+# color_pipeline.wide_develop_edits_supported).
+TONE_KEYS = ("exposure", "highlights", "shadows", "whites", "blacks", "contrast")
+# Transfer functions the tone stage can decode and re-encode. "srgb" also
+# serves Display P3, which shares the sRGB curve; "romm" is ProPhoto RGB.
+TONE_ENCODINGS = {"srgb": 0, "romm": 1}
+
+
+def _srgb_encode_scalar(value: float) -> float:
+    """The sRGB encode as a scalar, continued above 1.0 by the same power law."""
+    if value <= 0.0031308:
+        return value * 12.92
+    return 1.055 * value ** (1.0 / 2.4) - 0.055
+
+
+def tone_knee(g: dict) -> float:
+    """Where the highlight shoulder of the tone stage begins, in encoded units.
+
+    The shoulder replaces the hard clip at the end of the tone stage. It has
+    to be an exact identity when the recipe cannot push anything past white,
+    or the first nudge of a slider would visibly dim every white; so its
+    knee opens with the headroom the recipe creates: the encoded value a
+    white pixel reaches after Exposure, Highlights, Whites and Blacks (the
+    other controls never raise a value that is already above white). With no
+    excess the knee is 1.0 and the stage clips as before. The shaders derive
+    the same number from the sliders.
+    """
+    exposure = float(g.get("exposure", 0.0) or 0.0)
+    highlights = float(g.get("highlights", 0.0) or 0.0)
+    whites = float(g.get("whites", 0.0) or 0.0)
+    blacks = float(g.get("blacks", 0.0) or 0.0)
+    peak = 2.0 ** max(exposure, 0.0) * (1.0 + 0.85 * max(highlights, 0.0))
+    top = _srgb_encode_scalar(peak)
+    if whites or blacks:
+        white = 1.0 - whites * 0.35
+        black = blacks * -0.25
+        top = (top - black) / max(white - black, 1e-4)
+    excess = max(top - 1.0, 0.0)
+    return 1.0 - 0.15 * (1.0 - math.exp(-2.0 * excess))
+
+
+
+
+def is_tone_only(g: dict | None) -> bool:
+    """Whether the grade uses nothing but the scene-linear tone controls."""
+    g = clean(g)
+    if is_identity(g):
+        return False
+    if any(g.get(k) for k in (*CURVE_KEYS, *ADVANCED_KEYS)) or g.get("hsl"):
+        return False
+    return all(abs(g[k] - DEFAULTS[k]) < 1e-6 for k in DEFAULTS
+               if k not in TONE_KEYS
+               and (g["vignette"] or k not in ("vignetteSize", "vignetteFeather")))
 
 
 # The tone curve travels as a 256-entry lookup table computed by the client,
@@ -424,6 +489,78 @@ def _linear_to_srgb(c: np.ndarray) -> np.ndarray:
     return np.where(c <= 0.0031308, c * 12.92, 1.055 * c ** (1 / 2.4) - 0.055)
 
 
+def _decode_transfer(c: np.ndarray, encoding: str) -> np.ndarray:
+    if encoding == "romm":
+        return np.where(c < 0.03125, c / 16.0, np.maximum(c, 0.0) ** 1.8)
+    return _srgb_to_linear(c)
+
+
+def _encode_transfer(lin: np.ndarray, encoding: str) -> np.ndarray:
+    lin = np.clip(lin, 0.0, None)
+    if encoding == "romm":
+        return np.where(lin < 1.0 / 512.0, lin * 16.0, lin ** (1.0 / 1.8))
+    return _linear_to_srgb(lin)
+
+
+def _tone_stage(c: np.ndarray, g: dict, encoding: str = "srgb") -> np.ndarray:
+    """Exposure, Highlights, Shadows, Whites, Blacks and Contrast, unclipped.
+
+    The NumPy definition of the stage; the Numba kernel, the WebGL and Metal
+    shaders and the Rust export reproduce it. The display values are decoded
+    to linear light for Exposure and the luminance-masked Highlights and
+    Shadows gains, then re-encoded with the sRGB curve continued above 1.0
+    rather than clipped. Whites, Blacks and Contrast are the same curves as
+    before, now acting on that extended signal, so a tone pushed past white
+    is still there for them to bring back. A soft shoulder finally rolls
+    whatever is still above the knee off toward white. Values inside the
+    range are unchanged by any of this, which is why saved edits keep their
+    look without a migration.
+    """
+    knee = tone_knee(g)
+    lin = _decode_transfer(c, encoding).astype(np.float32)
+    if g["exposure"]:
+        lin = lin * np.float32(2.0 ** g["exposure"])
+    # Highlight / shadow recovery, masked by luminance so each acts on its own
+    # end of the range rather than the whole image.
+    if g["highlights"] or g["shadows"]:
+        y = np.clip(lin @ LUMA, 0.0, None)[..., None]
+        if g["highlights"]:
+            m = np.clip((y - 0.35) / 0.65, 0.0, 1.0) ** 1.2
+            lin = lin * (1.0 + g["highlights"] * 0.85 * m)
+        if g["shadows"]:
+            m = np.clip((0.45 - y) / 0.45, 0.0, 1.0) ** 1.2
+            lin = lin * (1.0 + g["shadows"] * 1.5 * m)
+    t = _linear_to_srgb(lin)
+    if g["whites"] or g["blacks"]:
+        # Move the endpoints, then renormalise so the range stays [0,1].
+        # Positive Whites lowers the white point (brightens the top of
+        # the range); positive Blacks raises the black point (lifts).
+        w = 1.0 - g["whites"] * 0.35
+        b = g["blacks"] * -0.25
+        t = (t - b) / max(w - b, 1e-4)
+    if g["contrast"]:
+        k = g["contrast"]
+        if k > 0:
+            # smoothstep: steeper mid. Above white the curve continues
+            # smoothly with the same zero slope and rejoins the identity.
+            s_curve = np.where(t <= 1.0, t * t * (3.0 - 2.0 * t),
+                               np.minimum(1.0 + (t - 1.0) * (t - 1.0), t))
+            t = t + (s_curve - t) * k
+        else:
+            t = 0.5 + (t - 0.5) * (1.0 + k * 0.8)  # flatten toward mid grey
+    t = np.clip(t, 0.0, None)
+    if knee < 1.0:
+        # Roll the over-range highlights off toward white instead of
+        # clipping them, so tones above the knee keep their order.
+        width = max(1.0 - knee, 1e-6)
+        t = (np.minimum(t, knee)
+             + width * (1.0 - np.exp(-np.maximum(t - knee, 0.0) / width)))
+    if encoding == "srgb":
+        return np.clip(t, 0.0, 1.0).astype(np.float32)
+    return np.clip(_encode_transfer(_srgb_to_linear(np.clip(t, 0.0, 1.0)),
+                                    encoding), 0.0, 1.0).astype(np.float32)
+
+
 def _axis_sample(c: np.ndarray, offset: float, axis: int) -> np.ndarray:
     """Linearly sample an image at a constant x/y offset, clamped at edges."""
     size = c.shape[axis]
@@ -490,7 +627,8 @@ def _correct_chromatic_aberration(c: np.ndarray, red_cyan: float,
 
 if _HAS_NUMBA:
     @numba.njit(parallel=True)
-    def _numba_grade_stages_5_6(c, exp, hl, sh, whites, blacks, contrast, dehaze, temp, tint, sat, vib):
+    def _numba_grade_stages_5_6(c, exp, hl, sh, whites, blacks, contrast, knee,
+                                dehaze, temp, tint, sat, vib, encoding):
         h, w, _ = c.shape
         out = np.empty((h, w, 3), dtype=np.float32)
         exp_factor = 2.0 ** exp
@@ -501,6 +639,8 @@ if _HAS_NUMBA:
         # stretch up to white; positive Blacks lifts the black point.
         w_denom = max(1.0 - whites * 0.35 - (blacks * -0.25), 1e-4)
         b_val = blacks * -0.25
+        shoulder = knee < 1.0
+        shoulder_width = max(1.0 - knee, 1e-6)
         haze_val = dehaze * 0.12
         haze_denom = max(1.0 - haze_val, 0.2)
 
@@ -510,10 +650,15 @@ if _HAS_NUMBA:
                 g = c[y, x, 1]
                 b = c[y, x, 2]
 
-                # _srgb_to_linear
-                r_lin = r / 12.92 if r <= 0.04045 else ((r + 0.055) / 1.055) ** 2.4
-                g_lin = g / 12.92 if g <= 0.04045 else ((g + 0.055) / 1.055) ** 2.4
-                b_lin = b / 12.92 if b <= 0.04045 else ((b + 0.055) / 1.055) ** 2.4
+                # decode to linear light (sRGB / Display P3, or ProPhoto ROMM)
+                if encoding == 1:
+                    r_lin = r / 16.0 if r < 0.03125 else r ** 1.8
+                    g_lin = g / 16.0 if g < 0.03125 else g ** 1.8
+                    b_lin = b / 16.0 if b < 0.03125 else b ** 1.8
+                else:
+                    r_lin = r / 12.92 if r <= 0.04045 else ((r + 0.055) / 1.055) ** 2.4
+                    g_lin = g / 12.92 if g <= 0.04045 else ((g + 0.055) / 1.055) ** 2.4
+                    b_lin = b / 12.92 if b <= 0.04045 else ((b + 0.055) / 1.055) ** 2.4
 
                 if exp != 0.0:
                     r_lin *= exp_factor
@@ -531,7 +676,7 @@ if _HAS_NUMBA:
                         scale = 1.0 + sh * 1.5 * m
                         r_lin *= scale; g_lin *= scale; b_lin *= scale
 
-                # _linear_to_srgb
+                # sRGB encode, continued above white instead of clipped
                 r_lin = max(0.0, r_lin)
                 g_lin = max(0.0, g_lin)
                 b_lin = max(0.0, b_lin)
@@ -539,26 +684,48 @@ if _HAS_NUMBA:
                 g_s = g_lin * 12.92 if g_lin <= 0.0031308 else 1.055 * (g_lin ** (1.0 / 2.4)) - 0.055
                 b_s = b_lin * 12.92 if b_lin <= 0.0031308 else 1.055 * (b_lin ** (1.0 / 2.4)) - 0.055
 
-                r_s = max(0.0, min(1.0, r_s))
-                g_s = max(0.0, min(1.0, g_s))
-                b_s = max(0.0, min(1.0, b_s))
-
                 # whites / blacks
                 if whites != 0.0 or blacks != 0.0:
-                    r_s = max(0.0, min(1.0, (r_s - b_val) / w_denom))
-                    g_s = max(0.0, min(1.0, (g_s - b_val) / w_denom))
-                    b_s = max(0.0, min(1.0, (b_s - b_val) / w_denom))
+                    r_s = (r_s - b_val) / w_denom
+                    g_s = (g_s - b_val) / w_denom
+                    b_s = (b_s - b_val) / w_denom
 
                 # contrast
                 if contrast != 0.0:
                     if contrast > 0.0:
-                        r_s = r_s + (r_s * r_s * (3.0 - 2.0 * r_s) - r_s) * contrast
-                        g_s = g_s + (g_s * g_s * (3.0 - 2.0 * g_s) - g_s) * contrast
-                        b_s = b_s + (b_s * b_s * (3.0 - 2.0 * b_s) - b_s) * contrast
+                        r_c = r_s * r_s * (3.0 - 2.0 * r_s) if r_s <= 1.0 else min(1.0 + (r_s - 1.0) * (r_s - 1.0), r_s)
+                        g_c = g_s * g_s * (3.0 - 2.0 * g_s) if g_s <= 1.0 else min(1.0 + (g_s - 1.0) * (g_s - 1.0), g_s)
+                        b_c = b_s * b_s * (3.0 - 2.0 * b_s) if b_s <= 1.0 else min(1.0 + (b_s - 1.0) * (b_s - 1.0), b_s)
+                        r_s = r_s + (r_c - r_s) * contrast
+                        g_s = g_s + (g_c - g_s) * contrast
+                        b_s = b_s + (b_c - b_s) * contrast
                     else:
                         r_s = 0.5 + (r_s - 0.5) * (1.0 + contrast * 0.8)
                         g_s = 0.5 + (g_s - 0.5) * (1.0 + contrast * 0.8)
                         b_s = 0.5 + (b_s - 0.5) * (1.0 + contrast * 0.8)
+
+                # soft highlight shoulder above the knee, then bound
+                r_s = max(0.0, r_s)
+                g_s = max(0.0, g_s)
+                b_s = max(0.0, b_s)
+                if shoulder:
+                    if r_s > knee:
+                        r_s = knee + shoulder_width * (1.0 - math.exp(-(r_s - knee) / shoulder_width))
+                    if g_s > knee:
+                        g_s = knee + shoulder_width * (1.0 - math.exp(-(g_s - knee) / shoulder_width))
+                    if b_s > knee:
+                        b_s = knee + shoulder_width * (1.0 - math.exp(-(b_s - knee) / shoulder_width))
+                r_s = min(1.0, r_s)
+                g_s = min(1.0, g_s)
+                b_s = min(1.0, b_s)
+                if encoding == 1:
+                    # back to linear, then the ProPhoto (ROMM) encode
+                    r_lin = r_s / 12.92 if r_s <= 0.04045 else ((r_s + 0.055) / 1.055) ** 2.4
+                    g_lin = g_s / 12.92 if g_s <= 0.04045 else ((g_s + 0.055) / 1.055) ** 2.4
+                    b_lin = b_s / 12.92 if b_s <= 0.04045 else ((b_s + 0.055) / 1.055) ** 2.4
+                    r_s = r_lin * 16.0 if r_lin < 0.001953125 else r_lin ** (1.0 / 1.8)
+                    g_s = g_lin * 16.0 if g_lin < 0.001953125 else g_lin ** (1.0 / 1.8)
+                    b_s = b_lin * 16.0 if b_lin < 0.001953125 else b_lin ** (1.0 / 1.8)
                     r_s = max(0.0, min(1.0, r_s))
                     g_s = max(0.0, min(1.0, g_s))
                     b_s = max(0.0, min(1.0, b_s))
@@ -609,16 +776,28 @@ def warm_grade_jit() -> None:
     try:
         dummy = np.zeros((2, 2, 3), dtype=np.float32)
         with _PARALLEL_KERNEL_LOCK:
-            _numba_grade_stages_5_6(dummy, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            _numba_grade_stages_5_6(dummy, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+                                    0.0, 0.0, 0.0, 0.0, 0.0, 0)
     except Exception:
         pass
 
 
-def apply(img: np.ndarray, g: dict) -> np.ndarray:
-    """Apply the grade. `img` is float [0,1] sRGB, HxWx3."""
+def apply(img: np.ndarray, g: dict, *, encoding: str = "srgb") -> np.ndarray:
+    """Apply the grade. `img` is float [0,1] display-encoded RGB, HxWx3.
+
+    ``encoding`` names the transfer function of ``img``: ``"srgb"`` (also
+    Display P3) or ``"romm"`` (ProPhoto RGB). Only the scene-linear tone
+    stage understands the encoding; every other control is defined on sRGB
+    values, so a non-sRGB image may only carry a tone-only grade (see
+    :func:`is_tone_only`).
+    """
+    if encoding not in TONE_ENCODINGS:
+        raise ValueError(f"unknown tone encoding {encoding!r}")
     g = clean(g)
     if is_identity(g):
         return img
+    if encoding != "srgb" and not is_tone_only(g):
+        raise ValueError("only the tone controls can grade a non-sRGB image")
     c = np.clip(img.astype(np.float32), 0.0, 1.0)
 
     c = _correct_chromatic_aberration(
@@ -672,48 +851,16 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
                 c = _numba_grade_stages_5_6(
                     c, float(g["exposure"]), float(g["highlights"]), float(g["shadows"]),
                     float(g["whites"]), float(g["blacks"]), float(g["contrast"]),
+                    float(tone_knee(g)),
                     float(g["dehaze"]), float(g["temp"]), float(g["tint"]),
-                    float(g["saturation"]), float(g["vibrance"])
-                )
+                    float(g["saturation"]), float(g["vibrance"]),
+                    TONE_ENCODINGS[encoding])
             need_stages_5_6 = False
         except Exception:
             pass
 
     if need_stages_5_6:
-        # --- linear-light stage -------------------------------------------------
-        lin = _srgb_to_linear(c)
-        if g["exposure"]:
-            lin = lin * (2.0 ** g["exposure"])
-
-        # Highlight / shadow recovery, masked by luminance so each acts on its own
-        # end of the range rather than the whole image.
-        if g["highlights"] or g["shadows"]:
-            y = np.clip(lin @ LUMA, 0.0, None)[..., None]
-            if g["highlights"]:
-                m = np.clip((y - 0.35) / 0.65, 0.0, 1.0) ** 1.2
-                lin = lin * (1.0 + g["highlights"] * 0.85 * m)
-            if g["shadows"]:
-                m = np.clip((0.45 - y) / 0.45, 0.0, 1.0) ** 1.2
-                lin = lin * (1.0 + g["shadows"] * 1.5 * m)
-        c = np.clip(_linear_to_srgb(lin), 0.0, 1.0)
-
-        # --- display-referred stage --------------------------------------------
-        if g["whites"] or g["blacks"]:
-            # Move the endpoints, then renormalise so the range stays [0,1].
-            # Positive Whites lowers the white point (brightens the top of
-            # the range); positive Blacks raises the black point (lifts).
-            w = 1.0 - g["whites"] * 0.35
-            b = g["blacks"] * -0.25
-            c = np.clip((c - b) / max(w - b, 1e-4), 0.0, 1.0)
-
-        if g["contrast"]:
-            k = g["contrast"]
-            if k > 0:
-                s_curve = c * c * (3.0 - 2.0 * c)      # smoothstep: steeper mid
-                c = c + (s_curve - c) * k
-            else:
-                c = 0.5 + (c - 0.5) * (1.0 + k * 0.8)  # flatten toward mid grey
-            c = np.clip(c, 0.0, 1.0)
+        c = _tone_stage(c, g, encoding)
 
         if g["dehaze"]:
             haze = g["dehaze"] * 0.12
@@ -773,15 +920,20 @@ def apply(img: np.ndarray, g: dict) -> np.ndarray:
     return c
 
 
-def apply_accelerated(img: np.ndarray, g: dict) -> np.ndarray:
+def apply_accelerated(img: np.ndarray, g: dict, *,
+                      encoding: str = "srgb") -> np.ndarray:
     """Float32 GPU finishing for exports, with the established CPU fallback.
 
     Small images stay on CPU because worker transport costs more than the
-    shader saves. This does not change the sRGB domain or any edit ordering.
+    shader saves. This does not change the display domain or any edit
+    ordering. A non-sRGB ``encoding`` is tone-only by contract and stays on
+    the CPU kernel, which is the only implementation that decodes it.
     """
     g = clean(g)
     if is_identity(g):
         return img
+    if encoding != "srgb":
+        return apply(img, g, encoding=encoding)
     heavy = (any(g[key] for key in ("texture", "clarity", "sharpness",
                                    "luminanceNoise", "colorNoise"))
              or any(g.get(key) for key in (*CURVE_KEYS, *ADVANCED_KEYS, "hsl")))

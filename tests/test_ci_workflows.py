@@ -6,6 +6,26 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 WINDOWS_WORKFLOW = ROOT / ".github" / "workflows" / "windows-build.yml"
 RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
+PYTHON_WORKFLOW = ROOT / ".github" / "workflows" / "python-tests.yml"
+HELP_WORKFLOW = ROOT / ".github" / "workflows" / "help-content.yml"
+
+
+class PullRequestConcurrencyWorkflowContractTests(unittest.TestCase):
+    def test_pr_runs_cancel_only_their_workflow_and_pr(self):
+        expected_group = (
+            "group: ${{ github.workflow }}-"
+            "${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}"
+        )
+        for path in (PYTHON_WORKFLOW, HELP_WORKFLOW):
+            with self.subTest(workflow=path.name):
+                workflow = path.read_text()
+                self.assertIn("concurrency:\n", workflow)
+                self.assertIn(expected_group, workflow)
+                self.assertIn(
+                    "cancel-in-progress: ${{ github.event_name == 'pull_request' }}",
+                    workflow,
+                )
+                self.assertNotIn("github.event.pull_request.number || github.ref", workflow)
 
 
 class WindowsWorkflowContractTests(unittest.TestCase):

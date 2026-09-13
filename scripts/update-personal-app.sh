@@ -57,7 +57,7 @@ if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
   exit 2
 fi
 
-for TOOL in cargo codesign git plutil rsync shasum swiftc; do
+for TOOL in cargo codesign git plutil rsync swiftc xcrun; do
   if ! command -v "$TOOL" >/dev/null 2>&1; then
     echo "$TOOL is required for a personal app update" >&2
     exit 1
@@ -241,40 +241,38 @@ if [[ "$MODE" == "check" ]]; then
   exit 0
 fi
 
+FINGERPRINTS_FILE="$TEMP_CHECK/fingerprints.env"
+"$BASE_PYTHON" "$ROOT/scripts/build_fingerprint.py" --root "$ROOT" \
+  > "$FINGERPRINTS_FILE"
+while IFS="=" read -r FINGERPRINT_KEY FINGERPRINT_VALUE; do
+  case "$FINGERPRINT_KEY" in
+    FINGERPRINT_FORMAT|LEGACY_XCODE_CONFIG_HASH|NATIVE_HASH|NATIVE_TOOLCHAIN_HASH|XCODE_CONFIG_HASH|HELPER_HASH|\
+    HELPER_TOOLCHAIN_HASH|ENGINE_HASH|ENGINE_TOOLCHAIN_HASH|MODEL_HASH|SOURCE_TREE_HASH)
+      if [[ "$FINGERPRINT_KEY" != "FINGERPRINT_FORMAT" && ! "$FINGERPRINT_VALUE" =~ ^[a-f0-9]+$ ]]; then
+        echo "Invalid build fingerprint for $FINGERPRINT_KEY" >&2
+        exit 1
+      fi
+      if [[ "$FINGERPRINT_KEY" == "FINGERPRINT_FORMAT" && ! "$FINGERPRINT_VALUE" =~ ^[A-Za-z0-9._-]+$ ]]; then
+        echo "Invalid build fingerprint for $FINGERPRINT_KEY" >&2
+        exit 1
+      fi
+      printf -v "$FINGERPRINT_KEY" "%s" "$FINGERPRINT_VALUE"
+      ;;
+    "") ;;
+    *)
+      echo "Unexpected build fingerprint key: $FINGERPRINT_KEY" >&2
+      exit 1
+      ;;
+  esac
+done < "$FINGERPRINTS_FILE"
+
+if [[ "$FINGERPRINT_FORMAT" != "build-fingerprint-v2" ]]; then
+  echo "Unsupported build fingerprint format: $FINGERPRINT_FORMAT" >&2
+  exit 1
+fi
+
 cleanup_check
 trap - EXIT
-
-hash_sources() {
-  /usr/bin/find "$@" \
-    \( -name .git -o -name __pycache__ -o -name target -o -name xcuserdata \) \
-      -prune -o -type f -exec /usr/bin/shasum -a 256 {} \; \
-    | /usr/bin/sed "s|$ROOT/||g" \
-    | LC_ALL=C /usr/bin/sort \
-    | /usr/bin/shasum -a 256 \
-    | /usr/bin/awk '{print $1}'
-}
-
-NATIVE_HASH="$(hash_sources \
-  "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift" \
-  "$ROOT/scripts/update-personal-app.sh")"
-XCODE_CONFIG_HASH="$(hash_sources \
-  "$ROOT/app/Info.plist" "$ROOT/LightTable.xcodeproj/project.pbxproj" \
-  "$PACKAGE_RESOLVED")"
-HELPER_HASH="$(hash_sources \
-  "$ROOT/film_lab_ai/vision_helper.swift" \
-  "$ROOT/film_lab_ai/enhance_helper.swift")"
-ENGINE_HASH="$(hash_sources "$ROOT/rust-engine/Cargo.toml" \
-  "$ROOT/rust-engine/Cargo.lock" "$ROOT/rust-engine/src")"
-MODEL_HASH="$(hash_sources "$MODEL_PACKAGE" "$MODEL_INDEX" \
-  "$ROOT/scripts/models/SCUNet-CODE-LICENSE.txt" \
-  "$ROOT/scripts/models/SCUNet-WEIGHTS-LICENSE.txt" "${HAIR_MODEL_ASSETS[@]}")"
-SOURCE_TREE_HASH="$(hash_sources \
-  "$ROOT"/*.py "$ROOT/lighttable" "$ROOT/lighttable_cli" \
-  "$ROOT/media-formats.json" "$ROOT/web" "$ROOT/profiles" "$ROOT/presets" \
-  "$ROOT/film_lab_ai" "$ROOT/app/main.swift" \
-  "$ROOT/app/NativePreview.swift" "$ROOT/app/DiagnosticReports.swift" "$ROOT/app/NativePreview.metal" \
-  "$ROOT/rust-engine/Cargo.toml" "$ROOT/rust-engine/Cargo.lock" \
-  "$ROOT/rust-engine/src")"
 SOURCE_REVISION="$(git rev-parse HEAD)"
 if [[ -n "$(git status --porcelain --untracked-files=normal)" ]]; then
   SOURCE_DIRTY="true"
@@ -283,6 +281,10 @@ else
 fi
 
 PREVIOUS_MANIFEST="$BASE_PAYLOAD/personal-build.env"
+PACKAGING_PROVENANCE="$BASE_PAYLOAD/packaging-provenance.env"
+if [[ ! -f "$PREVIOUS_MANIFEST" && -f "$PACKAGING_PROVENANCE" ]]; then
+  PREVIOUS_MANIFEST="$PACKAGING_PROVENANCE"
+fi
 manifest_value() {
   local KEY="$1"
   if [[ -f "$PREVIOUS_MANIFEST" ]]; then
@@ -291,23 +293,26 @@ manifest_value() {
   fi
 }
 
+PREVIOUS_FINGERPRINT_FORMAT="$(manifest_value FINGERPRINT_FORMAT)"
 PREVIOUS_XCODE_CONFIG_HASH="$(manifest_value XCODE_CONFIG_HASH)"
 PREVIOUS_REVISION="$(manifest_value SOURCE_REVISION)"
+XCODE_CONFIG_COMPARISON_HASH="$XCODE_CONFIG_HASH"
+if [[ "$PREVIOUS_FINGERPRINT_FORMAT" != "$FINGERPRINT_FORMAT" ]]; then
+  echo "Fingerprint format changed; rebuilding all incremental components."
+  if [[ -z "$PREVIOUS_XCODE_CONFIG_HASH" || -z "$PREVIOUS_REVISION" ]]; then
+    echo "Legacy manifest lacks Xcode configuration provenance; run scripts/build-release.sh" >&2
+    exit 1
+  fi
+  XCODE_CONFIG_COMPARISON_HASH="$LEGACY_XCODE_CONFIG_HASH"
+fi
 if [[ -n "$PREVIOUS_XCODE_CONFIG_HASH" \
-      && "$PREVIOUS_XCODE_CONFIG_HASH" != "$XCODE_CONFIG_HASH" ]]; then
-  # Check if the differences between current and base Xcode configs are purely version fields
+      && "$PREVIOUS_XCODE_CONFIG_HASH" != "$XCODE_CONFIG_COMPARISON_HASH" ]]; then
+  # Only clean provenance can be compared to Git; parse version keys precisely.
   IS_VERSION_ONLY=false
-  if [[ -n "$PREVIOUS_REVISION" ]] && git cat-file -e "$PREVIOUS_REVISION^{commit}" 2>/dev/null; then
-    BASE_PBXPROJ_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$ROOT/LightTable.xcodeproj/project.pbxproj" \
-      | grep -v -E '^[+-][[:space:]]*(MARKETING_VERSION|CURRENT_PROJECT_VERSION)' \
-      | grep -E '^[+-]' | grep -v -E '^[+-]{3}' || true)"
-    BASE_PLIST_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$ROOT/app/Info.plist" \
-      | grep -v -E '^[+-][[:space:]]*<(key>CFBundle(ShortVersionString|Version)|string>[0-9])' \
-      | grep -E '^[+-]' | grep -v -E '^[+-]{3}' || true)"
-    PACKAGE_DIFF="$(git diff "$PREVIOUS_REVISION" -- "$PACKAGE_RESOLVED" || true)"
-    if [[ -z "$BASE_PBXPROJ_DIFF" && -z "$BASE_PLIST_DIFF" && -z "$PACKAGE_DIFF" ]]; then
-      IS_VERSION_ONLY=true
-    fi
+  if [[ "$(manifest_value SOURCE_DIRTY)" == "false" && -n "$PREVIOUS_REVISION" ]] \
+      && "$BASE_PYTHON" "$ROOT/scripts/build_fingerprint.py" --root "$ROOT" \
+        --version-only-since "$PREVIOUS_REVISION"; then
+    IS_VERSION_ONLY=true
   fi
   if [[ "$IS_VERSION_ONLY" == "true" ]]; then
     echo "Xcode version bumped without packaging changes; preserving personal update path."
@@ -342,7 +347,12 @@ PREVIOUS_NATIVE_HASH="$(manifest_value NATIVE_HASH)"
 PREVIOUS_HELPER_HASH="$(manifest_value HELPER_HASH)"
 PREVIOUS_ENGINE_HASH="$(manifest_value ENGINE_HASH)"
 PREVIOUS_MODEL_HASH="$(manifest_value MODEL_HASH)"
-
+if [[ "$PREVIOUS_FINGERPRINT_FORMAT" != "$FINGERPRINT_FORMAT" ]]; then
+  PREVIOUS_NATIVE_HASH=""
+  PREVIOUS_HELPER_HASH=""
+  PREVIOUS_ENGINE_HASH=""
+  PREVIOUS_MODEL_HASH=""
+fi
 if [[ -z "$PREVIOUS_NATIVE_HASH" || "$PREVIOUS_NATIVE_HASH" != "$NATIVE_HASH" ]]; then
   echo "Building the native shell with the verified Sparkle framework..."
   # Match the Xcode Release target while reusing its already-validated package.
@@ -542,6 +552,11 @@ plist_bool SUEnableAutomaticChecks false
 
 cat > "$STAGE_PAYLOAD/personal-build.env" <<MANIFEST
 FORMAT=1
+FINGERPRINT_FORMAT=$FINGERPRINT_FORMAT
+LEGACY_XCODE_CONFIG_HASH=$LEGACY_XCODE_CONFIG_HASH
+NATIVE_TOOLCHAIN_HASH=$NATIVE_TOOLCHAIN_HASH
+HELPER_TOOLCHAIN_HASH=$HELPER_TOOLCHAIN_HASH
+ENGINE_TOOLCHAIN_HASH=$ENGINE_TOOLCHAIN_HASH
 SOURCE_REVISION=$SOURCE_REVISION
 SOURCE_TREE_HASH=$SOURCE_TREE_HASH
 SOURCE_DIRTY=$SOURCE_DIRTY

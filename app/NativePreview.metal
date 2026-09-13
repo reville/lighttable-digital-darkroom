@@ -335,6 +335,59 @@ float3 linearToSrgb(float3 c) {
                   c >= 0.0031308);
 }
 
+// The tone stage of grade.py, unclipped: Exposure and the luminance-masked
+// Highlights and Shadows in linear light, then the sRGB curve continued
+// above white, Whites/Blacks and Contrast on that extended signal, and a
+// soft shoulder whose knee opens with the headroom the sliders create. Kept
+// identical in grade.py, web/gl.js, grade_gpu.wgsl and export.rs.
+float toneKnee(float exposure, float highlights, float whites, float blacks) {
+    float peak = pow(2.0, max(exposure, 0.0)) * (1.0 + 0.85 * max(highlights, 0.0));
+    float top = peak <= 0.0031308 ? peak * 12.92 : 1.055 * pow(peak, 1.0 / 2.4) - 0.055;
+    if (whites != 0.0 || blacks != 0.0) {
+        float w = 1.0 - whites * 0.35;
+        float b = blacks * -0.25;
+        top = (top - b) / max(w - b, 1e-4);
+    }
+    float excess = max(top - 1.0, 0.0);
+    return 1.0 - 0.15 * (1.0 - exp(-2.0 * excess));
+}
+
+float3 toneStage(float3 color, float exposure, float highlights, float shadows,
+                 float whites, float blacks, float contrast) {
+    float3 linear = srgbToLinear(color) * pow(2.0, exposure);
+    if (highlights != 0.0 || shadows != 0.0) {
+        float luminance = max(dot(linear, LUMA), 0.0);
+        if (highlights != 0.0) {
+            float mask = pow(clamp((luminance - 0.35) / 0.65, 0.0, 1.0), 1.2);
+            linear *= 1.0 + highlights * 0.85 * mask;
+        }
+        if (shadows != 0.0) {
+            float mask = pow(clamp((0.45 - luminance) / 0.45, 0.0, 1.0), 1.2);
+            linear *= 1.0 + shadows * 1.5 * mask;
+        }
+    }
+    float3 t = linearToSrgb(linear);
+    if (whites != 0.0 || blacks != 0.0) {
+        float whitePoint = 1.0 - whites * 0.35;
+        float blackPoint = blacks * -0.25;
+        t = (t - blackPoint) / max(whitePoint - blackPoint, 1e-4);
+    }
+    if (contrast > 0.0) {
+        float3 shaped = select(min(1.0 + (t - 1.0) * (t - 1.0), t),
+                               t * t * (3.0 - 2.0 * t), t <= 1.0);
+        t += (shaped - t) * contrast;
+    } else if (contrast < 0.0) {
+        t = 0.5 + (t - 0.5) * (1.0 + contrast * 0.8);
+    }
+    t = max(t, 0.0);
+    float knee = toneKnee(exposure, highlights, whites, blacks);
+    if (knee < 1.0) {
+        float width = 1.0 - knee;
+        t = min(t, knee) + width * (1.0 - exp(-max(t - knee, 0.0) / width));
+    }
+    return clamp(t, 0.0, 1.0);
+}
+
 float curveAt(float value, int channel,
               texture2d<float> curve, sampler linearSampler) {
     float x = (clamp(value, 0.0, 1.0) * 255.0 + 0.5) / 256.0;
@@ -487,28 +540,7 @@ float3 localGrade(float3 color, float4 tone, float4 localColorValue,
         float middle = clamp(1.0 - abs(dot(color, LUMA) - 0.5) * 2.0, 0.0, 1.0);
         color = clamp(color + localDetail * detail.y * 1.8 * middle, 0.0, 1.0);
     }
-    float3 linear = srgbToLinear(color) * pow(2.0, tone.x);
-    if (tone.z != 0.0 || tone.w != 0.0) {
-        float luminance = max(dot(linear, LUMA), 0.0);
-        if (tone.z != 0.0) {
-            float mask = pow(clamp((luminance - 0.35) / 0.65, 0.0, 1.0), 1.2);
-            linear *= 1.0 + tone.z * 0.85 * mask;
-        }
-        if (tone.w != 0.0) {
-            float mask = pow(clamp((0.45 - luminance) / 0.45, 0.0, 1.0), 1.2);
-            linear *= 1.0 + tone.w * 1.5 * mask;
-        }
-    }
-    color = clamp(linearToSrgb(linear), 0.0, 1.0);
-    if (tone.y != 0.0) {
-        if (tone.y > 0.0) {
-            float3 shaped = color * color * (3.0 - 2.0 * color);
-            color += (shaped - color) * tone.y;
-        } else {
-            color = 0.5 + (color - 0.5) * (1.0 + tone.y * 0.8);
-        }
-        color = clamp(color, 0.0, 1.0);
-    }
+    color = toneStage(color, tone.x, tone.z, tone.w, 0.0, 0.0, tone.y);
     if (localColorValue.x != 0.0 || localColorValue.y != 0.0) {
         color = clamp(color * float3(
             1.0 + localColorValue.x * 0.18 + localColorValue.y * 0.06,
@@ -659,34 +691,7 @@ fragment float4 nativePreviewFragment(
         color = clamp(color + shaped * sharpness * 1.8 * mask, 0.0, 1.0);
     }
 
-    float3 linear = srgbToLinear(color) * pow(2.0, exposure);
-    if (highlights != 0.0 || shadows != 0.0) {
-        float luminance = max(dot(linear, LUMA), 0.0);
-        if (highlights != 0.0) {
-            float mask = pow(clamp((luminance - 0.35) / 0.65, 0.0, 1.0), 1.2);
-            linear *= 1.0 + highlights * 0.85 * mask;
-        }
-        if (shadows != 0.0) {
-            float mask = pow(clamp((0.45 - luminance) / 0.45, 0.0, 1.0), 1.2);
-            linear *= 1.0 + shadows * 1.5 * mask;
-        }
-    }
-    color = clamp(linearToSrgb(linear), 0.0, 1.0);
-
-    if (whites != 0.0 || blacks != 0.0) {
-        float whitePoint = 1.0 - whites * 0.35;
-        float blackPoint = blacks * -0.25;
-        color = clamp((color - blackPoint) / max(whitePoint - blackPoint, 1e-4), 0.0, 1.0);
-    }
-    if (contrast != 0.0) {
-        if (contrast > 0.0) {
-            float3 curveColor = color * color * (3.0 - 2.0 * color);
-            color += (curveColor - color) * contrast;
-        } else {
-            color = 0.5 + (color - 0.5) * (1.0 + contrast * 0.8);
-        }
-        color = clamp(color, 0.0, 1.0);
-    }
+    color = toneStage(color, exposure, highlights, shadows, whites, blacks, contrast);
     if (dehaze != 0.0) {
         float haze = dehaze * 0.12;
         color = clamp((color - haze) / max(1.0 - haze, 0.2), 0.0, 1.0);
