@@ -279,5 +279,179 @@ class WatermarkTests(unittest.TestCase):
         self.assertLessEqual(float(result.max()), 1.0)
 
 
+class BorderAndContactSheetTests(unittest.TestCase):
+    def test_border_is_validated_and_added_after_resizing(self):
+        self.assertEqual(export_workflow.clean_border({"enabled": "yes", "size": 9, "tone": -2}),
+                         {"enabled": True, "size": 0.25, "tone": 0.0})
+        self.assertFalse(export_workflow.clean_recipe({})["border"]["enabled"])
+        self.assertEqual(export_workflow.output_dimensions(
+            4000, 2000, long_edge=2000, border={"enabled": True, "size": 0.05}), (2200, 1200))
+        self.assertEqual(export_workflow.output_dimensions(
+            4000, 2000, long_edge=2000, border={"enabled": False, "size": 0.05}), (2000, 1000))
+        image = np.full((20, 40, 3), 0.25, dtype=np.float32)
+        framed = export_workflow.apply_border(image, {"enabled": True, "size": 0.1, "tone": 1.0})
+        self.assertEqual(framed.shape, (28, 48, 3))
+        self.assertEqual(float(framed[0, 0, 0]), 1.0)
+        np.testing.assert_array_equal(framed[4:24, 4:44], image)
+        self.assertIs(export_workflow.apply_border(image, {"enabled": False}), image)
+
+    def test_contact_sheet_options_and_layout_are_bounded(self):
+        spec = export_workflow.clean_contact_sheet({
+            "columns": 40, "width": 1234, "background": "pink",
+            "captions": ["rating", "unknown", "filename"], "title": "  Roll   7 "})
+        self.assertEqual(spec, {"columns": 10, "width": 3600, "background": "white",
+                                "captions": ["filename", "rating"], "title": "Roll 7"})
+        layout = export_workflow.contact_sheet_layout(7, {"columns": 3, "width": 2400})
+        self.assertEqual((layout["rows"], layout["columns"]), (3, 3))
+        self.assertLessEqual(layout["margin"] * 2 + layout["cell"] * 3 + layout["gutter"] * 2, 2400)
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(0, {})
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(export_workflow.CONTACT_SHEET_MAX_PHOTOS + 1, {})
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(200, {"columns": 2, "width": 4800})
+
+    def test_contact_sheet_places_each_photo_in_its_cell(self):
+        red = np.zeros((30, 60, 3), dtype=np.float32); red[..., 0] = 1.0
+        blue = np.zeros((60, 30, 3), dtype=np.float32); blue[..., 2] = 1.0
+        spec = {"columns": 2, "width": 2400, "background": "black", "captions": ["filename"],
+                "title": "Contact"}
+        sheet = export_workflow.compose_contact_sheet(
+            [{"image": red, "caption": ["red.jpg"]}, {"image": blue, "caption": ["blue.jpg"]}],
+            spec, subtitle="2026-09-13")
+        layout = export_workflow.contact_sheet_layout(2, spec)
+        self.assertEqual(sheet.shape, (layout["height"], 2400, 3))
+        top = layout["margin"] + layout["titleHeight"]
+        # Photos rest on the lower edge of their square cell.
+        centre = top + layout["cell"] * 7 // 8
+        first = layout["margin"] + layout["cell"] // 2
+        second = first + layout["cell"] + layout["gutter"]
+        np.testing.assert_allclose(sheet[centre, first], [1, 0, 0], atol=0.02)
+        np.testing.assert_allclose(sheet[centre, second], [0, 0, 1], atol=0.02)
+        self.assertEqual(float(sheet[2, 2].max()), 0.0)
+
+
+class SizingModeTests(unittest.TestCase):
+    def test_legacy_long_edge_recipe_still_loads_as_long_edge_mode(self):
+        recipe = export_workflow.clean_recipe({"longEdge": 2560})
+        self.assertEqual(recipe["sizeMode"], "long-edge")
+        self.assertEqual(recipe["longEdge"], 2560)
+        self.assertEqual(export_workflow.resize_target(6000, 4000, recipe), (2560, 1707))
+
+    def test_full_size_mode_ignores_a_stray_long_edge(self):
+        recipe = export_workflow.clean_recipe({"sizeMode": "full", "longEdge": 2000})
+        self.assertEqual(recipe["sizeMode"], "full")
+        self.assertIsNone(recipe["longEdge"])
+        self.assertEqual(export_workflow.resize_target(6000, 4000, recipe), (6000, 4000))
+
+    def test_short_edge_mode(self):
+        sizing = export_workflow.clean_sizing({"sizeMode": "short-edge", "shortEdge": 1000})
+        self.assertEqual(export_workflow.resize_target(4000, 6000, sizing), (1000, 1500))
+
+    def test_fit_mode_uses_the_tighter_of_width_and_height(self):
+        sizing = export_workflow.clean_sizing(
+            {"sizeMode": "fit", "maxWidth": 1920, "maxHeight": 1080})
+        self.assertEqual(export_workflow.resize_target(6000, 4000, sizing), (1620, 1080))
+        sizing = export_workflow.clean_sizing({"sizeMode": "fit", "maxWidth": 1500})
+        self.assertEqual(export_workflow.resize_target(6000, 4000, sizing), (1500, 1000))
+
+    def test_megapixels_mode(self):
+        sizing = export_workflow.clean_sizing({"sizeMode": "megapixels", "megapixels": 6.0})
+        self.assertEqual(export_workflow.resize_target(6000, 4000, sizing), (3000, 2000))
+
+    def test_percent_mode(self):
+        sizing = export_workflow.clean_sizing({"sizeMode": "percent", "percent": 33.3})
+        self.assertEqual(export_workflow.resize_target(6000, 4000, sizing), (1998, 1332))
+
+    def test_no_enlarge_keeps_full_size_by_default(self):
+        sizing = export_workflow.clean_sizing(
+            {"sizeMode": "long-edge", "longEdge": 1600})
+        self.assertEqual(export_workflow.resize_target(800, 600, sizing), (800, 600))
+        sizing = export_workflow.clean_sizing(
+            {"sizeMode": "long-edge", "longEdge": 1600, "noEnlarge": False})
+        self.assertEqual(export_workflow.resize_target(800, 600, sizing), (1600, 1200))
+
+    def test_resolution_ppi_is_bounded_and_optional(self):
+        self.assertEqual(export_workflow.clean_sizing({"resolutionPpi": 300})["resolutionPpi"], 300)
+        self.assertIsNone(export_workflow.clean_sizing({"resolutionPpi": 0})["resolutionPpi"])
+        self.assertIsNone(export_workflow.clean_sizing({})["resolutionPpi"])
+
+    def test_rust_resize_request_mirrors_the_cleaned_sizing_block(self):
+        self.assertIsNone(export_workflow.rust_resize_request({"sizeMode": "full"}))
+        request = export_workflow.rust_resize_request(
+            {"sizeMode": "short-edge", "shortEdge": 1000})
+        self.assertEqual(request["mode"], "short-edge")
+        self.assertEqual(request["short_edge"], 1000)
+        self.assertTrue(request["no_enlarge"])
+
+
+class OutputSharpenTests(unittest.TestCase):
+    def test_none_target_yields_no_parameters(self):
+        self.assertIsNone(export_workflow.sharpen_parameters({"target": "none"}))
+
+    def test_screen_target_ignores_resolution(self):
+        low_ppi = export_workflow.sharpen_parameters({"target": "screen", "amount": "high"}, 72)
+        high_ppi = export_workflow.sharpen_parameters({"target": "screen", "amount": "high"}, 300)
+        self.assertEqual(low_ppi["radius"], high_ppi["radius"])
+
+    def test_print_targets_scale_radius_with_resolution(self):
+        at_150 = export_workflow.sharpen_parameters({"target": "matte", "amount": "standard"}, 150)
+        at_300 = export_workflow.sharpen_parameters({"target": "matte", "amount": "standard"}, 300)
+        self.assertAlmostEqual(at_300["radius"], at_150["radius"] * 2, places=3)
+
+    def test_amount_controls_gain_ordering(self):
+        low = export_workflow.sharpen_parameters({"target": "glossy", "amount": "low"})
+        high = export_workflow.sharpen_parameters({"target": "glossy", "amount": "high"})
+        self.assertLess(low["amount"], high["amount"])
+
+    def test_output_sharpen_raises_local_contrast_at_an_edge(self):
+        # Mid-range values on both sides of the edge so the unsharp-mask halo
+        # (undershoot before the edge, overshoot after) is visible instead of
+        # clipping into 0/1 saturation.
+        image = np.full((20, 20, 3), 0.3, dtype=np.float32)
+        image[:, 10:] = 0.7
+        params = export_workflow.sharpen_parameters({"target": "screen", "amount": "high"})
+        sharpened = export_workflow.output_sharpen(image, params)
+        self.assertLess(float(sharpened[10, 9, 0]), float(image[10, 9, 0]))
+        self.assertGreater(float(sharpened[10, 10, 0]), float(image[10, 10, 0]))
+        self.assertGreaterEqual(float(sharpened.min()), 0.0)
+        self.assertLessEqual(float(sharpened.max()), 1.0)
+
+    def test_output_sharpen_is_a_no_op_when_disabled(self):
+        image = np.zeros((5, 5, 3), dtype=np.float32)
+        self.assertIs(export_workflow.output_sharpen(image, None), image)
+
+
+class JpegSizeLimitTests(unittest.TestCase):
+    def test_encode_within_limit_reduces_quality_and_bounds_encode_count(self):
+        from PIL import Image
+        import color_pipeline
+
+        image = Image.effect_noise((300, 300), 60).convert("RGB")
+        unbounded, _ = color_pipeline.encode_jpeg_within(image, 95, None)
+        data, quality = color_pipeline.encode_jpeg_within(image, 95, 8_000)
+        # High-entropy noise may still exceed a tiny cap even at the quality
+        # floor; the search must still shrink the file and drop quality.
+        self.assertLess(len(data), len(unbounded))
+        self.assertLess(quality, 95)
+
+    def test_encode_without_limit_keeps_requested_quality(self):
+        from PIL import Image
+        import color_pipeline
+
+        image = Image.new("RGB", (40, 40), (120, 60, 200))
+        data, quality = color_pipeline.encode_jpeg_within(image, 80, None)
+        self.assertEqual(quality, 80)
+        self.assertGreater(len(data), 0)
+
+    def test_quality_never_drops_below_the_floor(self):
+        from PIL import Image
+        import color_pipeline
+
+        image = Image.effect_noise((800, 800), 80).convert("RGB")
+        _, quality = color_pipeline.encode_jpeg_within(image, 100, 1)
+        self.assertGreaterEqual(quality, color_pipeline.JPEG_QUALITY_FLOOR)
+
+
 if __name__ == "__main__":
     unittest.main()

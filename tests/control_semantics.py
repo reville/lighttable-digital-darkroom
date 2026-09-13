@@ -376,6 +376,9 @@ COMPANION: dict[str, dict] = {
     "sharpenDetail": {"sharpness": 0.8},
     "sharpenMasking": {"sharpness": 0.8},
     "sharpenRadius": {"sharpness": 0.8},
+    # Luminosity-only blending needs a curve to restrict.
+    "curveLuminosity": {"curveL": [round((index / 255) ** 0.55, 6) for index in range(256)],
+                        "saturation": 0.3},
 }
 # Point Color and Colour Grading entries need an effect to modulate before a
 # selection or strength control has anything to change.
@@ -404,6 +407,10 @@ COVERED_ELSEWHERE = {
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
     "optics.profileOverride":
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
+    "heal.dust.sensitivity":
+        "needs small high-contrast marks to select; covered by tests/test_edits.py",
+    "heal.dust.size":
+        "needs small high-contrast marks to select; covered by tests/test_edits.py",
     "optics.profileChromatic":
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
 }
@@ -452,6 +459,9 @@ CLAIMS.update({f"local.{key}": CLAIMS[key] for key in
                ("exposure", "contrast", "highlights", "shadows", "whites",
                 "blacks", "temp", "tint", "saturation", "texture", "clarity")
                if key in CLAIMS})
+
+# Lens blur exists only as a local effect.
+CLAIMS["blur"] = (fine_detail, -1, "softens detail inside the selection")
 
 CLAIMS.update({
     "optics.scale": (frame_coverage, +1, "enlarges the image inside the frame"),

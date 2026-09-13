@@ -58,6 +58,17 @@ class ExportParityTests(unittest.TestCase):
         self.assertTrue(server.rust_direct_export_supported(dict(
             basic, masks=[{"type": "linear", "start": [0.1, 0.5],
                            "end": [0.9, 0.5]}])))
+        # Borders, lens blur, and luminosity-only curves render in Python only.
+        self.assertFalse(server.rust_direct_export_supported(
+            dict(basic, border={"enabled": True, "size": 0.05})))
+        self.assertTrue(server.rust_direct_export_supported(
+            dict(basic, border={"enabled": False, "size": 0.05})))
+        for local in ({"blur": 0.4}, {"curveLuminosity": True, "exposure": 0.2}):
+            with self.subTest(local=local):
+                self.assertFalse(server.rust_direct_export_supported(dict(
+                    basic, masks=[{"type": "radial", "radius": 0.3, "grade": local}])))
+        self.assertTrue(server.preview_grade_requires_bake(
+            [{"type": "radial", "radius": 0.3, "grade": {"blur": 0.2}}]))
         self.assertTrue(server.rust_direct_export_supported(dict(
             basic, masks=[{"type": "subject", "bitmap": {
                 "width": 1, "height": 1, "data": "AA=="}}])))
@@ -381,6 +392,45 @@ class ExportParityTests(unittest.TestCase):
             self.assertEqual(keys.get("Exif.Image.Make"), "Ricoh")
             self.assertEqual(keys.get("Exif.Image.Model"), "GR III")
             self.assertNotIn("Exif.GPSInfo.GPSLatitudeRef", keys)
+
+
+class DarkroomToolRouteTests(unittest.TestCase):
+    def test_dust_preview_reports_marks_and_an_overlay(self):
+        pixels = np.full((200, 300, 3), 110, dtype=np.uint8)
+        for x in range(40, 280, 40):
+            pixels[98:102, x:x + 4] = 250
+        with mock.patch.object(server, "program_render_image",
+                               return_value=Image.fromarray(pixels)) as render:
+            result = server.detect_dust({"name": "a.jpg", "sensitivity": 0.5,
+                                         "size": 0.02, "heals": [{"mode": "clone"}]})
+        state = render.call_args.args[0]["state"]
+        self.assertEqual(state["grade"], {})
+        self.assertEqual(len(state["heals"]), 1)
+        self.assertEqual(result["count"], 6)
+        self.assertEqual((result["overlay"]["width"], result["overlay"]["height"]), (300, 200))
+        with self.assertRaises(ValueError):
+            server.detect_dust({})
+
+    def test_contact_sheet_job_renders_captions_and_writes_a_jpeg(self):
+        self.assertIn("error", server.start_contact_sheet({"names": []}))
+        photo = Image.fromarray(np.full((40, 60, 3), 180, dtype=np.uint8))
+        spec = server.export_workflow.clean_contact_sheet(
+            {"columns": 2, "width": 2400, "captions": ["filename", "rating"]})
+        layout = server.export_workflow.contact_sheet_layout(2, spec)
+        record = server.JOBS.create("contact-sheet", total=2, state="running")
+        with tempfile.TemporaryDirectory() as folder, \
+                mock.patch.object(server, "program_render_image", return_value=photo), \
+                mock.patch.object(server, "catalog_entry_for", return_value={"rating": 2}), \
+                mock.patch.object(server, "src_path", side_effect=lambda name: Path("/p") / name), \
+                mock.patch.object(server, "catalog_handle", return_value=None):
+            server._run_contact_sheet(record["id"], ["one.jpg", "two.jpg"], spec, layout,
+                                      Path(folder), server.threading.Event())
+            job = server.JOBS.get(record["id"])
+            self.assertEqual(job["state"], "done", job["errors"])
+            self.assertEqual(job["result"]["count"], 2)
+            with Image.open(job["result"]["path"]) as sheet:
+                self.assertEqual(sheet.size, (2400, layout["height"]))
+        self.assertEqual(server._contact_sheet_caption.__name__, "_contact_sheet_caption")
 
 
 if __name__ == "__main__":

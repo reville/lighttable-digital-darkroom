@@ -126,6 +126,7 @@ def main():
     out = export_workflow.output_sharpen(out, export_workflow.sharpen_parameters(
         job.get("sharpen"), job.get("resolutionPpi")))
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
+    out = export_workflow.apply_border(out, job.get("border"))
     metadata_policy = str(job.get("metadata", "all-except-location"))
     # Catalog exports name the original capture explicitly because ``src``
     # is usually an intermediate render TIFF; external edits pass the capture

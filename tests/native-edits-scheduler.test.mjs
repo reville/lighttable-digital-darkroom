@@ -25,7 +25,7 @@ function withPreview(options, run) {
     nativePreviewActive: () => options.native !== false,
     postNative: (type, payload) => messages.push({type, payload: structuredClone(payload)}),
     drawGradeNow: () => messages.push({type: 'nativeGrade'}),
-    drawEditOverlayNow: () => overlays++, updateReferenceCompositeNow: () => {},
+    drawEditOverlayNow: () => overlays++, drawSamplerOverlay: () => {}, updateReferenceCompositeNow: () => {},
     spotVisualization: () => ({enabled: true, threshold: 0.6}),
     markContinuousInput: () => {}, GRADE_PERF: {input: () => {}},
     syncPreviewBackend: () => {}, renderPhysicalPreview: () => renders++, renderFilm: () => renders++,

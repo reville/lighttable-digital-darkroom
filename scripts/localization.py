@@ -196,7 +196,17 @@ def validate_translation(source, translation, locale=None):
     return None
 
 
-def check(messages):
+def check(messages, allow_pending=False):
+    """Validate every catalog against the extracted source.
+
+    Strict mode (the default and the release gate) requires each locale to
+    carry the current source version and a translation for every message.
+    With allow_pending, a locale may lag the source between releases: its
+    existing translations are still validated, missing ones are counted and
+    reported, and the web runtime shows English for them until
+    translate-locales.py completes the catalog. Returns the pending messages
+    per locale (empty when every catalog is complete).
+    """
     source = json.loads((ROOT / 'docs/localization/source.json').read_text())
     if source.get('sourceDigest') != source_digest(messages) or source.get('messages') != messages:
         raise ValueError('Source manifest is stale; run python3 scripts/localization.py extract')
@@ -204,34 +214,67 @@ def check(messages):
     if source.get('pluralPairs') != pairs or source.get('pluralsDigest') != plural_digest(pairs):
         raise ValueError('Plural source manifest is stale; run extract')
     manifest = json.loads((ROOT / 'web/locales/manifest.json').read_text())
+    pending = {}
     for locale in manifest['locales']:
         code = locale['code']
         catalog = json.loads((ROOT / f'web/locales/{code}.json').read_text())
-        if catalog.get('locale') != code or catalog.get('sourceDigest') != source['sourceDigest']:
+        if catalog.get('locale') != code:
+            raise ValueError(f'{code}: translation catalog locale does not match its filename')
+        stale = catalog.get('sourceDigest') != source['sourceDigest']
+        if stale and not allow_pending:
             raise ValueError(f'{code}: translation source version is stale')
         if catalog.get('pluralsDigest') != source['pluralsDigest']:
-            raise ValueError(f'{code}: plural forms are stale')
+            if not allow_pending:
+                raise ValueError(f'{code}: plural forms are stale')
+            stale = True
+        missing = []
         for pair in pairs:
             forms = catalog.get('plurals', {}).get(pair['one'], {})
             for category in plural_categories(code):
+                if allow_pending and forms.get(category) is None:
+                    missing.append(pair['one'])
+                    break
                 error = validate_translation(pair['one'], forms.get(category), code)
                 if error:
                     raise ValueError(f'{code}: plural {category}: {error}: {pair["one"][:80]}')
         for message in messages:
-            error = validate_translation(message, catalog['messages'].get(message), code)
+            translation = catalog['messages'].get(message)
+            if allow_pending and translation is None:
+                missing.append(message)
+                continue
+            error = validate_translation(message, translation, code)
             if error:
                 raise ValueError(f'{code}: {error}: {message[:100]}')
-    print(f'Localization current: {len(manifest["locales"])} locales, {len(messages)} messages.')
+        if stale or missing:
+            pending[code] = missing
+    if pending:
+        print(f'Localization pending: {len(pending)} of {len(manifest["locales"])} locales lag the source: '
+              + ', '.join(f'{code} ({len(missing)} missing)' for code, missing in sorted(pending.items())))
+        print('Complete them before a release: python3 scripts/translate-locales.py, then rerun check.')
+    else:
+        print(f'Localization current: {len(manifest["locales"])} locales, {len(messages)} messages.')
+    return pending
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('extract', 'annotate', 'check'))
+    parser.add_argument('command', choices=('extract', 'annotate', 'check', 'pending'))
+    parser.add_argument('--allow-pending', action='store_true',
+                        help='check only: tolerate locales that lag the source and report their missing messages')
+    parser.add_argument('--json', action='store_true', help='pending only: print the missing messages per locale as JSON')
     args = parser.parse_args()
+    if args.allow_pending and args.command != 'check':
+        parser.error('--allow-pending is valid only with check')
+    if args.json and args.command != 'pending':
+        parser.error('--json is valid only with pending')
     try:
         messages = collect(annotate=args.command == 'annotate')
         if args.command == 'check':
-            check(messages)
+            check(messages, allow_pending=args.allow_pending)
+        elif args.command == 'pending':
+            pending = check(messages, allow_pending=True)
+            if args.json:
+                print(json.dumps(pending, ensure_ascii=False, indent=2))
         else:
             write_source(messages)
             print(f'Extracted {len(messages)} English messages.')

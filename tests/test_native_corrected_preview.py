@@ -118,6 +118,9 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
         self.assertFalse(server.heals_require_bake([dict(first, enabled=False)] * 17))
         self.assertTrue(server.heals_require_bake([first] * 17))
         self.assertTrue(server.heals_require_bake([dict(first, mode="remove")]))
+        # Dust removal runs on the CPU and has no live Metal equivalent.
+        self.assertTrue(server.heals_require_bake([{"mode": "dust"}]))
+        self.assertFalse(server.heals_require_bake([{"mode": "dust", "enabled": False}]))
         result = self.render({}, chained)
         self.assertTrue(result["baseEditsBaked"])
         rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")

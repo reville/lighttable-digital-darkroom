@@ -823,6 +823,7 @@ final class EditRecoveryStore {
 /// Metadata pages and bounded thumbnails only. Original resources are copied
 /// by PhotosLibraryImporter after an explicit selection, never by a page fetch.
 private final class ApplePhotosBrowser: NSObject, PHPhotoLibraryChangeObserver {
+    private let isAssetImported: ((PHAsset) -> Bool)?
     private let event: ([String: Any]) -> Void
     private let queue = DispatchQueue(label: "lighttable.photos-browser", qos: .userInitiated)
     private let images = PHImageManager()
@@ -830,7 +831,10 @@ private final class ApplePhotosBrowser: NSObject, PHPhotoLibraryChangeObserver {
     private var requests: [PHImageRequestID] = []
     private var observing = false
 
-    init(event: @escaping ([String: Any]) -> Void) { self.event = event }
+    init(isAssetImported: ((PHAsset) -> Bool)? = nil, event: @escaping ([String: Any]) -> Void) {
+        self.isAssetImported = isAssetImported
+        self.event = event
+    }
 
     func close() {
         generation += 1
@@ -904,8 +908,10 @@ private final class ApplePhotosBrowser: NSObject, PHPhotoLibraryChangeObserver {
                 let name = PHAssetResource.assetResources(for: asset).first {
                     $0.type == .photo || $0.type == .alternatePhoto
                 }?.originalFilename ?? L("Photo")
+                let imported = isAssetImported?(asset) ?? false
                 rows.append(["id": asset.localIdentifier, "name": name,
-                             "width": asset.pixelWidth, "height": asset.pixelHeight])
+                             "width": asset.pixelWidth, "height": asset.pixelHeight,
+                             "imported": imported])
             }
             var payload: [String: Any] = ["type": "applePhotosPage", "requestId": requestID,
                 "items": rows, "offset": start, "total": assets.count, "hasMore": end < assets.count]
@@ -1074,21 +1080,43 @@ private final class PhotosLibraryImporter {
         SHA256.hash(data: Data(value.utf8)).map { String(format: "%02x", $0) }.joined()
     }
 
-    private func destination(for item: Item) -> URL {
-        let digest = Self.digest(item.identity)
-        let name = URL(fileURLWithPath: item.resource.originalFilename)
+    static func destination(for resource: PHAssetResource, identity: String, in directory: URL) -> URL {
+        let digest = self.digest(identity)
+        let name = URL(fileURLWithPath: resource.originalFilename)
         let invalid = CharacterSet(charactersIn: "/:\0").union(.controlCharacters)
         let stem = name.deletingPathExtension().lastPathComponent
             .components(separatedBy: invalid).joined(separator: "_")
         var safeStem = String((stem.isEmpty ? "Photo" : stem).prefix(80))
         while safeStem.utf8.count > 100 { safeStem.removeLast() }
         let ext = name.pathExtension.isEmpty
-            ? (UTType(item.resource.uniformTypeIdentifier)?.preferredFilenameExtension ?? "")
+            ? (UTType(resource.uniformTypeIdentifier)?.preferredFilenameExtension ?? "")
             : name.pathExtension
         let safeExtension = String(ext.components(separatedBy: invalid).joined(separator: "_").prefix(16))
         return directory.appendingPathComponent("Originals", isDirectory: true)
             .appendingPathComponent(String(digest.prefix(2)), isDirectory: true)
             .appendingPathComponent("\(safeStem)-\(digest)" + (safeExtension.isEmpty ? "" : ".\(safeExtension)"))
+    }
+
+    private func destination(for item: Item) -> URL {
+        Self.destination(for: item.resource, identity: item.identity, in: directory)
+    }
+
+    static func isAssetImported(_ asset: PHAsset, in directory: URL) -> Bool {
+        let originals = PHAssetResource.assetResources(for: asset)
+            .filter { $0.type == .photo || $0.type == .alternatePhoto }
+        guard !originals.isEmpty else { return false }
+        var occurrences: [String: Int] = [:]
+        for resource in originals {
+            let key = "\(asset.localIdentifier)|\(resource.type.rawValue)|\(resource.uniformTypeIdentifier)|\(resource.originalFilename)"
+            let occurrence = occurrences[key, default: 0] + 1
+            occurrences[key] = occurrence
+            let target = destination(for: resource, identity: "\(key)|\(occurrence)", in: directory)
+            guard let values = try? target.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey]),
+                  values.isRegularFile == true, (values.fileSize ?? 0) > 0 else {
+                return false
+            }
+        }
+        return true
     }
 
     private func next() {
@@ -1624,7 +1652,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private var schemeCommandItems: [String: NSMenuItem] = [:]
     private var photoPicker: PHPickerViewController?
     private var pendingPhotosImportEvent: [String: Any]?
-    private lazy var applePhotosBrowser = ApplePhotosBrowser { [weak self] in self?.sendEvent($0) }
+    private lazy var applePhotosBrowser = ApplePhotosBrowser(
+        isAssetImported: { [weak self] asset in
+            guard let self, let root = try? self.photosImportRoot() else { return false }
+            return PhotosLibraryImporter.isAssetImported(asset, in: root)
+        },
+        event: { [weak self] in self?.sendEvent($0) }
+    )
     private var browsingPhotosImporter: PhotosLibraryImporter?
     private var browsingPhotosImportEvent: [String: Any]?
     private var photosLibraryImporter: PhotosLibraryImporter?

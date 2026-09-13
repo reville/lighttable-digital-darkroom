@@ -72,6 +72,25 @@ def edit_cases():
     ])
     for mode in ("clone", "heal", "remove"):
         cases.append({"name": "photo-" + mode, "fixture": "photo", "heals": [dict(spot, mode=mode)]})
+    stroke = [[.2, .4], [.5, .55], [.8, .5]]
+    cases.extend([
+        {"name": "photo-dust", "fixture": "photo",
+         "heals": [{"mode": "dust", "sensitivity": .7, "size": .01}]},
+        {"name": "photo-remove-stroke-patch", "fixture": "photo", "heals": [
+            {"id": "stroke-patch", "mode": "remove", "fill": "patch", "radius": .04,
+             "feather": .4, "points": stroke}]},
+        {"name": "photo-remove-stroke-smooth", "fixture": "photo", "heals": [
+            {"id": "stroke-smooth", "mode": "remove", "fill": "smooth", "radius": .04,
+             "feather": .4, "points": stroke}]},
+        {"name": "radial-lens-blur", "fixture": "photo", "masks": [
+            {"type": "radial", "center": [.5, .5], "radius": .3, "feather": .5,
+             "invert": True, "grade": {"blur": .6}}]},
+        {"name": "ellipse-local-curve-luminosity", "fixture": "photo", "masks": [
+            {"type": "radial", "center": [.5, .5], "radiusX": .45, "radiusY": .2,
+             "angle": -20, "feather": .5,
+             "grade": {"curveL": (np.linspace(0, 1, 256) ** .75).tolist(),
+                       "curveLuminosity": True}}]},
+    ])
     # Live Metal retouches: the Heal annulus must be measured on the manually
     # corrected image, and separate spots must not read each other's pixels.
     cases.append({"name": "photo-heal-rotated", "fixture": "photo",

@@ -90,6 +90,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `raw-default` | `/api/raw-default`, `/api/camera-profiles` |
 | `presets` | `/api/presets`, `/api/presets/import`, `/api/presets/export`, `/api/presets/community`, `/api/presets/community/recipe`, `/api/presets/community/install`, `/api/presets/submission` |
 | `export` | `/api/export`, `/api/export/status`, `/api/export-recipes` |
+| `contact-sheet` | `/api/contact-sheet` |
 | `jobs` | `/api/jobs`, `/api/jobs/<id>`, `/api/jobs/<id>/cancel` |
 | `import` | `/api/import/catalog`, `/api/import/report`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
 | `ingest` | `/api/ingest`, `/api/ingest/scan`, `/api/ingest/status`, `/api/ingest/sources`, `/api/ingest/cancel` |
@@ -117,6 +118,7 @@ Internal browser/native routes are declared rather than hidden:
 - `/api/people/thumbnail` — local face crop used by the People gallery.
 - `/api/desktop-theme` — read-only Linux desktop palette for interface chrome.
 - `/api/export/preview` — read-only export dialog delivery example.
+- `/api/heal/dust-detect` — read-only dust selection overlay for the Remove panel.
 - `/api/thumb/rendered` — edit-aware browser thumbnail replacement.
 - `/api/render/native` — native surface transport.
 - `/api/render/png` — lossless corrected preview transport.
