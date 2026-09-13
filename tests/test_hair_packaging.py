@@ -115,8 +115,7 @@ sys.exit(int(os.environ["SMOKE_EXIT"]))
         for asset in ASSETS:
             self.assertIn('"$ROOT/scripts/models/' + asset + '"', assets)
         self.assertIn('for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"; do\n  require_file "$MODEL_ASSET"', source)
-        model_hash = source.split('MODEL_HASH="$(hash_sources ', 1)[1].split('\nSOURCE_TREE_HASH=', 1)[0]
-        self.assertIn('"${HAIR_MODEL_ASSETS[@]}"', model_hash)
+        # Content-based cache invalidation is covered by test_build_fingerprint.
         refresh = source.split('echo "Refreshing the bundled models..."', 1)[1].split('\nelse\n', 1)[0]
         self.assertIn('for MODEL_ASSET in "${HAIR_MODEL_ASSETS[@]}"', refresh)
         self.assertIn('"$STAGE_CONTENTS/Resources/models/$(basename "$MODEL_ASSET")"', refresh)

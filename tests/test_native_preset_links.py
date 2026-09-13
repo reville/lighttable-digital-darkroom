@@ -128,8 +128,7 @@ class PresetPackagingTests(unittest.TestCase):
             for name in ("preset_library.py", "preset_submission.py"):
                 self.assertEqual((resources / name).read_bytes(), (ROOT / name).read_bytes())
         self.assertIn('Copy-Item (Join-Path $Project "presets") $Resources -Recurse', windows)
-        hash_source = personal.split('SOURCE_TREE_HASH="$(hash_sources', 1)[1].split('SOURCE_REVISION=', 1)[0]
-        self.assertIn('"$ROOT/presets"', hash_source)
+        # Content-based cache invalidation is covered by test_build_fingerprint.
 
     def test_developer_bundle_declares_the_same_preset_protocol_as_release(self):
         build = (ROOT / "build-app.sh").read_text()
