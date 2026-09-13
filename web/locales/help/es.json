@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -111,7 +112,7 @@
           "title": "Revisar ediciones traducidas",
           "paragraphs": [
             "Los ajustes de Develop son aproximados y no pueden prometer la apariencia renderizada de Lightroom. Las máscaras locales no compatibles, los perfiles de cámara, las máscaras de IA .lrcat-data o las cargas útiles de LUT, y las reglas de colecciones inteligentes no compatibles se informan como omitidas. Los ajustes de Develop importados desactivan Film.",
-            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
+            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Aplica los ajustes de revelado y el recorte solo cuando activa esas opciones. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Primeros pasos"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Si vienes de Lightroom",
+      "category": "Getting started",
+      "summary": "Qué traen un catálogo de Lightroom Classic y los sidecars XMP, qué no tiene vía de importación y en qué difiere el vocabulario.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrar",
+        "migración",
+        "XMP",
+        "sidecars",
+        "ajustes preestablecidos",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Qué se traslada",
+          "paragraphs": [
+            "Desde un catálogo de Lightroom Classic: las fotos permanecen en sus carpetas actuales y se referencian, no se copian. El importador lee valoraciones, marcas, etiquetas y campos IPTC; palabras clave; colecciones y colecciones inteligentes compatibles; pilas; copias virtuales; recorte y enderezado; ajustes de revelado aproximados; y, si lo elige, el historial de edición. Su archivo .lrcat nunca se modifica.",
+            "Desde los sidecars XMP junto a sus fotos: valoraciones de estrellas, marcas de selección y rechazo, etiquetas de color estándar, palabras clave y campos IPTC descriptivos. Carpetas ••• → Importar sidecars… también puede aplicar los ajustes de revelado y el recorte cuando activa esas opciones.",
+            "Ambas vías usan el mismo conversor, así que un ajuste se traduce igual llegue por donde llegue: tono, desplazamientos de balance de blancos, textura, claridad, eliminación de neblina, el mezclador de color, la conversión a blanco y negro con su mezclador, curvas por puntos, cantidad de viñeta, enfoque y reducción de ruido. Un valor fuera del rango de LightTable, como una exposición más allá de ±5 EV, se limita y se nombra en el informe."
+          ]
+        },
+        {
+          "title": "Qué no tiene vía de importación",
+          "paragraphs": [
+            "Los álbumes en la nube y los ajustes preestablecidos guardados solo en la app en la nube no se pueden leer. Sincronícelos primero en Lightroom Classic o guarde los ajustes preestablecidos como archivos.",
+            "Las máscaras de IA y las ediciones generativas, el desenfoque de objetivo y los ajustes de reducción de ruido son pasos de renderizado propietarios. Se informan como omitidos en lugar de aproximarse, igual que los perfiles de cámara, los looks LUT, las máscaras locales, las correcciones y las identidades de perfil de objetivo. Las ediciones importadas empiezan con Película desactivada para que los ajustes de revelado convertidos se muestren por sí solos."
+          ]
+        },
+        {
+          "title": "Vocabulario",
+          "paragraphs": [
+            "Las colecciones también son colecciones aquí; los álbumes de la app en la nube solo llegan a través de un catálogo de Lightroom Classic.",
+            "Las marcas Seleccionar y Rechazar funcionan igual, y la barra inferior las muestra para las fotos seleccionadas.",
+            "Revelar se llama Editar. Película está desactivada de forma predeterminada en las fotos nuevas e importadas; actívela cuando quiera un tratamiento de película sobre la edición.",
+            "Perfil de cámara en Editar muestra los perfiles DCP de Adobe que Camera Raw o Lightroom instalaron en este equipo, o la carpeta de perfiles de cámara elegida en Configuración. Los perfiles se aplican de forma aproximada y solo al revelado con Película desactivada."
+          ]
+        },
+        {
+          "title": "Importar sus ajustes preestablecidos",
+          "paragraphs": [
+            "Ajustes preestablecidos → Administrar… → Importar… acepta ajustes preestablecidos .xmp de Lightroom y Camera Raw, ajustes preestablecidos .lrtemplate antiguos y estilos .costyle de Capture One. Tras importar un catálogo o una carpeta, la configuración también ofrece Importar ajustes preestablecidos…. Cada ajuste preestablecido importado muestra cuántos ajustes se tradujeron y cuáles se omitieron antes de aplicarlo."
+          ],
+          "steps": [
+            "Abra Ajustes preestablecidos, haga clic en Administrar… y luego en Importar… y elija los archivos de ajustes preestablecidos o, en la app para Mac, una carpeta entera de ajustes preestablecidos.",
+            "Revise el informe de conversión y luego aplique el ajuste preestablecido desde Tuya."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y luego elija Carpetas ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
             "Los metadatos admitidos incluyen calificaciones de estrellas, marcas de seleccionar/rechazar, etiquetas de color estándar, palabras clave planas y jerárquicas, y campos descriptivos IPTC. Un valor vacío explícito borra ese campo; un valor ausente lo deja sin cambios. Las etiquetas de color personalizadas que no coinciden con un color de LightTable se informan como omitidas.",
-            "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte no se aplican con esta acción de menú."
+            "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte se aplican solo cuando activa esas opciones en el cuadro de diálogo Importar sidecars."
           ]
         },
         {
@@ -1108,7 +1171,7 @@
         {
           "title": "Empezar con Luz",
           "paragraphs": [
-            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal. Contraste cambia su separación."
+            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal: suba Blancos para aclarar los tonos más luminosos, suba Negros para levantar los más oscuros y baje cualquiera de los dos para retraer ese extremo. Contraste cambia su separación."
           ],
           "steps": [
             "Configure Exposición para el sujeto principal.",
@@ -1161,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Aplique correcciones de lente y de aberración cromática",
       "category": "Editing",
-      "summary": "Use un perfil de lente emparejado o seleccionado manualmente, o haga correcciones manuales cuando no haya un perfil exacto disponible.",
+      "summary": "Use un perfil de lente emparejado o seleccionado manualmente, corrija la aberración cromática, elimine halos púrpura y verdes, o haga correcciones manuales cuando no haya un perfil exacto disponible.",
       "keywords": [
         "lente",
         "perfil",
@@ -1170,6 +1233,9 @@
         "sombras",
         "aberración cromática",
         "franjas",
+        "eliminar halos",
+        "halo púrpura",
+        "halo verde",
         "rojo cian",
         "azul amarillo",
         "óptica"
@@ -1178,18 +1244,21 @@
         {
           "title": "Elegir y verificar una corrección",
           "paragraphs": [
-            "Expanda Correcciones de lente en Editar. La tarjeta de perfil explica la coincidencia automática de cámara/lente y si hay un perfil utilizable disponible."
+            "Expanda Correcciones de lente en Editar. La tarjeta de perfil explica la coincidencia automática de cámara/lente y si hay un perfil utilizable disponible. El panel también indica la versión de la base de datos de objetivos en uso y cuántas cámaras y objetivos incluye; la base de datos viene con la biblioteca de objetivos, no con LightTable.",
+            "Cuando la cámara y el objetivo de los metadatos de la foto coinciden exactamente con un solo perfil, Usar el perfil de lente coincidente está activado en cuanto se abre la foto y se aplica también a miniaturas y exportaciones. Una coincidencia inferida o ambigua permanece desactivada. Ajustes → Valores predeterminados de revelado → Aplicar automáticamente el perfil de objetivo coincidente desactiva este comportamiento; las fotos con ajustes de objetivo guardados los conservan en cualquier caso."
           ],
           "steps": [
             "Lea el nombre del perfil y la explicación de coincidencia.",
-            "Active Usar perfil de lente emparejado cuando haya un perfil disponible y luego elija Corregir distorsión y Corregir sombreado de lente según sea necesario.",
+            "Active Usar el perfil de lente coincidente cuando haya un perfil disponible y luego elija Corregir distorsión, Corregir sombreado de lente y Corregir aberración cromática según sea necesario. Cada interruptor es independiente, así que la aberración cromática puede corregirse sin cambiar la geometría.",
             "Si es necesario, elige otra entrada en Perfil de lente y compara la corrección con el original.",
-            "Refine los controles manuales de Distorsión y Viñeta. Para franjas de color, ajuste Rojo / Cian y Azul / Amarillo bajo Aberración cromática."
+            "Refine los controles manuales de Distorsión y Viñeta. Para franjas de color, ajuste Rojo / Cian y Azul / Amarillo bajo Aberración cromática.",
+            "En Eliminar halos, suba Púrpura o Verde para quitar ese color de los píxeles muy saturados junto a bordes duros. Los controles de inicio y fin de tono definen el rango de tonos que trata cada control; un inicio mayor que su fin pasa por el rojo."
           ],
           "tips": [
             "Si no se encuentra un perfil de lente exacto, siguen disponibles los controles manuales de distorsión y perspectiva.",
-            "Las casillas de verificación de distorsión y sombreado del perfil solo se activan cuando el perfil seleccionado proporciona esa corrección y el perfil está activado.",
+            "Las casillas de distorsión, sombreado y aberración cromática del perfil solo se activan cuando el perfil seleccionado proporciona esa corrección y el perfil está activado.",
             "Un perfil seleccionado manualmente necesita verificación visual; la selección no establece que sea una coincidencia exacta.",
+            "Eliminar halos trata el contorno de un sujeto grande púrpura o verde como un halo. Baje la cantidad o estreche el rango de tonos si un sujeto pierde color en su borde.",
             "Las correcciones de lente y de franjas permanecen no destructivas hasta la exportación."
           ]
         }
@@ -1335,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edición"
     },
@@ -2090,7 +2160,8 @@
         {
           "title": "Neutralizar una dominante de color",
           "paragraphs": [
-            "La sección Color en Editar contiene Temp y Tinte, además de un cuentagotas de balance de blancos junto a Temp. Estos son los controles de acabado del panel Editar."
+            "La sección Color en Editar contiene Temp y Tinte, además de un cuentagotas de balance de blancos junto a Temp. Estos son los controles de acabado del panel Editar.",
+            "Para un original RAW, un bloque Balance de blancos de captura aparece encima con Según captura, Auto, ajustes preestablecidos y Personalizado para una temperatura en kelvin y un tinte de captura. Vuelve a revelar los datos RAW y funciona con Film activado o desactivado; se oculta para archivos procesados."
           ],
           "steps": [
             "Abrir Editar y expandir Color.",
@@ -2108,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Edición"
     },
@@ -2537,7 +2609,7 @@
           "title": "Controles de captura y controles de acabado",
           "paragraphs": [
             "EV de cámara y balance de blancos de Captura actúan antes de la exposición de la película. Exposición y Temp/Tinte en el panel Editar son ajustes finales más adelante en el flujo de trabajo.",
-            "El balance de blancos de captura requiere un original RAW. Para un JPEG, HEIF, TIFF u otro archivo procesado, use Editar Temp/Tinte."
+            "El balance de blancos de captura está en la parte superior de la sección Color para originales RAW y funciona con Film activado o desactivado: elija Según captura, Auto, un ajuste preestablecido o Personalizado para fijar una temperatura en kelvin y un tinte de captura. Para un JPEG, HEIF, TIFF u otro archivo procesado, el bloque se oculta; use Editar Temp/Tinte."
           ],
           "steps": [
             "Activa Película, elige un stock y ajusta Cámara EV.",
@@ -2989,7 +3061,8 @@
         {
           "title": "Predeterminados para fotos sin editar",
           "paragraphs": [
-            "Los valores predeterminados de revelado se aplican solo a fotos que aún no tienen ediciones guardadas. Pueden activar Película por defecto, elegir un flujo de trabajo y un perfil de revelado neutro, y aplicar un ajuste preestablecido predeterminado."
+            "Los valores predeterminados de revelado se aplican solo a fotos que aún no tienen ediciones guardadas. Pueden activar Película por defecto, elegir un flujo de trabajo y un perfil de revelado neutro, y aplicar un ajuste preestablecido predeterminado.",
+            "Aplicar automáticamente el perfil de objetivo coincidente, activado de forma predeterminada, activa el perfil de objetivo en las fotos cuya cámara y objetivo coinciden exactamente con un solo perfil y cuyos ajustes de objetivo nunca se guardaron. Desactívelo para abrir todas las fotos con el perfil desactivado."
           ],
           "steps": [
             "Abra Configuración → Predeterminados de revelado.",
@@ -3422,5 +3495,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
+  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445"
 }

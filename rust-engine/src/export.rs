@@ -507,7 +507,7 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
                 });
             }
             if whites != 0.0 || blacks != 0.0 {
-                let white = 1.0 + whites * 0.35;
+                let white = 1.0 - whites * 0.35;
                 let black = blacks * -0.25;
                 let range = (white - black).max(1e-4);
                 for channel in pixel.iter_mut() {

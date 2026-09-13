@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -111,7 +112,7 @@
           "title": "Przeglądaj przetłumaczone edycje",
           "paragraphs": [
             "Ustawienia wywoływania są przybliżone i nie mogą zagwarantować wyrenderowanego wyglądu Lightroom. Nieobsługiwane lokalne maski, profile aparatu, maski ai .lrcat-data lub pakiety LUT oraz nieobsługiwane reguły inteligentnej kolekcji są zgłaszane jako pominięte. Zaimportowane ustawienia wywoływania wyłączają Film.",
-            "Foldery ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ta akcja nie stosuje ustawień wywoływania ani kadrowania. Okno wyników pokazuje postęp, liczbę zastosowanych zmian, pominięte ustawienia i błędy."
+            "Foldery ••• → Importuj sidecary… to osobna akcja służąca do odczytu obsługiwanych metadanych z sąsiednich sidecarów. Ustawienia wywoływania i kadrowanie stosuje tylko wtedy, gdy włączysz te opcje. Okno wyników pokazuje postęp, liczbę zastosowanych zmian, pominięte ustawienia i błędy."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Pierwsze kroki"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Przechodzisz z Lightroom",
+      "category": "Getting started",
+      "summary": "Co przenosi katalog Lightroom Classic i sidecary XMP, co nie ma ścieżki importu i czym różni się słownictwo.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migruj",
+        "migracja",
+        "XMP",
+        "sidecary",
+        "presety",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Co zostaje przeniesione",
+          "paragraphs": [
+            "Z katalogu Lightroom Classic: zdjęcia pozostają w swoich obecnych folderach i są tylko wskazywane, nie kopiowane. Importer odczytuje oceny, flagi, etykiety i pola IPTC; słowa kluczowe; kolekcje i obsługiwane kolekcje inteligentne; stosy; kopie wirtualne; kadrowanie i prostowanie; przybliżone ustawienia wywoływania; a na życzenie także historię edycji. Plik .lrcat nigdy nie jest zmieniany.",
+            "Z sidecarów XMP obok zdjęć: oceny gwiazdkowe, flagi wyboru i odrzucenia, standardowe etykiety kolorów, słowa kluczowe i opisowe pola IPTC. Foldery ••• → Importuj sidecary… może też zastosować ustawienia wywoływania i kadrowanie, gdy włączysz te opcje.",
+            "Obie drogi używają tego samego konwertera, więc ustawienie jest odwzorowywane tak samo niezależnie od tego, którędy trafia: tonalność, przesunięcia balansu bieli, tekstura, przejrzystość, usuwanie zamglenia, mikser kolorów, konwersja do czerni i bieli z jej mikserem, krzywe punktowe, siła winiety, wyostrzanie i redukcja szumów. Wartość spoza zakresu LightTable, na przykład ekspozycja poza ±5 EV, jest ograniczana i wymieniana w raporcie."
+          ]
+        },
+        {
+          "title": "Co nie ma ścieżki importu",
+          "paragraphs": [
+            "Albumów w chmurze i presetów zapisanych tylko w aplikacji chmurowej nie można odczytać. Najpierw zsynchronizuj je z Lightroom Classic lub zapisz presety jako pliki.",
+            "Maski AI i edycje generatywne, rozmycie obiektywu oraz ustawienia odszumiania to zastrzeżone etapy renderowania. Są zgłaszane jako pominięte, a nie przybliżane, podobnie jak profile aparatu, looki LUT, maski lokalne, retusz i identyfikatory profili obiektywów. Zaimportowane edycje zaczynają z wyłączonym Film, aby przekonwertowane ustawienia wywoływania były widoczne same."
+          ]
+        },
+        {
+          "title": "Słownictwo",
+          "paragraphs": [
+            "Kolekcje to tutaj również kolekcje; albumy z aplikacji chmurowej trafiają tu tylko przez katalog Lightroom Classic.",
+            "Flagi Wybierz i Odrzuć działają tak samo, a dolny pasek pokazuje je dla zaznaczonych zdjęć.",
+            "Wywoływanie nazywa się tu Edytuj. Film jest domyślnie wyłączony dla nowych i zaimportowanych zdjęć; włącz go, gdy chcesz nałożyć obróbkę filmową na edycję.",
+            "Profil aparatu w Edytuj wyświetla profile Adobe DCP zainstalowane na tym komputerze przez Camera Raw lub Lightroom albo folder profili aparatu wybrany w Ustawieniach. Profile działają w przybliżeniu i tylko na wywoływanie z wyłączonym Film."
+          ]
+        },
+        {
+          "title": "Zaimportuj swoje presety",
+          "paragraphs": [
+            "Presety → Zarządzaj… → Importuj… przyjmuje presety .xmp z Lightroom i Camera Raw, starsze presety .lrtemplate oraz style .costyle z Capture One. Po imporcie katalogu lub folderu konfiguracja oferuje też Importuj presety…. Każdy zaimportowany preset pokazuje przed zastosowaniem, ile ustawień odwzorowano, a które pominięto."
+          ],
+          "steps": [
+            "Otwórz Presety, kliknij Zarządzaj…, a następnie Importuj… i wybierz pliki presetów lub, w aplikacji na Maca, cały folder z presetami.",
+            "Przejrzyj raport konwersji, a następnie zastosuj preset z sekcji Twoje."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Pierwsze kroki"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Poproś inny edytor o zapisanie metadanych do sąsiednich plików XMP, a następnie wybierz Foldery ••• → Importuj sidecary…. Ta akcja odczytuje oryginały z katalogu, w tym wszystkie strony dużych bibliotek, do 100 000 zdjęć na jeden import. Wirtualne kopie zachowują własne metadane.",
             "Obsługiwane metadane obejmują oceny w gwiazdkach, znaczniki wybierz/odrzuć, standardowe etykiety kolorystyczne, płaskie i hierarchiczne słowa kluczowe oraz opisowe pola IPTC. Jawna pusta wartość czyści to pole; nieobecna wartość pozostawia je bez zmian. Niestandardowe etykiety kolorystyczne, które nie pasują do koloru LightTable, są zgłaszane jako pominięte.",
-            "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie nie są stosowane przez tę akcję menu."
+            "Importer odczytuje obsługiwane konwencje metadanych Photo Mechanic i digiKam. Każda aplikacja ma dodatkowe konwencje, więc przed wymianą całej biblioteki przejrzyj małą próbkę w obu aplikacjach. Ustawienia wywoływania i kadrowanie są stosowane tylko wtedy, gdy włączysz te opcje w oknie Importuj sidecary."
           ]
         },
         {
@@ -1108,7 +1171,7 @@
         {
           "title": "Zacznij od Jasny",
           "paragraphs": [
-            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego. Kontrast zmienia ich rozdzielenie."
+            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie."
           ],
           "steps": [
             "Ustaw Ekspozycję dla głównego obiektu.",
@@ -1161,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Zastosuj korekcje obiektywu i aberracji chromatycznej",
       "category": "Editing",
-      "summary": "Użyj dopasowanego lub ręcznie wybranego profilu obiektywu albo wprowadź ręczne korekty, gdy dokładny profil jest niedostępny.",
+      "summary": "Użyj dopasowanego lub ręcznie wybranego profilu obiektywu, skoryguj aberrację chromatyczną, usuń purpurowe i zielone obwódki albo wprowadź ręczne korekty, gdy dokładny profil jest niedostępny.",
       "keywords": [
         "obiektyw",
         "profil",
@@ -1170,6 +1233,9 @@
         "cieniowanie",
         "aberracja chromatyczna",
         "obelowanie",
+        "usuwanie obwódek",
+        "purpurowa obwódka",
+        "zielona obwódka",
         "czerwony cyjan",
         "niebieski żółty",
         "optyka"
@@ -1178,18 +1244,21 @@
         {
           "title": "Wybierz i zweryfikuj korektę",
           "paragraphs": [
-            "Rozwiń Korekcje obiektywu w Edytuj. Karta profilu wyjaśnia automatyczne dopasowanie aparat/obiektyw i to, czy dostępny jest użyteczny profil."
+            "Rozwiń Korekcje obiektywu w Edytuj. Karta profilu wyjaśnia automatyczne dopasowanie aparat/obiektyw i to, czy dostępny jest użyteczny profil. Panel podaje też wersję używanej bazy danych obiektywów oraz liczbę aparatów i obiektywów w niej; baza danych jest dostarczana z biblioteką obiektywów, a nie z LightTable.",
+            "Gdy aparat i obiektyw w metadanych zdjęcia dokładnie pasują do jednego profilu, Użyj dopasowanego profilu obiektywu jest włączone od razu po otwarciu zdjęcia i dotyczy także miniatur oraz eksportu. Dopasowanie wywnioskowane lub niejednoznaczne pozostaje wyłączone. Ustawienia → Domyślne ustawienia wywoływania → Automatycznie stosuj dopasowany profil obiektywu wyłącza to zachowanie; zdjęcia z zapisanymi ustawieniami obiektywu zachowują je w każdym przypadku."
           ],
           "steps": [
             "Odczytaj nazwę profilu i wyjaśnienie dopasowania.",
-            "Włącz Użyj dopasowanego profilu obiektywu, gdy profil jest dostępny, a następnie w razie potrzeby wybierz Koryguj zniekształcenia i Koryguj winietowanie obiektywu.",
+            "Włącz Użyj dopasowanego profilu obiektywu, gdy profil jest dostępny, a następnie w razie potrzeby wybierz Skoryguj zniekształcenie, Skoryguj cieniowanie obiektywu i Skoryguj aberrację chromatyczną. Każdy przełącznik jest niezależny, więc aberrację chromatyczną można skorygować bez zmiany geometrii.",
             "W razie potrzeby wybierz inną pozycję w Profil obiektywu i porównaj korektę z oryginałem.",
-            "Dopracuj ręczne sterowanie Zniekształcenie i Winietowanie. Dla barwnych obwódek dostosuj Czerwony / Cyjan i Niebieski / Żółty w Aberracji chromatycznej."
+            "Dopracuj ręczne sterowanie Zniekształcenie i Winietowanie. Dla barwnych obwódek dostosuj Czerwony / Cyjan i Niebieski / Żółty w Aberracji chromatycznej.",
+            "W sekcji Usuwanie obwódek zwiększ Purpurowy lub Zielony, aby usunąć ten kolor z silnie nasyconych pikseli przy ostrych krawędziach. Suwaki początku i końca odcienia określają zakres odcieni obsługiwany przez każdą kontrolkę; początek powyżej końca przechodzi przez czerwień."
           ],
           "tips": [
             "Brak dokładnie dopasowanego profilu obiektywu pozostawia dostępne ręczne sterowanie zniekształceniami i perspektywą.",
-            "Pola wyboru zniekształceń i winietowania profilu są włączane tylko wtedy, gdy wybrany profil udostępnia tę korekcję i profil jest włączony.",
+            "Pola wyboru zniekształceń, cieniowania i aberracji chromatycznej profilu są włączane tylko wtedy, gdy wybrany profil udostępnia tę korekcję i profil jest włączony.",
             "Profil wybrany ręcznie wymaga wzrokowego sprawdzenia; samo wybranie nie oznacza, że jest to dokładne dopasowanie.",
+            "Usuwanie obwódek traktuje kontur dużego fioletowego lub zielonego obiektu jak obwódkę. Zmniejsz wartość lub zawęź zakres odcieni, jeśli obiekt traci kolor wzdłuż krawędzi.",
             "Korekcje obiektywu i obwódek pozostają niedestrukcyjne podczas eksportu."
           ]
         }
@@ -1335,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edycja"
     },
@@ -2090,7 +2160,8 @@
         {
           "title": "Zneutralizuj dominantę koloru",
           "paragraphs": [
-            "Sekcja Kolor w Edytuj zawiera Temp i Odcień, a także pipetę balansu bieli obok Temp. To są końcowe sterowania panelu Edytuj."
+            "Sekcja Kolor w Edytuj zawiera Temp i Odcień, a także pipetę balansu bieli obok Temp. To są końcowe sterowania panelu Edytuj.",
+            "Dla oryginału RAW nad nimi znajduje się blok Balans bieli podczas przechwytywania z opcjami Jak wykonano, Auto, ustawienia wstępne i Niestandardowy dla temperatury w kelwinach i odcienia wykonania. Ponownie wywołuje dane RAW i działa przy włączonym lub wyłączonym Film; dla plików przetworzonych jest ukryty."
           ],
           "steps": [
             "Otwórz Edytuj i rozwiń Kolor.",
@@ -2108,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Edycja"
     },
@@ -2537,7 +2609,7 @@
           "title": "Sterowanie przechwytywaniem i wykańczaniem",
           "paragraphs": [
             "Aparat EV i balans bieli Capture działają przed ekspozycją filmu. Ekspozycja oraz Temp/Odcień w panelu Edytuj są końcowymi korektami później w przepływie pracy.",
-            "Balans bieli wykonania wymaga oryginału raw. Dla JPEG, HEIF, TIFF lub innego pliku przetworzonego użyj Edytuj Temp/Odcień."
+            "Balans bieli podczas przechwytywania znajduje się na górze sekcji Kolor dla oryginałów RAW i działa przy włączonym lub wyłączonym Film: wybierz Jak wykonano, Auto, ustawienie wstępne lub Niestandardowy, aby ustawić temperaturę w kelwinach i odcień wykonania. Dla plików JPEG, HEIF, TIFF lub innych przetworzonych blok jest ukryty; użyj Edytuj Temp/Odcień."
           ],
           "steps": [
             "Włącz Film, wybierz nośnik i dostosuj EV Aparat.",
@@ -2989,7 +3061,8 @@
         {
           "title": "Domyślne dla nieedytowanych zdjęć",
           "paragraphs": [
-            "Domyślne wywoływania stosują się tylko do zdjęć, które nie mają jeszcze zapisanych edycji. Mogą uruchamiać Film włączony, wybierać przepływ pracy i neutralny profil wywoływania oraz stosować domyślny preset."
+            "Domyślne wywoływania stosują się tylko do zdjęć, które nie mają jeszcze zapisanych edycji. Mogą uruchamiać Film włączony, wybierać przepływ pracy i neutralny profil wywoływania oraz stosować domyślny preset.",
+            "Automatycznie stosuj dopasowany profil obiektywu, domyślnie włączone, włącza profil obiektywu dla zdjęć, których aparat i obiektyw dokładnie pasują do jednego profilu i których ustawienia obiektywu nigdy nie zostały zapisane. Wyłącz, aby otwierać każde zdjęcie z wyłączonym profilem."
           ],
           "steps": [
             "Otwórz Ustawienia → Domyślne wywołania.",
@@ -3422,5 +3495,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
+  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445"
 }

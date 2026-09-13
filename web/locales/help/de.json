@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -111,7 +112,7 @@
           "title": "Übersetzte Bearbeitungen prüfen",
           "paragraphs": [
             "Develop-Einstellungen sind ungefähre Werte und können Lightrooms dargestellte Erscheinung nicht garantieren. Nicht unterstützte lokale Masken, Kameraprofiele, .lrcat-data-KI-Masken oder LUT-Nutzdaten sowie nicht unterstützte Regeln für intelligente Sammlungen werden als übersprungen gemeldet. Importierte Develop-Einstellungen schalten Film aus.",
-            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Diese Aktion wendet keine Entwicklungseinstellungen oder Zuschnitte an. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
+            "Ordner ••• → Sidecars importieren… ist eine separate Aktion zum Lesen unterstützter Metadaten aus benachbarten Sidecars. Entwicklungseinstellungen und Zuschnitt wendet sie nur an, wenn Sie diese Optionen einschalten. Der Ergebnisdialog zeigt Fortschritt, angewendete Anzahl, übersprungene Einstellungen und Fehler an."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Erste Schritte"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Umstieg von Lightroom",
+      "category": "Getting started",
+      "summary": "Was ein Lightroom-Classic-Katalog und XMP-Sidecars mitbringen, wofür es keinen Importweg gibt und wie sich die Begriffe unterscheiden.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "Migrieren",
+        "Migration",
+        "XMP",
+        "Sidecars",
+        "Vorgaben",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Was übernommen wird",
+          "paragraphs": [
+            "Aus einem Lightroom-Classic-Katalog: Fotos bleiben in ihren aktuellen Ordnern und werden referenziert, nicht kopiert. Der Importer liest Bewertungen, Markierungen, Etiketten und IPTC-Felder; Stichwörter; Sammlungen und unterstützte Smart-Sammlungen; Stapel; virtuelle Kopien; Zuschnitt und Begradigung; näherungsweise Entwicklungseinstellungen; und auf Wunsch den Bearbeitungsverlauf. Ihre .lrcat-Datei wird nie verändert.",
+            "Aus XMP-Sidecars neben Ihren Fotos: Sternebewertungen, Auswählen- und Ablehnen-Markierungen, Standard-Farbetiketten, Stichwörter und beschreibende IPTC-Felder. Ordner ••• → Sidecars importieren… kann auch Entwicklungseinstellungen und Zuschnitt anwenden, wenn Sie diese Optionen einschalten.",
+            "Beide Wege nutzen denselben Konverter, daher wird eine Einstellung auf beiden Wegen gleich abgebildet: Tonwerte, Weißabgleich-Verschiebungen, Textur, Klarheit, Dunst entfernen, der Farbmixer, die Schwarzweiß-Umwandlung mit ihrem Mixer, Punktkurven, Vignettenstärke, Schärfen und Rauschreduzierung. Ein Wert außerhalb des Bereichs von LightTable, etwa eine Belichtung jenseits von ±5 EV, wird begrenzt und im Bericht genannt."
+          ]
+        },
+        {
+          "title": "Wofür es keinen Importweg gibt",
+          "paragraphs": [
+            "Cloud-Alben und Vorgaben, die nur in der Cloud-App gespeichert sind, können nicht gelesen werden. Synchronisieren Sie sie zuerst in Lightroom Classic oder speichern Sie die Vorgaben als Dateien.",
+            "KI-Masken und generative Bearbeitungen, Objektivunschärfe und Entrauschen-Einstellungen sind proprietäre Renderschritte. Sie werden als übersprungen gemeldet statt angenähert, ebenso Kameraprofile, LUT-Looks, lokale Masken, Reparaturen und Objektivprofil-Kennungen. Importierte Bearbeitungen beginnen mit ausgeschaltetem Film, damit die umgewandelten Develop-Einstellungen für sich allein sichtbar sind."
+          ]
+        },
+        {
+          "title": "Begriffe",
+          "paragraphs": [
+            "Sammlungen heißen auch hier Sammlungen; die Alben der Cloud-App kommen nur über einen Lightroom-Classic-Katalog an.",
+            "Auswählen- und Ablehnen-Markierungen funktionieren gleich, und die untere Leiste zeigt sie für die ausgewählten Fotos.",
+            "Entwickeln heißt Bearbeiten. Film ist bei neuen und importierten Fotos standardmäßig aus; schalten Sie ihn ein, wenn Sie eine Filmbehandlung über der Bearbeitung möchten.",
+            "Kameraprofil in Bearbeiten listet die Adobe-DCP-Profile, die Camera Raw oder Lightroom auf diesem Computer installiert hat, oder den in den Einstellungen gewählten Ordner für Kameraprofile. Profile wirken näherungsweise und nur auf die Entwicklung bei ausgeschaltetem Film."
+          ]
+        },
+        {
+          "title": "Ihre Vorgaben importieren",
+          "paragraphs": [
+            "Vorgaben → Verwalten… → Importieren… akzeptiert .xmp-Vorgaben aus Lightroom und Camera Raw, ältere .lrtemplate-Vorgaben und Capture-One-Stile (.costyle). Nach einem Katalog- oder Ordnerimport bietet die Einrichtung ebenfalls Vorgaben importieren… an. Jede importierte Vorgabe zeigt vor dem Anwenden, wie viele Einstellungen abgebildet und welche übersprungen wurden."
+          ],
+          "steps": [
+            "Öffnen Sie Vorgaben, klicken Sie auf Verwalten…, dann auf Importieren… und wählen Sie die Vorgabendateien oder, in der Mac-App, einen ganzen Vorgabenordner.",
+            "Prüfen Sie den Umwandlungsbericht und wenden Sie die Vorgabe dann unter Deine an."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Erste Schritte"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Bitten Sie das andere Programm, seine Metadaten in benachbarte XMP-Dateien zu speichern, und wählen Sie dann Ordner ••• → Sidecars importieren…. Die Aktion liest die Originale des Katalogs, einschließlich aller Seiten großer Bibliotheken mit bis zu 100.000 Fotos pro Import. Virtuelle Kopien behalten ihre eigenen Metadaten.",
             "Unterstützte Metadaten umfassen Sternbewertungen, Auswahl/Ablehnung-Markierungen, standardisierte Farblabel, flache und hierarchische Stichwörter sowie beschreibende IPTC-Felder. Ein explizit leerer Wert löscht dieses Feld; ein fehlender Wert lässt es unverändert. Benutzerdefinierte Farblabel, die keinem LightTable-Farbton entsprechen, werden als übersprungen gemeldet.",
-            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden durch diese Menüaktion nicht angewendet."
+            "Der Importer liest unterstützte Metadatenkonventionen von Photo Mechanic und digiKam. Jede Anwendung hat zusätzliche Konventionen; überprüfen Sie daher vor dem Austausch einer ganzen Bibliothek ein kleines Beispiel in beiden Anwendungen. Entwicklungseinstellungen und Zuschnitt werden nur angewendet, wenn Sie diese Optionen im Dialog Sidecars importieren einschalten."
           ]
         },
         {
@@ -1108,7 +1171,7 @@
         {
           "title": "Mit Licht beginnen",
           "paragraphs": [
-            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an. Kontrast verändert deren Trennung."
+            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an: Erhöhen Sie Weißtöne, um die hellsten Töne aufzuhellen, erhöhen Sie Schwarztöne, um die dunkelsten anzuheben, und verringern Sie einen der beiden Werte, um dieses Ende wieder zurückzunehmen. Kontrast verändert deren Trennung."
           ],
           "steps": [
             "Belichtung für das Hauptmotiv festlegen.",
@@ -1161,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Objektiv- und chromatische-Abberationskorrekturen anwenden",
       "category": "Editing",
-      "summary": "Verwenden Sie ein abgeglichenes oder manuell ausgewähltes Objektivprofil, oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
+      "summary": "Verwenden Sie ein gematchtes oder manuell ausgewähltes Objektivprofil, korrigieren Sie chromatische Aberration, entfernen Sie violette und grüne Farbsäume oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
       "keywords": [
         "Objektiv",
         "Profil",
@@ -1170,6 +1233,9 @@
         "Abdunkeln",
         "chromatische Aberration",
         "Farbsäume",
+        "Farbsäume entfernen",
+        "violetter Farbsaum",
+        "grüner Farbsaum",
         "Rot-Cyan",
         "blau gelb",
         "optik"
@@ -1178,18 +1244,21 @@
         {
           "title": "Eine Korrektur auswählen und überprüfen",
           "paragraphs": [
-            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profikarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist."
+            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profilkarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist. Der Bereich nennt außerdem die Version der verwendeten Objektivdatenbank und wie viele Kameras und Objektive sie enthält; die Datenbank wird mit der Objektivbibliothek geliefert, nicht mit LightTable.",
+            "Wenn Kamera und Objektiv in den Fotometadaten genau zu einem Profil passen, ist Gematchtes Objektivprofil verwenden beim Öffnen des Fotos sofort aktiv und gilt auch für Miniaturen und Exporte. Ein abgeleiteter oder mehrdeutiger Treffer bleibt aus. Einstellungen → Standardwerte der Entwicklung → Gematchtes Objektivprofil automatisch anwenden schaltet dieses Verhalten ab; Fotos mit gespeicherten Objektiveinstellungen behalten diese in jedem Fall."
           ],
           "steps": [
             "Den Profilnamen und die Angleich-Erklärung lesen.",
-            "Aktivieren Sie Das angepasste Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann Verzeichnung korrigieren und Objektivabschattung korrigieren nach Bedarf.",
+            "Aktivieren Sie Gematchtes Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann nach Bedarf Verzeichnung korrigieren, Objektivabdunkeln korrigieren und Chromatische Aberration korrigieren. Jeder Schalter ist unabhängig, sodass sich die chromatische Aberration ohne Änderung der Geometrie korrigieren lässt.",
             "Wählen Sie bei Bedarf einen anderen Eintrag in Lens profile und vergleichen Sie die Korrektur mit dem Original.",
-            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an."
+            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an.",
+            "Erhöhen Sie unter Farbsäume entfernen Violett oder Grün, um diese Farbe aus stark gesättigten Pixeln neben harten Kanten zu entfernen. Die Regler für Farbton-Anfang und Farbton-Ende legen den Farbtonbereich fest, den jeder Regler behandelt; ein Anfang über seinem Ende läuft über Rot."
           ],
           "tips": [
             "Wird kein exaktes Objektivprofil gefunden, bleiben manuelle Steuerelemente für Verzeichnung und Perspektive verfügbar.",
-            "Die Kontrollkästchen für Profil-Verzeichnung und Abschattung sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
+            "Die Kontrollkästchen für Profil-Verzeichnung, Abschattung und chromatische Aberration sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
             "Ein manuell ausgewähltes Profil muss visuell geprüft werden; die Auswahl bedeutet nicht, dass es eine exakte Übereinstimmung ist.",
+            "Farbsäume entfernen behandelt den Umriss eines großen violetten oder grünen Motivs wie einen Farbsaum. Verringern Sie die Stärke oder verengen Sie den Farbtonbereich, wenn ein Motiv an seiner Kante Farbe verliert.",
             "Objektiv- und Farbsäume-Korrekturen bleiben bis zum Export nicht-destruktiv."
           ]
         }
@@ -1335,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -2090,7 +2160,8 @@
         {
           "title": "Farbstich neutralisieren",
           "paragraphs": [
-            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs."
+            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs.",
+            "Bei einem RAW-Original steht darüber ein Block Weißabgleich der Aufnahme mit Wie aufgenommen, Auto, Vorgaben und Benutzerdefiniert für eine Farbtemperatur in Kelvin und eine Aufnahmetönung. Er entwickelt die RAW-Daten neu und funktioniert mit ein- oder ausgeschaltetem Film; bei bearbeiteten Dateien ist er ausgeblendet."
           ],
           "steps": [
             "Bearbeiten öffnen und Farbe aufklappen.",
@@ -2108,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -2537,7 +2609,7 @@
           "title": "Aufnahme- und Abschlusssteuerungen",
           "paragraphs": [
             "Kamera-EV und Capture-Weißabgleich wirken vor der Filmbelichtung. Belichtung und Temp/Tönung im Bearbeiten-Bereich sind spätere Abschlusskorrekturen im Workflow.",
-            "Der Aufnahme-Weißabgleich erfordert ein RAW-Original. Für JPEG, HEIF, TIFF oder eine andere verarbeitete Datei verwenden Sie Bearbeiten Temp/Tönung."
+            "Der Weißabgleich der Aufnahme steht bei RAW-Originalen oben im Bereich Farbe und funktioniert mit ein- oder ausgeschaltetem Film: Wählen Sie Wie aufgenommen, Auto, eine Vorgabe oder Benutzerdefiniert, um eine Farbtemperatur in Kelvin und eine Aufnahmetönung festzulegen. Bei JPEG, HEIF, TIFF oder einer anderen bearbeiteten Datei ist der Block ausgeblendet; verwenden Sie Bearbeiten Temp/Tönung."
           ],
           "steps": [
             "Schalten Sie Film ein, wählen Sie einen Film und passen Sie Kamera EV an.",
@@ -2989,7 +3061,8 @@
         {
           "title": "Standardwerte für unbearbeitete Fotos",
           "paragraphs": [
-            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden."
+            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden.",
+            "Gematchtes Objektivprofil automatisch anwenden, standardmäßig aktiv, schaltet das Objektivprofil für Fotos ein, deren Kamera und Objektiv genau zu einem Profil passen und deren Objektiveinstellungen nie gespeichert wurden. Schalten Sie es aus, um jedes Foto mit deaktiviertem Profil zu öffnen."
           ],
           "steps": [
             "Einstellungen → Entwicklungs-Standardwerte öffnen.",
@@ -3422,5 +3495,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
+  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445"
 }

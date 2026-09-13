@@ -24,13 +24,25 @@ and approximate conversions from other editors.
 The converter maps controls with a defensible counterpart: exposure; basic
 tone; temperature and tint where the source carries usable relative data;
 vibrance and saturation; texture, clarity, and dehaze; point curves; the
-eight-band colour mixer; vignette amount; sharpening; luminance and colour noise
-reduction; and manual red/cyan or blue/yellow chromatic-aberration correction.
+eight-band colour mixer; black-and-white conversion with its eight-band grey
+mixer; vignette amount; sharpening; luminance and colour noise reduction; and
+manual red/cyan or blue/yellow chromatic-aberration correction.
+
+Lightroom's `ConvertToGrayscale` becomes the app's B&W treatment
+(`grade.monochrome`), and `GrayMixerRed` … `GrayMixerMagenta` become the
+luminance values of the matching HSL bands, which the B&W mixer shares with
+the colour mixer. While a source preset is in B&W, its colour luminance panel
+is inert there too, so the grey mixer values replace it. Grey mixer values in
+a colour preset are left alone. Exports of a B&W preset write the same keys.
 
 Ranges and colour engines differ, so a numeric round trip between products is
 not colourimetric proof. LightTable stores the imported source, mapped-control
 count, skipped operations, and conversion notes with each preset and displays
-that report before application.
+that report before application. Exposure is clamped to the app's own slider
+range (read from `grade.RANGES`, currently ±5 EV). A clamped value is applied
+and named in the report (`exposure beyond -5 to +5 clamped to range`), with the
+source value in the conversion notes; the same entry reaches per-photo reports
+from sidecar and catalog imports.
 
 ## What does not map across external formats
 
