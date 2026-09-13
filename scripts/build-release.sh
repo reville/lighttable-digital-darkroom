@@ -253,6 +253,18 @@ PYTHONPATH="$PAYLOAD" \
   "$ROOT/scripts/native_localization_sources.py" --bundle "$APP" \
   --catalogs "$PAYLOAD/web/locales"
 
+LEGACY_XCODE_CONFIG_HASH="$("$ROOT/scripts/build_fingerprint.py" --root "$ROOT" --packaging-only | sed -n 's/^LEGACY_XCODE_CONFIG_HASH=//p')"
+if [[ -z "$LEGACY_XCODE_CONFIG_HASH" ]]; then
+  echo "Could not establish Xcode packaging provenance" >&2
+  exit 1
+fi
+cat > "$PAYLOAD/packaging-provenance.env" <<PROVENANCE
+FORMAT=packaging-provenance-v1
+SOURCE_REVISION=$(git -C "$ROOT" rev-parse HEAD)
+SOURCE_DIRTY=$SOURCE_DIRTY
+XCODE_CONFIG_HASH=$LEGACY_XCODE_CONFIG_HASH
+PROVENANCE
+
 "$ROOT/scripts/sign-app.sh" "$APP" "$SIGN_IDENTITY"
 
 echo "Built self-contained application: $APP"
