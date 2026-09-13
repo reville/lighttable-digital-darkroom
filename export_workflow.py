@@ -6,6 +6,7 @@ from server_localization import T
 
 import re
 import hashlib
+import math
 import os
 from datetime import datetime
 from pathlib import Path
@@ -49,6 +50,27 @@ CAPTURE_TIME_POLICIES = ("require-offset", "local")
 
 WATERMARK_KINDS = ("text", "image")
 
+SIZE_MODES = ("full", "long-edge", "fit", "short-edge", "megapixels", "percent")
+SHARPEN_TARGETS = ("none", "screen", "matte", "glossy")
+SHARPEN_AMOUNTS = ("low", "standard", "high")
+TIFF_BIT_DEPTHS = (8, 16)
+SIZING_KEYS = ("sizeMode", "longEdge", "maxWidth", "maxHeight", "shortEdge",
+               "megapixels", "percent", "noEnlarge", "resolutionPpi")
+MIN_EDGE, MAX_EDGE = 1, 40000
+# Output sharpening: Gaussian radius in output pixels and the unsharp-mask
+# gain for each amount. Print radii are stated at 300 ppi and scale with the
+# recipe's resolution tag so a 150 ppi enlargement keeps the same physical halo.
+SHARPEN_RADIUS_PX = {"screen": 0.8, "matte": 1.6, "glossy": 1.0}
+SHARPEN_GAIN = {
+    "screen": {"low": 0.3, "standard": 0.5, "high": 0.8},
+    "matte": {"low": 0.5, "standard": 0.8, "high": 1.2},
+    "glossy": {"low": 0.4, "standard": 0.65, "high": 1.0},
+}
+SHARPEN_REFERENCE_PPI = 300
+DEFAULT_PRINT_PPI = 300
+JPEG_QUALITY_FLOOR = 40
+MAX_SIZE_SEARCH_ENCODES = 6
+
 WATERMARK_ANCHORS = (
     "top-left", "top-right", "bottom-left", "bottom-right", "center",
 )
@@ -83,6 +105,61 @@ def _clamped(value, default: float, low: float, high: float) -> float:
     if number != number:  # NaN never survives a round-trip through the UI.
         return default
     return max(low, min(high, number))
+
+
+def _optional_int(value, low: int, high: int) -> int | None:
+    """Parse an optional bounded integer; blank, zero, or junk means unset."""
+    try:
+        number = int(float(value))
+    except (TypeError, ValueError):
+        return None
+    if number <= 0:
+        return None
+    return max(low, min(high, number))
+
+
+def _optional_float(value, low: float, high: float) -> float | None:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    if number != number or number <= 0.0:
+        return None
+    return max(low, min(high, number))
+
+
+def clean_sharpen(raw) -> dict:
+    """Validate one output-sharpening spec."""
+    raw = raw if isinstance(raw, dict) else {}
+    target = str(raw.get("target", "none")).lower()
+    if target not in SHARPEN_TARGETS:
+        target = "none"
+    amount = str(raw.get("amount", "standard")).lower()
+    if amount not in SHARPEN_AMOUNTS:
+        amount = "standard"
+    return {"target": target, "amount": amount}
+
+
+def clean_sizing(raw: dict) -> dict:
+    """Validate the resize block; an old ``longEdge`` recipe keeps its meaning."""
+    raw = raw if isinstance(raw, dict) else {}
+    long_edge = _optional_int(raw.get("longEdge"), 320, MAX_EDGE)
+    mode = str(raw.get("sizeMode") or ("long-edge" if long_edge else "full")).lower()
+    if mode not in SIZE_MODES:
+        mode = "long-edge" if long_edge else "full"
+    if mode == "long-edge" and not long_edge:
+        mode = "full"
+    return {
+        "sizeMode": mode,
+        "longEdge": long_edge if mode == "long-edge" else None,
+        "maxWidth": _optional_int(raw.get("maxWidth"), MIN_EDGE, MAX_EDGE),
+        "maxHeight": _optional_int(raw.get("maxHeight"), MIN_EDGE, MAX_EDGE),
+        "shortEdge": _optional_int(raw.get("shortEdge"), MIN_EDGE, MAX_EDGE),
+        "megapixels": _optional_float(raw.get("megapixels"), 0.01, 1600.0),
+        "percent": _optional_float(raw.get("percent"), 1.0, 400.0),
+        "noEnlarge": _flag(raw.get("noEnlarge"), True),
+        "resolutionPpi": _optional_int(raw.get("resolutionPpi"), 1, 10000),
+    }
 
 
 def clean_watermark(raw) -> dict:
@@ -121,11 +198,13 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
         quality = max(1, min(100, int(raw.get("quality", 92))))
     except (TypeError, ValueError):
         quality = 92
+    sizing = clean_sizing(raw)
     try:
-        edge = int(raw.get("longEdge") or 0)
-        long_edge = max(320, min(40000, edge)) if edge else None
+        bit_depth = int(raw.get("bitDepth", 16))
     except (TypeError, ValueError):
-        long_edge = None
+        bit_depth = 16
+    if bit_depth not in TIFF_BIT_DEPTHS:
+        bit_depth = 16
     collision = str(raw.get("collision", "rename"))
     if collision not in ("rename", "skip", "overwrite"):
         collision = "rename"
@@ -146,7 +225,10 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
         "id": _text(raw.get("id"), "recipe", 100),
         "name": _text(raw.get("name"), "Export recipe", 80),
         "builtin": bool(builtin or raw.get("builtin", False)),
-        "format": format_name, "quality": quality, "longEdge": long_edge,
+        "format": format_name, "quality": quality, **sizing,
+        "sharpen": clean_sharpen(raw.get("sharpen")),
+        "maxFileKb": _optional_int(raw.get("maxFileKb"), 20, 1_000_000),
+        "bitDepth": bit_depth,
         "outputSpace": output_space,
         "destination": str(raw.get("destination", "film-exports"))[:500],
         "destinationMode": destination_mode,
@@ -295,9 +377,128 @@ def collision_path(path: Path, policy: str,
     raise ValueError(T("could not find a free name for {name}", name=f'{path.name}'))
 
 
+def _round_half_even(value: float) -> int:
+    """Python's float ``round`` is ties-to-even, matching Rust ``round_ties_even``."""
+    return int(round(float(value)))
+
+
+def resize_scale(width: int, height: int, sizing: dict) -> float:
+    """Return the linear scale a sizing block asks for; 1.0 means no resize.
+
+    Every mode is a single uniform scale computed in double precision from the
+    post-crop pixel size, so Python and the Rust delivery path agree exactly.
+    """
+    sizing = clean_sizing(sizing)
+    width, height = float(width), float(height)
+    mode = sizing["sizeMode"]
+    if mode == "long-edge" and sizing["longEdge"]:
+        scale = sizing["longEdge"] / max(width, height)
+    elif mode == "short-edge" and sizing["shortEdge"]:
+        scale = sizing["shortEdge"] / min(width, height)
+    elif mode == "fit" and (sizing["maxWidth"] or sizing["maxHeight"]):
+        limits = []
+        if sizing["maxWidth"]:
+            limits.append(sizing["maxWidth"] / width)
+        if sizing["maxHeight"]:
+            limits.append(sizing["maxHeight"] / height)
+        scale = min(limits)
+    elif mode == "megapixels" and sizing["megapixels"]:
+        scale = math.sqrt(sizing["megapixels"] * 1_000_000.0 / (width * height))
+    elif mode == "percent" and sizing["percent"]:
+        scale = sizing["percent"] / 100.0
+    else:
+        return 1.0
+    if sizing["noEnlarge"] and scale >= 1.0:
+        return 1.0
+    return scale
+
+
+def resize_target(width: int, height: int, sizing: dict) -> tuple[int, int]:
+    """Output pixel size for a sizing block; ``(width, height)`` when unchanged."""
+    scale = resize_scale(width, height, sizing)
+    if scale == 1.0:
+        return int(width), int(height)
+    return (max(1, _round_half_even(width * scale)),
+            max(1, _round_half_even(height * scale)))
+
+
+def rust_resize_request(sizing: dict) -> dict | None:
+    """The resize block the resident engine evaluates with the same geometry."""
+    sizing = clean_sizing(sizing)
+    if sizing["sizeMode"] == "full":
+        return None
+    return {
+        "mode": sizing["sizeMode"], "long_edge": sizing["longEdge"],
+        "width": sizing["maxWidth"], "height": sizing["maxHeight"],
+        "short_edge": sizing["shortEdge"], "megapixels": sizing["megapixels"],
+        "percent": sizing["percent"], "no_enlarge": sizing["noEnlarge"],
+    }
+
+
+def sharpen_parameters(sharpen, resolution_ppi=None) -> dict | None:
+    """Resolve a sharpening spec to ``{"radius": px, "amount": gain}``.
+
+    Screen output ignores the resolution tag; print targets scale their radius
+    with the delivered ppi so the halo keeps its physical width on paper.
+    """
+    spec = clean_sharpen(sharpen)
+    if spec["target"] == "none":
+        return None
+    radius = SHARPEN_RADIUS_PX[spec["target"]]
+    if spec["target"] != "screen":
+        ppi = _optional_int(resolution_ppi, 1, 10000) or DEFAULT_PRINT_PPI
+        radius = radius * ppi / SHARPEN_REFERENCE_PPI
+    radius = max(0.3, min(4.0, radius))
+    return {"radius": float(radius), "amount": float(SHARPEN_GAIN[spec["target"]][spec["amount"]])}
+
+
+def gaussian_taps(radius: float) -> list[float]:
+    """Normalized one-dimensional Gaussian taps shared with the Rust encoder."""
+    sigma = max(0.3, float(radius))
+    half = min(12, math.ceil(3.0 * sigma))
+    taps = [math.exp(-float(offset * offset) / (2.0 * sigma * sigma))
+            for offset in range(-half, half + 1)]
+    total = sum(taps)
+    return [tap / total for tap in taps]
+
+
+def output_sharpen(rgb, parameters: dict | None):
+    """Unsharp-mask luminance after resizing; returns the input when disabled.
+
+    Luminance is Rec. 709 weighted on the encoded values, blurred with a
+    separable Gaussian using edge replication, and the gained difference is
+    added to every channel. The resident engine runs the identical steps.
+    """
+    if not parameters:
+        return rgb
+    import numpy as np
+
+    base = np.asarray(rgb, dtype=np.float32)
+    if base.ndim != 3 or base.shape[2] < 3 or base.shape[0] < 1 or base.shape[1] < 1:
+        return rgb
+    taps = np.asarray(gaussian_taps(parameters["radius"]), dtype=np.float32)
+    half = len(taps) // 2
+    luma = (base[..., 0] * np.float32(0.2126) + base[..., 1] * np.float32(0.7152)
+            + base[..., 2] * np.float32(0.0722)).astype(np.float32)
+    padded = np.pad(luma, ((0, 0), (half, half)), mode="edge")
+    width = luma.shape[1]
+    horizontal = np.zeros_like(luma)
+    for index, tap in enumerate(taps):
+        horizontal += padded[:, index:index + width] * tap
+    padded = np.pad(horizontal, ((half, half), (0, 0)), mode="edge")
+    height = luma.shape[0]
+    blurred = np.zeros_like(luma)
+    for index, tap in enumerate(taps):
+        blurred += padded[index:index + height, :] * tap
+    delta = ((luma - blurred) * np.float32(parameters["amount"]))[..., None]
+    result = base.copy()
+    result[..., :3] = np.clip(base[..., :3] + delta, 0.0, 1.0)
+    return result.astype(np.float32, copy=False)
+
+
 def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
-                      long_edge=None) -> tuple[int, int]:
-    """Mirror export's rotation, pixel-rounded crop, then downsize geometry."""
+                      long_edge=None, sizing: dict | None = None) -> tuple[int, int]:
+    """Mirror export's rotation, pixel-rounded crop, then resize geometry."""
     if int(round(float(rotate) / 90)) % 2:
         width, height = height, width
     if crop:
@@ -307,10 +508,9 @@ def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
         height = min(height - y0, max(1, int(round(crop["h"] * height))))
     if width < 1 or height < 1:
         raise ValueError(T("Crop has no output pixels"))
-    if long_edge and max(width, height) > int(long_edge):
-        scale = int(long_edge) / max(width, height)
-        width, height = max(1, round(width * scale)), max(1, round(height * scale))
-    return width, height
+    if sizing is None:
+        sizing = {"longEdge": long_edge}
+    return resize_target(width, height, sizing)
 
 
 def _watermark_font(app_root: Path, size: float):

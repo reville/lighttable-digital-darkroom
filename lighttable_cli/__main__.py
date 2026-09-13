@@ -323,7 +323,21 @@ def build_parser() -> argparse.ArgumentParser:
     run_export.add_argument(
         "--format", choices=["jpeg", "heif", "png", "tif"], default="jpeg")
     run_export.add_argument("--quality", type=int, default=92)
+    run_export.add_argument("--size-mode", choices=["full", "long-edge", "fit", "short-edge", "megapixels", "percent"],
+                            help="Resize rule; defaults to long-edge when --long-edge is given, otherwise full")
     run_export.add_argument("--long-edge", type=int)
+    run_export.add_argument("--max-width", type=int, help="Fit within this width (size-mode fit)")
+    run_export.add_argument("--max-height", type=int, help="Fit within this height (size-mode fit)")
+    run_export.add_argument("--short-edge", type=int)
+    run_export.add_argument("--megapixels", type=float)
+    run_export.add_argument("--percent", type=float)
+    run_export.add_argument("--enlarge", action="store_true", help="Allow upsizing smaller photos to the requested size")
+    run_export.add_argument("--ppi", type=int, help="Resolution tag written to the file, in pixels per inch")
+    run_export.add_argument("--sharpen", choices=["none", "screen", "matte", "glossy"], default="none",
+                            help="Output sharpening target, applied after resizing")
+    run_export.add_argument("--sharpen-amount", choices=["low", "standard", "high"], default="standard")
+    run_export.add_argument("--max-file-kb", type=int, help="JPEG only: lower the quality until the file fits")
+    run_export.add_argument("--bit-depth", type=int, choices=[8, 16], default=16, help="TIFF sample depth")
     run_export.add_argument("--no-wait", action="store_true")
     export.add_parser("status")
     export.add_parser("recipes")
@@ -832,9 +846,17 @@ def dispatch(client: Client, args):
         if args.action == "recipes": return client.get("/api/export-recipes")
         names = resolve_many(client, args.refs, where=args.where,
             names_from=args.names_from, limit=args.limit, sort=args.sort)
+        size_mode = args.size_mode or ("long-edge" if args.long_edge else "full")
         body = {"which": args.which, "destination": args.destination,
                 "format": args.format, "quality": args.quality,
-                "longEdge": args.long_edge, "destinationMode": args.destination_mode,
+                "sizeMode": size_mode, "longEdge": args.long_edge,
+                "maxWidth": args.max_width, "maxHeight": args.max_height,
+                "shortEdge": args.short_edge, "megapixels": args.megapixels,
+                "percent": args.percent, "noEnlarge": not args.enlarge,
+                "resolutionPpi": args.ppi,
+                "sharpen": {"target": args.sharpen, "amount": args.sharpen_amount},
+                "maxFileKb": args.max_file_kb, "bitDepth": args.bit_depth,
+                "destinationMode": args.destination_mode,
                 "preserveCaptureTime": args.preserve_capture_time,
                 "captureTimePolicy": args.capture_time_policy,
                 "metadata": args.metadata, "sidecar": not args.no_sidecar}

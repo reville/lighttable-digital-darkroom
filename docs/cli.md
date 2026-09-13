@@ -45,6 +45,16 @@ computer's timezone at the capture date, including daylight saving time.
 `--metadata` selects all, all-except-location, copyright, or none;
 `--no-sidecar` omits the delivery recipe sidecar.
 
+Sizing is one rule: `--long-edge`, `--short-edge`, `--max-width` and/or
+`--max-height` (fit within), `--megapixels`, or `--percent`, selected by
+`--size-mode` (a bare `--long-edge` implies `long-edge`). Photos smaller than
+the rule stay at full size unless `--enlarge` is given. `--ppi` writes only the
+resolution tag. `--sharpen screen|matte|glossy` with `--sharpen-amount
+low|standard|high` applies output sharpening after the resize; print targets
+scale the radius with `--ppi`. `--max-file-kb` lowers JPEG quality (never below
+40, at most six encodes) until the file fits, and warns if it cannot.
+`--bit-depth 8` writes 8-bit TIFF; PNG and HEIF keep their 8-bit output.
+
 Use `--no-wait` to get a job ID, then `lighttable jobs cancel ID` to stop it.
 Cancellation stops queueing and waits for active work to clean up. Completed
 outputs survive. The job becomes terminal only after cleanup; its result
@@ -84,7 +94,7 @@ Ambiguous automatic matches and unavailable overrides stay uncorrected.
 | `import` | `/api/import/catalog`, `/api/import/report`, `/api/import/status`, `/api/import/sidecars`, `/api/sidecars/write`, `/api/sidecars/status` |
 | `ingest` | `/api/ingest`, `/api/ingest/scan`, `/api/ingest/status`, `/api/ingest/sources`, `/api/ingest/cancel` |
 | `watch` | `/api/watch`, `/api/watch/status` |
-| `merge` | `/api/merge`, `/api/merge/status` |
+| `merge` | `/api/merge`, `/api/merge/status`, `/api/merge/preview` |
 | `denoise / enhance` | `/api/denoise`, `/api/denoise/status`, `/api/denoise/cancel`, `/api/enhance`, `/api/enhance/capabilities` |
 | `external-edit` | `/api/edit-external`, `/api/edit-external/status` |
 | `files` | `/api/photos/move`, `/api/photos/rename`, `/api/photos/trash`, `/api/photos/reveal`, `/api/catalog/duplicates` |
