@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Groen",
     "Green label": "Groene label",
     "Greens": "Groenen",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn.",
     "Group and find people": "Personen groeperen en vinden",
     "Group photos into collections": "Foto's groeperen in collecties",
     "Group similar faces and search names you add.": "Vergelijk vergelijkbare gezichten en zoek naar namen die u toevoegt.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW-originelen moeten worden gerenderd als aangepaste TIFF’s. Bewerkt origineel is niet beschikbaar als de selectie een RAW-bestand bevat. Voor verwerkte foto’s opent die optie het origineel in plaats van een aangepaste TIFF voor te bereiden.",
     "RAW originals only.": "Alleen RAW-originelen.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW-foto's kunnen regelaars voor sensorruisonderdrukking en geleerd ruis verminderen tonen. Geleerd ruis verminderen draait lokaal wanneer u op Ruis verminderen toepassen klikt; het verplaatsen van Sterkte voert het niet live uit.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Het kan even duren voordat de eerste foto die nog niet in de cache staat verschijnt. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
     "RAW preview could not finish. Try the photo again.": "RAW-voorbeeld kon niet worden voltooid. Probeer de foto opnieuw.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "cameraprofiel",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (ontbreekt)"
+    "{fileName} (missing)": "{fileName} (ontbreekt)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering."
   },
   "plurals": {
     " · {count} paired file linked": {

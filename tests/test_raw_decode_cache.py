@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import tempfile
 import threading
+import time
 import unittest
 from unittest import mock
 
@@ -153,7 +154,94 @@ class CacheBudgetTests(unittest.TestCase):
             np.testing.assert_array_equal(b.result(2), np.ones(3))
 
 
+    def test_live_waiter_adopts_a_superseded_owner_decode(self):
+        # A prefetch is cancelled by the navigation it anticipated. While the
+        # navigation's own request waits on that decode, it must finish once
+        # and serve both, instead of restarting the demosaic from scratch.
+        cache = DecodedRawCache(100)
+        stale = threading.Event()
+        started, waiter_arrived = threading.Event(), threading.Event()
+        builds = []
+        def owner():
+            with runtime.cancellation(stale.is_set):
+                def build():
+                    builds.append("owner")
+                    started.set()
+                    self.assertTrue(waiter_arrived.wait(2))
+                    runtime.check_cancel()  # LibRaw-style mid-decode check
+                    return np.ones(3)
+                return cache.get_or_build("a", build, runtime.check_cancel)
+        def waiter():
+            with runtime.cancellation(lambda: False):
+                return cache.get_or_build(
+                    "a", lambda: builds.append("waiter") or np.zeros(3), runtime.check_cancel)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            a = pool.submit(owner)
+            self.assertTrue(started.wait(1))
+            stale.set()
+            b = pool.submit(waiter)
+            for _ in range(200):
+                if cache.waiting("a"):
+                    break
+                time.sleep(0.005)
+            self.assertTrue(cache.waiting("a"))
+            waiter_arrived.set()
+            np.testing.assert_array_equal(b.result(2), np.ones(3))
+            with self.assertRaises(runtime.RawDecodeCancelled):
+                a.result(2)
+        self.assertEqual(builds, ["owner"])
+        self.assertFalse(cache.waiting("a"))
+        self.assertEqual(cache.stats()["entries"], 1)
+
+    def test_superseded_owner_without_waiters_still_cancels(self):
+        cache = DecodedRawCache(100)
+        stale = threading.Event()
+        def build():
+            stale.set()
+            runtime.check_cancel()
+            return np.ones(3)
+        with runtime.cancellation(stale.is_set):
+            with self.assertRaises(runtime.RawDecodeCancelled):
+                cache.get_or_build("a", build, runtime.check_cancel)
+        self.assertEqual(cache.stats()["entries"], 0)
+        self.assertFalse(cache.waiting("a"))
+
+    def test_unretained_decode_serves_the_request_without_entering_the_cache(self):
+        cache = DecodedRawCache(100)
+        pixels = cache.get_or_build("a", lambda: np.ones(3), lambda: None, retain=False)
+        np.testing.assert_array_equal(pixels, np.ones(3))
+        self.assertEqual(cache.stats()["entries"], 0)
+        self.assertEqual(cache.stats()["bytes"], 0)
+
+
+class ImportWarmupDecodeTests(SharedCaptureTests):
+    def test_import_warmup_decode_is_not_retained_but_later_requests_are(self):
+        with runtime.unretained_pixels():
+            color_pipeline.decode_raw(self.source, max_width=20)
+        self.assertEqual(color_pipeline.RAW_DEMOSAIC_CACHE.stats()["entries"], 0)
+        color_pipeline.decode_raw(self.source, max_width=20)
+        self.assertEqual(color_pipeline.RAW_DEMOSAIC_CACHE.stats()["entries"], 1)
+        self.assertEqual(self.decode.call_count, 2)
+
+
 class CooperativeCancellationTests(unittest.TestCase):
+    def test_retained_decode_defers_native_cancel_until_no_consumer_waits(self):
+        cancelled, native_cancelled = threading.Event(), threading.Event()
+        waiting = threading.Event()
+        waiting.set()
+        raw = SimpleNamespace(request_cancel=native_cancelled.set)
+        decoder = SimpleNamespace(LIGHTTABLE_RAW_CANCEL=1)
+        with runtime.cancellation(cancelled.is_set), runtime.retained(waiting.is_set):
+            with self.assertRaises(runtime.RawDecodeCancelled):
+                with runtime.interruptible(raw, decoder):
+                    cancelled.set()
+                    self.assertFalse(native_cancelled.wait(0.1))
+                    self.assertFalse(runtime.is_cancelled())
+                    waiting.clear()
+                    self.assertTrue(native_cancelled.wait(1))
+                    self.assertTrue(runtime.is_cancelled())
+        self.assertFalse(runtime.is_cancelled())
+
     def test_active_native_decode_stops_without_retry_or_partial_cache(self):
         cancelled, native_cancelled, started = (threading.Event() for _ in range(3))
         class NativeError(Exception):

@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Les aperçus de pellicule incluent les retouches de la photo actuelle. Parcourir et fermer la fenêtre d’aperçu n’appliquent pas une pellicule ; choisir un aperçu, oui.",
             "Une pellicule décrit le processus de pellicule physique. Un préréglage d’édition peut contenir des ajustements enregistrés plus larges, et peut aussi inclure des réglages de Film. Le menu Sortie dans Film choisit une recette de numérisation ou d’impression ; il n’exporte pas de fichier.",
-            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible."
+            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. Lorsque Film est activé, la première image d’une photo non mise en cache utilise l’aperçu intégré de l’appareil photo ; la conversion précise la remplace peu après et, d’ici là, l’état indique « Affinage du RAW… ». La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible."
           ],
           "tips": [
             "Si une pellicule n’est pas disponible, elle peut nécessiter le moteur GPU. La disponibilité des moteurs est indiquée dans Réglages → Performance."
@@ -3214,8 +3214,8 @@
         {
           "title": "Vérifier ce qui a terminé le rendu",
           "paragraphs": [
-            "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts.",
-            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
+            "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts. Un aperçu standard de chaque RAW est également préparé afin que la photo s’ouvre sans attendre un décodage complet.",
+            "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. Lorsque Film est activé, la première image d’une photo non mise en cache utilise l’aperçu intégré de l’appareil photo ; la conversion précise la remplace peu après et, d’ici là, l’état indique « Affinage du RAW… ». La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
             "Lorsque vous changez de photo avec le zoom activé, LightTable affiche immédiatement un aperçu correspondant en cache, s’il est disponible. Les détails plus nets se chargent en arrière-plan et les photos voisines sont préchargées pour votre niveau de zoom.",
             "Le zoom conserve l’aperçu le plus net disponible pendant le chargement des détails supplémentaires. Le dézoom réutilise cet aperçu. À 1:1, consultez l’infobulle du bouton avant d’évaluer les détails fins.",
             "Si l'infobulle du bouton 1:1 indique une taille de pixel d'aperçu inférieure à celle de la source, vous voyez un aperçu livré plus petit. La résolution automatique adapte l'affichage et augmente sa demande pour la visualisation zoomée ; les sources très grandes peuvent dépasser la limite de demande de l'aperçu.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }
