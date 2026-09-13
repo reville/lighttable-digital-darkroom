@@ -752,40 +752,56 @@ def apply_manual_optics(image: np.ndarray, optics: dict) -> np.ndarray:
                 optics["vignette"], optics["flipHorizontal"],
                 optics["flipVertical"])):
         return image
+    import color_pipeline
+
     height, width = image.shape[:2]
-    yy, xx = np.mgrid[0:height, 0:width].astype(np.float32)
     half = max(min(width, height) / 2.0, 1.0)
-    nx = (xx - (width - 1) / 2.0) / half / scale
-    ny = (yy - (height - 1) / 2.0) / half / scale
-    if optics["flipHorizontal"]:
-        nx = -nx
-    if optics["flipVertical"]:
-        ny = -ny
     cosine, sine = math.cos(rotation), math.sin(rotation)
-    rx = cosine * nx - sine * ny
-    ry = sine * nx + cosine * ny
-    px = rx * (1.0 + vertical * 0.45 * ry)
-    py = ry * (1.0 + horizontal * 0.45 * rx)
-    radius2 = px * px + py * py
-    factor = 1.0 + distortion * 0.18 * radius2
-    if any((distortion, vertical, horizontal, rotation, scale - 1.0)):
-        source_x = px * factor * half + (width - 1) / 2.0
-        source_y = py * factor * half + (height - 1) / 2.0
-        warped = np.stack([
-            _map_coordinates()(image[..., channel], [source_y, source_x],
-                               order=1, mode="constant", cval=0.0)
-            for channel in range(3)
-        ], axis=2)
+    warp = any((distortion, vertical, horizontal, rotation, scale - 1.0))
+    if warp:
+        channels = [np.ascontiguousarray(image[..., channel]) for channel in range(3)]
+        result = np.empty((height, width, 3), dtype=np.float32)
     else:
         # Discrete flips need no interpolation. Reconstructing their integer
         # coordinates through normalized float32 can put a border just below
         # zero and sample black; it also softens unchanged source pixels.
-        warped = image[::(-1 if optics["flipVertical"] else 1),
-                       ::(-1 if optics["flipHorizontal"] else 1)].copy()
-    if optics["vignette"]:
-        radial = np.clip(radius2 / 2.0, 0.0, 1.5)
-        warped *= (1.0 + optics["vignette"] * 0.8 * radial)[..., None]
-    return np.clip(warped, 0.0, 1.0).astype(np.float32)
+        flipped = image[::(-1 if optics["flipVertical"] else 1),
+                        ::(-1 if optics["flipHorizontal"] else 1)]
+        result = np.empty(flipped.shape, dtype=np.float32)
+
+    # Every value below depends only on its own output pixel, so bands of
+    # rows render in parallel and assemble the single-pass result exactly.
+    def render_band(start: int, stop: int) -> None:
+        yy, xx = np.mgrid[start:stop, 0:width].astype(np.float32)
+        nx = (xx - (width - 1) / 2.0) / half / scale
+        ny = (yy - (height - 1) / 2.0) / half / scale
+        if optics["flipHorizontal"]:
+            nx = -nx
+        if optics["flipVertical"]:
+            ny = -ny
+        rx = cosine * nx - sine * ny
+        ry = sine * nx + cosine * ny
+        px = rx * (1.0 + vertical * 0.45 * ry)
+        py = ry * (1.0 + horizontal * 0.45 * rx)
+        radius2 = px * px + py * py
+        factor = 1.0 + distortion * 0.18 * radius2
+        if warp:
+            source_x = px * factor * half + (width - 1) / 2.0
+            source_y = py * factor * half + (height - 1) / 2.0
+            warped = np.stack([
+                _map_coordinates()(channel, [source_y, source_x],
+                                   order=1, mode="constant", cval=0.0)
+                for channel in channels
+            ], axis=2)
+        else:
+            warped = flipped[start:stop].copy()
+        if optics["vignette"]:
+            radial = np.clip(radius2 / 2.0, 0.0, 1.5)
+            warped *= (1.0 + optics["vignette"] * 0.8 * radial)[..., None]
+        result[start:stop] = np.clip(warped, 0.0, 1.0).astype(np.float32)
+
+    color_pipeline.run_row_bands(height, render_band)
+    return result
 
 
 def apply_base(image: np.ndarray, optics=None, heals=None,

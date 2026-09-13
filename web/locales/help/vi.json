@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Bản xem trước phim bao gồm các chỉnh sửa của ảnh hiện tại. Duyệt và đóng cửa sổ xem trước không áp dụng một phim; chọn một bản xem trước thì có.",
             "Một film stock mô tả quy trình phim vật lý. Một preset chỉnh sửa có thể chứa các điều chỉnh đã lưu rộng hơn, và cũng có thể bao gồm các thiết lập Film. Menu Output bên trong Film chọn một recipe quét hoặc in; nó không xuất tệp.",
-            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị."
           ],
           "tips": [
             "Nếu một phim không khả dụng, có thể cần đến công cụ GPU. Tình trạng khả dụng của công cụ được hiển thị trong Cài đặt → Hiệu năng."
@@ -3214,8 +3214,8 @@
         {
           "title": "Kiểm tra những gì đã kết xuất xong",
           "paragraphs": [
-            "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng.",
-            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
+            "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng. Ảnh xem trước tiêu chuẩn của mỗi ảnh RAW cũng được chuẩn bị sẵn để ảnh mở ra mà không phải chờ giải mã đầy đủ.",
+            "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
             "Khi chuyển ảnh trong lúc phóng to, LightTable hiển thị ngay bản xem trước phù hợp trong bộ nhớ đệm nếu có. Chi tiết sắc nét hơn được tải trong nền, còn các ảnh lân cận được tải trước theo mức thu phóng của bạn.",
             "Khi phóng to, bản xem trước sắc nét nhất hiện có được giữ lại trong lúc tải thêm chi tiết. Khi thu nhỏ, bản xem trước đó được dùng lại. Ở tỷ lệ 1:1, hãy kiểm tra chú giải của nút trước khi đánh giá chi tiết nhỏ.",
             "Nếu chú giải công cụ của nút 1:1 báo kích thước pixel bản xem trước nhỏ hơn nguồn, nghĩa là bạn đang thấy một bản xem trước được cung cấp có kích thước nhỏ hơn. Độ phân giải tự động khớp với màn hình và tăng yêu cầu khi xem phóng to; các nguồn rất lớn có thể vượt quá giới hạn yêu cầu bản xem trước.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }

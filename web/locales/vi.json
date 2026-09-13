@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Xanh lá",
     "Green label": "Nhãn xanh lá",
     "Greens": "Xanh lá",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng.",
     "Group and find people": "Nhóm và tìm người",
     "Group photos into collections": "Nhóm ảnh vào các bộ sưu tập",
     "Group similar faces and search names you add.": "Nhóm các khuôn mặt tương tự và tìm các tên bạn thêm vào.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Ảnh gốc RAW phải được render thành TIFF đã chỉnh sửa. Original đã xử lý không khả dụng nếu vùng chọn chứa một tệp RAW. Với ảnh đã xử lý, tùy chọn đó sẽ mở ảnh gốc thay vì chuẩn bị một TIFF đã chỉnh sửa.",
     "RAW originals only.": "Chỉ Ảnh RAW gốc.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Ảnh RAW có thể hiển thị các điều khiển Giảm nhiễu cảm biến và Khử nhiễu học máy. Khử nhiễu học máy chạy cục bộ khi bạn nhấn Áp dụng khử nhiễu; di chuyển Mức không chạy nó trực tiếp.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Ảnh đầu tiên chưa được lưu vào bộ nhớ đệm có thể mất một chút thời gian để xuất hiện. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
     "RAW preview could not finish. Try the photo again.": "Xem trước RAW không thể hoàn tất. Hãy thử lại ảnh.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "hồ sơ máy ảnh",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (thiếu)"
+    "{fileName} (missing)": "{fileName} (thiếu)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Ảnh RAW được mở với kết quả xử lý của LightTable, kể cả khi tắt Phim. Khi bật Phim, khung hình đầu tiên của ảnh chưa được lưu vào bộ nhớ đệm dùng ảnh xem trước nhúng sẵn của máy ảnh; bản chuyển đổi chính xác sẽ thay thế nó ngay sau đó, và cho đến lúc ấy trạng thái hiển thị “Đang tinh chỉnh RAW…”. Thanh tiến trình hiển thị các giai đoạn xử lý đã hoàn tất và biến mất khi ảnh hiển thị.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Bản xem trước trong lưới được chuẩn bị ở chế độ nền khi bạn thêm hoặc quét lại thư mục. Bản xem trước lớn của ảnh gốc xuất hiện trước; bản xem trước có các chỉnh sửa của bạn sẽ thay thế khi sẵn sàng. Ảnh xem trước tiêu chuẩn của mỗi ảnh RAW cũng được chuẩn bị sẵn để ảnh mở ra mà không phải chờ giải mã đầy đủ."
   },
   "plurals": {
     " · {count} paired file linked": {

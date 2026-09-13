@@ -198,6 +198,59 @@ class LocalEditTests(unittest.TestCase):
         self.assertTrue(np.isfinite(transformed).all())
         self.assertGreater(float(np.abs(transformed - self.image).mean()), 0.01)
 
+    def test_banded_manual_optics_match_the_single_pass_render(self):
+        import math
+        from scipy.ndimage import map_coordinates
+
+        def single_pass(image, optics):
+            optics = edits.clean_optics(optics)
+            height, width = image.shape[:2]
+            yy, xx = np.mgrid[0:height, 0:width].astype(np.float32)
+            half = max(min(width, height) / 2.0, 1.0)
+            nx = (xx - (width - 1) / 2.0) / half / optics["scale"]
+            ny = (yy - (height - 1) / 2.0) / half / optics["scale"]
+            if optics["flipHorizontal"]:
+                nx = -nx
+            if optics["flipVertical"]:
+                ny = -ny
+            rotation = math.radians(optics["rotate"])
+            cosine, sine = math.cos(rotation), math.sin(rotation)
+            rx = cosine * nx - sine * ny
+            ry = sine * nx + cosine * ny
+            px = rx * (1.0 + optics["vertical"] * 0.45 * ry)
+            py = ry * (1.0 + optics["horizontal"] * 0.45 * rx)
+            radius2 = px * px + py * py
+            factor = 1.0 + optics["distortion"] * 0.18 * radius2
+            if any((optics["distortion"], optics["vertical"], optics["horizontal"],
+                    rotation, optics["scale"] - 1.0)):
+                warped = np.stack([map_coordinates(
+                    image[..., channel],
+                    [py * factor * half + (height - 1) / 2.0,
+                     px * factor * half + (width - 1) / 2.0],
+                    order=1, mode="constant", cval=0.0) for channel in range(3)], axis=2)
+            else:
+                warped = image[::(-1 if optics["flipVertical"] else 1),
+                               ::(-1 if optics["flipHorizontal"] else 1)].copy()
+            if optics["vignette"]:
+                warped *= (1.0 + optics["vignette"] * 0.8
+                           * np.clip(radius2 / 2.0, 0.0, 1.5))[..., None]
+            return np.clip(warped, 0.0, 1.0).astype(np.float32)
+
+        rng = np.random.default_rng(12)
+        rgb = rng.random((331, 257, 3), dtype=np.float32)
+        rgba = rng.random((97, 64, 4), dtype=np.float32)
+        for image, optics in (
+                (rgb, {"distortion": 0.4, "vertical": 0.3, "horizontal": -0.2,
+                       "rotate": 7.5, "scale": 1.1, "vignette": -0.4}),
+                (rgb, {"vignette": 0.6}),
+                (rgb, {"flipHorizontal": True, "vignette": 0.3}),
+                (rgba, {"flipVertical": True, "flipHorizontal": True}),
+                (rgba, {"rotate": -3.0})):
+            expected = single_pass(image, optics)
+            rendered = edits.apply_manual_optics(image, optics)
+            self.assertEqual(rendered.shape, expected.shape, optics)
+            self.assertEqual(rendered.tobytes(), expected.tobytes(), optics)
+
     def test_manual_optics_flips_match_pixel_geometry(self):
         horizontal = edits.apply_manual_optics(
             self.image, {"flipHorizontal": True})

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Zielony",
     "Green label": "Zielona etykieta",
     "Greens": "Zielone",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe.",
     "Group and find people": "Grupuj i znajdź osoby",
     "Group photos into collections": "Grupuj zdjęcia w kolekcje",
     "Group similar faces and search names you add.": "Grupuj podobne twarze i wyszukuj dodane przez siebie nazwy.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Oryginały RAW muszą zostać wyrenderowane jako skorygowane TIFF-y. Przetworzony oryginał jest niedostępny, jeśli zaznaczenie zawiera plik RAW. W przypadku zdjęć przetworzonych ta opcja otwiera oryginał zamiast przygotowywać skorygowany TIFF.",
     "RAW originals only.": "Tylko oryginały RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Zdjęcia RAW mogą pokazywać kontrolki Redukcja szumu matrycy oraz Uczone usuwanie szumu. Uczone usuwanie szumu działa lokalnie po naciśnięciu Zastosuj usuwanie szumu; przesuwanie Siła nie uruchamia go na żywo.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Wyświetlenie pierwszego zdjęcia, którego nie ma w pamięci podręcznej, może chwilę potrwać. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
     "RAW preview could not finish. Try the photo again.": "Podgląd RAW nie mógł się zakończyć. Spróbuj ponownie ze zdjęciem.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "profil aparatu",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (brak)"
+    "{fileName} (missing)": "{fileName} (brak)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Zdjęcia RAW otwierają się z wywołaniem LightTable, również wtedy, gdy Film jest wyłączony. Gdy Film jest włączony, pierwsza klatka zdjęcia, którego nie ma w pamięci podręcznej, korzysta z podglądu osadzonego przez aparat; wkrótce zastępuje go dokładna konwersja, a do tego czasu stan pokazuje „Ulepszanie RAW…”. Pasek postępu pokazuje ukończone etapy przetwarzania i znika, gdy zdjęcie jest widoczne.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Podglądy siatki są przygotowywane w tle podczas dodawania lub ponownego skanowania folderów. Najpierw pojawiają się duże podglądy oryginałów; podglądy z wprowadzonymi zmianami zastępują je, gdy są gotowe. Przygotowywany jest także standardowy podgląd każdego pliku RAW, dzięki czemu zdjęcie otwiera się bez czekania na pełne dekodowanie."
   },
   "plurals": {
     " · {count} paired file linked": {
