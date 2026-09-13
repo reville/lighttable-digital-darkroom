@@ -14,6 +14,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urljoin, urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
+import edit_schema
+
 import durable_io
 
 ROOT = Path(__file__).resolve().parent
@@ -180,7 +182,9 @@ def builtin_presets():
     value = json.loads((ROOT / "presets" / "builtin.json").read_text())
     if value.get("version") != NATIVE_VERSION:
         raise ValueError("Unsupported bundled preset version")
-    return [dict(validate_look(p), collection="builtin") for p in value["presets"]]
+    # Bundled looks are authored against the current edit schema.
+    return [dict(validate_look(p), collection="builtin",
+                 editSchema=edit_schema.EDIT_SCHEMA_VERSION) for p in value["presets"]]
 
 
 def look_patch(preset):

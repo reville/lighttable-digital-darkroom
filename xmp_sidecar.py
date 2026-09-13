@@ -28,6 +28,7 @@ from xml.dom import minidom, Node
 from pathlib import Path
 
 import durable_io
+import edit_schema
 
 # Namespaces this module understands, keyed by the prefix used in the parsed
 # output.  The prefix in the document itself is irrelevant.
@@ -386,8 +387,18 @@ def parse(text: str) -> dict | None:
              list(arrays.get(("lr", "hierarchicalSubject")) or []))
     orientation = _number(scalars.get(("tiff", "Orientation")))
     angle = _number(crs.get("CropAngle"))
+    # A sidecar LightTable wrote carries its own payload; its schema says
+    # which meaning of the controls the crs values were exported under.
+    edit_schema_version = None
+    if ("lighttable", "edit") in scalars:
+        try:
+            native_payload = json.loads(scalars.get(("lighttable", "edit")) or "{}")
+        except (TypeError, ValueError):
+            native_payload = {}
+        edit_schema_version = edit_schema.record_version(native_payload)
     parsed = {
         "rating": rating,
+        "editSchema": edit_schema_version,
         "captureTime": scalars.get(("exif", "DateTimeOriginal")) or scalars.get(("photoshop", "DateCreated")),
         "rejected": status == "skipped",
         "status": status,
@@ -457,6 +468,47 @@ def find_sidecars(source: Path) -> list[Path]:
 def find_sidecar(source: Path) -> Path | None:
     """The first sidecar on disk for one image, in Adobe's naming order."""
     return next(iter(find_sidecars(source)), None)
+
+
+# Photo archives can hold tens of thousands of folders; the first-run offer
+# only needs to know whether any sidecar exists, so the walk stops at the
+# first hit and gives up after a bounded number of directories.
+SIDECAR_SCAN_MAX_DIRECTORIES = 2000
+
+
+def folder_has_sidecars(root: Path, max_directories: int = SIDECAR_SCAN_MAX_DIRECTORIES) -> bool:
+    """Whether ``root`` or any subfolder holds an .xmp sidecar.
+
+    Breadth-first, so a sidecar near the top is found before deep trees are
+    visited. Hidden folders and symbolic links are skipped, unreadable
+    folders are ignored, and the walk stops after ``max_directories``
+    folders so a huge archive cannot stall the caller.
+    """
+    import os
+    from collections import deque
+
+    pending = deque([Path(root)])
+    visited = 0
+    while pending and visited < max_directories:
+        folder = pending.popleft()
+        visited += 1
+        try:
+            with os.scandir(folder) as entries:
+                for entry in entries:
+                    name = entry.name
+                    if name.startswith("."):
+                        continue
+                    try:
+                        if entry.is_file(follow_symlinks=False):
+                            if name.lower().endswith(SIDECAR_SUFFIXES[0]):
+                                return True
+                        elif entry.is_dir(follow_symlinks=False):
+                            pending.append(Path(entry.path))
+                    except OSError:
+                        continue
+        except OSError:
+            continue
+    return False
 
 
 def _decode(data: bytes) -> str:
@@ -570,6 +622,11 @@ def as_edit_patch(parsed: dict) -> dict:
         for key, points in (parsed.get("crsCurves") or {}).items()
     }
     converted = preset_io.map_crs_settings(crs, curves)
+    grade = converted["grade"]
+    # Values exported by an older LightTable build were written under that
+    # build's meaning of the controls; a foreign sidecar needs no translation.
+    if parsed.get("editSchema") is not None:
+        grade = edit_schema.upgrade_grade(grade, parsed["editSchema"])
 
     optics: dict[str, float] = {}
     ignored = list(converted["ignored"])
@@ -580,7 +637,7 @@ def as_edit_patch(parsed: dict) -> dict:
             optics["rotate"] = round(float(angle), 4)
     mapped = converted["mapped"] + (1 if crop else 0) + len(optics)
     return {
-        "grade": converted["grade"],
+        "grade": grade,
         "crop": crop,
         "optics": optics,
         "ignored": sorted(set(ignored)),
@@ -746,6 +803,7 @@ def build_sidecar(record: dict) -> str:
     native = {key: record.get(key) for key in _NATIVE_FIELDS
               if record.get(key) not in (None, [], {})}
     if native:
+        native["editSchema"] = edit_schema.EDIT_SCHEMA_VERSION
         payload = _escape(json.dumps(native, separators=(",", ":")))
         attributes.append(f'   lighttable:edit="{payload}"')
         attributes.append('   lighttable:note="crs values are approximate; '
@@ -937,7 +995,10 @@ def merge_sidecar(existing: str, record: dict) -> str:
             raise ValueError(T("Existing LightTable edits could not be merged safely"))
         # Keep unknown future keys and explicit clears. Do not feed these
         # inherited fields to build_sidecar, which would also export them to
-        # Camera Raw properties the user did not request to change.
+        # Camera Raw properties the user did not request to change. Fields
+        # an older build left behind are translated to the current schema
+        # before the fresh ones join them.
+        native = edit_schema.upgrade_record(native)
         native.update({key: record[key] for key in _NATIVE_FIELDS if key in record})
         fresh.setAttributeNS(NAMESPACES["lighttable"], "lighttable:edit",
                              json.dumps(native, separators=(",", ":")))

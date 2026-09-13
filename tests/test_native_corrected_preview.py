@@ -83,16 +83,61 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
         self.assertFalse(server.native_base_edits_required({}, [{"enabled": False}] * 17))
         self.assertTrue(server.native_base_edits_required({}, [{}] * 17))
 
-    def test_each_retouch_mode_uses_ordered_export_pixels(self):
-        for mode in ("clone", "heal", "remove"):
+    def test_heal_and_clone_stay_live_while_remove_uses_ordered_export_pixels(self):
+        spot = {"target": [.35, .5], "source": [.7, .5], "radius": .14, "feather": .4}
+        for mode in ("clone", "heal"):
             with self.subTest(mode=mode):
-                heals = [{"mode": mode, "target": [.35, .5], "source": [.7, .5],
-                          "radius": .14, "feather": .4}]
-                result = self.render({}, heals)
-                self.assertTrue(result["baseEditsBaked"])
-                rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")
-                expected = edits.apply_base(self.pixels.astype(np.float32) / 255, {}, heals)
-                np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
+                # Sixteen separate spots: none reads another's target patch.
+                apart = [dict(spot, mode=mode, radius=.02, target=[.05 + i * .058, .5],
+                              source=[.05 + i * .058, .8]) for i in range(16)]
+                response = self.render({"distortion": 0.2}, apart)
+                self.assertFalse(response["baseEditsBaked"])
+                self.assertEqual(response["native"], self.result["native"])
+        heals = [dict(spot, mode="remove")]
+        result = self.render({}, heals)
+        self.assertTrue(result["baseEditsBaked"])
+        rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")
+        expected = edits.apply_base(self.pixels.astype(np.float32) / 255, {}, heals)
+        np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
+
+    def test_spots_reading_earlier_retouches_bake_the_ordered_result(self):
+        first = {"mode": "clone", "target": [.35, .5], "source": [.7, .5], "radius": .14}
+        # A later source patch inside an earlier target copies healed pixels.
+        chained = [first, {"mode": "clone", "target": [.15, .5], "source": [.35, .5], "radius": .1}]
+        self.assertTrue(server.heals_require_bake(chained))
+        # A Heal annulus overlapping an earlier target measures healed pixels.
+        overlapping_heal = [first, {"mode": "heal", "target": [.45, .5], "source": [.8, .8], "radius": .1}]
+        self.assertTrue(server.heals_require_bake(overlapping_heal))
+        # The same overlap only mixes for Clone, which the shader also orders.
+        overlapping_clone = [first, dict(overlapping_heal[1], mode="clone")]
+        self.assertFalse(server.heals_require_bake(overlapping_clone))
+        apart = [first, {"mode": "heal", "target": [.15, .2], "source": [.15, .8], "radius": .05}]
+        self.assertFalse(server.heals_require_bake(apart))
+        # Disabled spots neither chain nor count against the live limit.
+        self.assertFalse(server.heals_require_bake([dict(first, enabled=False)] + chained[1:]))
+        self.assertFalse(server.heals_require_bake([dict(first, enabled=False)] * 17))
+        self.assertTrue(server.heals_require_bake([first] * 17))
+        self.assertTrue(server.heals_require_bake([dict(first, mode="remove")]))
+        # Dust removal runs on the CPU and has no live Metal equivalent.
+        self.assertTrue(server.heals_require_bake([{"mode": "dust"}]))
+        self.assertFalse(server.heals_require_bake([{"mode": "dust", "enabled": False}]))
+        result = self.render({}, chained)
+        self.assertTrue(result["baseEditsBaked"])
+        rgba, _ = server.read_native_surface(self.cache / "render" / f"{result['key']}.rgba")
+        expected = edits.apply_base(self.pixels.astype(np.float32) / 255, {}, chained)
+        np.testing.assert_array_equal(rgba[..., :3], np.rint(expected * 255).astype(np.uint8))
+
+    def test_corrected_base_metadata_is_published_as_cache_without_fsync(self):
+        with mock.patch.object(server.durable_io, "atomic_write_json",
+                               side_effect=AssertionError("disposable cache must not fsync")), \
+             mock.patch.object(server.durable_io, "cache_write_json",
+                               wraps=server.durable_io.cache_write_json) as cache_write:
+            result = self.render()
+        self.assertTrue(result["baseEditsBaked"])
+        cache_write.assert_called_once()
+        metadata = self.cache / "render" / f"{result['key']}.json"
+        self.assertEqual(cache_write.call_args.args[0], metadata)
+        self.assertTrue(metadata.is_file())
 
     def test_local_tones_and_curves_use_exact_ordered_preview_pixels(self):
         import grade

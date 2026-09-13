@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -111,7 +112,7 @@
           "title": "Tinjau penyuntingan yang diterjemahkan",
           "paragraphs": [
             "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
-            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Tindakan ini tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
+            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Pindah dari Lightroom",
+      "category": "Getting started",
+      "summary": "Apa yang dibawa katalog Lightroom Classic dan sidecar XMP, apa yang tidak memiliki jalur impor, dan bagaimana kosakatanya berbeda.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrasi",
+        "migrasi",
+        "XMP",
+        "sidecar",
+        "preset",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Apa yang ikut terbawa",
+          "paragraphs": [
+            "Dari katalog Lightroom Classic: foto tetap di folder saat ini dan dirujuk, bukan disalin. Pengimpor membaca peringkat, tanda, label, dan bidang IPTC; kata kunci; koleksi dan koleksi pintar yang didukung; tumpukan; salinan virtual; pangkas dan pelurusan; pengaturan pengembangan kira-kira; dan, jika dipilih, riwayat penyuntingan. File .lrcat Anda tidak pernah diubah.",
+            "Dari sidecar XMP di samping foto Anda: peringkat bintang, tanda pilih dan tolak, label warna standar, kata kunci, dan bidang IPTC deskriptif. Folder ••• → Impor sidecar… juga dapat menerapkan pengaturan pengembangan dan pangkas jika Anda mengaktifkan opsi tersebut.",
+            "Kedua jalur memakai konverter yang sama, jadi sebuah pengaturan dipetakan dengan cara yang sama dari jalur mana pun: nada, pergeseran white balance, tekstur, kejernihan, dehaze, mixer warna, konversi hitam putih beserta mixer-nya, kurva titik, jumlah vignette, penajaman, dan pengurangan noise. Nilai di luar rentang LightTable, misalnya eksposur melebihi ±5 EV, dibatasi dan disebutkan dalam laporan."
+          ]
+        },
+        {
+          "title": "Apa yang tidak memiliki jalur impor",
+          "paragraphs": [
+            "Album cloud dan preset yang hanya tersimpan di aplikasi cloud tidak dapat dibaca. Sinkronkan dulu ke Lightroom Classic atau simpan preset sebagai file.",
+            "Masker AI dan penyuntingan generatif, Lens Blur, serta pengaturan Denoise adalah langkah render berpemilik. Semuanya dilaporkan sebagai dilewati, bukan didekati, begitu pula profil kamera, look LUT, masker lokal, penyembuhan, dan identitas profil lensa. Penyuntingan yang diimpor dimulai dengan Film mati agar pengaturan pengembangan hasil konversi tampil sendiri."
+          ]
+        },
+        {
+          "title": "Kosakata",
+          "paragraphs": [
+            "Koleksi tetap disebut koleksi di sini; album dari aplikasi cloud hanya masuk melalui katalog Lightroom Classic.",
+            "Tanda Pilih dan Tolak bekerja dengan cara yang sama, dan bilah bawah menampilkannya untuk foto yang dipilih.",
+            "Pengembangan di sini disebut Edit. Film mati secara default untuk foto baru dan foto impor; nyalakan saat Anda ingin perlakuan film di atas penyuntingan.",
+            "Profil kamera di Edit menampilkan profil Adobe DCP yang dipasang Camera Raw atau Lightroom di komputer ini, atau folder profil kamera yang dipilih di Pengaturan. Profil diterapkan secara kira-kira dan hanya pada pengembangan dengan Film mati."
+          ]
+        },
+        {
+          "title": "Impor preset Anda",
+          "paragraphs": [
+            "Preset → Kelola… → Impor… menerima preset .xmp dari Lightroom dan Camera Raw, preset .lrtemplate lama, dan gaya .costyle dari Capture One. Setelah impor katalog atau folder, penyiapan juga menawarkan Impor preset…. Setiap preset yang diimpor menunjukkan berapa banyak pengaturan yang dipetakan dan mana yang dilewati sebelum Anda menerapkannya."
+          ],
+          "steps": [
+            "Buka Preset, klik Kelola…, lalu klik Impor… dan pilih file preset atau, di aplikasi Mac, seluruh folder preset.",
+            "Tinjau laporan konversi, lalu terapkan preset dari Milik Anda."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Memulai"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Minta editor lain menyimpan metadatanya ke file XMP yang bersebelahan, lalu pilih Folder ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual mempertahankan metadata masing-masing.",
             "Metadata yang didukung mencakup rating bintang, tanda pilih/tolak, label warna standar, kata kunci datar dan hierarkis, serta bidang IPTC deskriptif. Nilai kosong yang eksplisit membersihkan bidang itu; nilai yang tidak ada membiarkannya tidak berubah. Label warna kustom yang tidak cocok dengan warna LightTable dilaporkan sebagai dilewati.",
-            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas tidak diterapkan oleh tindakan menu ini."
+            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut di dialog Impor sidecar."
           ]
         },
         {
@@ -1108,7 +1171,7 @@
         {
           "title": "Mulai dengan Cahaya",
           "paragraphs": [
-            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal. Contrast mengubah pemisahan di antaranya."
+            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal: naikkan Whites untuk mencerahkan nada paling terang, naikkan Blacks untuk mengangkat nada paling gelap, dan turunkan salah satunya untuk menarik kembali ujung tersebut. Contrast mengubah pemisahan di antaranya."
           ],
           "steps": [
             "Atur Eksposur untuk subjek utama.",
@@ -1161,7 +1224,7 @@
       "id": "editing-lens-corrections",
       "title": "Terapkan koreksi lensa dan aberasi kromatik",
       "category": "Editing",
-      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
+      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, koreksi aberasi kromatik, hapus fringe ungu dan hijau, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
       "keywords": [
         "lensa",
         "profil",
@@ -1170,6 +1233,9 @@
         "pencahayaan",
         "aberasi kromatik",
         "fringing",
+        "hapus fringe",
+        "fringe ungu",
+        "fringe hijau",
         "merah sian",
         "biru kuning",
         "optik"
@@ -1178,18 +1244,21 @@
         {
           "title": "Pilih dan verifikasi koreksi",
           "paragraphs": [
-            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia."
+            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia. Panel ini juga menyebutkan versi basis data lensa yang digunakan serta berapa banyak kamera dan lensa yang tercantum; basis data disertakan bersama pustaka lensa, bukan bersama LightTable.",
+            "Saat kamera dan lensa dalam metadata foto cocok persis dengan satu profil, Gunakan profil lensa yang cocok aktif begitu foto dibuka dan berlaku juga untuk thumbnail dan ekspor. Kecocokan yang disimpulkan atau ambigu tetap nonaktif. Pengaturan → Default Pengembangan → Terapkan profil lensa yang cocok secara otomatis mematikan perilaku ini; foto dengan pengaturan lensa tersimpan tetap mempertahankannya."
           ],
           "steps": [
             "Baca nama profil dan penjelasan kecocokan.",
-            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi dan Koreksi shading lensa sesuai kebutuhan.",
+            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi, Perbaiki pencahayaan lensa, dan Koreksi aberasi kromatik sesuai kebutuhan. Setiap sakelar independen, sehingga aberasi kromatik dapat dikoreksi tanpa mengubah geometri.",
             "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
-            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik."
+            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik.",
+            "Di bawah Hapus fringe, naikkan Ungu atau Hijau untuk menarik warna itu dari piksel sangat jenuh di samping tepi tajam. Slider awal hue dan akhir hue mengatur rentang hue yang ditangani setiap kontrol; awal di atas akhirnya melingkar melalui merah."
           ],
           "tips": [
             "Tidak ditemukan profil lensa yang tepat; kontrol distorsi dan perspektif manual tetap tersedia.",
-            "Kotak centang distorsi dan shading profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
+            "Kotak centang distorsi, shading, dan aberasi kromatik profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
             "Profil yang dipilih secara manual perlu diperiksa secara visual; pilihan itu tidak membuktikan bahwa profil tersebut cocok tepat.",
+            "Hapus fringe memperlakukan garis tepi subjek ungu atau hijau yang besar seperti fringe. Turunkan jumlahnya atau persempit rentang hue jika subjek kehilangan warna di tepinya.",
             "Koreksi lensa dan fringe tetap tidak merusak sepanjang ekspor."
           ]
         }
@@ -1335,7 +1404,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2090,7 +2160,8 @@
         {
           "title": "Netralisir cast warna",
           "paragraphs": [
-            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit."
+            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit.",
+            "Untuk original RAW, blok Keseimbangan putih tangkap berada di atasnya dengan Seperti diambil, Otomatis, preset, dan Kustom untuk suhu dalam kelvin dan tint kamera. Blok ini mengembangkan ulang data RAW dan bekerja dengan Film aktif atau nonaktif; disembunyikan untuk file yang sudah diproses."
           ],
           "steps": [
             "Buka Edit dan perluas Warna.",
@@ -2108,7 +2179,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2537,7 +2609,7 @@
           "title": "Kontrol tangkap dan kontrol penyelesaian",
           "paragraphs": [
             "Camera EV dan Capture white balance bekerja sebelum eksposur film. Exposure dan Temp/Tint di panel Edit adalah penyesuaian akhir di tahap selanjutnya dalam alur kerja.",
-            "White balance tangkapan memerlukan original RAW. Untuk JPEG, HEIF, TIFF, atau file lain yang telah diproses, gunakan Edit Temp/Tint."
+            "Keseimbangan putih tangkap berada di bagian atas bagian Warna untuk original RAW dan bekerja dengan Film aktif atau nonaktif: pilih Seperti diambil, Otomatis, preset, atau Kustom untuk mengatur suhu dalam kelvin dan tint kamera. Untuk JPEG, HEIF, TIFF, atau file yang sudah diproses lainnya, blok ini disembunyikan; gunakan Edit Temp/Tint."
           ],
           "steps": [
             "Aktifkan Film, pilih stok, dan sesuaikan Kamera EV.",
@@ -2989,7 +3061,8 @@
         {
           "title": "Default untuk foto tanpa edit",
           "paragraphs": [
-            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan."
+            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan.",
+            "Terapkan profil lensa yang cocok secara otomatis, aktif secara default, menyalakan profil lensa untuk foto yang kamera dan lensanya cocok persis dengan satu profil dan pengaturan lensanya belum pernah disimpan. Matikan untuk membuka setiap foto dengan profil nonaktif."
           ],
           "steps": [
             "Buka Pengaturan → Default Develop.",
@@ -3422,5 +3495,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
 }

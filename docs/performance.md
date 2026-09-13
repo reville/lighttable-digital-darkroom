@@ -195,6 +195,83 @@ The follow-up Python suite passed 1116 tests with the rebuilt decoder and four
 platform/optional-fixture skips. All 22 Rust tests passed, and all 54 help
 articles passed their source and review checks.
 
+## Export throughput, scan hashing, warm-up, and denoise preload (2026-09-13)
+
+Four background paths changed; the interactive render path is untouched.
+
+- Direct JPEG exports no longer encode inside the engine gate. The resident
+  engine quantises the finished frame to the same 8-bit codes its own encoder
+  received and publishes them as a packed RGB8 shared-memory surface
+  (`export_rgb8`); the Python export worker adopts and unlinks it and encodes
+  with libjpeg-turbo while the engine is already free for the next photo or a
+  preview. The encoder settings match the engine's `image` crate encoder:
+  libjpeg quality scaling of the standard tables, 4:4:4 chroma (the crate's
+  doc comment says 4:2:2, its component table says 1×1), standard Huffman
+  tables. Delivered bytes differ because the DCT implementations differ, so
+  the batch benchmark's cross-run hash check compares runs of the same build
+  only. On a 4128×2752 film render both encoders sit at the same distance
+  from the 8-bit codes (mean 4.15, p99 15, PSNR 33.5 dB each) and 43.6 dB from
+  each other with 0.8% file-size difference; the engine encoder took 290 ms
+  per frame inside the gate, libjpeg-turbo 65 ms outside it. Windows, older
+  workers, and shared-memory failures keep the in-engine encoder
+  (`LIGHTTABLE_DEFERRED_ENCODE=0` forces it). Python-finished recipes (TIFF,
+  wide gamut, brushes, heals, optics, watermarks) are unchanged.
+- The export pool is sized from the machine: `min(4, max(2, cores // 4))`
+  workers (`LIGHTTABLE_EXPORT_WORKERS` overrides). RAW decode keeps its
+  single admission slot and GPU work its gate, so extra workers overlap
+  decode, encode, ICC, and metadata rather than multiplying demosaics.
+- Startup warms the background engine after the preview engine
+  (`warm_resident_engines`), including one export-shaped request so the grade
+  shader and shared RGB8 path are compiled before the first export
+  (`LIGHTTABLE_WARM_BACKGROUND_ENGINE=0` restores the old cold start).
+- Scan hashing runs each batch's header and complete BLAKE2b digests on a
+  bounded pool (`max(2, min(4, cores // 2))`, serial on Windows where the
+  strong signature already reads every byte through a single-entry cache;
+  `LIGHTTABLE_SCAN_HASH_WORKERS` overrides). Only reads and digests leave the
+  scanning thread: failures are reported in walk order and every catalog
+  decision, relink, and write still happens on that thread in the original
+  sequence, so the identity invariants in `docs/recovery.md` hold unchanged.
+- After the first RAW render completes, macOS schedules a one-time learned
+  denoise preload (`schedule_denoise_preload`). It waits, outside the denoise
+  pool, until the preview and background gates, the RAW decoder, refinements,
+  exports, and any real denoise are idle (bounded by
+  `LIGHTTABLE_DENOISE_PRELOAD_WAIT`, 300 s), then runs one blank tile through
+  the Core ML helper inside `DENOISE_POOL` so a user denoise started meanwhile
+  queues behind the shared compile instead of compiling twice. It is skipped
+  in Safe Mode, off-platform, without a model, during updates, or with
+  `LIGHTTABLE_DENOISE_PRELOAD=0`; a real denoise cancels a preload still
+  waiting, and shutdown cancels a running one. This Mac has the helper but no
+  bundled model, so the compile-time saving is not measured here; the state
+  machine is covered by `tests/test_denoise_preload.py`.
+
+Measurements: same Apple-silicon Mac (18 cores), four CC0 RAW originals
+(X-T30 III RAF, EOS M200 CR3, G100D RW2, Mavic 3 Pro DNG) in an isolated
+catalog and cache, Film on, JPEG quality 92, `bench/export_pipeline_benchmark.py`
+with `--repeats 3`; the first batch pays the cold RAW decodes and the next two
+reuse the demosaic cache. "Before" runs the same build with the three switches
+set to the previous behaviour (in-engine encode, two workers, cold background
+engine). Scan numbers use `bench/scan_benchmark.py` on 300 distinct noise JPEGs
+(676 MB, warm page cache), median of three fresh catalogs.
+
+| Measurement | Before | After |
+| --- | ---: | ---: |
+| First export after startup (X-Trans, cold decode) | 12262 ms | 9694 ms |
+| First export, engine phase | 3105 ms | 1528 ms |
+| Four-RAW batch, warm demosaic cache, two workers | 6065 / 5790 ms | 4125 / 4316 ms |
+| Four-RAW batch, warm demosaic cache, sized pool (4 workers) | — | 4007 / 4789 ms |
+| Four-RAW batch, cold decodes | 7621 ms | 4313 ms |
+| Interactive preview during the cold batch | 627 ms | 192 ms |
+| Scan, new files, with metadata read | 491 photos/s | 1403 photos/s |
+| Scan, new files, hashing only | 543 photos/s | 1717 photos/s |
+| Four-RAW batch, Film off (Python worker), warm, two vs four workers | 8525 / 7020 ms | 5454 / 6263 ms |
+
+With Film on the four-photo batch is now bound by the serialised GPU render,
+so the sized pool matches two workers on it; the extra workers pay off on the
+Python worker path, where each export is its own process. Every batch left the
+preview probe complete and every delivered JPEG hash identical across repeats
+and across the two-worker and sized-pool runs. JSON evidence is retained under
+`bench/results/export-perf-2026-09-13/` (ignored).
+
 ## Repeatable checks
 
 ```sh
@@ -206,6 +283,8 @@ python rust-engine/bench_viewport.py --data engine/data --width 2200
 python rust-engine/bench_native_surface.py --data engine/data --width 2200
 python scripts/benchmark-raw-reuse.py /path/to/capture.RAF --repeats 2
 python rust-engine/bench_export_surface.py --data engine/data --width 2200
+python bench/export_pipeline_benchmark.py --photos /path/to/raw-folder --count 4 --repeats 3 --output bench/results/export.json
+python bench/scan_benchmark.py --count 300 --repeats 3 --fixtures /path/to/fixtures --output bench/results/scan.json
 python scripts/native-app-smoke.py --app /path/to/LightTable.app --layer pr
 ```
 

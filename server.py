@@ -72,6 +72,7 @@ import media_formats  # noqa: E402
 import media_availability  # noqa: E402
 import file_identity  # noqa: E402
 import durable_io  # noqa: E402
+import edit_schema  # noqa: E402
 import launcher_control  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
@@ -544,6 +545,9 @@ def entry_for(st, name):
         "masks": edits.clean_masks(e.get("masks")),
         "heals": edits.clean_heals(e.get("heals")),
         "optics": edits.clean_optics(e.get("optics")),
+        # Renderers apply the Develop Defaults lens profile only while lens
+        # state has never been saved (default_optics_for).
+        "opticsSaved": bool(e.get("optics")),
         "keywords": clean_keywords(e.get("keywords", [])),
         "versions": clean_versions(e.get("versions", [])),
         "provenance": e.get("provenance"),
@@ -597,6 +601,50 @@ def default_grade_for(name: str, default_grade: dict) -> dict:
     if is_raw(name):
         return {**default_grade, **RAW_GRADE_DEFAULTS}
     return dict(default_grade)
+
+
+def lens_profile_default_enabled() -> bool:
+    """Develop Defaults: apply a confidently matched lens profile by itself."""
+    configured = load_preferences().get("newPhotoDefaults")
+    configured = configured if isinstance(configured, dict) else {}
+    return configured.get("lensProfileAuto") is not False
+
+
+def lens_match_for_photo(name: str) -> dict:
+    """The lens match plus whether it switches the correction on unasked.
+
+    Only an exact camera and lens metadata match qualifies, and only while
+    the Develop Defaults preference allows it. An ambiguous match keeps the
+    correction off and lists its candidates for a manual choice.
+    """
+    match = edits.lens_match_for(exif_for(name))
+    match["autoEnabled"] = bool(match.get("confident")) and lens_profile_default_enabled()
+    return match
+
+
+def default_optics_for(name: str, entry: dict | None) -> dict:
+    """The lens state a photo renders with.
+
+    Saved lens edits are returned exactly as cleaned. A photo that has never
+    saved lens state starts with the matched profile enabled when the match
+    is confident, so thumbnails, exports, and command-line renders agree with
+    the editor without writing anything to the catalog. ``entry`` is a
+    catalog entry (``opticsSaved`` decides) or a raw stored edit record
+    (a non-empty ``optics`` blob decides).
+    """
+    entry = entry if isinstance(entry, dict) else {}
+    saved = entry.get("opticsSaved")
+    if saved is None:
+        saved = bool(entry.get("optics"))
+    if saved:
+        return edits.clean_optics(entry.get("optics"))
+    optics = edits.clean_optics(None)
+    if lens_profile_default_enabled():
+        try:
+            optics["profileEnabled"] = bool(lens_match_for_photo(name).get("autoEnabled"))
+        except Exception:
+            optics["profileEnabled"] = False
+    return optics
 
 
 def effective_new_photo_defaults() -> tuple[dict, dict]:
@@ -708,10 +756,14 @@ def clean_preset(raw: dict) -> dict | None:
     name = " ".join(str(raw.get("name", "")).split()).strip()[:120]
     if not name:
         return None
+    # A preset saved, installed or imported before the current edit schema
+    # carries its values under the old meaning; translate them first.
+    raw = edit_schema.upgrade_record(raw)
     if raw.get("scope") == "look":
         preset_library.validate_look(raw)
         return {
             "id": str(raw.get("id") or secrets.token_hex(16))[:120],
+            "editSchema": edit_schema.EDIT_SCHEMA_VERSION,
             "name": name, "source": "lighttable", "presetType": "style",
             "scope": "look", "filmMode": raw["filmMode"],
             "includeFilm": raw["filmMode"] == "on",
@@ -755,6 +807,7 @@ def clean_preset(raw: dict) -> dict | None:
     notes = conversion.get("notes") if isinstance(conversion.get("notes"), list) else []
     return {
         "id": str(raw.get("id") or hashlib.md5(name.encode()).hexdigest())[:100],
+        "editSchema": edit_schema.EDIT_SCHEMA_VERSION,
         "name": name,
         "source": source,
         "presetType": preset_type,
@@ -881,6 +934,14 @@ def load_state() -> dict:
                 if not isinstance(loaded, dict):
                     raise ValueError(T("state root must be an object"))
                 loaded.setdefault("images", {})
+                # A file written under an older edit schema is translated
+                # once and written back, so its recipes keep their look and
+                # the next launch does not repeat the work.
+                loaded, upgraded = edit_schema.upgrade_state(loaded)
+                if upgraded:
+                    durable_io.atomic_write_json(path, loaded)
+                    stat = path.stat()
+                    stamp = (stat.st_mtime_ns, stat.st_size)
                 _STATE_CACHE = loaded
             except Exception:
                 # Preserve the last valid in-memory state if an external write
@@ -896,6 +957,7 @@ def write_state(state: dict) -> None:
     """Atomically replace state and refresh the process-local parsed copy."""
     global _STATE_CACHE_PATH, _STATE_CACHE_STAMP, _STATE_CACHE
     path = state_path()
+    state["editSchema"] = edit_schema.EDIT_SCHEMA_VERSION
     durable_io.atomic_write_json(path, state)
     stat = path.stat()
     _STATE_CACHE_PATH = path
@@ -1199,6 +1261,7 @@ def catalog_entry_for(name: str) -> dict:
         "masks": edits.clean_masks(state.get("masks")),
         "heals": edits.clean_heals(state.get("heals")),
         "optics": edits.clean_optics(state.get("optics")),
+        "opticsSaved": bool(state.get("optics")),
         "keywords": clean_keywords(state.get("keywords", [])),
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
@@ -2789,7 +2852,7 @@ def edited_thumbnail_state(name: str) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": edits.clean_optics(entry.get("optics")),
+        "optics": default_optics_for(name, entry),
     }
 
 
@@ -3515,7 +3578,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 13  # scan levels correction and meter-anchored display-referred source expansion
+RENDER_CACHE_VERSION = 14  # Whites sign corrected: a positive value now brightens
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
@@ -3753,8 +3816,12 @@ class RustEngineClient:
         return bool(self.render({"command": "probe_input", "input_cache_key": key})
                     .get("input_cache_hit"))
 
-    def warm(self) -> None:
-        """Compile the real GPU pipelines and spectral LUT before first open."""
+    def warm(self, *, export: bool = False) -> None:
+        """Compile the real GPU pipelines and spectral LUT before first open.
+
+        ``export`` also runs one export-shaped request so the grade shader and
+        shared RGB8 output path are compiled for the first real export.
+        """
         if not self.binary:
             return
         previous = getattr(RENDER_CONTEXT, "priority", "export")
@@ -3781,6 +3848,21 @@ class RustEngineClient:
                                  "data_dir": str(RUST_DATA), "film": pair[0],
                                  "paper": pair[1], "scan_film": pair[0] in fp.POSITIVE_STOCKS,
                                  "params": fp.rust_params_json(cp)})
+                if export:
+                    cp = pairs[0]
+                    request = {"input": str(source), "data_dir": str(RUST_DATA),
+                               "film": cp["stock"], "paper": cp["paper"],
+                               "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
+                               "params": fp.rust_params_json(cp),
+                               "grade": grade.clean({"exposure": 0.01}), "quality": 92}
+                    if export_surface.supported() and DEFERRED_EXPORT_ENCODE:
+                        result = self.render(dict(request, export_rgb8=True))
+                        descriptor = result.get("export_shared")
+                        if isinstance(descriptor, dict):
+                            export_surface.discard_surface(descriptor)
+                    else:
+                        self.render(dict(request, output=str(output.with_suffix(".jpg"))))
+                        output.with_suffix(".jpg").unlink(missing_ok=True)
             finally:
                 source.unlink(missing_ok=True)
                 output.unlink(missing_ok=True)
@@ -3795,6 +3877,21 @@ atexit.register(RUST_ENGINE.close)
 BACKGROUND_RENDER_LOCK = PriorityGate(reentrant=True)
 BACKGROUND_ENGINE = RustEngineClient(RUST_WORKER_BIN, lock=BACKGROUND_RENDER_LOCK)
 atexit.register(BACKGROUND_ENGINE.close)
+
+
+def warm_resident_engines() -> None:
+    """Compile both resident engines' GPU pipelines before the first request.
+
+    The preview engine warms first because the first open is what the user is
+    waiting for. The background engine (exports, prefetch, edited thumbnails)
+    then compiles the same film pipeline plus the export grade shader, so the
+    first export no longer pays a cold GPU start on top of its RAW decode.
+    ``LIGHTTABLE_WARM_BACKGROUND_ENGINE=0`` keeps the old behaviour for
+    before/after measurements.
+    """
+    RUST_ENGINE.warm()
+    if os.environ.get("LIGHTTABLE_WARM_BACKGROUND_ENGINE", "1") != "0":
+        BACKGROUND_ENGINE.warm(export=True)
 _LAST_WARM_PAIR = None
 
 
@@ -4524,10 +4621,39 @@ def _preview_source_bytes(result: dict, name: str, width: int,
     return orig_jpeg(name, width, rotate)
 
 
+# The Metal preview applies this many Heal and Clone spots live. Keep the rule
+# identical to web/app.js nativeBaseRequiresBake.
+MAX_LIVE_HEALS = 16
+
+
+def _heal_reads_earlier_heal(spot: dict, earlier: dict) -> bool:
+    """Whether a spot samples pixels an earlier spot already changed.
+
+    Normalised distances shrink at most by min(width, height), so comparing
+    against the summed radii is conservative for any aspect ratio.
+    """
+    reach = spot["radius"] + earlier["radius"]
+
+    def near(point):
+        return math.hypot(point[0] - earlier["target"][0],
+                          point[1] - earlier["target"][1]) < reach
+
+    return near(spot["source"]) or (spot["mode"] == "heal" and near(spot["target"]))
+
+
+def heals_require_bake(heals=None) -> bool:
+    """Remove and dust removal run on the CPU; chained spots need the ordered CPU result."""
+    enabled = [spot for spot in edits.clean_heals(heals) if spot["enabled"]]
+    if len(enabled) > MAX_LIVE_HEALS:
+        return True
+    return any(spot["mode"] in ("remove", "dust")
+               or any(_heal_reads_earlier_heal(spot, earlier) for earlier in enabled[:index])
+               for index, spot in enumerate(enabled))
+
+
 def native_base_edits_required(optics=None, heals=None) -> bool:
-    """Retouch sources must include earlier corrections, exactly as in export."""
-    return (edits.clean_optics(optics)["profileEnabled"]
-            or any(spot["enabled"] for spot in edits.clean_heals(heals)))
+    """Lens-profile remaps, defringe, and CPU-only retouches bake the base."""
+    return edits.optics_requires_bake(optics) or heals_require_bake(heals)
 
 
 def preview_grade_requires_bake(masks=None) -> bool:
@@ -4577,8 +4703,8 @@ def _native_corrected_preview(result: dict, name: str, width: int,
             adjusted = edits.apply_masks(grade.apply(adjusted, cleaned_grade), cleaned_masks)
         write_native_surface(surface, adjusted)
         # Publish metadata last, matching the ordinary render bundle contract.
-        durable_io.atomic_write_json(metadata, {"baseEditsBaked": True},
-                                     indent=None, keep_backup=False)
+        # This is disposable, reproducible cache: no fsync on the hot path.
+        durable_io.cache_write_json(metadata, {"baseEditsBaked": True})
         prune_render_cache_throttled(surface.parent, _RENDER_CACHE_MAX_BYTES)
     response = {field: value for field, value in result.items()
                 if field not in {"img", "native", "helper", "key"}}
@@ -4654,7 +4780,31 @@ def close_export_cache():
 
 
 atexit.register(close_export_cache)
-EXPORT_POOL = ThreadPoolExecutor(max_workers=2)
+
+
+def export_worker_count() -> int:
+    """Concurrent export workers, sized from the machine.
+
+    Each worker pipelines one photo: RAW decode still passes through its single
+    admission slot and the GPU render through the background engine gate, so
+    extra workers overlap decode, GPU work, JPEG encoding, ICC and metadata
+    rather than multiplying demosaics. ``LIGHTTABLE_EXPORT_WORKERS`` overrides
+    the count for benchmarks.
+    """
+    configured = os.environ.get("LIGHTTABLE_EXPORT_WORKERS", "")
+    if configured.strip():
+        try:
+            return max(1, min(8, int(configured)))
+        except ValueError:
+            pass
+    return min(4, max(2, (os.cpu_count() or 2) // 4))
+
+
+EXPORT_WORKERS = export_worker_count()
+EXPORT_POOL = ThreadPoolExecutor(max_workers=EXPORT_WORKERS)
+# JPEG encoding of direct exports happens here, in the export worker, from the
+# engine's shared RGB8 result; "0" keeps the encoder inside the engine process.
+DEFERRED_EXPORT_ENCODE = os.environ.get("LIGHTTABLE_DEFERRED_ENCODE", "1") != "0"
 MERGE = {"running": False, "mode": "", "progress": 0, "total": 0,
          "phase": "", "phaseProgress": 0, "phaseTotal": 0,
          "alignmentInliers": 0, "elapsedSeconds": 0.0,
@@ -4675,6 +4825,121 @@ EXTERNAL_EDIT_POOL = ThreadPoolExecutor(max_workers=1)
 def cancel_denoise_job() -> None:
     with DENOISE_LOCK:
         DENOISE["cancelled"] = True
+
+
+# Learned-denoise preload: compile and load the Core ML model once, at idle,
+# after the first RAW opens, so the first real denoise does not pay the
+# roughly thirty-second first compile. States: idle, scheduled, waiting,
+# running, done, unavailable, skipped, cancelled, failed.
+DENOISE_PRELOAD = {"state": "idle", "reason": "", "seconds": 0.0}
+DENOISE_PRELOAD_LOCK = threading.Lock()
+DENOISE_PRELOAD_CANCEL = threading.Event()
+DENOISE_PRELOAD_IDLE_WAIT = float(os.environ.get("LIGHTTABLE_DENOISE_PRELOAD_WAIT", "300"))
+
+
+def _denoise_preload_busy() -> bool:
+    """True while interaction, decoding, exports or a real denoise are active."""
+    import raw_decode_runtime
+    with DENOISE_LOCK:
+        denoise_running = bool(DENOISE["running"])
+    with EXPORT_LOCK:
+        export_running = bool(EXPORT.get("running"))
+    return (RENDER_LOCK.locked() or BACKGROUND_RENDER_LOCK.locked()
+            or raw_decode_runtime.decoder_busy() or bool(RAW_REFINE_JOBS)
+            or denoise_running or export_running or UPDATES.blocked)
+
+
+def _denoise_preload_state(state: str, reason: str = "", seconds: float | None = None) -> dict:
+    with DENOISE_PRELOAD_LOCK:
+        DENOISE_PRELOAD.update(state=state, reason=reason)
+        if seconds is not None:
+            DENOISE_PRELOAD["seconds"] = round(seconds, 3)
+        return dict(DENOISE_PRELOAD)
+
+
+def denoise_preload_status() -> dict:
+    with DENOISE_PRELOAD_LOCK:
+        return dict(DENOISE_PRELOAD)
+
+
+def schedule_denoise_preload(*, reason: str = "raw-open") -> bool:
+    """Queue the one-time idle preload; False when it is not applicable or already queued."""
+    if (sys.platform != "darwin" or SAFE_MODE
+            or os.environ.get("LIGHTTABLE_DENOISE_PRELOAD", "1") == "0"):
+        return False
+    with DENOISE_PRELOAD_LOCK:
+        if DENOISE_PRELOAD["state"] != "idle":
+            return False
+        DENOISE_PRELOAD.update(state="scheduled", reason=reason)
+    threading.Thread(target=_denoise_preload_worker, daemon=True,
+                     name="lighttable-denoise-preload").start()
+    return True
+
+
+def cancel_denoise_preload(*, only_waiting: bool = False) -> bool:
+    """Stop the preload; with ``only_waiting`` a compile already running finishes.
+
+    A user denoise queued behind a running preload reuses its compiled model,
+    so killing the helper mid-compile would only cost that user the compile
+    twice. Shutdown cancels unconditionally.
+    """
+    with DENOISE_PRELOAD_LOCK:
+        state = DENOISE_PRELOAD["state"]
+    if state in ("idle", "done", "unavailable", "skipped", "cancelled", "failed"):
+        return False
+    if only_waiting and state == "running":
+        return False
+    DENOISE_PRELOAD_CANCEL.set()
+    return True
+
+
+def _denoise_preload_worker(*, busy=None, preload=None, wait_seconds=None,
+                            poll: float = 0.5, settle: float = 2.0) -> dict:
+    """Wait for idle, then run the preload through the single denoise worker.
+
+    The helper runs in DENOISE_POOL so a user denoise started meanwhile is
+    serialised behind it rather than compiling the model a second time in
+    parallel; the idle wait itself never occupies that pool.
+    """
+    busy = busy if busy is not None else _denoise_preload_busy
+    wait_seconds = DENOISE_PRELOAD_IDLE_WAIT if wait_seconds is None else wait_seconds
+    started = time.monotonic()
+    try:
+        import enhance_workflow
+        preload = preload if preload is not None else enhance_workflow.preload_denoise
+        report = enhance_workflow.capabilities()
+        if not report.get("modes", {}).get("denoise"):
+            return _denoise_preload_state("unavailable", report.get("reason", ""))
+        _denoise_preload_state("waiting")
+        deadline = time.monotonic() + wait_seconds
+        # Let the navigation that triggered this settle before probing.
+        if DENOISE_PRELOAD_CANCEL.wait(settle):
+            return _denoise_preload_state("cancelled")
+        while busy():
+            if time.monotonic() >= deadline:
+                return _denoise_preload_state("skipped", "never idle")
+            if DENOISE_PRELOAD_CANCEL.wait(poll):
+                return _denoise_preload_state("cancelled")
+        if DENOISE_PRELOAD_CANCEL.is_set():
+            return _denoise_preload_state("cancelled")
+        with UPDATES.background_work() as allowed:
+            if not allowed:
+                return _denoise_preload_state("skipped", "update in progress")
+            _denoise_preload_state("running")
+            result = DENOISE_POOL.submit(
+                preload, cancel=DENOISE_PRELOAD_CANCEL).result()
+        if DENOISE_PRELOAD_CANCEL.is_set():
+            return _denoise_preload_state("cancelled", seconds=time.monotonic() - started)
+        return _denoise_preload_state(
+            "done" if result.get("ok") else "failed", str(result.get("error", "")),
+            seconds=time.monotonic() - started)
+    except Exception as error:  # a warm-up must never surface as a failure
+        return _denoise_preload_state(
+            "cancelled" if DENOISE_PRELOAD_CANCEL.is_set() else "failed", str(error),
+            seconds=time.monotonic() - started)
+
+
+atexit.register(cancel_denoise_preload)
 
 
 def sync_job_status(status: dict, *, progress_key: str = "done",
@@ -4974,6 +5239,47 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
                 phase_ms=phases)
 
 
+def _direct_export_render(name: str, params: dict, request: dict,
+                          dst: Path, job: dict) -> dict:
+    """Render a parity-safe JPEG export, encoding outside the engine gate.
+
+    The engine quantises the finished frame to the same 8-bit codes its own
+    encoder would receive and shares them as RGB8; this worker then encodes
+    with libjpeg-turbo using the engine encoder's settings (libjpeg quality
+    scaling of the standard tables, 4:4:4 chroma, standard Huffman tables)
+    while the engine is already free for the next photo or a preview. Windows,
+    older workers and shared-memory failures keep the in-engine encoder.
+    """
+    if export_surface.supported() and DEFERRED_EXPORT_ENCODE:
+        try:
+            metrics = _resident_render_full(name, params, dict(request, export_rgb8=True))
+        except RenderCancelled:
+            raise
+        except Exception as error:  # noqa: BLE001 - one retry on the established path
+            return dict(_resident_render_full(name, params, dict(request, output=str(dst))),
+                        export_transport="engine-jpeg", encode_fallback=type(error).__name__)
+        descriptor = metrics.get("export_shared")
+        if isinstance(descriptor, dict):
+            try:
+                pixels = export_surface.adopt_surface(descriptor)
+            except Exception:
+                export_surface.discard_surface(descriptor)
+                raise
+            try:
+                with export_phase(job, "encode"):
+                    Image.fromarray(pixels, "RGB").save(
+                        dst, "JPEG", quality=int(request.get("quality", 92)),
+                        subsampling=0)
+            finally:
+                del pixels
+            return dict(metrics, export_transport="shared-memory-rgb8")
+        # An older resident worker ignores export_rgb8 and writes nothing.
+        return dict(_resident_render_full(name, params, dict(request, output=str(dst))),
+                    export_transport="engine-jpeg", encode_fallback="NoSharedExport")
+    metrics = _resident_render_full(name, params, dict(request, output=str(dst)))
+    return dict(metrics, export_transport="engine-jpeg")
+
+
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     # Check before a renderer spends work or creates any untagged output.
     profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
@@ -4983,7 +5289,6 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
     direct_error = None
     if rust_direct_export_supported(job):
         request = {
-            "output": str(dst),
             "data_dir": str(RUST_DATA), "film": cp["stock"],
             "paper": cp["paper"],
             "scan_film": cp["stock"] in fp.POSITIVE_STOCKS,
@@ -4997,7 +5302,7 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "long_edge": job.get("longEdge"),
         }
         try:
-            metrics = _resident_render_full(name, params, request)
+            metrics = _direct_export_render(name, params, request, dst, job)
             job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
             with export_phase(job, "icc"):
                 platform_image.embed_jpeg_icc(dst, profile)
@@ -5107,7 +5412,7 @@ def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": edits.clean_optics(entry.get("optics")),
+        "optics": default_optics_for(name, entry),
         "format": "tif", "quality": 100, "outputSpace": output_space,
         "longEdge": None, "watermark": {"enabled": False},
         "metadata": "all", "metadataFields": export_metadata_fields(name),
@@ -5465,7 +5770,7 @@ def export_would_replace_original(destination: Path, source_name: str) -> bool:
 
 
 class ExportBatch:
-    """Keep only two workers active; this batch owns its status until cleanup."""
+    """Keep only EXPORT_WORKERS workers active; this batch owns its status until cleanup."""
     def __init__(self, items, destination):
         self.items = iter(items)
         self.lock = threading.RLock()
@@ -5638,6 +5943,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         metadata_started = time.perf_counter()
         metadata = (exif_for(name, capture_override=job["captureTimeOverride"])
                     if "captureTimeOverride" in job else exif_for(name))
+        job["optics"] = default_optics_for(name, job)
         job["lensProfile"] = edits.lens_profile_for(metadata,
             edits.clean_optics(job.get("optics")).get("profileOverride"))
         if "metadataFields" not in job:
@@ -5818,6 +6124,7 @@ def export_candidates() -> list[tuple[str, dict, str]]:
                 "masks": item.get("masks") or [],
                 "heals": edits.clean_heals(item.get("heals")),
                 "optics": edits.clean_optics(item.get("optics")),
+                "opticsSaved": bool(item.get("optics")),
                 "keywords": clean_keywords(item.get("keywords", [])),
                 "provenance": item.get("provenance"),
             }
@@ -5897,6 +6204,9 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "masks": e["masks"],
             "heals": e["heals"],
             "optics": e["optics"],
+            # Never-saved lens state is resolved by the worker, which is the
+            # only place metadata is read (default_optics_for).
+            "opticsSaved": e.get("opticsSaved", bool(e.get("optics"))),
             "format": recipe["format"],
             "quality": recipe["quality"],
             "longEdge": recipe["longEdge"],
@@ -6047,8 +6357,8 @@ def start_export(opts: dict) -> dict:
         batch.status["jobId"] = record["id"]
         EXPORT.clear()
         EXPORT.update(batch.status)
-    batch.dispatch()
-    batch.dispatch()
+    for _ in range(EXPORT_WORKERS):
+        batch.dispatch()
     return {"queued": len(items), "destination": str(destination), "jobId": record["id"]}
 
 
@@ -6615,6 +6925,8 @@ def options_payload() -> dict:
                   "curveKeys": grade.CURVE_KEYS,
                   "hslBands": grade.HSL_BANDS,
                   "advancedKeys": grade.ADVANCED_KEYS},
+        "optics": {"defaults": edits.OPTICS_DEFAULTS,
+                   "ranges": edits.OPTICS_RANGES},
         "labels": list(LABEL_VALUES),
         "statuses": list(catalog_module.STATUS_VALUES),
         "maskKinds": ["brush", "linear", "radial", "subject", "sky",
@@ -6708,6 +7020,7 @@ def _program_render_state(body: dict) -> tuple[str, dict, int]:
     stored = catalog_entry_for(name)
     supplied = body.get("state") if isinstance(body.get("state"), dict) else {}
     state = dict(stored)
+    state["optics"] = default_optics_for(name, stored)
     state.update(supplied)
     width = max(64, min(8000, int(body.get("w", 1400))))
     return name, state, width
@@ -7227,6 +7540,8 @@ class Handler(BaseHTTPRequestHandler):
                     "hasExif": True,
                     "gradeDefaults": default_grade,
                     "rawGradeDefaults": RAW_GRADE_DEFAULTS,
+                    "lensProfileDefault": lens_profile_default_enabled(),
+                    "lensDatabase": edits.lens_database_info(),
                     "cameraProfileFolder": str(camera_profile_folder() or ""),
                     "aiIndex": AI_INDEX.status() if AI_INDEX else None,
                     "platform": sys.platform,
@@ -7341,7 +7656,7 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/exif":
                 self._json(exif_for(q["name"]))
             elif u.path == "/api/lens-profile":
-                self._json(edits.lens_match_for(exif_for(q["name"])))
+                self._json(lens_match_for_photo(q["name"]))
             elif u.path == "/api/raw-default":
                 if not is_raw(q["name"]):
                     self._json({"settings": None, "label": "Processed image",
@@ -7593,6 +7908,8 @@ class Handler(BaseHTTPRequestHandler):
                         grade_values=b.get("grade"), masks=b.get("masks"))
                 if not result.get("cancelled") and not result.get("error"):
                     publish_preview_progress(client, generation, b["name"], 4)
+                    if is_raw(b["name"]):
+                        schedule_denoise_preload()
                 self._json(result)
             elif u.path == "/api/mask/semantic":
                 b = self._body()
@@ -8404,7 +8721,7 @@ def main() -> None:
         name="lighttable-maintenance",
     ).start()
     if RUST_WORKER_BIN and not SAFE_MODE:
-        threading.Thread(target=RUST_ENGINE.warm, daemon=True,
+        threading.Thread(target=warm_resident_engines, daemon=True,
                          name="rust-engine-warmup").start()
     # Importing the optional colour-science dependency can take hundreds of
     # milliseconds. Warm it after the port is live so the first Develop open
@@ -8711,17 +9028,10 @@ def catalog_sources_action(body: dict) -> dict:
             if not body.get("importState", True):
                 catalog_scan.scan_source(cat, source_id, on_local_file=_enqueue_scan_warmups)
             cat.create_collections_for_source_folders(source_id)
-        has_sidecars = False
-        try:
-            with os.scandir(path) as it:
-                for entry in it:
-                    if entry.is_file() and entry.name.lower().endswith(".xmp"):
-                        has_sidecars = True
-                        break
-        except OSError:
-            pass
+        import xmp_sidecar
         return {"ok": True, "sourceId": source_id, "imported": imported,
-                "hasSidecars": has_sidecars, "sources": cat.sources()}
+                "hasSidecars": xmp_sidecar.folder_has_sidecars(path),
+                "sources": cat.sources()}
     if action == "remove":
         source_id = int(body["id"])
         if source_id == PRIMARY_SOURCE_ID:
@@ -9352,6 +9662,10 @@ def start_denoise(body: dict) -> dict:
             "reason", "Learned denoise is unavailable")}
     params = fp.clean_params(body.get("params") or {})
     params["learned_denoise"] = True
+    # This denoise compiles the model itself; a preload still waiting for
+    # idle would only duplicate that work. A preload already compiling is
+    # left to finish because this job is queued behind it and reuses it.
+    cancel_denoise_preload(only_waiting=True)
     with DENOISE_LOCK:
         if DENOISE["running"]:
             return {"ok": False, "error": T("A denoise is already running")}
