@@ -459,6 +459,47 @@ def find_sidecar(source: Path) -> Path | None:
     return next(iter(find_sidecars(source)), None)
 
 
+# Photo archives can hold tens of thousands of folders; the first-run offer
+# only needs to know whether any sidecar exists, so the walk stops at the
+# first hit and gives up after a bounded number of directories.
+SIDECAR_SCAN_MAX_DIRECTORIES = 2000
+
+
+def folder_has_sidecars(root: Path, max_directories: int = SIDECAR_SCAN_MAX_DIRECTORIES) -> bool:
+    """Whether ``root`` or any subfolder holds an .xmp sidecar.
+
+    Breadth-first, so a sidecar near the top is found before deep trees are
+    visited. Hidden folders and symbolic links are skipped, unreadable
+    folders are ignored, and the walk stops after ``max_directories``
+    folders so a huge archive cannot stall the caller.
+    """
+    import os
+    from collections import deque
+
+    pending = deque([Path(root)])
+    visited = 0
+    while pending and visited < max_directories:
+        folder = pending.popleft()
+        visited += 1
+        try:
+            with os.scandir(folder) as entries:
+                for entry in entries:
+                    name = entry.name
+                    if name.startswith("."):
+                        continue
+                    try:
+                        if entry.is_file(follow_symlinks=False):
+                            if name.lower().endswith(SIDECAR_SUFFIXES[0]):
+                                return True
+                        elif entry.is_dir(follow_symlinks=False):
+                            pending.append(Path(entry.path))
+                    except OSError:
+                        continue
+        except OSError:
+            continue
+    return False
+
+
 def _decode(data: bytes) -> str:
     for encoding in ("utf-8-sig", "utf-16", "latin-1"):
         try:
