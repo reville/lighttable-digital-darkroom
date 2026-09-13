@@ -542,9 +542,10 @@ def entry_for(st, name):
         "crop": e.get("crop"),
         "masks": edits.clean_masks(e.get("masks")),
         "heals": edits.clean_heals(e.get("heals")),
-        # An empty object means lens state was never saved, so renderers can
-        # still apply the Develop Defaults lens profile (default_optics_for).
-        "optics": edits.clean_optics(e["optics"]) if e.get("optics") else {},
+        "optics": edits.clean_optics(e.get("optics")),
+        # Renderers apply the Develop Defaults lens profile only while lens
+        # state has never been saved (default_optics_for).
+        "opticsSaved": bool(e.get("optics")),
         "keywords": clean_keywords(e.get("keywords", [])),
         "versions": clean_versions(e.get("versions", [])),
         "provenance": e.get("provenance"),
@@ -619,16 +620,22 @@ def lens_match_for_photo(name: str) -> dict:
     return match
 
 
-def default_optics_for(name: str, saved_optics) -> dict:
+def default_optics_for(name: str, entry: dict | None) -> dict:
     """The lens state a photo renders with.
 
     Saved lens edits are returned exactly as cleaned. A photo that has never
     saved lens state starts with the matched profile enabled when the match
     is confident, so thumbnails, exports, and command-line renders agree with
-    the editor without writing anything to the catalog.
+    the editor without writing anything to the catalog. ``entry`` is a
+    catalog entry (``opticsSaved`` decides) or a raw stored edit record
+    (a non-empty ``optics`` blob decides).
     """
-    if isinstance(saved_optics, dict) and saved_optics:
-        return edits.clean_optics(saved_optics)
+    entry = entry if isinstance(entry, dict) else {}
+    saved = entry.get("opticsSaved")
+    if saved is None:
+        saved = bool(entry.get("optics"))
+    if saved:
+        return edits.clean_optics(entry.get("optics"))
     optics = edits.clean_optics(None)
     if lens_profile_default_enabled():
         try:
@@ -1237,7 +1244,8 @@ def catalog_entry_for(name: str) -> dict:
         "crop": state.get("crop"),
         "masks": edits.clean_masks(state.get("masks")),
         "heals": edits.clean_heals(state.get("heals")),
-        "optics": edits.clean_optics(state["optics"]) if state.get("optics") else {},
+        "optics": edits.clean_optics(state.get("optics")),
+        "opticsSaved": bool(state.get("optics")),
         "keywords": clean_keywords(state.get("keywords", [])),
         "versions": clean_versions(state.get("versions", [])),
         "provenance": state.get("provenance"),
@@ -2828,7 +2836,7 @@ def edited_thumbnail_state(name: str) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": default_optics_for(name, entry.get("optics")),
+        "optics": default_optics_for(name, entry),
     }
 
 
@@ -5139,7 +5147,7 @@ def _external_job(name: str, output_space: str, bit_depth: int = 16) -> dict:
         "crop": clean_crop(entry.get("crop")),
         "masks": edits.clean_masks(entry.get("masks")),
         "heals": edits.clean_heals(entry.get("heals")),
-        "optics": default_optics_for(name, entry.get("optics")),
+        "optics": default_optics_for(name, entry),
         "format": "tif", "quality": 100, "outputSpace": output_space,
         "longEdge": None, "watermark": {"enabled": False},
         "metadata": "all", "metadataFields": export_metadata_fields(name),
@@ -5546,6 +5554,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         metadata_started = time.perf_counter()
         metadata = (exif_for(name, capture_override=job["captureTimeOverride"])
                     if "captureTimeOverride" in job else exif_for(name))
+        job["optics"] = default_optics_for(name, job)
         job["lensProfile"] = edits.lens_profile_for(metadata,
             edits.clean_optics(job.get("optics")).get("profileOverride"))
         if "metadataFields" not in job:
@@ -5725,7 +5734,8 @@ def export_candidates() -> list[tuple[str, dict, str]]:
                 "crop": item.get("crop"),
                 "masks": item.get("masks") or [],
                 "heals": edits.clean_heals(item.get("heals")),
-                "optics": default_optics_for(item["name"], item.get("optics")),
+                "optics": edits.clean_optics(item.get("optics")),
+                "opticsSaved": bool(item.get("optics")),
                 "keywords": clean_keywords(item.get("keywords", [])),
                 "provenance": item.get("provenance"),
             }
@@ -5804,7 +5814,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "crop": e["crop"],
             "masks": e["masks"],
             "heals": e["heals"],
-            "optics": default_optics_for(n, e["optics"]),
+            "optics": e["optics"],
+            # Never-saved lens state is resolved by the worker, which is the
+            # only place metadata is read (default_optics_for).
+            "opticsSaved": e.get("opticsSaved", bool(e.get("optics"))),
             "format": recipe["format"],
             "quality": recipe["quality"],
             "longEdge": recipe["longEdge"],
@@ -6616,7 +6629,7 @@ def _program_render_state(body: dict) -> tuple[str, dict, int]:
     stored = catalog_entry_for(name)
     supplied = body.get("state") if isinstance(body.get("state"), dict) else {}
     state = dict(stored)
-    state["optics"] = default_optics_for(name, stored.get("optics"))
+    state["optics"] = default_optics_for(name, stored)
     state.update(supplied)
     width = max(64, min(8000, int(body.get("w", 1400))))
     return name, state, width

@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Terapkan koreksi lensa dan aberasi kromatik",
       "category": "Editing",
-      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
+      "summary": "Gunakan profil lensa yang cocok atau dipilih manual, koreksi aberasi kromatik, hapus fringe ungu dan hijau, atau lakukan koreksi manual saat profil yang tepat tidak tersedia.",
       "keywords": [
         "lensa",
         "profil",
@@ -1148,6 +1148,9 @@
         "pencahayaan",
         "aberasi kromatik",
         "fringing",
+        "hapus fringe",
+        "fringe ungu",
+        "fringe hijau",
         "merah sian",
         "biru kuning",
         "optik"
@@ -1156,18 +1159,21 @@
         {
           "title": "Pilih dan verifikasi koreksi",
           "paragraphs": [
-            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia."
+            "Perluas Koreksi lensa di Edit. Kartu profil menjelaskan kecocokan kamera/lensa otomatis dan apakah profil yang dapat digunakan tersedia. Panel ini juga menyebutkan versi basis data lensa yang digunakan serta berapa banyak kamera dan lensa yang tercantum; basis data disertakan bersama pustaka lensa, bukan bersama LightTable.",
+            "Saat kamera dan lensa dalam metadata foto cocok persis dengan satu profil, Gunakan profil lensa yang cocok aktif begitu foto dibuka dan berlaku juga untuk thumbnail dan ekspor. Kecocokan yang disimpulkan atau ambigu tetap nonaktif. Pengaturan → Default Pengembangan → Terapkan profil lensa yang cocok secara otomatis mematikan perilaku ini; foto dengan pengaturan lensa tersimpan tetap mempertahankannya."
           ],
           "steps": [
             "Baca nama profil dan penjelasan kecocokan.",
-            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi dan Koreksi shading lensa sesuai kebutuhan.",
+            "Aktifkan Gunakan profil lensa yang cocok saat profil tersedia, lalu pilih Koreksi distorsi, Perbaiki pencahayaan lensa, dan Koreksi aberasi kromatik sesuai kebutuhan. Setiap sakelar independen, sehingga aberasi kromatik dapat dikoreksi tanpa mengubah geometri.",
             "Jika perlu, pilih entri lain di Lens profile dan bandingkan koreksinya dengan original.",
-            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik."
+            "Sempurnakan kontrol manual Distortion dan Vignette. Untuk fringing warna, sesuaikan Merah / Cyan dan Biru / Kuning di bawah Aberasi kromatik.",
+            "Di bawah Hapus fringe, naikkan Ungu atau Hijau untuk menarik warna itu dari piksel sangat jenuh di samping tepi tajam. Slider awal hue dan akhir hue mengatur rentang hue yang ditangani setiap kontrol; awal di atas akhirnya melingkar melalui merah."
           ],
           "tips": [
             "Tidak ditemukan profil lensa yang tepat; kontrol distorsi dan perspektif manual tetap tersedia.",
-            "Kotak centang distorsi dan shading profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
+            "Kotak centang distorsi, shading, dan aberasi kromatik profil hanya aktif saat profil yang dipilih menyediakan koreksi tersebut dan profilnya diaktifkan.",
             "Profil yang dipilih secara manual perlu diperiksa secara visual; pilihan itu tidak membuktikan bahwa profil tersebut cocok tepat.",
+            "Hapus fringe memperlakukan garis tepi subjek ungu atau hijau yang besar seperti fringe. Turunkan jumlahnya atau persempit rentang hue jika subjek kehilangan warna di tepinya.",
             "Koreksi lensa dan fringe tetap tidak merusak sepanjang ekspor."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Netralisir cast warna",
           "paragraphs": [
-            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit."
+            "Bagian Warna di Edit berisi Temp dan Tint, plus eyedropper white balance di samping Temp. Ini adalah kontrol penyelesaian panel Edit.",
+            "Untuk original RAW, blok Keseimbangan putih tangkap berada di atasnya dengan Seperti diambil, Otomatis, preset, dan Kustom untuk suhu dalam kelvin dan tint kamera. Blok ini mengembangkan ulang data RAW dan bekerja dengan Film aktif atau nonaktif; disembunyikan untuk file yang sudah diproses."
           ],
           "steps": [
             "Buka Edit dan perluas Warna.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -2434,7 +2442,7 @@
           "title": "Kontrol tangkap dan kontrol penyelesaian",
           "paragraphs": [
             "Camera EV dan Capture white balance bekerja sebelum eksposur film. Exposure dan Temp/Tint di panel Edit adalah penyesuaian akhir di tahap selanjutnya dalam alur kerja.",
-            "White balance tangkapan memerlukan original RAW. Untuk JPEG, HEIF, TIFF, atau file lain yang telah diproses, gunakan Edit Temp/Tint."
+            "Keseimbangan putih tangkap berada di bagian atas bagian Warna untuk original RAW dan bekerja dengan Film aktif atau nonaktif: pilih Seperti diambil, Otomatis, preset, atau Kustom untuk mengatur suhu dalam kelvin dan tint kamera. Untuk JPEG, HEIF, TIFF, atau file yang sudah diproses lainnya, blok ini disembunyikan; gunakan Edit Temp/Tint."
           ],
           "steps": [
             "Aktifkan Film, pilih stok, dan sesuaikan Kamera EV.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Default untuk foto tanpa edit",
           "paragraphs": [
-            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan."
+            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan.",
+            "Terapkan profil lensa yang cocok secara otomatis, aktif secara default, menyalakan profil lensa untuk foto yang kamera dan lensanya cocok persis dengan satu profil dan pengaturan lensanya belum pernah disimpan. Matikan untuk membuka setiap foto dengan profil nonaktif."
           ],
           "steps": [
             "Buka Pengaturan → Default Develop.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

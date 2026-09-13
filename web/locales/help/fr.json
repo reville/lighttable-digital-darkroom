@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Appliquer les corrections d’objectif et d’aberration chromatique",
       "category": "Editing",
-      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
+      "summary": "Utilisez un profil d’objectif correspondant ou sélectionné manuellement, corrigez l’aberration chromatique, supprimez les franges violettes et vertes, ou effectuez des corrections manuelles lorsqu’aucun profil exact n’est disponible.",
       "keywords": [
         "objectif",
         "profil",
@@ -1148,6 +1148,9 @@
         "ombrage",
         "aberration chromatique",
         "franges",
+        "défrangeage",
+        "frange violette",
+        "frange verte",
         "rouge cyan",
         "bleu jaune",
         "optique"
@@ -1156,18 +1159,21 @@
         {
           "title": "Choisir et vérifier une correction",
           "paragraphs": [
-            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible."
+            "Développez Corrections de l’objectif dans Modifier. La carte de profil explique la correspondance automatique appareil photo/objectif et si un profil utilisable est disponible. Le panneau indique aussi la version de la base de données d’objectifs utilisée et le nombre d’appareils et d’objectifs qu’elle répertorie ; la base de données est fournie avec la bibliothèque d’objectifs, pas avec LightTable.",
+            "Lorsque l’appareil et l’objectif des métadonnées de la photo correspondent exactement à un seul profil, Utiliser le profil d’objectif correspondant est activé dès l’ouverture de la photo et s’applique aussi aux vignettes et aux exports. Une correspondance déduite ou ambiguë reste désactivée. Réglages → Réglages de développement → Appliquer automatiquement le profil d’objectif correspondant désactive ce comportement ; les photos ayant des réglages d’objectif enregistrés les conservent dans tous les cas."
           ],
           "steps": [
             "Lire le nom du profil et l’explication de la correspondance.",
-            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion et Corriger l’ombre de l’objectif selon le besoin.",
+            "Activez Utiliser le profil d’objectif correspondant lorsqu’un profil est disponible, puis choisissez Corriger la distorsion, Corriger l’ombrage de l’objectif et Corriger l’aberration chromatique selon le besoin. Chaque interrupteur est indépendant : l’aberration chromatique peut être corrigée sans modifier la géométrie.",
             "Si nécessaire, choisissez une autre entrée dans Profil d’objectif et comparez la correction avec l’original.",
-            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique."
+            "Affinez les contrôles manuels de Distorsion et de Vignettage. Pour les franges de couleur, ajustez Rouge / Cyan et Bleu / Jaune sous Aberration chromatique.",
+            "Sous Défrangeage, augmentez Violet ou Vert pour retirer cette couleur des pixels fortement saturés bordant les contours nets. Les curseurs de début et de fin de teinte définissent la plage de teintes traitée par chaque contrôle ; un début supérieur à sa fin passe par le rouge."
           ],
           "tips": [
             "Si aucun profil d’objectif exact n’est trouvé, les réglages manuels de distorsion et de perspective restent disponibles.",
-            "Les cases à cocher de distorsion et d’ombre du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
+            "Les cases Distorsion, Ombrage et Aberration chromatique du profil ne sont activées que lorsque le profil sélectionné fournit cette correction et que le profil est activé.",
             "Un profil sélectionné manuellement nécessite une vérification visuelle ; la sélection n’établit pas qu’il s’agit d’une correspondance exacte.",
+            "Le défrangeage traite le contour d’un grand sujet violet ou vert comme une frange. Réduisez la quantité ou resserrez la plage de teintes si un sujet perd sa couleur le long de son bord.",
             "Les corrections de l’objectif et des franges restent non destructives jusqu’à l’export."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Neutraliser une dominante de couleur",
           "paragraphs": [
-            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche."
+            "La section Couleur dans Modifier contient Temp et Teinte, ainsi qu’une pipette de balance des blancs à côté de Temp. Ce sont les contrôles de finition du panneau de retouche.",
+            "Pour un original RAW, un bloc Balance des blancs de capture se trouve au-dessus, avec Telle que prise, Auto, des préréglages et Personnalisé pour une température en kelvins et une teinte de capture. Il redéveloppe les données RAW et fonctionne avec Film activé ou non ; il est masqué pour les fichiers traités."
           ],
           "steps": [
             "Ouvrir Modifier et développer Couleur.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Modification"
     },
@@ -2434,7 +2442,7 @@
           "title": "Contrôles de capture et contrôles de finition",
           "paragraphs": [
             "L’EV de l’appareil photo et la balance des blancs de Capture agissent avant l’exposition du film. L’exposition et Temp/Teinte dans le panneau Modifier sont des ajustements de finition effectués plus tard dans le flux de travail.",
-            "La balance des blancs de capture nécessite un original RAW. Pour un JPEG, HEIF, TIFF ou tout autre fichier traité, utilisez Modifier Temp/Teinte."
+            "La balance des blancs de capture se trouve en haut de la section Couleur pour les originaux RAW et fonctionne avec Film activé ou non : choisissez Telle que prise, Auto, un préréglage ou Personnalisé pour définir une température en kelvins et une teinte de capture. Pour un JPEG, HEIF, TIFF ou un autre fichier traité, le bloc est masqué ; utilisez Modifier Temp/Teinte."
           ],
           "steps": [
             "Activez Film, choisissez une pellicule et ajustez l’EV de l’Appareil photo.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Valeurs par défaut pour les photos non modifiées",
           "paragraphs": [
-            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut."
+            "Les défauts de développement s’appliquent uniquement aux photos qui n’ont pas déjà d’éditions enregistrées. Ils peuvent commencer avec Film activé, choisir un flux de travail et un profil Développement neutre, et appliquer un préréglage par défaut.",
+            "Appliquer automatiquement le profil d’objectif correspondant, activé par défaut, active le profil d’objectif pour les photos dont l’appareil et l’objectif correspondent exactement à un seul profil et dont les réglages d’objectif n’ont jamais été enregistrés. Désactivez-le pour ouvrir chaque photo avec le profil désactivé."
           ],
           "steps": [
             "Ouvrir Réglages → Paramètres par défaut de développement.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

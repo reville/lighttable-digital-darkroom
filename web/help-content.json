@@ -1117,7 +1117,7 @@
       "id": "editing-lens-corrections",
       "title": "Apply lens and chromatic-aberration corrections",
       "category": "Editing",
-      "summary": "Use a matched or manually selected lens profile, or make manual corrections when an exact profile is unavailable.",
+      "summary": "Use a matched or manually selected lens profile, correct chromatic aberration, remove purple and green fringes, or make manual corrections when an exact profile is unavailable.",
       "keywords": [
         "lens",
         "profile",
@@ -1126,6 +1126,9 @@
         "shading",
         "chromatic aberration",
         "fringing",
+        "defringe",
+        "purple fringe",
+        "green fringe",
         "red cyan",
         "blue yellow",
         "optics"
@@ -1134,18 +1137,21 @@
         {
           "title": "Choose and verify a correction",
           "paragraphs": [
-            "Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available."
+            "Expand Lens corrections in Edit. The profile card explains the automatic camera/lens match and whether a usable profile is available. The panel also names the version of the lens database in use and how many cameras and lenses it lists; the database ships with the lens library rather than with LightTable.",
+            "When the camera and lens in the photo metadata exactly match one profile, Use matched lens profile is on as soon as the photo opens and applies to thumbnails and exports as well. An inferred or ambiguous match stays off. Settings → Develop Defaults → Apply matched lens profile automatically turns this behavior off; photos with saved lens settings keep them either way."
           ],
           "steps": [
             "Read the profile name and match explanation.",
-            "Enable Use matched lens profile when a profile is available, then choose Correct distortion and Correct lens shading as needed.",
+            "Enable Use matched lens profile when a profile is available, then choose Correct distortion, Correct lens shading, and Correct chromatic aberration as needed. Each switch is independent, so chromatic aberration can be corrected without changing the geometry.",
             "If necessary, choose a different entry in Lens profile and compare the correction against the original.",
-            "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration."
+            "Refine the manual Distortion and Vignette controls. For color fringes, adjust Red / Cyan and Blue / Yellow under Chromatic aberration.",
+            "Under Defringe, raise Purple or Green to drain that color from strongly saturated pixels beside hard edges. The hue start and hue end sliders set the range of hues each control treats; a start above its end wraps through red."
           ],
           "tips": [
             "No exact lens profile found leaves manual distortion and perspective controls available.",
-            "Profile distortion and shading checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.",
+            "Profile distortion, shading, and chromatic aberration checkboxes are enabled only when the selected profile supplies that correction and the profile is enabled.",
             "A manually selected profile needs visual checking; the selection does not establish that it is an exact match.",
+            "Defringe treats the outline of a large purple or green subject like a fringe. Lower the amount or narrow the hue range if a subject loses color along its edge.",
             "Lens and fringe corrections remain non-destructive through export."
           ]
         }
@@ -1976,7 +1982,8 @@
         {
           "title": "Neutralize a color cast",
           "paragraphs": [
-            "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls."
+            "The Color section in Edit contains Temp and Tint, plus a white-balance eyedropper beside Temp. These are the Edit panel’s finishing controls.",
+            "For a RAW original, a Capture white balance block sits above them with As shot, Auto, presets, and Custom for a kelvin temperature and capture tint. It re-develops the RAW data and works with Film on or off; it is hidden for processed files."
           ],
           "steps": [
             "Open Edit and expand Color.",
@@ -1994,7 +2001,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ]
     },
     {
@@ -2392,7 +2400,7 @@
           "title": "Capture controls and finishing controls",
           "paragraphs": [
             "Camera EV and Capture white balance act before film exposure. Exposure and Temp/Tint in the Edit panel are finishing adjustments later in the workflow.",
-            "Capture white balance requires a RAW original. For a JPEG, HEIF, TIFF, or another processed file, use Edit Temp/Tint."
+            "Capture white balance sits at the top of the Color section for RAW originals and works with Film on or off: choose As shot, Auto, a preset, or Custom to set a kelvin temperature and capture tint. For a JPEG, HEIF, TIFF, or another processed file, the block is hidden; use Edit Temp/Tint."
           ],
           "steps": [
             "Turn on Film, choose a stock, and adjust Camera EV.",
@@ -2801,7 +2809,8 @@
         {
           "title": "Defaults for unedited photos",
           "paragraphs": [
-            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset."
+            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset.",
+            "Apply matched lens profile automatically, on by default, switches on the lens profile for photos whose camera and lens exactly match one profile and whose lens settings were never saved. Turn it off to open every photo with the profile off."
           ],
           "steps": [
             "Open Settings → Develop Defaults.",

@@ -404,6 +404,15 @@ COVERED_ELSEWHERE = {
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
     "optics.profileOverride":
         "needs a matched lens profile; covered by tests/test_lens_matching.py",
+    "optics.profileChromatic":
+        "needs a matched lens profile; covered by tests/test_lens_matching.py",
+}
+# Defringe hue ranges only do something while an amount is raised.
+OPTICS_COMPANION: dict[str, dict] = {
+    "defringePurpleHueStart": {"defringePurple": 1.0},
+    "defringePurpleHueEnd": {"defringePurple": 1.0},
+    "defringeGreenHueStart": {"defringeGreen": 1.0},
+    "defringeGreenHueEnd": {"defringeGreen": 1.0},
 }
 
 CLIENT_DERIVED = {
@@ -462,6 +471,10 @@ CLAIMS.update({
                           "corrects horizontal converging lines"),
     "optics.vertical": (keystone("vertical"), +1,
                         "corrects vertical converging lines"),
+    "optics.defringePurple": (band_chroma("purple"), -1,
+                              "drains purple colour from hard edges"),
+    "optics.defringeGreen": (band_chroma("green"), -1,
+                             "drains green colour from hard edges"),
     "mask.opacity": (affected_strength, +1, "strengthens the masked edit"),
     "mask.radial.radius": (affected_area, +1, "grows the selected area"),
     "mask.radial.radiusX": (affected_area, +1, "widens the selected ellipse"),
@@ -479,6 +492,10 @@ WRAPPING.update({
     "mask.radial.angle": "rotates the ellipse; symmetric about zero",
     "optics.rotate": "rotates the frame; symmetric about zero",
     "optics.distortion": "barrel one way, pincushion the other",
+    "optics.defringePurpleHueStart": "hue arc start; wraps through red",
+    "optics.defringePurpleHueEnd": "hue arc end; wraps through red",
+    "optics.defringeGreenHueStart": "hue arc start; wraps through red",
+    "optics.defringeGreenHueEnd": "hue arc end; wraps through red",
 })
 
 
@@ -584,7 +601,10 @@ def _apply_local(base, name, value):
 
 def _apply_optics(base, name, value):
     sent = {} if value is OMIT else {name: value}
-    return edits.apply_manual_optics(base, edits.clean_optics(sent))
+    optics = edits.clean_optics({**_without(OPTICS_COMPANION.get(name, {}), name), **sent})
+    # The same base stage export runs: defringe, then manual geometry. No
+    # lens profile is supplied, so the profile switches are audited elsewhere.
+    return edits.apply_base(base, optics)
 
 
 # A mask that selects the left half, so a geometry or strength control has a

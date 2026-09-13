@@ -15,7 +15,8 @@ function withPreview(options, run) {
   const defaults = {distortion: 0, vignette: 0, profileEnabled: false,
     profileOverride: '', profileDistortion: true, profileVignette: true};
   let renders = 0, saves = 0, overlays = 0;
-  const context = {S, OPTICS_DEFAULTS: defaults, $: id => elements[id], createFrameScheduler,
+  const context = {S, OPTICS_DEFAULTS: defaults, DEFRINGE_KEYS: [], defringeActive: () => false,
+    $: id => elements[id], createFrameScheduler,
     nativePreviewActive: () => options.native !== false,
     postNative: (type, payload) => messages.push({type, payload: structuredClone(payload)}),
     drawGradeNow: () => messages.push({type: 'nativeGrade'}),

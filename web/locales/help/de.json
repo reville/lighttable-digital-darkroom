@@ -1139,7 +1139,7 @@
       "id": "editing-lens-corrections",
       "title": "Objektiv- und chromatische-Abberationskorrekturen anwenden",
       "category": "Editing",
-      "summary": "Verwenden Sie ein abgeglichenes oder manuell ausgewähltes Objektivprofil, oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
+      "summary": "Verwenden Sie ein gematchtes oder manuell ausgewähltes Objektivprofil, korrigieren Sie chromatische Aberration, entfernen Sie violette und grüne Farbsäume oder nehmen Sie manuelle Korrekturen vor, wenn kein exaktes Profil verfügbar ist.",
       "keywords": [
         "Objektiv",
         "Profil",
@@ -1148,6 +1148,9 @@
         "Abdunkeln",
         "chromatische Aberration",
         "Farbsäume",
+        "Farbsäume entfernen",
+        "violetter Farbsaum",
+        "grüner Farbsaum",
         "Rot-Cyan",
         "blau gelb",
         "optik"
@@ -1156,18 +1159,21 @@
         {
           "title": "Eine Korrektur auswählen und überprüfen",
           "paragraphs": [
-            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profikarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist."
+            "Erweitern Sie Objektivkorrekturen in Bearbeiten. Die Profilkarte erklärt den automatischen Kamera-/Objektivabgleich und ob ein verwendbares Profil verfügbar ist. Der Bereich nennt außerdem die Version der verwendeten Objektivdatenbank und wie viele Kameras und Objektive sie enthält; die Datenbank wird mit der Objektivbibliothek geliefert, nicht mit LightTable.",
+            "Wenn Kamera und Objektiv in den Fotometadaten genau zu einem Profil passen, ist Gematchtes Objektivprofil verwenden beim Öffnen des Fotos sofort aktiv und gilt auch für Miniaturen und Exporte. Ein abgeleiteter oder mehrdeutiger Treffer bleibt aus. Einstellungen → Standardwerte der Entwicklung → Gematchtes Objektivprofil automatisch anwenden schaltet dieses Verhalten ab; Fotos mit gespeicherten Objektiveinstellungen behalten diese in jedem Fall."
           ],
           "steps": [
             "Den Profilnamen und die Angleich-Erklärung lesen.",
-            "Aktivieren Sie Das angepasste Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann Verzeichnung korrigieren und Objektivabschattung korrigieren nach Bedarf.",
+            "Aktivieren Sie Gematchtes Objektivprofil verwenden, wenn ein Profil verfügbar ist, und wählen Sie dann nach Bedarf Verzeichnung korrigieren, Objektivabdunkeln korrigieren und Chromatische Aberration korrigieren. Jeder Schalter ist unabhängig, sodass sich die chromatische Aberration ohne Änderung der Geometrie korrigieren lässt.",
             "Wählen Sie bei Bedarf einen anderen Eintrag in Lens profile und vergleichen Sie die Korrektur mit dem Original.",
-            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an."
+            "Verfeinern Sie die manuellen Steuerungen für Verzeichnung und Vignette. Für Farbsäume passen Sie Rot / Cyan und Blau / Gelb unter Chromatische Aberration an.",
+            "Erhöhen Sie unter Farbsäume entfernen Violett oder Grün, um diese Farbe aus stark gesättigten Pixeln neben harten Kanten zu entfernen. Die Regler für Farbton-Anfang und Farbton-Ende legen den Farbtonbereich fest, den jeder Regler behandelt; ein Anfang über seinem Ende läuft über Rot."
           ],
           "tips": [
             "Wird kein exaktes Objektivprofil gefunden, bleiben manuelle Steuerelemente für Verzeichnung und Perspektive verfügbar.",
-            "Die Kontrollkästchen für Profil-Verzeichnung und Abschattung sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
+            "Die Kontrollkästchen für Profil-Verzeichnung, Abschattung und chromatische Aberration sind nur aktiviert, wenn das ausgewählte Profil diese Korrektur liefert und das Profil aktiviert ist.",
             "Ein manuell ausgewähltes Profil muss visuell geprüft werden; die Auswahl bedeutet nicht, dass es eine exakte Übereinstimmung ist.",
+            "Farbsäume entfernen behandelt den Umriss eines großen violetten oder grünen Motivs wie einen Farbsaum. Verringern Sie die Stärke oder verengen Sie den Farbtonbereich, wenn ein Motiv an seiner Kante Farbe verliert.",
             "Objektiv- und Farbsäume-Korrekturen bleiben bis zum Export nicht-destruktiv."
           ]
         }
@@ -2010,7 +2016,8 @@
         {
           "title": "Farbstich neutralisieren",
           "paragraphs": [
-            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs."
+            "Der Bereich Farbe in Bearbeiten enthält Temp und Tönung sowie eine Weißabgleich-Pipette neben Temp. Das sind die Abschlusssteuerungen des Bearbeiten-Bereichs.",
+            "Bei einem RAW-Original steht darüber ein Block Weißabgleich der Aufnahme mit Wie aufgenommen, Auto, Vorgaben und Benutzerdefiniert für eine Farbtemperatur in Kelvin und eine Aufnahmetönung. Er entwickelt die RAW-Daten neu und funktioniert mit ein- oder ausgeschaltetem Film; bei bearbeiteten Dateien ist er ausgeblendet."
           ],
           "steps": [
             "Bearbeiten öffnen und Farbe aufklappen.",
@@ -2028,7 +2035,8 @@
       "related": [
         "editing-tone",
         "editing-color-mixer-point-color",
-        "editing-color-grading"
+        "editing-color-grading",
+        "film-exposure-and-processing"
       ],
       "categoryLabel": "Bearbeitung"
     },
@@ -2434,7 +2442,7 @@
           "title": "Aufnahme- und Abschlusssteuerungen",
           "paragraphs": [
             "Kamera-EV und Capture-Weißabgleich wirken vor der Filmbelichtung. Belichtung und Temp/Tönung im Bearbeiten-Bereich sind spätere Abschlusskorrekturen im Workflow.",
-            "Der Aufnahme-Weißabgleich erfordert ein RAW-Original. Für JPEG, HEIF, TIFF oder eine andere verarbeitete Datei verwenden Sie Bearbeiten Temp/Tönung."
+            "Der Weißabgleich der Aufnahme steht bei RAW-Originalen oben im Bereich Farbe und funktioniert mit ein- oder ausgeschaltetem Film: Wählen Sie Wie aufgenommen, Auto, eine Vorgabe oder Benutzerdefiniert, um eine Farbtemperatur in Kelvin und eine Aufnahmetönung festzulegen. Bei JPEG, HEIF, TIFF oder einer anderen bearbeiteten Datei ist der Block ausgeblendet; verwenden Sie Bearbeiten Temp/Tönung."
           ],
           "steps": [
             "Schalten Sie Film ein, wählen Sie einen Film und passen Sie Kamera EV an.",
@@ -2852,7 +2860,8 @@
         {
           "title": "Standardwerte für unbearbeitete Fotos",
           "paragraphs": [
-            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden."
+            "Entwicklungs-Standardeinstellungen gelten nur für Fotos, die noch keine gespeicherten Bearbeitungen haben. Sie können Film standardmäßig aktivieren, einen Workflow und ein neutrales Entwicklungsprofil wählen und eine Standardvorgabe anwenden.",
+            "Gematchtes Objektivprofil automatisch anwenden, standardmäßig aktiv, schaltet das Objektivprofil für Fotos ein, deren Kamera und Objektiv genau zu einem Profil passen und deren Objektiveinstellungen nie gespeichert wurden. Schalten Sie es aus, um jedes Foto mit deaktiviertem Profil zu öffnen."
           ],
           "steps": [
             "Einstellungen → Entwicklungs-Standardwerte öffnen.",
@@ -3285,5 +3294,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "a43042247992870f941bb354746607bd512c20b944d0f2100e8f9b584886d1a5"
 }

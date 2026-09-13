@@ -4870,6 +4870,7 @@ function saveState(immediate = false) {
   // The catalog flags any saved blob as an edit; mirror it so defaults for
   // never-saved photos stop applying to this one from now on.
   im.hasEdits = true;
+  im.opticsSaved = true;
   if (wasEdited !== photoHasEdits(im)) {
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
@@ -6922,6 +6923,10 @@ function normalizeLibraryImage(im, stateLoaded = !S.catalogEnabled) {
     masks: normalizeMasks(im.masks),
     heals: normalizeHeals(im.heals),
     optics: normalizeOptics(im.optics),
+    // The server says whether lens state was ever saved; a payload without
+    // the flag (a recovered draft) counts as saved when it carries optics.
+    opticsSaved: typeof im.opticsSaved === 'boolean' ? im.opticsSaved
+      : !!im.optics && Object.keys(im.optics).length > 0,
   };
 }
 
@@ -7229,10 +7234,7 @@ const _lensProfileCache = new Map();
  * server applies the same rule to thumbnails, exports, and CLI renders, so a
  * saved edit, including one that switched the profile off, is never overridden. */
 function lensProfileStartsEnabled(match) {
-  const image = cur();
-  const savedOptics = image?.optics && Object.keys(image.optics).length > 0;
-  return !!match?.autoEnabled && !S.optics.profileOverride &&
-    !image?.hasEdits && !savedOptics;
+  return !!match?.autoEnabled && !S.optics.profileOverride && !cur()?.opticsSaved;
 }
 async function loadLensProfile(name) {
   if (_lensProfileCache.has(name)) {
@@ -7986,7 +7988,7 @@ async function initializeEditRecovery(data) {
       const image = S.images.find(item => item.name === record.name);
       if (image) Object.assign(image, normalizeLibraryImage({
         ...image, ...record.payload.state, stateLoaded: true, hasEdits: true,
-        recoverySourceKey: record.payload.sourceKey,
+        opticsSaved: true, recoverySourceKey: record.payload.sourceKey,
       }, true));
     }
   } else {
