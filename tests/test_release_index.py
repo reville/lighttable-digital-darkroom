@@ -35,14 +35,17 @@ class ReleaseIndexTests(unittest.TestCase):
         self.assertEqual(self.index, original)
 
     def test_new_linux_version_preserves_older_mac_source(self):
-        m = self.result['manifest'];m['version'] = '0.7.0';m['source_revision'] = 'a'*40;m['tag'] = 'v0.7.0'
-        e = m['platforms']['linux-x86_64'];e['version'] = '0.7.0';e['tag'] = 'v0.7.0';e['source_revision'] = 'a'*40
+        m = self.result['manifest']
         current_version = self.index['platforms']['linux-x86_64']['version']
+        major, minor, patch = (int(part) for part in current_version.split('-beta.')[0].split('.'))
+        next_version = f'{major}.{minor}.{patch + 1}'
+        m['version'] = next_version; m['source_revision'] = 'a'*40; m['tag'] = 'v' + next_version
+        e = m['platforms']['linux-x86_64']; e['version'] = next_version; e['tag'] = 'v' + next_version; e['source_revision'] = 'a'*40
         for a in e['artifacts']:
-            a['name'] = a['name'].replace(current_version, '0.7.0');a['url'] = a['url'].replace(current_version, '0.7.0')
-        self.result.update(version='0.7.0', source_revision='a'*40)
+            a['name'] = a['name'].replace(current_version, next_version); a['url'] = a['url'].replace(current_version, next_version)
+        self.result.update(version=next_version, source_revision='a'*40)
         out = merge(self.index, self.result)
-        self.assertEqual(out['version'], '0.7.0')
+        self.assertEqual(out['version'], next_version)
         self.assertEqual(out['platforms']['macos-arm64']['source_revision'],
                          self.index['platforms']['macos-arm64'].get('source_revision', self.index['source_revision']))
         self.assertEqual(out['platforms']['macos-arm64']['version'],
