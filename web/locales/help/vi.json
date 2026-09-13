@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -111,7 +112,7 @@
           "title": "Xem lại các chỉnh sửa đã dịch",
           "paragraphs": [
             "Các cài đặt Phát triển chỉ mang tính xấp xỉ và không thể đảm bảo giao diện kết xuất của Lightroom. Các mặt nạ cục bộ không được hỗ trợ, hồ sơ máy ảnh, mặt nạ ai của .lrcat-data hoặc tải trọng LUT, và các quy tắc bộ sưu tập thông minh không được hỗ trợ sẽ được báo là đã bỏ qua. Các cài đặt phát triển đã nhập sẽ tắt Phim.",
-            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này không áp dụng thiết lập phát triển hay cắt xén. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
+            "Thư mục ••• → Nhập sidecar… là một thao tác riêng để đọc siêu dữ liệu được hỗ trợ từ các sidecar liền kề. Thao tác này chỉ áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó. Hộp thoại kết quả của nó hiển thị tiến trình, số lượng đã áp dụng, các thiết lập bị bỏ qua và lỗi."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Bắt đầu"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Chuyển từ Lightroom",
+      "category": "Getting started",
+      "summary": "Danh mục Lightroom Classic và sidecar XMP mang sang được gì, thứ gì không có đường nhập, và thuật ngữ khác nhau ra sao.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "di chuyển",
+        "di chuyển dữ liệu",
+        "XMP",
+        "sidecar",
+        "thiết lập sẵn",
+        "mẫu LR",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Những gì được mang sang",
+          "paragraphs": [
+            "Từ danh mục Lightroom Classic: ảnh vẫn ở thư mục hiện tại và được tham chiếu, không sao chép. Trình nhập đọc xếp hạng, cờ, nhãn và trường IPTC; từ khóa; bộ sưu tập và bộ sưu tập thông minh được hỗ trợ; ngăn xếp; bản sao ảo; cắt xén và làm thẳng; thiết lập phát triển gần đúng; và lịch sử chỉnh sửa nếu chọn. Tệp .lrcat của bạn không bao giờ bị thay đổi.",
+            "Từ sidecar XMP cạnh ảnh của bạn: xếp hạng sao, cờ chọn và từ chối, nhãn màu chuẩn, từ khóa và các trường IPTC mô tả. Thư mục ••• → Nhập sidecar… cũng có thể áp dụng thiết lập phát triển và cắt xén khi bạn bật các tùy chọn đó.",
+            "Cả hai đường đều dùng cùng một bộ chuyển đổi, nên một cài đặt được ánh xạ giống nhau dù đến theo đường nào: tông, độ lệch cân bằng trắng, kết cấu, độ rõ, khử mờ sương, bộ trộn màu, chuyển đổi đen trắng cùng bộ trộn của nó, đường cong điểm, lượng vignette, làm nét và giảm nhiễu. Giá trị nằm ngoài phạm vi của LightTable, chẳng hạn phơi sáng vượt ±5 EV, sẽ bị giới hạn và được nêu tên trong báo cáo."
+          ]
+        },
+        {
+          "title": "Những gì không có đường nhập",
+          "paragraphs": [
+            "Không thể đọc album đám mây và thiết lập sẵn chỉ lưu trong ứng dụng đám mây. Hãy đồng bộ chúng vào Lightroom Classic hoặc lưu thiết lập sẵn thành tệp trước.",
+            "Mặt nạ AI và chỉnh sửa tạo sinh, Lens Blur và các cài đặt Denoise là những bước kết xuất độc quyền. Chúng được báo là đã bỏ qua thay vì ước lượng, cũng như hồ sơ máy ảnh, look LUT, mặt nạ cục bộ, sửa lỗi và định danh hồ sơ ống kính. Các chỉnh sửa đã nhập bắt đầu với Phim tắt để các cài đặt phát triển đã chuyển đổi hiển thị riêng."
+          ]
+        },
+        {
+          "title": "Thuật ngữ",
+          "paragraphs": [
+            "Bộ sưu tập ở đây cũng là bộ sưu tập; album của ứng dụng đám mây chỉ vào được qua danh mục Lightroom Classic.",
+            "Cờ Chọn và Từ chối hoạt động giống nhau, và thanh dưới cùng hiển thị chúng cho các ảnh đã chọn.",
+            "Phát triển ở đây gọi là Chỉnh sửa. Phim mặc định tắt với ảnh mới và ảnh đã nhập; bật lên khi bạn muốn phủ hiệu ứng phim lên trên chỉnh sửa.",
+            "Hồ sơ máy ảnh trong Chỉnh sửa liệt kê các hồ sơ Adobe DCP mà Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc thư mục hồ sơ máy ảnh đã chọn trong Cài đặt. Hồ sơ được áp dụng gần đúng và chỉ cho phát triển khi Phim tắt."
+          ]
+        },
+        {
+          "title": "Nhập thiết lập sẵn của bạn",
+          "paragraphs": [
+            "Thiết lập sẵn → Quản lý… → Nhập… chấp nhận thiết lập sẵn .xmp của Lightroom và Camera Raw, thiết lập sẵn .lrtemplate cũ và style .costyle của Capture One. Sau khi nhập danh mục hoặc thư mục, phần thiết lập cũng đưa ra Nhập thiết lập sẵn…. Mỗi thiết lập sẵn đã nhập cho biết bao nhiêu cài đặt được ánh xạ và cài đặt nào bị bỏ qua trước khi bạn áp dụng."
+          ],
+          "steps": [
+            "Mở Thiết lập sẵn, bấm Quản lý…, rồi bấm Nhập… và chọn các tệp thiết lập sẵn hoặc, trong ứng dụng Mac, cả một thư mục thiết lập sẵn.",
+            "Xem lại báo cáo chuyển đổi, rồi áp dụng thiết lập sẵn từ Của bạn."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Bắt đầu"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Hãy yêu cầu trình chỉnh sửa khác lưu siêu dữ liệu của nó vào các tệp XMP liền kề, rồi chọn Thư mục ••• → Nhập sidecar…. Thao tác này đọc các bản gốc của danh mục, bao gồm tất cả các trang của thư viện lớn lên đến 100,000 ảnh cho mỗi lần nhập. Bản sao ảo giữ siêu dữ liệu riêng của chúng.",
             "Siêu dữ liệu được hỗ trợ gồm xếp hạng sao, cờ chọn/từ chối, nhãn màu chuẩn, từ khóa phẳng và phân cấp, cùng các trường IPTC mô tả. Một giá trị rỗng rõ ràng sẽ xóa trường đó; một giá trị không có sẽ giữ nguyên không đổi. Các nhãn màu tùy chỉnh không khớp với màu của LightTable sẽ được báo là bị bỏ qua.",
-            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Cài đặt phát triển và cắt xén không được áp dụng bởi thao tác menu này."
+            "Trình nhập đọc các quy ước siêu dữ liệu được Photo Mechanic và digiKam hỗ trợ. Mỗi ứng dụng có thêm các quy ước riêng, vì vậy hãy xem xét một mẫu nhỏ trong cả hai ứng dụng trước khi trao đổi toàn bộ thư viện. Thiết lập phát triển và cắt xén chỉ được áp dụng khi bạn bật các tùy chọn đó trong hộp thoại Nhập sidecar."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Chỉnh sửa"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }

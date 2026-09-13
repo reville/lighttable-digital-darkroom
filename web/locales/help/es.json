@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -111,7 +112,7 @@
           "title": "Revisar ediciones traducidas",
           "paragraphs": [
             "Los ajustes de Develop son aproximados y no pueden prometer la apariencia renderizada de Lightroom. Las máscaras locales no compatibles, los perfiles de cámara, las máscaras de IA .lrcat-data o las cargas útiles de LUT, y las reglas de colecciones inteligentes no compatibles se informan como omitidas. Los ajustes de Develop importados desactivan Film.",
-            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Esa acción no aplica ajustes de revelado ni recorte. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
+            "Carpetas ••• → Importar sidecars… es una acción independiente para leer metadatos compatibles desde sidecars adyacentes. Aplica los ajustes de revelado y el recorte solo cuando activa esas opciones. El cuadro de resultados muestra el progreso, los recuentos aplicados, los ajustes omitidos y los errores."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Primeros pasos"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Si vienes de Lightroom",
+      "category": "Getting started",
+      "summary": "Qué traen un catálogo de Lightroom Classic y los sidecars XMP, qué no tiene vía de importación y en qué difiere el vocabulario.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrar",
+        "migración",
+        "XMP",
+        "sidecars",
+        "ajustes preestablecidos",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Qué se traslada",
+          "paragraphs": [
+            "Desde un catálogo de Lightroom Classic: las fotos permanecen en sus carpetas actuales y se referencian, no se copian. El importador lee valoraciones, marcas, etiquetas y campos IPTC; palabras clave; colecciones y colecciones inteligentes compatibles; pilas; copias virtuales; recorte y enderezado; ajustes de revelado aproximados; y, si lo elige, el historial de edición. Su archivo .lrcat nunca se modifica.",
+            "Desde los sidecars XMP junto a sus fotos: valoraciones de estrellas, marcas de selección y rechazo, etiquetas de color estándar, palabras clave y campos IPTC descriptivos. Carpetas ••• → Importar sidecars… también puede aplicar los ajustes de revelado y el recorte cuando activa esas opciones.",
+            "Ambas vías usan el mismo conversor, así que un ajuste se traduce igual llegue por donde llegue: tono, desplazamientos de balance de blancos, textura, claridad, eliminación de neblina, el mezclador de color, la conversión a blanco y negro con su mezclador, curvas por puntos, cantidad de viñeta, enfoque y reducción de ruido. Un valor fuera del rango de LightTable, como una exposición más allá de ±5 EV, se limita y se nombra en el informe."
+          ]
+        },
+        {
+          "title": "Qué no tiene vía de importación",
+          "paragraphs": [
+            "Los álbumes en la nube y los ajustes preestablecidos guardados solo en la app en la nube no se pueden leer. Sincronícelos primero en Lightroom Classic o guarde los ajustes preestablecidos como archivos.",
+            "Las máscaras de IA y las ediciones generativas, el desenfoque de objetivo y los ajustes de reducción de ruido son pasos de renderizado propietarios. Se informan como omitidos en lugar de aproximarse, igual que los perfiles de cámara, los looks LUT, las máscaras locales, las correcciones y las identidades de perfil de objetivo. Las ediciones importadas empiezan con Película desactivada para que los ajustes de revelado convertidos se muestren por sí solos."
+          ]
+        },
+        {
+          "title": "Vocabulario",
+          "paragraphs": [
+            "Las colecciones también son colecciones aquí; los álbumes de la app en la nube solo llegan a través de un catálogo de Lightroom Classic.",
+            "Las marcas Seleccionar y Rechazar funcionan igual, y la barra inferior las muestra para las fotos seleccionadas.",
+            "Revelar se llama Editar. Película está desactivada de forma predeterminada en las fotos nuevas e importadas; actívela cuando quiera un tratamiento de película sobre la edición.",
+            "Perfil de cámara en Editar muestra los perfiles DCP de Adobe que Camera Raw o Lightroom instalaron en este equipo, o la carpeta de perfiles de cámara elegida en Configuración. Los perfiles se aplican de forma aproximada y solo al revelado con Película desactivada."
+          ]
+        },
+        {
+          "title": "Importar sus ajustes preestablecidos",
+          "paragraphs": [
+            "Ajustes preestablecidos → Administrar… → Importar… acepta ajustes preestablecidos .xmp de Lightroom y Camera Raw, ajustes preestablecidos .lrtemplate antiguos y estilos .costyle de Capture One. Tras importar un catálogo o una carpeta, la configuración también ofrece Importar ajustes preestablecidos…. Cada ajuste preestablecido importado muestra cuántos ajustes se tradujeron y cuáles se omitieron antes de aplicarlo."
+          ],
+          "steps": [
+            "Abra Ajustes preestablecidos, haga clic en Administrar… y luego en Importar… y elija los archivos de ajustes preestablecidos o, en la app para Mac, una carpeta entera de ajustes preestablecidos.",
+            "Revise el informe de conversión y luego aplique el ajuste preestablecido desde Tuya."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Primeros pasos"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Pida al otro editor que guarde sus metadatos en archivos XMP adyacentes y luego elija Carpetas ••• → Importar sidecars…. La acción lee los originales del catálogo, incluidas todas las páginas de bibliotecas grandes de hasta 100000 fotos por importación. Las copias virtuales conservan sus propios metadatos.",
             "Los metadatos admitidos incluyen calificaciones de estrellas, marcas de seleccionar/rechazar, etiquetas de color estándar, palabras clave planas y jerárquicas, y campos descriptivos IPTC. Un valor vacío explícito borra ese campo; un valor ausente lo deja sin cambios. Las etiquetas de color personalizadas que no coinciden con un color de LightTable se informan como omitidas.",
-            "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte no se aplican con esta acción de menú."
+            "El importador lee las convenciones de metadatos admitidas de Photo Mechanic y digiKam. Cada aplicación tiene convenciones adicionales, así que revise una pequeña muestra en ambas aplicaciones antes de intercambiar una biblioteca completa. Los ajustes de revelado y el recorte se aplican solo cuando activa esas opciones en el cuadro de diálogo Importar sidecars."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edición"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }

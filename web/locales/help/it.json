@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -111,7 +112,7 @@
           "title": "Rivedi modifiche tradotte",
           "paragraphs": [
             "Le impostazioni Develop sono approssimative e non possono garantire l’aspetto renderizzato di Lightroom. Le maschere locali non supportate, i profili fotocamera, le maschere IA .lrcat-data o i payload LUT, e le regole delle raccolte intelligenti non supportate vengono segnalati come saltati. Le impostazioni Develop importate disattivano Film.",
-            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Questa azione non applica le impostazioni di sviluppo né il ritaglio. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
+            "Cartelle ••• → Importa sidecar… è un'azione separata per leggere i metadati supportati dai sidecar adiacenti. Applica le impostazioni di sviluppo e il ritaglio solo quando attivi quelle opzioni. La finestra dei risultati mostra il progresso, i conteggi applicati, le impostazioni saltate e gli errori."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Per iniziare"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Se vieni da Lightroom",
+      "category": "Getting started",
+      "summary": "Cosa portano con sé un catalogo Lightroom Classic e i sidecar XMP, cosa non ha una via di importazione e come differisce il vocabolario.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migra",
+        "migrazione",
+        "XMP",
+        "sidecar",
+        "predefiniti",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Cosa viene trasferito",
+          "paragraphs": [
+            "Da un catalogo Lightroom Classic: le foto restano nelle cartelle attuali e vengono referenziate, non copiate. L’importatore legge valutazioni, contrassegni, etichette e campi IPTC; parole chiave; raccolte e raccolte dinamiche supportate; pile; copie virtuali; ritaglio e raddrizzamento; impostazioni di sviluppo approssimate; e, se scelto, la cronologia delle modifiche. Il file .lrcat non viene mai modificato.",
+            "Dai sidecar XMP accanto alle tue foto: valutazioni a stelle, contrassegni di selezione e rifiuto, etichette colore standard, parole chiave e campi IPTC descrittivi. Cartelle ••• → Importa sidecar… può anche applicare le impostazioni di sviluppo e il ritaglio quando attivi quelle opzioni.",
+            "Entrambe le vie usano lo stesso convertitore, quindi un’impostazione viene tradotta allo stesso modo da qualunque via arrivi: tono, scostamenti del bilanciamento del bianco, texture, chiarezza, rimozione foschia, il mixer colore, la conversione in bianco e nero con il suo mixer, curve a punti, quantità di vignettatura, nitidezza e riduzione del rumore. Un valore fuori dall’intervallo di LightTable, come un’esposizione oltre ±5 EV, viene limitato e indicato nel rapporto."
+          ]
+        },
+        {
+          "title": "Cosa non ha una via di importazione",
+          "paragraphs": [
+            "Gli album cloud e i predefiniti salvati solo nell’app cloud non possono essere letti. Sincronizzali prima in Lightroom Classic o salva i predefiniti come file.",
+            "Le maschere IA e le modifiche generative, la sfocatura obiettivo e le impostazioni di riduzione del rumore sono passaggi di rendering proprietari. Vengono segnalati come saltati anziché approssimati, così come i profili fotocamera, i look LUT, le maschere locali, le correzioni e le identità dei profili obiettivo. Le modifiche importate iniziano con Pellicola disattivata, così le impostazioni di sviluppo convertite vengono mostrate da sole."
+          ]
+        },
+        {
+          "title": "Vocabolario",
+          "paragraphs": [
+            "Le raccolte sono raccolte anche qui; gli album dell’app cloud arrivano solo tramite un catalogo Lightroom Classic.",
+            "I contrassegni Seleziona e Rifiuta funzionano allo stesso modo, e la barra inferiore li mostra per le foto selezionate.",
+            "Sviluppa si chiama Modifica. Pellicola è disattivata per impostazione predefinita nelle foto nuove e importate; attivala quando vuoi un trattamento pellicola sopra la modifica.",
+            "Profilo fotocamera in Modifica elenca i profili Adobe DCP che Camera Raw o Lightroom hanno installato su questo computer, oppure la cartella dei profili fotocamera scelta nelle Impostazioni. I profili si applicano in modo approssimato e solo allo sviluppo con Pellicola disattivata."
+          ]
+        },
+        {
+          "title": "Importa i tuoi predefiniti",
+          "paragraphs": [
+            "Predefiniti → Gestisci… → Importa… accetta predefiniti .xmp di Lightroom e Camera Raw, predefiniti .lrtemplate legacy e stili .costyle di Capture One. Dopo l’importazione di un catalogo o di una cartella, la configurazione offre anche Importa predefiniti…. Ogni predefinito importato mostra quante impostazioni sono state tradotte e quali saltate prima che tu lo applichi."
+          ],
+          "steps": [
+            "Apri Predefiniti, fai clic su Gestisci…, poi su Importa… e scegli i file dei predefiniti oppure, nell’app per Mac, un’intera cartella di predefiniti.",
+            "Esamina il rapporto di conversione, poi applica il predefinito da Tuo."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Per iniziare"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Chiedi all'altro editor di salvare i metadati nei file XMP adiacenti, quindi scegli Cartelle ••• → Importa sidecar…. L'azione legge gli originali del catalogo, incluse tutte le pagine delle librerie di grandi dimensioni fino a 100.000 foto per importazione. Le copie virtuali mantengono i propri metadati.",
             "I metadati supportati includono valutazioni a stelle, contrassegni seleziona/rifiuta, etichette colore standard, parole chiave piatte e gerarchiche e campi IPTC descrittivi. Un valore vuoto esplicito cancella quel campo; un valore assente lo lascia invariato. Le etichette colore personalizzate che non corrispondono a un colore di LightTable vengono segnalate come saltate.",
-            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio non vengono applicati da questa azione di menu."
+            "L'importatore legge le convenzioni dei metadati supportate di Photo Mechanic e digiKam. Ogni applicazione ha convenzioni aggiuntive, quindi esamina un piccolo campione in entrambe le applicazioni prima di scambiare un'intera libreria. Le impostazioni di sviluppo e il ritaglio vengono applicati solo quando attivi quelle opzioni nella finestra Importa sidecar."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Modifica"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }

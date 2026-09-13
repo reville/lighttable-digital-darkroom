@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -111,7 +112,7 @@
           "title": "Tinjau penyuntingan yang diterjemahkan",
           "paragraphs": [
             "Pengaturan Develop bersifat perkiraan dan tidak dapat menjamin tampilan hasil render Lightroom. masker lokal, profil kamera, mask AI data .lrcat atau payload LUT yang tidak didukung, serta aturan smart collection yang tidak didukung, dilaporkan sebagai dilewati. Pengaturan develop yang diimpor mematikan Film.",
-            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Tindakan ini tidak menerapkan pengaturan pengembangan atau pangkas. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
+            "Folder ••• → Impor sidecar… adalah tindakan terpisah untuk membaca metadata yang didukung dari sidecar yang bersebelahan. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut. Dialog hasilnya menampilkan progres, jumlah yang diterapkan, pengaturan yang dilewati, dan kesalahan."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Memulai"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Memulai"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Pindah dari Lightroom",
+      "category": "Getting started",
+      "summary": "Apa yang dibawa katalog Lightroom Classic dan sidecar XMP, apa yang tidak memiliki jalur impor, dan bagaimana kosakatanya berbeda.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrasi",
+        "migrasi",
+        "XMP",
+        "sidecar",
+        "preset",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Apa yang ikut terbawa",
+          "paragraphs": [
+            "Dari katalog Lightroom Classic: foto tetap di folder saat ini dan dirujuk, bukan disalin. Pengimpor membaca peringkat, tanda, label, dan bidang IPTC; kata kunci; koleksi dan koleksi pintar yang didukung; tumpukan; salinan virtual; pangkas dan pelurusan; pengaturan pengembangan kira-kira; dan, jika dipilih, riwayat penyuntingan. File .lrcat Anda tidak pernah diubah.",
+            "Dari sidecar XMP di samping foto Anda: peringkat bintang, tanda pilih dan tolak, label warna standar, kata kunci, dan bidang IPTC deskriptif. Folder ••• → Impor sidecar… juga dapat menerapkan pengaturan pengembangan dan pangkas jika Anda mengaktifkan opsi tersebut.",
+            "Kedua jalur memakai konverter yang sama, jadi sebuah pengaturan dipetakan dengan cara yang sama dari jalur mana pun: nada, pergeseran white balance, tekstur, kejernihan, dehaze, mixer warna, konversi hitam putih beserta mixer-nya, kurva titik, jumlah vignette, penajaman, dan pengurangan noise. Nilai di luar rentang LightTable, misalnya eksposur melebihi ±5 EV, dibatasi dan disebutkan dalam laporan."
+          ]
+        },
+        {
+          "title": "Apa yang tidak memiliki jalur impor",
+          "paragraphs": [
+            "Album cloud dan preset yang hanya tersimpan di aplikasi cloud tidak dapat dibaca. Sinkronkan dulu ke Lightroom Classic atau simpan preset sebagai file.",
+            "Masker AI dan penyuntingan generatif, Lens Blur, serta pengaturan Denoise adalah langkah render berpemilik. Semuanya dilaporkan sebagai dilewati, bukan didekati, begitu pula profil kamera, look LUT, masker lokal, penyembuhan, dan identitas profil lensa. Penyuntingan yang diimpor dimulai dengan Film mati agar pengaturan pengembangan hasil konversi tampil sendiri."
+          ]
+        },
+        {
+          "title": "Kosakata",
+          "paragraphs": [
+            "Koleksi tetap disebut koleksi di sini; album dari aplikasi cloud hanya masuk melalui katalog Lightroom Classic.",
+            "Tanda Pilih dan Tolak bekerja dengan cara yang sama, dan bilah bawah menampilkannya untuk foto yang dipilih.",
+            "Pengembangan di sini disebut Edit. Film mati secara default untuk foto baru dan foto impor; nyalakan saat Anda ingin perlakuan film di atas penyuntingan.",
+            "Profil kamera di Edit menampilkan profil Adobe DCP yang dipasang Camera Raw atau Lightroom di komputer ini, atau folder profil kamera yang dipilih di Pengaturan. Profil diterapkan secara kira-kira dan hanya pada pengembangan dengan Film mati."
+          ]
+        },
+        {
+          "title": "Impor preset Anda",
+          "paragraphs": [
+            "Preset → Kelola… → Impor… menerima preset .xmp dari Lightroom dan Camera Raw, preset .lrtemplate lama, dan gaya .costyle dari Capture One. Setelah impor katalog atau folder, penyiapan juga menawarkan Impor preset…. Setiap preset yang diimpor menunjukkan berapa banyak pengaturan yang dipetakan dan mana yang dilewati sebelum Anda menerapkannya."
+          ],
+          "steps": [
+            "Buka Preset, klik Kelola…, lalu klik Impor… dan pilih file preset atau, di aplikasi Mac, seluruh folder preset.",
+            "Tinjau laporan konversi, lalu terapkan preset dari Milik Anda."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Memulai"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Minta editor lain menyimpan metadatanya ke file XMP yang bersebelahan, lalu pilih Folder ••• → Impor sidecar…. Tindakan ini membaca asli katalog, termasuk semua halaman pustaka besar hingga 100.000 foto per impor. Salinan virtual mempertahankan metadata masing-masing.",
             "Metadata yang didukung mencakup rating bintang, tanda pilih/tolak, label warna standar, kata kunci datar dan hierarkis, serta bidang IPTC deskriptif. Nilai kosong yang eksplisit membersihkan bidang itu; nilai yang tidak ada membiarkannya tidak berubah. Label warna kustom yang tidak cocok dengan warna LightTable dilaporkan sebagai dilewati.",
-            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas tidak diterapkan oleh tindakan menu ini."
+            "Pengimpor membaca konvensi metadata Photo Mechanic dan digiKam yang didukung. Setiap aplikasi memiliki konvensi tambahan, jadi tinjau sampel kecil di kedua aplikasi sebelum menukar seluruh pustaka. Pengaturan pengembangan dan pangkas hanya diterapkan jika Anda mengaktifkan opsi tersebut di dialog Impor sidecar."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Pengeditan"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }

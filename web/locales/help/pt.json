@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -111,7 +112,7 @@
           "title": "Revisar edições traduzidas",
           "paragraphs": [
             "As configurações de Desenvolver são aproximadas e não podem garantir a aparência renderizada do Lightroom. Máscaras locais sem suporte, perfis de câmera, máscaras de IA do .lrcat-data ou cargas úteis de LUT, e regras de coleção inteligente sem suporte são relatadas como ignoradas. As configurações de desenvolvimento importadas desativam Filme.",
-            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Essa ação não aplica configurações de revelação nem corte. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
+            "Pastas ••• → Importar sidecars… é uma ação separada para ler metadados compatíveis de sidecars adjacentes. Ela aplica configurações de revelação e corte apenas quando você ativa essas opções. A caixa de diálogo de resultados mostra progresso, contagens aplicadas, configurações ignoradas e erros."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Primeiros passos"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Vindo do Lightroom",
+      "category": "Getting started",
+      "summary": "O que um catálogo do Lightroom Classic e sidecars XMP trazem, o que não tem caminho de importação e como o vocabulário difere.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migrar",
+        "migração",
+        "XMP",
+        "sidecars",
+        "predefinições",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "O que é trazido",
+          "paragraphs": [
+            "De um catálogo do Lightroom Classic: as fotos permanecem nas pastas atuais e são referenciadas, não copiadas. O importador lê classificações, marcações, rótulos e campos IPTC; palavras-chave; coleções e coleções inteligentes compatíveis; pilhas; cópias virtuais; corte e alinhamento; configurações de revelação aproximadas; e, se escolhido, o histórico de edição. Seu arquivo .lrcat nunca é alterado.",
+            "De sidecars XMP ao lado das suas fotos: classificações por estrelas, marcações de escolha e rejeição, rótulos de cor padrão, palavras-chave e campos IPTC descritivos. Pastas ••• → Importar sidecars… também pode aplicar configurações de revelação e corte quando você ativa essas opções.",
+            "Os dois caminhos usam o mesmo conversor, então uma configuração é mapeada da mesma forma por qualquer via: tom, deslocamentos de balanço de branco, textura, clareza, remoção de neblina, o misturador de cores, a conversão em preto e branco com seu misturador, curvas por pontos, quantidade de vinheta, nitidez e redução de ruído. Um valor fora do intervalo do LightTable, como exposição além de ±5 EV, é limitado e nomeado no relatório."
+          ]
+        },
+        {
+          "title": "O que não tem caminho de importação",
+          "paragraphs": [
+            "Álbuns na nuvem e predefinições guardadas apenas no app na nuvem não podem ser lidos. Sincronize-os primeiro no Lightroom Classic ou salve as predefinições como arquivos.",
+            "Máscaras de IA e edições generativas, desfoque de lente e configurações de redução de ruído são etapas de renderização proprietárias. Elas são relatadas como ignoradas em vez de aproximadas, assim como perfis de câmera, looks LUT, máscaras locais, correções e identidades de perfil de lente. As edições importadas começam com Filme desativado para que as configurações de revelação convertidas apareçam sozinhas."
+          ]
+        },
+        {
+          "title": "Vocabulário",
+          "paragraphs": [
+            "Coleções também são coleções aqui; os álbuns do app na nuvem só chegam por meio de um catálogo do Lightroom Classic.",
+            "As marcações Escolher e Rejeitar funcionam da mesma forma, e a barra inferior as mostra para as fotos selecionadas.",
+            "Revelar se chama Editar. Filme fica desativado por padrão em fotos novas e importadas; ative-o quando quiser um tratamento de filme sobre a edição.",
+            "Perfil de câmera em Editar lista os perfis DCP da Adobe que o Camera Raw ou o Lightroom instalaram neste computador, ou a pasta de perfis de câmera escolhida em Configurações. Os perfis se aplicam de forma aproximada e apenas à revelação com Filme desativado."
+          ]
+        },
+        {
+          "title": "Importe suas predefinições",
+          "paragraphs": [
+            "Predefinições → Gerenciar… → Importar… aceita predefinições .xmp do Lightroom e do Camera Raw, predefinições .lrtemplate antigas e estilos .costyle do Capture One. Após importar um catálogo ou uma pasta, a configuração também oferece Importar predefinições…. Cada predefinição importada mostra quantas configurações foram mapeadas e quais foram ignoradas antes de você aplicá-la."
+          ],
+          "steps": [
+            "Abra Predefinições, clique em Gerenciar… e depois em Importar… e escolha os arquivos de predefinição ou, no app para Mac, uma pasta inteira de predefinições.",
+            "Revise o relatório de conversão e depois aplique a predefinição em Seus."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Primeiros passos"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Peça ao outro editor para salvar os metadados em arquivos XMP adjacentes e, em seguida, escolha Pastas ••• → Importar sidecars…. A ação lê os originais do catálogo, incluindo todas as páginas de bibliotecas grandes com até 100.000 fotos por importação. As cópias virtuais mantêm seus próprios metadados.",
             "Os metadados compatíveis incluem avaliações por estrelas, marcas de selecionar/rejeitar, rótulos de cor padrão, palavras-chave planas e hierárquicas e campos descritivos IPTC. Um valor vazio explícito limpa esse campo; um valor ausente o deixa inalterado. Rótulos de cor personalizados que não correspondem a uma cor do LightTable são informados como ignorados.",
-            "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte não são aplicados por esta ação de menu."
+            "O importador lê convenções de metadados compatíveis do Photo Mechanic e do digiKam. Cada aplicativo possui convenções adicionais, portanto revise uma pequena amostra em ambos os aplicativos antes de trocar uma biblioteca inteira. As configurações de revelação e o corte são aplicados apenas quando você ativa essas opções na caixa de diálogo Importar sidecars."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Edição"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }

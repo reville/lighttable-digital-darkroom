@@ -73,7 +73,8 @@
       "related": [
         "browse-folders",
         "import-from-card",
-        "views-and-selection"
+        "views-and-selection",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -111,7 +112,7 @@
           "title": "Vertaalde bewerkingen beoordelen",
           "paragraphs": [
             "Ontwikkelinstellingen zijn benaderingen en kunnen het weergegeven uiterlijk van Lightroom niet garanderen. Niet-ondersteunde lokale maskers, cameraprofielen, .lrcat-data-AI-maskers of LUT-payloads, en niet-ondersteunde regels voor slimme collecties worden gerapporteerd als overgeslagen. Geïmporteerde ontwikkelinstellingen schakelen Film uit.",
-            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Die actie past geen ontwikkelinstellingen of bijsnijden toe. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
+            "Mappen ••• → Sidecars importeren… is een afzonderlijke actie om ondersteunde metagegevens uit naastliggende sidecars te lezen. Ontwikkelinstellingen en bijsnijden past die alleen toe als je die opties inschakelt. Het resultatendialoogvenster toont voortgang, toegepaste aantallen, overgeslagen instellingen en fouten."
           ]
         }
       ],
@@ -119,7 +120,8 @@
         "add-photos",
         "collections",
         "metadata-and-keywords",
-        "xmp-interchange"
+        "xmp-interchange",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -159,6 +161,67 @@
         "flags-and-ratings",
         "colour-labels",
         "survey-photos"
+      ],
+      "categoryLabel": "Aan de slag"
+    },
+    {
+      "id": "coming-from-lightroom",
+      "title": "Overstappen van Lightroom",
+      "category": "Getting started",
+      "summary": "Wat een Lightroom Classic-catalogus en XMP-sidecars meebrengen, wat geen importroute heeft en hoe de woordenschat verschilt.",
+      "keywords": [
+        "Lightroom",
+        "Lightroom Classic",
+        "migreren",
+        "migratie",
+        "XMP",
+        "sidecars",
+        "voorinstellingen",
+        "lrtemplate",
+        "Capture One"
+      ],
+      "sections": [
+        {
+          "title": "Wat meekomt",
+          "paragraphs": [
+            "Uit een Lightroom Classic-catalogus: foto's blijven in hun huidige mappen en worden verwezen, niet gekopieerd. De importeur leest waarderingen, markeringen, labels en IPTC-velden; trefwoorden; collecties en ondersteunde slimme collecties; stapels; virtuele kopieën; bijsnijden en rechtzetten; benaderde ontwikkelinstellingen; en, als je dat kiest, de bewerkingsgeschiedenis. Je .lrcat-bestand wordt nooit gewijzigd.",
+            "Uit XMP-sidecars naast je foto's: sterwaarderingen, kies- en afwijsmarkeringen, standaard kleurlabels, trefwoorden en beschrijvende IPTC-velden. Mappen ••• → Sidecars importeren… kan ook ontwikkelinstellingen en bijsnijden toepassen als je die opties inschakelt.",
+            "Beide routes gebruiken dezelfde omzetter, dus een instelling wordt op dezelfde manier vertaald, hoe die ook binnenkomt: toon, witbalansverschuivingen, textuur, helderheid, nevel verwijderen, de kleurmixer, zwart-witconversie met zijn mixer, puntcurven, vignethoeveelheid, verscherping en ruisonderdrukking. Een waarde buiten het bereik van LightTable, zoals belichting voorbij ±5 EV, wordt begrensd en in het rapport genoemd."
+          ]
+        },
+        {
+          "title": "Wat geen importroute heeft",
+          "paragraphs": [
+            "Cloudalbums en voorinstellingen die alleen in de cloud-app zijn opgeslagen, kunnen niet worden gelezen. Synchroniseer ze eerst naar Lightroom Classic of sla de voorinstellingen als bestanden op.",
+            "AI-maskers en generatieve bewerkingen, lensvervaging en ruisonderdrukkingsinstellingen zijn eigen renderstappen. Ze worden als overgeslagen gemeld in plaats van benaderd, net als cameraprofielen, LUT-looks, lokale maskers, retouches en lensprofiel-identiteiten. Geïmporteerde bewerkingen beginnen met Film uit, zodat de omgezette ontwikkelinstellingen op zichzelf zichtbaar zijn."
+          ]
+        },
+        {
+          "title": "Woordenlijst",
+          "paragraphs": [
+            "Collecties heten hier ook collecties; de albums van de cloud-app komen alleen binnen via een Lightroom Classic-catalogus.",
+            "Kies- en afwijsmarkeringen werken hetzelfde, en de onderste balk toont ze voor de geselecteerde foto's.",
+            "Ontwikkelen heet hier Bewerken. Film staat standaard uit voor nieuwe en geïmporteerde foto's; zet het aan als je een filmbehandeling boven op de bewerking wilt.",
+            "Cameraprofiel in Bewerken toont de Adobe DCP-profielen die Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of de map met cameraprofielen die in Instellingen is gekozen. Profielen werken bij benadering en alleen op de ontwikkeling met Film uit."
+          ]
+        },
+        {
+          "title": "Je voorinstellingen importeren",
+          "paragraphs": [
+            "Voorinstellingen → Beheren… → Importeren… accepteert .xmp-voorinstellingen van Lightroom en Camera Raw, oudere .lrtemplate-voorinstellingen en Capture One .costyle-stijlen. Na een catalogus- of mapimport biedt de installatie ook Voorinstellingen importeren… aan. Elke geïmporteerde voorinstelling toont hoeveel instellingen zijn vertaald en welke zijn overgeslagen voordat je hem toepast."
+          ],
+          "steps": [
+            "Open Voorinstellingen, klik op Beheren… en daarna op Importeren… en kies de voorinstellingsbestanden of, in de Mac-app, een hele map met voorinstellingen.",
+            "Bekijk het conversierapport en pas de voorinstelling daarna toe vanuit Jouw."
+          ]
+        }
+      ],
+      "related": [
+        "import-lightroom-catalog",
+        "xmp-interchange",
+        "editing-presets",
+        "add-photos",
+        "film-getting-started"
       ],
       "categoryLabel": "Aan de slag"
     },
@@ -497,7 +560,7 @@
           "paragraphs": [
             "Vraag de andere editor om de metagegevens op te slaan in naastliggende XMP-bestanden en kies daarna Mappen ••• → Sidecars importeren…. De actie leest de originelen van de catalogus, inclusief alle pagina's van grote bibliotheken tot 100.000 foto's per import. Virtuele kopieën behouden hun eigen metagegevens.",
             "Ondersteunde metagegevens zijn onder meer sterbeoordelingen, kies/afwijzen-markeringen, standaard kleurlabels, platte en hiërarchische trefwoorden en beschrijvende IPTC-velden. Een expliciete lege waarde wist dat veld; een ontbrekende waarde laat het ongewijzigd. Aangepaste kleurlabels die niet overeenkomen met een LightTable-kleur worden gerapporteerd als overgeslagen.",
-            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelingsinstellingen en bijsnijden worden niet toegepast door deze menubewerking."
+            "De importeur leest ondersteunde metagegevensconventies van Photo Mechanic en digiKam. Elke toepassing heeft aanvullende conventies, dus bekijk eerst een klein monster in beide toepassingen voordat je een hele bibliotheek uitwisselt. Ontwikkelinstellingen en bijsnijden worden alleen toegepast als je die opties inschakelt in het dialoogvenster Sidecars importeren."
           ]
         },
         {
@@ -1313,7 +1376,8 @@
         "editing-history-snapshots",
         "editing-copy-paste-match-exposure",
         "film-getting-started",
-        "editing-curves"
+        "editing-curves",
+        "coming-from-lightroom"
       ],
       "categoryLabel": "Bewerken"
     },
@@ -3285,5 +3349,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "f8ec743c1359b6f7bf8ba8404ab0ff21c4e979d27a5229c70d7b40cd9253c8e4"
 }
