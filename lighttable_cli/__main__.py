@@ -15,6 +15,7 @@ from pathlib import Path
 
 import platform_paths
 
+from . import __version__
 from .client import Client, ClientError, query
 from .instances import Instance, default_instance_directory, discover, select
 from .manifest import (
@@ -1104,7 +1105,7 @@ def run_mcp(client: Client) -> None:
             if method == "initialize":
                 result = {"protocolVersion": "2025-06-18",
                           "capabilities": {"tools": {}, "resources": {}},
-                          "serverInfo": {"name": "lighttable", "version": "1.0"}}
+                          "serverInfo": {"name": "lighttable", "version": __version__}}
             elif method == "tools/list":
                 result = {"tools": [{"name": tool["name"],
                     "description": tool["summary"], "inputSchema": tool["schema"],

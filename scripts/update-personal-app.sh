@@ -43,7 +43,7 @@ INSTALL_APP="${LIGHTTABLE_PERSONAL_APP:-/Applications/LightTable - NPR Installed
 BASE_APP="${LIGHTTABLE_PERSONAL_BASE_APP:-$INSTALL_APP}"
 BUILD_ROOT="$ROOT/.build/personal"
 BUILD_NUMBER="${LIGHTTABLE_BUILD_NUMBER:-$(date +%Y%m%d%H%M)}"
-VERSION="${LIGHTTABLE_VERSION:-0.1.0}"
+VERSION="${LIGHTTABLE_VERSION:-$(sed -n 's/^VERSION = "\([^"]*\)"$/\1/p' "$ROOT/app_version.py")}"
 PRODUCT_NAME="LightTable - NPR Installed"
 BUNDLE_IDENTIFIER="com.reville.filmlab.nprinstalled"
 DATA_NAME="Film Lab - NPR Installed"

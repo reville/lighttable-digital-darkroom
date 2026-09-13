@@ -207,10 +207,14 @@ jobs:
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_gpu_grade.py -v
           .build/linux/test-runtime/bin/python3 -m unittest discover -s tests -p test_merge_acceleration.py -v
 
-      - name: Build and smoke-test relocated package
+      - name: Select package version
         if: github.event_name != 'pull_request' || inputs.build_package
         env:
-          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: echo "PACKAGE_VERSION=${REQUESTED_VERSION:-$(python3 app_version.py)-ci.$GITHUB_RUN_NUMBER}" >> "$GITHUB_ENV"
+
+      - name: Build and smoke-test relocated package
+        if: github.event_name != 'pull_request' || inputs.build_package
         run: ./scripts/linux/build-release.sh --version "$PACKAGE_VERSION"
 
       - name: Retain completed portable bundle before native acceptance
@@ -226,8 +230,6 @@ jobs:
       - name: Open native GTK desktop and require a rendered photo
         if: github.event_name != 'pull_request' || inputs.build_package
         timeout-minutes: 3
-        env:
-          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
         run: |
           mkdir -p ".build/linux/native desktop smoke"
           tar -xzf "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" -C ".build/linux/native desktop smoke"
@@ -273,8 +275,6 @@ jobs:
 
       - name: Prepare local pacman package recipe
         if: github.event_name != 'pull_request' || inputs.build_package
-        env:
-          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
         run: |
           python3 scripts/linux/make-arch-package.py \
             "dist/LightTable-$PACKAGE_VERSION-linux-x86_64.tar.gz" --output-dir .build/linux/arch-package

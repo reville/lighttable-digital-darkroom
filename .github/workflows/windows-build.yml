@@ -259,7 +259,7 @@ jobs:
         shell: pwsh
         env:
           STORE_CANDIDATE: ${{ inputs.store_candidate && 'true' || 'false' }}
-          PACKAGE_VERSION: ${{ inputs.version || format('0.1.0-ci.{0}', github.run_number) }}
+          PACKAGE_VERSION: ${{ inputs.version }}
           REQUIRE_SIGNING: ${{ (inputs.require_signing || inputs.store_candidate) && 'true' || 'false' }}
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
@@ -294,6 +294,7 @@ jobs:
               OfflineWebView2Sha256 = $InputRecord.sha256
             }
           }
+          if (-not $env:PACKAGE_VERSION) { $env:PACKAGE_VERSION = "$(python app_version.py)-ci.$env:GITHUB_RUN_NUMBER" }
           ./scripts/windows/build-release.ps1 @StoreOptions -Version $env:PACKAGE_VERSION -RequireSigning:($env:REQUIRE_SIGNING -eq 'true')
 
       - name: Verify signatures in the completed artifacts
