@@ -1971,7 +1971,8 @@
         {
           "title": "Pilih orang atau area wajah",
           "paragraphs": [
-            "Orang menawarkan Orang, Kulit wajah, Mata, Alis, Bibir, Gigi, Rambut, dan Haluskan kulit. Kontrol ini memerlukan helper Vision di macOS 14 atau lebih baru dan disembunyikan di Linux dan Windows. Kulit wajah dan rambut diperkirakan, dan tidak ada identitas yang disimpulkan."
+            "People menawarkan Orang dan Rambut di setiap platform. Kulit wajah, Mata, Alis, Bibir, Gigi, dan Haluskan kulit memerlukan helper Vision di macOS 14 atau lebih baru. Kulit wajah diperkirakan, dan tidak ada identitas yang disimpulkan.",
+            "Rambut menggunakan model bawaan yang berjalan secara lokal dan memilih rambut di luar wajah, termasuk rambut sebahu. Periksa helai halus, highlight terang, wig, dan orang kecil di latar belakang; ini masih bisa terlewat. Build lama atau source tanpa model menggunakan perkiraan Vision sebelumnya jika tersedia. Masker tersimpan yang sudah ada mempertahankan pilihannya."
           ],
           "steps": [
             "Pilih Orang, lalu bagian yang ingin Anda sesuaikan.",
@@ -3286,5 +3287,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "0f5fe0fbef1fb987e6ea524b93d9c899f15c5d3ed2d35b545683f6f3d5d24d5a"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

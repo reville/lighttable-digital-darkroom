@@ -118,6 +118,9 @@ and rotated. Each mask has Whites, Blacks, and RGB or individual-channel tone
 curves. Subject, Sky, and Object selections retain up to 1,024 pixels along
 their longest edge, with edges refined against the source image. Automatic
 selections remain starting points that need inspection and painted refinement.
+Hair uses a bundled local segmentation model that follows hair below the face
+and distinguishes it from skin and clothing. Fine strands, bright highlights,
+and small distant people can still be missed.
 
 In Effects, Vignette darkens or brightens the edges. Size controls how much of
 the center stays clear, and Feather controls how softly the effect blends in.

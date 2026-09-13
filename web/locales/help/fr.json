@@ -1971,7 +1971,8 @@
         {
           "title": "Sélectionner des personnes ou des régions faciales",
           "paragraphs": [
-            "Personnes propose Personne, Peau du visage, Yeux, Sourcils, Lèvres, Dents, Cheveux et Adoucir la peau. Ces commandes nécessitent l’assistant Vision sur macOS 14 ou version ultérieure et sont masquées sur Linux et Windows. La peau du visage et les cheveux sont estimés, et aucune identité n’est déduite."
+            "People propose Personne et Cheveux sur toutes les plateformes. Peau du visage, Yeux, Sourcils, Lèvres, Dents et Adoucir la peau nécessitent l’assistant Vision sur macOS 14 ou version ultérieure. La peau du visage est estimée, et aucune identité n’est déduite.",
+            "Cheveux utilise un modèle intégré qui s’exécute localement et sélectionne les cheveux au-delà du visage, y compris les cheveux jusqu’aux épaules. Inspectez les mèches fines, les hautes lumières claires, les perruques et les petites personnes en arrière-plan ; ils peuvent tout de même être manqués. Les anciennes versions ou les versions source sans le modèle utilisent l’estimation Vision antérieure lorsqu’elle est disponible. Les masques enregistrés existants conservent leurs sélections."
           ],
           "steps": [
             "Choisir Personnes, puis la partie que vous voulez ajuster.",
@@ -3286,5 +3287,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "0f5fe0fbef1fb987e6ea524b93d9c899f15c5d3ed2d35b545683f6f3d5d24d5a"
+  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
 }

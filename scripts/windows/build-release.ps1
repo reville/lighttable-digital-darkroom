@@ -83,6 +83,7 @@ $PythonSource = Join-Path $BuildRoot "python-engine"
 $RustSource = Join-Path $BuildRoot "rust-engine-source"
 $PreviousTestUpdater = [Environment]::GetEnvironmentVariable("LIGHTTABLE_TEST_WINSPARKLE_DLL", "Process")
 $PreviousIcon = [Environment]::GetEnvironmentVariable("LIGHTTABLE_ICON_ICO", "Process")
+$PreviousPythonPath = [Environment]::GetEnvironmentVariable("PYTHONPATH", "Process")
 
 $RequiredTools = if ($RuntimeSmokeOnly) { @("git", "uv") } else { @("cargo", "git", "rustup", "uv") }
 foreach ($Tool in $RequiredTools) {
@@ -141,6 +142,16 @@ try {
         --requirements (Join-Path $Project "packaging\runtime-windows.lock")
     if ($LASTEXITCODE -ne 0) { throw "Windows runtime dependency installation failed" }
 
+    # Move the installed runtime before either smoke path so native libraries
+    # cannot depend on their original build location.
+    $MovedParent = Join-Path $BuildRoot "moved bundle with spaces"
+    New-Item -ItemType Directory -Path $MovedParent | Out-Null
+    Move-Item -Path $Payload -Destination $MovedParent
+    $Payload = Join-Path $MovedParent "LightTable"
+    $Resources = Join-Path $Payload "Resources\LightTable"
+    $Python = Join-Path $Payload "Python"
+    $PythonExe = Join-Path $Python "python.exe"
+
     & git clone --quiet --filter=blob:none https://github.com/andreavolpato/agx-emulsion.git $PythonSource
     & git -C $PythonSource checkout --quiet $PythonSourceRevision
     if ($LASTEXITCODE -ne 0) { throw "Could not check out the pinned Python render source" }
@@ -194,6 +205,17 @@ try {
 
     & $PythonExe (Join-Path $Project "scripts\fetch-color-profiles.py") (Join-Path $Resources "color-profiles")
     if ($LASTEXITCODE -ne 0) { throw "Color-profile download failed" }
+
+    $Models = Join-Path $Payload "Resources\models"
+    & $PythonExe -B (Join-Path $Project "scripts\fetch-hair-model.py") --into $Models
+    if ($LASTEXITCODE -ne 0) { throw "Hair-model preparation failed" }
+    # Explicit PYTHONPATH prevents the smoke helper importing source modules.
+    # Embedded Python resolves the packaged module path through python313._pth.
+    $env:PYTHONPATH = $Resources
+    & $PythonExe -B (Join-Path $Project "scripts\smoke-hair-mask.py") `
+        --model-dir $Models --image (Join-Path $Project "tests\fixtures\photos\portrait.jpg")
+    if ($LASTEXITCODE -ne 0) { throw "The relocated Windows hair-model smoke test failed" }
+    [Environment]::SetEnvironmentVariable("PYTHONPATH", $PreviousPythonPath, "Process")
 
     # Pin and verify the upstream updater binary before it reaches the payload.
     $WinSparkleArchive = Join-Path $BuildRoot "winsparkle.zip"
@@ -376,6 +398,7 @@ try {
     Write-Host "Built Windows artifacts in $Output"
 } finally {
     Complete-BuildTiming $Timing $BuildSucceeded
+    [Environment]::SetEnvironmentVariable("PYTHONPATH", $PreviousPythonPath, "Process")
     [Environment]::SetEnvironmentVariable("LIGHTTABLE_TEST_WINSPARKLE_DLL", $PreviousTestUpdater, "Process")
     [Environment]::SetEnvironmentVariable("LIGHTTABLE_ICON_ICO", $PreviousIcon, "Process")
     if (Test-Path $BuildRoot) {

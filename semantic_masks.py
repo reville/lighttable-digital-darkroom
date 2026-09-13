@@ -372,6 +372,18 @@ def generate(image: np.ndarray, kind: str, point: tuple[float, float] | None = N
              vision_provider=None,
              parts_cache: Path | None = None) -> tuple[np.ndarray, str]:
     kind = str(kind).lower()
+    if kind == "hair":
+        from film_lab_ai.hair_segmentation import hair_mask, HairModelUnavailable
+        try:
+            # Analyze the full photograph, including hair below the face.
+            # A valid empty result must stay empty; falling back to a face
+            # ellipse would invent hair on bald heads or hairless scenes.
+            mask = hair_mask(image)
+        except HairModelUnavailable:
+            pass  # Older/source installs retain the labelled Vision estimate.
+        else:
+            return _finish(mask, _working_image(image, MAX_PART_EDGE),
+                           strength=0.75), "local-hair-segmentation"
     if kind in PERSON_PARTS:
         if not source_path or not vision_helper:
             if kind == "person":
