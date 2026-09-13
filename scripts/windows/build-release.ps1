@@ -217,20 +217,30 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "The relocated Windows hair-model smoke test failed" }
 
     # The denoise model is converted locally (scripts/convert-models.py
-    # --format onnx), never fetched at build time; a missing artefact fails
-    # the build rather than shipping a silently denoise-less Windows release.
+    # --format onnx), never fetched at build time. It is bundled when the
+    # converted artefact is present; LIGHTTABLE_REQUIRE_DENOISE_MODEL=1 makes
+    # a missing artefact fail the build instead of producing a runtime that
+    # reports learned denoise as unavailable.
     $OnnxModelRoot = Join-Path $Project "scripts\models\onnx"
     $OnnxAssets = @("denoise.onnx", "models.json", "SCUNet-CODE-LICENSE.txt", "SCUNet-WEIGHTS-LICENSE.txt")
-    foreach ($Asset in $OnnxAssets) {
-        $AssetPath = Join-Path $OnnxModelRoot $Asset
-        if (-not (Test-Path $AssetPath)) {
-            throw "Missing converted denoise model asset: $AssetPath (run scripts/fetch-models.py and scripts/convert-models.py --format onnx)"
-        }
-        Copy-Item $AssetPath $Models
+    $OnnxPresent = Test-Path (Join-Path $OnnxModelRoot "denoise.onnx")
+    if (-not $OnnxPresent -and $env:LIGHTTABLE_REQUIRE_DENOISE_MODEL -eq "1") {
+        throw "Missing converted denoise model asset: $OnnxModelRoot\denoise.onnx (run scripts/fetch-models.py and scripts/convert-models.py --format onnx)"
     }
-    & $PythonExe -B (Join-Path $Project "scripts\smoke-denoise.py") `
-        --model-dir $Models --image (Join-Path $Project "tests\fixtures\photos\portrait.jpg")
-    if ($LASTEXITCODE -ne 0) { throw "The relocated Windows denoise smoke test failed" }
+    if ($OnnxPresent) {
+        foreach ($Asset in $OnnxAssets) {
+            $AssetPath = Join-Path $OnnxModelRoot $Asset
+            if (-not (Test-Path $AssetPath)) {
+                throw "Missing converted denoise model asset: $AssetPath (run scripts/fetch-models.py and scripts/convert-models.py --format onnx)"
+            }
+            Copy-Item $AssetPath $Models
+        }
+        & $PythonExe -B (Join-Path $Project "scripts\smoke-denoise.py") `
+            --model-dir $Models --image (Join-Path $Project "tests\fixtures\photos\portrait.jpg")
+        if ($LASTEXITCODE -ne 0) { throw "The relocated Windows denoise smoke test failed" }
+    } else {
+        Write-Host "Converted denoise model not present; the Windows runtime will report learned denoise as unavailable."
+    }
     [Environment]::SetEnvironmentVariable("PYTHONPATH", $PreviousPythonPath, "Process")
 
     # Pin and verify the upstream updater binary before it reaches the payload.

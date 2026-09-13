@@ -148,20 +148,27 @@ def main() -> None:
         run(python, ROOT / "scripts/fetch-color-profiles.py",
             bundle / "Resources/LightTable/color-profiles", env=environment)
         # The denoise model is converted locally (scripts/convert-models.py
-        # --format onnx), never fetched at build time; a missing artefact is
-        # a hard failure rather than a silently denoise-less Linux release.
+        # --format onnx), never fetched at build time. It is bundled when the
+        # converted artefact is present; LIGHTTABLE_REQUIRE_DENOISE_MODEL=1
+        # makes a missing artefact fail the build instead of producing a
+        # runtime that reports learned denoise as unavailable.
         onnx_root = ROOT / "scripts/models/onnx"
-        if not (onnx_root / "denoise.onnx").is_file() or not (onnx_root / "models.json").is_file():
+        denoise_present = (onnx_root / "denoise.onnx").is_file()
+        if not denoise_present and os.environ.get("LIGHTTABLE_REQUIRE_DENOISE_MODEL") == "1":
             raise SystemExit(
                 "Missing converted denoise model; run scripts/fetch-models.py and "
                 "scripts/convert-models.py --format onnx")
-        (bundle / "Resources/models").mkdir(parents=True, exist_ok=True)
-        for asset in ("denoise.onnx", "models.json",
-                     "SCUNet-CODE-LICENSE.txt", "SCUNet-WEIGHTS-LICENSE.txt"):
-            source_asset = onnx_root / asset
-            if not source_asset.is_file():
-                raise SystemExit(f"Missing model asset: {source_asset}")
-            shutil.copy2(source_asset, bundle / "Resources/models" / asset)
+        if denoise_present:
+            (bundle / "Resources/models").mkdir(parents=True, exist_ok=True)
+            for asset in ("denoise.onnx", "models.json",
+                         "SCUNet-CODE-LICENSE.txt", "SCUNet-WEIGHTS-LICENSE.txt"):
+                source_asset = onnx_root / asset
+                if not source_asset.is_file():
+                    raise SystemExit(f"Missing model asset: {source_asset}")
+                shutil.copy2(source_asset, bundle / "Resources/models" / asset)
+        else:
+            print("Converted denoise model not present; the Linux runtime will "
+                  "report learned denoise as unavailable.")
         for manifest, binary, destination in (
             (ROOT / "rust-engine/Cargo.toml", "lighttable-engine", bundle / "Resources/LightTable/engine/lighttable-engine"),
             (ROOT / "windows-shell/Cargo.toml", "lighttable-desktop-shell", bundle / "bin/lighttable-desktop-shell"),
@@ -212,9 +219,10 @@ def main() -> None:
         run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-hair-mask.py",
             "--model-dir", relocated / "Resources/models",
             "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
-        run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-denoise.py",
-            "--model-dir", relocated / "Resources/models",
-            "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
+        if denoise_present:
+            run(relocated / "Python/bin/python3", "-B", ROOT / "scripts/smoke-denoise.py",
+                "--model-dir", relocated / "Resources/models",
+                "--image", ROOT / "tests/fixtures/photos/portrait.jpg", env=hair_environment)
         run(relocated / "Python/bin/python3", "-B", relocated / "runtime-smoke.py", relocated,
             env=environment)
         filename = f"LightTable-{args.version}-linux-{architecture}.tar.gz"

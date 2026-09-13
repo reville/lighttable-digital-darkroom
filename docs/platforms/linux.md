@@ -283,7 +283,11 @@ original with the same formula the macOS Swift helper uses. The converted
 `.onnx` package is staged into `Resources/models` alongside the LiteRT hair
 model before the bundle is relocated, and `scripts/smoke-denoise.py` exercises
 it for real after relocation, the same way `scripts/smoke-hair-mask.py`
-exercises the hair model. Flatpak packaging does not yet carry this model or
+exercises the hair model. The build bundles the converted model only when
+`scripts/models/onnx/denoise.onnx` is present (set
+`LIGHTTABLE_REQUIRE_DENOISE_MODEL=1` to make its absence a build failure);
+hosted CI does not yet convert it, so a runtime built there reports learned
+denoise as unavailable. Flatpak packaging does not yet carry this model or
 `onnxruntime`; only the portable tarball build above does.
 
 Native ARM64 Linux builders may pass `--experimental-aarch64` for a validation

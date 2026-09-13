@@ -247,7 +247,12 @@ back to CPU on its own; strength blends against the original with the same
 formula the Swift helper uses, so a strength value means the same thing on
 every platform. `scripts/smoke-denoise.py` exercises the packaged ONNX model
 after relocation, the same way `scripts/smoke-hair-mask.py` exercises the
-LiteRT hair model.
+LiteRT hair model. The build bundles the converted model only when
+`scripts/models/onnx/denoise.onnx` is present (set
+`LIGHTTABLE_REQUIRE_DENOISE_MODEL=1` to make its absence a build failure);
+hosted CI does not yet convert it, so a runtime built there reports learned
+denoise as unavailable until a conversion step like the macOS release job's is
+added.
 
 Full-resolution portable processed-image conversion decodes through OpenImageIO
 and applies ICC transforms through LittleCMS via the pinned `imagecodecs`
