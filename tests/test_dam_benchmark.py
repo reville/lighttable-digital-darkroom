@@ -55,7 +55,10 @@ class DAMBenchmarkTests(unittest.TestCase):
                     "name": lambda row: row["filename"].casefold(),
                     "rating": lambda row: row["rating"],
                     "status": lambda row: row["status"],
-                    "label": lambda row: row["label"],
+                    # Labels sort in colour order, the way the label picker
+                    # lays them out, not alphabetically.
+                    "label": lambda row: ("none", "red", "yellow", "green", "blue",
+                                          "purple").index(row["label"] or "none"),
                     "added": lambda row: row["created_at"],
                     "size": lambda row: row["size"],
                 }

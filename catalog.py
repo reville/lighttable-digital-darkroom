@@ -2243,6 +2243,7 @@ class Catalog:
                 params.append(int(spec["collectionId"]))
 
         for flt in (collection_rules, spec.get("filter") or {}):
+            toolbar = flt is spec.get("filter")
             flt = flt if isinstance(flt, dict) else {}
             status = str(flt.get("status", "all"))
             if status == "unflagged":
@@ -2371,17 +2372,27 @@ class Catalog:
                 search_clause = ("i.id IN (SELECT image_id FROM image_search"
                                  " WHERE image_search MATCH ?)")
                 params.append(_fts_query(query_text))
-                also = spec.get("searchAlsoIds") if flt is spec.get("filter") else None
+                # The browser's local index matches descriptions the catalog
+                # never sees. It sends those names so a search stays one
+                # server-ordered result instead of two lists merged by hand.
+                also = spec.get("searchAlsoNames") if toolbar else None
                 if isinstance(also, (list, tuple)) and also:
                     search_clause = (f"({search_clause} OR i.id IN"
                                      " (SELECT value FROM json_each(?)))")
-                    params.append(json.dumps([int(v) for v in also]))
+                    params.append(json.dumps(self.image_ids_for_names(also)))
                 where.append(search_clause)
         if isinstance(spec.get("names"), list):
             # An explicit name list: the browser resolves a full-view selection
             # it never loaded into rows for marking, without paging everything.
             ids = self.image_ids_for_names(spec["names"])
             where.append("i.id IN (SELECT value FROM json_each(?))")
+            params.append(json.dumps(ids))
+        if isinstance(spec.get("excludeNames"), list) and spec["excludeNames"]:
+            # Photos the browser has learned it cannot display are its
+            # knowledge alone; it hands the names over rather than paging the
+            # whole view to drop them.
+            ids = self.image_ids_for_names(spec["excludeNames"])
+            where.append("i.id NOT IN (SELECT value FROM json_each(?))")
             params.append(json.dumps(ids))
         sort = spec.get("sort") if isinstance(spec.get("sort"), dict) else {}
         field = SORT_FIELDS.get(str(sort.get("field", "capture")),
@@ -2422,13 +2433,14 @@ class Catalog:
         if hiding:
             # The matched CTE binds the filter clause first; the pair rules
             # that follow it bind after, so the parameter order must match.
-            cte, params = hiding[0] + " page AS (", params + hiding[1]
+            prefix, params = hiding[0].rstrip(",") + " ", params + hiding[1]
+            cte = hiding[0] + " page AS ("
             base = joins + " JOIN result ON result.id=i.id"
             total = self.connection.execute(
-                f"{hiding[0].rstrip(',')} SELECT COUNT(*) AS n FROM result",
+                f"{prefix}SELECT COUNT(*) AS n FROM result",
                 params).fetchone()["n"]
         else:
-            cte = "WITH page AS ("
+            prefix, cte = "", "WITH page AS ("
             base = joins + f" WHERE {clause}"
             total = self.connection.execute(
                 f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
@@ -2450,6 +2462,18 @@ class Catalog:
         # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
         # through SQLite's temporary sort made the last page grow with the library.
         ordering = f"{field} {direction}, f.filename COLLATE NOCASE, i.id"
+        located = None
+        if spec.get("locate"):
+            # Where one photo sits in this ordering, so the browser can keep
+            # or resume its place after a filter change without paging up to
+            # it. One window-function pass over the matched ids.
+            wanted = self.image_ids_for_names([str(spec["locate"])])
+            if wanted:
+                row = self.connection.execute(
+                    f"{prefix}SELECT rn FROM (SELECT i.id AS id,"
+                    f" ROW_NUMBER() OVER (ORDER BY {ordering}) - 1 AS rn"
+                    f"{base}) WHERE id=?", (*params, wanted[0])).fetchone()
+                located = int(row["rn"]) if row else None
         if spec.get("namesOnly"):
             try:
                 limit = max(1, min(100000, int(spec.get("limit", 100000))))
@@ -2465,7 +2489,7 @@ class Catalog:
                 for row in rows
             ]
             return {"total": int(total), "offset": offset, "limit": limit,
-                    "names": names, "items": []}
+                    "located": located, "names": names, "items": []}
         if spec.get("idsOnly"):
             try:
                 limit = max(1, min(100000, int(spec.get("limit", 100000))))
@@ -2476,7 +2500,8 @@ class Catalog:
                 "SELECT page.id FROM page",
                 (*params, limit, offset)).fetchall()
             return {"total": int(total), "offset": offset, "limit": limit,
-                    "ids": [row["id"] for row in rows], "items": []}
+                    "located": located, "ids": [row["id"] for row in rows],
+                    "items": []}
         rows = self.connection.execute(
             f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
@@ -2514,7 +2539,7 @@ class Catalog:
                 item["keywords"] = keywords.get(row["id"], [])
                 item["captureTimeOverride"] = row["capture_time_override"]
         return {"total": int(total), "offset": offset, "limit": limit,
-                "items": items}
+                "located": located, "items": items}
 
     def image_ids_for_names(self, names: Sequence[str]) -> list[int]:
         """Resolve qualified names to image ids in a few statements.
@@ -2583,6 +2608,10 @@ class Catalog:
                     "WHEN m.source_id=? AND m.stem=? THEN m.relpath!=?")
                 params.extend([int(source_id), stem, relpath])
             params.append(1 if pair_view == "raw" else 0)
+            hidden_rule = "(m.kind='raw')!=?"
+            if preferred:
+                hidden_rule = ("CASE " + " ".join(preferred)
+                               + f" ELSE {hidden_rule} END")
             parts.append(
                 "members AS (SELECT * FROM matched WHERE virtual=0"
                 " AND (kind='raw' OR (kind='processed' AND ext IN ('.jpg','.jpeg')))),"
@@ -2590,8 +2619,7 @@ class Catalog:
                 " GROUP BY source_id, stem HAVING COUNT(*)=2 AND SUM(kind='raw')=1),"
                 " pair_hidden AS (SELECT m.id AS id FROM members m"
                 " JOIN pair_groups g ON g.source_id=m.source_id AND g.stem=m.stem"
-                " WHERE CASE " + " ".join(preferred)
-                + " ELSE (m.kind='raw')!=? END),"
+                f" WHERE {hidden_rule}),"
                 " shown AS (SELECT id FROM matched"
                 " WHERE id NOT IN (SELECT id FROM pair_hidden))")
             shown = "shown"
