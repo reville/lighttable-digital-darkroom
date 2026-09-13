@@ -4219,6 +4219,11 @@ function originalPreviewURL(requestedWidth = requestedPreviewWidth()) {
 
 let browserOriginal = null;
 let browserOriginalTextureURL = null;
+// Zooming asks for a sharper Original of the same photo; only its width differs.
+function originalIdentity(url) {
+  return String(url || '').replace(/([?&])w=[^&]*(&|$)/, '$1').replace(/[?&]$/, '');
+}
+
 function installBrowserOriginal() {
   if ((!S.compareActive && !S.holdBefore) || nativePreviewActive() ||
       !S.gl || !browserOriginal?.image?.complete ||
@@ -4238,9 +4243,15 @@ function syncBrowserOriginal(requestedWidth = requestedPreviewWidth()) {
     installBrowserOriginal();
     return;
   }
+  // Keep comparing against the loaded Original until the sharper one arrives,
+  // but never against another photo or rotation.
+  const keepLoaded = browserOriginalTextureURL !== null &&
+    originalIdentity(browserOriginalTextureURL) === originalIdentity(url);
   S.originalImageName = url;
-  browserOriginalTextureURL = null;
-  S.gl?.clearOriginalImage();
+  if (!keepLoaded) {
+    browserOriginalTextureURL = null;
+    S.gl?.clearOriginalImage();
+  }
   const image = new Image();
   browserOriginal = { url, image };
   image.onload = () => installBrowserOriginal();
