@@ -1970,7 +1970,8 @@
         {
           "title": "Seleziona persone o regioni facciali",
           "paragraphs": [
-            "Persone offre Persona, Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti, Capelli e Leviga la pelle. Questi controlli richiedono l'assistente Vision su macOS 14 o successivo e sono nascosti su Linux e Windows. Incarnato del viso e capelli vengono stimati e non viene dedotta alcuna identità."
+            "Persone offre Persona e Capelli su tutte le piattaforme. Incarnato del viso, Occhi, Sopracciglia, Labbra, Denti e Leviga la pelle richiedono l'helper Vision su macOS 14 o versioni successive. Incarnato del viso è stimato e non viene dedotta alcuna identità.",
+            "Capelli usa un modello integrato che viene eseguito localmente e seleziona i capelli oltre il viso, compresi i capelli lunghi fino alle spalle. Ispeziona i ciuffi sottili, le alte luci brillanti, le parrucche e le piccole persone sullo sfondo; anche questi elementi possono essere mancati. Le build più vecchie o di origine senza il modello usano la stima Vision precedente, quando disponibile. Le maschere salvate esistenti mantengono le rispettive selezioni."
           ],
           "steps": [
             "Scegli Persone, poi la parte che vuoi regolare.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }

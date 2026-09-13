@@ -1970,7 +1970,8 @@
         {
           "title": "Personen oder Gesichtsbereiche auswählen",
           "paragraphs": [
-            "Personen bietet Person, Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Diese Steuerelemente benötigen den Vision-Helfer unter macOS 14 oder neuer und sind unter Linux und Windows ausgeblendet. Gesichtshaut und Haare werden geschätzt, und es wird keine Identität abgeleitet."
+            "Personen bietet Person und Haare auf allen Plattformen. Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne und Haut glätten erfordern den Vision-Helfer unter macOS 14 oder neuer. Gesichtshaut wird geschätzt, und es wird keine Identität abgeleitet.",
+            "Haare verwendet ein mitgeliefertes Modell, das lokal ausgeführt wird, und wählt Haare über das Gesicht hinaus aus, einschließlich schulterlangem Haar. Prüfen Sie feine Strähnen, helle Lichter, Perücken und kleine Personen im Hintergrund; diese können dennoch übersehen werden. Ältere Builds oder Source-Builds ohne das Modell verwenden nach Möglichkeit die frühere Vision-Schätzung. Vorhandene gespeicherte Masken behalten ihre Auswahlen."
           ],
           "steps": [
             "Personen wählen und dann den Teil, den Sie anpassen möchten.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }

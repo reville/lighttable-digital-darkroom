@@ -1970,7 +1970,8 @@
         {
           "title": "Chọn người hoặc vùng khuôn mặt",
           "paragraphs": [
-            "Mọi người cung cấp Người, Da mặt, Mắt, Lông mày, Môi, Răng, Tóc và Làm mềm da. Các điều khiển này yêu cầu trình trợ giúp Vision trên macOS 14 trở lên và bị ẩn trên Linux và Windows. Da mặt và tóc được ước tính, và không có nhận dạng danh tính nào được suy ra."
+            "Mọi người cung cấp Người và Tóc trên mọi nền tảng. Da mặt, Mắt, Lông mày, Môi, Răng và Làm mềm da yêu cầu trình hỗ trợ Vision trên macOS 14 trở lên. Da mặt được ước tính và không suy ra danh tính.",
+            "Tóc sử dụng một mô hình đi kèm chạy cục bộ và chọn tóc ngoài khuôn mặt, bao gồm cả tóc dài ngang vai. Kiểm tra các sợi tóc mảnh, vùng sáng mạnh, tóc giả và những người nhỏ ở nền; những đối tượng này vẫn có thể bị bỏ sót. Các bản dựng cũ hơn hoặc bản dựng nguồn không có mô hình sẽ dùng ước tính Vision trước đó khi có sẵn. Các mặt nạ đã lưu hiện có vẫn giữ nguyên vùng chọn của chúng."
           ],
           "steps": [
             "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }

@@ -1,8 +1,36 @@
 {
   "format": 1,
   "source_build_ready": false,
-  "requirements_sha256": "4412442c807f8a8d9b02a942d54aed9dad921a96f76b0e67dd24d277798246de",
+  "requirements_sha256": "a51bd42651a53c4708a69bd2d8314b1362046b09d7a244897163f701b927535d",
   "packages": [
+    {
+      "name": "ai-edge-litert",
+      "version": "2.2.0",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google-ai-edge/LiteRT.git",
+          "commit": "145c7523ff08d5e57ab5c582141775eea47da9c7",
+          "tag": "v2.2.0"
+        }
+      ],
+      "requires_python": null,
+      "offline_recipe_verified": false,
+      "note": "No PyPI sdist at this pin; upstream Git source and its submodules require a native build recipe."
+    },
+    {
+      "name": "backports.strenum",
+      "version": "1.2.8",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/57/f1/611f9ce7f5ede2e8156d3bc6cd2c62a7f2ff07d73b948925da84785cf331/backports_strenum-1.2.8.tar.gz",
+          "sha256": "4dd47365fd427ac8028aeb1ad3628ea38e67c4d0336ceebd5c0f113e0c487ce9"
+        }
+      ],
+      "requires_python": ">=3.8.6,<4.0.0",
+      "offline_recipe_verified": false
+    },
     {
       "name": "colour-science",
       "version": "0.4.7",
@@ -54,6 +82,21 @@
       ],
       "requires_python": null,
       "offline_recipe_verified": false
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.12.19",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/google/flatbuffers.git",
+          "commit": "7e163021e59cca4f8e1e35a7c828b5c6b7915953",
+          "tag": "v25.12.19"
+        }
+      ],
+      "requires_python": null,
+      "offline_recipe_verified": false,
+      "note": "No PyPI sdist at this pin; upstream Git source and its submodules require a native build recipe."
     },
     {
       "name": "fonttools",
@@ -175,6 +218,19 @@
       "offline_recipe_verified": false
     },
     {
+      "name": "ml-dtypes",
+      "version": "0.6.0",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/12/72/307d7c4bd0600601c7133fba5cb78af7db968152951c1cd473abb1cda782/ml_dtypes-0.6.0.tar.gz",
+          "sha256": "5e60251d32ced5598972e4d5e06a2f044341f9291402551a3f6f0ec44f9299b0"
+        }
+      ],
+      "requires_python": ">=3.10",
+      "offline_recipe_verified": false
+    },
+    {
       "name": "networkx",
       "version": "3.6.1",
       "sources": [
@@ -273,6 +329,19 @@
           "type": "file",
           "url": "https://files.pythonhosted.org/packages/1c/3d/bb7fca845737cf9d7dbde16ed1843984665ff2e0a518f5db43e77ec540b9/pillow-12.3.0.tar.gz",
           "sha256": "3b8182a766685eaa002637e28b4ec8d6b18819a0c71f579bf0dbaa5830297cce"
+        }
+      ],
+      "requires_python": ">=3.10",
+      "offline_recipe_verified": false
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.1",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/86/73/f66c748df06e7fe24e658eddd600d19c4b40bad836c97ce2d0ad9851fb6b/protobuf-7.36.1.tar.gz",
+          "sha256": "d0f6470f0ce2b84e3feaea2d4b816378b37ba4d4aa08a274305373de93e2d524"
         }
       ],
       "requires_python": ">=3.10",
@@ -380,6 +449,32 @@
         }
       ],
       "requires_python": ">=3.12",
+      "offline_recipe_verified": false
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.0",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/21/3b/6c24bec5be5e743ffd99576daa5cc077722fc7d5bbc00bd133fa0c698dc6/tqdm-4.70.0.tar.gz",
+          "sha256": "55b0b0dbd97462d06ebee91e4dac24ed4d4702be82b24f07e6c1d27e08cea220"
+        }
+      ],
+      "requires_python": ">=3.8",
+      "offline_recipe_verified": false
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz",
+          "sha256": "dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"
+        }
+      ],
+      "requires_python": ">=3.9",
       "offline_recipe_verified": false
     }
   ]

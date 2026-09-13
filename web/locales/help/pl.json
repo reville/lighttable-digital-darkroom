@@ -1970,7 +1970,8 @@
         {
           "title": "Wybierz osoby lub obszary twarzy",
           "paragraphs": [
-            "Osoby oferuje Osoba, Skóra twarzy, Oczy, Brwi, Usta, Zęby, Włosy i Wygładź skórę. Te elementy sterujące wymagają pomocnika Vision w macOS 14 lub nowszym i są ukryte w systemach Linux i Windows. Skóra twarzy i włosy są szacowane, a tożsamość nie jest wnioskowana."
+            "Osoby oferuje Person i Hair na każdej platformie. Face skin, Eyes, Eyebrows, Lips, Teeth oraz Soften skin wymagają pomocnika Vision w systemie macOS 14 lub nowszym. Face skin jest szacowana i nie jest wnioskowana tożsamość.",
+            "Hair korzysta z dołączonego modelu, który działa lokalnie i zaznacza włosy poza twarzą, w tym włosy do ramion. Sprawdź cienkie pasma, jasne światła, peruki i małe osoby w tle; one nadal mogą zostać pominięte. Starsze wersje lub wersje źródłowe bez modelu używają wcześniejszego oszacowania Vision, jeśli jest dostępne. Istniejące zapisane maski zachowują swoje zaznaczenia."
           ],
           "steps": [
             "Wybierz Osoby, a potem część, którą chcesz dostosować.",
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "2ee9fa10073074cd5f212fbd96ddf09ea19f8894ea1aa5798090dd20b502a5f1"
 }
