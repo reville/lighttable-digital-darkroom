@@ -24,6 +24,8 @@ download tag is `vMAJOR.MINOR.PATCH` in `reville/lighttable-digital-darkroom`.
 | WinGet | `LightTable-VERSION-windows-x64-setup.exe` | `winget/manifests/n/NicholasReville/LightTable/VERSION/` |
 | Chocolatey | `LightTable-VERSION-windows-x64-setup.exe` | `chocolatey/lighttable/` |
 | AUR | `LightTable-VERSION-linux-x86_64.tar.gz` | `aur/lighttable-bin/` |
+| RPM | `LightTable-VERSION-linux-x86_64.tar.gz` | `rpm/` |
+| DEB | `LightTable-VERSION-linux-x86_64.tar.gz` | `deb/` |
 
 Omit `--channels` to generate all channels whose artifact is present. Explicitly
 requested channels fail when their artifact is missing. Windows channels require
@@ -88,7 +90,7 @@ updates manual. An upgrade preserves the recorded manager unless an explicit
 channel is supplied.
 
 The Linux portable archive records `portable` in `installation-owner.json`.
-Arch, Flatpak, and Snap packaging identifies their managed installation, so
+Arch, RPM, DEB, Flatpak, and Snap packaging identifies their managed installation, so
 LightTable cannot replace package-owned files. The Linux portable updater also
 requires a matching install record, release identity, and configured signing
 key. A package-manager manifest does not configure or publish an update feed.

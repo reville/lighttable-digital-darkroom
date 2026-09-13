@@ -448,7 +448,7 @@
       "content": "36af0e391db2ac30d1ca009a2ec1b8138ace10b6b2a45966418762d455d713b4",
       "sources": {
         "color_pipeline.py": "59f39e0b3fd540340132e23f9c462c30f062a17eef7cfe99d9d916a0914e0fba",
-        "desktop_updater.py": "38e7aacde9a7fc40d88ed4ce748b6d4b2a13319ab8021d306da663fc9c5faf2f",
+        "desktop_updater.py": "ee4b3046a0b202cb579f60d02ff6e1ff7f7754ca4a394a12ef7be3ba96a026cd",
         "linux_theme.py": "0712b6783baf454abe704ce3bfda01ffa5170096ba4b9104470109da7007ff6f",
         "server_updates.py": "cc3b07c1396b2d26a710d8cb3d9b67574f68c5293ca89433257e9a9f118b43d5",
         "web/desktop-theme.js": "e4891f7837e1447d0a1a623e3d1d9b4475006263eb53938bc41665f0bd132ab7",
