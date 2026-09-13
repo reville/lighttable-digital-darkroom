@@ -199,7 +199,7 @@
             "Collections are collections here as well; the cloud app’s albums arrive only through a Lightroom Classic catalog.",
             "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
             "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
-            "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+            "Camera profile in Edit offers the bundled LightTable Standard look and the DCP profiles in your camera profile folder, which on macOS and Windows defaults to the profiles that Camera Raw or Lightroom installed. A profile’s colour matrices are applied to the RAW decode following the DNG specification; its look and tone curve apply to the Film-off develop."
           ]
         },
         {
@@ -3025,7 +3025,8 @@
         {
           "title": "Defaults for unedited photos",
           "paragraphs": [
-            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset.",
+            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, choose the Camera profile a never-edited RAW photo starts with, and apply a default preset.",
+            "Camera profile defaults to LightTable Standard, the bundled look. Choose Built-in to start new RAW photos from the analytic Standard curve instead. Photos with saved edits keep whatever they saved.",
             "Apply matched lens profile automatically, on by default, switches on the lens profile for photos whose camera and lens exactly match one profile and whose lens settings were never saved. Turn it off to open every photo with the profile off."
           ],
           "steps": [
@@ -3034,14 +3035,16 @@
             "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.",
             "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.",
             "Use Reset in the Current camera area to remove that camera default.",
-            "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files."
+            "To use your own DCP profiles, leave Camera profile folder empty to use the CameraProfiles folder in LightTable’s data directory, or on macOS and Windows the profiles that Adobe Camera Raw or Lightroom installed, or enter another folder of .dcp files."
           ]
         },
         {
           "title": "Camera profiles",
           "paragraphs": [
-            "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.",
-            "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data."
+            "A RAW photo’s Profile section offers a Camera profile menu with LightTable Standard and the .dcp files in your camera profile folder that name its camera, either in the file name or in the profile’s own camera and name tags, such as Adobe Standard or the camera-matching looks. Only LightTable Standard ships with LightTable; other profiles belong to your own installation.",
+            "LightTable Standard is a modelled generic look: a modest hue and saturation map and a tone curve that lands middle grey and rolls highlights off the way a camera-matching rendition does. It is not measured from any camera and carries no colour matrices, so the decoder’s own camera colour stays in charge.",
+            "A DCP profile with colour matrices is applied following the DNG specification. At the RAW decode, its colour and forward matrices, blended for the capture white balance, replace the decoder’s embedded matrix, so Film and Develop both start from the profile’s camera colour. In the Film-off develop, the hue and saturation tables blend at the same white balance, then the baseline exposure offset, look table and tone curve follow; a profile tone curve replaces the Standard develop curve. Linux has no vendor profile location, so point Camera profile folder at your own .dcp files there.",
+            "What remains approximate: demosaic and highlight reconstruction come from LibRaw rather than a reference converter, and Auto white balance estimates its temperature from the as-shot balance, so a profile can still render slightly differently from the same file in Lightroom."
           ]
         },
         {

@@ -7669,6 +7669,12 @@ function showCurrentImage(im) {
   if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
+  // An edit saved before the camera-profile control existed rendered with the
+  // built-in curve; the LightTable Standard default is for never-edited photos
+  // only, so a saved edit without the key keeps Built-in rather than adopting it.
+  if (hadSavedParams && !Object.prototype.hasOwnProperty.call(im.params, 'camera_profile')) {
+    S.params.camera_profile = '';
+  }
   const isRaw = im.raw === true || isRawInput();
   const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? rawGradeDefaults() : {};
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...rawDefaults, ...(im.grade || {}) };
@@ -7920,11 +7926,12 @@ async function loadCameraProfiles(name) {
     }
     if (cur()?.name !== name) return;
     populateCameraProfiles(result.profiles || []);
+    const fromFolder = (result.profiles || []).filter((item) => !item.bundled).length;
     $('cameraProfileHint').textContent = !result.available
-      ? tr("No camera profile folder was found. Choose one in Settings › Develop Defaults.")
-      : (result.profiles || []).length
-        ? tr("Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.")
-        : tr("No profile in the folder names this camera.");
+      ? tr("LightTable Standard is bundled. To add DCP profiles, choose a camera profile folder in Settings › Develop Defaults.")
+      : fromFolder
+        ? tr("LightTable Standard plus the DCP profiles in your camera profile folder. Colour matrices apply to the RAW decode; the look applies to the Film-off develop.")
+        : tr("LightTable Standard is bundled. No profile in the folder names this camera.");
   } catch (_) {
     if (cur()?.name === name) populateCameraProfiles([]);
   }

@@ -1558,7 +1558,7 @@
           "Collections are collections here as well; the cloud app\u2019s albums arrive only through a Lightroom Classic catalog.",
           "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
           "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
-          "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+          "Camera profile in Edit offers the bundled LightTable Standard look and the DCP profiles in your camera profile folder, which on macOS and Windows defaults to the profiles that Camera Raw or Lightroom installed. A profile’s colour matrices are applied to the RAW decode following the DNG specification; its look and tone curve apply to the Film-off develop."
         ]
       },
       {
@@ -1610,7 +1610,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "Applied approximately, to the Film-off develop only."
+        "anchor": "Colour matrices apply to the RAW decode; the look applies to the Film-off develop."
       },
       {
         "path": "web/first-run.js",
