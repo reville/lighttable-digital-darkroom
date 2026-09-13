@@ -4713,6 +4713,26 @@ def _preview_source_bytes(result: dict, name: str, width: int,
     return orig_jpeg(name, width, rotate)
 
 
+def _preview_source_pixels(result: dict, name: str, width: int,
+                           rotate: float) -> np.ndarray:
+    """Float RGB pixels of a preview result, lossless when a surface exists.
+
+    A resident RGBA8 surface is the exact film render. Only source previews
+    that never had a surface (film off, embedded RAW previews) fall back to
+    decoding their image bytes.
+    """
+    native_url = str((result.get("native") or {}).get("url", ""))
+    if native_url.startswith("/api/render/native?"):
+        key = parse_qs(urlparse(native_url).query).get("key", [""])[0]
+        surface = CACHE / "render" / f"{key}.rgba"
+        if native_surface_exists(surface):
+            rgba, _ = read_native_surface(surface)
+            return rgba[..., :3].astype(np.float32) / 255.0
+    base = Image.open(io.BytesIO(_preview_source_bytes(
+        result, name, width, rotate))).convert("RGB")
+    return np.asarray(base, dtype=np.float32) / 255.0
+
+
 # The Metal preview applies this many Heal and Clone spots live. Keep the rule
 # identical to web/app.js nativeBaseRequiresBake.
 MAX_LIVE_HEALS = 16
@@ -7189,9 +7209,14 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
     if body.get("before"):
         return Image.open(io.BytesIO(orig_jpeg(
             name, width, params.get("rotate", 0), quality="full"))).convert("RGB")
+    # The file route is the lossless reference for exports, comparisons and
+    # the processing gates. Ask for the resident RGBA8 surface so the film
+    # render is read back exactly instead of through the lossy preview JPEG
+    # (quality 88 with chroma subsampling blends colour edges by up to ~25
+    # code values, which the raw browser transport no longer shares).
     result = render_preview(
         name, params, width, str(body.get("engine", "rs")),
-        str(body.get("client", "cli"))[:80], None, False, priority)
+        str(body.get("client", "cli"))[:80], None, False, priority, raw=True)
     if result.get("refining"):
         # File/analysis requests have no browser refinement loop. Finish the
         # RAW source before encoding their one authoritative result.
@@ -7203,14 +7228,12 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
                 build_neutral_preview(name, width, params.get("rotate", 0), params)
         result = render_preview(
             name, params, width, str(body.get("engine", "rs")),
-            str(body.get("client", "cli"))[:80], None, False, priority)
+            str(body.get("client", "cli"))[:80], None, False, priority, raw=True)
         if result.get("refining"):
             raise RuntimeError(T("Accurate RAW preview is unavailable"))
     if result.get("cancelled"):
         raise RuntimeError(result.get("reason") or "render cancelled")
-    base = Image.open(io.BytesIO(_preview_source_bytes(
-        result, name, width, params.get("rotate", 0)))).convert("RGB")
-    image = np.asarray(base, dtype=np.float32) / 255.0
+    image = _preview_source_pixels(result, name, width, params.get("rotate", 0))
     image = edits.apply_base(
         image, state.get("optics"), state.get("heals"),
         edits.lens_profile_for(exif_for(name),
