@@ -1101,7 +1101,7 @@
         {
           "title": "Işık ile başla",
           "paragraphs": [
-            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar. Kontrast, bunların ayrımını değiştirir."
+            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar: en parlak tonları aydınlatmak için Beyazlar'ı yükseltin, en koyu tonları kaldırmak için Siyahlar'ı yükseltin ve o ucu geri çekmek için herhangi birini düşürün. Kontrast, bunların ayrımını değiştirir."
           ],
           "steps": [
             "Ana konu için Pozlama’yı ayarlayın.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

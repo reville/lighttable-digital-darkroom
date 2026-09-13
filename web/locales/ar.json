@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "افتح الاقتصاص في شريط أدوات التحرير. تعرض نسبة الأبعاد خيارات: حر، والأصل، والنسب القياسية، ومخصص. يعرض تقرير الاقتصاص الإطارَ والكمية المحتفَظ بها.",
     "Open Edit and expand Color.": "افتح تحرير ووسّع لون.",
     "Open Edit and expand Curve.": "افتح تحرير ووسّع منحنى.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "افتح Edit ووسّع Light. يغيّر Exposure السطوع العام؛ بينما يتيح Highlights وShadows استهداف المناطق الساطعة والمظلمة. يضبط Whites وBlacks نهايات النطاق اللوني. يغيّر Contrast الفصل بينها.",
     "Open Export and choose Destination layout.": "افتح التصدير واختر تخطيط الوجهة.",
     "Open Export and choose a preset across the top.": "افتح التصدير واختر إعدادًا مسبقًا من الأعلى.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "افتح المجلدات ••• → استيراد الكتالوج…، أو اختر الاستيراد من Lightroom في الإعداد.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (مفقود)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "تُفتح صور RAW بمعالجة LightTable، حتى عند إيقاف وضع الفيلم. عند تشغيل وضع الفيلم، يستخدم الإطار الأول لصورة غير مخزنة مؤقتًا المعاينة المضمّنة في الكاميرا؛ ويحل التحويل الدقيق محلها بعد قليل، وتعرض الحالة «جارٍ تحسين RAW…» حتى ذلك الحين. يعرض شريط التقدم مراحل المعالجة المكتملة ويختفي عند ظهور الصورة.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة. كما يتم إعداد معاينة قياسية لكل ملف RAW حتى تُفتح الصورة دون انتظار فك الترميز الكامل."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "تُجهَّز معاينات الشبكة في الخلفية عند إضافة المجلدات أو إعادة فحصها. تظهر أولاً معاينات كبيرة للصور الأصلية، ثم تحل محلها المعاينات التي تتضمن تعديلاتك عندما تصبح جاهزة. كما يتم إعداد معاينة قياسية لكل ملف RAW حتى تُفتح الصورة دون انتظار فك الترميز الكامل.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "افتح Edit ووسّع Light. يغيّر Exposure السطوع العام؛ بينما يتيح Highlights وShadows استهداف المناطق الساطعة والمظلمة. يضبط Whites وBlacks نهايات النطاق اللوني: ارفع Whites لزيادة سطوع أكثر الدرجات إشراقًا، وارفع Blacks لرفع أكثر الدرجات ظلمة، واخفض أيًا منهما لإعادة ذلك الطرف إلى الخلف. يغيّر Contrast الفصل بينها."
   },
   "plurals": {
     " · {count} paired file linked": {

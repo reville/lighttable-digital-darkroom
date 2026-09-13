@@ -1101,7 +1101,7 @@
         {
           "title": "Mulai dengan Cahaya",
           "paragraphs": [
-            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal. Contrast mengubah pemisahan di antaranya."
+            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal: naikkan Whites untuk mencerahkan nada paling terang, naikkan Blacks untuk mengangkat nada paling gelap, dan turunkan salah satunya untuk menarik kembali ujung tersebut. Contrast mengubah pemisahan di antaranya."
           ],
           "steps": [
             "Atur Eksposur untuk subjek utama.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

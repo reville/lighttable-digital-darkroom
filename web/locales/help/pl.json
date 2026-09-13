@@ -1101,7 +1101,7 @@
         {
           "title": "Zacznij od Jasny",
           "paragraphs": [
-            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego. Kontrast zmienia ich rozdzielenie."
+            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie."
           ],
           "steps": [
             "Ustaw Ekspozycję dla głównego obiektu.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

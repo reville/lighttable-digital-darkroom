@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Ouvrez Recadrer dans la barre d’outils d’édition. Le rapport d’aspect propose Libre, Original, des proportions standard et Personnalisé. L’affichage du recadrage montre le cadre et la quantité conservée.",
     "Open Edit and expand Color.": "Ouvrir Modifier et développer Couleur.",
     "Open Edit and expand Curve.": "Ouvrir Modifier et développer Courbe.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale. Contraste modifie leur séparation.",
     "Open Export and choose Destination layout.": "Ouvrir Exporter et choisir la disposition de destination.",
     "Open Export and choose a preset across the top.": "Ouvrir Exporter et choisir un préréglage en haut.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Ouvrez Dossiers ••• → Importer un catalogue…, ou choisissez Importer depuis Lightroom dans la configuration.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (manquant)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. Lorsque Film est activé, la première image d’une photo non mise en cache utilise l’aperçu intégré de l’appareil photo ; la conversion précise la remplace peu après et, d’ici là, l’état indique « Affinage du RAW… ». La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts. Un aperçu standard de chaque RAW est également préparé afin que la photo s’ouvre sans attendre un décodage complet."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts. Un aperçu standard de chaque RAW est également préparé afin que la photo s’ouvre sans attendre un décodage complet.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Ouvrez Modifier et développez Lumière. Exposition modifie la luminosité globale ; Hautes lumières et Ombres permettent de cibler les zones claires et sombres. Blancs et Noirs ajustent les extrémités de la plage tonale : augmentez Blancs pour éclaircir les tons les plus lumineux, augmentez Noirs pour relever les plus sombres, et diminuez l’un ou l’autre pour ramener cette extrémité en arrière. Contraste modifie leur séparation."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -1101,7 +1101,7 @@
         {
           "title": "Begin met Licht",
           "paragraphs": [
-            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan. Contrast wijzigt hun scheiding."
+            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding."
           ],
           "steps": [
             "Stel Belichting in voor het hoofdonderwerp.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

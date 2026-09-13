@@ -1101,7 +1101,7 @@
         {
           "title": "라이트부터 시작",
           "paragraphs": [
-            "편집을 열고 라이트를 펼치세요. 노출은 전체 밝기를 변경하고, Highlights와 Shadows는 밝은 영역과 어두운 영역을 대상으로 조정할 수 있게 합니다. Whites와 Blacks는 톤 범위의 양 끝을 조정합니다. Contrast는 이들의 분리를 변경합니다."
+            "편집을 열고 라이트를 펼치세요. 노출은 전체 밝기를 변경하고, Highlights와 Shadows는 밝은 영역과 어두운 영역을 대상으로 조정할 수 있게 합니다. Whites와 Blacks는 톤 범위의 양 끝을 조정합니다. Whites를 올리면 가장 밝은 톤이 더 밝아지고, Blacks를 올리면 가장 어두운 톤이 들어 올려지며, 둘 중 하나를 내리면 그쪽 끝이 다시 되돌아갑니다. Contrast는 이들의 분리를 변경합니다."
           ],
           "steps": [
             "주 피사체의 노출을 설정하세요.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "ko",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

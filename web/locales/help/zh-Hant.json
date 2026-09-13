@@ -1101,7 +1101,7 @@
         {
           "title": "以亮部開始",
           "paragraphs": [
-            "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端。Contrast 會改變它們之間的分離程度。"
+            "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端：提高 Whites 可讓最亮的色調更亮，提高 Blacks 可提升最暗的色調，降低其中任一項則會把該端拉回。Contrast 會改變它們之間的分離程度。"
           ],
           "steps": [
             "為主要主體設定曝光。",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

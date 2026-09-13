@@ -1101,7 +1101,7 @@
         {
           "title": "从明亮开始",
           "paragraphs": [
-            "打开 Edit 并展开 Light。Exposure 会改变整体亮度；Highlights 和 Shadows 让你针对亮部和暗部区域。Whites 和 Blacks 调整色调范围的两端。Contrast 会改变它们之间的分离度。"
+            "打开 Edit 并展开 Light。Exposure 会改变整体亮度；Highlights 和 Shadows 让你针对亮部和暗部区域。Whites 和 Blacks 调整色调范围的两端：提高 Whites 可让最亮的色调更亮，提高 Blacks 可提升最暗的色调，降低其中任一项则会把该端拉回。Contrast 会改变它们之间的分离度。"
           ],
           "steps": [
             "为主体设置曝光。",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

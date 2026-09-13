@@ -1101,7 +1101,7 @@
         {
           "title": "Mit Licht beginnen",
           "paragraphs": [
-            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an. Kontrast verändert deren Trennung."
+            "Öffnen Sie Bearbeiten und erweitern Sie Licht. Belichtung verändert die Gesamthelligkeit; Lichter und Schatten ermöglichen die gezielte Bearbeitung heller und dunkler Bereiche. Weißtöne und Schwarztöne passen die Enden des Tonwertbereichs an: Erhöhen Sie Weißtöne, um die hellsten Töne aufzuhellen, erhöhen Sie Schwarztöne, um die dunkelsten anzuheben, und verringern Sie einen der beiden Werte, um dieses Ende wieder zurückzunehmen. Kontrast verändert deren Trennung."
           ],
           "steps": [
             "Belichtung für das Hauptmotiv festlegen.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Open Bijsnijden in de bewerkingswerkbalk. Beeldverhouding biedt Vrij, Origineel, standaardverhoudingen en Aangepast. De uitsnedeweergave toont het kader en de hoeveelheid die behouden blijft.",
     "Open Edit and expand Color.": "Open Bewerken en vouw Kleur uit.",
     "Open Edit and expand Curve.": "Open Bewerken en vouw Kromme uit.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan. Contrast wijzigt hun scheiding.",
     "Open Export and choose Destination layout.": "Open Exporteren en kies de bestemmingsindeling.",
     "Open Export and choose a preset across the top.": "Open Exporteren en kies bovenaan een voorinstelling.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Open Mappen ••• → Catalogus importeren… of kies tijdens de installatie Importeren uit Lightroom.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (ontbreekt)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW-foto’s openen met de ontwikkeling van LightTable, ook wanneer Film uit staat. Staat Film aan, dan gebruikt het eerste beeld van een foto die nog niet in de cache staat het ingebedde voorbeeld van de camera; de nauwkeurige omzetting vervangt het kort daarna en tot die tijd toont de status ‘RAW verfijnen…’. De voortgangsbalk toont voltooide verwerkingsstappen en verdwijnt zodra de foto zichtbaar is.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Rastervoorbeelden worden op de achtergrond voorbereid wanneer je mappen toevoegt of opnieuw scant. Eerst verschijnen grote voorbeelden van de originelen; voorbeelden met je bewerkingen vervangen deze zodra ze klaar zijn. Van elke RAW wordt ook een standaardvoorbeeld voorbereid, zodat de foto opent zonder te wachten op een volledige decodering.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding."
   },
   "plurals": {
     " · {count} paired file linked": {

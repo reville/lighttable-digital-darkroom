@@ -1101,7 +1101,7 @@
         {
           "title": "ابدأ مع ضوء",
           "paragraphs": [
-            "افتح Edit ووسّع Light. يغيّر Exposure السطوع العام؛ بينما يتيح Highlights وShadows استهداف المناطق الساطعة والمظلمة. يضبط Whites وBlacks نهايات النطاق اللوني. يغيّر Contrast الفصل بينها."
+            "افتح Edit ووسّع Light. يغيّر Exposure السطوع العام؛ بينما يتيح Highlights وShadows استهداف المناطق الساطعة والمظلمة. يضبط Whites وBlacks نهايات النطاق اللوني: ارفع Whites لزيادة سطوع أكثر الدرجات إشراقًا، وارفع Blacks لرفع أكثر الدرجات ظلمة، واخفض أيًا منهما لإعادة ذلك الطرف إلى الخلف. يغيّر Contrast الفصل بينها."
           ],
           "steps": [
             "اضبط التعريض للموضوع الرئيسي.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "ar",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "Düzenleme araç çubuğunda Crop’u açın. En-boy oranı Serbest, Orijinal, standart oranlar ve Özel seçeneklerini sunar. Kırpma göstergesi çerçeveyi ve korunan miktarı gösterir.",
     "Open Edit and expand Color.": "Düzenle'yi açın ve Renk'i genişletin.",
     "Open Edit and expand Curve.": "Düzenle'yi açın ve Eğri'yi genişletin.",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar. Kontrast, bunların ayrımını değiştirir.",
     "Open Export and choose Destination layout.": "Dışa Aktar’ı açın ve Hedef düzeni’ni seçin.",
     "Open Export and choose a preset across the top.": "Dışa Aktar’ı açın ve üst kısımdan bir hazır ayar seçin.",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "Klasörler ••• → Kataloğu içe aktar… açın ya da kurulumda Lightroom'dan içe aktar seçeneğini kullanın.",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (eksik)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Film açıkken, önbelleğe alınmamış bir fotoğrafın ilk karesi kameranın gömülü önizlemesini kullanır; kısa süre sonra doğru dönüştürme onun yerini alır ve o zamana kadar durum “RAW iyileştiriliyor…” gösterir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır. Ayrıca her RAW için standart bir önizleme hazırlanır; böylece fotoğraf tam kod çözme beklenmeden açılır."
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır. Ayrıca her RAW için standart bir önizleme hazırlanır; böylece fotoğraf tam kod çözme beklenmeden açılır.",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar: en parlak tonları aydınlatmak için Beyazlar'ı yükseltin, en koyu tonları kaldırmak için Siyahlar'ı yükseltin ve o ucu geri çekmek için herhangi birini düşürün. Kontrast, bunların ayrımını değiştirir."
   },
   "plurals": {
     " · {count} paired file linked": {

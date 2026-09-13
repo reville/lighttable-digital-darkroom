@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "editing toolbar-এ Crop খুলুন। Aspect ratio-তে Free, Original, standard proportion, এবং Custom রয়েছে। crop readout ফ্রেম এবং retained পরিমাণ দেখায়।",
     "Open Edit and expand Color.": "Edit খুলুন এবং Color প্রসারিত করুন।",
     "Open Edit and expand Curve.": "Edit খুলুন এবং Curve প্রসারিত করুন।",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "Edit খুলুন এবং Light প্রসারিত করুন। Exposure সামগ্রিক উজ্জ্বলতা পরিবর্তন করে; Highlights এবং Shadows আপনাকে উজ্জ্বল ও অন্ধকার অঞ্চলে লক্ষ্য স্থির করতে দেয়। Whites এবং Blacks টোনাল পরিসরের দুই প্রান্ত সামঞ্জস্য করে। Contrast তাদের পৃথকীকরণ পরিবর্তন করে।",
     "Open Export and choose Destination layout.": "Export খুলুন এবং Destination layout নির্বাচন করুন।",
     "Open Export and choose a preset across the top.": "Export খুলুন এবং উপরে একটি প্রিসেট নির্বাচন করুন।",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "ফোল্ডারসমূহ ••• → ক্যাটালগ আমদানি করুন… খুলুন, অথবা সেটআপে Lightroom থেকে আমদানি করুন নির্বাচন করুন।",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName} (অনুপস্থিত)",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW ছবি শুরু থেকেই LightTable-এর প্রসেসিংসহ খোলে, এমনকি ফিল্ম বন্ধ থাকলেও। ফিল্ম চালু থাকলে ক্যাশে না থাকা ছবির প্রথম ফ্রেমে ক্যামেরার অন্তর্নির্মিত প্রিভিউ ব্যবহৃত হয়; কিছুক্ষণ পরে সঠিক রূপান্তর সেটি প্রতিস্থাপন করে, আর ততক্ষণ স্ট্যাটাসে “RAW পরিশোধিত করা হচ্ছে…” দেখায়। অগ্রগতি বার সম্পন্ন হওয়া প্রসেসিং ধাপ দেখায় এবং ছবি দেখা গেলে অদৃশ্য হয়ে যায়।",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "ফোল্ডার যোগ করলে বা আবার স্ক্যান করলে গ্রিডের প্রিভিউ পটভূমিতে তৈরি হয়। প্রথমে মূল ছবির বড় প্রিভিউ দেখা যায়; আপনার সম্পাদনাসহ প্রিভিউ তৈরি হলে সেগুলোর জায়গায় দেখানো হয়। প্রতিটি RAW-এর একটি স্ট্যান্ডার্ড প্রিভিউও তৈরি করা হয়, যাতে পুরো ডিকোড শেষ হওয়ার অপেক্ষা ছাড়াই ছবিটি খোলে।"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "ফোল্ডার যোগ করলে বা আবার স্ক্যান করলে গ্রিডের প্রিভিউ পটভূমিতে তৈরি হয়। প্রথমে মূল ছবির বড় প্রিভিউ দেখা যায়; আপনার সম্পাদনাসহ প্রিভিউ তৈরি হলে সেগুলোর জায়গায় দেখানো হয়। প্রতিটি RAW-এর একটি স্ট্যান্ডার্ড প্রিভিউও তৈরি করা হয়, যাতে পুরো ডিকোড শেষ হওয়ার অপেক্ষা ছাড়াই ছবিটি খোলে।",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "Edit খুলুন এবং Light প্রসারিত করুন। Exposure সামগ্রিক উজ্জ্বলতা পরিবর্তন করে; Highlights এবং Shadows আপনাকে উজ্জ্বল ও অন্ধকার অঞ্চলে লক্ষ্য স্থির করতে দেয়। Whites এবং Blacks টোনাল পরিসরের দুই প্রান্ত সামঞ্জস্য করে: সবচেয়ে উজ্জ্বল টোন আরও উজ্জ্বল করতে Whites বাড়ান, সবচেয়ে অন্ধকার টোন তুলতে Blacks বাড়ান, এবং সেই প্রান্তটি পিছিয়ে আনতে যেকোনো একটি কমান। Contrast তাদের পৃথকীকরণ পরিবর্তন করে।"
   },
   "plurals": {
     " · {count} paired file linked": {

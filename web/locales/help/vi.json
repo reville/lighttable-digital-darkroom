@@ -1101,7 +1101,7 @@
         {
           "title": "Bắt đầu với Sáng",
           "paragraphs": [
-            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông. Contrast thay đổi độ tách biệt của chúng."
+            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông: tăng Whites để làm sáng các tông sáng nhất, tăng Blacks để nâng các tông tối nhất, và giảm một trong hai để kéo đầu đó trở lại. Contrast thay đổi độ tách biệt của chúng."
           ],
           "steps": [
             "Đặt Phơi sáng cho đối tượng chính.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52"
 }

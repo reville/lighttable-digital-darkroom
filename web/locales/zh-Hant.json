@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
+  "sourceDigest": "9ba14d7d5470d83739056cc20a2dfecba50539a71a7ac5964b7f5d6a99006e52",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1949,7 +1949,6 @@
     "Open Crop in the editing toolbar. Aspect ratio offers Free, Original, standard proportions, and Custom. The crop readout shows the frame and the amount retained.": "在編輯工具列中打開裁切。長寬比提供自由、原始、標準比例與自訂。裁切讀數會顯示畫面框與保留的比例。",
     "Open Edit and expand Color.": "開啟編輯並展開色彩。",
     "Open Edit and expand Curve.": "開啟編輯並展開曲線。",
-    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range. Contrast changes their separation.": "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端。Contrast 會改變它們之間的分離程度。",
     "Open Export and choose Destination layout.": "打開匯出並選擇目的地版面配置。",
     "Open Export and choose a preset across the top.": "打開匯出並在頂端選擇預設集。",
     "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.": "開啟「資料夾」••• → 「匯入目錄…」，或在設定中選擇「從 Lightroom 匯入」。",
@@ -4276,7 +4275,8 @@
     "dcp": "dcp",
     "{fileName} (missing)": "{fileName}（遺失）",
     "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 照片開啟時即採用 LightTable 的顯影效果，即使關閉底片功能也是如此。開啟底片功能後，尚未快取的照片的第一格會使用相機內嵌的預覽圖；精確的轉換結果隨後很快將其取代，在此之前狀態會顯示「正在精修 RAW…」。進度列顯示已完成的處理階段，並在照片顯示後消失。",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。同時也會為每張 RAW 照片準備標準預覽，讓照片開啟時不必等待完整解碼。"
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。同時也會為每張 RAW 照片準備標準預覽，讓照片開啟時不必等待完整解碼。",
+    "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.": "開啟編輯並展開亮部。曝光會改變整體亮度；Highlights 與 Shadows 可讓你針對亮區與暗區。Whites 與 Blacks 會調整色調範圍的兩端：提高 Whites 可讓最亮的色調更亮，提高 Blacks 可提升最暗的色調，降低其中任一項則會把該端拉回。Contrast 會改變它們之間的分離程度。"
   },
   "plurals": {
     " · {count} paired file linked": {
