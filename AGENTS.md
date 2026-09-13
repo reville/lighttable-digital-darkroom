@@ -44,3 +44,12 @@ authorization. Keep `recorded`, `functional checks passed`, and `visually
 reviewed` separate. Inspect clips and transition frames before recording
 findings in `review.json`; do not automatically approve a baseline. The first
 version covers browse, zoom, basic editing, and bounded exploratory interaction.
+
+## Build workflow
+
+For fixed-snapshot personal builds, use `bash scripts/mnb.sh` and read the
+compact JSON receipt it prints. See `docs/personal-builds.md` for ownership,
+cache validity, installation checks, and cleanup. `--build-only` still runs a
+native package journey; it does not authorize a foreground launch by itself.
+Use focused `test_mnb.py` and `test_build_fingerprint.py` tests for build tooling.
+Keep package, installed runtime, and visual-review evidence separate.

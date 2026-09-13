@@ -10,6 +10,14 @@ SCRIPT = ROOT / "scripts" / "update-personal-app.sh"
 class PersonalBuildScriptTests(unittest.TestCase):
     def test_quick_build_reuses_but_does_not_mutate_the_base_runtime(self):
         source = SCRIPT.read_text()
+        self.assertIn("scripts/build_fingerprint.py", source)
+        self.assertNotIn("hash_sources", source)
+        self.assertIn("FINGERPRINT_FORMAT=$FINGERPRINT_FORMAT", source)
+        self.assertIn("ENGINE_TOOLCHAIN_HASH=$ENGINE_TOOLCHAIN_HASH", source)
+        self.assertIn('PACKAGING_PROVENANCE="$BASE_PAYLOAD/packaging-provenance.env"', source)
+        release = (ROOT / "scripts" / "build-release.sh").read_text()
+        self.assertIn("--packaging-only", release)
+        self.assertIn("packaging-provenance.env", release)
         self.assertIn('BASE_NATIVE="$BASE_CONTENTS/MacOS/LightTable"', source)
         self.assertIn('BASE_PYTHON="$BASE_CONTENTS/Resources/Python/bin/python3.13"', source)
         self.assertIn('/bin/cp -cRp "$BASE_APP" "$STAGE_APP"', source)
