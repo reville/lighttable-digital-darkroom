@@ -12,13 +12,32 @@ export function radialHandleCursor(handle, angle = 0, dragging = false) {
   return ['ew-resize', 'nwse-resize', 'ns-resize', 'nesw-resize'][Math.round(direction / 45) % 4];
 }
 
+function strokeDistance(points, point, rect) {
+  let best = Infinity;
+  for (let index = 1; index < points.length; index++) {
+    const ax = points[index - 1][0] * rect.width, ay = points[index - 1][1] * rect.height;
+    const bx = points[index][0] * rect.width, by = points[index][1] * rect.height;
+    const px = point[0] * rect.width, py = point[1] * rect.height;
+    const dx = bx - ax, dy = by - ay, length = dx * dx + dy * dy;
+    const along = length ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / length)) : 0;
+    best = Math.min(best, Math.hypot(px - (ax + along * dx), py - (ay + along * dy)));
+  }
+  return best;
+}
+
 export function healHandleAt(heals, selectedId, point, rect) {
   const selected = heals.find(spot => spot.id === selectedId);
   const candidates = [...(selected ? [selected] : []), ...[...heals].reverse().filter(spot => spot !== selected)];
   const distance = location => Math.hypot((point[0] - location[0]) * rect.width,
     (point[1] - location[1]) * rect.height);
   for (const spot of candidates) {
+    // Whole-photo dust removal has no on-image handle.
+    if (spot.mode === 'dust') continue;
     const radius = Math.max(9, spot.radius * Math.min(rect.width, rect.height) + 5);
+    if (Array.isArray(spot.points) && spot.points.length > 1) {
+      if (strokeDistance(spot.points, point, rect) <= radius) return { spot, handle: 'target' };
+      continue;
+    }
     if (spot.mode !== 'remove' && distance(spot.source) <= radius) return { spot, handle: 'source' };
     if (distance(spot.target) <= radius) return { spot, handle: 'target' };
   }

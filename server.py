@@ -15,6 +15,7 @@ import copy
 import capture_time as capture_clock
 import faulthandler
 import hashlib
+import base64
 import io
 import json
 import math
@@ -4452,7 +4453,8 @@ def preview_grade_requires_bake(masks=None) -> bool:
     """Spatial local filters need the complete preceding grade/mask image."""
     return any(mask["enabled"] and mask["opacity"] > 0
                and (any(mask["grade"].get(key) for key in
-                        ("texture", "clarity", "whites", "blacks", *grade.CURVE_KEYS)))
+                        ("texture", "clarity", "whites", "blacks", "blur",
+                         *grade.CURVE_KEYS)))
                for mask in edits.clean_masks(masks))
 
 
@@ -4688,6 +4690,7 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
     # The mark is applied after resizing so it scales with the delivered image
     # rather than being enlarged or shrunk with the pixels beneath it.
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
+    out = export_workflow.apply_border(out, job.get("border"))
     fmt = job.get("format", "jpeg")
     is_heif = str(fmt).lower() in ("heif", "heic")
     policy, metadata_source, metadata_fields = _export_metadata_payload(job)
@@ -4763,12 +4766,17 @@ def rust_direct_export_supported(job: dict) -> bool:
         return False
     if export_workflow.clean_watermark(job.get("watermark"))["enabled"]:
         return False
+    if export_workflow.clean_border(job.get("border"))["enabled"]:
+        return False
     # Rust reproduces geometric and bitmap masks. Brush rasterization still
     # uses Pillow's Gaussian stroke contract and therefore stays on Python.
     # Radial ellipses/rotation, collapsed linear gradients, and the adjustable
     # depth interval are also Python-only: Rust would silently deliver a
     # different mask than the preview, so those recipes fall back.
     for mask in edits.clean_masks(job.get("masks")):
+        # Lens blur and luminosity-only curves are rendered by edits.py alone.
+        if mask["grade"].get("blur") or mask["grade"].get("curveLuminosity"):
+            return False
         for component in mask.get("components", []):
             kind = component.get("type")
             if kind == "brush" or kind == "depth":
@@ -5169,6 +5177,130 @@ def start_external_edit(body: dict) -> dict:
         _run_external_edits, names, output_space, bit_depth,
         stack_with_original)
     return {"ok": True, "running": True, "queued": len(names)}
+
+
+def detect_dust(body: dict) -> dict:
+    """Preview which marks a dust correction would select on this photo.
+
+    The analysis image includes geometry and the corrections listed before the
+    dust correction, but no grade or crop, matching where the correction runs.
+    """
+    from scipy import ndimage
+
+    name = str(body.get("name") or "")
+    if not name:
+        raise ValueError(T("Choose a photo to edit"))
+    spot = edits.clean_heals([{"mode": "dust", "sensitivity": body.get("sensitivity"),
+                               "size": body.get("size")}])[0]
+    prior = edits.clean_heals(body.get("heals"))
+    try:
+        width = max(320, min(2400, int(body.get("w", 1600))))
+    except (TypeError, ValueError):
+        width = 1600
+    image = program_render_image({
+        "name": name, "w": width, "client": "dust-detect",
+        "state": {"heals": prior, "grade": {}, "masks": [], "crop": None},
+    }, priority="interactive")
+    pixels = np.asarray(image, dtype=np.float32) / 255.0
+    defects, radius = edits.dust_defects(pixels, spot["sensitivity"], spot["size"])
+    grown = edits.grow_dust(defects, radius)
+    count = int(ndimage.label(defects)[1]) if defects.any() else 0
+    overlay = np.zeros((*grown.shape, 4), dtype=np.uint8)
+    overlay[grown] = (255, 64, 64, 230)
+    encoded = io.BytesIO()
+    Image.fromarray(overlay, "RGBA").save(encoded, "PNG")
+    return {"ok": True, "count": count, "coverage": round(float(grown.mean()), 6),
+            "overlay": {"width": int(grown.shape[1]), "height": int(grown.shape[0]),
+                        "data": base64.b64encode(encoded.getvalue()).decode("ascii")}}
+
+
+CONTACT_SHEET = {"running": False, "jobId": None}
+CONTACT_SHEET_LOCK = threading.Lock()
+
+
+def _contact_sheet_caption(name: str, captions: list[str]) -> list[str]:
+    entry = catalog_entry_for(name)
+    lines = []
+    if "filename" in captions:
+        try:
+            lines.append(src_path(name).name)
+        except (OSError, ValueError, KeyError):
+            lines.append(str(name).rsplit("/", 1)[-1])
+    if "stock" in captions:
+        params = fp.clean_params(entry.get("params") or {})
+        if params.get("profile_enabled"):
+            names = {profile["id"]: profile["name"] for profile in fp.FILM_PROFILES}
+            lines.append(names.get(params.get("stock"), str(params.get("stock") or "")))
+        else:
+            lines.append("")
+    if "rating" in captions:
+        lines.append("★" * max(0, min(5, int(entry.get("rating") or 0))))
+    return lines
+
+
+def start_contact_sheet(body: dict) -> dict:
+    """Render the chosen photos into one captioned sheet in the background."""
+    names = [str(name) for name in (body.get("names") or []) if str(name)]
+    spec = export_workflow.clean_contact_sheet(body)
+    try:
+        layout = export_workflow.contact_sheet_layout(len(names), spec)
+        destination = export_workflow.resolve_destination(
+            FOLDER, str(body.get("destination") or "film-exports"))
+    except ValueError as error:
+        return {"ok": False, "error": str(error)}
+    cancelled = threading.Event()
+    with CONTACT_SHEET_LOCK:
+        if CONTACT_SHEET["running"]:
+            return {"ok": False, "error": T("A contact sheet is already being made")}
+        record = JOBS.create("contact-sheet", total=len(names), state="running",
+                             cancel=cancelled.set)
+        CONTACT_SHEET.update(running=True, jobId=record["id"])
+    threading.Thread(target=_run_contact_sheet, name="contact-sheet", daemon=True,
+                     args=(record["id"], names, spec, layout, destination, cancelled)).start()
+    return {"ok": True, "jobId": record["id"], "total": len(names)}
+
+
+def _run_contact_sheet(job_id: str, names: list[str], spec: dict, layout: dict,
+                       destination: Path, cancelled: threading.Event) -> None:
+    cat = catalog_handle()
+    errors: list[str] = []
+    try:
+        photos = []
+        for index, name in enumerate(names):
+            if cancelled.is_set():
+                JOBS.update(job_id, state="cancelled", errors=errors)
+                return
+            try:
+                image = program_render_image(
+                    {"name": name, "w": layout["cell"], "client": "contact-sheet"})
+                photos.append({"image": np.asarray(image, dtype=np.float32) / 255.0,
+                               "caption": _contact_sheet_caption(name, spec["captions"])})
+            except Exception as error:  # noqa: BLE001 - report and continue
+                errors.append(f"{name}: {error}")
+            JOBS.update(job_id, progress=index + 1, errors=errors)
+        if not photos:
+            raise RuntimeError(T("No photos could be rendered for the contact sheet"))
+        sheet = export_workflow.compose_contact_sheet(
+            photos, spec, subtitle=time.strftime("%Y-%m-%d"), app_root=APP)
+        destination.mkdir(parents=True, exist_ok=True)
+        target = export_workflow.collision_path(
+            destination / f"contact-sheet-{time.strftime('%Y%m%d-%H%M%S')}.jpg", "rename")
+        if target is None:
+            raise FileExistsError(T("could not find a free name for {name}", name="contact-sheet.jpg"))
+        warnings: list[str] = []
+        color_pipeline.save_export_image(sheet, target, fmt="jpeg", quality=92,
+                                         output_space="srgb", bit_depth=8,
+                                         warnings=warnings)
+        JOBS.update(job_id, state="done", errors=errors,
+                    result={"path": str(target), "count": len(photos),
+                            "warnings": warnings})
+    except Exception as error:  # noqa: BLE001 - the job reports the failure
+        JOBS.update(job_id, state="failed", errors=[*errors, str(error)])
+    finally:
+        with CONTACT_SHEET_LOCK:
+            CONTACT_SHEET.update(running=False)
+        if cat is not None:
+            cat.close()
 
 
 def benchmark_export(name: str, job: dict) -> dict:
@@ -5705,6 +5837,7 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "metadata": recipe.get("metadata", "all-except-location"),
             "sidecar": recipe.get("sidecar", True),
             "watermark": recipe.get("watermark"),
+            "border": recipe.get("border"),
             "sourceName": n,
             "sourceSignature": source_signature,
         }))
@@ -5790,7 +5923,8 @@ def preview_export(opts: dict) -> dict:
         width, height = export_source_dimensions(name)
         width, height = export_workflow.output_dimensions(
             width, height, rotate=fp.clean_params(job["params"])["rotate"],
-            crop=job.get("crop"), long_edge=job.get("longEdge"))
+            crop=job.get("crop"), long_edge=job.get("longEdge"),
+            border=job.get("border"))
         sample.update(width=width, height=height, dimensionsExact=True)
     except Exception:  # Header support can differ from the full decoder.
         sample["dimensionsNote"] = "Dimensions will be available after rendering."
@@ -6663,7 +6797,7 @@ READ_ONLY_POST_PATHS = {
     "/api/soft-proof", "/api/catalog/query", "/api/ingest/scan",
     "/api/photos/reveal", "/api/geometry/auto", "/api/presets/export",
     "/api/presets/submission",
-    "/api/export/preview",
+    "/api/export/preview", "/api/heal/dust-detect",
 }
 
 
@@ -7794,6 +7928,11 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(preview_export(self._body()))
             elif u.path == "/api/export":
                 result = start_export(self._body())
+                self._json(result, 409 if result.get("error") else 200)
+            elif u.path == "/api/heal/dust-detect":
+                self._json(detect_dust(self._body()))
+            elif u.path == "/api/contact-sheet":
+                result = start_contact_sheet(self._body())
                 self._json(result, 409 if result.get("error") else 200)
             elif u.path == "/api/merge":
                 result = start_merge(self._body())

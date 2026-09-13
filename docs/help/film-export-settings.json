@@ -130,10 +130,23 @@
     "title": "Export selected photos",
     "category": "Export",
     "summary": "Choose exactly which photos to export, preview the output, and monitor progress.",
-    "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress"],
+    "keywords": ["export", "save", "jpeg", "jpg", "download", "selection", "picked", "rated", "batch", "cancel", "progress", "contact sheet", "proof sheet", "index print"],
     "sections": [
-      {"title": "Make an export", "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."], "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar.", "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds."]},
-      {"title": "Check the scope and result", "paragraphs": ["Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.", "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."]}
+      {
+        "title": "Make an export",
+        "paragraphs": ["Export creates rendered output files from your photo edits. Use Selected photos when you want the export limited to a specific selection. Each queued photo keeps the edits, rating, and capture-time correction chosen when you started the export."],
+        "steps": ["Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.", "Check the Photos field. Choose Selected photos, Picked only, Rated 1+, or All except rejected.", "Choose an export preset or set file type, dimensions, quality, and color space.", "Set the destination and inspect Output preview for the filename, dimensions, and path.", "Click Export and follow the progress in the top bar.", "When the export finishes, click Show in Finder on the second line of the completion notification to open the exported photo’s containing folder. The notification stays visible for 2.8 seconds."]
+      },
+      {
+        "title": "Check the scope and result",
+        "paragraphs": ["Selected photos uses selected photos still shown by the current folder, collection, and filters. If none of the selection remains in view, it uses the active photo. Check the photo count and name in Export before starting.", "Picked only, Rated 1+, and All except rejected select matching still photos from the active catalog, and can include photos outside the displayed collection or filter. Selected photos provides explicit control over the set.", "If a batch writes to multiple folders, Show in Finder reveals the first successfully exported photo. The link is absent when no photos were exported. Use Cancel export to request a stop. Export details reports completed, skipped, and cancelled counts, plus warnings and errors; a warning can occur after a photo was successfully written. Video clips are not rendered by the still-photo export workflow. If an original changes while its export is queued or rendering, that photo fails with an error; queue it again after checking the original."]
+      },
+      {
+        "title": "Make a contact sheet",
+        "paragraphs": ["Contact Sheet… in Export lays the photos chosen in the Photos field out on one captioned JPEG, with your edits applied. It can hold up to 200 photos."],
+        "steps": ["Open Export and set Photos and the destination folder.", "Click Contact Sheet… and choose Columns, Sheet width, Background, and a Title.", "Choose captions: File name, Film stock, and Rating.", "Click Make Sheet. The dialog reports progress, and a notification gives the saved file’s path."],
+        "tips": ["The sheet is saved as contact-sheet followed by the date and time. A photo that cannot be rendered is skipped and counted in the notification.", "Choose more columns if a large selection makes the sheet too tall to create."]
+      }
     ],
     "related": ["export-format-color-space", "export-filenames-and-folders", "export-metadata-sidecars"],
     "sources": [
@@ -143,7 +156,10 @@
       {"path": "web/app.js", "anchor": "if (meta && e.shiftKey && e.key.toLowerCase() === 'e')"},
       {"path": "web/app.js", "anchor": "$('exportDetails').onclick = () => {"},
       {"path": "server.py", "anchor": "Photo exported, but its recipe sidecar could not be saved:"},
-      {"path": "web/app.js", "anchor": "function transferTargets() {"}
+      {"path": "web/app.js", "anchor": "function transferTargets() {"},
+      {"path": "web/index.html", "anchor": "id=\"exportModalContactSheet\""},
+      {"path": "server.py", "anchor": "def start_contact_sheet(body: dict) -> dict:"},
+      {"path": "export_workflow.py", "anchor": "def compose_contact_sheet("}
     ]
   },
   {
@@ -151,10 +167,22 @@
     "title": "Choose export size, format, and color space",
     "category": "Export",
     "summary": "Use export presets and understand bit depth, resizing, and the current color-gamut limits.",
-    "keywords": ["jpeg", "jpg", "png", "heif", "heic", "tiff", "16 bit", "srgb", "p3", "prophoto", "icc", "quality", "full size", "resolution", "preset"],
+    "keywords": ["jpeg", "jpg", "png", "heif", "heic", "tiff", "16 bit", "srgb", "p3", "prophoto", "icc", "quality", "full size", "resolution", "preset", "border", "frame", "matte", "margin"],
     "sections": [
-      {"title": "Formats and presets", "paragraphs": ["The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."], "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]},
-      {"title": "Color space limits", "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]}
+      {
+        "title": "Formats and presets",
+        "paragraphs": ["The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.", "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."],
+        "steps": ["Open Export and choose a preset across the top.", "Set Dimensions to Full size or a long-edge limit.", "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."]
+      },
+      {
+        "title": "Add a border",
+        "paragraphs": ["Border in Advanced adds a plain white, grey, or black margin around each exported photo. The margin is added after resizing, so its width is a share of the delivered long edge and the output is larger than the photo by that margin on every side."],
+        "steps": ["Open Export and expand Advanced.", "Choose Thin, Medium, or Wide in Border, then choose Border colour.", "Check Output preview for the final dimensions."]
+      },
+      {
+        "title": "Color space limits",
+        "paragraphs": ["Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.", "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."]
+      }
     ],
     "related": ["export-photos", "soft-proof", "external-editor"],
     "sources": [
@@ -162,7 +190,9 @@
       {"path": "web/index.html", "anchor": "TIFF exports are 16-bit RGB. HEIF is high-efficiency 8-bit output on macOS. Every export embeds its selected ICC profile."},
       {"path": "web/index.html", "anchor": "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors."},
       {"path": "export_workflow.py", "anchor": "if long_edge and max(width, height) > int(long_edge):"},
-      {"path": "web/app.js", "anchor": "$('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';"}
+      {"path": "web/app.js", "anchor": "$('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';"},
+      {"path": "web/index.html", "anchor": "id=\"modalExBorder\""},
+      {"path": "export_workflow.py", "anchor": "def apply_border(rgb, spec):"}
     ]
   },
   {
