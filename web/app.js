@@ -2147,8 +2147,29 @@ function nativeEditsPayload(baked = S.baseEditsBaked) {
   };
 }
 
+// The Metal shader applies this many Heal and Clone spots live. Remove uses
+// CPU biharmonic inpainting, and a spot whose source patch or Heal annulus
+// reads pixels an earlier spot already changed needs the ordered CPU result,
+// so those bake a corrected base on the server. Keep the rule identical to
+// server.py native_base_edits_required.
+const MAX_LIVE_HEALS = 16;
+
+function healReadsEarlierHeal(spot, earlier) {
+  const reach = (spot.radius ?? 0.04) + (earlier.radius ?? 0.04);
+  const near = (point) => Math.hypot(
+    point[0] - earlier.target[0], point[1] - earlier.target[1]) < reach;
+  return near(spot.source) || (spot.mode === 'heal' && near(spot.target));
+}
+
+function healsRequireBake(heals = S.heals) {
+  const enabled = (heals || []).filter((spot) => spot.enabled !== false);
+  if (enabled.length > MAX_LIVE_HEALS) return true;
+  return enabled.some((spot, index) => spot.mode === 'remove'
+    || enabled.slice(0, index).some((earlier) => healReadsEarlierHeal(spot, earlier)));
+}
+
 function nativeBaseRequiresBake() {
-  return !!S.optics.profileEnabled || S.heals.some((spot) => spot.enabled !== false);
+  return !!S.optics.profileEnabled || healsRequireBake();
 }
 
 /* ---------------------------------------------------------- local tools */
@@ -2969,7 +2990,9 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
       S.editGesture = { type: 'heal-create', pointerId: event.pointerId,
         spot, start: point, rect };
     }
-    syncHealPanel(); drawEditOverlay();
+    syncHealPanel();
+    // One coalesced frame carries the new spot to Metal and redraws the overlay.
+    previewFrameScheduler.request({ edits: nativePreviewActive(), overlay: true });
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3018,8 +3041,9 @@ $('editOverlay').addEventListener('pointermove', (event) => {
         (point[1] - gesture.start[1]) * rect.height) / Math.min(rect.width, rect.height);
       if (radius > 0.008) gesture.spot.radius = clamp(radius, 0.005, 0.25);
     }
-    drawEditOverlay();
-    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+    // A moved spot and its overlay share one animation frame; the WebGL
+    // fallback only redraws the overlay until the gesture ends.
+    previewFrameScheduler.request({ edits: nativePreviewActive(), overlay: true });
   }
 });
 function finishEditGesture(event) {

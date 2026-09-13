@@ -72,6 +72,13 @@ def edit_cases():
     ])
     for mode in ("clone", "heal", "remove"):
         cases.append({"name": "photo-" + mode, "fixture": "photo", "heals": [dict(spot, mode=mode)]})
+    # Live Metal retouches: the Heal annulus must be measured on the manually
+    # corrected image, and separate spots must not read each other's pixels.
+    cases.append({"name": "photo-heal-rotated", "fixture": "photo",
+                  "optics": {"rotate": 7, "vignette": .3}, "heals": [dict(spot, mode="heal")]})
+    cases.append({"name": "photo-heal-and-clone-apart", "fixture": "photo", "heals": [
+        dict(spot, mode="heal"),
+        dict(spot, mode="clone", target=[.15, .2], source=[.15, .8], radius=.08)]})
     for key, value in (("rotate", 7), ("distortion", .3), ("vertical", .3),
                        ("horizontal", -.3), ("scale", 1.2), ("flipHorizontal", True)):
         cases.append({"name": "optics-" + key, "fixture": "target", "optics": {key: value}})

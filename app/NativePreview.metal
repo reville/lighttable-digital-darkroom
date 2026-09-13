@@ -254,15 +254,19 @@ float3 applyHeals(float3 color, float2 uv,
         HealUniform spot = heals[index];
         float2 target = spot.points.xy;
         float2 source = spot.points.zw;
-        float radius = max(spot.settings.x, 0.0001);
-        float distance = length((uv - target) * dimensions) / (radius * minimum);
+        // Pixel conventions follow the CPU reference (edits.apply_heals):
+        // integer centres scaled by size - 1, radius of at least one pixel.
+        float radius = max(spot.settings.x * minimum, 1.0);
+        float2 pixel = uv * dimensions - 0.5;
+        float2 centre = target * (dimensions - 1.0);
+        float distance = length(pixel - centre) / radius;
         if (distance >= 1.0) continue;
         float inner = max(0.0, 1.0 - spot.settings.y);
         float weight = (1.0 - smoothstep(inner, 1.0, distance))
             * spot.settings.z;
         float3 replacement;
         if (spot.settings.w < 1.5) {
-            float2 ring = radius * minimum / dimensions * 1.25;
+            float2 ring = radius / dimensions * 1.25;
             replacement = (
                 sampleEditedSource(image, fallback, linearSampler, target + float2(ring.x, 0.0),
                     grade, texel, redCyan, blueYellow)
@@ -273,8 +277,9 @@ float3 applyHeals(float3 color, float2 uv,
                 + sampleEditedSource(image, fallback, linearSampler, target - float2(0.0, ring.y),
                     grade, texel, redCyan, blueYellow)) * 0.25;
         } else {
+            float2 offset = (source - target) * (dimensions - 1.0) / dimensions;
             replacement = sampleEditedSource(
-                image, fallback, linearSampler, uv + source - target,
+                image, fallback, linearSampler, uv + offset,
                 grade, texel, redCyan, blueYellow);
             // Heal (mode 2) adds the annulus colour match reduced by
             // healRingMeans; Clone (mode 3) copies the source unchanged.
