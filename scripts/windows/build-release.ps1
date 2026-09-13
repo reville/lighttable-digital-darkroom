@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 param(
     [ValidatePattern('^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$')]
-    [string]$Version = "0.1.0",
+    [string]$Version = "",
     [string]$OutputDirectory = "dist",
     [switch]$PortableOnly,
     [switch]$RuntimeSmokeOnly,
@@ -13,6 +13,13 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+# Builds without an explicit version use the one release version.
+if (-not $Version) {
+    $Version = [regex]::Match((Get-Content -Raw (Join-Path $PSScriptRoot "..\..\app_version.py")),
+        '(?m)^VERSION = "([^"]+)"\r?$').Groups[1].Value
+    if (-not $Version) { throw "app_version.py does not define VERSION." }
+}
 
 # A Store candidate embeds its prerequisite and signs the entire native payload.
 # Certification still requires a clean offline Windows acceptance run.

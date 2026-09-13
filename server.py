@@ -52,6 +52,7 @@ if os.environ.get("LIGHTTABLE_DIAGNOSTICS"):
 
 APP = Path(__file__).resolve().parent
 sys.path.insert(0, str(APP))
+import app_version  # noqa: E402
 import film_pipeline as fp  # noqa: E402
 import grade  # noqa: E402
 import edits  # noqa: E402
@@ -6313,7 +6314,7 @@ def health_payload(*, include_token: bool = False) -> dict:
         models = {"available": False, "reason": str(error)}
     payload = {
         "ok": True,
-        "version": "1.0",
+        "version": app_version.VERSION,
         "sourceRevision": _git_revision(APP),
         "catalog": str(cat.path.resolve()) if cat is not None else None,
         "folder": str(FOLDER.resolve()) if FOLDER else "",
