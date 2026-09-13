@@ -13152,17 +13152,27 @@ APPLE_PHOTOS = installApplePhotosBrowser({
   el: $, sendNative, nativeBridge,
   onImported: async (path) => {
     if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
-    const result = await api('/api/catalog/sources', {action: 'add', path, importState: false});
+    const result = await api('/api/catalog/sources', {action: 'add', path, importState: true});
     if (!result?.ok || result.error) throw new Error(result?.error || tr('Could not add that folder.'));
     await reloadLibrary();
   },
   onViewImported: async (path) => {
     if (!await saveState(true)) throw new Error(tr('Could not save changes. Please try again.'));
+    if (typeof LIBRARY_FILTERS?.clear === 'function') LIBRARY_FILTERS.clear();
+    if ($('search')) $('search').value = '';
+    S.activeCollection = '';
+    if (S.cull) S.cull.review = 'all';
     S.includeSubfolders = true;
-    $('includeSubfolders').checked = true;
+    if ($('includeSubfolders')) $('includeSubfolders').checked = true;
     S.activeFolders[path] = '';
+    S.activeFolder = '';
     await savePrefs();
-    if (S.rootFolder === path) { await reloadLibrary(); selectFolder(''); }
-    else sendNative('selectSource', {path});
+    if (S.rootFolder === path) {
+      await reloadLibrary();
+      selectFolder('');
+      refreshFilteredView();
+    } else {
+      postNative('selectSource', {path});
+    }
   },
 });
