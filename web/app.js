@@ -1202,6 +1202,13 @@ function displaySourcePixelWidth() {
 }
 
 function viewportRegionEnabled() {
+  // The server now accepts a viewport request for a raw-transport (WebGL)
+  // client too (see render_preview's `want_surface` gate in server.py), but
+  // presenting a viewport tile also needs the Metal presenter's virtual-canvas
+  // compositing (positioning a partial-frame texture at an offset while
+  // panning, tracking S.nativeViewport). The WebGL/raw path does not have
+  // that yet, so it keeps requesting whole frames; see the "Viewport tiling"
+  // note in docs/platforms/gpu-preview-design.md. Restrict to native for now.
   return nativePreviewActive() && $('engine').value === 'rs' &&
     S.zoomMode === '100' && S.params.profile_enabled !== false &&
     S.presentedPhotoName === cur()?.name && !S.crop && !S.cropSession &&
@@ -4036,6 +4043,10 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       // computed that could not be displayed.
       allow_draft: phase === 'navigation',
       native: nativePreviewActive(),
+      // Ask for the resident RGBA8 surface instead of a JPEG whenever there
+      // is no Metal presenter to feed; a plain browser (this review server,
+      // or the Windows/Linux shell) uploads it straight to a WebGL texture.
+      raw: !nativePreviewActive() && rawPreviewTransportSupported(),
       ...(viewport ? { viewport } : {}),
     };
     if (phase === 'navigation') {
@@ -4504,6 +4515,73 @@ function rememberPresentedRender(state, identity, backend, timing) {
   state.presentedBackend = backend;
 }
 
+// True whenever the browser can fetch the resident preview surface as raw
+// bytes and hand them straight to WebGL: no <img>/JPEG decode. Supported by
+// every engine that runs the Windows/Linux shell (and a plain review
+// browser); guarded defensively rather than platform-sniffed.
+function rawPreviewTransportSupported() {
+  return typeof fetch === 'function' && typeof Uint8Array !== 'undefined';
+}
+
+// Fetches the engine's packed RGBA8 preview surface over the existing
+// keep-alive HTTP connection and uploads it directly as a WebGL texture:
+// the non-Metal equivalent of setNativeBaseImage's zero-copy presentation,
+// used on Windows/Linux (and this review server) in place of a JPEG <img>.
+async function setRawBaseImage(surface, {
+  preserveCanvasSize = false, generation = null, cacheKey = null,
+} = {}) {
+  const startedAt = performance.now();
+  let buffer;
+  try {
+    const response = await fetch(surface.url);
+    if (!response.ok) throw new Error(`raw preview fetch failed (${response.status})`);
+    buffer = await response.arrayBuffer();
+  } catch {
+    return null; // caller falls back to the JPEG transport
+  }
+  if (generation !== null && generation !== S.seq) {
+    const cancelledAt = performance.now();
+    return { decodeMs: cancelledAt - startedAt, uploadMs: 0,
+      uploadedAt: cancelledAt, cancelled: true };
+  }
+  const headerBytes = surface.headerBytes || 16;
+  const header = new DataView(buffer, 0, headerBytes);
+  const magic = String.fromCharCode(
+    header.getUint8(0), header.getUint8(1), header.getUint8(2), header.getUint8(3));
+  const width = header.getUint32(4, true);
+  const height = header.getUint32(8, true);
+  const rowBytes = header.getUint32(12, true);
+  if (magic !== 'FLRA' || rowBytes !== width * 4 || width <= 0 || height <= 0 ||
+      buffer.byteLength < headerBytes + rowBytes * height) {
+    return null; // malformed surface; fall back to JPEG rather than fail
+  }
+  const pixels = new Uint8Array(buffer, headerBytes, rowBytes * height);
+  const decodedAt = performance.now();
+  if (!S.gl) {
+    try { S.gl = new GradeRenderer($('cv')); }
+    catch (e) {
+      toast(tr("WebGL unavailable: {eMessage}", {eMessage: e.message}));
+      return { decodeMs: decodedAt - startedAt, uploadMs: 0,
+        uploadedAt: performance.now(), failed: true,
+        error: previewFailureMessage(tr('WebGL preview could not be initialized'), e) };
+    }
+    browserOriginalTextureURL = null;
+    browserReferenceTextureURL = null;
+  }
+  const { textureCacheHit } = S.gl.setImageFromRaw(
+    pixels, width, height, { resizeCanvas: !preserveCanvasSize, cacheKey });
+  installBrowserOriginal();
+  installBrowserReference();
+  S.maskTextureDirty = true;
+  const uploadedAt = performance.now();
+  drawGrade();
+  scheduleHistogram(true);
+  applyCropVisual();
+  cropFrameScheduler.flush();
+  return { decodeMs: decodedAt - startedAt, uploadMs: uploadedAt - decodedAt,
+    uploadedAt, textureCacheHit };
+}
+
 async function setBaseImage(render, generation, { preserveCanvasSize = false } = {}) {
   const previousGradeState = [S.presentedGradeKey, S.gradeEditsBaked];
   S.presentedGradeKey = render.previewGradeKey ?? null;
@@ -4522,9 +4600,18 @@ async function setBaseImage(render, generation, { preserveCanvasSize = false } =
   S.previewLoadGeneration = generation;
   let timing;
   try {
-    timing = native
-      ? await setNativeBaseImage(render, generation, { preserveCanvasSize })
-      : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+    if (native) {
+      timing = await setNativeBaseImage(render, generation, { preserveCanvasSize });
+    } else if (render.native && rawPreviewTransportSupported()) {
+      timing = await setRawBaseImage(render.native, { generation, preserveCanvasSize, cacheKey: identity });
+      // A raw fetch can fail (network hiccup, unsupported response); the
+      // JPEG the server already keeps as a fallback still presents.
+      if (!timing && render.img) {
+        timing = await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+      }
+    } else {
+      timing = await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+    }
     if (generation === S.seq && timing.failed) {
       [S.presentedGradeKey, S.gradeEditsBaked] = previousGradeState;
     }
@@ -4856,6 +4943,7 @@ async function prefetchImage(target, epoch, generation, detail = false) {
       // The small pass must not start a demosaic; the detail pass may.
       ...(detail ? {} : { prepared_only: true }),
       native: nativePreviewActive(),
+      raw: !nativePreviewActive() && rawPreviewTransportSupported(),
     };
     const key = renderRequestKey(target, request);
     const result = presentationCache.get(key) || await api('/api/render', request);

@@ -189,6 +189,21 @@ parity. `--require-hardware` rejects software/unknown adapters. Without a
 separate baseline binary it compares the current engine with caching disabled
 and enabled; it does not measure a before/after patch speedup.
 
+The interactive preview frame reaches the WebKitGTK webview the same way it
+reaches WebView2 on Windows: since Linux has no Metal-equivalent GPU-resident
+presenter, the resident engine's packed RGBA8 surface used to be JPEG-encoded
+on the server, decoded again by the browser's `<img>`, then uploaded to a
+WebGL texture. A non-Metal client can now request that surface directly
+(`raw: true` on `/api/render`) and upload it with `texImage2D` from a
+`fetch()` + `ArrayBuffer`, removing the JPEG round trip for the base frame;
+see [`../performance.md`](../performance.md#windowslinux-interactive-preview-transport-2026-09-13)
+for measurements and what is not yet covered (viewport-tile compositing for
+this path). A design for a GPU-resident presenter (a wgpu child surface under
+the webview, matching the Metal approach) — including the WebKitGTK
+compositing and X11/Wayland embedding risks specific to Linux — is in
+[`gpu-preview-design.md`](gpu-preview-design.md); it has not been spiked
+because it needs real Linux hardware to validate compositing behavior.
+
 ### Storage
 
 Linux uses the XDG directories, with `lighttable` beneath each root:

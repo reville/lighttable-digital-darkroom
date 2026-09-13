@@ -4392,7 +4392,7 @@ def render_preview(name: str, params: dict, width: int,
                    generation: int | None = None,
                    native: bool = False,
                    priority: str = "interactive", viewport: dict | None = None,
-                   allow_draft: bool = True) -> dict:
+                   allow_draft: bool = True, raw: bool = False) -> dict:
     viewport = clean_viewport(viewport)
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
@@ -4411,7 +4411,7 @@ def render_preview(name: str, params: dict, width: int,
                 preview_progress.advance(1)
                 return _render_preview(name, params, width, engine, client,
                                        generation, native, priority, viewport,
-                                       allow_draft)
+                                       allow_draft, raw)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -4424,7 +4424,12 @@ def _render_preview(name: str, params: dict, width: int,
                     generation: int | None = None,
                     native: bool = False,
                     priority: str = "interactive", viewport: dict | None = None,
-                    allow_draft: bool = True) -> dict:
+                    allow_draft: bool = True, raw: bool = False) -> dict:
+    """``raw`` asks for the resident RGBA8 surface as a transport for a
+    non-Metal (WebGL) presenter, on any platform. It never changes where
+    grading happens: unlike ``native`` it does not switch the client to the
+    Metal presenter or bake edits server-side, it only lets a WebGL client
+    skip the JPEG encode/decode round trip for the base frame."""
     params = dict(params)
     params["linear_input"] = is_raw(name)
     cp = fp.clean_params(params)
@@ -4474,7 +4479,10 @@ def _render_preview(name: str, params: dict, width: int,
         engine = "rs"
     elif engine == "rs" and not RUST_AVAILABLE:
         engine = "py"
-    if viewport is not None and (engine != "rs" or not native):
+    # A raw-transport request needs the same resident RGBA8 surface as the
+    # Metal presenter; it just consumes it over HTTP/WebGL instead.
+    want_surface = native or raw
+    if viewport is not None and (engine != "rs" or not want_surface):
         raise ValueError(T("viewport rendering requires the resident native preview"))
     variant = "full" if viewport else preview_variant(name, width, params)
 
@@ -4487,13 +4495,13 @@ def _render_preview(name: str, params: dict, width: int,
     jpg = CACHE / "render" / f"{key}.jpg"
     native_surface = CACHE / "render" / f"{key}.rgba"
     meta = CACHE / "render" / f"{key}.json"
-    # Native presentation must not wait for JPEG encoding. A small WebGL
-    # helper is generated lazily after interaction settles for histogram,
-    # sampling, and reference tools.
-    need_jpg = not native
+    # Native and raw-transport presentation must not wait for JPEG encoding.
+    # A small WebGL helper is generated lazily after interaction settles for
+    # histogram, sampling, and reference tools.
+    need_jpg = not want_surface
     cached_meta = _render_bundle_metadata(meta, jpg, native_surface)
     if cached_meta is not None:
-        if native:
+        if want_surface:
             try:
                 ensure_native_surface(native_surface, jpg)
             except (OSError, ValueError):
@@ -4503,7 +4511,7 @@ def _render_preview(name: str, params: dict, width: int,
                 ensure_jpeg_surface(jpg, native_surface)
             except (OSError, ValueError, struct.error):
                 native_surface.unlink(missing_ok=True)
-    if cached_meta is not None and (not native or native_surface_exists(native_surface)) and (
+    if cached_meta is not None and (not want_surface or native_surface_exists(native_surface)) and (
             not need_jpg or jpg.exists()):
         return preview_response(
             cached_meta, key, jpg, native_surface, cached=True,
@@ -4527,7 +4535,7 @@ def _render_preview(name: str, params: dict, width: int,
                     return {"cancelled": True}
         cached_meta = _render_bundle_metadata(meta, jpg, native_surface)
         if cached_meta is not None:
-            if native:
+            if want_surface:
                 try:
                     ensure_native_surface(native_surface, jpg)
                 except (OSError, ValueError):
@@ -4538,7 +4546,7 @@ def _render_preview(name: str, params: dict, width: int,
                 except (OSError, ValueError, struct.error):
                     native_surface.unlink(missing_ok=True)
         if cached_meta is not None and (
-                not native or native_surface_exists(native_surface)) and (
+                not want_surface or native_surface_exists(native_surface)) and (
                 not need_jpg or jpg.exists()):      # raced with prefetch
             return dict(preview_response(
                 cached_meta, key, jpg, native_surface, cached=True,
@@ -4550,8 +4558,8 @@ def _render_preview(name: str, params: dict, width: int,
             rust_metrics = render_rust(
                 name, params, width,
                 jpg if need_jpg else None,
-                native_surface if native else None, viewport, variant)
-            if native and rust_metrics.get("native_shared"):
+                native_surface if want_surface else None, viewport, variant)
+            if want_surface and rust_metrics.get("native_shared"):
                 retain_native_shared(native_surface, rust_metrics["native_shared"])
             film_mean = float(rust_metrics["mean"])
         else:
@@ -4570,7 +4578,7 @@ def _render_preview(name: str, params: dict, width: int,
             film_mean = float(out.mean()) / 255.0
             if need_jpg:
                 durable_io.cache_write_bytes(jpg, jpeg_bytes(out))
-            if native:
+            if want_surface:
                 write_native_surface(native_surface, out)
         m = {"ms": ms, "engine": engine}
         if viewport is None:
@@ -7891,7 +7899,8 @@ class Handler(BaseHTTPRequestHandler):
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
                     str(b.get("priority", "interactive")), b.get("viewport"),
-                    allow_draft=b.get("allow_draft") is not False)
+                    allow_draft=b.get("allow_draft") is not False,
+                    raw=bool(b.get("raw", False)))
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
                         result, b["name"], width,

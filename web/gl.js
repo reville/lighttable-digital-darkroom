@@ -756,6 +756,67 @@ export class GradeRenderer {
     return { textureCacheHit };
   }
 
+  // Uploads a tightly packed RGBA8 buffer (the engine's resident preview
+  // surface, fetched raw over HTTP) directly to a texture: no <img> decode,
+  // no JPEG artefacts. Used by the non-Metal presenter on Windows/Linux (and
+  // in a plain browser) in place of setImage().
+  setImageFromRaw(pixels, imageWidth, imageHeight, { resizeCanvas = true, cacheKey = null } = {}) {
+    const gl = this.gl;
+    const key = cacheKey || Symbol('uncached raw preview');
+    let entry = this.imageTextures.get(key);
+    const textureCacheHit = Boolean(entry);
+    if (entry) {
+      this.imageTextures.delete(key);
+    } else {
+      const texture = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      // RGBA8, tightly packed (rowBytes === width * 4): no alignment padding
+      // to configure, unlike the RGB path setImage() uses for <img> sources.
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageWidth, imageHeight, 0,
+                    gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      entry = { texture, image: null, bytes: imageWidth * imageHeight * 4 };
+      this.imageTextureBytes += entry.bytes;
+    }
+    this.imageTextures.set(key, entry);
+    this.tex = entry.texture;
+    while (this.imageTextures.size > 1 &&
+        (this.imageTextureBytes > this.maxImageTextureBytes ||
+         this.imageTextures.size > this.maxImageTextures)) {
+      const oldest = this.imageTextures.keys().next().value;
+      const removed = this.imageTextures.get(oldest);
+      this.imageTextures.delete(oldest);
+      this.imageTextureBytes -= removed.bytes;
+      gl.deleteTexture(removed.texture);
+    }
+    if (resizeCanvas &&
+        (this.canvas.width !== imageWidth || this.canvas.height !== imageHeight)) {
+      this.canvas.width = imageWidth;
+      this.canvas.height = imageHeight;
+    }
+    gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    gl.useProgram(this.prog);
+    gl.uniform2f(this.uTexel, 1 / imageWidth, 1 / imageHeight);
+    const scale = Math.min(1, 128 / Math.max(imageWidth, imageHeight));
+    const sampleWidth = Math.max(1, Math.round(imageWidth * scale));
+    const sampleHeight = Math.max(1, Math.round(imageHeight * scale));
+    if (this.sampleWidth !== sampleWidth || this.sampleHeight !== sampleHeight) {
+      this.sampleWidth = sampleWidth;
+      this.sampleHeight = sampleHeight;
+      this.samplePixels = new Uint8Array(sampleWidth * sampleHeight * 4);
+      gl.bindTexture(gl.TEXTURE_2D, this.sampleTexture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, sampleWidth,
+        sampleHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    }
+    this.ready = true;
+    return { textureCacheHit };
+  }
+
   setOriginalImage(img) {
     const gl = this.gl;
     gl.activeTexture(gl.TEXTURE3);
