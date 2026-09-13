@@ -1,0 +1,92 @@
+# Generated from a verified official release archive; SHA-256 pins its exact bytes.
+%define _build_id_links none
+%define debug_package %{nil}
+%define __strip /bin/true
+%define _find_requires %{nil}
+
+Name:           lighttable
+Version:        @PKGVER@
+Release:        @PKGREL@%{?dist}
+Summary:        @DESCRIPTION@
+License:        GPL-3.0-only
+URL:            https://github.com/reville/lighttable-digital-darkroom
+ExclusiveArch:  @ARCH@
+
+Source0:        @ARCHIVE@
+Source1:        @DESKTOP_FILE@
+
+Requires:       gtk3
+Requires:       webkit2gtk4.1
+Requires:       openblas
+Requires:       openssl
+Requires:       libglvnd-glx
+Requires:       vulkan-loader
+Requires:       lcms2
+Requires:       xdotool
+Requires:       xdg-utils
+Requires:       hicolor-icon-theme
+Requires:       desktop-file-utils
+
+%description
+LightTable is a digital darkroom for RAW photography and film simulation built around
+the spektrafilm spectral film pipeline.
+
+%prep
+%setup -q -c -n LightTable
+
+%build
+# Precompiled native bundle; no compilation required.
+
+%install
+rm -rf %{buildroot}
+install -d %{buildroot}/opt/lighttable
+install -d %{buildroot}%{_bindir}
+install -d %{buildroot}%{_datadir}/applications
+install -d %{buildroot}%{_datadir}/icons/hicolor/1024x1024/apps
+install -d %{buildroot}%{_datadir}/licenses/%{name}
+
+cp -a LightTable/. %{buildroot}/opt/lighttable/
+printf '{"owner":"rpm"}\n' > %{buildroot}/opt/lighttable/installation-owner.json
+
+# Package manager owns system integration. Never run the per-user portable installer.
+rm -f %{buildroot}/opt/lighttable/install.sh %{buildroot}/opt/lighttable/uninstall.sh \
+  %{buildroot}/opt/lighttable/desktop-integration.py
+
+chmod -R a+rX %{buildroot}/opt/lighttable
+ln -s /opt/lighttable/bin/lighttable %{buildroot}%{_bindir}/lighttable
+ln -s /opt/lighttable/bin/lighttable-desktop %{buildroot}%{_bindir}/lighttable-desktop
+
+install -Dm644 %{SOURCE1} %{buildroot}%{_datadir}/applications/app.lighttable.LightTable.desktop
+install -Dm644 %{buildroot}/opt/lighttable/share/icons/lighttable.png \
+  %{buildroot}%{_datadir}/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png
+install -Dm644 %{buildroot}/opt/lighttable/LICENSE %{buildroot}%{_datadir}/licenses/%{name}/LICENSE
+install -Dm644 %{buildroot}/opt/lighttable/THIRD_PARTY_NOTICES.md \
+  %{buildroot}%{_datadir}/licenses/%{name}/THIRD_PARTY_NOTICES.md
+
+%check
+test -x %{buildroot}/opt/lighttable/bin/lighttable-desktop-shell
+test -x %{buildroot}/opt/lighttable/Python/bin/python3
+test -f %{buildroot}%{_datadir}/applications/app.lighttable.LightTable.desktop
+
+%post
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+update-desktop-database &>/dev/null || :
+
+%postun
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+update-desktop-database &>/dev/null || :
+
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+%files
+%license %{_datadir}/licenses/%{name}/LICENSE
+%license %{_datadir}/licenses/%{name}/THIRD_PARTY_NOTICES.md
+/opt/lighttable
+%{_bindir}/lighttable
+%{_bindir}/lighttable-desktop
+%{_datadir}/applications/app.lighttable.LightTable.desktop
+%{_datadir}/icons/hicolor/1024x1024/apps/app.lighttable.LightTable.png

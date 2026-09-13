@@ -1,0 +1,13 @@
+Package: lighttable
+Version: @PKGVER@-@PKGREL@
+Section: graphics
+Priority: optional
+Architecture: @DEB_ARCH@
+Maintainer: Nicholas Reville <reville@gmail.com>
+Homepage: https://github.com/reville/lighttable-digital-darkroom
+Depends: gtk3, webkit2gtk-4.1 (>= 2.40), libopenblas0, openssl, libgl1, libvulkan1, liblcms2-2, xdotool, xdg-utils, hicolor-icon-theme, desktop-file-utils
+Description: Digital darkroom for RAW photography and film simulation
+ LightTable is a local photo browser and editor built around the spektrafilm
+ spectral film pipeline. Film simulation is the base render; ordinary editing
+ controls grade on top of it in real time. Includes the lighttable command-line
+ interface and desktop application.

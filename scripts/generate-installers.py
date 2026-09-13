@@ -28,6 +28,8 @@ CHANNEL_ARTIFACTS = {
     "winget": "LightTable-{version}-windows-x64-setup.exe",
     "chocolatey": "LightTable-{version}-windows-x64-setup.exe",
     "aur": "LightTable-{version}-linux-x86_64.tar.gz",
+    "rpm": "LightTable-{version}-linux-x86_64.tar.gz",
+    "deb": "LightTable-{version}-linux-x86_64.tar.gz",
 }
 
 
@@ -257,8 +259,8 @@ def generate(version: str, artifacts_dir: Path, channels: list[str] | None = Non
         raise ValueError("Chocolatey requires --license-url")
     if "scoop" in channels:
         validate_portable_archive(artifacts_dir / names["scoop"])
-    if "aur" in channels and not source_revision:
-        raise ValueError("AUR manifests require --source-revision for the exact release commit")
+    if set(channels) & {"aur", "rpm", "deb"} and not source_revision:
+        raise ValueError("Linux manifests require --source-revision for the exact release commit")
     hashes = {name: digest(artifacts_dir / name) for name in sorted(set(names.values()))
               if (artifacts_dir / name).exists()}
     # Include optional Sparkle release files when CI has placed them beside installers.
@@ -288,6 +290,33 @@ def generate(version: str, artifacts_dir: Path, channels: list[str] | None = Non
                                 source_revision=source_revision)
                 for item in sorted(directory.iterdir()):
                     output["aur/lighttable-bin/" + item.name] = item.read_text(encoding="utf-8")
+        elif channel == "rpm":
+            spec = importlib.util.spec_from_file_location(
+                "lighttable_rpm_package", Path(__file__).parent / "linux/make-rpm-package.py")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            manifest = module.release_metadata(artifacts_dir / name, version=version,
+                                               source_revision=source_revision)
+            digest_val = module.archive_sha256(artifacts_dir / name)
+            with tempfile.TemporaryDirectory(prefix="lighttable-rpm-manifest-") as temporary:
+                directory = Path(temporary) / "rpm"
+                spec_file = module.write_spec(directory, manifest, digest_val,
+                                              source_archive_name=name, pkgrel=1)
+                output["rpm/SPECS/" + spec_file.name] = spec_file.read_text(encoding="utf-8")
+                for item in sorted((directory / "SOURCES").iterdir()):
+                    output["rpm/SOURCES/" + item.name] = item.read_text(encoding="utf-8")
+        elif channel == "deb":
+            spec = importlib.util.spec_from_file_location(
+                "lighttable_deb_package", Path(__file__).parent / "linux/make-deb-package.py")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            manifest = module.release_metadata(artifacts_dir / name, version=version,
+                                               source_revision=source_revision)
+            with tempfile.TemporaryDirectory(prefix="lighttable-deb-manifest-") as temporary:
+                stage_dir = Path(temporary) / "stage"
+                module.stage_debian_tree(artifacts_dir / name, stage_dir, manifest, pkgrel=1)
+                for item in sorted((stage_dir / "DEBIAN").iterdir()):
+                    output["deb/DEBIAN/" + item.name] = item.read_text(encoding="utf-8")
     output["SHA256SUMS"] = "".join(f"{hashes[name]}  {name}\n" for name in sorted(hashes))
     return output
 

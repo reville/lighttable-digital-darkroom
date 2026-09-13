@@ -324,7 +324,7 @@ class PortableUpdaterTests(unittest.TestCase):
         self.assert_data_preserved()
 
     def test_unconfigured_and_package_managed_installs_do_not_contact_network(self):
-        for owner in ("arch", "snap", "flatpak", "development"):
+        for owner in ("arch", "rpm", "deb", "snap", "flatpak", "development"):
             with self.subTest(owner=owner):
                 if owner == "development":
                     (self.bundle / "installation-owner.json").unlink()

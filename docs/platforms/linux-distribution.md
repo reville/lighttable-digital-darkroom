@@ -18,7 +18,9 @@ candidate artifacts built before that cutoff must be rebuilt.
 | Direct Flatpak | Full-app sandbox candidate and manual CI | Successful installed sandbox/portal workflow and an explicit update-distribution choice before public delivery |
 | Flathub | AppStream metadata, canonical ID and source dependency audit | Finish the source-only dependency closure, validate runtime, establish release/use history and complete human submission |
 | Snap | Strict development candidate using GNOME runtime and private shared memory | Native confinement/photo/upgrade/GPU tests, name registration and store review |
-| DEB / RPM / AppImage | Deferred | Add when demand justifies another maintained distribution channel |
+| Fedora / RPM | Spec generator and RPM builder (`scripts/linux/make-rpm-package.py`), verified packaging, and DNF container validation | Build verified binary RPM for Fedora 40/41/Rawhide and RHEL-compatible systems |
+| Debian / Ubuntu / DEB | Debian package generator (`scripts/linux/make-deb-package.py`), control files, and APT container validation | Build verified binary DEB for Ubuntu 24.04+ and Debian 12+ |
+| AppImage | Deferred | WebKitGTK sandbox/bwrap permission collisions on modern distros make native RPM and DEB preferable |
 
 The public app ID is `app.lighttable.LightTable`, matching `lighttable.app`.
 Portable installation migrates only untouched legacy launchers recorded as
