@@ -323,7 +323,7 @@ void main() {
   c = clamp(linearToSrgb(lin), 0.0, 1.0);
 
   if (u_whites != 0.0 || u_blacks != 0.0) {
-    float w = 1.0 + u_whites * 0.35;
+    float w = 1.0 - u_whites * 0.35;
     float b = u_blacks * -0.25;
     c = clamp((c - b) / max(w - b, 1e-4), 0.0, 1.0);
   }
@@ -981,9 +981,13 @@ export class GradeRenderer {
   }
 
   /** Read one graded pixel without retaining or downloading the canvas. */
-  samplePixel(u, v) {
+  samplePixel(u, v, { channelCurves = true } = {}) {
     if (!this.ready) return null;
     const gl = this.gl, pixel = new Uint8Array(4);
+    const curveOn = this._curveOn || [0, 0, 0, 0];
+    // Curve eyedroppers read the value that enters the red, green and blue
+    // tables, so those three tables are skipped for this one pixel.
+    if (!channelCurves) gl.uniform4f(this.uCurveOn, curveOn[0], 0, 0, 0);
     gl.uniform2f(this.uSpotVisualization, 0, 0);
     gl.uniform1f(this.uClippingOverlay, 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.sampleFramebuffer);
@@ -1002,6 +1006,7 @@ export class GradeRenderer {
     gl.uniform1f(this.uClippingOverlay, this.clippingOverlay);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    if (!channelCurves) gl.uniform4f(this.uCurveOn, ...curveOn);
     return pixel;
   }
 }

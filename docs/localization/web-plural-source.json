@@ -5,6 +5,10 @@
       "other": " · {count} paired files linked"
     },
     {
+      "one": "Contact sheet saved to {path}. {count} photo was skipped.",
+      "other": "Contact sheet saved to {path}. {count} photos were skipped."
+    },
+    {
       "one": "Corrected {count} capture. You can also restore capture-time steps in History.",
       "other": "Corrected {count} captures. You can also restore capture-time steps in History."
     },
@@ -153,6 +157,10 @@
       "other": "{count} indexed photos remain local until deleted."
     },
     {
+      "one": "{count} mark found",
+      "other": "{count} marks found"
+    },
+    {
       "one": "{count} matching photo shown: {criteria}.",
       "other": "{count} matching photos shown: {criteria}."
     },
@@ -187,6 +195,10 @@
     {
       "one": "{count} photo exported",
       "other": "{count} photos exported"
+    },
+    {
+      "one": "{count} photo from the export selection",
+      "other": "{count} photos from the export selection"
     },
     {
       "one": "{count} photo imported.",

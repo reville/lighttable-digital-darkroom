@@ -59,6 +59,14 @@ WATERMARK_DEFAULTS = {
 }
 
 APP_ROOT = Path(__file__).resolve().parent
+# A border is a plain margin added around the delivered photo. Size is a
+# fraction of the long edge and tone runs from black (0) to white (1).
+BORDER_DEFAULTS = {"enabled": False, "size": 0.03, "tone": 1.0}
+CONTACT_SHEET_BACKGROUNDS = {"white": 1.0, "grey": 0.5, "black": 0.0}
+CONTACT_SHEET_CAPTIONS = ("filename", "stock", "rating")
+CONTACT_SHEET_WIDTHS = (2400, 3600, 4800)
+CONTACT_SHEET_MAX_PHOTOS = 200
+CONTACT_SHEET_MAX_HEIGHT = 30000
 
 
 def _text(value, default: str, limit: int) -> str:
@@ -109,6 +117,38 @@ def clean_watermark(raw) -> dict:
     }
 
 
+def clean_border(raw) -> dict:
+    """Validate a border spec, filling every key with a safe default."""
+    raw = raw if isinstance(raw, dict) else {}
+    return {
+        "enabled": _flag(raw.get("enabled"), BORDER_DEFAULTS["enabled"]),
+        "size": _clamped(raw.get("size"), BORDER_DEFAULTS["size"], 0.0, 0.25),
+        "tone": _clamped(raw.get("tone"), BORDER_DEFAULTS["tone"], 0.0, 1.0),
+    }
+
+
+def border_pixels(spec, width: int, height: int) -> int:
+    spec = clean_border(spec)
+    if not spec["enabled"]:
+        return 0
+    return int(round(spec["size"] * max(int(width), int(height))))
+
+
+def apply_border(rgb, spec):
+    """Surround a resized export with a plain margin of the chosen tone."""
+    import numpy as np
+
+    base = np.asarray(rgb, dtype=np.float32)
+    if base.ndim != 3:
+        return rgb
+    pixels = border_pixels(spec, base.shape[1], base.shape[0])
+    if pixels <= 0:
+        return rgb
+    tone = clean_border(spec)["tone"]
+    return np.pad(base, ((pixels, pixels), (pixels, pixels), (0, 0)),
+                  mode="constant", constant_values=tone).astype(np.float32)
+
+
 def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
     raw = raw if isinstance(raw, dict) else {}
     format_name = str(raw.get("format", "jpeg")).lower()
@@ -156,6 +196,7 @@ def clean_recipe(raw: dict | None, *, builtin: bool = False) -> dict:
         "metadata": metadata,
         "sidecar": _flag(raw.get("sidecar"), True),
         "watermark": clean_watermark(raw.get("watermark")),
+        "border": clean_border(raw.get("border")),
     }
 
 
@@ -296,8 +337,8 @@ def collision_path(path: Path, policy: str,
 
 
 def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
-                      long_edge=None) -> tuple[int, int]:
-    """Mirror export's rotation, pixel-rounded crop, then downsize geometry."""
+                      long_edge=None, border=None) -> tuple[int, int]:
+    """Mirror export's rotation, pixel-rounded crop, downsize, then border."""
     if int(round(float(rotate) / 90)) % 2:
         width, height = height, width
     if crop:
@@ -310,7 +351,8 @@ def output_dimensions(width: int, height: int, *, rotate=0, crop=None,
     if long_edge and max(width, height) > int(long_edge):
         scale = int(long_edge) / max(width, height)
         width, height = max(1, round(width * scale)), max(1, round(height * scale))
-    return width, height
+    margin = border_pixels(border, width, height)
+    return width + 2 * margin, height + 2 * margin
 
 
 def _watermark_font(app_root: Path, size: float):
@@ -443,3 +485,120 @@ def apply_watermark(rgb, spec, app_root: Path | None = None):
         return result.astype(np.float32, copy=False)
     except Exception:  # noqa: BLE001 - a watermark must not lose the export
         return rgb
+
+
+def clean_contact_sheet(raw) -> dict:
+    """Validate contact-sheet options; unknown values fall back to defaults."""
+    raw = raw if isinstance(raw, dict) else {}
+    try:
+        columns = int(raw.get("columns", 5))
+    except (TypeError, ValueError):
+        columns = 5
+    try:
+        width = int(raw.get("width", 3600))
+    except (TypeError, ValueError):
+        width = 3600
+    background = str(raw.get("background", "white")).lower()
+    captions = raw.get("captions")
+    captions = captions if isinstance(captions, list) else list(CONTACT_SHEET_CAPTIONS)
+    return {
+        "columns": max(2, min(10, columns)),
+        "width": width if width in CONTACT_SHEET_WIDTHS else 3600,
+        "background": background if background in CONTACT_SHEET_BACKGROUNDS else "white",
+        "captions": [key for key in CONTACT_SHEET_CAPTIONS if key in captions],
+        "title": " ".join(str(raw.get("title") or "").split())[:80],
+    }
+
+
+def contact_sheet_layout(count: int, spec) -> dict:
+    """Geometry for ``count`` photos, refusing a sheet too tall to encode."""
+    spec = clean_contact_sheet(spec)
+    if count < 1:
+        raise ValueError(T("Choose photos for the contact sheet"))
+    if count > CONTACT_SHEET_MAX_PHOTOS:
+        raise ValueError(T("A contact sheet can hold up to {count} photos",
+                           count=CONTACT_SHEET_MAX_PHOTOS))
+    width, columns = spec["width"], spec["columns"]
+    margin = round(width * 0.04)
+    gutter = round(width * 0.02)
+    cell = (width - 2 * margin - (columns - 1) * gutter) // columns
+    caption_size = max(10, round(cell * 0.06))
+    line_height = round(caption_size * 1.35)
+    lines = len(spec["captions"])
+    caption_height = lines * line_height + (round(caption_size * 0.6) if lines else 0)
+    title_size = max(14, round(width * 0.016))
+    title_height = round(title_size * 2.4)
+    rows = -(-count // columns)
+    height = (2 * margin + title_height + rows * (cell + caption_height)
+              + (rows - 1) * gutter)
+    if height > CONTACT_SHEET_MAX_HEIGHT:
+        raise ValueError(T("Too many photos for one sheet. Add columns or choose fewer photos."))
+    return {"width": width, "height": height, "columns": columns, "rows": rows,
+            "margin": margin, "gutter": gutter, "cell": cell,
+            "captionSize": caption_size, "lineHeight": line_height,
+            "captionHeight": caption_height, "titleSize": title_size,
+            "titleHeight": title_height}
+
+
+def _fit_text(draw, text: str, font, width: int) -> str:
+    if draw.textlength(text, font=font) <= width:
+        return text
+    while text and draw.textlength(text + "…", font=font) > width:
+        text = text[:-1]
+    return (text + "…") if text else ""
+
+
+def compose_contact_sheet(photos: list[dict], spec, *, subtitle: str = "",
+                          app_root: Path | None = None):
+    """Lay rendered photos out on one sheet with optional captions.
+
+    Each entry of ``photos`` holds an ``image`` (float RGB in [0, 1]) and a
+    ``caption`` list of text lines. Photos are fitted inside square cells
+    without cropping and rest on the cell's lower edge. Returns the sheet as
+    float RGB in [0, 1].
+    """
+    import numpy as np
+    from PIL import Image, ImageDraw
+
+    spec = clean_contact_sheet(spec)
+    layout = contact_sheet_layout(len(photos), spec)
+    tone = CONTACT_SHEET_BACKGROUNDS[spec["background"]]
+    paper = int(round(tone * 255))
+    ink = (38, 38, 38) if tone > 0.6 else (232, 232, 232)
+    muted = (110, 110, 110) if tone > 0.6 else (170, 170, 170)
+    sheet = Image.new("RGB", (layout["width"], layout["height"]), (paper,) * 3)
+    draw = ImageDraw.Draw(sheet)
+    root = app_root or APP_ROOT
+    title_font = _watermark_font(root, layout["titleSize"])
+    caption_font = _watermark_font(root, layout["captionSize"])
+    margin = layout["margin"]
+    usable = layout["width"] - 2 * margin
+    if spec["title"]:
+        draw.text((margin, margin), _fit_text(draw, spec["title"], title_font, usable),
+                  font=title_font, fill=ink)
+    if subtitle:
+        subtitle_font = _watermark_font(root, layout["titleSize"] * 0.62)
+        draw.text((margin, margin + round(layout["titleSize"] * 1.35)),
+                  _fit_text(draw, subtitle, subtitle_font, usable),
+                  font=subtitle_font, fill=muted)
+    top = margin + layout["titleHeight"]
+    cell = layout["cell"]
+    for index, photo in enumerate(photos):
+        column, row = index % layout["columns"], index // layout["columns"]
+        left = margin + column * (cell + layout["gutter"])
+        upper = top + row * (cell + layout["captionHeight"] + layout["gutter"])
+        pixels = np.clip(np.asarray(photo["image"], dtype=np.float32)[..., :3], 0.0, 1.0)
+        image = Image.fromarray((pixels * 255.0 + 0.5).astype(np.uint8), "RGB")
+        scale = cell / max(image.size)
+        fitted = image.resize((max(1, round(image.size[0] * scale)),
+                               max(1, round(image.size[1] * scale))),
+                              Image.Resampling.LANCZOS)
+        # Bottom-align, so each caption sits directly under its photo.
+        sheet.paste(fitted, (left + (cell - fitted.size[0]) // 2,
+                             upper + cell - fitted.size[1]))
+        baseline = upper + cell + round(layout["captionSize"] * 0.45)
+        for line_index, line in enumerate(photo.get("caption") or []):
+            draw.text((left, baseline + line_index * layout["lineHeight"]),
+                      _fit_text(draw, str(line), caption_font, cell),
+                      font=caption_font, fill=ink if line_index == 0 else muted)
+    return np.asarray(sheet, dtype=np.float32) / 255.0

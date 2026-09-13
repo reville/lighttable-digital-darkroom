@@ -111,9 +111,14 @@ def merge_mapping(base: dict, patch: dict) -> dict:
 OPTICS_DEFAULTS = {
     "profileEnabled": False, "profileOverride": None,
     "profileDistortion": True, "profileVignette": True,
+    "profileChromatic": True,
     "flipHorizontal": False, "flipVertical": False, "distortion": 0.0,
     "vignette": 0.0, "vertical": 0.0, "horizontal": 0.0, "rotate": 0.0,
     "scale": 1.0,
+    "defringePurple": 0.0, "defringePurpleHueStart": 250.0,
+    "defringePurpleHueEnd": 330.0,
+    "defringeGreen": 0.0, "defringeGreenHueStart": 90.0,
+    "defringeGreenHueEnd": 150.0,
 }
 PRESET_LAYERED = ("masks", "heals")
 
@@ -1053,6 +1058,10 @@ def dispatch_domain(client: Client, args):
         if action == "get": return client.get("/api/prefs")
         return client.post("/api/prefs", body)
 
+    if args.command == "contact-sheet":
+        if not names:
+            raise ValueError("contact-sheet create needs at least one photo reference")
+        return client.post("/api/contact-sheet", {**body, "names": names})
     if args.command == "match-exposure":
         if names:
             body.setdefault("reference", names[0])
@@ -1062,7 +1071,7 @@ def dispatch_domain(client: Client, args):
 
 
 def completion_script(shell: str) -> str:
-    commands = "status instances doctor open serve stop photos rate flag label edit render analyze compare sources folders metadata history versions film presets export jobs ui keywords raw-default collections stacks virtual-copy import ingest watch merge denoise enhance external-edit files catalog cache masks ai-index soft-proof prefs match-exposure route schema completion mcp"
+    commands = "status instances doctor open serve stop photos rate flag label edit render analyze compare sources folders metadata history versions film presets export jobs ui keywords raw-default collections stacks virtual-copy import ingest watch merge denoise enhance external-edit files catalog cache masks ai-index soft-proof prefs match-exposure contact-sheet route schema completion mcp"
     if shell == "fish": return f"complete -c lighttable -f -a '{commands}'"
     if shell == "zsh": return f"#compdef lighttable\n_arguments '1:command:({commands})'"
     return f"complete -W '{commands}' lighttable"

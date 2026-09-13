@@ -328,6 +328,9 @@ final class NativePreviewRenderer {
     private let device: MTLDevice
     private let commandQueue: MTLCommandQueue
     private let pipeline: MTLRenderPipelineState
+    private let healMeansPipeline: MTLComputePipelineState
+    /// Per-spot heal colour shifts reduced on the GPU before each display pass.
+    private let healShiftBuffer: MTLBuffer
     private let sampler: MTLSamplerState
     private let textureLoader: MTKTextureLoader
     private var imageTexture: MTLTexture?
@@ -354,6 +357,7 @@ final class NativePreviewRenderer {
     private var loadTask: URLSessionDataTask?
     private var originalLoadTask: URLSessionDataTask?
     private var originalURL: URL?
+    private var loadedOriginalURL: URL?
     private var requestedGeneration = 0
     private var awaitingPhoto = false
     private var preparingSurface = false
@@ -365,8 +369,8 @@ final class NativePreviewRenderer {
         pendingInteraction = nil
         loadTask?.cancel()
         originalLoadTask?.cancel()
+        originalLoadTask = nil
     }
-    private var requestedOriginalGeneration = 0
     private var renderScheduled = false
     var onInteractionPresented: (([String: Any]) -> Void)?
     private var pendingInteraction: [String: Any]?
@@ -385,7 +389,12 @@ final class NativePreviewRenderer {
               let library = try? device.makeLibrary(
                 source: librarySource, options: nil),
               let vertex = library.makeFunction(name: "nativePreviewVertex"),
-              let fragment = library.makeFunction(name: "nativePreviewFragment")
+              let fragment = library.makeFunction(name: "nativePreviewFragment"),
+              let healMeans = library.makeFunction(name: "healRingMeans"),
+              let healMeansPipeline = try? device.makeComputePipelineState(function: healMeans),
+              let healShiftBuffer = device.makeBuffer(
+                length: NativePreviewRenderer.maximumLiveHeals * MemoryLayout<SIMD4<Float>>.stride,
+                options: .storageModeShared)
         else { return nil }
 
         let metalView = PassthroughMetalView(frame: .zero, device: device)
@@ -431,6 +440,8 @@ final class NativePreviewRenderer {
         self.device = device
         commandQueue = queue
         self.pipeline = pipeline
+        self.healMeansPipeline = healMeansPipeline
+        self.healShiftBuffer = healShiftBuffer
         self.sampler = sampler
         view = metalView
         textureLoader = MTKTextureLoader(device: device)
@@ -483,6 +494,7 @@ final class NativePreviewRenderer {
     func hide() {
         loadTask?.cancel()
         originalLoadTask?.cancel()
+        originalLoadTask = nil
         view.isHidden = true
         cancelPreloads()
     }
@@ -602,9 +614,12 @@ final class NativePreviewRenderer {
         scheduleRender()
     }
 
+    /// The shader applies at most this many heals live; the browser bakes more.
+    static let maximumLiveHeals = 16
+
     func updateEdits(optics: [String: Any], heals: [[String: Any]]) {
         self.optics = optics
-        self.heals = Array(heals.prefix(16))
+        self.heals = Array(heals.prefix(NativePreviewRenderer.maximumLiveHeals))
         scheduleRender()
     }
 
@@ -636,44 +651,87 @@ final class NativePreviewRenderer {
         scheduleRender()
     }
 
-    func loadOriginal(_ surface: NativeSurfaceDescription, generation: Int) {
-        requestedOriginalGeneration = generation
-        if originalURL == surface.url, originalTexture != nil {
+    /// The original's URL without its width: zooming asks for a sharper copy of
+    /// the same photo, which may replace the loaded one only after it arrives.
+    private static func originalIdentity(_ url: URL) -> String {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        else { return url.absoluteString }
+        components.queryItems = components.queryItems?.filter { $0.name != "w" }
+        return components.string ?? url.absoluteString
+    }
+
+    func loadOriginal(_ surface: NativeSurfaceDescription, generation _: Int) {
+        let url = surface.url
+        if url == loadedOriginalURL, originalTexture != nil {
+            originalLoadTask?.cancel()
+            originalLoadTask = nil
+            originalURL = url
             scheduleRender()
             return
         }
+        // Every presentation repeats this request while a full-resolution RAW
+        // original develops; restarting it would discard that work.
+        if url == originalURL, originalLoadTask != nil { return }
         originalLoadTask?.cancel()
-        originalURL = surface.url
-        originalTexture = nil
-        var request = URLRequest(url: surface.url)
-        request.cachePolicy = .returnCacheDataElseLoad
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let self, error == nil, let data else { return }
-            do {
-                let texture = try self.textureLoader.newTexture(
-                    data: data,
-                    options: [
-                        .SRGB: false,
-                        .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
-                        .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
-                    ])
-                DispatchQueue.main.async {
-                    guard generation == self.requestedOriginalGeneration,
-                          surface.url == self.originalURL else { return }
+        originalLoadTask = nil
+        if let loaded = loadedOriginalURL,
+           Self.originalIdentity(loaded) != Self.originalIdentity(url) {
+            // Never compare against another photo or rotation.
+            originalTexture = nil
+            loadedOriginalURL = nil
+            scheduleRender()
+        }
+        originalURL = url
+        fetchOriginal(url, attempt: 0)
+    }
+
+    private func fetchOriginal(_ url: URL, attempt: Int) {
+        var request = URLRequest(url: url)
+        // Originals are immutable, but a retry must not replay a cached failure.
+        request.cachePolicy = attempt == 0 ? .returnCacheDataElseLoad : .reloadIgnoringLocalCacheData
+        // Developing a large RAW original can take longer than the default minute.
+        request.timeoutInterval = 600
+        var task: URLSessionDataTask?
+        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else { return }
+            let cancelled = (error as NSError?)?.code == NSURLErrorCancelled
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 200
+            let texture = !cancelled && error == nil && (200..<300).contains(status)
+                ? data.flatMap { try? self.textureLoader.newTexture(data: $0, options: [
+                    .SRGB: false,
+                    .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
+                    .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
+                ]) }
+                : nil
+            DispatchQueue.main.async {
+                guard let task, self.originalLoadTask === task else { return }
+                self.originalLoadTask = nil
+                guard !cancelled, self.originalURL == url else { return }
+                if let texture {
                     self.originalTexture = texture
+                    self.loadedOriginalURL = url
                     self.render()
+                } else if attempt < 2 {
+                    // The loaded original stays visible while this is retried.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(attempt + 1)) {
+                        guard self.originalURL == url, self.originalLoadTask == nil else { return }
+                        self.fetchOriginal(url, attempt: attempt + 1)
+                    }
+                } else {
+                    // Let the next presentation request it again.
+                    self.originalURL = self.loadedOriginalURL
                 }
-            } catch {
-                return
             }
         }
         originalLoadTask = task
-        task.resume()
+        task?.resume()
     }
 
     func clearOriginal() {
         originalLoadTask?.cancel()
+        originalLoadTask = nil
         originalURL = nil
+        loadedOriginalURL = nil
         originalTexture = nil
         scheduleRender()
     }
@@ -1189,10 +1247,7 @@ final class NativePreviewRenderer {
         pass.colorAttachments[0].loadAction = .clear
         pass.colorAttachments[0].storeAction = .store
         pass.colorAttachments[0].clearColor = view.clearColor
-        guard let encoder = commandBuffer.makeRenderCommandEncoder(
-            descriptor: pass) else { return nil }
-        encodePreview(into: encoder)
-        encoder.endEncoding()
+        guard encodeFrame(into: commandBuffer, descriptor: pass) else { return nil }
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
         guard commandBuffer.status == .completed else { return nil }
@@ -1225,12 +1280,56 @@ final class NativePreviewRenderer {
         return NSImage(cgImage: image, size: view.bounds.size)
     }
 
-    private func encodePreview(into encoder: MTLRenderCommandEncoder) {
-        guard let imageTexture else { return }
+    /// Encode one complete preview frame: the heal colour-match reduction,
+    /// then the display pass. Both the presented drawable and the test
+    /// snapshot pass through here so they submit identical work.
+    private func encodeFrame(
+        into commandBuffer: MTLCommandBuffer, descriptor: MTLRenderPassDescriptor
+    ) -> Bool {
+        guard imageTexture != nil else { return false }
         var uniforms = uniforms()
         var healValues = healUniforms()
         let localValues = localUniforms()
+        encodeHealMeans(into: commandBuffer, uniforms: &uniforms, healValues: healValues)
         if healValues.isEmpty { healValues = [HealUniform()] }
+        guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {
+            return false
+        }
+        encodePreview(into: encoder, uniforms: &uniforms,
+                      healValues: healValues, localValues: localValues)
+        encoder.endEncoding()
+        return true
+    }
+
+    private func encodeHealMeans(
+        into commandBuffer: MTLCommandBuffer, uniforms: inout GradeUniforms,
+        healValues: [HealUniform]
+    ) {
+        guard let imageTexture, !healValues.isEmpty,
+              healValues.contains(where: { $0.settings.w >= 1.5 && $0.settings.w < 2.5 }),
+              let encoder = commandBuffer.makeComputeCommandEncoder()
+        else { return }
+        encoder.setComputePipelineState(healMeansPipeline)
+        encoder.setTexture(imageTexture, index: 0)
+        encoder.setTexture(fullFrameTexture ?? imageTexture, index: 1)
+        encoder.setSamplerState(sampler, index: 0)
+        encoder.setBytes(&uniforms, length: MemoryLayout<GradeUniforms>.stride, index: 0)
+        healValues.withUnsafeBytes { bytes in
+            encoder.setBytes(bytes.baseAddress!, length: bytes.count, index: 1)
+        }
+        encoder.setBuffer(healShiftBuffer, offset: 0, index: 2)
+        let width = min(256, healMeansPipeline.maxTotalThreadsPerThreadgroup)
+        encoder.dispatchThreadgroups(
+            MTLSize(width: healValues.count, height: 1, depth: 1),
+            threadsPerThreadgroup: MTLSize(width: width, height: 1, depth: 1))
+        encoder.endEncoding()
+    }
+
+    private func encodePreview(
+        into encoder: MTLRenderCommandEncoder, uniforms: inout GradeUniforms,
+        healValues: [HealUniform], localValues: [LocalUniform]
+    ) {
+        guard let imageTexture else { return }
         encoder.setRenderPipelineState(pipeline)
         encoder.setFragmentTexture(imageTexture, index: 0)
         encoder.setFragmentTexture(curveTexture, index: 1)
@@ -1249,6 +1348,7 @@ final class NativePreviewRenderer {
             encoder.setFragmentBytes(
                 bytes.baseAddress!, length: bytes.count, index: 2)
         }
+        encoder.setFragmentBuffer(healShiftBuffer, offset: 0, index: 3)
         encoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
     }
 
@@ -1271,8 +1371,7 @@ final class NativePreviewRenderer {
               let descriptor = view.currentRenderPassDescriptor,
               let drawable = view.currentDrawable,
               let commandBuffer = commandQueue.makeCommandBuffer(),
-              let encoder = commandBuffer.makeRenderCommandEncoder(
-                descriptor: descriptor)
+              encodeFrame(into: commandBuffer, descriptor: descriptor)
         else {
             if let completion {
                 if attempt < 30 {
@@ -1285,8 +1384,6 @@ final class NativePreviewRenderer {
             }
             return
         }
-        encodePreview(into: encoder)
-        encoder.endEncoding()
         if var sample = pendingInteraction {
             pendingInteraction = nil
             let submittedAt = ProcessInfo.processInfo.systemUptime

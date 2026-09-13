@@ -375,7 +375,15 @@ def localized_help_text(bundle, catalog, locale, source_messages, source_digest)
     return json.dumps(localized, ensure_ascii=False, indent=2) + '\n'
 
 
-def run_localization(command, locales=None, root=ROOT):
+def catalog_lags_source(catalog, source_messages, source_digest):
+    """True when a catalog predates the current source or lacks a message."""
+    if not isinstance(catalog, dict) or catalog.get('sourceDigest') != source_digest:
+        return True
+    translations = catalog.get('messages')
+    return not isinstance(translations, dict) or any(message not in translations for message in source_messages)
+
+
+def run_localization(command, locales=None, root=ROOT, allow_pending=False):
     if command not in ('localization-build', 'localization-check'):
         raise HelpError('Unknown help localization command')
     bundle = load_help_bundle(root)
@@ -392,8 +400,14 @@ def run_localization(command, locales=None, root=ROOT):
     # Validate all selected locales before writing any bundle. A missing final
     # language must not leave a partially refreshed set that looks complete.
     outputs = []
+    lagging = []
     for locale in selected:
         catalog = read_json(root / 'web/locales' / f'{locale}.json')
+        if allow_pending and catalog_lags_source(catalog, source_messages, source_digest):
+            # Between releases a locale may lag the English source. Keep its
+            # last complete bundle; the release gate runs without allow_pending.
+            lagging.append(locale)
+            continue
         expected = localized_help_text(bundle, catalog, locale, source_messages, source_digest)
         target = root / 'web/locales/help' / f'{locale}.json'
         if command == 'localization-check' and (not target.is_file() or target.read_text() != expected):
@@ -403,8 +417,13 @@ def run_localization(command, locales=None, root=ROOT):
         for target, expected in outputs:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(expected, encoding='utf-8')
-    print(f'Help {command}: {len(selected)} locales, {len(bundle["articles"])} articles each; '
+    current = len(selected) - len(lagging)
+    print(f'Help {command}: {current} locales, {len(bundle["articles"])} articles each; '
           'complete translations and source versions current.')
+    if lagging:
+        print(f'Help {command}: {len(lagging)} locales lag the source and kept their last complete bundle '
+              f'(pending translations): {", ".join(lagging)}. Complete them before a release with '
+              'python3 scripts/translate-locales.py, then run localization-build and localization-check.')
     return 0
 
 
@@ -415,14 +434,18 @@ def run(argv=None, root=ROOT):
     parser.add_argument('articles', nargs='*', help='Reviewed article IDs (review only)')
     parser.add_argument('--all', action='store_true', help='Acknowledge review of every article')
     parser.add_argument('--locale', action='append', help='Limit localization commands to a declared locale; repeatable')
+    parser.add_argument('--allow-pending', action='store_true',
+                        help='localization-build/localization-check: skip locales whose catalog lags the source')
     args = parser.parse_args(argv)
     if args.command != 'review' and (args.articles or args.all):
         parser.error('Article IDs and --all are valid only with review')
     if args.locale and not args.command.startswith('localization-'):
         parser.error('--locale is valid only with localization-build/localization-check')
+    if args.allow_pending and not args.command.startswith('localization-'):
+        parser.error('--allow-pending is valid only with localization-build/localization-check')
     try:
         if args.command.startswith('localization-'):
-            return run_localization(args.command, args.locale, root)
+            return run_localization(args.command, args.locale, root, allow_pending=args.allow_pending)
         articles = load_articles(root)
         current = current_records(articles, root)
         reviewed = read_lock(root)

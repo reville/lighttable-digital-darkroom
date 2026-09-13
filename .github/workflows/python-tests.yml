@@ -9,7 +9,43 @@ permissions:
   contents: read
 
 jobs:
+  scope:
+    # Decide which checks this change needs; see scripts/ci/change-scope.py.
+    # Pushes, dispatches, and release calls always run everything.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      full: ${{ steps.scope.outputs.full }}
+      docs_only: ${{ steps.scope.outputs.docs_only }}
+      pixel: ${{ steps.scope.outputs.pixel }}
+      windows: ${{ steps.scope.outputs.windows }}
+      linux: ${{ steps.scope.outputs.linux }}
+      installers: ${{ steps.scope.outputs.installers }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/ci
+      - id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          PULL_REQUEST: ${{ github.event.pull_request.number }}
+          LABELS: ${{ github.event_name == 'pull_request' && join(github.event.pull_request.labels.*.name, ',') || '' }}
+        run: |
+          changed="$RUNNER_TEMP/changed-files.txt"
+          : > "$changed"
+          if [[ "$EVENT" == pull_request ]]; then
+            # An unreadable file list falls back to the full tier.
+            gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PULL_REQUEST/files" \
+              --jq '.[].filename' > "$changed" || : > "$changed"
+          fi
+          python3 scripts/ci/change-scope.py --event "$EVENT" --labels "$LABELS" \
+            < "$changed" | tee -a "$GITHUB_OUTPUT"
+
   unit:
+    needs: scope
+    # Documentation-only changes skip the suite; a skipped required job counts as passing.
+    if: needs.scope.outputs.docs_only != 'true'
     runs-on: macos-14
     timeout-minutes: 45
     steps:
@@ -50,21 +86,26 @@ jobs:
         with:
           node-version: '24'
       - uses: dtolnay/rust-toolchain@stable
+        if: needs.scope.outputs.pixel == 'true'
       - uses: actions/cache@v4
+        if: needs.scope.outputs.pixel == 'true'
         with:
           path: build/processing-cargo
           key: processing-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('rust-engine/Cargo.lock', 'rust-engine/**/Cargo.toml') }}
 
       # The control audit and the frozen renders drive this engine. Build it
       # before the unit step or both suites skip themselves and the job stays
-      # green while checking nothing.
+      # green while checking nothing. The light tier (no pixel-path change)
+      # skips the engine on purpose; pushes to main always run it.
       - name: Build the resident film engine
+        if: needs.scope.outputs.pixel == 'true'
         run: CARGO_TARGET_DIR=build/processing-cargo cargo build --manifest-path rust-engine/Cargo.toml --locked
 
       - name: Unit and contract tests
         run: PYTHONPATH=".:vendor/spektrafilm/src" python -m unittest discover -s tests -p 'test_*.py' -t tests --verbose
 
       - name: Confirm the engine-backed gates were not skipped
+        if: needs.scope.outputs.pixel == 'true'
         run: |
           test -x build/processing-cargo/debug/lighttable-engine
           PYTHONPATH=".:vendor/spektrafilm/src:tests" python - <<'CHECK'
@@ -74,31 +115,33 @@ jobs:
           CHECK
 
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && needs.scope.outputs.pixel == 'true'
         with:
           name: control-audit
           path: build/control-audit
           if-no-files-found: warn
           retention-days: 14
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: failure() && needs.scope.outputs.pixel == 'true'
         with:
           name: golden-diffs
           path: build/golden-diffs
           if-no-files-found: ignore
           retention-days: 14
       - name: Prepare the pinned browser test runtime
+        if: needs.scope.outputs.pixel == 'true'
         run: |
           npm install --prefix "$RUNNER_TEMP/processing-browser" --no-save playwright@1.62.1
           "$RUNNER_TEMP/processing-browser/node_modules/.bin/playwright" install chromium
           echo "LIGHTTABLE_PLAYWRIGHT_MODULE=$RUNNER_TEMP/processing-browser/node_modules/playwright/index.mjs" >> "$GITHUB_ENV"
       - name: Independent film, export, and application pixel gates
+        if: needs.scope.outputs.pixel == 'true'
         run: python scripts/check-processing.py --suites film,export,webgl,app
       # A hosted runner is not evidence of an actual Metal/display session.
       # The native gate is required by the local full command documented in
       # docs/processing-correctness.md; unavailable native renderers fail that gate.
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && needs.scope.outputs.pixel == 'true'
         with:
           name: processing-correctness
           path: build/processing-correctness
@@ -106,6 +149,8 @@ jobs:
           retention-days: 14
 
   installers:
+    needs: scope
+    if: needs.scope.outputs.installers == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

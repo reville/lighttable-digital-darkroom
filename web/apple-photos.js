@@ -26,7 +26,7 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
     el('applePhotosNext').disabled = loading || importing || !hasMore;
     el('applePhotosAlbum').disabled = loading || importing;
     el('applePhotosRefresh').disabled = importing;
-    el('applePhotosSelectPage').disabled = loading || importing || !items.length;
+    el('applePhotosSelectPage').disabled = loading || importing || !items.some(item => !item.imported);
     el('applePhotosClear').disabled = importing || !selected.size;
     el('applePhotosImport').disabled = !selected.size || importing || registering;
     el('applePhotosStop').hidden = !importing;
@@ -107,15 +107,28 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
     for (const item of items) {
       const card = document.createElement('button');
       card.type = 'button'; card.className = 'apple-photos-card';
-      card.setAttribute('aria-label', item.name);
+      if (item.imported) {
+        selected.delete(item.id);
+        card.classList.add('imported');
+        card.setAttribute('aria-disabled', 'true');
+        card.setAttribute('aria-label', t('{name} (Already imported)', {name: item.name}));
+      } else {
+        card.setAttribute('aria-label', item.name);
+      }
       const preview = document.createElement('span'); preview.className = 'apple-photos-preview';
       const placeholder = document.createElement('span'); placeholder.textContent = t('Preview unavailable');
       const img = document.createElement('img'); img.alt = ''; img.hidden = true;
       preview.append(placeholder, img);
+      if (item.imported) {
+        const badge = document.createElement('span');
+        badge.className = 'apple-photos-badge';
+        badge.textContent = t('Imported');
+        preview.append(badge);
+      }
       const name = document.createElement('span'); name.className = 'apple-photos-name'; name.textContent = item.name;
       card.append(preview, name);
       card.onclick = () => {
-        if (importing) return;
+        if (importing || item.imported) return;
         if (selected.has(item.id)) selected.delete(item.id);
         else if (selected.size < 500) selected.add(item.id);
         else status(t('Select up to 500 photos per import.'));
@@ -146,9 +159,27 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
         try {
           await onImported(event.path);
           importedPath = event.path;
-          // Keep a partial selection for an explicit retry; deterministic
-          // destination paths skip copies that already completed.
-          if (event.state === 'completed' && !event.failures) selected.clear();
+          if (event.state === 'completed' && !event.failures) {
+            for (const item of items) {
+              if (selected.has(item.id)) {
+                item.imported = true;
+                const card = cards.get(item.id);
+                if (card) {
+                  card.classList.add('imported');
+                  card.setAttribute('aria-disabled', 'true');
+                  card.setAttribute('aria-label', t('{name} (Already imported)', {name: item.name}));
+                  const preview = card.querySelector('.apple-photos-preview');
+                  if (preview && !preview.querySelector('.apple-photos-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'apple-photos-badge';
+                    badge.textContent = t('Imported');
+                    preview.append(badge);
+                  }
+                }
+              }
+            }
+            selected.clear();
+          }
           status(t('Imported: {imported} · Already added: {existing} · Unavailable: {failures}', {
             imported: formatNumber(event.imported || 0), existing: formatNumber(event.existing || 0),
             failures: formatNumber(event.failures || 0),
@@ -170,8 +201,8 @@ export function installApplePhotosBrowser({ el, sendNative, nativeBridge, onImpo
   el('applePhotosPrevious').onclick = () => { offset = Math.max(0, offset - 60); request(); };
   el('applePhotosNext').onclick = () => { offset += 60; request(); };
   el('applePhotosSelectPage').onclick = () => {
-    for (const item of items) if (selected.size < 500) selected.add(item.id);
-    if (items.some(item => !selected.has(item.id))) status(t('Select up to 500 photos per import.'));
+    for (const item of items) if (!item.imported && selected.size < 500) selected.add(item.id);
+    if (items.some(item => !item.imported && !selected.has(item.id))) status(t('Select up to 500 photos per import.'));
     sync();
   };
   el('applePhotosClear').onclick = () => { selected.clear(); sync(); };

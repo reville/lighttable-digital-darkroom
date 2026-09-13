@@ -8,26 +8,33 @@ export function localToolLabel(type) {
     subject: tr('Subject'), sky: tr('Sky'), object: tr('Object'), depth: tr('Depth'),
     person: tr('Person'), 'face-skin': tr('Face skin'), eyes: tr('Eyes'),
     eyebrows: tr('Eyebrows'), lips: tr('Lips'), teeth: tr('Teeth'), hair: tr('Hair'),
-    remove: tr('Remove'), heal: tr('Heal'), clone: tr('Clone'),
+    remove: tr('Remove'), heal: tr('Heal'), clone: tr('Clone'), dust: tr('Dust'),
   };
   return labels[type] || String(type || '');
 }
 
 export const LOCAL_GRADE_DEFAULTS = Object.freeze({
   exposure: 0, contrast: 0, highlights: 0, shadows: 0, whites: 0, blacks: 0,
-  temp: 0, tint: 0, saturation: 0, texture: 0, clarity: 0,
+  temp: 0, tint: 0, saturation: 0, texture: 0, clarity: 0, blur: 0,
 });
 
 export const OPTICS_DEFAULTS = Object.freeze({
   profileOverride: null, profileEnabled: false, profileDistortion: true, profileVignette: true,
+  profileChromatic: true,
   flipHorizontal: false, flipVertical: false,
   distortion: 0, vignette: 0, vertical: 0, horizontal: 0, rotate: 0, scale: 1,
+  // Defringe: amount 0..1 and a hue arc in degrees per fringe colour. Mirrors
+  // OPTICS_DEFAULTS in edits.py; a start above its end wraps through 0.
+  defringePurple: 0, defringePurpleHueStart: 250, defringePurpleHueEnd: 330,
+  defringeGreen: 0, defringeGreenHueStart: 90, defringeGreenHueEnd: 150,
 });
+export const DEFRINGE_KEYS = ['defringePurple', 'defringeGreen'];
 
 export const MAX_MASKS = 16;
 export const MAX_MASK_COMPONENTS = 12;
 export const MAX_TOTAL_MASK_POINTS = 20000;
 export const MAX_HEALS = 50;
+export const MAX_HEAL_POINTS = 256;
 // A linear gradient shorter than this fraction of the frame has no usable
 // direction and contributes nothing. Mirrors LINEAR_MIN_SPAN in edits.py; the
 // threshold is normalized so preview and export agree at any resolution.
@@ -141,16 +148,30 @@ export function normalizeMasks(raw) {
 }
 
 export function normalizeHeals(raw) {
-  return (Array.isArray(raw) ? raw : []).slice(0, MAX_HEALS).map((spot) => ({
-    id: String(spot?.id || editId('heal')),
-    mode: ['remove', 'clone'].includes(spot?.mode) ? spot.mode : 'heal',
-    enabled: spot?.enabled !== false,
-    target: Array.isArray(spot?.target) ? spot.target : [0.5, 0.5],
-    source: Array.isArray(spot?.source) ? spot.source : [0.4, 0.4],
-    radius: clamp(+(spot?.radius ?? 0.04), 0.005, 0.25),
-    feather: clamp(+(spot?.feather ?? 0.65), 0, 1),
-    opacity: clamp(+(spot?.opacity ?? 1), 0, 1),
-  }));
+  return (Array.isArray(raw) ? raw : []).slice(0, MAX_HEALS).map((spot) => {
+    const mode = ['remove', 'clone', 'dust'].includes(spot?.mode) ? spot.mode : 'heal';
+    const result = {
+      id: String(spot?.id || editId('heal')),
+      mode,
+      enabled: spot?.enabled !== false,
+      target: Array.isArray(spot?.target) ? spot.target : [0.5, 0.5],
+      source: Array.isArray(spot?.source) ? spot.source : [0.4, 0.4],
+      radius: clamp(+(spot?.radius ?? 0.04), 0.005, 0.25),
+      feather: clamp(+(spot?.feather ?? 0.65), 0, 1),
+      opacity: clamp(+(spot?.opacity ?? 1), 0, 1),
+    };
+    if (mode === 'remove') {
+      result.fill = spot?.fill === 'patch' ? 'patch' : 'smooth';
+      const points = (Array.isArray(spot?.points) ? spot.points : []).slice(0, MAX_HEAL_POINTS)
+        .filter((point) => Array.isArray(point) && point.length >= 2)
+        .map((point) => [clamp(+point[0] || 0, 0, 1), clamp(+point[1] || 0, 0, 1)]);
+      if (points.length >= 2) result.points = points;
+    } else if (mode === 'dust') {
+      result.sensitivity = clamp(+(spot?.sensitivity ?? 0.5), 0, 1);
+      result.size = clamp(+(spot?.size ?? 0.004), 0.001, 0.02);
+    }
+    return result;
+  });
 }
 
 export function normalizeOptics(raw) {
@@ -158,6 +179,7 @@ export function normalizeOptics(raw) {
   value.profileEnabled = !!value.profileEnabled;
   value.profileDistortion = value.profileDistortion !== false;
   value.profileVignette = value.profileVignette !== false;
+  value.profileChromatic = value.profileChromatic !== false;
   const overrideKeys = ['cameraMaker', 'cameraModel', 'lensMaker', 'lensModel'];
   value.profileOverride = overrideKeys.every((key) => typeof value.profileOverride?.[key] === 'string'
     && value.profileOverride[key].length > 0 && value.profileOverride[key].length <= 256)
@@ -169,5 +191,16 @@ export function normalizeOptics(raw) {
   });
   value.rotate = clamp(+value.rotate || 0, -15, 15);
   value.scale = clamp(+value.scale || 1, 1, 1.6);
+  for (const key of DEFRINGE_KEYS) {
+    value[key] = clamp(+value[key] || 0, 0, 1);
+    for (const edge of ['HueStart', 'HueEnd']) {
+      const raw = +value[key + edge];
+      value[key + edge] = clamp(Number.isFinite(raw) ? raw : OPTICS_DEFAULTS[key + edge], 0, 360);
+    }
+  }
   return value;
+}
+
+export function defringeActive(optics) {
+  return DEFRINGE_KEYS.some((key) => (optics?.[key] || 0) > 0);
 }

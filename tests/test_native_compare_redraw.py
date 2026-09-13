@@ -9,7 +9,9 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import unittest
+import urllib.parse
 from pathlib import Path
 
 from PIL import Image
@@ -30,13 +32,23 @@ class NativeCompareRedrawTests(unittest.TestCase):
     def test_spot_visualization_preserves_detail_and_tracks_current_preview(self):
         self.run_harness(SPOT_HARNESS, "PASS: spot visualization")
 
-    def run_harness(self, harness_source, expected_output, *, probe=False):
+    def test_zoomed_original_stays_visible_until_its_sharper_copy_loads(self):
+        requests = []
+        self.run_harness(ORIGINAL_HARNESS, "PASS: compare keeps the current original",
+                         requests=requests)
+        sharper = [path for path in requests if "name=photo" in path and "w=2" in path]
+        failing = [path for path in requests if "name=photo" in path and "w=3" in path]
+        self.assertEqual(len(sharper), 1, "repeated presentations restarted the sharper original")
+        self.assertEqual(len(failing), 3, "a failed original was not retried exactly twice")
+
+    def run_harness(self, harness_source, expected_output, *, probe=False, requests=None):
         swiftc = shutil.which("swiftc")
         if not swiftc:
             self.skipTest("swiftc is unavailable")
         with tempfile.TemporaryDirectory() as directory:
             temporary = Path(directory)
-            for name, color in (("after", (0, 255, 0)), ("before", (255, 0, 0))):
+            for name, color in (("after", (0, 255, 0)), ("before", (255, 0, 0)),
+                                ("sharper", (0, 0, 255))):
                 Image.new("RGB", (128, 64), color).save(temporary / f"{name}.png")
 
             # Coordinates encoded in R/G reveal stale UV mappings, stretching,
@@ -54,6 +66,25 @@ class NativeCompareRedrawTests(unittest.TestCase):
             class QuietHandler(http.server.SimpleHTTPRequestHandler):
                 def log_message(self, *_args):
                     pass
+
+                def do_GET(self):
+                    # Originals named by query model the app's /api/orig: a
+                    # slow sharper width, a failing width, and another photo.
+                    query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
+                    if requests is not None:
+                        requests.append(self.path)
+                    if query.get("name") == ["other"]:
+                        time.sleep(0.5)
+                    width = query.get("w", [""])[0]
+                    if width == "2":
+                        time.sleep(1.0)
+                        self.path = "/sharper.png"
+                    elif width == "3":
+                        self.send_error(404)
+                        return
+                    elif query.get("name"):
+                        self.path = "/before.png"
+                    super().do_GET()
 
             handler = functools.partial(QuietHandler, directory=str(temporary))
             server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
@@ -493,6 +524,109 @@ struct ZoomRedraw {
         print("PASS: 8 atomic zoom frames preserve submitted geometry and clipped source pixels")
         print("PASS: HTTP and cached surface swaps submit exactly one matching texture/grade/viewport")
         print("Drawable presentation callbacks: \(presentationCallbacks); background window, no visible-screen claim")
+    }
+}
+'''
+
+
+ORIGINAL_HARNESS = r'''
+import AppKit
+import MetalKit
+
+@main
+struct OriginalRefinement {
+    static func require(_ condition: @autoclosure () -> Bool, _ message: String) {
+        if !condition() {
+            fputs("FAIL: \(message)\n", stderr)
+            exit(1)
+        }
+    }
+
+    static func wait(_ message: String, _ condition: () -> Bool) {
+        let deadline = Date().addingTimeInterval(5)
+        while !condition() && Date() < deadline {
+            RunLoop.main.run(until: Date().addingTimeInterval(0.01))
+        }
+        require(condition(), "timed out waiting for \(message)")
+    }
+
+    static func main() {
+        guard MTLCreateSystemDefaultDevice() != nil else {
+            fputs("Metal device unavailable on this host\n", stderr)
+            exit(77)
+        }
+        let focus = BackgroundFocusGuard()
+        defer { focus.verify() }
+        let app = NSApplication.shared
+        app.setActivationPolicy(.accessory)
+        app.finishLaunching()
+        guard let renderer = NativePreviewRenderer() else {
+            fputs("FAIL: Metal renderer unavailable\n", stderr)
+            exit(1)
+        }
+        let window = NSWindow(contentRect: NSRect(x: 80, y: 80, width: 512, height: 256),
+                              styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView!.addSubview(renderer.view)
+        renderer.view.framebufferOnly = false
+        renderer.setFrame(NSRect(x: 0, y: 0, width: 512, height: 256), visible: true)
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
+        window.orderBack(nil)
+        focus.verify()
+        defer { window.orderOut(nil) }
+
+        let base = URL(string: CommandLine.arguments[1])!
+        func surface(_ path: String) -> NativeSurfaceDescription {
+            NativeSurfaceDescription(payload: ["url": path], baseURL: base)!
+        }
+        func leftEdge() -> String {
+            guard let image = renderer.snapshot(), let data = image.tiffRepresentation,
+                  let bitmap = NSBitmapImageRep(data: data),
+                  let color = bitmap.colorAt(x: 0, y: 0)?.usingColorSpace(.sRGB)
+            else { return "none" }
+            let (r, g, b) = (color.redComponent, color.greenComponent, color.blueComponent)
+            if r > 0.9 && g < 0.2 && b < 0.2 { return "original" }
+            if b > 0.9 && r < 0.2 && g < 0.2 { return "sharper" }
+            if g > 0.9 && r < 0.2 && b < 0.2 { return "edited" }
+            return "other"
+        }
+
+        var loaded = false
+        renderer.load(surface("after.png"), generation: 1, grade: [:]) { result in
+            if case .success = result { loaded = true }
+        }
+        wait("edited surface") { loaded }
+        renderer.updateComparePosition(1)
+        renderer.loadOriginal(surface("original?name=photo&w=1"), generation: 1)
+        wait("first original") { leftEdge() == "original" }
+
+        // Zooming requests a slow sharper copy, and every presentation repeats
+        // that request. Compare must keep the current original meanwhile.
+        let sharper = surface("original?name=photo&w=2")
+        var generation = 2
+        let pending = Date().addingTimeInterval(0.6)
+        while Date() < pending {
+            renderer.loadOriginal(sharper, generation: generation)
+            generation += 1
+            RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+            require(leftEdge() == "original",
+                    "compare lost the current original while a sharper copy loaded")
+        }
+        wait("sharper original") { leftEdge() == "sharper" }
+
+        // A failed sharper request keeps the loaded original through its retries.
+        renderer.loadOriginal(surface("original?name=photo&w=3"), generation: generation)
+        generation += 1
+        let failing = Date().addingTimeInterval(3.6)
+        while Date() < failing {
+            RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+            require(leftEdge() == "sharper", "a failed original request removed the loaded original")
+        }
+
+        // Another photo must never show the previous photo's original.
+        renderer.loadOriginal(surface("original?name=other&w=1"), generation: generation)
+        wait("cleared original") { leftEdge() == "edited" }
+        wait("next photo original") { leftEdge() == "original" }
+        print("PASS: compare keeps the current original until a sharper copy loads, retries failures, and clears for another photo")
     }
 }
 '''

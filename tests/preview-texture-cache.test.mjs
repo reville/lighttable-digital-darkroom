@@ -84,9 +84,10 @@ test('new render identities and mutable unkeyed sources cannot reuse old pixels'
 const source = readFileSync(new URL('../web/app.js', import.meta.url), 'utf8');
 const between = (a, b) => source.slice(source.indexOf(a), source.indexOf(b, source.indexOf(a)));
 function originalHarness() {
-  const requested = [], uploaded = [];
+  const requested = [], uploaded = [], cleared = [];
   const S = {compareActive: false, holdBefore: false, originalImageName: null,
-    gl: {setOriginalImage: image => uploaded.push(image), drawCompare: () => {}, clearOriginalImage: () => {}}};
+    gl: {setOriginalImage: image => uploaded.push(image), drawCompare: () => {},
+      clearOriginalImage: () => cleared.push(url)}};
   let url = 'photo-A@1400', native = false;
   class Image {
     complete = false; naturalWidth = 0;
@@ -98,7 +99,7 @@ function originalHarness() {
     nativePreviewActive: () => native, previewSourceX: x => x, renderedComparePosition: () => 0.5};
   vm.runInNewContext(between('let browserOriginal = null;', 'function rememberPresentedRender(') +
     '\nglobalThis.sync = syncBrowserOriginal;', context);
-  return {S, requested, uploaded, sync: context.sync,
+  return {S, requested, uploaded, cleared, sync: context.sync,
     photo: value => {url = value;}, native: value => {native = value;}};
 }
 
@@ -127,6 +128,21 @@ test('an old photo Original cannot replace the newly requested one', () => {
   h.photo('photo-B@6000'); h.sync();
   h.requested[0].finish(); assert.equal(h.uploaded.length, 0);
   h.requested[1].finish(); assert.deepEqual(h.uploaded, [h.requested[1]]);
+});
+
+test('a sharper Original of the same photo keeps the loaded one until it arrives', () => {
+  const h = originalHarness(); h.S.compareActive = true;
+  h.photo('/api/orig?name=A&w=1400&rot=0'); h.sync(); h.requested[0].finish();
+  const loaded = h.cleared.length;
+  h.photo('/api/orig?name=A&w=6000&rot=0'); h.sync();
+  assert.equal(h.cleared.length, loaded, 'zooming cleared the loaded Original');
+  h.requested[1].finish();
+  assert.deepEqual(h.uploaded, [h.requested[0], h.requested[1]]);
+  h.photo('/api/orig?name=A&w=6000&rot=90'); h.sync();
+  assert.equal(h.cleared.length, loaded + 1, 'a rotated Original kept the previous pixels');
+  h.requested[2].finish();
+  h.photo('/api/orig?name=B&w=6000&rot=90'); h.sync();
+  assert.equal(h.cleared.length, loaded + 2, 'another photo kept the previous Original');
 });
 
 test('native presentation never fetches or installs browser Original', () => {

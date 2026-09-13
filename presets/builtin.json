@@ -1657,7 +1657,7 @@
         "contrast": 0.58,
         "saturation": -1.0,
         "blacks": -0.3,
-        "whites": 0.14,
+        "whites": -0.14,
         "highlights": -0.12,
         "clarity": 0.2,
         "texture": 0.14,
@@ -1836,7 +1836,7 @@
         "blacks": -0.18,
         "shadows": -0.02,
         "highlights": -0.02,
-        "whites": 0.06,
+        "whites": -0.06,
         "saturation": 0.08,
         "vibrance": 0.12,
         "colorGrading": {
@@ -1971,7 +1971,7 @@
         "blacks": -0.2,
         "shadows": -0.04,
         "highlights": -0.04,
-        "whites": 0.08,
+        "whites": -0.08,
         "clarity": 0.08,
         "vibrance": 0.16,
         "saturation": 0.06,
@@ -2108,7 +2108,7 @@
         "blacks": -0.16,
         "shadows": 0.0,
         "highlights": -0.02,
-        "whites": 0.06,
+        "whites": -0.06,
         "clarity": 0.04,
         "saturation": 0.08,
         "vibrance": 0.14,
@@ -2647,7 +2647,7 @@
         "vignette": 0.3,
         "vignetteSize": 0.5,
         "vignetteFeather": 1.0,
-        "whites": 0.12
+        "whites": -0.12
       },
       "includedGrade": [
         "contrast",

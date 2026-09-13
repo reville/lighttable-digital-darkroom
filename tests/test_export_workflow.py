@@ -279,5 +279,57 @@ class WatermarkTests(unittest.TestCase):
         self.assertLessEqual(float(result.max()), 1.0)
 
 
+class BorderAndContactSheetTests(unittest.TestCase):
+    def test_border_is_validated_and_added_after_resizing(self):
+        self.assertEqual(export_workflow.clean_border({"enabled": "yes", "size": 9, "tone": -2}),
+                         {"enabled": True, "size": 0.25, "tone": 0.0})
+        self.assertFalse(export_workflow.clean_recipe({})["border"]["enabled"])
+        self.assertEqual(export_workflow.output_dimensions(
+            4000, 2000, long_edge=2000, border={"enabled": True, "size": 0.05}), (2200, 1200))
+        self.assertEqual(export_workflow.output_dimensions(
+            4000, 2000, long_edge=2000, border={"enabled": False, "size": 0.05}), (2000, 1000))
+        image = np.full((20, 40, 3), 0.25, dtype=np.float32)
+        framed = export_workflow.apply_border(image, {"enabled": True, "size": 0.1, "tone": 1.0})
+        self.assertEqual(framed.shape, (28, 48, 3))
+        self.assertEqual(float(framed[0, 0, 0]), 1.0)
+        np.testing.assert_array_equal(framed[4:24, 4:44], image)
+        self.assertIs(export_workflow.apply_border(image, {"enabled": False}), image)
+
+    def test_contact_sheet_options_and_layout_are_bounded(self):
+        spec = export_workflow.clean_contact_sheet({
+            "columns": 40, "width": 1234, "background": "pink",
+            "captions": ["rating", "unknown", "filename"], "title": "  Roll   7 "})
+        self.assertEqual(spec, {"columns": 10, "width": 3600, "background": "white",
+                                "captions": ["filename", "rating"], "title": "Roll 7"})
+        layout = export_workflow.contact_sheet_layout(7, {"columns": 3, "width": 2400})
+        self.assertEqual((layout["rows"], layout["columns"]), (3, 3))
+        self.assertLessEqual(layout["margin"] * 2 + layout["cell"] * 3 + layout["gutter"] * 2, 2400)
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(0, {})
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(export_workflow.CONTACT_SHEET_MAX_PHOTOS + 1, {})
+        with self.assertRaises(ValueError):
+            export_workflow.contact_sheet_layout(200, {"columns": 2, "width": 4800})
+
+    def test_contact_sheet_places_each_photo_in_its_cell(self):
+        red = np.zeros((30, 60, 3), dtype=np.float32); red[..., 0] = 1.0
+        blue = np.zeros((60, 30, 3), dtype=np.float32); blue[..., 2] = 1.0
+        spec = {"columns": 2, "width": 2400, "background": "black", "captions": ["filename"],
+                "title": "Contact"}
+        sheet = export_workflow.compose_contact_sheet(
+            [{"image": red, "caption": ["red.jpg"]}, {"image": blue, "caption": ["blue.jpg"]}],
+            spec, subtitle="2026-09-13")
+        layout = export_workflow.contact_sheet_layout(2, spec)
+        self.assertEqual(sheet.shape, (layout["height"], 2400, 3))
+        top = layout["margin"] + layout["titleHeight"]
+        # Photos rest on the lower edge of their square cell.
+        centre = top + layout["cell"] * 7 // 8
+        first = layout["margin"] + layout["cell"] // 2
+        second = first + layout["cell"] + layout["gutter"]
+        np.testing.assert_allclose(sheet[centre, first], [1, 0, 0], atol=0.02)
+        np.testing.assert_allclose(sheet[centre, second], [0, 0, 1], atol=0.02)
+        self.assertEqual(float(sheet[2, 2].max()), 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()

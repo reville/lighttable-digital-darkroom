@@ -11,6 +11,7 @@ import base64
 import math
 import os
 import re
+import zlib
 from functools import lru_cache
 
 import numpy as np
@@ -28,6 +29,17 @@ MAX_POINTS = 512
 MAX_TOTAL_MASK_POINTS = 20_000
 MAX_BITMAP_EDGE = 1024
 MAX_HEALS = 50
+MAX_HEAL_POINTS = 256
+# Dust and scratch removal selects marks by contrast against their own
+# neighbourhood. Size is the widest mark, as a fraction of the short edge, so a
+# preview and a full-size export select the same marks.
+DUST_DEFAULTS = {"sensitivity": 0.5, "size": 0.004}
+DUST_SIZE_RANGE = (0.001, 0.02)
+# Local effects that the global grade does not carry.
+LOCAL_EFFECT_KEYS = ("blur",)
+# Lens blur radius at full strength, as a fraction of the short edge.
+LENS_BLUR_RADIUS = 0.04
+LENS_BLUR_LEVELS = 4
 # A linear gradient shorter than this fraction of the frame has no usable
 # direction and contributes nothing. Mirrored by LINEAR_MIN_SPAN in
 # web/editor-panels.js so the preview and the export agree at any resolution.
@@ -41,6 +53,7 @@ OPTICS_DEFAULTS = {
     "profileOverride": None,
     "profileDistortion": True,
     "profileVignette": True,
+    "profileChromatic": True,
     "flipHorizontal": False,
     "flipVertical": False,
     "distortion": 0.0,
@@ -49,7 +62,28 @@ OPTICS_DEFAULTS = {
     "horizontal": 0.0,
     "rotate": 0.0,
     "scale": 1.0,
+    # Defringe desaturates high-saturation pixels along strong edges whose hue
+    # falls inside each range. A range whose start exceeds its end wraps
+    # through 0 degrees, so magenta-to-red fringes remain reachable.
+    "defringePurple": 0.0,
+    "defringePurpleHueStart": 250.0,
+    "defringePurpleHueEnd": 330.0,
+    "defringeGreen": 0.0,
+    "defringeGreenHueStart": 90.0,
+    "defringeGreenHueEnd": 150.0,
 }
+# Numeric travel for the CLI schema and strict validation, mirrored by the
+# slider bounds in web/index.html.
+OPTICS_RANGES = {
+    "distortion": (-1.0, 1.0), "vignette": (-1.0, 1.0),
+    "vertical": (-1.0, 1.0), "horizontal": (-1.0, 1.0),
+    "rotate": (-15.0, 15.0), "scale": (1.0, 1.6),
+    "defringePurple": (0.0, 1.0), "defringePurpleHueStart": (0.0, 360.0),
+    "defringePurpleHueEnd": (0.0, 360.0),
+    "defringeGreen": (0.0, 1.0), "defringeGreenHueStart": (0.0, 360.0),
+    "defringeGreenHueEnd": (0.0, 360.0),
+}
+DEFRINGE_KEYS = ("defringePurple", "defringeGreen")
 def _finite(value, default=0.0) -> float:
     try:
         result = float(value)
@@ -71,8 +105,13 @@ def _point(value, default=(0.5, 0.5)) -> list[float]:
 def clean_local_grade(value) -> dict:
     raw = value if isinstance(value, dict) else {}
     cleaned = grade.clean(raw)
-    return {key: cleaned[key] for key in (*LOCAL_GRADE_KEYS, *grade.CURVE_KEYS)
-            if key in cleaned}
+    result = {key: cleaned[key] for key in (*LOCAL_GRADE_KEYS, *grade.CURVE_KEYS)
+              if key in cleaned}
+    result["blur"] = round(_clamp(raw.get("blur"), 0.0, 1.0, 0.0), 4)
+    # Luminosity-only curves change brightness and keep each pixel's colour.
+    if raw.get("curveLuminosity") is True:
+        result["curveLuminosity"] = True
+    return result
 
 
 def _clean_strokes(values, point_budget: list[int] | None = None) -> list[dict]:
@@ -286,16 +325,30 @@ def clean_heals(values) -> list[dict]:
     for index, raw in enumerate(values[:MAX_HEALS] if isinstance(values, list) else []):
         if not isinstance(raw, dict):
             continue
-        result.append({
+        item = {
             "id": str(raw.get("id") or f"heal-{index + 1}")[:100],
-            "mode": raw.get("mode") if raw.get("mode") in {"remove", "clone"} else "heal",
+            "mode": raw.get("mode") if raw.get("mode") in {"remove", "clone", "dust"} else "heal",
             "enabled": raw.get("enabled") is not False,
             "target": _point(raw.get("target")),
             "source": _point(raw.get("source"), (0.4, 0.4)),
             "radius": _clamp(raw.get("radius"), 0.005, 0.25, 0.04),
             "feather": _clamp(raw.get("feather"), 0.0, 1.0, 0.65),
             "opacity": _clamp(raw.get("opacity"), 0.0, 1.0, 1.0),
-        })
+        }
+        if item["mode"] == "remove":
+            # Corrections saved before fill choices existed keep their look.
+            item["fill"] = raw.get("fill") if raw.get("fill") in {"smooth", "patch"} else "smooth"
+            points = raw.get("points") if isinstance(raw.get("points"), list) else []
+            stroke = [_point(point) for point in points[:MAX_HEAL_POINTS]
+                      if isinstance(point, (list, tuple)) and len(point) >= 2]
+            if len(stroke) >= 2:
+                item["points"] = stroke
+        elif item["mode"] == "dust":
+            item["sensitivity"] = _clamp(raw.get("sensitivity"), 0.0, 1.0,
+                                         DUST_DEFAULTS["sensitivity"])
+            item["size"] = _clamp(raw.get("size"), *DUST_SIZE_RANGE,
+                                  DUST_DEFAULTS["size"])
+        result.append(item)
     return result
 
 
@@ -303,10 +356,15 @@ def clean_optics(value) -> dict:
     raw = value if isinstance(value, dict) else {}
     result = dict(OPTICS_DEFAULTS)
     for key in ("profileEnabled", "profileDistortion", "profileVignette",
-                "flipHorizontal", "flipVertical"):
+                "profileChromatic", "flipHorizontal", "flipVertical"):
         result[key] = bool(raw.get(key, OPTICS_DEFAULTS[key]))
     for key in ("distortion", "vignette", "vertical", "horizontal"):
         result[key] = _clamp(raw.get(key), -1.0, 1.0, OPTICS_DEFAULTS[key])
+    for key in DEFRINGE_KEYS:
+        result[key] = _clamp(raw.get(key), 0.0, 1.0, 0.0)
+        for edge in ("HueStart", "HueEnd"):
+            result[key + edge] = _clamp(raw.get(key + edge), 0.0, 360.0,
+                                        OPTICS_DEFAULTS[key + edge])
     override = raw.get("profileOverride")
     if isinstance(override, dict):
         keys = ("cameraMaker", "cameraModel", "lensMaker", "lensModel")
@@ -317,9 +375,26 @@ def clean_optics(value) -> dict:
     return result
 
 
+def defringe_is_active(value) -> bool:
+    optics = clean_optics(value)
+    return any(optics[key] > 0.0 for key in DEFRINGE_KEYS)
+
+
+def optics_requires_bake(value) -> bool:
+    """Corrections that only the CPU reference path can apply.
+
+    The native preview applies bounded manual geometry itself; a lens profile
+    remap and defringe are baked into the cached base image instead, exactly
+    as in export.
+    """
+    optics = clean_optics(value)
+    return optics["profileEnabled"] or defringe_is_active(optics)
+
+
 def optics_is_identity(value) -> bool:
     optics = clean_optics(value)
     return (not optics["profileEnabled"]
+            and not defringe_is_active(optics)
             and not optics["flipHorizontal"]
             and not optics["flipVertical"]
             and all(abs(optics[key] - OPTICS_DEFAULTS[key]) < 1e-7
@@ -471,12 +546,91 @@ def _color_weight(image: np.ndarray, hue: float | None,
         np.float32)
 
 
+def _disc_kernel(radius: float) -> np.ndarray:
+    extent = int(math.ceil(radius))
+    yy, xx = np.mgrid[-extent:extent + 1, -extent:extent + 1]
+    kernel = np.clip(radius + 0.5 - np.hypot(xx, yy), 0.0, 1.0).astype(np.float32)
+    return kernel / max(float(kernel.sum()), 1e-6)
+
+
+def _supported_blur(values: np.ndarray, support: np.ndarray, radius: float) -> np.ndarray:
+    """Blur using only selected pixels, so sharp surroundings do not bleed in.
+
+    This is a normalised convolution: the selection weights both the summed
+    colour and the summed weight. Large radii run on a block-averaged copy
+    with a disc kernel and are resampled back, which keeps the cost bounded.
+    """
+    from scipy import ndimage
+
+    height, width = support.shape
+    weighted = values * support[..., None]
+    if radius <= 4.0:
+        sigma = max(radius / 2.0, 0.35)
+
+        def blur(plane):
+            return ndimage.gaussian_filter(plane, sigma, mode="constant", truncate=3.0)
+
+        denominator = blur(support)
+        numerator = np.stack([blur(weighted[..., channel]) for channel in range(3)], axis=-1)
+    else:
+        factor = int(math.ceil(radius / 4.0))
+        small_h, small_w = -(-height // factor), -(-width // factor)
+        pad = ((0, small_h * factor - height), (0, small_w * factor - width))
+        small_support = np.pad(support, pad).reshape(
+            small_h, factor, small_w, factor).mean(axis=(1, 3))
+        small_values = np.pad(weighted, (*pad, (0, 0))).reshape(
+            small_h, factor, small_w, factor, 3).mean(axis=(1, 3))
+        kernel = _disc_kernel(radius / factor)
+
+        def enlarge(plane):
+            blurred = ndimage.convolve(plane, kernel, mode="constant")
+            return ndimage.zoom(blurred, factor, order=1, grid_mode=True,
+                                mode="nearest")[:height, :width]
+
+        denominator = enlarge(small_support)
+        numerator = np.stack([enlarge(small_values[..., channel]) for channel in range(3)],
+                             axis=-1)
+    usable = (denominator > 1e-4)[..., None]
+    return np.where(usable, numerator / np.maximum(denominator, 1e-6)[..., None],
+                    values).astype(np.float32)
+
+
+def _lens_blur(window: np.ndarray, support: np.ndarray, amount: float,
+               minimum: int) -> np.ndarray:
+    """Blur whose radius grows with the selection's strength.
+
+    Blurring happens in linear light, so bright points spread into discs the
+    way out-of-focus highlights do. A pixel at full selection strength gets
+    the full radius; a feathered edge gets a proportionally smaller one.
+    """
+    maximum = float(amount) * LENS_BLUR_RADIUS * minimum
+    support = np.clip(support, 0.0, 1.0).astype(np.float32)
+    if maximum < 0.5 or not np.any(support > 1e-3):
+        return window
+    linear = grade._srgb_to_linear(np.clip(window, 0.0, 1.0)).astype(np.float32)
+    position = support * LENS_BLUR_LEVELS
+    result = linear * np.clip(1.0 - position, 0.0, 1.0)[..., None]
+    for level in range(1, LENS_BLUR_LEVELS + 1):
+        share = np.clip(1.0 - np.abs(position - level), 0.0, 1.0)
+        if not np.any(share > 0.0):
+            continue
+        blurred = _supported_blur(linear, support, maximum * level / LENS_BLUR_LEVELS)
+        result += blurred * share[..., None]
+    encoded = np.clip(grade._linear_to_srgb(result), 0.0, 1.0).astype(np.float32)
+    return np.where((support > 0.0)[..., None], encoded, window).astype(np.float32)
+
+
 def apply_masks(image: np.ndarray, masks, *, accelerated: bool = False) -> np.ndarray:
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
+    height, width = output.shape[:2]
+    minimum = max(1, min(height, width))
     for mask in clean_masks(masks):
-        if not mask["enabled"] or grade.is_identity(mask["grade"]):
+        local = mask["grade"]
+        blur = local.get("blur", 0.0)
+        tonal_identity = grade.is_identity(local)
+        if not mask["enabled"] or (tonal_identity and blur <= 0.0):
             continue
-        weight = raster_mask(mask, *output.shape[:2])
+        weight = raster_mask(mask, height, width)
         active = weight > 1e-6
         rows = np.flatnonzero(np.any(active, axis=1))
         columns = np.flatnonzero(np.any(active, axis=0))
@@ -493,22 +647,192 @@ def apply_masks(image: np.ndarray, masks, *, accelerated: bool = False) -> np.nd
             mask["colorAmount"])
         if not np.any(region_weight > 1e-6):
             continue
-        apply_grade = grade.apply_accelerated if accelerated else grade.apply
-        if mask["grade"]["texture"] or mask["grade"]["clarity"]:
-            # Local detail uses the source's one-pixel cross neighbors.
-            # Include them beyond the mask bounds, then discard the halo so
-            # the selection limits changed pixels rather than sampled pixels.
-            height, width = output.shape[:2]
-            sy0, sy1 = max(0, y0 - 1), min(height, y1 + 1)
-            sx0, sx1 = max(0, x0 - 1), min(width, x1 + 1)
-            adjusted = apply_grade(output[sy0:sy1, sx0:sx1], mask["grade"])[
-                y0 - sy0:y1 - sy0, x0 - sx0:x1 - sx0]
-        else:
-            adjusted = apply_grade(region, mask["grade"])
-        output[y0:y1, x0:x1] = (
-            region * (1.0 - region_weight[..., None])
-            + adjusted * region_weight[..., None])
+        if not tonal_identity:
+            apply_grade = grade.apply_accelerated if accelerated else grade.apply
+            luminosity = bool(local.get("curveLuminosity")) and any(
+                local.get(key) for key in grade.CURVE_KEYS)
+            settings = ({key: value for key, value in local.items()
+                         if key not in grade.CURVE_KEYS} if luminosity else local)
+
+            def graded(source):
+                if grade.is_identity(settings):
+                    result = source.astype(np.float32, copy=True)
+                else:
+                    result = apply_grade(source, settings)
+                if luminosity:
+                    result = grade.apply_curves(result, local, luminosity=True)
+                return result
+
+            if local["texture"] or local["clarity"]:
+                # Local detail uses the source's one-pixel cross neighbors.
+                # Include them beyond the mask bounds, then discard the halo so
+                # the selection limits changed pixels rather than sampled pixels.
+                sy0, sy1 = max(0, y0 - 1), min(height, y1 + 1)
+                sx0, sx1 = max(0, x0 - 1), min(width, x1 + 1)
+                adjusted = graded(output[sy0:sy1, sx0:sx1])[
+                    y0 - sy0:y1 - sy0, x0 - sx0:x1 - sx0]
+            else:
+                adjusted = graded(region)
+            output[y0:y1, x0:x1] = (
+                region * (1.0 - region_weight[..., None])
+                + adjusted * region_weight[..., None])
+        if blur > 0.0:
+            # Pixels outside the selection carry no weight, so the window
+            # needs no margin: they can neither receive nor lend blur.
+            output[y0:y1, x0:x1] = _lens_blur(
+                output[y0:y1, x0:x1], region_weight, blur, minimum)
     return np.clip(output, 0.0, 1.0).astype(np.float32)
+
+
+def dust_defects(image: np.ndarray, sensitivity=DUST_DEFAULTS["sensitivity"],
+                 size=DUST_DEFAULTS["size"]) -> tuple[np.ndarray, int]:
+    """Small marks that stand out from an otherwise smooth neighbourhood.
+
+    A grey opening removes bright marks narrower than the window and a grey
+    closing removes dark ones. A pixel counts when what they remove clears a
+    contrast floor and is several times the typical residual of the pixels
+    around it, so dust on sky, skin, or film base is found while texture is
+    left alone. Shapes wider than the window in both directions, such as a
+    network of twigs, are left alone; thin scratches are kept. Returns the
+    selection and the window radius in pixels.
+    """
+    from scipy import ndimage
+
+    pixels = np.asarray(image, dtype=np.float32)[..., :3]
+    height, width = pixels.shape[:2]
+    minimum = max(1, min(height, width))
+    fraction = _clamp(size, *DUST_SIZE_RANGE, DUST_DEFAULTS["size"])
+    radius = max(1, int(round(fraction * minimum)))
+    window = 2 * radius + 1
+    luma = (pixels @ grade.LUMA).astype(np.float32)
+    opened = ndimage.grey_opening(luma, size=(window, window), mode="reflect")
+    closed = ndimage.grey_closing(luma, size=(window, window), mode="reflect")
+    residual = np.maximum(luma - opened, closed - luma)
+    strictness = 1.0 - _clamp(sensitivity, 0.0, 1.0, DUST_DEFAULTS["sensitivity"])
+    floor = 0.03 + 0.09 * strictness
+    candidates = residual > floor
+    if not candidates.any():
+        return candidates, radius
+    # Measure the surroundings without the candidate marks and their halos.
+    halo = ndimage.maximum_filter(candidates.astype(np.uint8), size=window,
+                                  mode="constant") > 0
+    known = (~halo).astype(np.float32)
+    span = 3 * window + 1
+    coverage = ndimage.uniform_filter(known, span, mode="reflect")
+    surroundings = ndimage.uniform_filter(residual * known, span, mode="reflect")
+    surroundings = np.where(coverage > 0.2, surroundings / np.maximum(coverage, 1e-3), 1.0)
+    defects = candidates & (residual > floor + (4.0 + 8.0 * strictness) * surroundings)
+    if defects.any():
+        labels, total = ndimage.label(defects, structure=np.ones((3, 3), dtype=bool))
+        keep = np.zeros(total + 1, dtype=bool)
+        for index, box in enumerate(ndimage.find_objects(labels), start=1):
+            keep[index] = min(box[0].stop - box[0].start, box[1].stop - box[1].start) <= window
+        defects = keep[labels]
+    return defects, radius
+
+
+def grow_dust(defects: np.ndarray, radius: int) -> np.ndarray:
+    """Widen selected marks slightly so their soft edges are replaced too."""
+    from scipy import ndimage
+
+    grow = max(1, int(radius) // 3)
+    return ndimage.maximum_filter(defects.astype(np.uint8), size=2 * grow + 1,
+                                  mode="constant") > 0
+
+
+def remove_dust(image: np.ndarray, spot: dict) -> np.ndarray:
+    """Replace detected marks with a smooth estimate from their surroundings."""
+    from scipy import ndimage
+
+    output = np.clip(np.asarray(image, dtype=np.float32), 0.0, 1.0)
+    opacity = float(spot.get("opacity", 1.0))
+    defects, radius = dust_defects(output, spot.get("sensitivity"), spot.get("size"))
+    if opacity <= 0.0 or not defects.any():
+        return output
+    grown = grow_dust(defects, radius)
+    known = (~grown).astype(np.float32)
+    size = 2 * (radius + max(1, radius // 3)) + 1
+
+    def smooth(values):
+        once = ndimage.uniform_filter(values, size=size, mode="reflect")
+        return ndimage.uniform_filter(once, size=size, mode="reflect")
+
+    denominator = smooth(known)
+    usable = grown & (denominator > 0.02)
+    filled = output.copy()
+    for channel in range(3):
+        numerator = smooth(output[..., channel] * known)
+        filled[..., channel][usable] = numerator[usable] / denominator[usable]
+    weight = grown.astype(np.float32)[..., None] * opacity
+    return np.clip(output * (1.0 - weight) + filled * weight, 0.0, 1.0).astype(np.float32)
+
+
+def _stroke_distance(points, x0: int, x1: int, y0: int, y1: int,
+                     radius: float) -> np.ndarray:
+    """Distance from each pixel of a window to a polyline, in radii."""
+    yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float32)
+    best = np.full(yy.shape, np.inf, dtype=np.float32)
+    segments = list(zip(points[:-1], points[1:])) or [(points[0], points[0])]
+    reach = radius + 2.0
+    for (ax, ay), (bx, by) in segments:
+        sx0 = max(x0, int(math.floor(min(ax, bx) - reach)))
+        sx1 = min(x1, int(math.ceil(max(ax, bx) + reach)) + 1)
+        sy0 = max(y0, int(math.floor(min(ay, by) - reach)))
+        sy1 = min(y1, int(math.ceil(max(ay, by) + reach)) + 1)
+        if sx1 <= sx0 or sy1 <= sy0:
+            continue
+        px = xx[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0]
+        py = yy[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0]
+        dx, dy = bx - ax, by - ay
+        length = dx * dx + dy * dy
+        along = 0.0 if length < 1e-9 else np.clip(
+            ((px - ax) * dx + (py - ay) * dy) / length, 0.0, 1.0)
+        distance = np.hypot(px - (ax + along * dx), py - (ay + along * dy))
+        view = best[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0]
+        np.minimum(view, distance, out=view)
+    return best / max(radius, 1e-6)
+
+
+def _smooth_fill(window: np.ndarray, hole: np.ndarray) -> np.ndarray:
+    try:
+        from skimage.restoration import inpaint
+        return inpaint.inpaint_biharmonic(window, hole, channel_axis=-1).astype(np.float32)
+    except Exception:
+        import patch_fill
+        return patch_fill._nearest_fill(window.astype(np.float32), hole)
+
+
+def _remove_region(output: np.ndarray, spot: dict) -> np.ndarray:
+    """A Remove correction painted as a stroke, or filled from texture."""
+    height, width = output.shape[:2]
+    minimum = max(1, min(width, height))
+    radius = max(1.0, spot["radius"] * minimum)
+    points = spot.get("points") or [spot["target"]]
+    pixels = [(x * (width - 1), y * (height - 1)) for x, y in points]
+    patch = spot.get("fill") == "patch"
+    # The texture search needs surrounding detail to copy from.
+    pad = math.ceil(radius * 3 + 24) if patch else math.ceil(radius + 2)
+    xs = [x for x, _ in pixels]
+    ys = [y for _, y in pixels]
+    x0, x1 = max(0, int(min(xs)) - pad), min(width, int(max(xs)) + pad + 1)
+    y0, y1 = max(0, int(min(ys)) - pad), min(height, int(max(ys)) + pad + 1)
+    if x1 <= x0 or y1 <= y0:
+        return output
+    distance = _stroke_distance(pixels, x0, x1, y0, y1, radius)
+    hole = distance <= 1.0
+    if not hole.any():
+        return output
+    inner = max(0.0, 1.0 - spot["feather"])
+    weight = ((1.0 - _smoothstep(inner, 1.0, distance)) * spot["opacity"])[..., None]
+    window = output[y0:y1, x0:x1]
+    if patch:
+        import patch_fill
+        sampled = patch_fill.fill(window, hole,
+                                  seed=zlib.crc32(spot["id"].encode("utf-8")))
+    else:
+        sampled = _smooth_fill(window, hole)
+    output[y0:y1, x0:x1] = window * (1.0 - weight) + sampled * weight
+    return output
 
 
 def apply_heals(image: np.ndarray, heals) -> np.ndarray:
@@ -517,6 +841,12 @@ def apply_heals(image: np.ndarray, heals) -> np.ndarray:
     minimum = max(1, min(width, height))
     for spot in clean_heals(heals):
         if not spot["enabled"]:
+            continue
+        if spot["mode"] == "dust":
+            output = remove_dust(output, spot)
+            continue
+        if spot["mode"] == "remove" and (spot.get("points") or spot.get("fill") == "patch"):
+            output = _remove_region(output, spot)
             continue
         tx, ty = spot["target"]; sx, sy = spot["source"]
         radius = max(1.0, spot["radius"] * minimum)
@@ -608,7 +938,8 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
     """Explain automatic matching and offer explicit compatible profile choices."""
     metadata = metadata or {}
     maker, model = str(metadata.get("Make", "")), str(metadata.get("Model", ""))
-    result = {"found": False, "profile": None, "reason": "Camera model is missing from the photo metadata.", "candidates": []}
+    result = {"found": False, "profile": None, "reason": "Camera model is missing from the photo metadata.",
+              "candidates": [], "confident": False}
     if not model:
         return result
     try:
@@ -659,15 +990,20 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
             if lens_name:
                 lenses = database.find_lenses(camera, lens=str(lens_name), loose_search=False)
                 reason = "Exact camera and lens metadata match."
+                confident = True
                 if not lenses:
                     lenses = [lens for lens in database.find_lenses(camera, lens=str(lens_name), loose_search=True)
                               if lens.score >= 40]
                     reason = "One compatible lens name match. Verify the correction against the original."
+                    confident = False
                 lenses = [lens for lens in lenses if compatible(lens)]
                 lenses = list({(lens.maker, lens.model): lens for lens in lenses}.values())
             else:
+                # The body alone does not say which lens was mounted, so a
+                # single compatible profile is an inference, not a match.
                 lenses = candidates if focal > 0 else []
                 reason = "Only one camera-compatible profile matches the recorded focal length."
+                confident = False
             if len(lenses) != 1:
                 result["reason"] = ("Multiple lens profiles fit this photo; automatic correction is off. Select the lens used below."
                                     if len(lenses) > 1 else "No unambiguous camera, lens and focal-length match. Select a compatible profile or use manual controls.")
@@ -675,7 +1011,10 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
         profile = spec(lenses[0])
         profile["manualOverride"] = bool(override)
         profile["matchReason"] = reason
-        result.update(found=True, profile=profile, reason=reason)
+        # Only the camera and lens named in the metadata can switch the
+        # correction on by itself; every other route needs a person to agree.
+        result.update(found=True, profile=profile, reason=reason,
+                      confident=not override and confident)
         return result
     except Exception:
         result["reason"] = "The bundled lens database could not be read. Manual controls remain available."
@@ -684,6 +1023,28 @@ def lens_match_for(metadata: dict | None, override=None) -> dict:
 
 def lens_profile_for(metadata: dict | None, override=None) -> dict | None:
     return lens_match_for(metadata, override)["profile"]
+
+
+@lru_cache(maxsize=1)
+def lens_database_info() -> dict:
+    """What the lens matcher actually consults, for the lens panel copy.
+
+    No database is vendored with the app: the profiles come from the lens
+    library bundled with its Python binding, so the version and record counts
+    are read at runtime rather than claimed in copy.
+    """
+    try:
+        import lensfunpy
+        database = _lens_database()
+        version = ".".join(str(part) for part in
+                           tuple(lensfunpy.lensfun_version)[:3])
+        return {"available": True, "version": version,
+                "binding": str(getattr(lensfunpy, "__version__", "")),
+                "cameras": len(database.cameras),
+                "lenses": len(database.lenses)}
+    except Exception:
+        return {"available": False, "version": "", "binding": "",
+                "cameras": 0, "lenses": 0}
 
 
 def _resolve_lens_profile(spec):
@@ -714,10 +1075,14 @@ def apply_lens_profile(image: np.ndarray, optics: dict, spec) -> np.ndarray:
     height, width = image.shape[:2]
     flags = 0
     if optics["profileDistortion"]:
-        flags |= lensfunpy.ModifyFlags.DISTORTION | lensfunpy.ModifyFlags.TCA \
-            | lensfunpy.ModifyFlags.SCALE
+        flags |= lensfunpy.ModifyFlags.DISTORTION | lensfunpy.ModifyFlags.SCALE
+    if optics["profileChromatic"]:
+        # Lateral chromatic aberration is its own per-channel remap, so it can
+        # be corrected without touching the geometry, and vice versa.
+        flags |= lensfunpy.ModifyFlags.TCA
     if optics["profileVignette"]:
         flags |= lensfunpy.ModifyFlags.VIGNETTING
+    remap = optics["profileDistortion"] or optics["profileChromatic"]
     modifier = lensfunpy.Modifier(lens, float(camera.crop_factor), width, height)
     modifier.initialize(
         _finite(spec.get("focal"), lens.min_focal),
@@ -728,7 +1093,7 @@ def apply_lens_profile(image: np.ndarray, optics: dict, spec) -> np.ndarray:
     source = np.ascontiguousarray(image.astype(np.float32).copy())
     if optics["profileVignette"]:
         modifier.apply_color_modification(source)
-    if optics["profileDistortion"]:
+    if remap:
         coordinates = modifier.apply_subpixel_geometry_distortion()
         if coordinates is not None:
             source = np.stack([
@@ -752,40 +1117,151 @@ def apply_manual_optics(image: np.ndarray, optics: dict) -> np.ndarray:
                 optics["vignette"], optics["flipHorizontal"],
                 optics["flipVertical"])):
         return image
+    import color_pipeline
+
     height, width = image.shape[:2]
-    yy, xx = np.mgrid[0:height, 0:width].astype(np.float32)
     half = max(min(width, height) / 2.0, 1.0)
-    nx = (xx - (width - 1) / 2.0) / half / scale
-    ny = (yy - (height - 1) / 2.0) / half / scale
-    if optics["flipHorizontal"]:
-        nx = -nx
-    if optics["flipVertical"]:
-        ny = -ny
     cosine, sine = math.cos(rotation), math.sin(rotation)
-    rx = cosine * nx - sine * ny
-    ry = sine * nx + cosine * ny
-    px = rx * (1.0 + vertical * 0.45 * ry)
-    py = ry * (1.0 + horizontal * 0.45 * rx)
-    radius2 = px * px + py * py
-    factor = 1.0 + distortion * 0.18 * radius2
-    if any((distortion, vertical, horizontal, rotation, scale - 1.0)):
-        source_x = px * factor * half + (width - 1) / 2.0
-        source_y = py * factor * half + (height - 1) / 2.0
-        warped = np.stack([
-            _map_coordinates()(image[..., channel], [source_y, source_x],
-                               order=1, mode="constant", cval=0.0)
-            for channel in range(3)
-        ], axis=2)
+    warp = any((distortion, vertical, horizontal, rotation, scale - 1.0))
+    if warp:
+        channels = [np.ascontiguousarray(image[..., channel]) for channel in range(3)]
+        result = np.empty((height, width, 3), dtype=np.float32)
     else:
         # Discrete flips need no interpolation. Reconstructing their integer
         # coordinates through normalized float32 can put a border just below
         # zero and sample black; it also softens unchanged source pixels.
-        warped = image[::(-1 if optics["flipVertical"] else 1),
-                       ::(-1 if optics["flipHorizontal"] else 1)].copy()
-    if optics["vignette"]:
-        radial = np.clip(radius2 / 2.0, 0.0, 1.5)
-        warped *= (1.0 + optics["vignette"] * 0.8 * radial)[..., None]
-    return np.clip(warped, 0.0, 1.0).astype(np.float32)
+        flipped = image[::(-1 if optics["flipVertical"] else 1),
+                        ::(-1 if optics["flipHorizontal"] else 1)]
+        result = np.empty(flipped.shape, dtype=np.float32)
+
+    # Every value below depends only on its own output pixel, so bands of
+    # rows render in parallel and assemble the single-pass result exactly.
+    def render_band(start: int, stop: int) -> None:
+        yy, xx = np.mgrid[start:stop, 0:width].astype(np.float32)
+        nx = (xx - (width - 1) / 2.0) / half / scale
+        ny = (yy - (height - 1) / 2.0) / half / scale
+        if optics["flipHorizontal"]:
+            nx = -nx
+        if optics["flipVertical"]:
+            ny = -ny
+        rx = cosine * nx - sine * ny
+        ry = sine * nx + cosine * ny
+        px = rx * (1.0 + vertical * 0.45 * ry)
+        py = ry * (1.0 + horizontal * 0.45 * rx)
+        radius2 = px * px + py * py
+        factor = 1.0 + distortion * 0.18 * radius2
+        if warp:
+            source_x = px * factor * half + (width - 1) / 2.0
+            source_y = py * factor * half + (height - 1) / 2.0
+            warped = np.stack([
+                _map_coordinates()(channel, [source_y, source_x],
+                                   order=1, mode="constant", cval=0.0)
+                for channel in channels
+            ], axis=2)
+        else:
+            warped = flipped[start:stop].copy()
+        if optics["vignette"]:
+            radial = np.clip(radius2 / 2.0, 0.0, 1.5)
+            warped *= (1.0 + optics["vignette"] * 0.8 * radial)[..., None]
+        result[start:stop] = np.clip(warped, 0.0, 1.0).astype(np.float32)
+
+    color_pipeline.run_row_bands(height, render_band)
+    return result
+
+
+def _box_mean(values: np.ndarray, radius: int) -> np.ndarray:
+    """Mean over a (2r+1)² window with edge clamping, via summed areas."""
+    padded = np.pad(values, [(radius, radius), (radius, radius)]
+                    + [(0, 0)] * (values.ndim - 2), mode="edge")
+    total = np.cumsum(np.cumsum(padded, axis=0, dtype=np.float64), axis=1)
+    total = np.pad(total, [(1, 0), (1, 0)] + [(0, 0)] * (values.ndim - 2))
+    size = 2 * radius + 1
+    height, width = values.shape[:2]
+    window = (total[size:size + height, size:size + width]
+              - total[:height, size:size + width]
+              - total[size:size + height, :width]
+              + total[:height, :width])
+    return (window / float(size * size)).astype(np.float32)
+
+
+def _hue_membership(hue: np.ndarray, start: float, end: float,
+                    softness: float = 15.0) -> np.ndarray:
+    """1 inside the arc from start to end (clockwise), fading out over
+    ``softness`` degrees on either side. start > end wraps through 0."""
+    span = (end - start) % 360.0
+    if span == 0.0 and abs(end - start) >= 360.0:
+        return np.ones_like(hue)
+    offset = (hue - start) % 360.0
+    inside = offset <= span
+    # Angular distance to the nearest end of the arc for pixels outside it.
+    outside = np.minimum(offset - span, 360.0 - offset)
+    return np.where(inside, 1.0, 1.0 - _smoothstep(0.0, softness, outside)
+                    ).astype(np.float32)
+
+
+def apply_defringe(image: np.ndarray, optics: dict) -> np.ndarray:
+    """Suppress purple and green fringes along high-contrast edges.
+
+    A fringe pixel is strongly saturated, sits next to a strong luminance
+    edge, and has a hue inside the chosen range. Such pixels take the colour
+    of their non-fringe neighbourhood at their own brightness, which removes
+    the false colour without leaving grey halos; where every neighbour is a
+    fringe the pixel simply desaturates. The same code runs for the cached
+    preview base and for export, so both agree pixel for pixel.
+    """
+    optics = clean_optics(optics)
+    targets = [(optics[key], optics[key + "HueStart"], optics[key + "HueEnd"])
+               for key in DEFRINGE_KEYS if optics[key] > 0.0]
+    if not targets or image.ndim != 3 or image.shape[2] < 3:
+        return image
+    source = np.clip(image[..., :3].astype(np.float32), 0.0, 1.0)
+    red, green, blue = source[..., 0], source[..., 1], source[..., 2]
+    highest = np.max(source, axis=2)
+    chroma = highest - np.min(source, axis=2)
+    saturation = chroma / np.maximum(highest, 1e-4)
+    safe_chroma = np.maximum(chroma, 1e-6)
+    hue = np.where(
+        highest == red, (green - blue) / safe_chroma,
+        np.where(highest == green, 2.0 + (blue - red) / safe_chroma,
+                 4.0 + (red - green) / safe_chroma)) * 60.0
+    hue = np.where(chroma > 1e-6, hue % 360.0, 0.0).astype(np.float32)
+    luma = (0.2126 * red + 0.7152 * green + 0.0722 * blue).astype(np.float32)
+    gradient_y, gradient_x = np.gradient(luma)
+    edge = np.hypot(gradient_x, gradient_y).astype(np.float32)
+    # Fringes sit a few pixels beside the edge that caused them, so the edge
+    # weight is spread over a small neighbourhood before it gates the pixel.
+    spread = edge.copy()
+    for shift_y in (-2, -1, 0, 1, 2):
+        for shift_x in (-2, -1, 0, 1, 2):
+            if shift_y or shift_x:
+                spread = np.maximum(spread, np.roll(
+                    np.roll(edge, shift_y, axis=0), shift_x, axis=1))
+    edge_weight = _smoothstep(0.04, 0.2, spread)
+    saturation_weight = _smoothstep(0.12, 0.4, saturation)
+    membership = np.zeros_like(luma)
+    weight = np.zeros_like(luma)
+    for amount, start, end in targets:
+        member = _hue_membership(hue, start, end)
+        membership = np.maximum(membership, member)
+        weight = np.maximum(weight, amount * member)
+    weight = weight * edge_weight * saturation_weight
+    if not np.any(weight > 1e-4):
+        return image
+    # Neighbourhood colour, excluding fringe-hued pixels, at this pixel's
+    # brightness. Averaging in a 5×5 window keeps the result local.
+    keep = (1.0 - membership)[..., None]
+    neighbour = _box_mean(source * keep, 2)
+    coverage = _box_mean(keep, 2)
+    neighbour_luma = (0.2126 * neighbour[..., 0] + 0.7152 * neighbour[..., 1]
+                      + 0.0722 * neighbour[..., 2])
+    valid = (coverage[..., 0] > 0.05) & (neighbour_luma > 1e-4)
+    scale = np.where(valid, luma / np.maximum(neighbour_luma, 1e-4), 0.0)
+    target = np.where(valid[..., None], neighbour * scale[..., None], luma[..., None])
+    target = np.clip(target, 0.0, 1.0)
+    output = source + weight[..., None] * (target - source)
+    if image.shape[2] > 3:
+        output = np.concatenate([output, image[..., 3:]], axis=2)
+    return np.clip(output, 0.0, 1.0).astype(np.float32)
 
 
 def apply_base(image: np.ndarray, optics=None, heals=None,
@@ -793,5 +1269,6 @@ def apply_base(image: np.ndarray, optics=None, heals=None,
     cleaned_optics = clean_optics(optics)
     output = np.clip(image.astype(np.float32), 0.0, 1.0)
     output = apply_lens_profile(output, cleaned_optics, lens_profile)
+    output = apply_defringe(output, cleaned_optics)
     output = apply_manual_optics(output, cleaned_optics)
     return apply_heals(output, heals)

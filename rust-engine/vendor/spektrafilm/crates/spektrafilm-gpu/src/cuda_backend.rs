@@ -2037,14 +2037,18 @@ impl CudaBackend {
             let print_n_wl = p.film_channel_density.len() as u32;
             let has_enlarger_diffusion = p.enlarger_diffusion.is_some();
             let print_exposure_scale = p.print_exposure_scale as f32;
-            let print_norm = if has_enlarger_diffusion && print_exposure_scale != 0.0 {
+            // CPU order is (raw * midgray + preflash) * scale: when the scale is
+            // folded into the kernel rather than restored after it, scale preflash too.
+            let scale_after_kernel = has_enlarger_diffusion && print_exposure_scale != 0.0;
+            let print_norm = if scale_after_kernel {
                 (p.print_normalization_factor / p.print_exposure_scale) as f32
             } else {
                 p.print_normalization_factor as f32
             };
-            let preflash_r = p.preflash[0] as f32;
-            let preflash_g = p.preflash[1] as f32;
-            let preflash_b = p.preflash[2] as f32;
+            let preflash_scale = if scale_after_kernel { 1.0 } else { p.print_exposure_scale };
+            let preflash_r = (p.preflash[0] * preflash_scale) as f32;
+            let preflash_g = (p.preflash[1] * preflash_scale) as f32;
+            let preflash_b = (p.preflash[2] * preflash_scale) as f32;
             {
                 let mut launch = self.stream.launch_builder(&self.print_kernel);
                 launch
