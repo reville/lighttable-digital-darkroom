@@ -245,12 +245,21 @@
           "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
           "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
         ]
+      },
+      {
+        "title": "Reconnect a moved or offline source",
+        "paragraphs": [
+          "A source that went offline — a drive unplugged, a folder renamed or moved outside LightTable — shows Locate… instead of Rescan. Choosing it and picking the folder's new location checks a sample of the catalog's own photos there by content, not just name, before moving the source; edits, ratings, and collections stay attached to the same rows. It refuses a folder whose files do not match.",
+          "Folders ••• → Locate missing photos… searches one chosen folder for files matching any of the catalog's currently missing photos by content, wherever they ended up, and relinks the matches. It reports how many it relinked and how many it could not find there.",
+          "Show only missing photos, under the source list, filters the library down to photos the catalog currently cannot find, so you can review or export the list before hunting for the originals."
+        ]
       }
     ],
     "related": [
       "add-photos",
       "search-filter-sort",
-      "trash-rejected"
+      "trash-rejected",
+      "catalog-health-recovery"
     ],
     "sources": [
       {
@@ -272,6 +281,26 @@
       {
         "path": "web/catalog-ui.js",
         "anchor": "el('watchExisting')?.addEventListener('change'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "function openLocateDialog({ title, hint, confirmLabel, onConfirm }) {"
+      },
+      {
+        "path": "catalog_scan.py",
+        "anchor": "def locate_source(cat: catalog_module.Catalog, source_id: int,"
+      },
+      {
+        "path": "catalog_scan.py",
+        "anchor": "def locate_missing(cat: catalog_module.Catalog, folder: Path | str, *,"
+      },
+      {
+        "path": "server.py",
+        "anchor": "elif action == \"locate\":"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "missing_only = bool(spec.get(\"missingOnly\")"
       },
       {
         "path": "web/catalog-ui.js",
@@ -708,20 +737,25 @@
     "id": "collections",
     "title": "Group photos into collections",
     "category": "Library",
-    "summary": "Create named groups without moving the original files.",
+    "summary": "Create nested collection groups, reorder them, and build a fast, temporary set with the Quick Collection.",
     "keywords": [
       "collection",
       "album",
       "organize",
       "group",
       "selected",
-      "delete collection"
+      "delete collection",
+      "nested collection",
+      "collection set",
+      "quick collection",
+      "rename collection",
+      "reorder"
     ],
     "sections": [
       {
         "title": "Create and add photos",
         "paragraphs": [
-          "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+          "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk. Collections work only with a catalog; folder mode keeps the flat, unnested list it always had."
         ],
         "steps": [
           "Select the photos you want to group.",
@@ -731,16 +765,28 @@
         ]
       },
       {
+        "title": "Nest, rename, and reorder",
+        "paragraphs": [
+          "Collections can hold other collections. The + on a collection row creates a new collection inside it; a triangle appears once it has children and toggles whether they are shown. Rename with the pencil icon. The up and down arrows move a collection within its current siblings; the left arrow on a nested collection moves it back to the top level. Order is saved and reopens the same way next time."
+        ]
+      },
+      {
         "title": "Delete a collection",
         "paragraphs": [
-          "The \u00d7 beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+          "The × beside a collection deletes it and everything nested inside it. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+        ]
+      },
+      {
+        "title": "The Quick Collection",
+        "paragraphs": [
+          "The Quick Collection is one persistent collection for building a set fast while culling, without naming anything first. Press Cmd+B (bare B is already before/after) with photos selected to add them, or press it again on the same selection to remove them. The × on its row clears it entirely. It behaves like any regular collection otherwise: add photos to it manually, or open it to review and remove individual photos."
         ]
       },
       {
         "title": "Folders and collections",
         "paragraphs": [
           "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
-          "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+          "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections. Importing a Lightroom Classic catalog maps its collection sets onto this same nesting."
         ]
       }
     ],
@@ -765,6 +811,30 @@
       {
         "path": "web/app.js",
         "anchor": "await runLibraryAction({ action: 'delete_collection', id: collection.id });"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "async function toggleQuickCollection() {"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "function collectionChildren(collections) {"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def toggle_quick_collection(self, image_ids: Sequence[int]) -> dict:"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def move_collection(self, collection_id: int,"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def reorder_collections(self, parent_id: int | None,"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "command: \"toggleQuickCollection\", key: \"b\")"
       },
       {
         "path": "web/index.html",

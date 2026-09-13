@@ -58,6 +58,15 @@ export function createCatalogUI(ctx) {
     if (event.key === 'Tab') { event.preventDefault(); el('catalogResultClose').focus(); }
   });
 
+  const locateBackdrop = el('locateDialog');
+  locateBackdrop?.addEventListener('keydown', event => {
+    event.stopPropagation();
+    if (event.key === 'Escape' && !locateBusy) el('locateCancel')?.click();
+  });
+  locateBackdrop?.addEventListener('pointerdown', event => {
+    if (event.target === locateBackdrop && !locateBusy) el('locateCancel')?.click();
+  });
+
   /* ------------------------------------------------------------- sources */
 
   function renderSources() {
@@ -92,10 +101,14 @@ export function createCatalogUI(ctx) {
         <button class="source-star${source.favorite ? ' on' : ''}"
                 data-act="favorite" title="${i18nHTML(tr("Favourite"))}">★</button>
         <span class="source-name" title="${escapeHTML(source.path)}">${escapeHTML(source.name)}</span>
-        <span class="source-count">${Number(source.count) || 0}</span>
+        <span class="source-count">${Number(source.count) || 0}${source.missingCount
+          ? ` <em class="source-missing-count" title="${i18nHTML(tr('{count} missing', {count: source.missingCount}))}">(${source.missingCount})</em>` : ''}</span>
+        ${source.available ? '' : `<button class="source-act" data-act="locate" title="${i18nHTML(tr("Locate…"))}">${i18nHTML(tr("Locate…"))}</button>`}
         <button class="source-act" data-act="rescan" title="${i18nHTML(tr("Rescan"))}">⟳</button>
         <button class="source-act" data-act="remove" title="${i18nHTML(tr("Remove from catalog"))}">×</button>
       </div>`).join('') || i18nHTML(tr('No sources yet.'));
+    const missingRow = el('catalogMissingRow');
+    if (missingRow) missingRow.hidden = !(stats.missing > 0);
     if (maintenance && catalog.recovery?.status === 'recovered') {
       maintenance.textContent = tr("Recovered the catalog from a verified backup. The damaged database was preserved in the Recovery folder.");
       if (!recoveryShown) {
@@ -113,6 +126,56 @@ export function createCatalogUI(ctx) {
     }
     renderSources();
     return catalog;
+  }
+
+  /* One dialog for both "point this source at its new folder" and "search a
+   * folder for missing photos": same path field, same native-picker/paste
+   * fallback, a different verb and server call. */
+  let locateBusy = false;
+  function openLocateDialog({ title, hint, confirmLabel, onConfirm }) {
+    const dialog = el('locateDialog');
+    if (!dialog || locateBusy) return;
+    el('locateTitle').textContent = title;
+    el('locateHint').textContent = hint || '';
+    el('locateRun').textContent = confirmLabel;
+    el('locatePath').value = '';
+    el('locateStatus').textContent = '';
+    dialog.classList.add('on');
+    dialog.setAttribute('aria-hidden', 'false');
+    setTimeout(() => el('locatePath').focus(), 0);
+    const close = () => {
+      dialog.classList.remove('on');
+      dialog.setAttribute('aria-hidden', 'true');
+      el('locateChoose').onclick = null;
+      el('locateRun').onclick = null;
+      el('locateCancel').onclick = null;
+    };
+    el('locateChoose').onclick = () => {
+      if (!sendNative('chooseIngestFolder', { field: 'locatePath' })) {
+        toast(tr("Choosing a folder needs the desktop app; paste a path instead"));
+      }
+    };
+    el('locateCancel').onclick = () => { if (!locateBusy) close(); };
+    el('locateRun').onclick = async () => {
+      const path = el('locatePath').value.trim();
+      if (!path) { el('locateStatus').textContent = tr("Choose a folder first."); return; }
+      locateBusy = true;
+      el('locateRun').disabled = true;
+      el('locateStatus').textContent = tr("Working…");
+      try {
+        const message = await onConfirm(path);
+        el('locateStatus').textContent = message || tr("Done.");
+        await refresh();
+        if (ctx.onLibraryChanged) ctx.onLibraryChanged();
+        locateBusy = false;
+        el('locateRun').disabled = false;
+        setTimeout(close, 900);
+      } catch (error) {
+        locateBusy = false;
+        el('locateRun').disabled = false;
+        el('locateStatus').textContent = String(error?.message || error);
+      }
+    };
   }
 
   function bindSources() {
@@ -147,9 +210,54 @@ export function createCatalogUI(ctx) {
         } else if (action === 'rescan') {
           if (!await send('/api/catalog/scan', { sourceId: id })) return;
           toast(tr("Scanning…"));
+        } else if (action === 'locate') {
+          const source = (catalog.sources || []).find((s) => s.id === id);
+          openLocateDialog({
+            title: tr("Locate “{value}”", {value: source ? source.name : tr("folder")}),
+            hint: tr("Choose the folder's new location. LightTable checks a sample of the catalog's own photos there before moving anything, so edits, ratings and collections stay attached."),
+            confirmLabel: tr("Locate"),
+            onConfirm: async (path) => {
+              const result = await post('/api/catalog/sources', { action: 'locate', id, path });
+              if (result.error) throw new Error(result.error);
+              return trn(
+                "Relinked; {count} photo verified by content and {sampled} sampled.",
+                "Relinked; {count} photos verified by content and {sampled} sampled.",
+                result.located?.matched || 0,
+                {count: result.located?.matched || 0, sampled: result.located?.sampled || 0});
+            },
+          });
+          return;
         }
         await refresh();
         if (ctx.onLibraryChanged) ctx.onLibraryChanged();
+      });
+    }
+
+    const locateMissing = el('catalogLocateMissing');
+    if (locateMissing) {
+      locateMissing.addEventListener('click', () => {
+        openLocateDialog({
+          title: tr("Locate missing photos…"),
+          hint: tr("Choose a folder to search. LightTable matches files there to missing catalog rows by content, not name or location, and relinks the ones it finds."),
+          confirmLabel: tr("Search"),
+          onConfirm: async (path) => {
+            const result = await post('/api/catalog/sources', { action: 'locate_missing', path });
+            if (result.error) throw new Error(result.error);
+            const summary = result.summary || {};
+            return trn(
+              "Relinked {count} photo; {unmatched} not found there.",
+              "Relinked {count} photos; {unmatched} not found there.",
+              summary.relinked || 0,
+              {count: summary.relinked || 0, unmatched: (summary.unmatched || 0) + (summary.unverifiable || 0)});
+          },
+        });
+      });
+    }
+
+    const missingOnly = el('catalogMissingOnly');
+    if (missingOnly && ctx.onMissingOnlyChanged) {
+      missingOnly.addEventListener('change', () => {
+        ctx.onMissingOnlyChanged(missingOnly.checked);
       });
     }
 
@@ -958,7 +1066,8 @@ export function createCatalogUI(ctx) {
     openRename: () => rename && rename.open(),
     setCatalogPath: (path) => importDialog && importDialog.setPath(path),
     setIngestField: (field, value) => {
-      if (field.startsWith('watch')) watchDialog?.setField(field, value);
+      if (field === 'locatePath') { const input = el('locatePath'); if (input) input.value = value; }
+      else if (field.startsWith('watch')) watchDialog?.setField(field, value);
       else ingest?.setField(field, value);
     },
     get catalog() { return catalog; },

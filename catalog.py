@@ -1281,13 +1281,51 @@ class Catalog:
             conn.execute("UPDATE sources SET display_name=? WHERE id=? AND active=1",
                          (display_name[:200], source_id))
 
+    def set_source_path(self, source_id: int, new_path: Path | str) -> str:
+        """Point an active source at the folder's new location.
+
+        Every file row keeps its id, so edits, ratings, history, versions and
+        collection membership survive untouched; only the root moves. The
+        caller is responsible for proving the folder is the same one (see
+        ``catalog_scan.locate_source``); this only guards the catalog's own
+        invariants.
+        """
+        resolved = str(Path(new_path).expanduser().resolve())
+        with self.write() as conn:
+            source = conn.execute(
+                "SELECT id, path FROM sources WHERE id=? AND active=1",
+                (int(source_id),)).fetchone()
+            if not source:
+                raise ValueError("unknown source")
+            if source["path"] == resolved:
+                return resolved
+            other = conn.execute("SELECT id, active FROM sources WHERE path=?",
+                                 (resolved,)).fetchone()
+            if other:
+                if other["active"]:
+                    raise ValueError("that folder is already a catalog source")
+                holds_rows = conn.execute(
+                    "SELECT 1 FROM files WHERE source_id=? LIMIT 1",
+                    (int(other["id"]),)).fetchone()
+                if holds_rows:
+                    raise ValueError(
+                        "that folder was removed from the catalog earlier and"
+                        " still holds photos; add it back instead")
+                conn.execute("DELETE FROM sources WHERE id=?", (int(other["id"]),))
+            conn.execute(
+                "UPDATE sources SET path=?, available=1 WHERE id=?",
+                (resolved, int(source_id)))
+        return resolved
+
     def sources(self) -> list[dict]:
         # Count what the browser shows: virtual copies are photos and videos are
         # not, which is how the grid, the folder rows and the totals all count.
         rows = self.connection.execute(
             "SELECT s.*, (SELECT COUNT(*) FROM images i"
             "   JOIN files f ON f.id=i.file_id WHERE f.source_id=s.id"
-            "   AND f.missing=0 AND f.kind!='video') AS photo_count"
+            "   AND f.missing=0 AND f.kind!='video') AS photo_count,"
+            " (SELECT COUNT(*) FROM files f WHERE f.source_id=s.id"
+            "   AND f.missing=1 AND f.kind!='video') AS missing_count"
             " FROM sources s WHERE s.active=1"
             " ORDER BY s.favorite DESC, s.display_name COLLATE NOCASE"
         ).fetchall()
@@ -1303,6 +1341,7 @@ class Catalog:
                 "favorite": bool(row["favorite"]),
                 "available": bool(source_path) and Path(source_path).is_dir(),
                 "count": _int_or(row["photo_count"], 0, minimum=0),
+                "missingCount": _int_or(row["missing_count"], 0, minimum=0),
                 "lastScan": _finite_number_or(row["last_scan_at"]),
             })
         return out
@@ -2717,24 +2756,70 @@ class Catalog:
 
     # ---------------------------------------------------------- collections
 
+    QUICK_COLLECTION_NAME = "Quick Collection"
+
+    @staticmethod
+    def _collection_record(row) -> dict:
+        return {"id": row["id"], "name": row["name"], "type": row["type"],
+                "parentId": row["parent_id"],
+                "sortOrder": _int_or(row["sort_order"], 0),
+                "rules": _json_or(row["rules_json"])}
+
     def collection(self, collection_id: int) -> dict | None:
         row = self.connection.execute("SELECT * FROM collections WHERE id=?",
                                       (collection_id,)).fetchone()
         if not row:
             return None
-        return {"id": row["id"], "name": row["name"], "type": row["type"],
-                "parentId": row["parent_id"],
-                "rules": _json_or(row["rules_json"])}
+        return self._collection_record(row)
 
     def collections(self) -> list[dict]:
+        """Every collection, quick collection first, then siblings in order.
+
+        The list is flat; ``parentId`` and ``sortOrder`` let the sidebar build
+        the tree without a second query per level.
+        """
         rows = self.connection.execute(
             "SELECT c.*, (SELECT COUNT(*) FROM collection_images ci"
             "   WHERE ci.collection_id=c.id) AS count"
-            " FROM collections c ORDER BY c.sort_order, c.name COLLATE NOCASE"
+            " FROM collections c"
+            " ORDER BY (c.type='quick') DESC, c.sort_order, c.name COLLATE NOCASE, c.id"
         ).fetchall()
-        return [{"id": r["id"], "name": r["name"], "type": r["type"],
-                 "parentId": r["parent_id"], "count": r["count"],
-                 "rules": _json_or(r["rules_json"])} for r in rows]
+        return [dict(self._collection_record(r), count=r["count"]) for r in rows]
+
+    @staticmethod
+    def _next_sort_order(conn: sqlite3.Connection, parent_id: int | None) -> int:
+        row = conn.execute(
+            "SELECT COALESCE(MAX(sort_order), -1) + 1 AS n FROM collections"
+            " WHERE parent_id IS ?", (parent_id,)).fetchone()
+        return int(row["n"])
+
+    @staticmethod
+    def _require_collection(conn: sqlite3.Connection, collection_id: int):
+        row = conn.execute("SELECT * FROM collections WHERE id=?",
+                           (int(collection_id),)).fetchone()
+        if not row:
+            raise ValueError("unknown collection")
+        return row
+
+    @staticmethod
+    def _collection_descendants(conn: sqlite3.Connection,
+                                collection_id: int) -> list[int]:
+        """Children first, depth-first, so deletion can go bottom-up."""
+        out: list[int] = []
+        frontier = [int(collection_id)]
+        seen = {int(collection_id)}
+        while frontier:
+            parent = frontier.pop()
+            for row in conn.execute(
+                    "SELECT id FROM collections WHERE parent_id=?",
+                    (parent,)).fetchall():
+                child = int(row["id"])
+                if child in seen:
+                    continue  # A damaged cycle must not spin forever.
+                seen.add(child)
+                out.append(child)
+                frontier.append(child)
+        return out
 
     def add_collection(self, name: str, *, kind: str = "regular",
                        rules: dict | None = None,
@@ -2742,17 +2827,92 @@ class Catalog:
         if rules:
             rules = dict(rules, **dam_filters.clean_filters(rules))
         with self.write() as conn:
+            parent = int(parent_id) if parent_id else None
+            if parent is not None:
+                parent_row = self._require_collection(conn, parent)
+                if parent_row["type"] == "quick":
+                    raise ValueError("the quick collection cannot hold collections")
             cur = conn.execute(
-                "INSERT INTO collections(parent_id, name, type, rules_json)"
-                " VALUES(?,?,?,?)",
-                (parent_id, " ".join(str(name).split())[:120] or "Collection",
+                "INSERT INTO collections(parent_id, name, type, rules_json,"
+                " sort_order) VALUES(?,?,?,?,?)",
+                (parent, " ".join(str(name).split())[:120] or "Collection",
                  "smart" if kind == "smart" else "regular",
-                 json.dumps(rules) if rules else None))
+                 json.dumps(rules) if rules else None,
+                 self._next_sort_order(conn, parent)))
             return int(cur.lastrowid)
 
-    def delete_collection(self, collection_id: int) -> None:
+    def rename_collection(self, collection_id: int, name: str) -> None:
+        clean = " ".join(str(name).split())[:120]
+        if not clean:
+            raise ValueError("a collection needs a name")
         with self.write() as conn:
-            conn.execute("DELETE FROM collections WHERE id=?", (collection_id,))
+            row = self._require_collection(conn, collection_id)
+            if row["type"] == "quick":
+                raise ValueError("the quick collection keeps its name")
+            conn.execute("UPDATE collections SET name=? WHERE id=?",
+                         (clean, int(collection_id)))
+
+    def move_collection(self, collection_id: int,
+                        parent_id: int | None) -> None:
+        """Re-parent a collection, refusing any move that would form a cycle."""
+        with self.write() as conn:
+            row = self._require_collection(conn, collection_id)
+            if row["type"] == "quick":
+                raise ValueError("the quick collection stays at the top level")
+            parent = int(parent_id) if parent_id else None
+            if parent is not None:
+                if parent == int(collection_id):
+                    raise ValueError("a collection cannot contain itself")
+                parent_row = self._require_collection(conn, parent)
+                if parent_row["type"] == "quick":
+                    raise ValueError("the quick collection cannot hold collections")
+                if parent in self._collection_descendants(conn, collection_id):
+                    raise ValueError(
+                        "a collection cannot move inside one of its own children")
+            if (row["parent_id"] or None) == parent:
+                return
+            conn.execute(
+                "UPDATE collections SET parent_id=?, sort_order=? WHERE id=?",
+                (parent, self._next_sort_order(conn, parent), int(collection_id)))
+
+    def reorder_collections(self, parent_id: int | None,
+                            ordered_ids: Sequence[int]) -> None:
+        """Persist a manual order for the siblings under one parent.
+
+        Siblings left out of the list keep their relative order after the
+        listed ones, so a stale client never drops a collection.
+        """
+        parent = int(parent_id) if parent_id else None
+        with self.write() as conn:
+            siblings = [int(r["id"]) for r in conn.execute(
+                "SELECT id FROM collections WHERE parent_id IS ? AND type!='quick'"
+                " ORDER BY sort_order, name COLLATE NOCASE, id",
+                (parent,)).fetchall()]
+            wanted = [int(i) for i in ordered_ids if int(i) in siblings]
+            final = list(dict.fromkeys(wanted + siblings))
+            conn.executemany(
+                "UPDATE collections SET sort_order=? WHERE id=?",
+                [(n, cid) for n, cid in enumerate(final)])
+
+    def delete_collection(self, collection_id: int) -> int:
+        """Delete a collection and everything nested inside it.
+
+        Returns how many collections went. Membership rows go with them; the
+        photos themselves are untouched, as always.
+        """
+        with self.write() as conn:
+            row = conn.execute("SELECT type FROM collections WHERE id=?",
+                               (int(collection_id),)).fetchone()
+            if not row:
+                return 0
+            if row["type"] == "quick":
+                raise ValueError("the quick collection cannot be deleted; clear it instead")
+            doomed = self._collection_descendants(conn, collection_id)
+            doomed.append(int(collection_id))
+            for cid in doomed:
+                conn.execute("DELETE FROM collection_images WHERE collection_id=?", (cid,))
+                conn.execute("DELETE FROM collections WHERE id=?", (cid,))
+            return len(doomed)
 
     def set_collection_members(self, collection_id: int,
                                image_ids: Sequence[int]) -> None:
@@ -2781,6 +2941,53 @@ class Catalog:
                 " image_id, position) VALUES(?,?,?)",
                 [(collection_id, int(i), start + n)
                  for n, i in enumerate(image_ids)])
+
+    def remove_from_collection(self, collection_id: int,
+                               image_ids: Sequence[int]) -> int:
+        with self.write() as conn:
+            cur = conn.executemany(
+                "DELETE FROM collection_images WHERE collection_id=? AND image_id=?",
+                [(int(collection_id), int(i)) for i in image_ids])
+            return int(cur.rowcount if cur.rowcount is not None and cur.rowcount >= 0 else 0)
+
+    def quick_collection_id(self) -> int:
+        """The one persistent quick collection, created on first use."""
+        with self.write() as conn:
+            row = conn.execute(
+                "SELECT id FROM collections WHERE type='quick' ORDER BY id LIMIT 1"
+            ).fetchone()
+            if row:
+                return int(row["id"])
+            cur = conn.execute(
+                "INSERT INTO collections(parent_id, name, type, rules_json,"
+                " sort_order) VALUES(NULL,?,'quick',NULL,-1)",
+                (self.QUICK_COLLECTION_NAME,))
+            return int(cur.lastrowid)
+
+    def toggle_quick_collection(self, image_ids: Sequence[int]) -> dict:
+        """Add a batch to the quick collection, or remove it when it is all there.
+
+        One key press with a mixed batch adds the stragglers rather than
+        removing the members, which is what a photographer building a set
+        expects; a second press then removes the whole batch.
+        """
+        ids = list(dict.fromkeys(int(i) for i in image_ids))
+        quick = self.quick_collection_id()
+        if not ids:
+            return {"id": quick, "added": 0, "removed": 0}
+        present = set()
+        for start in range(0, len(ids), 500):
+            chunk = ids[start:start + 500]
+            placeholders = ",".join("?" * len(chunk))
+            present.update(int(r["image_id"]) for r in self.connection.execute(
+                f"SELECT image_id FROM collection_images WHERE collection_id=?"
+                f" AND image_id IN ({placeholders})", [quick, *chunk]).fetchall())
+        if len(present) == len(ids):
+            removed = self.remove_from_collection(quick, ids)
+            return {"id": quick, "added": 0, "removed": removed}
+        missing = [i for i in ids if i not in present]
+        self.add_to_collection(quick, missing)
+        return {"id": quick, "added": len(missing), "removed": 0}
 
     def create_collections_for_source_folders(self, source_id: int) -> list[int]:
         """Create a collection for each top-level folder under this source."""

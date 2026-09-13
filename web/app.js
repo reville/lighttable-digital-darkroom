@@ -328,6 +328,7 @@ function nativeMenuState() {
     canUnstack: targets.some((item) => !!stackForImage(item.name)),
     canAddToCollection: !!collection && collection.type === 'regular' &&
       targets.length > 0,
+    canUseQuickCollection: !!S.catalogEnabled && targets.length > 0,
     catalogEnabled: !!S.catalogEnabled,
     viewMode: S.viewMode,
     activePane: S.activePane,
@@ -437,6 +438,7 @@ function performNativeMenuCommand(command) {
       case 'newCollection': $('addCollection').click(); break;
       case 'newSmartCollection': $('addSmartCollection').click(); break;
       case 'addToCollection': $('addToCollection').click(); break;
+      case 'toggleQuickCollection': void toggleQuickCollection(); break;
       case 'virtualCopy': $('virtualCopyBtn').click(); break;
       case 'deleteVirtualCopy': $('deleteVirtualBtn').click(); break;
       case 'stack': $('stackBtn').click(); break;
@@ -6213,26 +6215,151 @@ function collectionImages(collection) {
   return S.images.filter((image) => members.has(image.name));
 }
 
+/* Collapse state is per-browser convenience, not library state: it is never
+ * sent to the server and a stale entry for a deleted collection just goes
+ * unused, so a bare Set with a best-effort save is enough. */
+let collapsedCollections;
+try {
+  collapsedCollections = new Set(JSON.parse(localStorage.getItem('lt.collectionsCollapsed') || '[]'));
+} catch { collapsedCollections = new Set(); }
+function saveCollapsedCollections() {
+  try { localStorage.setItem('lt.collectionsCollapsed', JSON.stringify([...collapsedCollections])); } catch {}
+}
+
+/* `parentId`/`sortOrder` make the sidebar tree from one flat list instead of
+ * a query per level. The quick collection is rendered separately, pinned
+ * above the tree, so it never competes for a parent slot. */
+function collectionChildren(collections) {
+  const byParent = new Map();
+  for (const collection of collections) {
+    if (collection.type === 'quick') continue;
+    const key = collection.parentId ? String(collection.parentId) : '';
+    if (!byParent.has(key)) byParent.set(key, []);
+    byParent.get(key).push(collection);
+  }
+  for (const list of byParent.values()) {
+    list.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+  return byParent;
+}
+
+function flattenCollectionTree(byParent) {
+  const out = [];
+  const walk = (key, depth) => {
+    for (const collection of byParent.get(key) || []) {
+      out.push({ collection, depth });
+      if (!collapsedCollections.has(String(collection.id))) {
+        walk(String(collection.id), depth + 1);
+      }
+    }
+  };
+  walk('', 0);
+  return out;
+}
+
 function renderCollections() {
   const host = $('collectionList');
   if (!host) return;
   host.replaceChildren();
-  for (const collection of S.library.collections || []) {
+  const all = S.library.collections || [];
+  const quick = all.find((collection) => collection.type === 'quick');
+  if (quick) {
     const row = document.createElement('div');
-    row.className = 'collection-row' +
-      (collection.id === S.activeCollection ? ' on' : '');
-    const count = S.catalogEnabled && Number.isInteger(collection.count)
-      ? collection.count : collectionImages(collection).length;
-    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${count}</b></button><button class="collection-delete" type="button" title="${i18nHTML(tr("Delete collection"))}">×</button>`;
-    row.querySelector('span').textContent =
+    const count = collectionImages(quick).length;
+    row.className = 'collection-row collection-row-quick' +
+      (quick.id === S.activeCollection ? ' on' : '');
+    row.innerHTML = `<button class="collection-main" type="button"><span class="collection-toggle-spacer"></span><span class="collection-name"></span><b>${count}</b></button><span class="collection-actions"><button class="collection-clear" type="button" title="${i18nHTML(tr("Clear Quick Collection"))}" ${count ? '' : 'disabled'}>×</button></span>`;
+    row.querySelector('.collection-name').textContent = `⌘ ${quick.name}`;
+    row.querySelector('.collection-main').onclick = () => {
+      S.activeCollection = S.activeCollection === quick.id ? '' : quick.id;
+      refreshFilteredView(); savePrefs();
+    };
+    row.querySelector('.collection-clear').onclick = async (event) => {
+      event.stopPropagation();
+      await runLibraryAction({ action: 'quick_clear_collection' });
+      refreshLists(); toast(tr("Quick Collection cleared"));
+    };
+    host.appendChild(row);
+  }
+  const byParent = collectionChildren(all);
+  for (const { collection, depth } of flattenCollectionTree(byParent)) {
+    const siblings = byParent.get(collection.parentId ? String(collection.parentId) : '') || [];
+    const idx = siblings.findIndex((item) => item.id === collection.id);
+    const hasChildren = (byParent.get(String(collection.id)) || []).length > 0;
+    const collapsed = collapsedCollections.has(String(collection.id));
+    const row = document.createElement('div');
+    row.className = 'collection-row' + (collection.id === S.activeCollection ? ' on' : '');
+    row.innerHTML = `
+      <button class="collection-main" type="button" style="padding-left:${8 + depth * 14}px">
+        ${hasChildren ? `<button class="collection-toggle" type="button" aria-label="${i18nHTML(tr('Show or hide nested collections'))}">${collapsed ? '▸' : '▾'}</button>` : '<span class="collection-toggle-spacer"></span>'}
+        <span class="collection-name"></span><b>${S.catalogEnabled && Number.isInteger(collection.count) ? collection.count : collectionImages(collection).length}</b>
+      </button>
+      <span class="collection-actions">
+        ${collection.type !== 'smart' ? `<button class="collection-add-child" type="button" title="${i18nHTML(tr('New collection inside {collectionName}', {collectionName: collection.name}))}">+</button>` : ''}
+        <button class="collection-rename" type="button" title="${i18nHTML(tr('Rename'))}">✎</button>
+        ${depth > 0 ? `<button class="collection-outdent" type="button" title="${i18nHTML(tr('Move to top level'))}">⇤</button>` : ''}
+        <button class="collection-up" type="button" title="${i18nHTML(tr('Move up'))}" ${idx <= 0 ? 'disabled' : ''}>↑</button>
+        <button class="collection-down" type="button" title="${i18nHTML(tr('Move down'))}" ${idx < 0 || idx >= siblings.length - 1 ? 'disabled' : ''}>↓</button>
+        <button class="collection-delete" type="button" title="${i18nHTML(tr("Delete collection"))}">×</button>
+      </span>`;
+    row.querySelector('.collection-name').textContent =
       `${collection.type === 'smart' ? '✦ ' : ''}${collection.name}`;
     row.querySelector('.collection-delete').setAttribute(
       'aria-label', tr("Delete {collectionName}", {collectionName: collection.name}));
-    row.querySelector('.collection-main').onclick = () => {
+    const toggle = row.querySelector('.collection-toggle');
+    if (toggle) {
+      toggle.onclick = (event) => {
+        event.stopPropagation();
+        const id = String(collection.id);
+        if (collapsedCollections.has(id)) collapsedCollections.delete(id);
+        else collapsedCollections.add(id);
+        saveCollapsedCollections();
+        renderCollections();
+      };
+    }
+    row.querySelector('.collection-main').onclick = (event) => {
+      if (event.target.closest('.collection-toggle')) return;
       S.activeCollection = S.activeCollection === collection.id ? '' : collection.id;
       refreshFilteredView(); savePrefs();
     };
-    row.querySelector('.collection-delete').onclick = async () => {
+    row.querySelector('.collection-add-child')?.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      const name = await askName(tr("New collection"));
+      if (!name) return;
+      collapsedCollections.delete(String(collection.id)); saveCollapsedCollections();
+      await runLibraryAction({ action: 'create_collection', name, parentId: collection.id });
+      refreshLists(); toast(tr("Collection created"));
+    });
+    row.querySelector('.collection-rename').onclick = async (event) => {
+      event.stopPropagation();
+      const name = await askName(tr("Rename collection"), collection.name);
+      if (!name || name === collection.name) return;
+      await runLibraryAction({ action: 'rename_collection', id: collection.id, name });
+      refreshLists();
+    };
+    row.querySelector('.collection-outdent')?.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await runLibraryAction({ action: 'move_collection', id: collection.id, parentId: null });
+      refreshLists();
+    });
+    row.querySelector('.collection-up').onclick = async (event) => {
+      event.stopPropagation();
+      if (idx <= 0) return;
+      const order = siblings.map((item) => item.id);
+      [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
+      await runLibraryAction({ action: 'reorder_collections', parentId: collection.parentId || null, ids: order });
+      refreshLists();
+    };
+    row.querySelector('.collection-down').onclick = async (event) => {
+      event.stopPropagation();
+      if (idx < 0 || idx >= siblings.length - 1) return;
+      const order = siblings.map((item) => item.id);
+      [order[idx], order[idx + 1]] = [order[idx + 1], order[idx]];
+      await runLibraryAction({ action: 'reorder_collections', parentId: collection.parentId || null, ids: order });
+      refreshLists();
+    };
+    row.querySelector('.collection-delete').onclick = async (event) => {
+      event.stopPropagation();
       await runLibraryAction({ action: 'delete_collection', id: collection.id });
       if (S.activeCollection === collection.id) S.activeCollection = '';
       refreshLists(); savePrefs(); toast(tr("Collection deleted"));
@@ -6246,19 +6373,42 @@ function renderCollections() {
     !transferTargets().length;
 }
 
+/* One key toggles the active batch in and out of the persistent Quick
+ * Collection — the fast, no-naming set a photographer builds while culling. */
+async function toggleQuickCollection() {
+  if (!S.catalogEnabled) return toast(tr("Quick Collection needs the catalog"));
+  const targets = transferTargets();
+  if (!targets.length) return toast(tr("Select photos to use the Quick Collection"));
+  const result = await runLibraryAction({
+    action: 'quick_toggle_collection',
+    members: targets.map((image) => image.name),
+  });
+  const quick = result?.quick;
+  if (!quick) return;
+  if (quick.added) toast(trn('Added {count} photo to Quick Collection', 'Added {count} photos to Quick Collection', quick.added, {count: quick.added}));
+  else if (quick.removed) toast(trn('Removed {count} photo from Quick Collection', 'Removed {count} photos from Quick Collection', quick.removed, {count: quick.removed}));
+}
+
 async function runLibraryAction(body) {
   const collectionActions = {
     create_collection: 'create', create_smart_collection: 'create_smart',
     delete_collection: 'delete', add_to_collection: 'add',
+    rename_collection: 'rename', move_collection: 'move',
+    reorder_collections: 'reorder',
+    quick_toggle_collection: 'quick_toggle', quick_clear_collection: 'quick_clear',
   };
   let path = '/api/library';
   let request = body;
+  // Nesting, reorder, and the Quick Collection live only in the catalog
+  // schema (parent_id, sort_order, the one persistent quick row); folder mode
+  // keeps the flat collections it always had.
   if (S.catalogEnabled && collectionActions[body.action]) {
     const rules = { ...(body.rules || {}) };
     if (rules.flag && rules.flag !== 'all') rules.status = rules.flag;
     delete rules.flag;
     request = {
       action: collectionActions[body.action], id: body.id, name: body.name,
+      parentId: body.parentId, ids: body.ids,
       rules, imageIds: (body.members || []).map((name) => {
         const image = S.images.find((item) => item.name === name);
         return image?.catalogId || image?.id;
@@ -8534,6 +8684,10 @@ function buildCatalogQuerySpec(extra = {}) {
   if (editState !== 'all') filter.editState = editState;
   if (fileTypes.length) filter.fileTypes = fileTypes;
   if (search) filter.query = search;
+  // The sources panel's "Show only missing photos" checkbox, not one of the
+  // flag/rating dropdowns: a source going offline or a card ejecting mid-
+  // rescan is a library-health question, not a triage one.
+  if (S.showMissingOnly) filter.missingOnly = true;
 
   let scope = 'all';
   let folderId, collectionId;
@@ -11085,6 +11239,12 @@ document.addEventListener('keydown', (e) => {
   if (meta && !e.shiftKey && e.key.toLowerCase() === 'f') {
     e.preventDefault(); $('search').focus(); $('search').select(); return;
   }
+  if (meta && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'b') {
+    // Bare "b" already holds before/after in both key schemes, so the Quick
+    // Collection toggle sits on Cmd+B instead — free in this app and in the
+    // native menu (see toggleQuickCollectionItem in app/main.swift).
+    e.preventDefault(); void toggleQuickCollection(); return;
+  }
   if (meta && (e.key === 'Backspace' || e.key === 'Delete')) {
     e.preventDefault(); trashRejected(); return;
   }
@@ -13205,6 +13365,27 @@ CATALOG_UI = createCatalogUI({
   onCatalogImportClosed: () => FIRST_RUN?.catalogClosed(),
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onLibraryChanged: () => { reloadLibrary(); },
+  onMissingOnlyChanged: async (checked) => {
+    // Missing rows are excluded from every ordinary query, so this cannot be
+    // a client-side filter over the images already loaded — it needs its own
+    // fetch of exactly the rows the checkbox asks for.
+    S.showMissingOnly = checked;
+    if (!S.catalogEnabled) return;
+    if (!checked) { await reloadLibrary(); return; }
+    try {
+      const result = await api('/api/catalog/query',
+        { scope: 'all', filter: { missingOnly: true },
+          sort: { field: 'capture', dir: 'desc' }, limit: 20000 });
+      if (result.error) throw new Error(result.error);
+      S.images = (result.images || []).map((image) => normalizeLibraryImage(image, false));
+      S.catalogTotal = S.images.length;
+      _stripKey = _gridKey = '';
+      S.idx = S.images.length ? 0 : -1;
+      refreshLists();
+    } catch (error) {
+      toast(String(error?.message || error));
+    }
+  },
   onWatchArrival: async (status) => {
     const follow = status.follow
       && performance.now() - lastUserNavigationAt > 5000;

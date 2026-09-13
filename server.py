@@ -9123,6 +9123,34 @@ def catalog_sources_action(body: dict) -> dict:
     elif action == "rescan":
         if SCANNER is not None:
             SCANNER.request(int(body["id"]) if body.get("id") else None)
+    elif action == "locate":
+        # The folder moved; the rows did not. Prove it is the same folder,
+        # move the root, then let the scanner clear the missing flags.
+        source_id = int(body["id"])
+        path = str(body.get("path", "")).strip()
+        if not path:
+            raise ValueError(T("choose the folder's new location"))
+        try:
+            located = catalog_scan.locate_source(cat, source_id, path)
+        except ValueError as error:
+            raise ValueError(T("Could not relink that folder: {error}", error=str(error))) from error
+        invalidate_library_cache()
+        if SCANNER is not None:
+            SCANNER.request(source_id)
+        return {"ok": True, "located": located, "sources": cat.sources()}
+    elif action == "locate_missing":
+        path = str(body.get("path", "")).strip()
+        if not path:
+            raise ValueError(T("choose a folder to search"))
+        try:
+            summary = catalog_scan.locate_missing(cat, path)
+        except ValueError as error:
+            raise ValueError(T("Could not search that folder: {error}", error=str(error))) from error
+        invalidate_library_cache()
+        _queue_mirror()
+        if summary.get("sourceAdded") and SCANNER is not None:
+            SCANNER.request(int(summary["sourceAdded"]))
+        return {"ok": True, "summary": summary, "sources": cat.sources()}
     elif action != "list":
         raise ValueError(T("unknown source action: {action}", action=f'{action}'))
     return {"ok": True, "sources": cat.sources()}
@@ -9144,20 +9172,42 @@ def catalog_collections_action(body: dict) -> dict:
         return {"ok": True, "id": collection_id,
                 "collections": cat.collections(),
                 "library": current_library_state()}
+    extra: dict = {}
     if action == "delete":
-        cat.delete_collection(int(body["id"]))
+        extra["deleted"] = cat.delete_collection(int(body["id"]))
     elif action == "add":
         cat.add_to_collection(int(body["id"]),
                               [int(i) for i in body.get("imageIds", [])])
+    elif action == "remove":
+        extra["removed"] = cat.remove_from_collection(
+            int(body["id"]), [int(i) for i in body.get("imageIds", [])])
     elif action == "set":
         cat.set_collection_members(int(body["id"]),
                                    [int(i) for i in body.get("imageIds", [])])
+    elif action == "rename":
+        cat.rename_collection(int(body["id"]), str(body.get("name", "")))
+    elif action == "move":
+        cat.move_collection(int(body["id"]),
+                            int(body["parentId"]) if body.get("parentId") else None)
+    elif action == "reorder":
+        cat.reorder_collections(
+            int(body["parentId"]) if body.get("parentId") else None,
+            [int(i) for i in body.get("ids", [])])
+    elif action == "quick":
+        extra["quick"] = {"id": cat.quick_collection_id()}
+    elif action == "quick_toggle":
+        extra["quick"] = cat.toggle_quick_collection(
+            [int(i) for i in body.get("imageIds", [])])
+    elif action == "quick_clear":
+        quick = cat.quick_collection_id()
+        cat.set_collection_members(quick, [])
+        extra["quick"] = {"id": quick, "added": 0, "removed": 0}
     elif action != "list":
         raise ValueError(T("unknown collection action: {action}", action=f'{action}'))
     if action != "list":
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
-            "library": current_library_state()}
+            "library": current_library_state(), **extra}
 
 
 def keyword_rename_action(body: dict) -> dict:
@@ -9773,7 +9823,7 @@ def current_library_state() -> dict:
     collections = []
     for record in cat.collections():
         members: list[str] = []
-        if record["type"] == "regular":
+        if record["type"] != "smart":
             rows = cat.connection.execute(
                 "SELECT i.copy_ident, f.relpath, f.source_id"
                 " FROM collection_images ci"
@@ -9794,6 +9844,9 @@ def current_library_state() -> dict:
         collections.append({
             "id": str(record["id"]), "name": record["name"],
             "type": record["type"], "members": members,
+            "parentId": (str(record["parentId"])
+                         if record.get("parentId") is not None else None),
+            "sortOrder": int(record.get("sortOrder") or 0),
             "rules": record.get("rules") or {},
             "count": int(browser_catalog_query(count_spec)["total"]),
         })
