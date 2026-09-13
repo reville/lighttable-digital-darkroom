@@ -44,9 +44,9 @@ echo "[4/6] Synchronizing detached worktree at $CUTOFF_SHORT..."
 if [[ ! -d "$WORKTREE_DIR" ]]; then
   git -C "$ROOT" worktree add "$WORKTREE_DIR" "$CUTOFF_SHA" --detach --quiet
 else
-  git -C "$WORKTREE_DIR" checkout --detach "$CUTOFF_SHA" --quiet
-  git -C "$WORKTREE_DIR" reset --hard "$CUTOFF_SHA" --quiet
+  git -C "$WORKTREE_DIR" reset --hard HEAD --quiet
   git -C "$WORKTREE_DIR" clean -fd --quiet
+  git -C "$WORKTREE_DIR" checkout --detach "$CUTOFF_SHA" --quiet
 fi
 
 # Overlay fast updater and smoke improvements if worktree revision does not have them yet
