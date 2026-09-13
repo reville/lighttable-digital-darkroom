@@ -350,7 +350,7 @@ class LinuxUpdater:
         marker = self.bundle / "installation-owner.json"
         if marker.exists():
             owner = read_json(marker).get("owner")
-            if owner not in {"portable", "arch", "snap", "flatpak"}:
+            if owner not in {"portable", "arch", "snap", "flatpak", "rpm", "deb"}:
                 raise UpdateError("Unknown installation owner")
             return owner
         if self.bundle == Path("/opt/lighttable") or self.bundle.is_relative_to("/usr"):
