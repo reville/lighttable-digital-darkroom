@@ -7,7 +7,7 @@ version read this. Bump it before tagging a release with
 tag that disagrees with it.
 """
 
-VERSION = "0.7.5"
+VERSION = "0.7.6"
 
 
 if __name__ == "__main__":

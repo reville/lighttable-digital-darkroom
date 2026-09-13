@@ -215,3 +215,25 @@ partial release resume, immutable manifests, blocked platform isolation,
 credential-presence policy, independent successful jobs, byte-preserving candidate
 preparation and deterministic archive generation. They do not claim a real public
 promotion or native updater run.
+
+## Agent release operation
+
+Use subagents for bounded independent work: run the full tests, review changed
+code and error handling with the PR review toolkit, and audit website/package
+metadata or release receipts. Give each agent an exact source revision, narrow
+scope, output limit and stopping condition. Return counts, evidence paths and
+first relevant failures instead of full logs. Keep source/version decisions,
+credential handling, external publication and final verification with the main
+agent. Avoid duplicating passing checks for the same revision.
+
+Record selected source, version, tags and workflow run IDs once in the release
+receipt. Reuse successful candidate and preparation artifacts for retries. Bind
+CI to the pull request and consume completion events; do not create polling
+agents or recurring release monitors. Run independent preparation and review
+work in parallel while keeping the existing shared publication lock.
+
+Until `orchestrate.py` verifies preparation runs against the requested version,
+source and original build, use explicitly recorded workflow IDs: its current
+preparation discovery can select artifacts from another release. Its printed
+commands are guidance only; inspect workflow inputs, including the Windows
+installer hash and the separate macOS beta version, before dispatch.
