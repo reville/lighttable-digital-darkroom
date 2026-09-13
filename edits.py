@@ -158,6 +158,10 @@ def _clean_mask_component(raw, index: int,
     elif kind == "linear":
         component["start"] = _point(raw.get("start"), (0.25, 0.5))
         component["end"] = _point(raw.get("end"), (0.75, 0.5))
+        # The width of the transition band as a share of the start-to-end
+        # span, centred on the midpoint between the handles. 1.0 is the whole
+        # span, which is how every earlier linear gradient rendered.
+        component["feather"] = _clamp(raw.get("feather"), 0.0, 1.0, 1.0)
     elif kind == "radial":
         component["center"] = _point(raw.get("center"))
         component["radius"] = _clamp(raw.get("radius"), 0.01, 1.5, 0.25)
@@ -373,7 +377,13 @@ def _raster_component(component: dict, height: int, width: int) -> np.ndarray:
         # Projection and denominator both scale with the raster, so the ramp is
         # resolution independent once the degenerate case is out of the way.
         denominator = dx * dx + dy * dy
-        weight = _smoothstep(0.0, 1.0, ((xx - sx) * dx + (yy - sy) * dy) / denominator)
+        projection = ((xx - sx) * dx + (yy - sy) * dy) / denominator
+        # Feather narrows the ramp symmetrically about the midpoint of the
+        # handle line; zero is a hard edge there. Mirrored by
+        # canvasGeometryValues in web/app.js and raster_component in
+        # rust-engine/src/export.rs.
+        half = component.get("feather", 1.0) / 2.0
+        weight = _smoothstep(0.5 - half, 0.5 + half, projection)
     elif component["type"] == "brush":
         combined = np.zeros((height, width), dtype=np.float32)
         for stroke in component.get("strokes", []):

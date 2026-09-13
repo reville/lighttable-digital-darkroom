@@ -719,12 +719,17 @@ fn raster_component(component: &Value, width: u32, height: u32) -> Result<Vec<f3
             let dx = end[0] * width.saturating_sub(1) as f32 - sx;
             let dy = end[1] * height.saturating_sub(1) as f32 - sy;
             let denominator = (dx * dx + dy * dy).max(1.0);
+            // The transition band is centred on the midpoint of the handle
+            // line; 1.0 spans the whole start-to-end distance and 0.0 is a
+            // hard edge. Mirrors edits._raster_component.
+            let half = number(component, "feather", 1.0).clamp(0.0, 1.0) * 0.5;
             (0..width as usize * height as usize)
                 .into_par_iter()
                 .map(|index| {
                     let x = (index as u32 % width) as f32;
                     let y = (index as u32 / width) as f32;
-                    smoothstep(0.0, 1.0, ((x - sx) * dx + (y - sy) * dy) / denominator)
+                    let projection = ((x - sx) * dx + (y - sy) * dy) / denominator;
+                    smoothstep(0.5 - half, 0.5 + half, projection)
                 })
                 .collect()
         }

@@ -1053,6 +1053,7 @@ a.reset:hover { color:#fff; }
 .edit-item-list { display:flex; flex-direction:column; margin:8px 0 0; border-top:1px solid var(--line-soft); }
 .mask-create-menu + .edit-item-list, .spot-visualize-control + .edit-item-list { margin-top:0; border-top:0; }
 .edit-item { min-height:42px; display:grid; grid-template-columns:minmax(0,1fr) 28px 28px; align-items:center; border-bottom:1px solid var(--line-soft); background:transparent; color:var(--muted); }
+.edit-item.mask-item { grid-template-columns:minmax(0,1fr) 28px 28px 28px; }
 .edit-item:hover { background:var(--hover); }
 .edit-item.on { background:rgba(75,156,245,.11); color:#fff; }
 .edit-item-main { min-width:0; min-height:41px; display:grid; grid-template-columns:31px minmax(0,1fr); align-items:center; gap:8px; border:0; padding:4px 6px; background:transparent; color:inherit; text-align:left; font-weight:400; }
@@ -1215,13 +1216,13 @@ a.reset:hover { color:#fff; }
 .keys b { color:var(--ink-2); font-weight:600; }
 .version-list { display:flex; flex-direction:column; gap:1px; margin-top:14px; border-top:1px solid var(--line-soft); }
 .version-empty { padding:22px 4px; color:var(--muted); text-align:center; font-size:11px; }
-.version-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; align-items:center; padding:8px 3px; border-bottom:1px solid var(--line-soft); }
+.version-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:6px; align-items:center; padding:8px 3px; border-bottom:1px solid var(--line-soft); }
 .version-row button.version-main { min-width:0; height:auto; border:0; border-radius:3px; padding:2px 6px; background:none; text-align:left; }
 .version-row button.version-main:hover { background:var(--hover); }
 .version-row strong, .version-row small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .version-row strong { color:var(--ink-2); font-size:12px; }
 .version-row small { color:var(--muted); margin-top:2px; font-size:11px; font-weight:400; }
-.version-delete { width:26px; min-width:26px; min-height:26px; padding:0; border:0; border-radius:3px; background:transparent; color:var(--muted); }
+.version-rename, .version-delete { width:26px; min-width:26px; min-height:26px; padding:0; border:0; border-radius:3px; background:transparent; color:var(--muted); }
 
 .toast { position:fixed; z-index:100; bottom:20px; left:50%; transform:translate(-50%,8px); padding:8px 14px; border-radius:var(--radius); background:#efefef; color:#161616; box-shadow:0 4px 18px rgba(0,0,0,.4); font-size:12px; font-weight:500; opacity:0; transition:opacity .15s ease,transform .15s ease; pointer-events:none; display:flex; align-items:center; gap:10px; }
 .toast.show { opacity:1; transform:translate(-50%,0); pointer-events:auto; }

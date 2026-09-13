@@ -50,7 +50,7 @@ ROUTE_COVERAGE = {
         "/api/catalog/collections", "/api/library"],
     "keywords": ["/api/catalog/keywords", "/api/state"],
     "metadata / api post": ["/api/metadata", "/api/metadata/bulk", "/api/metadata/capture-time", "/api/exif"],
-    "history": ["/api/history", "/api/history/state", "/api/history/clear"],
+    "history": ["/api/history", "/api/history/state", "/api/history/clear", "/api/state"],
     "versions": ["/api/state"],
     "film / schema": ["/api/options"],
     "raw-default": ["/api/raw-default", "/api/camera-profiles"],

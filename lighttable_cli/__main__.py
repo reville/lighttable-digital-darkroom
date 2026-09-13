@@ -288,6 +288,15 @@ def build_parser() -> argparse.ArgumentParser:
     history_show = history.add_parser("show"); history_show.add_argument("id", type=int)
     history_restore = history.add_parser("restore"); history_restore.add_argument("ref"); history_restore.add_argument("id", type=int)
     history_clear = history.add_parser("clear"); history_clear.add_argument("ref"); history_clear.add_argument("--yes", action="store_true")
+    # Named snapshots live beside History in the catalog. `versions` below is
+    # the older spelling of the same store and keeps working.
+    snapshot = history.add_parser("snapshot").add_subparsers(dest="snapshot_action", required=True)
+    for action in ("list", "create", "rename", "delete", "restore"):
+        item = snapshot.add_parser(action); item.add_argument("ref")
+        if action == "create": item.add_argument("--name", help="defaults to the current date and time")
+        if action in {"rename", "delete", "restore"}: item.add_argument("id")
+        if action == "rename": item.add_argument("--name", required=True)
+        if action == "delete": item.add_argument("--yes", action="store_true")
 
     film = commands.add_parser("film").add_subparsers(dest="action", required=True)
     for action in ("stocks", "papers", "profiles", "recipes", "defaults"):
@@ -747,6 +756,8 @@ def dispatch(client: Client, args):
         return client.post("/api/metadata", {"name": name, "fields": assignments(args.fields)})
     if command == "history":
         if args.action == "show": return client.get(query("/api/history/state", id=args.id))
+        if args.action == "snapshot":
+            return snapshot_command(client, args, args.snapshot_action)
         names = resolve_reference(client, args.ref); name = names[0]
         if args.action == "list": return client.get(query("/api/history", name=name))["steps"]
         if args.action == "clear":
@@ -798,35 +809,7 @@ def dispatch(client: Client, args):
         return state_merge_update(client, names, preset_state(preset), args,
                                   f"Preset {args.name}", append=PRESET_LAYERED)
     if command == "versions":
-        names = resolve_reference(client, args.ref)
-        if not names: raise ValueError("photo was not found")
-        name = names[0]
-        state = client.get(query("/api/state", name=name))
-        versions = list(state.get("versions") or [])
-        if args.action == "list": return versions
-        if args.action == "save":
-            version = {"id": uuid.uuid4().hex, "name": args.name,
-                "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                **{key: state.get(key) for key in
-                   ("params", "grade", "crop", "masks", "heals", "optics")}}
-            return client.post("/api/state", {"name": name,
-                "versions": [version, *versions][:50], "origin": args.origin,
-                "historyLabel": f"Save version {args.name}"})
-        chosen = next((item for item in versions if item.get("id") == args.id), None)
-        if not chosen: raise ValueError("version not found")
-        if args.action == "delete":
-            if args.dry_run:
-                return {"dryRun": True, "action": "delete-version",
-                        "name": name, "id": args.id}
-            if not args.yes: raise PermissionError("version delete requires --yes")
-            return client.post("/api/state", {"name": name,
-                "versions": [item for item in versions if item.get("id") != args.id],
-                "origin": args.origin, "historyLabel": "Delete version"})
-        entry = {key: chosen[key] for key in
-                 ("params", "grade", "crop", "masks", "heals", "optics")
-                 if key in chosen}
-        return state_merge_update(client, [name], entry, args,
-                                  f"Restore version {chosen.get('name', '')}")
+        return snapshot_command(client, args, {"save": "create"}.get(args.action, args.action))
     if command == "export":
         if args.action == "status": return client.get("/api/export/status")
         if args.action == "recipes": return client.get("/api/export-recipes")
@@ -1059,6 +1042,56 @@ def dispatch_domain(client: Client, args):
             body.setdefault("targets", names[1:])
         return client.post("/api/match-exposure", body)
     raise ValueError(f"unsupported command family: {args.command}")
+
+
+SNAPSHOT_LIMIT = 50
+SNAPSHOT_STATE_KEYS = ("params", "grade", "crop", "masks", "heals", "optics")
+
+
+def snapshot_command(client: Client, args, action: str) -> dict | list:
+    """Named snapshots: list, create, rename, delete, restore.
+
+    A snapshot is one entry of the photo's ``versions`` array, saved through
+    ``/api/state`` like any other edit. Restoring one merges its settings and
+    records a History step of its own, so it can be undone in the window.
+    """
+    names = resolve_reference(client, args.ref)
+    if not names: raise ValueError("photo was not found")
+    name = names[0]
+    state = client.get(query("/api/state", name=name))
+    versions = list(state.get("versions") or [])
+    if action == "list": return versions
+    if action == "create":
+        label = " ".join(str(getattr(args, "name", None) or "").split())
+        if not label: label = time.strftime("%Y-%m-%d %H:%M", time.localtime())
+        version = {"id": uuid.uuid4().hex, "name": label[:80],
+            "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            **{key: state.get(key) for key in SNAPSHOT_STATE_KEYS}}
+        client.post("/api/state", {"name": name,
+            "versions": [version, *versions][:SNAPSHOT_LIMIT], "origin": args.origin,
+            "historyLabel": f"Create snapshot {label[:80]}"})
+        return {"ok": True, "name": name, "snapshot": version}
+    chosen = next((item for item in versions if item.get("id") == args.id), None)
+    if not chosen: raise ValueError("snapshot not found")
+    if action == "rename":
+        label = " ".join(str(args.name or "").split())[:80]
+        if not label: raise ValueError("snapshot name must not be empty")
+        renamed = [dict(item, name=label) if item.get("id") == args.id else item
+                   for item in versions]
+        client.post("/api/state", {"name": name, "versions": renamed,
+            "origin": args.origin, "historyLabel": f"Rename snapshot {label}"})
+        return {"ok": True, "name": name, "id": args.id, "snapshotName": label}
+    if action == "delete":
+        if args.dry_run:
+            return {"dryRun": True, "action": "delete-snapshot",
+                    "name": name, "id": args.id}
+        if not args.yes: raise PermissionError("snapshot delete requires --yes")
+        return client.post("/api/state", {"name": name,
+            "versions": [item for item in versions if item.get("id") != args.id],
+            "origin": args.origin, "historyLabel": f"Delete snapshot {chosen.get('name', '')}"[:80]})
+    entry = {key: chosen[key] for key in SNAPSHOT_STATE_KEYS if key in chosen}
+    return state_merge_update(client, [name], entry, args,
+                              f"Restore snapshot {chosen.get('name', '')}"[:80])
 
 
 def completion_script(shell: str) -> str:
