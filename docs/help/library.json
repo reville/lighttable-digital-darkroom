@@ -334,6 +334,7 @@
         "title": "Hide photos that can't be displayed",
         "paragraphs": [
           "When a thumbnail error is visible in the grid, choose Hide photos that can't be displayed beside the location summary. This enables the matching switch in Filter, which is off by default and saved between sessions. This switch is not saved in smart collection rules.",
+          "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.",
           "The switch hides known unavailable or cloud-only photos and observed thumbnail or preview failures. Other decoding failures are discovered as photos load. Turn the switch off, remove its chip, or choose Clear all to show the photos again. A successful Retry or a changed original clears the recorded failure."
         ]
       },

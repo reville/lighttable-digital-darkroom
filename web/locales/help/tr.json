@@ -574,6 +574,7 @@
           "title": "Görüntülenemeyen fotoğrafları gizle",
           "paragraphs": [
             "Izgarada bir küçük resim hatası görünüyorsa konum özetinin yanındaki Görüntülenemeyen fotoğrafları gizle seçeneğini seçin. Bu, Filtre içindeki ilgili anahtarı açar. Anahtar varsayılan olarak kapalıdır ve ayarı oturumlar arasında kaydedilir. Bu anahtar akıllı koleksiyon kurallarına kaydedilmez.",
+            "Film şeridinde, bu bağlantı fotoğraf sayısının altında yalnızca geçerli liste görüntülenemeyen fotoğraflar içerdiğinde görünür.",
             "Anahtar, kullanılamadığı veya yalnızca bulutta olduğu bilinen fotoğrafları ve küçük resim ya da önizleme hatası gözlenen fotoğrafları gizler. Diğer kod çözme hataları fotoğraflar yüklenirken belirlenir. Fotoğrafları yeniden göstermek için anahtarı kapatın, filtre etiketini kaldırın veya Tümünü temizle seçeneğini seçin. Başarılı bir Tekrar dene işlemi veya orijinalin değişmesi, kaydedilen hatayı temizler."
           ]
         },
@@ -3285,5 +3286,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "affe61a9aa5f016dbb1233381eaa20e89dac53194304bc6ba02c813d91dc0df2"
 }
