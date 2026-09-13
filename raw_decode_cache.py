@@ -29,6 +29,7 @@ class DecodedRawCache:
         self._lock = threading.Lock()
         self._entries = OrderedDict()
         self._pending = {}
+        self._waiters = {}
         self._bytes = 0
         self._generation = 0
         self._hits = self._misses = self._waits = 0
@@ -46,14 +47,20 @@ class DecodedRawCache:
                         hits=self._hits, misses=self._misses, waits=self._waits,
                         budget=self.max_bytes)
 
-    def get_or_build(self, key, build, check_cancel):
-        from raw_decode_runtime import RawDecodeCancelled
+    def waiting(self, key):
+        with self._lock:
+            return self._waiters.get(key, 0) > 0
+
+    def get_or_build(self, key, build, check_cancel, *, retain=True):
+        from raw_decode_runtime import RawDecodeCancelled, retained
 
         check_cancel()
         if key is None or not self.max_bytes:
             return build()
         # If another request owns this decode, wait without holding the cache
-        # lock. Its cancellation must not cancel an independent live consumer.
+        # lock. Its cancellation must not cancel an independent live consumer,
+        # and a live waiter keeps a superseded owner's decode running (adopts
+        # it) instead of restarting the same demosaic afterwards.
         while True:
             check_cancel()
             with self._lock:
@@ -70,6 +77,7 @@ class DecodedRawCache:
                     self._misses += 1
                 else:
                     self._waits += 1
+                    self._waiters[key] = self._waiters.get(key, 0) + 1
             if owner:
                 break
             try:
@@ -83,14 +91,22 @@ class DecodedRawCache:
             except RawDecodeCancelled:
                 check_cancel()
                 continue
+            finally:
+                with self._lock:
+                    remaining = self._waiters.get(key, 0) - 1
+                    if remaining > 0:
+                        self._waiters[key] = remaining
+                    else:
+                        self._waiters.pop(key, None)
         try:
-            pixels = build()
-            check_cancel()
+            with retained(lambda: self.waiting(key)):
+                pixels = build()
             pixels.flags.writeable = False
             with self._lock:
                 # Oversized captures can still complete, but do not displace
                 # the working set or permanently exceed the configured budget.
-                if generation == self._generation and pixels.nbytes <= self.max_bytes:
+                if (retain and generation == self._generation
+                        and pixels.nbytes <= self.max_bytes):
                     while self._entries and self._bytes + pixels.nbytes > self.max_bytes:
                         _, old = self._entries.popitem(last=False)
                         self._bytes -= old.nbytes
@@ -98,9 +114,12 @@ class DecodedRawCache:
                     self._bytes += pixels.nbytes
                 self._pending.pop(key, None)
             future.set_result(pixels)
-            return pixels
         except BaseException as error:
             with self._lock:
                 self._pending.pop(key, None)
             future.set_exception(error)
             raise
+        # Complete pixels are published to every waiter before a superseded
+        # owner learns that its own request is obsolete.
+        check_cancel()
+        return pixels

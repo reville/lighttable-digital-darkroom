@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Le anteprime di pellicola includono le modifiche della foto corrente. La navigazione e la chiusura della finestra di anteprima non applicano una pellicola; lo fa la scelta di un'anteprima.",
             "Una pellicola descrive il processo della pellicola fisica. Un predefinito di modifica può contenere regolazioni salvate più ampie e può includere anche impostazioni Film. Il menu Output dentro Film sceglie una ricetta di scansione o stampa; non esporta un file.",
-            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. Con Pellicola attiva, il primo fotogramma di una foto non memorizzata nella cache usa l’anteprima incorporata della fotocamera; la conversione accurata la sostituisce poco dopo e, fino ad allora, lo stato mostra “Rifinitura RAW…”. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile."
           ],
           "tips": [
             "Se una pellicola non è disponibile, potrebbe richiedere il motore GPU. La disponibilità del motore è mostrata in Impostazioni → Prestazioni."
@@ -3214,8 +3214,8 @@
         {
           "title": "Controlla cosa ha terminato il rendering",
           "paragraphs": [
-            "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte.",
-            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. La prima foto non memorizzata nella cache può impiegare un momento ad apparire. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
+            "Le anteprime della griglia vengono preparate in background quando aggiungi o riesamini le cartelle. Prima vengono mostrate anteprime grandi degli originali; le anteprime con le tue modifiche le sostituiscono appena sono pronte. Viene inoltre preparata un’anteprima standard di ogni RAW, in modo che la foto si apra senza attendere una decodifica completa.",
+            "Le foto RAW si aprono con lo sviluppo di LightTable, anche quando Pellicola è disattivata. Con Pellicola attiva, il primo fotogramma di una foto non memorizzata nella cache usa l’anteprima incorporata della fotocamera; la conversione accurata la sostituisce poco dopo e, fino ad allora, lo stato mostra “Rifinitura RAW…”. La barra di avanzamento mostra le fasi di elaborazione completate e scompare quando la foto è visibile.",
             "Quando cambi foto con lo zoom attivo, LightTable mostra subito un’anteprima corrispondente nella cache, se disponibile. I dettagli più nitidi vengono caricati in background e le foto vicine vengono precaricate per il tuo livello di zoom.",
             "Lo zoom mantiene l’anteprima più nitida disponibile mentre vengono caricati ulteriori dettagli. Riducendo lo zoom, l’anteprima viene riutilizzata. A 1:1, consulta il suggerimento del pulsante prima di valutare i dettagli fini.",
             "Se il tooltip del pulsante 1:1 segnala una dimensione in pixel dell'anteprima inferiore a quella della sorgente, stai visualizzando un'anteprima consegnata più piccola. La risoluzione automatica si adatta al display e aumenta la propria richiesta per la visualizzazione con zoom; sorgenti molto grandi possono superare il limite della richiesta di anteprima.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }

@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Las vistas previas de stock incluyen las ediciones de la foto actual. Explorar y cerrar la ventana de vista previa no aplica un stock; elegir una vista previa sí.",
             "Un stock de película describe el proceso físico de la película. Un ajuste preestablecido de edición puede contener ajustes guardados más amplios y también puede incluir ajustes de Película. El menú Salida dentro de Película elige una receta de escaneo o impresión; no exporta un archivo.",
-            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible."
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. Con Película activada, el primer fotograma de una foto sin caché usa la vista previa incrustada de la cámara; la conversión precisa la sustituye poco después y, hasta entonces, el estado muestra «Refinando RAW…». La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible."
           ],
           "tips": [
             "Si un stock no está disponible, puede requerir el motor GPU. La disponibilidad del motor se muestra en Ajustes → Rendimiento."
@@ -3214,8 +3214,8 @@
         {
           "title": "Compruebe qué ha terminado de renderizarse",
           "paragraphs": [
-            "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas.",
-            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
+            "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas. También se prepara una vista previa estándar de cada RAW para que la foto se abra sin esperar una decodificación completa.",
+            "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. Con Película activada, el primer fotograma de una foto sin caché usa la vista previa incrustada de la cámara; la conversión precisa la sustituye poco después y, hasta entonces, el estado muestra «Refinando RAW…». La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
             "Al cambiar de foto con el zoom ampliado, LightTable muestra inmediatamente una vista previa compatible en caché, si está disponible. Los detalles más nítidos se cargan en segundo plano y las fotos cercanas se precargan para tu nivel de zoom.",
             "El zoom conserva la vista previa más nítida disponible mientras se carga más detalle. Al alejar, se reutiliza esa vista previa. A 1:1, consulta la información emergente del botón antes de evaluar los detalles finos.",
             "Si la información sobre herramientas del botón 1:1 informa de que el tamaño en píxeles de la vista previa es menor que el de la fuente, está viendo una vista previa entregada más pequeña. La resolución automática ajusta a la pantalla y aumenta su solicitud para la visualización ampliada; las fuentes muy grandes pueden superar el límite de solicitud de la vista previa.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }

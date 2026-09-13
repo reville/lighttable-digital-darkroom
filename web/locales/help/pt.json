@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "As pré-visualizações de filme incluem as edições da foto atual. Navegar e fechar a janela de pré-visualização não aplica um filme; escolher uma pré-visualização, sim.",
             "Uma película de filme descreve o processo físico do filme. Uma predefinição de edição pode conter ajustes salvos mais amplos e também pode incluir configurações de Filme. O menu Saída dentro de Filme escolhe uma receita de digitalização ou impressão; ele não exporta um arquivo.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível."
           ],
           "tips": [
             "Se um filme não estiver disponível, ele pode exigir o mecanismo da GPU. A disponibilidade do mecanismo é mostrada em Ajustes → Desempenho."
@@ -3214,8 +3214,8 @@
         {
           "title": "Verifique o que já terminou de renderizar",
           "paragraphs": [
-            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
-            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+            "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas. Também é preparada uma pré-visualização padrão de cada RAW para que a foto abra sem esperar por uma decodificação completa.",
+            "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
             "Ao mudar de foto com o zoom ampliado, o LightTable mostra imediatamente uma pré-visualização correspondente em cache, se disponível. Os detalhes mais nítidos são carregados em segundo plano e as fotos próximas são pré-carregadas para o seu nível de zoom.",
             "O zoom mantém a prévia mais nítida disponível enquanto mais detalhes são carregados. Ao diminuir o zoom, essa prévia é reutilizada. Em 1:1, consulte a dica do botão antes de avaliar os detalhes finos.",
             "Se a dica de ferramenta do botão 1:1 informar um tamanho de pixel da pré-visualização menor que o da origem, você está vendo uma pré-visualização entregue menor. A resolução automática ajusta-se à tela e aumenta sua solicitação para visualização com zoom; origens muito grandes podem exceder o limite de solicitação da pré-visualização.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }

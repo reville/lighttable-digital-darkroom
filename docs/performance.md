@@ -38,6 +38,18 @@ Malformed generated TIFF/JPEG files are discarded and rebuilt.
 - Scan-time source thumbnails use one bounded, cancellable background worker,
   yielding to interaction. Measured RAW thumbnails retain rawpy: ImageIO was
   slower on the tested NEF and CR2 files.
+- Opening a photo (the navigation request) allows the embedded-camera draft
+  through the film pipeline and refines it; requests for a photo already on
+  screen still ask for accurate pixels only. Neighbour prefetch starts behind
+  the first frame instead of after the settled full-width render. A superseded
+  decode (a prefetch overtaken by the navigation it anticipated) keeps running
+  while a live request waits on it, so the demosaic completes once and serves
+  both instead of restarting. Import and rescan queue a standard-preview
+  worker after the source thumbnails: it prepares each RAW's accurate 1100 px
+  input (the editor's first-frame width) at the lowest admission priority
+  without retaining the demosaic in memory, so the first frame after
+  navigation costs one film render. The Rust input tier defaults to 2 GiB to
+  hold a few hundred of those previews alongside the working set.
 - macOS packaging adds a reproducible, relocatable OpenMP decoder for Bayer
   and X-Trans. X-Trans tiles run in dependency order to retain exact serial
 pixels; older wheels lacking that schedule retain stock decoding. See

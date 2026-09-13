@@ -3797,7 +3797,11 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       optics: S.optics, heals: S.heals,
       ...gradeBakeRequest(S.grade, S.masks),
       client: CLIENT_ID, generation: my, priority: 'interactive',
-      allow_draft: false,
+      // Opening a photo shows the embedded-camera draft through the film
+      // pipeline at once and refines it; every later request for a photo that
+      // is already on screen asks for accurate pixels only, so no draft is
+      // computed that could not be displayed.
+      allow_draft: phase === 'navigation',
       native: nativePreviewActive(),
       ...(viewport ? { viewport } : {}),
     };
@@ -3956,6 +3960,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       // creates a second temporary film result that will soon be replaced.
       const refinementRequest = { name: im.name, params: { ...request.params },
         w: requestedWidth, client: CLIENT_ID, generation: my };
+      // Neighbours start warming behind the draft; the decode gate keeps this
+      // photo's refinement ahead of their demosaics.
+      prefetch();
       const ready = await waitForRawRefinement({
         request: () => api('/api/refine', refinementRequest),
         isCurrent: () => my === S.seq && cur()?.name === im.name,
@@ -3982,7 +3989,9 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       settleRenderTimer = setTimeout(
         renderWhenIdle, FULL_RESOLUTION_SETTLE_MS);
     } else $('zoomwrap').setAttribute('aria-busy', 'false');
-    prefetch(m.refining || phase === 'interactive');
+    // Neighbours start warming behind the first frame; the decode gate keeps
+    // this photo's refinement ahead of their demosaics.
+    prefetch();
   } catch (e) {
     const failedAt = performance.now();
     if (my === S.seq) automaticPreviewRequest = null;
@@ -4605,9 +4614,8 @@ async function prefetchImage(target, epoch, generation, detail = false) {
   } catch (_) { /* A speculative miss must not interrupt navigation. */ }
 }
 
-function prefetch(refining = false) {
+function prefetch() {
   clearTimeout(prefetchTimer);
-  if (refining) return;
   const ordered = visible();
   const visibleIndex = ordered.indexOf(cur());
   if (visibleIndex < 0) return;

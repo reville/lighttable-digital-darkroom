@@ -463,7 +463,8 @@ def decode_raw(path: Path | str, params: dict | None = None,
                     return raw.postprocess(**fallback)
 
         rgb = RAW_DEMOSAIC_CACHE.get_or_build(
-            key, demosaic, raw_decode_runtime.check_cancel)
+            key, demosaic, raw_decode_runtime.check_cancel,
+            retain=raw_decode_runtime.retain_pixels())
     if mode in RAW_WB_PRESETS and mode != "daylight":
         temperature, tint = RAW_WB_PRESETS[mode]
         balanced = apply_custom_raw_white_balance(

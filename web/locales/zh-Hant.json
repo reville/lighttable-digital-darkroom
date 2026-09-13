@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "綠色",
     "Green label": "綠色標籤",
     "Greens": "綠色",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。",
     "Group and find people": "分群並尋找人物",
     "Group photos into collections": "將相片分組為集合",
     "Group similar faces and search names you add.": "將相似的臉部分組，並搜尋你新增的名稱。",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW 原始檔必須先渲染為已調整的 TIFF。若選取中包含 RAW 檔案，Processed original 便無法使用。對已處理相片，該選項會開啟原始檔，而不是先製作已調整的 TIFF。",
     "RAW originals only.": "僅限 RAW 原始檔。",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW 相片可顯示感光元件雜訊抑制與學習式降噪控制。按下套用降噪後，學習式降噪會在本機執行；移動強度不會即時執行。",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 照片開啟時即採用 LightTable 的顯影效果，即使關閉底片功能也是如此。首次開啟尚未快取的照片可能需要稍等片刻。進度列顯示已完成的處理階段，並在照片顯示後消失。",
     "RAW preview could not finish. Try the photo again.": "RAW 預覽無法完成。請再試一次此相片。",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "相機描述檔",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName}（遺失）"
+    "{fileName} (missing)": "{fileName}（遺失）",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 照片開啟時即採用 LightTable 的顯影效果，即使關閉底片功能也是如此。開啟底片功能後，尚未快取的照片的第一格會使用相機內嵌的預覽圖；精確的轉換結果隨後很快將其取代，在此之前狀態會顯示「正在精修 RAW…」。進度列顯示已完成的處理階段，並在照片顯示後消失。",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "新增或重新掃描資料夾時，網格預覽會在背景產生。首先顯示較大的原始照片預覽；包含您編輯效果的預覽準備就緒後，便會取代原始預覽。同時也會為每張 RAW 照片準備標準預覽，讓照片開啟時不必等待完整解碼。"
   },
   "plurals": {
     " · {count} paired file linked": {

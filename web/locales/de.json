@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Grün",
     "Green label": "Grünes Etikett",
     "Greens": "Grüntöne",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind.",
     "Group and find people": "Personen gruppieren und finden",
     "Group photos into collections": "Fotos in Sammlungen gruppieren",
     "Group similar faces and search names you add.": "Gruppieren Sie ähnliche Gesichter und suchen Sie nach den Namen, die Sie hinzufügen.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW-Originale müssen als angepasste TIFFs gerendert werden. Verarbeitetes Original ist nicht verfügbar, wenn die Auswahl eine RAW-Datei enthält. Bei verarbeiteten Fotos öffnet diese Option das Original, anstatt ein angepasstes TIFF vorzubereiten.",
     "RAW originals only.": "Nur RAW-Originale.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW-Fotos können Sensor-Rauschminderung und Erlernte Rauschminderung anzeigen. Erlernte Rauschminderung läuft lokal, wenn Sie Rauschminderung anwenden drücken; das Bewegen von Stärke führt sie nicht live aus.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
     "RAW preview could not finish. Try the photo again.": "Die RAW-Vorschau konnte nicht fertiggestellt werden. Versuche das Foto erneut.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "kameraprofil",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (fehlt)"
+    "{fileName} (missing)": "{fileName} (fehlt)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Bei eingeschaltetem Film verwendet das erste Bild eines noch nicht zwischengespeicherten Fotos die in der Kamera eingebettete Vorschau; die genaue Umwandlung ersetzt sie kurz darauf, und der Status zeigt bis dahin „RAW wird verfeinert…“. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind. Außerdem wird für jedes RAW eine Standardvorschau vorbereitet, damit das Foto geöffnet wird, ohne auf eine vollständige Dekodierung zu warten."
   },
   "plurals": {
     " · {count} paired file linked": {
