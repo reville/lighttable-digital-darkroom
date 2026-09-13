@@ -1884,7 +1884,8 @@ function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
   const active = canvas.width && canvas.height &&
-    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+    (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+     (S.activePane === 'cropPane' && S.geometryGuideMode));
   const geometry = active ? screenOverlayGeometry(
     canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
     $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
@@ -2005,6 +2006,24 @@ function drawEditOverlayNow() {
     }
     if (cursor === 'none') drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    const drawGuide = (points, kind, live) => {
+      const [[x0, y0], [x1, y1]] = points;
+      ctx.save();
+      ctx.lineWidth = live ? 1.5 : 2;
+      ctx.strokeStyle = kind === 'horizontal' ? '#f5384b' : '#4b9cf5';
+      ctx.globalAlpha = live ? 0.75 : 1;
+      ctx.beginPath();
+      ctx.moveTo(x0 * surface.width, y0 * surface.height);
+      ctx.lineTo(x1 * surface.width, y1 * surface.height);
+      ctx.stroke();
+      ctx.restore();
+    };
+    for (const guide of S.geometryGuides) drawGuide(guide.points, guide.kind, false);
+    const gesture = S.editGesture;
+    if (gesture?.type === 'geometry-guide' && gesture.end) {
+      drawGuide([gesture.start, gesture.end], S.geometryGuideKind, true);
+    }
   }
 }
 
@@ -2998,6 +3017,11 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
         spot, start: point, rect };
     }
     syncHealPanel(); drawEditOverlay();
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    $('editOverlay').setPointerCapture(event.pointerId);
+    S.editGesture = { type: 'geometry-guide', pointerId: event.pointerId,
+      start: point, end: point, rect };
+    drawEditOverlay();
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3048,10 +3072,32 @@ $('editOverlay').addEventListener('pointermove', (event) => {
     }
     drawEditOverlay();
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+  } else if (S.activePane === 'cropPane' && gesture.type === 'geometry-guide') {
+    gesture.end = point;
+    drawEditOverlay();
   }
 });
 function finishEditGesture(event) {
   if (!S.editGesture || S.editGesture.pointerId !== event.pointerId) return;
+  if (S.editGesture.type === 'geometry-guide') {
+    const gesture = S.editGesture;
+    S.editGesture = null;
+    if ($('editOverlay').hasPointerCapture(event.pointerId)) {
+      $('editOverlay').releasePointerCapture(event.pointerId);
+    }
+    if (event.type === 'pointerup') {
+      const end = overlayPoint(event, gesture.rect);
+      const length = Math.hypot((end[0] - gesture.start[0]) * gesture.rect.width,
+        (end[1] - gesture.start[1]) * gesture.rect.height);
+      if (length >= 8 && S.geometryGuides.length < 4) {
+        S.geometryGuides.push({ kind: S.geometryGuideKind,
+          points: [gesture.start, end] });
+        syncGuidedPanel();
+      }
+    }
+    drawEditOverlay();
+    return;
+  }
   if (S.editGesture.type === 'mask-color-sample') {
     const gesture = S.editGesture;
     S.editGesture = null;
@@ -6428,8 +6474,14 @@ function switchPane(id, { fromCompare = false } = {}) {
   });
   if (id === 'cropPane') { beginCropSession(); setCropMode(true); }
   else if (S.cropping) setCropMode(false);
+  if (id !== 'cropPane') {
+    S.geometryGuideMode = false; S.geometryGuides = [];
+    if ($('guidedPanel')) $('guidedPanel').hidden = true;
+    if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
+  }
   S.editGesture = null;
-  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane'));
+  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane' ||
+    (id === 'cropPane' && S.geometryGuideMode)));
   if (compareEditingBlocked()) setCompareActive(false);
   else syncCompareControl();
   if (id === 'maskPane') syncMaskPanel();
@@ -6979,13 +7031,17 @@ function showCurrentImage(im) {
   S.exif = {};
   S.rawDefault = null;
   S.pointColorPick = false; S.maskColorPick = false; S.wbPick = false;
+  S.geometryGuideMode = false; S.geometryGuides = [];
+  if ($('guidedPanel')) $('guidedPanel').hidden = true;
+  if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
   $('wbBtn').classList.remove('on');
   $('cmp').classList.remove('wb-picking', 'color-picking');
   restoreCropChoices(im.cropChoices);
   Object.assign(S, photoUndo.activate(im.name));
   updateUndoRedoButtons();
   syncControls(); syncGrade(); syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
-  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane');
+  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+    (S.activePane === 'cropPane' && S.geometryGuideMode));
   applyView();
   if (S.activePane === 'cropPane') beginCropSession();
   setCropMode(S.activePane === 'cropPane');
@@ -12126,19 +12182,20 @@ if ($('surveyKeep')) $('surveyKeep').onclick = keepSurveySelection;
 
 /* --------------------------------------------------- lens: auto-straighten */
 if ($('autoLevel')) {
-  const runGeometry = async (mode) => {
+  const runGeometry = async (mode, { guides, noteEl = $('autoLevelNote') } = {}) => {
     const im = cur();
     if (!im) return;
     const session = cropSession;
-    $('autoLevelNote').textContent = tr("Looking for lines…");
+    noteEl.textContent = guides ? tr("Solving from the drawn guides…") : tr("Looking for lines…");
     try {
-      const result = await api('/api/geometry/auto',
-                               { name: im.name, mode, rotate: S.params?.rotate || 0 });
+      const payload = { name: im.name, mode, rotate: S.params?.rotate || 0 };
+      if (guides) payload.guides = guides;
+      const result = await api('/api/geometry/auto', payload);
       if (cur()?.name !== im.name || cropSession !== session) return;
-      if (result.error) { $('autoLevelNote').textContent = result.error; return; }
+      if (result.error) { noteEl.textContent = result.error; return; }
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
-        $('autoLevelNote').textContent =
+        noteEl.textContent =
           (((result.notes || []).join(' ') || tr("No usable lines found.")));
         return;
       }
@@ -12148,14 +12205,79 @@ if ($('autoLevel')) {
       saveState(true);
       refreshBaseEdits();
       const confidence = Math.round((result.confidence || 0) * 100);
-      $('autoLevelNote').textContent =
+      noteEl.textContent =
         tr("{value} lines · {confidence}% confidence{value2}", {value: (result.lines || 0), confidence: confidence, value2: (result.notes || []).length ? ` · ${result.notes.join(' ')}` : ''});
+      return true;
     } catch (error) {
-      $('autoLevelNote').textContent = tr("Could not analyse this photo.");
+      noteEl.textContent = tr("Could not analyse this photo.");
     }
   };
   $('autoLevel').onclick = () => runGeometry('level');
   if ($('autoUpright')) $('autoUpright').onclick = () => runGeometry('full');
+
+  /* Guided upright: the operator draws 2-4 lines along edges that should be
+   * vertical or horizontal; those replace automatic line detection. Drawing
+   * claims the edit overlay exclusively, the same pointer-ownership model
+   * masks and heals use, so the ordinary crop-drag handlers stand down while
+   * a guide is being drawn. */
+  function syncEditOverlayActive() {
+    $('editOverlay').classList.toggle('active', !!cur() &&
+      (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+       (S.activePane === 'cropPane' && S.geometryGuideMode)));
+  }
+  function exitGuidedUpright() {
+    S.geometryGuideMode = false;
+    S.geometryGuides = [];
+    S.editGesture = null;
+    syncEditOverlayActive();
+    drawEditOverlay();
+    syncGuidedPanel();
+  }
+  function syncGuidedPanel() {
+    $('guidedUpright').setAttribute('aria-pressed', String(S.geometryGuideMode));
+    $('guidedPanel').hidden = !S.geometryGuideMode;
+    $('guidedKindVertical').setAttribute('aria-pressed', String(S.geometryGuideKind === 'vertical'));
+    $('guidedKindHorizontal').setAttribute('aria-pressed', String(S.geometryGuideKind === 'horizontal'));
+    $('guidedUndo').disabled = !S.geometryGuides.length;
+    $('guidedClear').disabled = !S.geometryGuides.length;
+    $('guidedApply').disabled = S.geometryGuides.length < 2;
+    if (S.geometryGuideMode) {
+      $('guidedNote').textContent = S.geometryGuides.length >= 2
+        ? tr("{count} lines drawn.", {count: S.geometryGuides.length})
+        : tr("Draw at least 2 lines.");
+    }
+  }
+  if ($('guidedUpright')) {
+    $('guidedUpright').onclick = () => {
+      if (S.activePane !== 'cropPane') return;
+      if (S.geometryGuideMode) { exitGuidedUpright(); return; }
+      S.geometryGuideMode = true;
+      S.geometryGuides = [];
+      syncEditOverlayActive();
+      syncGuidedPanel();
+      drawEditOverlay();
+    };
+    $('guidedKindVertical').onclick = () => {
+      S.geometryGuideKind = 'vertical'; syncGuidedPanel();
+    };
+    $('guidedKindHorizontal').onclick = () => {
+      S.geometryGuideKind = 'horizontal'; syncGuidedPanel();
+    };
+    $('guidedUndo').onclick = () => {
+      S.geometryGuides.pop(); syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedClear').onclick = () => {
+      S.geometryGuides = []; syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedApply').onclick = async () => {
+      if (S.geometryGuides.length < 2) return;
+      const guides = S.geometryGuides.map((guide) => ({
+        kind: guide.kind, points: guide.points,
+      }));
+      const ok = await runGeometry('full', { guides, noteEl: $('guidedNote') });
+      if (ok) exitGuidedUpright();
+    };
+  }
 }
 
 /* --------------------------------------------------------------- enhance */

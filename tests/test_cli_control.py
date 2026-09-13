@@ -24,6 +24,7 @@ from lighttable_cli.__main__ import (
     dispatch_domain,
     normalize_global_arguments,
     preset_state,
+    snapshot_command,
     state_merge_update,
 )
 from lighttable_cli.instances import discover, select
@@ -287,6 +288,109 @@ class CLIContractTests(unittest.TestCase):
             {"grade": curves}, strict=True)
         self.assertEqual(warnings, [])
         self.assertEqual(len(cleaned["grade"]["curveL"]), 256)
+
+    def test_snapshot_create_lists_and_restores(self):
+        class FakeClient:
+            def __init__(self):
+                self.state = {"params": {"exposure": 0.0}, "grade": {},
+                              "crop": None, "masks": [], "heals": [],
+                              "optics": dict(OPTICS_DEFAULTS), "versions": []}
+                self.posts = []
+
+            def get(self, _path):
+                return self.state
+
+            def post(self, path, body):
+                self.posts.append((path, body))
+                self.state = {**self.state, **{
+                    key: value for key, value in body.items()
+                    if key not in ("name", "origin", "historyLabel")}}
+                return {"ok": True}
+
+        client = FakeClient()
+        args = SimpleNamespace(ref="photo.raw", origin="test", name="Before crop")
+
+        created = snapshot_command(client, args, "create")
+        self.assertEqual(created["snapshot"]["name"], "Before crop")
+        self.assertEqual(len(client.state["versions"]), 1)
+        self.assertEqual(client.posts[-1][1]["historyLabel"],
+                         "Create snapshot Before crop")
+
+        listed = snapshot_command(client, SimpleNamespace(ref="photo.raw"), "list")
+        self.assertEqual(listed, client.state["versions"])
+
+        snapshot_id = created["snapshot"]["id"]
+        rename_args = SimpleNamespace(ref="photo.raw", origin="test",
+                                      id=snapshot_id, name="Landing crop")
+        renamed = snapshot_command(client, rename_args, "rename")
+        self.assertEqual(renamed["snapshotName"], "Landing crop")
+        self.assertEqual(client.state["versions"][0]["name"], "Landing crop")
+
+        client.state["params"] = {"exposure": 1.4}
+        restore_args = SimpleNamespace(ref="photo.raw", origin="test",
+                                       id=snapshot_id)
+        snapshot_command(client, restore_args, "restore")
+        self.assertEqual(client.posts[-1][1]["historyLabel"],
+                         "Restore snapshot Landing crop")
+        self.assertEqual(client.posts[-1][1]["params"], {"exposure": 0.0})
+
+        delete_dry_run = snapshot_command(client, SimpleNamespace(
+            ref="photo.raw", origin="test", id=snapshot_id,
+            dry_run=True, yes=False), "delete")
+        self.assertTrue(delete_dry_run["dryRun"])
+        self.assertEqual(len(client.state["versions"]), 1,
+                         "a dry run must not remove the snapshot")
+
+        with self.assertRaisesRegex(PermissionError, "requires --yes"):
+            snapshot_command(client, SimpleNamespace(
+                ref="photo.raw", origin="test", id=snapshot_id,
+                dry_run=False, yes=False), "delete")
+
+        snapshot_command(client, SimpleNamespace(
+            ref="photo.raw", origin="test", id=snapshot_id,
+            dry_run=False, yes=True), "delete")
+        self.assertEqual(client.state["versions"], [])
+
+    def test_history_snapshot_and_legacy_versions_commands_parse_and_dispatch(self):
+        class FakeClient:
+            def __init__(self):
+                self.state = {"versions": [], "params": {}, "grade": {},
+                              "crop": None, "masks": [], "heals": [],
+                              "optics": dict(OPTICS_DEFAULTS)}
+
+            def get(self, _path):
+                return self.state
+
+            def post(self, _path, body):
+                self.state = {**self.state, **{
+                    key: value for key, value in body.items()
+                    if key not in ("name", "origin", "historyLabel")}}
+                return {"ok": True}
+
+        parser = build_parser()
+        client = FakeClient()
+        args = parser.parse_args(normalize_global_arguments(
+            ["history", "snapshot", "create", "photo.raw", "--name", "Take 1"]))
+        result = dispatch(client, args)
+        self.assertEqual(result["snapshot"]["name"], "Take 1")
+
+        # The legacy `versions` command routes through the same handler and
+        # "save" maps to "create".
+        args = parser.parse_args(normalize_global_arguments(
+            ["versions", "save", "photo.raw", "--name", "Take 2"]))
+        result = dispatch(client, args)
+        self.assertEqual(result["snapshot"]["name"], "Take 2")
+        self.assertEqual(len(client.state["versions"]), 2)
+
+    def test_snapshot_rename_and_delete_require_a_known_id(self):
+        class FakeClient:
+            def get(self, _path):
+                return {"versions": []}
+
+        with self.assertRaisesRegex(ValueError, "snapshot not found"):
+            snapshot_command(FakeClient(), SimpleNamespace(
+                ref="photo.raw", origin="test", id="missing", name="x"),
+                "rename")
 
     def test_domain_dispatch_uses_named_route(self):
         class FakeClient:

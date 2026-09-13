@@ -15,12 +15,15 @@ import numpy as np
 import edits
 
 
-def linear_mask(start, end):
+def linear_mask(start, end, feather=None):
+    component = {"id": "c1", "type": "linear", "combine": "add",
+                 "invert": False, "start": list(start), "end": list(end)}
+    if feather is not None:
+        component["feather"] = feather
     return {
         "id": "m1", "name": "Gradient", "type": "linear", "enabled": True,
         "invert": False, "opacity": 1.0, "grade": {},
-        "components": [{"id": "c1", "type": "linear", "combine": "add",
-                        "invert": False, "start": list(start), "end": list(end)}],
+        "components": [component],
     }
 
 
@@ -65,6 +68,38 @@ class LinearGradientDegeneracyTests(unittest.TestCase):
                 a = float(coarse[32, round(u * 63)])
                 b = float(fine[256, round(u * 511)])
                 self.assertAlmostEqual(a, b, delta=0.03)
+
+
+class LinearGradientFeatherTests(unittest.TestCase):
+    """Feather narrows or widens a linear gradient's transition band,
+    centred on the midpoint between its two handles. The same expression,
+    pixel for pixel, is mirrored by canvasGeometryValues in web/app.js
+    (see tests/linear-gradient-feather-parity.test.mjs) and by
+    raster_component in rust-engine/src/export.rs."""
+
+    # start=(0.2, 0.5), end=(0.6, 0.5) on a 101-wide raster puts the
+    # handle-line projection at exactly t=0, 0.25, 0.5, 0.75, 1 for
+    # x=20, 30, 40, 50, 60, avoiding rounding entirely.
+    XS = (20, 30, 40, 50, 60)
+
+    def _weights(self, feather):
+        mask = edits.clean_masks([linear_mask((0.2, 0.5), (0.6, 0.5), feather)])[0]
+        raster = edits.raster_mask(mask, 3, 101)
+        return [float(raster[1, x]) for x in self.XS]
+
+    def test_default_feather_is_a_smoothstep_across_the_whole_span(self):
+        weights = self._weights(None)
+        for actual, expected in zip(weights, (0.0, 0.15625, 0.5, 0.84375, 1.0)):
+            self.assertAlmostEqual(actual, expected, places=5)
+
+    def test_zero_feather_is_a_hard_edge_at_the_midpoint(self):
+        weights = self._weights(0.0)
+        self.assertEqual(weights, [0.0, 0.0, 1.0, 1.0, 1.0])
+
+    def test_half_feather_narrows_the_band_symmetrically(self):
+        weights = self._weights(0.5)
+        for actual, expected in zip(weights, (0.0, 0.0, 0.5, 1.0, 1.0)):
+            self.assertAlmostEqual(actual, expected, places=5)
 
 
 class IntersectRefinementTests(unittest.TestCase):

@@ -53,5 +53,8 @@ export function createAppState(gradeDefaults, opticsDefaults) {
     maskColorPick: false,
     speed: null,
     softProof: { enabled: false, profile: 'srgb', paper: true, gamut: true },
+    // Guided upright: lines the operator draws over edges that should be
+    // vertical/horizontal, sent to /api/geometry/auto in place of detection.
+    geometryGuideMode: false, geometryGuideKind: 'vertical', geometryGuides: [],
   };
 }

@@ -1097,6 +1097,46 @@ mod tests {
     }
 
     #[test]
+    fn linear_feather_narrows_the_transition_band_symmetrically() {
+        // start=(0.2, 0.5), end=(0.6, 0.5) on a 101-wide raster puts the
+        // handle-line projection at exactly t=0, 0.25, 0.5, 0.75, 1 for
+        // x=20, 30, 40, 50, 60. The same geometry and expected weights are
+        // asserted independently in tests/test_mask_preview_parity.py's
+        // LinearGradientFeatherTests and
+        // tests/linear-gradient-feather-parity.test.mjs.
+        let xs = [20usize, 30, 40, 50, 60];
+        let component = |feather: f64| {
+            json!({"type": "linear", "start": [0.2, 0.5], "end": [0.6, 0.5],
+                   "feather": feather})
+        };
+        let sample = |feather: f64| -> Vec<f32> {
+            let layer = raster_component(&component(feather), 101, 3).unwrap();
+            xs.iter().map(|&x| layer[101 + x]).collect()
+        };
+
+        let full = sample(1.0);
+        for (actual, expected) in full.iter().zip([0.0, 0.15625, 0.5, 0.84375, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
+
+        // f32 arithmetic can land a hair short of the exact midpoint that
+        // f64 (Python, JS) lands on exactly, so the pixel sitting exactly on
+        // a zero-width hard edge is read as either side of it; every other
+        // pixel is unambiguous.
+        let hard = sample(0.0);
+        assert_eq!(hard[0], 0.0);
+        assert_eq!(hard[1], 0.0);
+        assert!(hard[2] == 0.0 || hard[2] == 1.0);
+        assert_eq!(hard[3], 1.0);
+        assert_eq!(hard[4], 1.0);
+
+        let half = sample(0.5);
+        for (actual, expected) in half.iter().zip([0.0, 0.0, 0.5, 1.0, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
+    }
+
+    #[test]
     fn radial_mask_limits_a_local_grade() {
         let mut samples = vec![0.25; 9 * 9 * 3];
         apply_masks(

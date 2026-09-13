@@ -749,6 +749,20 @@
           <div class="btnrow crop-rotate-row"><button id="rotL" title="Rotate 90° left" data-i18n-text="{&quot;1&quot;:&quot;Rotate left&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Rotate 90° left&quot;}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9a7 7 0 1 1 7 8M3 3v6h6"/></svg> Rotate left</button><button id="rotR" title="Rotate 90° right" data-i18n-text="{&quot;0&quot;:&quot;Rotate right&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Rotate 90° right&quot;}">Rotate right <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 9a7 7 0 1 0-7 8M17 3v6h-6"/></svg></button></div>
             <div class="btnrow stack-gap geometry-flip-actions" role="group" aria-label="Flip image" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Flip image&quot;}"><button id="lensFlipHorizontal" type="button" aria-pressed="false" data-i18n-text="{&quot;0&quot;:&quot;Flip horizontal&quot;}">Flip horizontal</button><button id="lensFlipVertical" type="button" aria-pressed="false" data-i18n-text="{&quot;0&quot;:&quot;Flip vertical&quot;}">Flip vertical</button></div>
           <details class="sec crop-perspective"><summary><span data-i18n-text="{&quot;0&quot;:&quot;Perspective&quot;}">Perspective</span></summary><div class="secbody"><button class="quiet full" id="autoUpright" data-i18n-text="{&quot;0&quot;:&quot;Auto upright&quot;}">Auto upright</button>
+            <button class="quiet full" id="guidedUpright" type="button" aria-pressed="false" title="Draw lines along edges that should be vertical or horizontal" data-i18n-text="{&quot;0&quot;:&quot;Guided…&quot;}" data-i18n-attrs="{&quot;title&quot;:&quot;Draw lines along edges that should be vertical or horizontal&quot;}">Guided…</button>
+            <div class="crop-guided-panel" id="guidedPanel" hidden>
+              <p class="hint" data-i18n-text="{&quot;0&quot;:&quot;Draw 2 to 4 lines on the photo along edges that should be vertical or horizontal, then apply.&quot;}">Draw 2 to 4 lines on the photo along edges that should be vertical or horizontal, then apply.</p>
+              <div class="btnrow stack-gap" role="group" aria-label="Guide line orientation" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Guide line orientation&quot;}">
+                <button class="quiet compact" id="guidedKindVertical" type="button" aria-pressed="true" data-i18n-text="{&quot;0&quot;:&quot;Vertical line&quot;}">Vertical line</button>
+                <button class="quiet compact" id="guidedKindHorizontal" type="button" aria-pressed="false" data-i18n-text="{&quot;0&quot;:&quot;Horizontal line&quot;}">Horizontal line</button>
+              </div>
+              <div class="btnrow stack-gap">
+                <button class="quiet compact" id="guidedUndo" type="button" disabled data-i18n-text="{&quot;0&quot;:&quot;Undo line&quot;}">Undo line</button>
+                <button class="quiet compact" id="guidedClear" type="button" disabled data-i18n-text="{&quot;0&quot;:&quot;Clear&quot;}">Clear</button>
+              </div>
+              <button class="primary-btn full" id="guidedApply" type="button" disabled data-i18n-text="{&quot;0&quot;:&quot;Apply guides&quot;}">Apply guides</button>
+              <p class="hint" id="guidedNote"></p>
+            </div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Vertical&quot;}">Vertical</span><input type="range" data-optics="vertical" min="-1" max="1" step="0.01"><span class="val" data-opticsv="vertical">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Horizontal&quot;}">Horizontal</span><input type="range" data-optics="horizontal" min="-1" max="1" step="0.01"><span class="val" data-opticsv="horizontal">0.00</span></div>
             <div class="row"><span class="name" data-i18n-text="{&quot;0&quot;:&quot;Scale&quot;}">Scale</span><input type="range" data-optics="scale" min="1" max="1.6" step="0.005" value="1"><span class="val" data-opticsv="scale">1.00</span></div>
