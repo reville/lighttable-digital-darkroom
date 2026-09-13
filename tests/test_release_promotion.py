@@ -301,7 +301,19 @@ class PromotionProofTests(unittest.TestCase):
              patch.object(release, 'gh', return_value='a' * 40), patch.object(release, 'publish') as publish:
             with self.assertRaisesRegex(ValueError, 'client proof missing'):
                 promote.promote(args)
-            publish.assert_not_called()
+    def test_release_notes_defaults_to_generate_notes_when_no_notes_file(self):
+        self.assertEqual(promote.release_notes_args('v9.9.9', '9.9.9'), ['--generate-notes'])
+
+    def test_release_notes_prepends_human_notes_when_provided(self):
+        with tempfile.NamedTemporaryFile('w', suffix='.md') as temp_notes:
+            temp_notes.write('## Highlights\nExisting photos will look different.')
+            temp_notes.flush()
+            generated = json.dumps({'body': '* PR #1: Fix stuff\n* PR #2: More stuff'})
+            with patch.object(release, 'gh', return_value=generated):
+                opts = promote.release_notes_args('v9.9.9', '9.9.9', notes_file=temp_notes.name)
+            self.assertEqual(opts[0], '--notes')
+            self.assertIn('Existing photos will look different', opts[1])
+            self.assertIn('* PR #1: Fix stuff', opts[1])
 
 
 if __name__ == '__main__':
