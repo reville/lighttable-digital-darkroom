@@ -27,11 +27,11 @@ DESCRIPTION = ("LightTable's interpretation, adjusted using reference "
 # their highlights are packed into the top of the range. The film model expects
 # scene light and adds its own toe and shoulder, which is why a finished JPEG
 # rendered as-is comes out flat and grey. Before filming, the expansion below
-# raises the linear values to this power around middle grey: grey stays put,
-# shadows fall back to where a scene would have them, and highlights extend
-# above 1.0 as scene highlights do. Metering is unaffected at middle grey, so
-# an edit with a fixed print exposure keeps its brightness. RAW decodes are
-# scene-linear already and are never expanded.
+# raises linear luminance to this power around a metered anchor, then scales
+# all three channels by the same gain. This preserves RGB ratios instead of
+# amplifying dominant colors. Shadows deepen and highlights can exceed 1.0;
+# this approximates scene contrast, not the camera's original tone mapping.
+# RAW decodes are scene-linear already and are never expanded.
 DISPLAY_EXPANSION = 1.8
 MIDDLE_GREY_LINEAR = 0.18
 # The film model's automatic exposure is a centre-weighted mean of luminance
@@ -67,20 +67,20 @@ def expansion_anchor(image: np.ndarray, *, encoded: bool,
     small = source[::step, ::step, :3].astype(np.float64)
     if encoded:
         small = _romm_decode(np.clip(small, 0.0, 1.0))
-    # The expansion is applied per channel and the meter reads luminance, so
-    # the means are taken per channel and combined with the luminance weights:
-    # mean(Y') = a**(1-k) * sum_c(coef_c * mean(x_c**k)) must equal mean(Y).
-    channels = np.maximum(small, 0.0)
-    height, width = channels.shape[:2]
+    # Use the same luminance curve as prepare_input: mean(Y') must equal
+    # mean(Y). Raising channels separately here would overestimate the anchor
+    # for colorful images and let automatic metering shift their exposure.
+    luminance = np.maximum(small @ PROPHOTO_Y, 0.0)
+    height, width = luminance.shape
     longest = max(height, width)
     x = (np.arange(width) / width - 0.5) * (width / longest)
     y = (np.arange(height) / height - 0.5) * (height / longest)
     weight = np.exp(-(x[None, :] ** 2 + y[:, None] ** 2) / (2.0 * ANCHOR_SIGMA ** 2))
-    weight = weight[:, :, None] / np.sum(weight)
-    mean = float(np.sum(weight * channels, axis=(0, 1)) @ PROPHOTO_Y)
+    weight = weight / np.sum(weight)
+    mean = float(np.sum(weight * luminance))
     if not np.isfinite(mean) or mean <= 1e-6:
         return MIDDLE_GREY_LINEAR
-    mean_power = float(np.sum(weight * channels ** expansion, axis=(0, 1)) @ PROPHOTO_Y)
+    mean_power = float(np.sum(weight * luminance ** expansion))
     anchor = (mean_power / mean) ** (1.0 / (expansion - 1.0))
     if not np.isfinite(anchor):
         return MIDDLE_GREY_LINEAR
@@ -103,6 +103,7 @@ TUNING_DIGEST = hashlib.sha256(json.dumps({
     "red": FROM_SRGB_RED.tolist(), "luminance": PROPHOTO_Y.tolist(),
     "algorithm": "source-yellow-green-contraction-v1",
     "display_expansion": DISPLAY_EXPANSION, "middle_grey": MIDDLE_GREY_LINEAR,
+    "display_expansion_algorithm": "luminance-ratio-v1",
     "anchor": [ANCHOR_PREVIEW, ANCHOR_SIGMA, list(ANCHOR_RANGE)],
 }, sort_keys=True).encode()).hexdigest()
 
@@ -180,13 +181,15 @@ def prepare_input(image: np.ndarray, spec: dict) -> np.ndarray:
             linear = np.where(linear < 0.03125, linear / 16.0,
                               np.maximum(linear, 0.0) ** 1.8)
         if expansion > 0:
-            # Anchored where the metered mean stays put, so exposure is
-            # unchanged and highlights are free to exceed 1.0. Non-positive
-            # values are left alone.
-            linear = np.where(
-                linear > 0,
-                anchor * (np.maximum(linear, 0.0) / anchor) ** expansion,
-                linear)
+            # Expand luminance, preserving each pixel's signed RGB ratios.
+            # The shared gain is Y'/Y = (Y/anchor)**(expansion-1), avoiding
+            # division by near-black luminance. Leave non-positive luminance
+            # alone and retain highlights above 1.0 for the film model.
+            luminance = linear @ PROPHOTO_Y
+            gain = np.ones_like(luminance)
+            positive = luminance > 0.0
+            gain[positive] = (luminance[positive] / anchor) ** (expansion - 1.0)
+            linear *= gain[:, None]
         rgb = linear @ TO_SRGB.T
         r, g, b = rgb.T
         delta = g - b

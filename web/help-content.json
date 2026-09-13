@@ -2575,7 +2575,7 @@
             "For Custom, adjust Temperature and Capture tint."
           ],
           "tips": [
-            "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve, so LightTable expands it back toward scene light around middle grey before filming: highlights get their range back and shadows fall to where the scene had them, while exposure at middle grey is unchanged. RAW files are scene light already and are not expanded."
+            "A JPEG, HEIF, TIFF, or other processed file already carries a tone curve. Before filming, LightTable expands its brightness range while preserving the proportions of red, green, and blue, so this preparation does not exaggerate an existing color cast. Automatic scene metering keeps the same exposure reference. This approximates scene contrast; it cannot recover detail already lost in the processed photo. RAW files are scene light already and are not expanded."
           ]
         },
         {
