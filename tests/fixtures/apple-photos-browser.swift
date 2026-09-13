@@ -143,5 +143,14 @@ PHPhotoLibrary.status = .authorized
 PHAsset.fixtures = []
 result = request(10)
 precondition((result["items"] as? [[String: Any]])?.isEmpty == true && result["total"] as? Int == 0)
+PHAsset.fixtures = (0..<5).map { PHAsset("photo-\($0)") }
+private let importedBrowser = ApplePhotosBrowser(isAssetImported: { $0.localIdentifier == "photo-0" }) { events.append($0) }
+importedBrowser.page(["requestId": 11])
+wait { events.contains { $0["requestId"] as? Int == 11 } }
+let importedResult = events.last { $0["requestId"] as? Int == 11 }!
+let importedItems = importedResult["items"] as? [[String: Any]]
+precondition(importedItems?[0]["imported"] as? Bool == true, "first item should be marked imported")
+precondition(importedItems?[1]["imported"] as? Bool == false, "second item should not be marked imported")
+importedBrowser.close()
 browser.close()
-print("PASS: permission, bounded pages/thumbnails, album scope, missing albums, limited access, changes, close, stale permission, empty library")
+print("PASS: permission, bounded pages/thumbnails, album scope, missing albums, limited access, changes, close, stale permission, empty library, imported status")

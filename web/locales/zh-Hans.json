@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445",
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -4476,7 +4476,9 @@
     "‹ Back": "‹ 返回",
     "← Back to articles": "← 返回文章",
     "← People": "← 人物",
-    "☆ Favorites": "☆ 收藏"
+    "☆ Favorites": "☆ 收藏",
+    "Imported": "已导入",
+    "{name} (Already imported)": "{name} (已导入)"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -20,8 +20,11 @@ function fixture(platform = 'macos', bridge = true) {
     focus() { document.activeElement = this; }
     getClientRects() { return this.hidden ? [] : [{}]; }
     querySelector(selector) {
-      if (selector === 'img') return this.children[0].children.find(child => child.tagName === 'IMG');
-      if (selector === '.apple-photos-preview > span') return this.children[0].children[0];
+      if (selector === 'img') return this.children[0]?.children?.find(child => child.tagName === 'IMG');
+      if (selector === '.apple-photos-preview > span') return this.children[0]?.children?.[0];
+      if (selector === '.apple-photos-preview') return this.children.find?.(child => child.classList?.contains('apple-photos-preview'));
+      if (selector === '.apple-photos-badge') return this.children.find?.(child => child.classList?.contains('apple-photos-badge'))
+        || this.children[0]?.children?.find?.(child => child.classList?.contains('apple-photos-badge'));
       return null;
     }
     querySelectorAll() { return []; }
@@ -131,3 +134,40 @@ test('selection remains capped at 500 across pages', () => {
   f.controller.nativeEvent({type: 'applePhotosImport', state: 'error', message: 'retry'});
   f.controller.close();
 });
+
+test('already imported photos are grayed out, unselectable, and skipped by select page', async () => {
+  const f = fixture(); f.capabilities(); f.controller.open();
+  f.page([
+    {id: 'imported-1', name: 'Imported.jpg', imported: true},
+    {id: 'fresh-1', name: 'Fresh.jpg', imported: false},
+  ]);
+  const [importedCard, freshCard] = f.cards();
+  assert.equal(importedCard.classList.contains('imported'), true);
+  assert.equal(importedCard['aria-disabled'], 'true');
+  assert.ok(importedCard.querySelector('.apple-photos-badge') !== null);
+  assert.equal(freshCard.classList.contains('imported'), false);
+
+  // Clicking an imported photo does not select it
+  importedCard.onclick();
+  assert.equal(f.all.get('applePhotosSelection').textContent, 'Selected: 0');
+  assert.equal(f.all.get('applePhotosImport').disabled, true);
+
+  // Selecting page selects only unimported photos
+  f.click('applePhotosSelectPage');
+  assert.equal(f.all.get('applePhotosSelection').textContent, 'Selected: 1');
+  f.click('applePhotosImport');
+  assert.deepEqual(f.actions.at(-1), {action: 'importBrowsedApplePhotos', assetIds: ['fresh-1']});
+
+  // Successful import marks fresh photo as imported and clears selection
+  f.controller.nativeEvent({type: 'applePhotosImport', importId: 'done-1', state: 'completed',
+    imported: 1, failures: 0, path: '/photos'});
+  await tick();
+  assert.equal(freshCard.classList.contains('imported'), true);
+  assert.equal(freshCard['aria-disabled'], 'true');
+  assert.equal(f.all.get('applePhotosSelection').textContent, 'Selected: 0');
+
+  // When all photos are imported, select page is disabled
+  assert.equal(f.all.get('applePhotosSelectPage').disabled, true);
+  f.controller.close();
+});
+

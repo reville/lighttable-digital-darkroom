@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "f68ad8be5002243425067bfc56ebb8181a51d2a56fc2ab2e4e8523caa1bce445",
+  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3",
   "pluralPairs": [
     {
@@ -1872,6 +1872,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.",
     "Import the originals from your Photos library.",
     "Import your presets",
+    "Imported",
     "Imported {count} photo from Apple Photos{value}",
     "Imported {count} photos from Apple Photos{value}",
     "Imported {value} preset",
@@ -4687,6 +4688,7 @@
     "{milliseconds} ms",
     "{mode} failed",
     "{mode} merge needs 2 to {limit} distinct originals",
+    "{name} (Already imported)",
     "{name} (partial identity)",
     "{name} already exists in that folder",
     "{name} already exists; no files were moved",
