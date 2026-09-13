@@ -1,4 +1,5 @@
 name: Windows client VM acceptance
+run-name: Windows clients for build ${{ inputs.build_run_id }} source ${{ inputs.source_revision }} installer ${{ inputs.installer_sha256 }}
 
 on:
   workflow_dispatch:
