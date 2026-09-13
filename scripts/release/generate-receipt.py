@@ -1,17 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-only
-"""Generate a structured markdown release receipt from verified promotion results.
+"""Generate an offline receipt from exact promotion and distribution results.
 
-Collects evidence from:
-  1. Promotion result JSONs (.build/release-promotion/*.json or release/manifest.json)
-  2. Public GitHub Release asset metadata and checksums
-  3. CI workflow run IDs
-
-Formats the receipt according to docs/releases/0.7.0-20260913.md standard.
-
-Usage:
-    python3 scripts/release/generate-receipt.py --version 0.7.0
-    python3 scripts/release/generate-receipt.py --manifest release/manifest.json --output docs/releases/0.7.0.md
+A release manifest is descriptive metadata, not proof of publication. Missing
+promotion/channel results remain unverified. This command never queries GitHub,
+infers a successful dispatch, or claims website deployment from a source merge.
 """
 from __future__ import annotations
 
@@ -19,152 +12,100 @@ import argparse
 from datetime import datetime, timezone
 import json
 from pathlib import Path
-import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
-REPOSITORY = "reville/lighttable-digital-darkroom"
+sys.path.insert(0, str(ROOT / 'scripts/release'))
+import release_process as release
+from release_evidence import base, distribution_outcomes, load_promotions, public, validate_promotion
 
 
-def gh(*args: str) -> str:
-    try:
-        return subprocess.check_output(["gh", *args], text=True)
-    except Exception as e:
-        return ""
-
-
-def get_public_release_data(tag: str) -> dict:
-    raw = gh("api", f"repos/{REPOSITORY}/releases/tags/{tag}")
-    if raw:
-        try:
-            return json.loads(raw)
-        except Exception:
-            pass
-    return {}
-
-
-def format_receipt(version: str, manifest: dict, release_data: dict, notes_summary: str = "") -> str:
-    today_utc = datetime.now(timezone.utc).strftime("%B %d, %Y")
-    date_code = datetime.now(timezone.utc).strftime("%Y%m%d")
-    source_rev = manifest.get("source_revision", "")
-    platforms = manifest.get("platforms", {})
-
-    lines = [
-        f"# LightTable {version} Release Receipt — {today_utc} (UTC)",
-        "",
-        f"Operational record for the LightTable {version} multi-platform release.",
-        "",
-        "## Summary",
-        "",
-        "- **Release versions**:",
-    ]
-
-    for plat_name, pdata in sorted(platforms.items()):
-        plat_label = "Linux" if "linux" in plat_name else ("macOS" if "macos" in plat_name else "Windows")
-        lines.append(f"  - {plat_label}: `{pdata.get('version', version)}` ({pdata.get('channel', 'stable')})")
-
-    lines.extend([
-        f"- **Source revision**: [`{source_rev}`](https://github.com/{REPOSITORY}/commit/{source_rev})",
-        f"- **Tags**: `v{version}`" + (f" and `macos-v{platforms.get('macos-arm64', {}).get('version', version)}`" if "macos-arm64" in platforms else ""),
-    ])
-
+def format_receipt(version, manifest, release_data=None, notes_summary='', distribution=None,
+                   checked_at=None, promotions=None):
+    release.validate_manifest(manifest)
+    release.require(manifest['version'] == base(version), 'Aggregate manifest version mismatch')
+    source = manifest['source_revision']
+    promotions = promotions or {}
+    for platform, result in promotions.items():
+        validate_promotion(result, version, source)
+        release.require(platform == result['platform'] and platform in manifest['platforms'], 'Promotion platform is absent from aggregate')
+        current = manifest['platforms'][platform]
+        incoming = result['manifest']['platforms'][platform]
+        release.require(current['version'] == result['version']
+                        and current.get('source_revision', source) == source
+                        and current.get('tag', manifest.get('tag')) == result['tag'], 'Aggregate platform identity differs from promotion')
+        current_assets = {asset['name']: asset for asset in current['artifacts']}
+        release.require(all(current_assets.get(asset['name']) == asset for asset in incoming['artifacts']), 'Aggregate artifact differs from promotion')
+    channels = distribution_outcomes(distribution, version, source)
+    checked = datetime.fromisoformat(checked_at.replace('Z', '+00:00')) if checked_at else datetime.now(timezone.utc)
+    release.require(checked.tzinfo is not None, 'checked-at must include a timezone')
+    checked = checked.astimezone(timezone.utc)
+    complete = sum(public(result) for result in promotions.values())
+    lines = [f'# LightTable {version} release receipt', '',
+             f'Checked: {checked.isoformat()}', f'Source: `{source}`',
+             f'Public promotion proof: {complete} of {len(manifest["platforms"])} indexed platforms verified.', '']
     if notes_summary:
-        lines.append(f"- **Release notes focus**: {notes_summary}")
-
-    # Public artifacts table
-    lines.extend([
-        "",
-        "## Public artifacts and verification",
-        "",
-        "| Platform | Asset | Size (bytes) | SHA-256 |",
-        "| --- | --- | --- | --- |",
-    ])
-
-    assets = release_data.get("assets", [])
-    asset_by_name = {a["name"]: a for a in assets}
-
-    for plat_name, pdata in sorted(platforms.items()):
-        for art in pdata.get("artifacts", []):
-            name = art.get("name", "")
-            size = art.get("bytes", asset_by_name.get(name, {}).get("size", "—"))
-            sha = art.get("sha256", "—")
-            lines.append(f"| {plat_name} | `{name}` | {size} | `{sha}` |")
-
-    # If npm package is attached
-    npm_asset = next((a for a in assets if a["name"].startswith("lighttable-digital-darkroom-") and a["name"].endswith(".tgz")), None)
-    if npm_asset:
-        lines.append(f"| npm package | `{npm_asset['name']}` | {npm_asset['size']} | (signed provenance) |")
-
-    # Updater feeds section
-    lines.extend([
-        "",
-        "## Updater feeds (`desktop-updates`)",
-        "",
-    ])
-    if "linux-x86_64" in platforms:
-        linux_p = platforms["linux-x86_64"]
-        lines.append(f"- **Linux** `linux-x86_64.json`: `signed.version` {linux_p.get('version', version)}, `signed.source_revision` {source_rev[:7]}.")
-    if "windows-x64" in platforms:
-        win_p = platforms["windows-x64"]
-        lines.append(f"- **Windows** `appcast-windows-x64.xml`: `sparkle:version` {win_p.get('version', version)}.")
-    if "macos-arm64" in platforms:
-        lines.append("- **macOS beta**: manual updates; in-app updates disabled.")
-
-    # Package distribution channels
-    lines.extend([
-        "",
-        "## Package distribution channels",
-        "",
-        f"1. **Homebrew tap**: `reville/homebrew-lighttable` Casks/lighttable@beta.rb updated to {platforms.get('macos-arm64', {}).get('version', version)}.",
-        f"2. **Scoop bucket**: `reville/scoop-lighttable` update.yml dispatched.",
-        f"3. **npm CLI**: `lighttable-digital-darkroom` {version} published via npm-publish.yml.",
-        f"4. **Canonical manifest**: `release/manifest.json` synchronized.",
-        "",
-        "## Publishing.md Index Row",
-        "",
-        "```markdown",
-        f"| macOS direct, Apple silicon | **{platforms.get('macos-arm64', {}).get('version', version)} public prerelease** | See the [{version} receipt](releases/{version}-{date_code}.md). |",
-        f"| Linux portable, x86_64 | **{platforms.get('linux-x86_64', {}).get('version', version)} public** | See the [{version} receipt](releases/{version}-{date_code}.md). |",
-        f"| Windows direct x64 | **{platforms.get('windows-x64', {}).get('version', version)} public** | See the [{version} receipt](releases/{version}-{date_code}.md). |",
-        "```",
-    ])
-
-    return "\n".join(lines) + "\n"
+        lines += [notes_summary, '']
+    lines += ['## Platform evidence', '',
+              '| Platform | Version | Tag | State | Build / native runs | Evidence |',
+              '| --- | --- | --- | --- | --- | --- |']
+    for platform, entry in sorted(manifest['platforms'].items()):
+        result = promotions.get(platform)
+        tag = result['tag'] if result else entry.get('tag', manifest.get('tag', 'unverified'))
+        state = ('published' if public(result) else 'blocked') if result else 'unverified'
+        runs = []
+        if result:
+            runs.append(f"build {result['build_run_id']}")
+            native = result['manifest']['platforms'][platform].get('native_run_id')
+            if native:
+                runs.append(f'native {native}')
+            if result.get('promotion_run_id'):
+                runs.append(f"promotion {result['promotion_run_id']}")
+        lines.append(f"| {platform} | {entry['version']} | {tag} | {state} | {', '.join(runs) or 'unverified'} | {(result or {}).get('_path', 'unverified')} |")
+    lines += ['', '## Artifact identities', '', '| Platform | Asset | Bytes | SHA-256 |', '| --- | --- | ---: | --- |']
+    for platform, result in sorted(promotions.items()):
+        for artifact in result['manifest']['platforms'][platform]['artifacts']:
+            lines.append(f"| {platform} | [{artifact['name']}]({artifact['url']}) | {artifact['bytes']} | `{artifact['sha256']}` |")
+    lines += ['', '## Update feeds', '']
+    for platform in sorted(manifest['platforms']):
+        result = promotions.get(platform)
+        advanced = result and public(result) and result.get('feed_advanced') is True
+        lines.append(f'- {platform}: ' + ('advanced by the verified promotion.' if advanced else 'advancement not verified by this receipt.'))
+    lines += ['', '## Distribution', '']
+    for channel in ('homebrew', 'scoop', 'npm'):
+        outcome = channels.get(channel, {'state': 'unverified'})
+        evidence = json.dumps(outcome.get('evidence', {}), sort_keys=True)
+        lines.append(f"- {channel}: {outcome['state']}. Evidence: `{evidence}`.")
+    lines += ['', 'Website deployment and canonical manifest synchronization: unverified by these input files.', '']
+    return '\n'.join(lines)
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--version", required=True, help="Release version (e.g. 0.7.0)")
-    parser.add_argument("--manifest", default="release/manifest.json", help="Path to manifest.json")
-    parser.add_argument("--output", help="Output receipt path (defaults to stdout)")
-    args = parser.parse_args()
-
-    manifest_path = Path(args.manifest)
-    if not manifest_path.is_file():
-        manifest_path = ROOT / args.manifest
-
-    if not manifest_path.is_file():
-        print(f"✗ Manifest file not found: {args.manifest}", file=sys.stderr)
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--version', required=True)
+    parser.add_argument('--manifest', type=Path, default=ROOT / 'release/manifest.json')
+    parser.add_argument('--promotion-result', action='append', type=Path, default=[])
+    parser.add_argument('--distribution-result', type=Path)
+    parser.add_argument('--checked-at')
+    parser.add_argument('--output', type=Path)
+    args = parser.parse_args(argv)
+    try:
+        manifest = json.loads(args.manifest.read_text())
+        promotions = load_promotions(args.promotion_result, args.version, manifest['source_revision'])
+        distribution = json.loads(args.distribution_result.read_text()) if args.distribution_result else None
+        receipt = format_receipt(args.version, manifest, promotions=promotions,
+                                 distribution=distribution, checked_at=args.checked_at)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(receipt)
+            print(f'Receipt written: {args.output}')
+        else:
+            print(receipt)
+        return 0
+    except (OSError, ValueError, TypeError, KeyError) as error:
+        print(f'Release receipt: {error}', file=sys.stderr)
         return 1
 
-    manifest = json.loads(manifest_path.read_text())
-    release_data = get_public_release_data(f"v{args.version}")
 
-    notes_path = ROOT / f"docs/releases/notes/v{args.version}.md"
-    notes_summary = notes_path.read_text().strip() if notes_path.is_file() else ""
-
-    receipt = format_receipt(args.version, manifest, release_data, notes_summary)
-
-    if args.output:
-        out_path = Path(args.output)
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        out_path.write_text(receipt)
-        print(f"✓ Receipt written to {out_path}")
-    else:
-        print(receipt)
-
-    return 0
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())

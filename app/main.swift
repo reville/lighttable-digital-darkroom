@@ -1659,6 +1659,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         },
         event: { [weak self] in self?.sendEvent($0) }
     )
+    private var browsingPhotosImporter: PhotosLibraryImporter?
     private var browsingPhotosImportEvent: [String: Any]?
     private var photosLibraryImporter: PhotosLibraryImporter?
     private var photosLibraryImportEvent: [String: Any]?

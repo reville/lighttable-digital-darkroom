@@ -39,9 +39,10 @@ class FilmTuningTests(unittest.TestCase):
         out = ft.prepare_input(source, spec)
         np.testing.assert_allclose(out[0,0], source[0,0], atol=1e-7, rtol=0)
         # Highlights are scene-linear now and may exceed display white.
-        self.assertGreater(float(out[0,1,0]), 3.9)
-        self.assertLess(float(out[0,1,2]), float(source[0,1,2]))
-        # Zero and negative values are untouched; the expansion is monotonic.
+        self.assertGreater(float(out[0,1,0]), 1.0)
+        np.testing.assert_allclose(out[0,1] / out[0,1,0],
+                                   source[0,1] / source[0,1,0], atol=1e-7)
+        # Non-positive luminance is untouched; the neutral curve is monotonic.
         self.assertEqual(float(out[0,2,0]), 0.)
         self.assertEqual(float(out[0,2,1]), float(source[0,2,1]))
         ramp = np.linspace(0, 1, 512, dtype=np.float32)[None, :, None].repeat(3, axis=2)
@@ -51,6 +52,36 @@ class FilmTuningTests(unittest.TestCase):
         np.testing.assert_array_equal(untouched, source)
         with self.assertRaises(ValueError):
             ft.prepare_input(source, dict(spec, display_expansion=9.))
+
+    def test_expansion_preserves_color_ratios_and_does_not_mutate_input(self):
+        # Include dominant red, green and blue, warm skin, saturated highlights,
+        # signed wide-gamut channels, and tiny positive values near black.
+        colors = np.array([[.8,.4,.2], [.2,.8,.1], [.1,.2,.9], [.45,.2,.08],
+                           [2.,.1,.05], [-.01,.1,.05], [.1,-.01,.05],
+                           [0.,0.,0.], [1e-30,2e-30,3e-30]], np.float32)
+        source = colors[None].copy()
+        saved = source.copy()
+        spec = dict(version=1, green_amount=0., display_expansion=ft.DISPLAY_EXPANSION)
+        with np.errstate(divide='raise', invalid='raise', over='raise'):
+            out = ft.prepare_input(source, spec)
+        self.assertTrue(np.isfinite(out).all())
+        np.testing.assert_array_equal(source, saved)
+        np.testing.assert_array_equal(out[0,7], [0.,0.,0.])
+        # Normalized channels must agree independently of the luminance curve.
+        np.testing.assert_allclose(out[0,:7] / np.max(abs(out[0,:7]), axis=1)[:,None],
+                                   colors[:7] / np.max(abs(colors[:7]), axis=1)[:,None],
+                                   atol=1e-7, rtol=1e-6)
+        luminance = colors[:7].astype(np.float64) @ ft.PROPHOTO_Y
+        expected = ft.MIDDLE_GREY_LINEAR * (luminance / ft.MIDDLE_GREY_LINEAR) ** ft.DISPLAY_EXPANSION
+        np.testing.assert_allclose(out[0,:7] @ ft.PROPHOTO_Y, expected, rtol=1e-6)
+
+    def test_expansion_decodes_romm_before_preserving_linear_ratios(self):
+        linear = np.array([[[.001,.002,.001], [.45,.2,.08], [.05,.2,.35]]], np.float32)
+        encoded = np.where(linear < 1/512, linear * 16, linear ** (1/1.8)).astype(np.float32)
+        spec = dict(version=1, green_amount=0., display_expansion=1.8)
+        expected = ft.prepare_input(linear, spec)
+        actual = ft.prepare_input(encoded, dict(spec, input_cctf_decoding=True))
+        np.testing.assert_allclose(actual, expected, atol=2e-7, rtol=1e-6)
 
     def test_expansion_anchor_keeps_the_metered_mean(self):
         # The film meter is a centre-weighted mean of luminance; anchoring the
@@ -70,7 +101,7 @@ class FilmTuningTests(unittest.TestCase):
         self.assertAlmostEqual(spec['display_expansion_anchor'], anchor)
         out = ft.prepare_input(encoded, spec)
         before = metered(ft._romm_decode(encoded))
-        self.assertLess(abs(metered(out) - before) / before, 0.01)
+        self.assertLess(abs(metered(out) - before) / before, 1e-6)
         # Without pixels the anchor is middle grey, and an explicit anchor wins.
         self.assertEqual(fp.rust_tuning_request({'stock': 'kodak_ektar_100'})['input_tuning']['display_expansion_anchor'], ft.MIDDLE_GREY_LINEAR)
         self.assertEqual(fp.rust_tuning_request({'stock': 'kodak_ektar_100'}, image=encoded, anchor=0.3)['input_tuning']['display_expansion_anchor'], 0.3)
