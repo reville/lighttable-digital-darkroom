@@ -574,6 +574,7 @@
           "title": "Fotos ausblenden, die nicht angezeigt werden können",
           "paragraphs": [
             "Wenn im Raster ein Vorschaubildfehler sichtbar ist, wähle neben der Ortsangabe Fotos ausblenden, die nicht angezeigt werden können. Dadurch wird der entsprechende Schalter unter Filter aktiviert. Er ist standardmäßig ausgeschaltet und seine Einstellung bleibt zwischen Sitzungen erhalten. Dieser Schalter wird nicht in den Regeln intelligenter Sammlungen gespeichert.",
+            "Im Filmstreifen wird dieser Link unter der Fotoanzahl nur angezeigt, wenn die aktuelle Liste Fotos enthält, die nicht angezeigt werden können.",
             "Der Schalter blendet bekanntermaßen nicht verfügbare oder nur in der Cloud gespeicherte Fotos sowie Fotos mit fehlgeschlagenen Miniaturansichten oder Vorschauen aus. Weitere Dekodierungsfehler werden beim Laden der Fotos erkannt. Schalte ihn aus, entferne seinen Filterchip oder wähle Alle löschen, um die Fotos wieder anzuzeigen. Ein erfolgreiches Erneut versuchen oder ein geändertes Original löscht den erfassten Fehler."
           ]
         },
@@ -2048,7 +2049,8 @@
         {
           "title": "Personen oder Gesichtsbereiche auswählen",
           "paragraphs": [
-            "Personen bietet Person, Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne, Haare und Haut glätten. Diese Steuerelemente benötigen den Vision-Helfer unter macOS 14 oder neuer und sind unter Linux und Windows ausgeblendet. Gesichtshaut und Haare werden geschätzt, und es wird keine Identität abgeleitet."
+            "Personen bietet Person und Haare auf jeder Plattform. Gesichtshaut, Augen, Augenbrauen, Lippen, Zähne und Haut glätten erfordern den Vision-Helfer unter macOS 14 oder neuer. Gesichtshaut wird geschätzt, und es wird keine Identität abgeleitet.",
+            "Haare verwendet ein mitgeliefertes Modell, das lokal ausgeführt wird und Haare auch außerhalb des Gesichts auswählt, einschließlich schulterlangem Haar. Prüfen Sie feine Strähnen, helle Lichter, Perücken und kleine Personen im Hintergrund; diese können dennoch übersehen werden. Ältere oder Quell-Builds ohne das Modell verwenden, falls verfügbar, die frühere Vision-Schätzung. Vorhandene gespeicherte Masken behalten ihre Auswahlen."
           ],
           "steps": [
             "Personen wählen und dann den Teil, den Sie anpassen möchten.",
@@ -2453,7 +2455,7 @@
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
             "Ein Filmstock beschreibt den physischen Filmprozess. Eine Bearbeitungsvorgabe kann breitere gespeicherte Anpassungen enthalten und möglicherweise auch Film-Einstellungen. Das Ausgabe-Menü innerhalb von Film wählt ein Scan- oder Druckrezept; es exportiert keine Datei.",
-            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Bei eingeschaltetem Film verwendet das erste Bild eines noch nicht zwischengespeicherten Fotos die in der Kamera eingebettete Vorschau; die genaue Umwandlung ersetzt sie kurz darauf, und der Status zeigt bis dahin „RAW wird verfeinert…“. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
           ],
           "tips": [
             "Wenn ein Film nicht verfügbar ist, kann die GPU-Engine erforderlich sein. Die Verfügbarkeit der Engine wird in Einstellungen → Leistung angezeigt."
@@ -3349,8 +3351,8 @@
         {
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
-            "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind.",
-            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+            "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind. Außerdem wird für jedes RAW eine Standardvorschau vorbereitet, damit das Foto geöffnet wird, ohne auf eine vollständige Dekodierung zu warten.",
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Bei eingeschaltetem Film verwendet das erste Bild eines noch nicht zwischengespeicherten Fotos die in der Kamera eingebettete Vorschau; die genaue Umwandlung ersetzt sie kurz darauf, und der Status zeigt bis dahin „RAW wird verfeinert…“. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
             "Wenn du bei vergrößerter Ansicht das Foto wechselst, zeigt LightTable sofort eine passende Vorschau aus dem Cache, sofern verfügbar. Schärfere Details werden im Hintergrund geladen und benachbarte Fotos für deine Zoomstufe vorgeladen.",
             "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
@@ -3420,5 +3422,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "90775436556536d7d6760e09dd0ad4c4184b06737025d1cd003454f1e7c3bf09"
+  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
 }

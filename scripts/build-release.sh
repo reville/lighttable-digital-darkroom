@@ -217,6 +217,29 @@ uv pip install --no-config --system --break-system-packages --no-deps --reinstal
   "$ROOT/scripts/relocate-python-runtime.py" \
   "$APP/Contents/Resources/Python"
 
+# Build preparation fetches only the pinned model; runtime inference is offline.
+"$APP/Contents/Resources/Python/bin/python3.13" -B \
+  "$ROOT/scripts/fetch-hair-model.py" --into "$ROOT/scripts/models"
+for MODEL_ASSET in selfie_multiclass_256x256.tflite HairSegmentation-APACHE-2.0.txt hair-model.json; do
+  /usr/bin/ditto "$ROOT/scripts/models/$MODEL_ASSET" \
+    "$APP/Contents/Resources/models/$MODEL_ASSET"
+done
+
+# Exercise the actual interpreter and native LiteRT libraries after moving the
+# bundle. Always restore the output path, including when inference fails.
+(
+  HAIR_SMOKE_ROOT="$(mktemp -d "$OUTPUT_DIR/.hair-smoke.XXXXXX")"
+  HAIR_SMOKE_APP="$HAIR_SMOKE_ROOT/LightTable moved.app"
+  trap '/bin/mv "$HAIR_SMOKE_APP" "$APP"; /bin/rmdir "$HAIR_SMOKE_ROOT"' EXIT
+  /bin/mv "$APP" "$HAIR_SMOKE_APP"
+  PYTHONPATH="$HAIR_SMOKE_APP/Contents/Resources/LightTable" \
+  LIGHTTABLE_MODEL_DIR="$HAIR_SMOKE_APP/Contents/Resources/models" \
+    "$HAIR_SMOKE_APP/Contents/Resources/Python/bin/python3.13" -B \
+    "$ROOT/scripts/smoke-hair-mask.py" \
+    --model-dir "$HAIR_SMOKE_APP/Contents/Resources/models" \
+    --image "$ROOT/tests/fixtures/photos/portrait.jpg"
+)
+
 LIGHTTABLE_MODEL_DIR="$APP/Contents/Resources/models" \
   "$PAYLOAD/build/LightTableEnhance" --probe \
   | /usr/bin/grep -q '"denoise":true'

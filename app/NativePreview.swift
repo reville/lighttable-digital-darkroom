@@ -354,6 +354,7 @@ final class NativePreviewRenderer {
     private var loadTask: URLSessionDataTask?
     private var originalLoadTask: URLSessionDataTask?
     private var originalURL: URL?
+    private var loadedOriginalURL: URL?
     private var requestedGeneration = 0
     private var awaitingPhoto = false
     private var preparingSurface = false
@@ -365,8 +366,8 @@ final class NativePreviewRenderer {
         pendingInteraction = nil
         loadTask?.cancel()
         originalLoadTask?.cancel()
+        originalLoadTask = nil
     }
-    private var requestedOriginalGeneration = 0
     private var renderScheduled = false
     var onInteractionPresented: (([String: Any]) -> Void)?
     private var pendingInteraction: [String: Any]?
@@ -483,6 +484,7 @@ final class NativePreviewRenderer {
     func hide() {
         loadTask?.cancel()
         originalLoadTask?.cancel()
+        originalLoadTask = nil
         view.isHidden = true
         cancelPreloads()
     }
@@ -636,44 +638,87 @@ final class NativePreviewRenderer {
         scheduleRender()
     }
 
-    func loadOriginal(_ surface: NativeSurfaceDescription, generation: Int) {
-        requestedOriginalGeneration = generation
-        if originalURL == surface.url, originalTexture != nil {
+    /// The original's URL without its width: zooming asks for a sharper copy of
+    /// the same photo, which may replace the loaded one only after it arrives.
+    private static func originalIdentity(_ url: URL) -> String {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        else { return url.absoluteString }
+        components.queryItems = components.queryItems?.filter { $0.name != "w" }
+        return components.string ?? url.absoluteString
+    }
+
+    func loadOriginal(_ surface: NativeSurfaceDescription, generation _: Int) {
+        let url = surface.url
+        if url == loadedOriginalURL, originalTexture != nil {
+            originalLoadTask?.cancel()
+            originalLoadTask = nil
+            originalURL = url
             scheduleRender()
             return
         }
+        // Every presentation repeats this request while a full-resolution RAW
+        // original develops; restarting it would discard that work.
+        if url == originalURL, originalLoadTask != nil { return }
         originalLoadTask?.cancel()
-        originalURL = surface.url
-        originalTexture = nil
-        var request = URLRequest(url: surface.url)
-        request.cachePolicy = .returnCacheDataElseLoad
-        let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
-            guard let self, error == nil, let data else { return }
-            do {
-                let texture = try self.textureLoader.newTexture(
-                    data: data,
-                    options: [
-                        .SRGB: false,
-                        .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
-                        .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
-                    ])
-                DispatchQueue.main.async {
-                    guard generation == self.requestedOriginalGeneration,
-                          surface.url == self.originalURL else { return }
+        originalLoadTask = nil
+        if let loaded = loadedOriginalURL,
+           Self.originalIdentity(loaded) != Self.originalIdentity(url) {
+            // Never compare against another photo or rotation.
+            originalTexture = nil
+            loadedOriginalURL = nil
+            scheduleRender()
+        }
+        originalURL = url
+        fetchOriginal(url, attempt: 0)
+    }
+
+    private func fetchOriginal(_ url: URL, attempt: Int) {
+        var request = URLRequest(url: url)
+        // Originals are immutable, but a retry must not replay a cached failure.
+        request.cachePolicy = attempt == 0 ? .returnCacheDataElseLoad : .reloadIgnoringLocalCacheData
+        // Developing a large RAW original can take longer than the default minute.
+        request.timeoutInterval = 600
+        var task: URLSessionDataTask?
+        task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else { return }
+            let cancelled = (error as NSError?)?.code == NSURLErrorCancelled
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 200
+            let texture = !cancelled && error == nil && (200..<300).contains(status)
+                ? data.flatMap { try? self.textureLoader.newTexture(data: $0, options: [
+                    .SRGB: false,
+                    .textureUsage: NSNumber(value: MTLTextureUsage.shaderRead.rawValue),
+                    .textureStorageMode: NSNumber(value: MTLStorageMode.shared.rawValue),
+                ]) }
+                : nil
+            DispatchQueue.main.async {
+                guard let task, self.originalLoadTask === task else { return }
+                self.originalLoadTask = nil
+                guard !cancelled, self.originalURL == url else { return }
+                if let texture {
                     self.originalTexture = texture
+                    self.loadedOriginalURL = url
                     self.render()
+                } else if attempt < 2 {
+                    // The loaded original stays visible while this is retried.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(attempt + 1)) {
+                        guard self.originalURL == url, self.originalLoadTask == nil else { return }
+                        self.fetchOriginal(url, attempt: attempt + 1)
+                    }
+                } else {
+                    // Let the next presentation request it again.
+                    self.originalURL = self.loadedOriginalURL
                 }
-            } catch {
-                return
             }
         }
         originalLoadTask = task
-        task.resume()
+        task?.resume()
     }
 
     func clearOriginal() {
         originalLoadTask?.cancel()
+        originalLoadTask = nil
         originalURL = nil
+        loadedOriginalURL = nil
         originalTexture = nil
         scheduleRender()
     }
