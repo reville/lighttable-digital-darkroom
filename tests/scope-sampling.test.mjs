@@ -81,6 +81,7 @@ function scopes({ canvas, sample = null } = {}) {
     $: () => ({ ...(canvas ? canvas.cv : {}),
       getContext: () => (canvas ? canvas.ctx : null) }),
     refreshWebGLSamplingSurface: () => refreshes.push(true),
+    updateSamplerReadouts: () => {},
   });
   vm.runInContext(
     `${slice("let scopeMode = 'histogram';", "document.querySelectorAll('[data-scope]')")}

@@ -31,6 +31,7 @@ DOMAIN_ACTIONS = {
     "soft-proof": ["profiles", "render"],
     "prefs": ["get", "set"],
     "match-exposure": ["run"],
+    "contact-sheet": ["create"],
 }
 
 
@@ -58,6 +59,7 @@ ROUTE_COVERAGE = {
                 "/api/presets/community", "/api/presets/community/recipe",
                 "/api/presets/community/install", "/api/presets/submission"],
     "export": ["/api/export", "/api/export/status", "/api/export-recipes"],
+    "contact-sheet": ["/api/contact-sheet"],
     "jobs": ["/api/jobs", "/api/jobs/<id>", "/api/jobs/<id>/cancel"],
     "import": ["/api/import/catalog", "/api/import/report", "/api/import/status",
                "/api/import/sidecars", "/api/sidecars/write", "/api/sidecars/status"],
@@ -101,6 +103,7 @@ INTERNAL_ROUTES = {
     "/api/people/thumbnail": "local face crop used by the People gallery",
     "/api/desktop-theme": "read-only Linux desktop palette for interface chrome",
     "/api/export/preview": "read-only export dialog delivery example",
+    "/api/heal/dust-detect": "read-only dust selection overlay for the Remove panel",
     "/api/thumb/rendered": "edit-aware browser thumbnail replacement",
     "/api/render/native": "native surface transport",
     "/api/render/png": "lossless corrected preview transport",
@@ -241,6 +244,24 @@ def schema(options: dict | None = None) -> dict:
                     "sidecar": {"type": "boolean"},
                     "filenameTemplate": {"type": "string"},
                     "collision": {"enum": ["rename", "skip", "overwrite"]},
+                    "border": {"type": "object", "additionalProperties": False,
+                               "description": "Plain margin added after resizing; size is a fraction of the long edge.",
+                               "properties": {
+                                   "enabled": {"type": "boolean", "default": False},
+                                   "size": {"type": "number", "minimum": 0, "maximum": 0.25, "default": 0.03},
+                                   "tone": {"type": "number", "minimum": 0, "maximum": 1, "default": 1}}},
+                },
+            },
+            "contactSheet": {
+                "type": "object",
+                "description": "Options for contact-sheet create; photos come from the references.",
+                "properties": {
+                    "columns": {"type": "integer", "minimum": 2, "maximum": 10, "default": 5},
+                    "width": {"enum": [2400, 3600, 4800], "default": 3600},
+                    "background": {"enum": ["white", "grey", "black"], "default": "white"},
+                    "captions": {"type": "array", "items": {"enum": ["filename", "stock", "rating"]}},
+                    "title": {"type": "string", "maxLength": 80},
+                    "destination": {"type": "string", "default": "film-exports"},
                 },
             },
             "stateUpdate": {

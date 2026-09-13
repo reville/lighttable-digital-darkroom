@@ -122,6 +122,14 @@ Hair uses a bundled local segmentation model that follows hair below the face
 and distinguishes it from skin and clothing. Fine strands, bright highlights,
 and small distant people can still be missed.
 
+Remove paints strokes as well as spots and can fill them from matching texture
+elsewhere in the photo. Dust and scratches clears small marks from film scans
+across the whole photo and shows what it found before you keep it. Masks add
+Lens blur, whose radius follows the mask’s strength, and luminosity-only tone
+curves. Curve eyedroppers set black, grey, and white points, and up to four
+colour samplers read RGB and L* values as you edit. Exports can add a plain
+border, and Contact Sheet lays a selection out on one captioned JPEG.
+
 In Effects, Vignette darkens or brightens the edges. Size controls how much of
 the center stays clear, and Feather controls how softly the effect blends in.
 Existing edits keep their original vignette appearance with the default Size

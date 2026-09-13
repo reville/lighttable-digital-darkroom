@@ -1096,7 +1096,13 @@
         "tự động",
         "biểu đồ histogram",
         "cắt xén",
-        "trước khi"
+        "trước khi",
+        "bộ lấy mẫu màu",
+        "bộ lấy mẫu màu",
+        "bộ lấy mẫu",
+        "giá trị RGB",
+        "số đo",
+        "đo lường"
       ],
       "sections": [
         {
@@ -1126,6 +1132,21 @@
           "tips": [
             "Nếu Tự động báo đang chờ bản xem trước hình ảnh, hãy để bản xem trước tải xong rồi thử lại.",
             "Menu scope cũng cung cấp Waveform, RGB Parade và Vectorscope để kiểm tra tông và màu."
+          ]
+        },
+        {
+          "title": "Đo màu bằng bộ lấy mẫu",
+          "paragraphs": [
+            "Bộ lấy mẫu màu hiển thị giá trị đỏ, xanh lá và xanh dương (0–255) cùng độ sáng L* của tối đa bốn vị trí trong ảnh. Các số đo cập nhật khi bạn chỉnh sửa, nên bạn có thể kiểm tra thẻ xám, nền phim hoặc tông da trong lúc điều chỉnh."
+          ],
+          "steps": [
+            "Nhấp nút bộ lấy mẫu bên cạnh biểu đồ histogram.",
+            "Nhấp vào ảnh để đặt một bộ lấy mẫu. Đặt tối đa bốn bộ.",
+            "Đọc các giá trị bên dưới biểu đồ histogram. Dùng × để xóa một bộ lấy mẫu."
+          ],
+          "tips": [
+            "Bộ lấy mẫu đọc bản chỉnh sửa đang hiển thị. Chúng thuộc về phiên cửa sổ hiện tại và không được lưu cùng ảnh.",
+            "Nhấn Escape để dừng đặt bộ lấy mẫu."
           ]
         }
       ],
@@ -1604,7 +1625,15 @@
         "đen",
         "lớp phủ",
         "né sáng",
-        "đốt cháy"
+        "đốt cháy",
+        "làm mờ ống kính",
+        "làm mờ hậu cảnh",
+        "làm mờ",
+        "bokeh",
+        "độ sâu trường ảnh",
+        "độ sáng",
+        "hòa trộn độ sáng",
+        "giữ nguyên màu"
       ],
       "sections": [
         {
@@ -1661,10 +1690,26 @@
           ]
         },
         {
+          "title": "Làm mờ một phần ảnh",
+          "paragraphs": [
+            "Làm mờ ống kính trong mục Hiệu ứng của mặt nạ làm mềm vùng đã chọn giống như một ống kính bị lệch nét. Bán kính làm mờ tăng theo cường độ của mặt nạ, nên mép đã làm mềm hoặc dải độ sâu sẽ nhạt dần thay vì dừng lại ở một đường cứng.",
+            "Hiệu ứng làm mờ được áp dụng cho ảnh hoàn chỉnh, sau khi kết xuất phim và các điều chỉnh khác của mặt nạ. Nó cũng làm mịn hạt phim bên trong vùng bị làm mờ."
+          ],
+          "steps": [
+            "Tạo mặt nạ Đối tượng rồi chọn Đảo ngược, hoặc dùng mặt nạ Độ sâu cho một dải khoảng cách, hoặc vẽ mặt nạ Hình tròn rồi đảo ngược nó.",
+            "Mở rộng Hiệu ứng và tăng Làm mờ ống kính. Đợi bản xem trước cập nhật rồi mới đánh giá.",
+            "Tinh chỉnh vùng chọn bằng Thêm, Trừ hoặc Làm mềm mép ở những nơi hiệu ứng làm mờ tràn lên các mép sắc nét."
+          ],
+          "tips": [
+            "Chỉ các điểm ảnh được chọn mới góp vào hiệu ứng làm mờ, nên đối tượng sắc nét không bị lem vào hậu cảnh mờ. Hãy kiểm tra các mép mảnh như tóc ở tỷ lệ 1:1."
+          ]
+        },
+        {
           "title": "Điều chỉnh đường cong tông cục bộ",
           "steps": [
             "Mở rộng Đường cong tông cho mặt nạ đã chọn và chọn RGB, Đỏ, Xanh lá hoặc Xanh dương.",
             "Bấm vào đồ thị để thêm một điểm, rồi kéo nó. Di chuyển điểm lên sẽ làm sáng đầu ra của nó; di chuyển xuống sẽ làm tối nó. Bấm đúp vào một điểm bên trong để xóa nó.",
+            "Bật Chỉ độ sáng để thay đổi độ sáng mà không làm lệch màu hoặc độ bão hòa.",
             "Dùng Đặt lại đường cong để chỉ đặt lại kênh đã chọn của mặt nạ này, hoặc Hoàn tác để đảo ngược một chỉnh sửa."
           ],
           "tips": [
@@ -1819,7 +1864,7 @@
       "id": "editing-remove-heal",
       "title": "Xóa các vết bẩn và tinh chỉnh các chỉnh sửa bằng Heal hoặc Clone",
       "category": "Editing",
-      "summary": "Sơn lên các chi tiết gây xao lãng, kiểm tra độ hiện rõ của vết sửa, và di chuyển nguồn hoặc mục tiêu của một chỉnh sửa.",
+      "summary": "Xóa các chấm và nét đã tô, làm sạch bụi và vết xước trên toàn bộ ảnh, và tinh chỉnh các hiệu chỉnh Chữa hoặc Nhân bản.",
       "keywords": [
         "xóa bỏ",
         "chữa",
@@ -1831,7 +1876,18 @@
         "hiển thị điểm bụi",
         "nguồn",
         "mục tiêu",
-        "làm xao nhãng"
+        "làm xao nhãng",
+        "bụi và vết xước",
+        "vết xước",
+        "tóc",
+        "dây điện",
+        "cọ",
+        "nét vẽ",
+        "lấp đầy",
+        "lấp đầy kết cấu",
+        "tô lấp theo nội dung",
+        "bản quét phim",
+        "vết"
       ],
       "sections": [
         {
@@ -1842,22 +1898,44 @@
           ],
           "steps": [
             "Chọn Remove, Heal, hoặc Clone, rồi đặt Kích thước, Làm mềm mép, và Độ mờ.",
-            "Nhấp vào một vết hoặc kéo qua một chi tiết gây phân tâm trong ảnh.",
+            "Với Xóa bỏ, chọn Chấm để nhấp hoặc kéo tạo một hiệu chỉnh hình tròn, hoặc Cọ để tô dọc theo vết xước, sợi tóc hoặc dây điện.",
+            "Với Xóa bỏ, hãy chọn Lấp đầy. Khớp kết cấu xung quanh sao chép chi tiết lân cận từ ảnh; Hòa trộn mượt hòa các mép vào trong và phù hợp với vùng đồng đều như bầu trời.",
+            "Nhấp vào một chấm, kéo qua một chi tiết gây phân tâm hoặc tô một nét trong ảnh.",
             "Với các đốm bụi nhỏ, bật Visualize Spots và chỉnh Threshold để làm cho biên dễ kiểm tra hơn.",
             "Tắt Visualize Spots và kiểm tra bức ảnh đã được sửa."
           ],
           "tips": [
-            "Chọn một hiệu chỉnh và chọn một chế độ khác sẽ thay đổi chế độ của hiệu chỉnh đó."
+            "Chọn một hiệu chỉnh và chọn một chế độ khác sẽ thay đổi chế độ của hiệu chỉnh đó.",
+            "Khớp kết cấu xung quanh chỉ sao chép điểm ảnh từ ảnh này; tính năng này không bao giờ tạo ra chi tiết mới. Thay đổi Lấp đầy áp dụng cho hiệu chỉnh Xóa bỏ đang chọn. Các hiệu chỉnh được tạo trước khi có lựa chọn này vẫn giữ Hòa trộn mượt.",
+            "Một nét cọ chứa tối đa 256 điểm. Hãy nhả ra và tô một nét khác để tiếp tục."
+          ]
+        },
+        {
+          "title": "Xóa bụi và vết xước trên toàn bộ ảnh",
+          "paragraphs": [
+            "Bụi và vết xước tìm các vết nhỏ nổi bật rõ so với xung quanh, chẳng hạn bụi trên bản quét phim, rồi lấp chúng bằng các điểm ảnh lân cận. Tính năng này chạy trên toàn bộ ảnh như một hiệu chỉnh ở đầu danh sách, nên các hiệu chỉnh sau lấy mẫu từ ảnh đã được làm sạch.",
+            "Vết lớn nhất đặt độ rộng tối đa của một vết được tính, theo tỷ lệ cạnh ngắn của ảnh. Độ nhạy đặt mức khác biệt mà một vết phải có so với xung quanh. Giá trị cao hơn tìm được các vết mờ nhạt hơn nhưng cũng dễ bắt nhầm chi tiết nhỏ hơn."
+          ],
+          "steps": [
+            "Mở Xóa bỏ và mở rộng Bụi và vết xước.",
+            "Để bắt đầu, đặt Vết lớn nhất rộng hơn một chút so với bụi bạn thấy, và giữ Độ nhạy ở 50%.",
+            "Nhấp Xóa bụi. Hiện các vết phát hiện được sẽ viền đỏ những gì đã tìm thấy và cho biết số vết tìm được.",
+            "Phóng to vào tóc, sao, điểm sáng trong mắt và chữ. Nếu chúng bị bắt nhầm, hãy giảm Độ nhạy hoặc Vết lớn nhất, hoặc giảm Độ mờ.",
+            "Tắt Hiện các vết phát hiện được để đánh giá kết quả."
+          ],
+          "tips": [
+            "Chọn hiệu chỉnh Bụi trong danh sách để thay đổi sau này. Dùng Bật chỉnh sửa này để so sánh kết quả và Xóa hiệu chỉnh để xóa nó.",
+            "Các vết xước dài và mảnh được tìm thấy khi độ rộng của chúng nhỏ hơn Vết lớn nhất. Hãy tô các vết xước rộng hơn bằng cọ Xóa bỏ."
           ]
         },
         {
           "title": "Tinh chỉnh một hiệu chỉnh hiện có",
           "paragraphs": [
-            "Chọn một hiệu chỉnh trong danh sách để hiện các điều khiển của nó. Các vòng tròn trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Heal và Clone, nguồn.",
+            "Chọn một hiệu chỉnh trong danh sách để hiển thị các điều khiển của nó. Các vòng tròn hoặc nét trên ảnh cho biết mục tiêu có thể chỉnh sửa và, với Chữa và Nhân bản, cả vùng nguồn.",
             "Phóng to để đặt chính xác. Các đường viền hình tròn và các ghim vẫn sắc nét ở mọi mức thu phóng; các hình tròn tiếp tục hiển thị cùng một vùng của ảnh."
           ],
           "steps": [
-            "Kéo vòng tròn mục tiêu để đổi vị trí chỉnh sửa, hoặc chọn Move Target và nhấp vào vị trí mới của nó.",
+            "Kéo vòng tròn mục tiêu hoặc nét đã tô để đổi vị trí hiệu chỉnh, hoặc chọn Di chuyển mục tiêu và nhấp vào vị trí mới của nó.",
             "Với Heal hoặc Clone, kéo vòng tròn nguồn đến một vùng tốt hơn. Refresh Source thử một vị trí nguồn khác.",
             "Điều chỉnh Làm mềm mép hoặc Độ mờ nếu mép hoặc cường độ của hiệu chỉnh cần tinh chỉnh.",
             "Chuyển Bật hiệu chỉnh này để so sánh, hoặc dùng Xóa hiệu chỉnh để loại bỏ nó."
@@ -2049,7 +2127,15 @@
         "xanh dương",
         "tương phản",
         "điểm điều khiển",
-        "đường cong s"
+        "đường cong s",
+        "ống nhỏ giọt",
+        "điểm đen",
+        "điểm trắng",
+        "điểm xám",
+        "điểm xám",
+        "trung tính",
+        "ám màu",
+        "levels"
       ],
       "sections": [
         {
@@ -2067,6 +2153,21 @@
           "tips": [
             "Dùng vài điểm và so sánh ảnh trong khi làm; các đường cong kênh có thể tạo ra ám màu mạnh.",
             "Đường cong đã lưu hoặc đã nhập sẽ giữ nguyên bảng đã lưu chính xác cho đến khi bạn chỉnh sửa nó. Ứng dụng dựng lại các tay nắm đại diện để chỉnh sửa, vì vậy điều chỉnh đầu tiên có thể làm thay đổi một đường cong đã nhập vượt quá điểm bạn kéo."
+          ]
+        },
+        {
+          "title": "Đặt điểm đen, xám và trắng",
+          "paragraphs": [
+            "Các ống nhỏ giọt bên dưới đường cong điểm đặt các đường cong đỏ, xanh lá và xanh dương từ một vị trí trong ảnh. Điểm đen làm vùng lấy mẫu thành đen, Điểm trắng làm nó thành trắng, và Điểm xám làm nó trung tính mà vẫn giữ độ sáng. Điều này hữu ích để loại bỏ ám màu khỏi bản quét."
+          ],
+          "steps": [
+            "Mở Chỉnh sửa, mở rộng Đường cong và chọn Điểm đen, Điểm xám hoặc Điểm trắng.",
+            "Nhấp vào vùng trong ảnh cần thành màu đen, xám trung tính hoặc trắng.",
+            "Kiểm tra các đường cong R, G và B, rồi tinh chỉnh hoặc đặt lại nếu kết quả quá mạnh."
+          ],
+          "tips": [
+            "Điểm đen cần một vùng tối hơn xám trung bình, còn Điểm trắng cần một vùng sáng hơn xám trung bình. Nhấn Escape để hủy ống nhỏ giọt.",
+            "Các ống nhỏ giọt chuyển Đường cong sang chế độ Điểm vì chúng chỉnh sửa các đường cong kênh."
           ]
         },
         {
@@ -2529,7 +2630,11 @@
         "chất lượng",
         "kích thước đầy đủ",
         "độ phân giải",
-        "thiết lập sẵn"
+        "thiết lập sẵn",
+        "viền",
+        "khung",
+        "mờ",
+        "lề"
       ],
       "sections": [
         {
@@ -2542,6 +2647,17 @@
             "Mở Xuất và chọn một thiết lập sẵn ở phía trên.",
             "Đặt Kích thước thành cỡ Đầy đủ hoặc giới hạn cạnh dài.",
             "Kiểm tra Output preview: kích thước xuất phản ánh xoay và cắt xén, và giới hạn cạnh dài sẽ giảm kích thước ảnh lớn hơn mà không phóng to ảnh nhỏ hơn."
+          ]
+        },
+        {
+          "title": "Thêm viền",
+          "paragraphs": [
+            "Viền trong Nâng cao thêm một lề trơn màu trắng, xám hoặc đen quanh mỗi ảnh được xuất. Lề được thêm sau khi đổi kích thước, nên độ rộng của nó là một tỷ lệ của cạnh dài khi xuất, và ảnh đầu ra lớn hơn ảnh đúng bằng lề đó ở mỗi cạnh."
+          ],
+          "steps": [
+            "Mở Xuất và mở rộng Nâng cao.",
+            "Chọn Mỏng, Vừa hoặc Rộng trong Viền, rồi chọn Màu viền.",
+            "Kiểm tra Bản xem trước đầu ra để biết kích thước cuối cùng."
           ]
         },
         {
@@ -2665,7 +2781,10 @@
         "đã gắn sao",
         "lô",
         "hủy",
-        "tiến trình"
+        "tiến trình",
+        "bảng ảnh thu nhỏ",
+        "bản in thử",
+        "bản in chỉ mục"
       ],
       "sections": [
         {
@@ -2688,6 +2807,22 @@
             "Ảnh đã chọn sử dụng các ảnh đã chọn vẫn đang được hiển thị bởi thư mục, bộ sưu tập và bộ lọc hiện tại. Nếu không còn mục nào trong vùng chọn xuất hiện, nó sẽ sử dụng ảnh đang hoạt động. Kiểm tra số lượng ảnh và tên trong Xuất trước khi bắt đầu.",
             "Picked only, Rated 1+, và All except rejected chọn các ảnh tĩnh khớp từ danh mục đang hoạt động, và có thể bao gồm ảnh bên ngoài bộ sưu tập hoặc bộ lọc đang hiển thị. Selected photos cung cấp khả năng kiểm soát rõ ràng đối với tập hợp.",
             "Nếu một lô ghi ra nhiều thư mục, Hiển thị trong Finder sẽ mở ảnh đầu tiên được xuất thành công. Liên kết này sẽ không có khi không có ảnh nào được xuất. Dùng Hủy xuất để yêu cầu dừng. Chi tiết xuất báo cáo số lượng đã hoàn tất, đã bỏ qua và đã hủy, cùng với các cảnh báo và lỗi; một cảnh báo có thể xảy ra sau khi ảnh đã được ghi thành công. Các đoạn video không được dựng bởi quy trình làm việc xuất ảnh tĩnh. Nếu bản gốc thay đổi trong khi ảnh đang ở hàng đợi hoặc đang được xử lý, ảnh đó sẽ thất bại với lỗi; hãy đưa nó vào hàng đợi lại sau khi kiểm tra bản gốc."
+          ]
+        },
+        {
+          "title": "Tạo bảng ảnh thu nhỏ",
+          "paragraphs": [
+            "Bảng ảnh thu nhỏ… trong Xuất sắp xếp các ảnh đã chọn trong trường Ảnh lên một tệp JPEG có chú thích, với các chỉnh sửa của bạn được áp dụng. Bảng có thể chứa tối đa 200 ảnh."
+          ],
+          "steps": [
+            "Mở Xuất và đặt Ảnh cùng thư mục đích đến.",
+            "Nhấp Bảng ảnh thu nhỏ… và chọn Số cột, Chiều rộng bảng, Nền và Tiêu đề.",
+            "Chọn chú thích: Tên tệp, Loại phim và Xếp hạng.",
+            "Nhấp Tạo bảng. Hộp thoại sẽ báo tiến độ và một thông báo sẽ cho biết đường dẫn của tệp đã lưu."
+          ],
+          "tips": [
+            "Bảng được lưu với tên contact-sheet kèm theo ngày và giờ. Ảnh không thể kết xuất sẽ bị bỏ qua và được đếm trong thông báo.",
+            "Chọn nhiều cột hơn nếu lựa chọn lớn khiến bảng quá cao để tạo."
           ]
         }
       ],
@@ -3287,5 +3422,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
 }

@@ -1096,7 +1096,13 @@
         "automático",
         "histograma",
         "recorte",
-        "antes"
+        "antes",
+        "amostrador de cor",
+        "amostrador de cor",
+        "amostrador",
+        "valores RGB",
+        "leitura",
+        "medir"
       ],
       "sections": [
         {
@@ -1126,6 +1132,21 @@
           "tips": [
             "Se Automático disser que está aguardando a pré-visualização da imagem, deixe a pré-visualização carregar e tente novamente.",
             "O menu de scope também oferece Waveform, RGB Parade e Vectorscope para inspecionar tom e cor."
+          ]
+        },
+        {
+          "title": "Medir cores com amostradores",
+          "paragraphs": [
+            "Os amostradores de cor mostram os valores de vermelho, verde e azul (0–255) e a luminosidade L* de até quatro pontos da foto. As leituras são atualizadas enquanto você edita, para que você possa conferir um cartão cinza, a base do filme ou o tom de pele durante os ajustes."
+          ],
+          "steps": [
+            "Clique no botão de amostrador ao lado do histograma.",
+            "Clique na foto para posicionar um amostrador. Posicione até quatro.",
+            "Leia os valores abaixo do histograma. Use × para remover um amostrador."
+          ],
+          "tips": [
+            "Os amostradores leem a edição exibida. Eles pertencem à sessão atual da janela e não são salvos com a foto.",
+            "Pressione Escape para parar de posicionar amostradores."
           ]
         }
       ],
@@ -1604,7 +1625,15 @@
         "pretos",
         "sobreposição",
         "subexpor",
-        "queimar"
+        "queimar",
+        "desfoque de lente",
+        "desfoque de fundo",
+        "desfoque",
+        "bokeh",
+        "profundidade de campo",
+        "luminosidade",
+        "mesclagem de luminosidade",
+        "preservar cor"
       ],
       "sections": [
         {
@@ -1661,10 +1690,26 @@
           ]
         },
         {
+          "title": "Desfocar parte da foto",
+          "paragraphs": [
+            "Desfoque de lente, na seção Efeitos de uma máscara, suaviza a área selecionada como uma lente fora de foco. O raio do desfoque aumenta com a intensidade da máscara, então uma borda suavizada ou uma faixa de profundidade diminui gradualmente em vez de parar em uma linha dura.",
+            "O desfoque é aplicado à imagem finalizada, após a renderização do filme e os outros ajustes da máscara. Ele também suaviza a granulação do filme dentro da área desfocada."
+          ],
+          "steps": [
+            "Crie uma máscara de Assunto e escolha Inverter, ou uma máscara de Profundidade para uma faixa de distância, ou desenhe uma máscara Radial e inverta-a.",
+            "Expanda Efeitos e aumente Desfoque de lente. Aguarde a atualização da pré-visualização antes de avaliar o resultado.",
+            "Refine a seleção com Adicionar, Subtrair ou Suavizar bordas onde o desfoque invadir bordas nítidas."
+          ],
+          "tips": [
+            "Somente os pixels selecionados contribuem para o desfoque, então um assunto nítido não se espalha pelo plano de fundo desfocado. Confira bordas finas, como cabelo, em 1:1."
+          ]
+        },
+        {
           "title": "Ajuste uma curva de tom local",
           "steps": [
             "Expanda Curva de Tom para a máscara selecionada e escolha RGB, Vermelho, Verde ou Azul.",
             "Clique no gráfico para adicionar um ponto e depois arraste-o. Mover um ponto para cima clareia sua saída; movê-lo para baixo escurece. Clique duas vezes em um ponto interno para removê-lo.",
+            "Ative Somente luminosidade para alterar o brilho sem mudar a cor ou a saturação.",
             "Use Redefinir curva para redefinir apenas o canal selecionado desta máscara, ou Desfazer para reverter uma edição."
           ],
           "tips": [
@@ -1819,7 +1864,7 @@
       "id": "editing-remove-heal",
       "title": "Remova manchas e refine as correções de Corrigir ou Clonar",
       "category": "Editing",
-      "summary": "Pinte sobre distrações, inspecione a visibilidade da mancha e mova a origem ou o destino de uma correção.",
+      "summary": "Remova manchas e traços pintados, elimine poeira e arranhões da foto inteira e refine correções de Corrigir ou Clonar.",
       "keywords": [
         "remover",
         "corrigir",
@@ -1831,7 +1876,18 @@
         "visualizar manchas",
         "origem",
         "destino",
-        "distração"
+        "distração",
+        "poeira e arranhões",
+        "arranhão",
+        "cabelo",
+        "fio",
+        "pincel",
+        "traço",
+        "preenchimento",
+        "preenchimento de textura",
+        "preenchimento sensível ao conteúdo",
+        "digitalização de filme",
+        "marcas"
       ],
       "sections": [
         {
@@ -1842,22 +1898,44 @@
           ],
           "steps": [
             "Escolha Remover, Corrigir ou Clonar e depois defina Tamanho, Suavizar bordas e Opacidade.",
-            "Clique em uma mancha ou arraste sobre uma distração na foto.",
+            "Em Remover, escolha Mancha para clicar ou arrastar uma correção redonda, ou Pincel para pintar ao longo de um arranhão, fio de cabelo ou cabo.",
+            "Em Remover, escolha Preenchimento. Combinar textura ao redor copia detalhes próximos da foto; Mesclagem suave mescla as bordas para dentro e é adequada para áreas uniformes, como o céu.",
+            "Clique em uma mancha, arraste sobre uma distração ou pinte um traço na foto.",
             "Para pequenas manchas de poeira, ative Visualize Spots e ajuste Threshold para tornar as bordas mais fáceis de inspecionar.",
             "Desative Visualizar Manchas e inspecione a fotografia corrigida."
           ],
           "tips": [
-            "Selecionar uma correção e escolher um modo diferente altera o modo dessa correção."
+            "Selecionar uma correção e escolher um modo diferente altera o modo dessa correção.",
+            "Combinar textura ao redor copia pixels desta foto; nunca gera novos detalhes. As alterações em Preenchimento se aplicam à correção de Remover selecionada. Correções feitas antes de esta opção existir mantêm Mesclagem suave.",
+            "Um traço de pincel comporta até 256 pontos. Solte e faça outro traço para continuar."
+          ]
+        },
+        {
+          "title": "Remover poeira e arranhões da foto inteira",
+          "paragraphs": [
+            "Poeira e arranhões encontra pequenas marcas que se destacam nitidamente do entorno, como poeira em uma digitalização de filme, e as preenche com pixels próximos. Atua na foto inteira como uma única correção no topo da lista, para que as correções seguintes usem a imagem limpa como amostra.",
+            "Maior marca define a marca mais larga considerada, como fração do lado menor da foto. Sensibilidade define o quanto uma marca precisa se diferenciar do entorno. Valores mais altos encontram marcas mais fracas e têm mais chance de atingir detalhes finos."
+          ],
+          "steps": [
+            "Abra Remover e expanda Poeira e arranhões.",
+            "Defina Maior marca um pouco acima da poeira visível e deixe Sensibilidade em 50% para começar.",
+            "Clique em Remover poeira. Mostrar marcas detectadas contorna em vermelho o que foi encontrado e informa quantas marcas foram encontradas.",
+            "Amplie cabelos, estrelas, reflexos nos olhos e texto. Se forem atingidos, diminua Sensibilidade ou Maior marca, ou reduza Opacidade.",
+            "Desative Mostrar marcas detectadas para avaliar o resultado."
+          ],
+          "tips": [
+            "Selecione a correção Poeira na lista para alterá-la depois. Ativar esta correção compara o resultado, e Excluir Correção a remove.",
+            "Arranhões longos e finos são encontrados quando a largura deles fica abaixo de Maior marca. Pinte arranhões mais largos com o pincel de Remover."
           ]
         },
         {
           "title": "Refinar uma correção existente",
           "paragraphs": [
-            "Selecione uma correção na lista para mostrar seus controles. Os círculos na imagem indicam o destino editável e, para Corrigir e Clonar, a origem.",
+            "Selecione uma correção na lista para mostrar os controles dela. Os círculos ou traços na imagem indicam o destino editável e, em Corrigir e Clonar, a origem.",
             "Amplie para posicionamento preciso. Os contornos circulares e os pinos permanecem nítidos em todos os níveis de zoom; os círculos continuam mostrando a mesma área da foto."
           ],
           "steps": [
-            "Arraste o círculo de destino para reposicionar a correção ou escolha Move Target e clique na nova posição.",
+            "Arraste o círculo de destino ou um traço pintado para reposicionar a correção, ou escolha Mover destino e clique na nova posição.",
             "Para Heal ou Clone, arraste o círculo de origem para uma área melhor. Refresh Source tenta uma posição de origem diferente.",
             "Ajuste Suavizar bordas ou Opacidade se a borda ou a intensidade da correção precisarem de refinamento.",
             "Alterne Ativar esta correção para comparar, ou use Excluir correção para removê-la."
@@ -2049,7 +2127,15 @@
         "azul",
         "contraste",
         "Ponto de controle",
-        "curva S"
+        "curva S",
+        "conta-gotas",
+        "ponto preto",
+        "ponto branco",
+        "ponto cinza",
+        "ponto cinza",
+        "neutro",
+        "dominante de cor",
+        "níveis"
       ],
       "sections": [
         {
@@ -2067,6 +2153,21 @@
           "tips": [
             "Use alguns pontos e compare a foto enquanto trabalha; curvas de canal podem introduzir fortes dominantes de cor.",
             "Uma curva armazenada ou importada mantém sua tabela salva exata até que você a edite. O app reconstrói alças representativas para edição, então o primeiro ajuste pode remodelar uma curva importada além do ponto que você mover."
+          ]
+        },
+        {
+          "title": "Definir pontos preto, cinza e branco",
+          "paragraphs": [
+            "Os conta-gotas abaixo da curva de pontos definem as curvas vermelha, verde e azul a partir de um ponto da foto. Ponto preto deixa a área amostrada preta, Ponto branco a deixa branca e Ponto cinza a deixa neutra, mantendo o brilho. Isso é útil para remover uma dominante de cor de uma digitalização."
+          ],
+          "steps": [
+            "Abra Editar, expanda Curva e escolha Ponto preto, Ponto cinza ou Ponto branco.",
+            "Clique em uma área da foto que deva ser preta, cinza neutro ou branca.",
+            "Confira as curvas R, G e B e depois refine-as ou redefina-as se o resultado estiver forte demais."
+          ],
+          "tips": [
+            "Ponto preto precisa de uma área mais escura que o cinza médio, e Ponto branco precisa de uma mais clara que o cinza médio. Pressione Escape para cancelar um conta-gotas.",
+            "Os conta-gotas mudam Curva para o modo Ponto porque editam as curvas de canal."
           ]
         },
         {
@@ -2529,7 +2630,11 @@
         "qualidade",
         "tamanho completo",
         "resolução",
-        "predefinição"
+        "predefinição",
+        "borda",
+        "moldura",
+        "fosco",
+        "margem"
       ],
       "sections": [
         {
@@ -2542,6 +2647,17 @@
             "Abra Exportar e escolha uma predefinição na parte superior.",
             "Defina Dimensões como Tamanho completo ou um limite para o lado maior.",
             "Verifique a Pré-visualização de saída: o tamanho exportado reflete rotação e corte, e um limite na borda longa reduz imagens maiores sem ampliar as menores."
+          ]
+        },
+        {
+          "title": "Adicionar uma borda",
+          "paragraphs": [
+            "Borda em Avançado adiciona uma margem simples branca, cinza ou preta ao redor de cada foto exportada. A margem é adicionada após o redimensionamento, então sua largura é uma fração do lado maior entregue e a saída fica maior que a foto por essa margem em cada lado."
+          ],
+          "steps": [
+            "Abra Exportar e expanda Avançado.",
+            "Escolha Fina, Média ou Larga em Borda e depois escolha Cor da borda.",
+            "Confira as dimensões finais em Pré-visualização da saída."
           ]
         },
         {
@@ -2665,7 +2781,10 @@
         "com avaliação",
         "lote",
         "cancelar",
-        "progresso"
+        "progresso",
+        "folha de contato",
+        "folha de provas",
+        "folha índice"
       ],
       "sections": [
         {
@@ -2688,6 +2807,22 @@
             "Fotos selecionadas usa as fotos selecionadas que ainda estão visíveis pela pasta, coleção e filtros atuais. Se nenhuma parte da seleção permanecer em exibição, ele usa a foto ativa. Verifique a contagem de fotos e o nome em Exportar antes de iniciar.",
             "Selecionado apenas, Com avaliação 1+ e Todos exceto rejeitados selecionam fotos estáticas correspondentes do catálogo ativo e podem incluir fotos fora da coleção ou filtro exibidos. Fotos selecionadas fornece controle explícito sobre o conjunto.",
             "Se um lote gravar em várias pastas, Mostrar no Finder revela a primeira foto exportada com sucesso. O link não está presente quando nenhuma foto foi exportada. Use Cancelar exportação para solicitar a interrupção. Detalhes da exportação informa as contagens de concluídas, puladas e canceladas, além de avisos e erros; um aviso pode ocorrer depois que uma foto foi gravada com sucesso. Cliques de vídeo não são renderizados pelo fluxo de trabalho de exportação de fotos estáticas. Se um original for alterado enquanto sua exportação estiver na fila ou sendo renderizada, essa foto falha com um erro; coloque-a na fila novamente depois de verificar o original."
+          ]
+        },
+        {
+          "title": "Criar uma folha de contato",
+          "paragraphs": [
+            "Folha de contato… em Exportar organiza as fotos escolhidas no campo Fotos em um único JPEG com legendas, com suas edições aplicadas. Ela comporta até 200 fotos."
+          ],
+          "steps": [
+            "Abra Exportar e defina Fotos e a pasta de destino.",
+            "Clique em Folha de contato… e escolha Colunas, Largura da folha, Plano de fundo e um Título.",
+            "Escolha as legendas: Nome do arquivo, Filme e Avaliação.",
+            "Clique em Criar folha. A caixa de diálogo mostra o progresso, e uma notificação informa o caminho do arquivo salvo."
+          ],
+          "tips": [
+            "A folha é salva como contact-sheet seguido da data e da hora. Uma foto que não pode ser renderizada é ignorada e contada na notificação.",
+            "Escolha mais colunas se uma seleção grande deixar a folha alta demais para ser criada."
           ]
         }
       ],
@@ -3287,5 +3422,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
 }

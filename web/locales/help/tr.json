@@ -1096,7 +1096,13 @@
         "otomatik",
         "histogram",
         "kırpılma",
-        "önce"
+        "önce",
+        "renk örnekleyici",
+        "renk örnekleme",
+        "örnekleyici",
+        "rgb değerleri",
+        "okuma değeri",
+        "ölç"
       ],
       "sections": [
         {
@@ -1126,6 +1132,21 @@
           "tips": [
             "Otomatik, görüntü önizlemesini beklediğini söylüyorsa, önizlemenin yüklenmesine izin verin ve yeniden deneyin.",
             "Scope menüsü, ton ve rengi incelemek için Waveform, RGB Parade ve Vectorscope seçeneklerini de sunar."
+          ]
+        },
+        {
+          "title": "Renkleri örnekleyicilerle ölçün",
+          "paragraphs": [
+            "Renk örnekleyiciler, fotoğraftaki en fazla dört noktanın kırmızı, yeşil ve mavi değerlerini (0–255) ve açıklığını (L*) gösterir. Değerler siz düzenledikçe güncellenir; böylece ayar yaparken gri kartı, film tabanını veya ten rengini kontrol edebilirsiniz."
+          ],
+          "steps": [
+            "Histogramın yanındaki örnekleyici düğmesine tıklayın.",
+            "Örnekleyici yerleştirmek için fotoğrafa tıklayın. En fazla dört tane yerleştirebilirsiniz.",
+            "Histogramın altındaki değerleri okuyun. Bir örnekleyiciyi kaldırmak için × kullanın."
+          ],
+          "tips": [
+            "Örnekleyiciler görüntülenen düzenlemeyi okur. Geçerli pencere oturumuna aittirler ve fotoğrafla birlikte kaydedilmezler.",
+            "Örnekleyici yerleştirmeyi durdurmak için Escape tuşuna basın."
           ]
         }
       ],
@@ -1604,7 +1625,15 @@
         "siyahlar",
         "bindirme",
         "karartma",
-        "yak"
+        "yak",
+        "lens bulanıklığı",
+        "arka plan bulanıklığı",
+        "bulanıklık",
+        "bokeh",
+        "alan derinliği",
+        "parlaklık",
+        "parlaklık karışımı",
+        "rengi koru"
       ],
       "sections": [
         {
@@ -1661,10 +1690,26 @@
           ]
         },
         {
+          "title": "Fotoğrafın bir bölümünü bulanıklaştır",
+          "paragraphs": [
+            "Bir maskenin Efektler bölümündeki Lens bulanıklığı, seçilen alanı odak dışı bir lensin yaptığı gibi yumuşatır. Bulanıklık yarıçapı maskenin gücüyle birlikte artar; böylece yumuşatılmış bir kenar veya derinlik aralığı sert bir çizgide bitmek yerine kademeli olarak azalır.",
+            "Bulanıklık, film işlemesinden ve maskenin diğer ayarlarından sonra bitmiş görüntüye uygulanır. Bulanık alandaki film grenini de yumuşatır."
+          ],
+          "steps": [
+            "Bir Konu maskesi oluşturup Tersine Çevir seçeneğini belirleyin ya da bir mesafe aralığı için Derinlik maskesi oluşturun veya bir Radyal maske çizip tersine çevirin.",
+            "Efektler’i genişletin ve Lens bulanıklığı değerini artırın. Değerlendirmeden önce önizlemenin güncellenmesini bekleyin.",
+            "Bulanıklığın keskin kenarlara taştığı yerlerde seçimi Ekle, Çıkar veya Yumuşatma ile iyileştirin."
+          ],
+          "tips": [
+            "Bulanıklığa yalnızca seçili pikseller katkıda bulunur; böylece keskin bir konu bulanık arka plana yayılmaz. Saç gibi ince kenarları 1:1’de kontrol edin."
+          ]
+        },
+        {
           "title": "Yerel ton eğrisini ayarlayın",
           "steps": [
             "Seçili maske için Ton Eğrisi’ni genişletin ve RGB, Kırmızı, Yeşil veya Mavi’yi seçin.",
             "Nokta eklemek için grafiğe tıklayın, sonra sürükleyin. Bir noktayı yukarı taşımak çıkışını açar; aşağı taşımak karartır. İçteki bir noktayı kaldırmak için çift tıklayın.",
+            "Rengi veya doygunluğu kaydırmadan parlaklığı değiştirmek için Yalnızca parlaklık seçeneğini etkinleştirin.",
             "Yalnızca bu maskenin seçili kanalını sıfırlamak için Eğriyi Sıfırla’yı, bir düzenlemeyi geri almak için Geri Al’ı kullanın."
           ],
           "tips": [
@@ -1819,7 +1864,7 @@
       "id": "editing-remove-heal",
       "title": "Lekeleri kaldırın ve İyileştir veya Klonla düzeltmelerini ince ayarlayın",
       "category": "Editing",
-      "summary": "Dikkat dağıtan unsurların üzerini boyayın, nokta görünürlüğünü inceleyin ve bir düzeltmenin kaynağını veya hedefini taşıyın.",
+      "summary": "Lekeleri ve boyanmış darbeleri kaldırın, fotoğrafın tamamındaki toz ve çizikleri temizleyin, İyileştir veya Klonla düzeltmelerinde ince ayar yapın.",
       "keywords": [
         "kaldır",
         "iyileştir",
@@ -1831,7 +1876,18 @@
         "noktaları görselleştir",
         "kaynak",
         "hedef",
-        "dikkat dağıtıcı unsur"
+        "dikkat dağıtıcı unsur",
+        "toz ve çizikler",
+        "çizik",
+        "saç",
+        "kablo",
+        "fırça",
+        "fırça darbesi",
+        "dolgu",
+        "doku dolgusu",
+        "içeriğe duyarlı dolgu",
+        "film taraması",
+        "izler"
       ],
       "sections": [
         {
@@ -1842,22 +1898,44 @@
           ],
           "steps": [
             "Kaldır, İyileştir veya Klonla seçin, ardından Boyut, Yumuşatma ve Opaklık’ı ayarlayın.",
-            "Fotoğraftaki dikkat dağıtıcı bir noktaya tıklayın veya sürükleyin.",
+            "Kaldır için, tıklayarak veya sürükleyerek yuvarlak bir düzeltme yapmak üzere Nokta’yı ya da bir çizik, saç teli veya kablo boyunca boyamak için Fırça’yı seçin.",
+            "Kaldır için Dolgu seçeneğini belirleyin. Çevre dokusuyla eşleştir, fotoğraftaki yakın ayrıntıları kopyalar; Yumuşak geçiş kenarları içe doğru harmanlar ve gökyüzü gibi düz alanlara uygundur.",
+            "Fotoğrafta bir lekeye tıklayın, dikkat dağıtıcı bir unsurun üzerine sürükleyin veya bir darbe boyayın.",
             "Küçük toz noktaları için Visualize Spots’u etkinleştirin ve kenarları incelemeyi kolaylaştırmak için Threshold’u ayarlayın.",
             "Noktaları Görselleştir’i kapatın ve düzeltilmiş fotoğrafı inceleyin."
           ],
           "tips": [
-            "Bir düzeltmeyi seçip farklı bir kip seçmek, o düzeltmenin kipini değiştirir."
+            "Bir düzeltmeyi seçip farklı bir kip seçmek, o düzeltmenin kipini değiştirir.",
+            "Çevre dokusuyla eşleştir bu fotoğraftan piksel kopyalar; hiçbir zaman yeni ayrıntı üretmez. Dolgu değişiklikleri seçili Kaldır düzeltmesine uygulanır. Bu seçenek eklenmeden önce yapılan düzeltmeler Yumuşak geçiş olarak kalır.",
+            "Bir fırça darbesi en fazla 256 nokta içerebilir. Devam etmek için bırakın ve yeni bir darbe boyayın."
+          ]
+        },
+        {
+          "title": "Fotoğraftaki toz ve çizikleri kaldır",
+          "paragraphs": [
+            "Toz ve çizikler, film taramasındaki toz gibi çevresinden belirgin şekilde ayrılan küçük izleri bulur ve bunları yakındaki piksellerle doldurur. Listenin en üstünde tek bir düzeltme olarak tüm fotoğrafa uygulanır; böylece sonraki düzeltmeler temizlenmiş görüntüden örnek alır.",
+            "En büyük iz, dikkate alınan en geniş izi fotoğrafın kısa kenarının bir oranı olarak belirler. Hassasiyet, bir izin çevresinden ne kadar farklı olması gerektiğini belirler. Daha yüksek değerler daha soluk izleri bulur ve ince ayrıntıları yakalama olasılığı daha yüksektir."
+          ],
+          "steps": [
+            "Kaldır’ı açın ve Toz ve çizikler bölümünü genişletin.",
+            "En büyük iz değerini gördüğünüz tozdan biraz daha geniş ayarlayın ve başlangıç için Hassasiyet değerini %50’de bırakın.",
+            "Tozu Kaldır düğmesine tıklayın. Algılanan izleri göster, bulunanları kırmızıyla çevreler ve kaç iz bulunduğunu bildirir.",
+            "Saçları, yıldızları, gözdeki ışık yansımalarını ve metni yakınlaştırarak inceleyin. Bunlar yakalanıyorsa Hassasiyet veya En büyük iz değerini düşürün ya da Opaklık değerini azaltın.",
+            "Sonucu değerlendirmek için Algılanan izleri göster seçeneğini kapatın."
+          ],
+          "tips": [
+            "Daha sonra değiştirmek için listeden Toz düzeltmesini seçin. Bu düzeltmeyi etkinleştir sonucu karşılaştırır, Düzeltmeyi Sil ise düzeltmeyi kaldırır.",
+            "Uzun ince çizikler, genişlikleri En büyük iz değerinin altındaysa bulunur. Daha geniş çizikleri Kaldır fırçasıyla boyayın."
           ]
         },
         {
           "title": "Mevcut bir düzeltmeyi ince ayarla",
           "paragraphs": [
-            "Kontrollerini göstermek için listedeki bir düzeltmeyi seçin. Görüntü üzerindeki daireler, düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
+            "Denetimlerini göstermek için listeden bir düzeltme seçin. Görüntü üzerindeki daireler veya darbeler düzenlenebilir hedefi ve İyileştir ile Klonla için kaynağı gösterir.",
             "Hassas yerleştirme için yakınlaştırın. Daire konturları ve sabitleme noktaları her yakınlaştırma seviyesinde keskin kalır; daireler fotoğrafın aynı alanını göstermeye devam eder."
           ],
           "steps": [
-            "Düzeltmeyi yeniden konumlandırmak için hedef daireyi sürükleyin veya Move Target’ı seçip yeni konumuna tıklayın.",
+            "Düzeltmeyi yeniden konumlandırmak için hedef dairesini veya boyanmış bir darbeyi sürükleyin ya da Hedefi Taşı seçeneğini belirleyip yeni konumuna tıklayın.",
             "Heal veya Clone için kaynak dairesini daha iyi bir alana sürükleyin. Refresh Source farklı bir kaynak konumu dener.",
             "Düzeltmenin kenarı veya gücü iyileştirme gerektiriyorsa Yumuşatma veya Opaklık’ı ayarlayın.",
             "Karşılaştırmak için Bu düzeltmeyi etkinleştir’i açıp kapatın ya da kaldırmak için Düzeltmeyi sil’i kullanın."
@@ -2049,7 +2127,15 @@
         "mavi",
         "kontrast",
         "kontrol noktası",
-        "s eğrisi"
+        "s eğrisi",
+        "damlalık",
+        "siyah nokta",
+        "beyaz nokta",
+        "gri nokta",
+        "gri nokta",
+        "nötr",
+        "renk tonu",
+        "düzeyler"
       ],
       "sections": [
         {
@@ -2067,6 +2153,21 @@
           "tips": [
             "Birkaç nokta kullanın ve çalışırken fotoğrafı karşılaştırın; kanal eğrileri güçlü renk kaymaları oluşturabilir.",
             "Saklanan veya içe aktarılan bir eğri, siz onu düzenleyene kadar tam kaydedilmiş tablosunu korur. Uygulama, düzenleme için temsilî tutamaçları yeniden oluşturur; bu nedenle ilk ayarlama, içe aktarılan bir eğriyi taşıdığınız noktadan öteye yeniden şekillendirebilir."
+          ]
+        },
+        {
+          "title": "Siyah, gri ve beyaz noktaları ayarla",
+          "paragraphs": [
+            "Nokta eğrisinin altındaki damlalıklar, fotoğraftaki bir konuma göre kırmızı, yeşil ve mavi eğrileri ayarlar. Siyah nokta örneklenen alanı siyah, Beyaz nokta beyaz yapar; Gri nokta ise parlaklığını koruyarak nötr hale getirir. Bu, bir taramadaki renk kaymasını gidermek için kullanışlıdır."
+          ],
+          "steps": [
+            "Düzenle’yi açın, Eğri’yi genişletin ve Siyah nokta, Gri nokta veya Beyaz nokta seçeneğini belirleyin.",
+            "Fotoğrafta siyah, nötr gri veya beyaz olması gereken bir alana tıklayın.",
+            "R, G ve B eğrilerini kontrol edin; sonuç çok güçlüyse bunları iyileştirin veya sıfırlayın."
+          ],
+          "tips": [
+            "Siyah nokta için orta griden daha koyu, Beyaz nokta için ise orta griden daha açık bir alan gerekir. Damlalığı iptal etmek için Escape tuşuna basın.",
+            "Damlalıklar kanal eğrilerini düzenledikleri için Eğri’yi Nokta moduna geçirir."
           ]
         },
         {
@@ -2529,7 +2630,11 @@
         "kalite",
         "tam boyut",
         "çözünürlük",
-        "hazır ayar"
+        "hazır ayar",
+        "kenarlık",
+        "çerçeve",
+        "mat",
+        "kenar boşluğu"
       ],
       "sections": [
         {
@@ -2542,6 +2647,17 @@
             "Dışa Aktar’ı açın ve üst kısımdan bir hazır ayar seçin.",
             "Boyutları Tam boyut veya uzun kenar sınırı olarak ayarlayın.",
             "Çıkış önizlemesini kontrol edin: dışa aktarılan boyut döndürme ve kırpma sonucunu yansıtır ve uzun kenar sınırı daha büyük görüntüleri küçültür, daha küçük olanları büyütmez."
+          ]
+        },
+        {
+          "title": "Kenarlık ekle",
+          "paragraphs": [
+            "Gelişmiş bölümündeki Kenarlık, dışa aktarılan her fotoğrafın çevresine düz beyaz, gri veya siyah bir kenar boşluğu ekler. Boşluk yeniden boyutlandırmadan sonra eklenir; bu nedenle genişliği teslim edilen uzun kenarın bir oranıdır ve çıktı her kenarda bu boşluk kadar fotoğraftan büyüktür."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın ve Gelişmiş’i genişletin.",
+            "Kenarlık bölümünde İnce, Orta veya Geniş seçeneğini, ardından Kenarlık rengi seçeneğini belirleyin.",
+            "Son boyutları Çıkış önizlemesi bölümünde kontrol edin."
           ]
         },
         {
@@ -2665,7 +2781,10 @@
         "puanlanmış",
         "toplu iş",
         "iptal",
-        "ilerleme"
+        "ilerleme",
+        "kontak sayfası",
+        "kontak baskı",
+        "indeks baskı"
       ],
       "sections": [
         {
@@ -2688,6 +2807,22 @@
             "Seçili fotoğraflar, geçerli klasör, koleksiyon ve filtreler tarafından hâlâ gösterilen seçili fotoğrafları kullanır. Seçimin hiçbiri görünümde kalmazsa, etkin fotoğrafı kullanır. Başlamadan önce Dışa Aktar bölümündeki fotoğraf sayısını ve adı kontrol edin.",
             "Yalnızca Seçilmiş, Puanlanmış 1+ ve Reddedilenler hariç Tümü, etkin katalogdaki eşleşen sabit fotoğrafları seçer ve gösterilen koleksiyonun veya filtrenin dışındaki fotoğrafları da içerebilir. Seçili fotoğraflar, küme üzerinde açık denetim sağlar.",
             "Bir toplu iş birden fazla klasöre yazarsa, Finder'da Göster başarıyla dışa aktarılan ilk fotoğrafı gösterir. Hiç fotoğraf dışa aktarılmadığında bağlantı görünmez. Bir durdurma isteğinde bulunmak için Dışa aktarmayı iptal et seçeneğini kullanın. Dışa aktarma ayrıntıları; tamamlanan, atlanan ve iptal edilen sayıları ile birlikte uyarıları ve hataları bildirir; bir uyarı, bir fotoğraf başarıyla yazıldıktan sonra oluşabilir. Video klipler, sabit fotoğraf dışa aktarma iş akışında işlenmez. Bir orijinal, dışa aktarımı sıradayken veya oluşturulurken değişirse, o fotoğraf bir hatayla başarısız olur; orijinali kontrol ettikten sonra onu yeniden sıraya ekleyin."
+          ]
+        },
+        {
+          "title": "Kontak sayfası oluştur",
+          "paragraphs": [
+            "Dışa Aktar içindeki Kontak Sayfası…, Fotoğraflar alanında seçilen fotoğrafları düzenlemeleriniz uygulanmış olarak alt yazılı tek bir JPEG üzerine yerleştirir. En fazla 200 fotoğraf alabilir."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın, Fotoğraflar alanını ve hedef klasörü ayarlayın.",
+            "Kontak Sayfası… düğmesine tıklayın ve Sütunlar, Sayfa genişliği, Arka plan ile bir Başlık seçin.",
+            "Alt yazıları seçin: Dosya adı, Film stoğu ve Derecelendirme.",
+            "Sayfa Oluştur düğmesine tıklayın. İletişim kutusu ilerlemeyi gösterir ve bir bildirim kaydedilen dosyanın yolunu verir."
+          ],
+          "tips": [
+            "Sayfa, contact-sheet ve ardından tarih ile saatten oluşan bir adla kaydedilir. İşlenemeyen bir fotoğraf atlanır ve bildirimde sayılır.",
+            "Büyük bir seçim sayfayı oluşturulamayacak kadar uzun yapıyorsa daha fazla sütun seçin."
           ]
         }
       ],
@@ -3287,5 +3422,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "037cdbd08a895c9c84be673f4ddf5b87a57a637c9fbb6864d7a912e0b8df34a9"
+  "sourceDigest": "224f067697d4d067ccf692747e2f8014f425ba28114771d7fac6291438ad2d5e"
 }

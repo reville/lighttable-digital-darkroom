@@ -15,7 +15,7 @@ test('coalesced visualization uses current pane and threshold even during a pend
   const elements = { healVisualize: { checked: true }, healVisualizeThreshold: { value: '0.55' } };
   const context = { S, $: id => elements[id],
     createFrameScheduler: fn => createFrameScheduler(fn),
-    drawGradeNow: () => calls.push('grade'), drawEditOverlayNow: () => calls.push('overlay'),
+    drawGradeNow: () => calls.push('grade'), drawSamplerOverlay: () => {}, drawEditOverlayNow: () => calls.push('overlay'),
     nativePreviewActive: () => true, postNative: (type, data) => calls.push({type, data}),
   };
   const previous = globalThis.requestAnimationFrame;
