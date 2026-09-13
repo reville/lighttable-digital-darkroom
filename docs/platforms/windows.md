@@ -236,6 +236,19 @@ replacement for the macOS implementation.
 This separation is intentional: platform work should not add a conditional to
 the measured render loop unless the operating system genuinely requires one.
 
+Learned denoise (Detail panel and Photo → Enhance Photo…) has no Core ML on
+Windows. `scripts/convert-models.py --format onnx` exports the same traced,
+bit-identity-gated SCUNet network to ONNX at the fixed 512×512 input Core ML
+uses, and `enhance_workflow.onnx_runner`/`onnx_batch_runner` run it in-process
+through onnxruntime (`onnxruntime-directml`, pinned in
+`packaging/runtime-windows.lock`) instead of the Swift helper subprocess. The
+DirectML execution provider accelerates on whatever GPU is present and falls
+back to CPU on its own; strength blends against the original with the same
+formula the Swift helper uses, so a strength value means the same thing on
+every platform. `scripts/smoke-denoise.py` exercises the packaged ONNX model
+after relocation, the same way `scripts/smoke-hair-mask.py` exercises the
+LiteRT hair model.
+
 Full-resolution portable processed-image conversion decodes through OpenImageIO
 and applies ICC transforms through LittleCMS via the pinned `imagecodecs`
 runtime. 16-bit and floating-point intermediates preserve source detail instead of

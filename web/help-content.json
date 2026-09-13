@@ -2316,7 +2316,7 @@
             "Inspect the completed preview at 1:1."
           ],
           "tips": [
-            "Learned denoise requires the macOS inference helper and a compatible local model. It is unavailable on Linux and Windows. Ordinary noise reduction and sharpening remain available. Development builds may lack the model; read the availability message before starting."
+            "Learned denoise runs through Core ML on macOS and through onnxruntime on Windows and Linux, using the same converted model. Ordinary noise reduction and sharpening remain available everywhere. Development builds may lack the converted model or runtime; read the availability message before starting."
           ]
         },
         {

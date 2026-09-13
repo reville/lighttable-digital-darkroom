@@ -215,6 +215,22 @@ try {
     & $PythonExe -B (Join-Path $Project "scripts\smoke-hair-mask.py") `
         --model-dir $Models --image (Join-Path $Project "tests\fixtures\photos\portrait.jpg")
     if ($LASTEXITCODE -ne 0) { throw "The relocated Windows hair-model smoke test failed" }
+
+    # The denoise model is converted locally (scripts/convert-models.py
+    # --format onnx), never fetched at build time; a missing artefact fails
+    # the build rather than shipping a silently denoise-less Windows release.
+    $OnnxModelRoot = Join-Path $Project "scripts\models\onnx"
+    $OnnxAssets = @("denoise.onnx", "models.json", "SCUNet-CODE-LICENSE.txt", "SCUNet-WEIGHTS-LICENSE.txt")
+    foreach ($Asset in $OnnxAssets) {
+        $AssetPath = Join-Path $OnnxModelRoot $Asset
+        if (-not (Test-Path $AssetPath)) {
+            throw "Missing converted denoise model asset: $AssetPath (run scripts/fetch-models.py and scripts/convert-models.py --format onnx)"
+        }
+        Copy-Item $AssetPath $Models
+    }
+    & $PythonExe -B (Join-Path $Project "scripts\smoke-denoise.py") `
+        --model-dir $Models --image (Join-Path $Project "tests\fixtures\photos\portrait.jpg")
+    if ($LASTEXITCODE -ne 0) { throw "The relocated Windows denoise smoke test failed" }
     [Environment]::SetEnvironmentVariable("PYTHONPATH", $PreviousPythonPath, "Process")
 
     # Pin and verify the upstream updater binary before it reaches the payload.

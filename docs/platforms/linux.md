@@ -258,7 +258,9 @@ additional build packages include `base-devel`, `git`, `pkgconf`, `cmake`,
 
 `packaging/linux/runtime.json` pins CPython 3.13.12, the uv release that selects
 and verifies its standalone distribution, Rust 1.88.0, and both upstream film
-source revisions. Python dependencies reuse `requirements-runtime.lock`; only
+source revisions. Python dependencies come from `packaging/runtime-linux.lock`,
+which layers a small Linux-only overlay (Ed25519 update verification, the
+CPU-only `onnxruntime` build) on top of `requirements-runtime.lock`; only
 binary wheels are accepted so missing Linux wheels fail the build visibly.
 ICC downloads have fixed revisions and SHA-256 checksums. Build source revision,
 dirty state, platform, pins, and requirements checksum are recorded in
@@ -271,6 +273,18 @@ and runs the packaged runtime smoke there. Only then does it produce
 `dist/LightTable-VERSION-linux-x86_64.tar.gz` and its `.sha256` file.
 The archive needs the distribution libraries listed above and is not an
 AppImage, Flatpak, DEB, or RPM.
+
+Learned denoise has no Core ML on Linux. `scripts/convert-models.py --format
+onnx` exports the same traced, bit-identity-gated SCUNet network to ONNX at
+the fixed 512×512 input Core ML uses, and `enhance_workflow.onnx_runner`/
+`onnx_batch_runner` run it in-process through onnxruntime's CPU execution
+provider instead of a subprocess helper, blending strength against the
+original with the same formula the macOS Swift helper uses. The converted
+`.onnx` package is staged into `Resources/models` alongside the LiteRT hair
+model before the bundle is relocated, and `scripts/smoke-denoise.py` exercises
+it for real after relocation, the same way `scripts/smoke-hair-mask.py`
+exercises the hair model. Flatpak packaging does not yet carry this model or
+`onnxruntime`; only the portable tarball build above does.
 
 Native ARM64 Linux builders may pass `--experimental-aarch64` for a validation
 bundle. It uses the same pinned versions with ARM64 Python and Rust targets,

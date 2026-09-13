@@ -3,13 +3,18 @@
 
 WHAT IS REAL HERE AND WHAT IS NOT
 ---------------------------------
-The macOS release bundles a converted SCUNet denoise model. Development builds
-remain usable without that large local artifact and then report denoise as
-unavailable. Super-resolution has no bundled model. There is never an identity
-fallback that can make a missing model look like a successful operation.
+The macOS release bundles a converted SCUNet denoise model, run as an fp16
+Core ML package through a narrow Swift helper. Windows and Linux releases
+bundle the same traced network exported to ONNX at the same fixed input
+shape and run it in-process through onnxruntime; there is no Swift helper
+there. Development builds remain usable without the large local artifact and
+then report denoise as unavailable. Super-resolution has no bundled model.
+It is unavailable on every platform. There is never an identity fallback that can make a missing
+model look like a successful operation.
 
-Inference is delegated to ``build/LightTableEnhance``, a narrow Core ML helper
-reached through the same argv-dispatch convention the Vision helper uses::
+On macOS, inference is delegated to ``build/LightTableEnhance``, a narrow
+Core ML helper reached through the same argv-dispatch convention the Vision
+helper uses::
 
     LightTableEnhance --denoise in.tile out.tile --strength 0.60
     LightTableEnhance --denoise-batch manifest.tsv --strength 0.60
@@ -17,6 +22,12 @@ reached through the same argv-dispatch convention the Vision helper uses::
 The exchange is bare float32 planar RGB, not TIFF, so no image reader can
 colour-manage working pixels in transit. A whole image's tiles run in one
 helper process to amortise Core ML compilation and model loading.
+
+On Windows and Linux, ``onnx_runner`` and ``onnx_batch_runner`` load the
+exported ``.onnx`` graph directly with onnxruntime (DirectML execution
+provider on Windows when present, CPU otherwise) and apply the same
+strength blend the Swift helper applies, so the control means the same thing
+on every platform.
 
 The seam between this module and inference is one injectable callable::
 
@@ -39,6 +50,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 
@@ -68,12 +80,17 @@ HELPER_TIMEOUT = 300.0
 HELPER_ENV = "LIGHTTABLE_ENHANCE_HELPER"
 DEFAULT_HELPER = "build/LightTableEnhance"
 MODEL_DIR_ENV = "LIGHTTABLE_MODEL_DIR"
-MODEL_FILES = {"denoise": "denoise.mlpackage", "upscale": "upscale.mlpackage"}
+
+# macOS ships an fp16 Core ML package run by the Swift helper. Windows and
+# Linux ship the same traced network exported to ONNX at the same fixed
+# shape (scripts/convert-models.py --format onnx) and run it in-process
+# through onnxruntime; see onnx_runner/onnx_batch_runner below.
+MODEL_FILES = ({"denoise": "denoise.mlpackage", "upscale": "upscale.mlpackage"}
+               if sys.platform == "darwin" else
+               {"denoise": "denoise.onnx", "upscale": "upscale.onnx"})
 MODEL_INDEX_FILE = "models.json"
 
-# Windows needs ONNX Runtime and DirectML in packaging/runtime-windows.lock
-# before this can be enabled there; until then it reports as unsupported.
-SUPPORTED_PLATFORMS = ("darwin",)
+SUPPORTED_PLATFORMS = ("darwin", "win32", "linux")
 
 ENHANCED_FOLDER_NAME = "LightTable Enhanced"
 
@@ -128,19 +145,45 @@ def model_root() -> Path:
 
 
 def helper_path() -> Path:
-    """Path to the inference helper binary."""
+    """Path to the macOS Core ML helper binary. Meaningless off Darwin."""
     override = os.environ.get(HELPER_ENV)
     if override:
         return Path(override).expanduser()
     return APP / DEFAULT_HELPER
 
 
+def _onnxruntime_available() -> bool:
+    try:
+        import onnxruntime  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+def _runtime_available() -> bool:
+    """Whether this platform's inference backend can be invoked at all.
+
+    macOS runs the compiled Swift/Core ML helper binary; Windows and Linux
+    run onnxruntime in-process, so "available" there means the package
+    imports, not that a binary exists on disk.
+    """
+    if sys.platform == "darwin":
+        helper = helper_path()
+        return helper.is_file() and os.access(helper, os.X_OK)
+    return _onnxruntime_available()
+
+
+def _runtime_descriptor(available: bool) -> dict:
+    if sys.platform == "darwin":
+        return {"path": str(helper_path()), "installed": available}
+    return {"path": "onnxruntime (Python package)", "installed": available}
+
+
 def available_models() -> dict:
-    """Filesystem truth: which models and which helper are actually present."""
-    helper = helper_path()
+    """Filesystem truth: which models and which inference backend are present."""
     root = model_root()
     state = {mode: (root / MODEL_FILES[mode]).exists() for mode in MODES}
-    state["helper"] = helper.is_file() and os.access(helper, os.X_OK)
+    state["helper"] = _runtime_available()
     return state
 
 
@@ -189,18 +232,22 @@ def capabilities() -> dict:
     """What the UI shows, including a plain reason when Enhance is off."""
     state = available_models()
     supported = sys.platform in SUPPORTED_PLATFORMS
-    helper = helper_path()
     modes = {mode: bool(state[mode] and state["helper"] and supported)
              for mode in MODES}
     reason = ""
     if not supported:
         reason = (
-            T("Enhance needs the macOS inference helper; there is no build for {platform} yet", platform=f'{sys.platform}')
+            T("Enhance has no inference backend for {platform} yet", platform=f'{sys.platform}')
         )
     elif not state["helper"]:
-        reason = (
-            T("The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance", helper=f'{helper}')
-        )
+        if sys.platform == "darwin":
+            reason = (
+                T("The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance", helper=f'{helper_path()}')
+            )
+        else:
+            reason = (
+                T("onnxruntime is not installed; add it from the {platform} runtime lock before using Enhance", platform=f'{sys.platform}')
+            )
     elif not any(state[mode] for mode in MODES):
         reason = (
             T("No enhancement model is installed in {value}. Run the model fetch and conversion scripts for this development build", value=f'{model_root()}')
@@ -212,7 +259,7 @@ def capabilities() -> dict:
         "platform": sys.platform,
         "platformSupported": supported,
         "modes": modes,
-        "helper": {"path": str(helper), "installed": bool(state["helper"])},
+        "helper": _runtime_descriptor(bool(state["helper"])),
         "modelRoot": str(model_root()),
         "models": {mode: model_info(mode) for mode in MODES},
         "bundledModel": any(info["bundled"] for info in
@@ -460,12 +507,15 @@ def _run_helper(argv: list[str]) -> subprocess.CompletedProcess:
             T("the Enhance helper could not be run: {error}", error=f'{error}')) from error
 
 
-def _require_helper(mode: str) -> str:
+def _require_runtime(mode: str) -> str:
     mode = _mode_or_error(mode)
     state = available_models()
     if not state["helper"]:
+        if sys.platform == "darwin":
+            raise EnhanceUnavailable(
+                T("the Enhance helper has not been built ({value})", value=f'{helper_path()}'))
         raise EnhanceUnavailable(
-            T("the Enhance helper has not been built ({value})", value=f'{helper_path()}'))
+            T("onnxruntime is not installed for the {mode} runtime", mode=f'{mode}'))
     if not state[mode]:
         raise EnhanceUnavailable(
             T("no {mode} model is installed in {value}", mode=f'{mode}', value=f'{model_root()}'))
@@ -482,7 +532,7 @@ def helper_runner(tile, mode: str, params: dict):
     Raises :class:`EnhanceUnavailable` when the helper or the model is missing,
     which is this repository's normal state: nothing is bundled.
     """
-    mode = _require_helper(mode)
+    mode = _require_runtime(mode)
     with tempfile.TemporaryDirectory(prefix="lighttable-enhance-") as folder:
         source = Path(folder) / "in.tile"
         target = Path(folder) / "out.tile"
@@ -521,6 +571,107 @@ def _pad_to_tile(tile: np.ndarray, size: int) -> np.ndarray:
                   mode=mode).astype(np.float32, copy=False)
 
 
+# --------------------------------------------------------- onnxruntime -----
+#
+# Windows and Linux have no Core ML, so the same traced network is exported
+# to ONNX at the same fixed 1x3x512x512 shape (scripts/convert-models.py
+# --format onnx) and run in-process with onnxruntime instead of a subprocess
+# helper. This keeps the tiling, padding, cache-identity, and cancellation
+# code entirely shared; only the runner differs.
+
+_ONNX_LOCK = threading.Lock()
+_onnx_session_cache: dict = {}
+
+
+def _onnx_identity(path: Path) -> tuple:
+    stat = path.stat()
+    return (str(path), stat.st_size, stat.st_mtime_ns)
+
+
+def _onnx_providers() -> list[str]:
+    # DirectML accelerates on whatever GPU Windows exposes; onnxruntime
+    # falls through to CPU on its own if DirectML is unavailable at runtime,
+    # but listing CPU explicitly keeps that fallback deterministic here too.
+    if sys.platform == "win32":
+        return ["DmlExecutionProvider", "CPUExecutionProvider"]
+    return ["CPUExecutionProvider"]
+
+
+def _onnx_session(path: Path):
+    """Cache one onnxruntime session per model file identity.
+
+    Mirrors film_lab_ai.hair_segmentation's ``_interpreter`` cache: loading a
+    session compiles the graph, which costs far more than one inference.
+    """
+    identity = _onnx_identity(path)
+    cached = _onnx_session_cache.get("entry")
+    if cached is not None and cached[0] == identity:
+        return cached[1]
+    import onnxruntime as ort
+
+    session = ort.InferenceSession(str(path), providers=_onnx_providers())
+    inputs, outputs = session.get_inputs(), session.get_outputs()
+    if len(inputs) != 1 or len(outputs) != 1:
+        raise EnhanceUnavailable(
+            T("the denoise runtime model has an unexpected tensor contract"))
+    _onnx_session_cache["entry"] = (identity, session)
+    return session
+
+
+def onnx_runner(tile, mode: str, params: dict):
+    """Windows/Linux runner: onnxruntime on the exported fixed-shape graph.
+
+    Same contract as :func:`helper_runner`: float32 RGB tile in, float32 RGB
+    tile out, strength blended against the original exactly as the Swift
+    helper blends it, so a strength of 1.0 is untouched model output and a
+    strength of 0.0 is the identity on every platform.
+    """
+    mode = _require_runtime(mode)
+    if mode != "denoise":
+        raise EnhanceUnavailable(T("{mode} has no onnxruntime model", mode=f'{mode}'))
+    original = color_pipeline.as_float_rgb(tile)
+    fixed = int(params.get("tile", DEFAULT_TILE))
+    padded = _pad_to_tile(original, fixed)
+    chw = np.ascontiguousarray(
+        padded.transpose(2, 0, 1)[None, ...].astype(np.float32))
+    path = model_root() / MODEL_FILES[mode]
+    with _ONNX_LOCK:
+        session = _onnx_session(path)
+        (input_name,) = [item.name for item in session.get_inputs()]
+        (output_name,) = [item.name for item in session.get_outputs()]
+        result = session.run([output_name], {input_name: chw})[0]
+    denoised = np.asarray(result, dtype=np.float32)[0].transpose(1, 2, 0)
+    denoised = denoised[:original.shape[0], :original.shape[1]]
+    strength = float(params.get("strength", 1.0))
+    if strength < 1.0:
+        denoised = original * (1.0 - strength) + denoised * strength
+    return np.clip(denoised, 0.0, 1.0).astype(np.float32)
+
+
+def onnx_batch_runner(tiles: list, mode: str, params: dict, *,
+                      status=None, cancel=None) -> list:
+    """Run every tile of an image through the cached onnxruntime session.
+
+    There is no subprocess to batch here: the session is already cached
+    across calls by :func:`_onnx_session`, so this only adds progress and
+    cancellation on top of :func:`onnx_runner`, matching
+    :func:`helper_batch_runner`'s external shape.
+    """
+    if not tiles:
+        return []
+    mode = _require_runtime(mode)
+    if mode != "denoise":
+        raise EnhanceUnavailable(T("batch mode currently covers denoise only"))
+    produced = []
+    _publish_progress(status, 0, len(tiles))
+    for index, tile in enumerate(tiles):
+        if _cancel_requested(cancel):
+            raise RuntimeError(T("denoise cancelled"))
+        produced.append(onnx_runner(tile, mode, params))
+        _publish_progress(status, index + 1, len(tiles))
+    return produced
+
+
 def _cancel_requested(cancel) -> bool:
     if cancel is None:
         return False
@@ -549,7 +700,7 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
     """
     if not tiles:
         return []          # nothing to do cannot fail, model or no model
-    mode = _require_helper(mode)
+    mode = _require_runtime(mode)
     if mode != "denoise":
         raise EnhanceUnavailable(T("batch mode currently covers denoise only"))
     with tempfile.TemporaryDirectory(prefix="lighttable-enhance-") as folder:
@@ -642,6 +793,15 @@ def helper_batch_runner(tiles: list, mode: str, params: dict, *,
 
 
 
+def _default_single_runner():
+    """The in-process/subprocess runner this platform's backend uses."""
+    return helper_runner if sys.platform == "darwin" else onnx_runner
+
+
+def _default_batch_runner():
+    return helper_batch_runner if sys.platform == "darwin" else onnx_batch_runner
+
+
 def preload_denoise(*, cancel=None, tile: int = DEFAULT_TILE) -> dict:
     """Compile and load the denoise model once by running one blank tile.
 
@@ -658,7 +818,7 @@ def preload_denoise(*, cancel=None, tile: int = DEFAULT_TILE) -> dict:
                 "error": report["reason"] or "denoise is unavailable"}
     blank = np.full((MIN_TILE, MIN_TILE, 3), 0.5, dtype=np.float32)
     try:
-        produced = helper_batch_runner(
+        produced = _default_batch_runner()(
             [blank], "denoise", {"strength": 1.0, "tile": int(tile)}, cancel=cancel)
     except Exception as error:  # reported, never raised: this is a warm-up
         return {"ok": False, "available": True, "error": str(error),
@@ -699,14 +859,14 @@ def run_model(image, mode: str, *, strength: float = 1.0, scale: int = 2,
         # seconds while a tile costs a tenth of one, so per-tile processes
         # spend almost all their time loading the same model again.
         batch = mode == "denoise"
-        runner = helper_runner
+        runner = _default_single_runner()
 
     params = {"mode": mode, "strength": request["strength"], "scale": factor,
               "tile": request["tile"], "overlap": request["overlap"]}
     tiles = tile_image(source, request["tile"], request["overlap"])
 
     if batch:
-        produced_tiles = helper_batch_runner(
+        produced_tiles = _default_batch_runner()(
             [patch["image"] for patch in tiles], mode, dict(params),
             status=status, cancel=cancel)
         if len(produced_tiles) != len(tiles):
