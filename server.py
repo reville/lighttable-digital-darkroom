@@ -2685,6 +2685,16 @@ def standard_preview_ready(name: str, state: dict | None = None) -> bool:
         name, STANDARD_PREVIEW_WIDTH, params["rotate"], params).exists()
 
 
+def accurate_input_ready(name: str, width: int, params: dict) -> bool:
+    """Whether a render at this width can start without a RAW demosaic."""
+    if not is_raw(name):
+        return True
+    cp = fp.clean_params(params)
+    if cp["profile_enabled"]:
+        return valid_tiff_cache(raw_preview_path(name, width, "full", cp))
+    return neutral_preview_path(name, width, cp["rotate"], cp).exists()
+
+
 def _warm_standard_preview(name: str):
     """Build one photo's accurate 1100 px input; False asks for a retry."""
     if not is_raw(name):
@@ -7417,6 +7427,13 @@ class Handler(BaseHTTPRequestHandler):
                                            or preview_grade_requires_bake(b.get("masks"))):
                     raise ValueError(T("viewport rendering requires unwarped source geometry"))
                 width = preview_width(b.get("w", 1100))
+                # A wide prefetch window only warms film renders whose accurate
+                # input already exists; it never queues a demosaic behind the
+                # photo the window is refining.
+                if b.get("prepared_only") is True and not accurate_input_ready(
+                        b["name"], width, b.get("params", {})):
+                    self._json({"cancelled": True, "reason": "input not prepared"})
+                    return
                 result = render_preview(
                     b["name"], b.get("params", {}), width,
                     b.get("engine", "rs"), client,
