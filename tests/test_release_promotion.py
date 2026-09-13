@@ -218,6 +218,58 @@ class PromotionProofTests(unittest.TestCase):
                         self.assertEqual(len(result['assets']), 2)
                         self.assertTrue(all(item['action'] == 'add' for item in result['assets']))
 
+    def created_draft_fixture(self, directory):
+        manifest = self.manifest()
+        manifest_path = directory / release.platform_names('0.7.0', 'windows-x64')['manifest']
+        release.write_json(manifest_path, manifest)
+        return manifest_path
+
+    def test_new_draft_missing_from_listing_is_reread_with_bounded_backoff(self):
+        # Run 34730115761: the listing omitted the draft immediately after creation.
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            manifest_path = self.created_draft_fixture(directory)
+            draft = {'isDraft': True, 'isPrerelease': False, 'tagName': 'v0.7.0'}
+            with patch.object(promote, 'release_state', side_effect=[None, None, None, draft]) as state_read, \
+                 patch.object(promote.time, 'sleep') as sleep, patch.object(release, 'gh') as gh, \
+                 patch.object(release, 'publish', return_value={'applied': True, 'assets': []}) as publish:
+                result, state = promote.plan_or_publish(manifest_path, directory, 'windows-x64', True)
+            self.assertEqual(state, draft)
+            self.assertTrue(result['draft_created'])
+            self.assertEqual(state_read.call_count, 4)
+            self.assertEqual([call.args[0] for call in sleep.call_args_list], [1, 2])
+            self.assertEqual(gh.call_count, 1)
+            self.assertTrue(publish.call_args.kwargs['apply'])
+
+    def test_new_draft_that_never_appears_fails_closed_after_bounded_reads(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            manifest_path = self.created_draft_fixture(directory)
+            with patch.object(promote, 'release_state', return_value=None) as state_read, \
+                 patch.object(promote.time, 'sleep') as sleep, patch.object(release, 'gh') as gh, \
+                 patch.object(release, 'publish') as publish:
+                with self.assertRaisesRegex(ValueError, 'New draft metadata did not match'):
+                    promote.plan_or_publish(manifest_path, directory, 'windows-x64', True)
+            self.assertEqual(state_read.call_count, 2 + len(promote.DRAFT_READ_DELAYS))
+            self.assertEqual(sum(call.args[0] for call in sleep.call_args_list), 15)
+            self.assertEqual(gh.call_count, 1)
+            publish.assert_not_called()
+
+    def test_new_draft_with_wrong_metadata_is_not_retried(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            manifest_path = self.created_draft_fixture(directory)
+            for wrong in ({'isDraft': False, 'isPrerelease': False}, {'isDraft': True, 'isPrerelease': True}):
+                with self.subTest(wrong=wrong), \
+                     patch.object(promote, 'release_state', side_effect=[None, wrong]) as state_read, \
+                     patch.object(promote.time, 'sleep') as sleep, patch.object(release, 'gh'), \
+                     patch.object(release, 'publish') as publish:
+                    with self.assertRaisesRegex(ValueError, 'New draft metadata did not match'):
+                        promote.plan_or_publish(manifest_path, directory, 'windows-x64', True)
+                    self.assertEqual(state_read.call_count, 2)
+                    sleep.assert_not_called()
+                    publish.assert_not_called()
+
     def test_release_listing_errors_do_not_trigger_draft_creation(self):
         with patch.object(release, 'gh', return_value='[[]]'):
             self.assertIsNone(promote.release_state('v0.7.0'))

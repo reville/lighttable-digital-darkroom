@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "초록",
     "Green label": "초록 레이블",
     "Greens": "초록",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "폴더를 추가하거나 다시 스캔하면 그리드 미리보기가 백그라운드에서 준비됩니다. 먼저 원본 사진의 큰 미리보기가 표시되고, 편집 내용이 반영된 미리보기가 준비되는 대로 교체됩니다.",
     "Group and find people": "사람을 그룹화하고 찾기",
     "Group photos into collections": "사진을 컬렉션으로 그룹화",
     "Group similar faces and search names you add.": "비슷한 얼굴을 그룹화하고 추가한 이름을 검색합니다.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW 원본은 조정된 TIFF로 렌더링해야 합니다. 선택 항목에 RAW 파일이 포함되어 있으면 처리된 원본은 사용할 수 없습니다. 처리된 사진의 경우, 해당 옵션은 조정된 TIFF를 준비하는 대신 원본을 엽니다.",
     "RAW originals only.": "RAW 원본만.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "RAW 사진에는 센서 노이즈 감소와 학습형 노이즈 감소 조절이 표시될 수 있습니다. 학습형 노이즈 감소는 Apply denoise를 눌렀을 때 로컬에서 실행되며, Strength를 움직인다고 즉시 실행되지는 않습니다.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 사진은 필름이 꺼져 있어도 처음부터 LightTable의 현상 결과로 표시됩니다. 캐시에 없는 사진을 처음 열 때는 표시되기까지 잠시 걸릴 수 있습니다. 진행률 표시줄은 완료된 처리 단계를 표시하며 사진이 보이면 사라집니다.",
     "RAW preview could not finish. Try the photo again.": "RAW 미리보기를 완료하지 못했습니다. 사진을 다시 시도하세요.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "카메라 프로필",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (없음)"
+    "{fileName} (missing)": "{fileName} (없음)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "RAW 사진은 필름이 꺼져 있어도 처음부터 LightTable의 현상 결과로 표시됩니다. 필름이 켜져 있으면 캐시에 없는 사진의 첫 프레임에는 카메라에 내장된 미리보기가 사용되며, 곧 정확한 변환 결과로 대체됩니다. 그때까지 상태에는 “RAW 정제 중…”이 표시됩니다. 진행률 표시줄은 완료된 처리 단계를 표시하며 사진이 보이면 사라집니다.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "폴더를 추가하거나 다시 스캔하면 그리드 미리보기가 백그라운드에서 준비됩니다. 먼저 원본 사진의 큰 미리보기가 표시되고, 편집 내용이 반영된 미리보기가 준비되는 대로 교체됩니다. 각 RAW의 표준 미리보기도 준비되므로 전체 디코딩을 기다리지 않고 사진을 열 수 있습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

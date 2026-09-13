@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Hijau",
     "Green label": "Label hijau",
     "Greens": "Hijau",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap.",
     "Group and find people": "Kelompokkan dan temukan orang",
     "Group photos into collections": "Kelompokkan foto ke dalam koleksi",
     "Group similar faces and search names you add.": "Kelompokkan wajah serupa dan cari nama yang Anda tambahkan.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Original RAW harus dirender sebagai TIFF yang disesuaikan. Processed original tidak tersedia jika pilihan berisi file RAW. Untuk foto yang diproses, opsi itu membuka original, bukan menyiapkan TIFF yang disesuaikan.",
     "RAW originals only.": "Hanya asli RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Foto RAW dapat menampilkan kontrol Sensor noise reduction dan Learned denoise. Learned denoise berjalan secara lokal saat Anda menekan Apply denoise; menggeser Strength tidak menjalankannya secara langsung.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Foto pertama yang belum tersimpan di cache mungkin memerlukan waktu sejenak untuk muncul. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
     "RAW preview could not finish. Try the photo again.": "Pratinjau RAW tidak dapat diselesaikan. Coba foto itu lagi.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "profil kamera",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (hilang)"
+    "{fileName} (missing)": "{fileName} (hilang)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Foto RAW dibuka dengan hasil pengolahan LightTable, termasuk saat Film dinonaktifkan. Saat Film aktif, bingkai pertama foto yang belum tersimpan di cache menggunakan pratinjau tersemat dari kamera; konversi yang akurat menggantikannya tak lama kemudian, dan hingga saat itu status menampilkan “Menyempurnakan RAW…”. Bilah kemajuan menunjukkan tahap pemrosesan yang selesai dan menghilang saat foto terlihat.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Pratinjau kisi disiapkan di latar belakang saat Anda menambahkan atau memindai ulang folder. Pratinjau besar dari foto asli muncul terlebih dahulu; pratinjau dengan suntingan Anda menggantikannya setelah siap. Pratinjau standar untuk setiap RAW juga disiapkan agar foto terbuka tanpa menunggu proses dekode penuh."
   },
   "plurals": {
     " · {count} paired file linked": {

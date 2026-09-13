@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Film önizlemeleri mevcut fotoğrafın düzenlemelerini içerir. Önizleme penceresine gözatmak ve onu kapatmak bir film stoğu uygulamaz; bir önizleme seçmek uygular.",
             "Bir film stoğu, fiziksel film sürecini tanımlar. Bir düzenleme hazır ayarı daha geniş kaydedilmiş ayarlar içerebilir ve Film ayarlarını da içerebilir. Film içindeki Çıkış menüsü bir tarama veya baskı iş akışı seçer; bir dosya dışa aktarmaz.",
-            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Film açıkken, önbelleğe alınmamış bir fotoğrafın ilk karesi kameranın gömülü önizlemesini kullanır; kısa süre sonra doğru dönüştürme onun yerini alır ve o zamana kadar durum “RAW iyileştiriliyor…” gösterir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur."
           ],
           "tips": [
             "Bir film stoğu kullanılamıyorsa GPU motoru gerekebilir. Motor kullanılabilirliği Ayarlar → Performans bölümünde gösterilir."
@@ -3214,8 +3214,8 @@
         {
           "title": "Hangi işlemin tamamlanıp tamamlanmadığını kontrol edin",
           "paragraphs": [
-            "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır.",
-            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Önbelleğe alınmamış ilk fotoğrafın görünmesi biraz zaman alabilir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
+            "Klasör eklediğinizde veya yeniden taradığınızda ızgara önizlemeleri arka planda hazırlanır. Önce orijinallerin büyük önizlemeleri görünür; düzenlemelerinizi içeren önizlemeler hazır oldukça bunların yerini alır. Ayrıca her RAW için standart bir önizleme hazırlanır; böylece fotoğraf tam kod çözme beklenmeden açılır.",
+            "RAW fotoğraflar, Film kapalıyken de LightTable’ın işlenmiş görünümüyle açılır. Film açıkken, önbelleğe alınmamış bir fotoğrafın ilk karesi kameranın gömülü önizlemesini kullanır; kısa süre sonra doğru dönüştürme onun yerini alır ve o zamana kadar durum “RAW iyileştiriliyor…” gösterir. İlerleme çubuğu tamamlanan işleme aşamalarını gösterir ve fotoğraf göründüğünde kaybolur.",
             "Yakınlaştırılmış görünümde fotoğraf değiştirirken LightTable, varsa eşleşen önbellek önizlemesini hemen gösterir. Daha keskin ayrıntılar arka planda yüklenir ve komşu fotoğraflar yakınlaştırma düzeyinize göre önceden yüklenir.",
             "Yakınlaştırma, daha fazla ayrıntı yüklenirken mevcut en keskin önizlemeyi korur. Uzaklaştırmada aynı önizleme yeniden kullanılır. 1:1 görünümde, ince ayrıntıları değerlendirmeden önce düğmenin araç ipucunu kontrol edin.",
             "1:1 düğmesinin ipucu, bir önizleme piksel boyutunun kaynak boyuttan küçük olduğunu bildiriyorsa, teslim edilen önizleme daha küçüktür. Otomatik çözünürlük, ekranınıza uyar ve yakınlaştırılmış görüntüleme için isteğini artırır; çok büyük kaynaklar önizleme istek sınırını aşabilir.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }

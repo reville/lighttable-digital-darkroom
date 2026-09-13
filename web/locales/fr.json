@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "fr",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Vert",
     "Green label": "Étiquette verte",
     "Greens": "Verts",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts.",
     "Group and find people": "Grouper et rechercher des personnes",
     "Group photos into collections": "Grouper les photos en collections",
     "Group similar faces and search names you add.": "Groupez les visages similaires et recherchez les noms que vous ajoutez.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Les originaux RAW doivent être rendus en TIFF ajustés. L’original traité n’est pas disponible si la sélection contient un fichier RAW. Pour les photos traitées, cette option ouvre l’original au lieu de préparer un TIFF ajusté.",
     "RAW originals only.": "Originaux RAW uniquement.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Les photos RAW peuvent afficher les contrôles Réduction du bruit du capteur et Réduction du bruit apprise. La réduction du bruit apprise s’exécute localement lorsque vous appuyez sur Appliquer la réduction du bruit ; déplacer Intensité ne l’exécute pas en direct.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. La première photo non mise en cache peut prendre un instant à apparaître. La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
     "RAW preview could not finish. Try the photo again.": "L’aperçu RAW n’a pas pu se terminer. Réessayez avec la photo.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "profil d’appareil photo",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (manquant)"
+    "{fileName} (missing)": "{fileName} (manquant)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Les photos RAW s’ouvrent avec le rendu de LightTable, même lorsque Film est désactivé. Lorsque Film est activé, la première image d’une photo non mise en cache utilise l’aperçu intégré de l’appareil photo ; la conversion précise la remplace peu après et, d’ici là, l’état indique « Affinage du RAW… ». La barre de progression indique les étapes de traitement terminées et disparaît lorsque la photo est visible.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Les aperçus de la grille sont préparés en arrière-plan lorsque vous ajoutez ou réanalysez des dossiers. De grands aperçus des originaux s’affichent d’abord ; les aperçus avec vos retouches les remplacent dès qu’ils sont prêts. Un aperçu standard de chaque RAW est également préparé afin que la photo s’ouvre sans attendre un décodage complet."
   },
   "plurals": {
     " · {count} paired file linked": {
