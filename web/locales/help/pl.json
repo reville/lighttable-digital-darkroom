@@ -1095,7 +1095,13 @@
         "auto",
         "histogram",
         "obcinanie",
-        "przed"
+        "przed",
+        "próbnik koloru",
+        "próbnik kolorów",
+        "próbnik",
+        "wartości rgb",
+        "odczyt",
+        "pomiar"
       ],
       "sections": [
         {
@@ -1125,6 +1131,21 @@
           "tips": [
             "Jeśli Autom. informuje, że czeka na podgląd obrazu, pozwól mu się wczytać i spróbuj ponownie.",
             "Menu zakresu oferuje też Waveform, RGB Parade i Vectorscope do sprawdzania tonów i koloru."
+          ]
+        },
+        {
+          "title": "Mierz kolory próbnikami",
+          "paragraphs": [
+            "Próbniki kolorów pokazują wartości czerwieni, zieleni i niebieskiego (0–255) oraz jasność L* w maksymalnie czterech miejscach zdjęcia. Odczyty aktualizują się podczas edycji, więc w trakcie regulacji możesz sprawdzać szarą kartę, podłoże filmu lub odcień skóry."
+          ],
+          "steps": [
+            "Kliknij przycisk próbnika obok histogramu.",
+            "Kliknij zdjęcie, aby umieścić próbnik. Możesz umieścić maksymalnie cztery.",
+            "Odczytaj wartości pod histogramem. Użyj ×, aby usunąć próbnik."
+          ],
+          "tips": [
+            "Próbniki odczytują wyświetlaną edycję. Należą do bieżącej sesji okna i nie są zapisywane ze zdjęciem.",
+            "Naciśnij Escape, aby przestać umieszczać próbniki."
           ]
         }
       ],
@@ -1603,7 +1624,15 @@
         "cienie",
         "nakładka",
         "rozjaśnianie",
-        "wypalanie"
+        "wypalanie",
+        "rozmycie obiektywu",
+        "rozmycie tła",
+        "rozmycie",
+        "bokeh",
+        "głębia ostrości",
+        "luminancja",
+        "mieszanie luminancji",
+        "zachowaj kolor"
       ],
       "sections": [
         {
@@ -1660,10 +1689,26 @@
           ]
         },
         {
+          "title": "Rozmyj część zdjęcia",
+          "paragraphs": [
+            "Rozmycie obiektywu w sekcji Efekty maski zmiękcza zaznaczony obszar tak jak nieostry obiektyw. Promień rozmycia rośnie wraz z siłą maski, więc wtapiana krawędź lub zakres głębi zanika stopniowo zamiast kończyć się ostrą linią.",
+            "Rozmycie jest stosowane do gotowego obrazu, po renderowaniu filmu i pozostałych regulacjach maski. Wygładza też ziarno filmu w rozmytym obszarze."
+          ],
+          "steps": [
+            "Utwórz maskę Obiekt i wybierz Odwróć, maskę Głębia dla zakresu odległości albo narysuj maskę Promieniowy i ją odwróć.",
+            "Rozwiń Efekty i zwiększ Rozmycie obiektywu. Zanim ocenisz efekt, poczekaj na aktualizację podglądu.",
+            "Dopracuj zaznaczenie za pomocą Dodaj, Odejmij lub Wtapianie tam, gdzie rozmycie wychodzi na ostre krawędzie."
+          ],
+          "tips": [
+            "Do rozmycia wliczane są tylko zaznaczone piksele, więc ostry obiekt nie rozmazuje się na rozmytym tle. Sprawdź drobne krawędzie, takie jak włosy, w widoku 1:1."
+          ]
+        },
+        {
           "title": "Dostosuj lokalną krzywą tonalną",
           "steps": [
             "Rozwiń Krzywą tonalną dla wybranej maski i wybierz RGB, Czerwony, Zielony lub Niebieski.",
             "Kliknij wykres, aby dodać punkt, a potem go przeciągnij. Przesunięcie punktu w górę rozjaśnia jego wyjście; przesunięcie w dół je przyciemnia. Kliknij dwukrotnie punkt wewnętrzny, aby go usunąć.",
+            "Włącz Tylko luminancja, aby zmieniać jasność bez zmiany koloru i nasycenia.",
             "Użyj Resetuj krzywą, aby zresetować tylko wybrany kanał tej maski, albo Cofnij, aby odwrócić edycję."
           ],
           "tips": [
@@ -1818,7 +1863,7 @@
       "id": "editing-remove-heal",
       "title": "Usuń plamy i dopracuj korekcje Napraw lub Klon",
       "category": "Editing",
-      "summary": "Maluj po rozpraszających elementach, sprawdzaj widoczność punktu i przesuwaj źródło lub cel korekty.",
+      "summary": "Usuwaj plamki i namalowane pociągnięcia, czyść kurz i rysy na całym zdjęciu oraz dopracowuj korekty Napraw lub Klon.",
       "keywords": [
         "usuń",
         "naprawa",
@@ -1830,7 +1875,18 @@
         "wizualizuj plamy",
         "źródło",
         "cel",
-        "rozpraszanie uwagi"
+        "rozpraszanie uwagi",
+        "kurz i rysy",
+        "rysa",
+        "włosy",
+        "przewód",
+        "pędzel",
+        "pociągnięcie",
+        "wypełnienie",
+        "wypełnienie teksturą",
+        "wypełnienie z uwzględnieniem zawartości",
+        "skan filmu",
+        "skazy"
       ],
       "sections": [
         {
@@ -1841,22 +1897,44 @@
           ],
           "steps": [
             "Wybierz Usuń, Napraw lub Klon, a następnie ustaw Rozmiar, Wtapianie i Krycie.",
-            "Kliknij plamkę lub przeciągnij po rozpraszającym elemencie na zdjęciu.",
+            "W Usuń wybierz Plamka, aby kliknąć lub przeciągnąć okrągłą korektę, albo Pędzel, aby malować wzdłuż rysy, włosa lub przewodu.",
+            "W Usuń wybierz Wypełnienie. Dopasuj do otaczającej tekstury kopiuje pobliskie szczegóły ze zdjęcia; Płynne przejście stapia krawędzie do środka i nadaje się do jednolitych obszarów, takich jak niebo.",
+            "Kliknij plamkę, przeciągnij po elemencie rozpraszającym uwagę lub namaluj pociągnięcie na zdjęciu.",
             "Dla drobnych plamek kurzu włącz Visualize Spots i dostosuj Próg, aby krawędzie były łatwiejsze do sprawdzenia.",
             "Wyłącz Wizualizuj plamy i sprawdź skorygowane zdjęcie."
           ],
           "tips": [
-            "Wybranie korekty i wybranie innego trybu zmienia tryb tej korekty."
+            "Wybranie korekty i wybranie innego trybu zmienia tryb tej korekty.",
+            "Dopasuj do otaczającej tekstury kopiuje piksele z tego zdjęcia; nigdy nie generuje nowych szczegółów. Zmiany Wypełnienia dotyczą wybranej korekty Usuń. Korekty utworzone, zanim ta opcja była dostępna, zachowują Płynne przejście.",
+            "Pociągnięcie pędzla może mieć maksymalnie 256 punktów. Puść przycisk i namaluj kolejne pociągnięcie, aby kontynuować."
+          ]
+        },
+        {
+          "title": "Usuń kurz i rysy z całego zdjęcia",
+          "paragraphs": [
+            "Kurz i rysy wyszukuje drobne skazy wyraźnie odcinające się od otoczenia, takie jak kurz na skanie filmu, i wypełnia je pobliskimi pikselami. Działa na całym zdjęciu jako jedna korekta na górze listy, więc późniejsze korekty pobierają próbki z oczyszczonego obrazu.",
+            "Największa skaza ustala najszerszą uwzględnianą skazę jako część krótszego boku zdjęcia. Czułość określa, jak bardzo skaza musi różnić się od otoczenia. Wyższe wartości wykrywają słabsze skazy i częściej obejmują drobne szczegóły."
+          ],
+          "steps": [
+            "Otwórz Usuń i rozwiń Kurz i rysy.",
+            "Na początek ustaw Największa skaza nieco szerzej niż widoczny kurz i pozostaw Czułość na 50%.",
+            "Kliknij Usuń kurz. Pokaż wykryte skazy obrysowuje znalezione miejsca na czerwono i podaje, ile skaz znaleziono.",
+            "Powiększ włosy, gwiazdy, błyski w oczach i tekst. Jeśli zostały wychwycone, zmniejsz Czułość lub Największa skaza albo obniż Krycie.",
+            "Wyłącz Pokaż wykryte skazy, aby ocenić wynik."
+          ],
+          "tips": [
+            "Aby później zmienić korektę Kurz, wybierz ją z listy. Włącz tę korektę porównuje wynik, a Usuń korekcję ją usuwa.",
+            "Długie cienkie rysy są wykrywane, gdy ich szerokość jest mniejsza niż Największa skaza. Szersze rysy zamaluj pędzlem Usuń."
           ]
         },
         {
           "title": "Doprecyzuj istniejącą korektę",
           "paragraphs": [
-            "Wybierz korektę z listy, aby pokazać jej sterowania. Kółka na obrazie wskazują edytowalny cel oraz, dla Napraw i Klon, źródło.",
+            "Wybierz korektę z listy, aby pokazać jej ustawienia. Kółka lub pociągnięcia na obrazie wskazują edytowalny cel oraz, dla Napraw i Klon, źródło.",
             "Powiększ, aby uzyskać precyzyjne umieszczenie. Obrysy okręgów i punkty pozostają ostre na każdym poziomie powiększenia; okręgi nadal pokazują ten sam obszar zdjęcia."
           ],
           "steps": [
-            "Przeciągnij okrąg celu, aby zmienić położenie korekty, albo wybierz Przesuń cel i kliknij jego nowe położenie.",
+            "Przeciągnij okrąg celu lub namalowane pociągnięcie, aby przesunąć korektę, albo wybierz Przenieś cel i kliknij nowe położenie.",
             "W przypadku Napraw lub Klonu przeciągnij okrąg źródła do lepszego obszaru. Odśwież źródło próbuje innego położenia źródła.",
             "Dostosuj Wtapianie lub Krycie, jeśli krawędź albo siła korekty wymagają dopracowania.",
             "Przełącz Włącz tę korektę, aby porównać, albo użyj Usuń korektę, aby ją usunąć."
@@ -2047,7 +2125,15 @@
         "niebieski",
         "kontrast",
         "Punkt kontrolny",
-        "krzywa S"
+        "krzywa S",
+        "pipeta",
+        "punkt czerni",
+        "punkt bieli",
+        "szary punkt",
+        "punkt szarości",
+        "neutralny",
+        "dominanta koloru",
+        "poziomy"
       ],
       "sections": [
         {
@@ -2065,6 +2151,21 @@
           "tips": [
             "Użyj kilku punktów i porównuj zdjęcie podczas pracy; krzywe kanałów mogą wprowadzać silne zafarbienia.",
             "Zapisana lub zaimportowana krzywa zachowuje dokładnie zapisaną tabelę do momentu jej edycji. Aplikacja przebudowuje reprezentatywne uchwyty do edycji, więc pierwsza regulacja może przekształcić zaimportowaną krzywą poza punkt, który przesuniesz."
+          ]
+        },
+        {
+          "title": "Ustaw punkty czerni, szarości i bieli",
+          "paragraphs": [
+            "Pipety pod krzywą punktową ustawiają krzywe czerwieni, zieleni i niebieskiego na podstawie miejsca na zdjęciu. Punkt czerni zmienia próbkowany obszar w czerń, Punkt bieli — w biel, a Punkt szarości czyni go neutralnym, zachowując jego jasność. Przydaje się to do usuwania zafarbu ze skanu."
+          ],
+          "steps": [
+            "Otwórz Edytuj, rozwiń Krzywa i wybierz Punkt czerni, Punkt szarości lub Punkt bieli.",
+            "Kliknij obszar zdjęcia, który powinien być czarny, neutralnie szary lub biały.",
+            "Sprawdź krzywe R, G i B, a następnie dopracuj je lub zresetuj, jeśli efekt jest zbyt silny."
+          ],
+          "tips": [
+            "Punkt czerni wymaga obszaru ciemniejszego niż średnia szarość, a Punkt bieli — obszaru jaśniejszego niż średnia szarość. Naciśnij Escape, aby anulować pipetę.",
+            "Pipety przełączają Krzywa w tryb Punkt, ponieważ edytują krzywe kanałów."
           ]
         },
         {
@@ -2527,7 +2628,11 @@
         "jakość",
         "pełny rozmiar",
         "rozdzielczość",
-        "preset"
+        "preset",
+        "ramka",
+        "obramowanie",
+        "matowy",
+        "margines"
       ],
       "sections": [
         {
@@ -2540,6 +2645,17 @@
             "Otwórz Eksportuj i wybierz preset z górnego paska.",
             "Ustaw Wymiary na Pełny rozmiar albo limit dłuższego boku.",
             "Sprawdź Podgląd wyjściowy: wyeksportowany rozmiar uwzględnia obrót i kadr, a limit dłuższego boku zmniejsza większe obrazy bez powiększania mniejszych."
+          ]
+        },
+        {
+          "title": "Dodaj ramkę",
+          "paragraphs": [
+            "Ramka w sekcji Zaawansowane dodaje jednolity biały, szary lub czarny margines wokół każdego eksportowanego zdjęcia. Margines jest dodawany po zmianie rozmiaru, więc jego szerokość jest częścią dłuższego boku gotowego pliku, a plik wyjściowy jest większy od zdjęcia o ten margines z każdej strony."
+          ],
+          "steps": [
+            "Otwórz Eksportuj i rozwiń Zaawansowane.",
+            "Wybierz Cienka, Średnia lub Szeroka w sekcji Ramka, a następnie wybierz Kolor ramki.",
+            "Sprawdź ostateczne wymiary w sekcji Podgląd wyjścia."
           ]
         },
         {
@@ -2663,7 +2779,10 @@
         "ocenione",
         "wsadowy",
         "anuluj",
-        "postęp"
+        "postęp",
+        "stykówka",
+        "arkusz stykowy",
+        "odbitka indeksowa"
       ],
       "sections": [
         {
@@ -2686,6 +2805,22 @@
             "Wybrane zdjęcia używa wybranych zdjęć nadal widocznych w bieżącym folderze, kolekcji i filtrach. Jeśli żaden z elementów zaznaczenia nie jest już widoczny, używa aktywnego zdjęcia. Sprawdź liczbę zdjęć i nazwę w Eksportuj przed rozpoczęciem.",
             "Wybrane tylko, Ocenione 1+ i Wszystkie poza odrzuconymi wybierają pasujące nieruchome zdjęcia z aktywnego katalogu i mogą obejmować zdjęcia spoza wyświetlanej kolekcji lub filtra. Wybrane zdjęcia zapewnia jawne sterowanie zestawem.",
             "Jeśli wsadowy eksport zapisuje do wielu folderów, Pokaż w Finderze pokazuje pierwsze zdjęcie wyeksportowane pomyślnie. Łącze jest nieobecne, gdy nie wyeksportowano żadnych zdjęć. Użyj Anuluj eksport, aby zażądać zatrzymania. Szczegóły eksportu podają liczbę ukończonych, pominiętych i anulowanych elementów, a także ostrzeżenia i błędy; ostrzeżenie może wystąpić po pomyślnym zapisaniu zdjęcia. Klipy wideo nie są renderowane przez przepływ pracy eksportu zdjęć nieruchomych. Jeśli oryginał zmieni się, gdy jego eksport jest w kolejce lub jest renderowany, to zdjęcie zakończy się błędem; dodaj je ponownie do kolejki po sprawdzeniu oryginału."
+          ]
+        },
+        {
+          "title": "Utwórz stykówkę",
+          "paragraphs": [
+            "Stykówka… w Eksportuj układa zdjęcia wybrane w polu Zdjęcia w jednym pliku JPEG z podpisami, z zastosowanymi edycjami. Mieści maksymalnie 200 zdjęć."
+          ],
+          "steps": [
+            "Otwórz Eksportuj i ustaw Zdjęcia oraz folder docelowy.",
+            "Kliknij Stykówka… i wybierz Kolumny, Szerokość arkusza, Tło oraz Tytuł.",
+            "Wybierz podpisy: Nazwa pliku, Nośnik filmu i Ocena.",
+            "Kliknij Utwórz arkusz. Okno dialogowe pokazuje postęp, a powiadomienie podaje ścieżkę zapisanego pliku."
+          ],
+          "tips": [
+            "Arkusz jest zapisywany jako contact-sheet z datą i godziną. Zdjęcie, którego nie da się wyrenderować, jest pomijane i uwzględniane w powiadomieniu.",
+            "Wybierz więcej kolumn, jeśli przy dużym zaznaczeniu arkusz jest zbyt wysoki, aby go utworzyć."
           ]
         }
       ],
@@ -3285,5 +3420,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "90775436556536d7d6760e09dd0ad4c4184b06737025d1cd003454f1e7c3bf09"
 }

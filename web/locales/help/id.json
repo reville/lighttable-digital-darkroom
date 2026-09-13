@@ -1095,7 +1095,13 @@
         "otomatis",
         "histogram",
         "clipping",
-        "sebelum"
+        "sebelum",
+        "sampler warna",
+        "pengambil sampel warna",
+        "sampler",
+        "nilai rgb",
+        "pembacaan nilai",
+        "ukur"
       ],
       "sections": [
         {
@@ -1125,6 +1131,21 @@
           "tips": [
             "Jika Auto mengatakan sedang menunggu pratinjau gambar, biarkan pratinjau dimuat lalu coba lagi.",
             "Menu scope juga menawarkan Waveform, RGB Parade, dan Vectorscope untuk memeriksa nada dan warna."
+          ]
+        },
+        {
+          "title": "Ukur warna dengan sampler",
+          "paragraphs": [
+            "Sampler warna menampilkan nilai merah, hijau, dan biru (0–255) serta kecerahan, L*, dari hingga empat tempat pada foto. Nilai diperbarui saat Anda mengedit, sehingga Anda dapat memeriksa kartu abu-abu, basis film, atau warna kulit sambil menyesuaikan."
+          ],
+          "steps": [
+            "Klik tombol sampler di samping histogram.",
+            "Klik foto untuk menempatkan sampler. Tempatkan hingga empat.",
+            "Baca nilai di bawah histogram. Gunakan × untuk menghapus sampler."
+          ],
+          "tips": [
+            "Sampler membaca editan yang ditampilkan. Sampler hanya berlaku untuk sesi jendela saat ini dan tidak disimpan bersama foto.",
+            "Tekan Escape untuk berhenti menempatkan sampler."
           ]
         }
       ],
@@ -1603,7 +1624,15 @@
         "hitam",
         "lapisan",
         "dodge",
-        "dodge"
+        "dodge",
+        "blur lensa",
+        "blur latar belakang",
+        "blur",
+        "bokeh",
+        "ruang tajam",
+        "luminositas",
+        "paduan luminositas",
+        "pertahankan warna"
       ],
       "sections": [
         {
@@ -1660,10 +1689,26 @@
           ]
         },
         {
+          "title": "Blur sebagian foto",
+          "paragraphs": [
+            "Blur lensa di bagian Efek pada masker melembutkan area yang dipilih seperti lensa yang tidak fokus. Radius blur bertambah seiring kekuatan masker, sehingga tepi yang dihaluskan atau rentang kedalaman memudar secara bertahap, bukan berhenti di garis tegas.",
+            "Blur diterapkan pada gambar akhir, setelah rendering film dan penyesuaian lain pada masker. Blur juga menghaluskan grain film di dalam area yang di-blur."
+          ],
+          "steps": [
+            "Buat masker Subjek lalu pilih Balikkan, atau masker Kedalaman untuk rentang jarak, atau gambar masker Radial lalu balikkan.",
+            "Perluas Efek dan naikkan Blur lensa. Tunggu pratinjau diperbarui sebelum menilainya.",
+            "Sempurnakan seleksi dengan Tambahkan, Kurangi, atau Kehalusan Tepi di bagian yang blur-nya meluber ke tepi tajam."
+          ],
+          "tips": [
+            "Hanya piksel yang dipilih yang berkontribusi pada blur, sehingga subjek yang tajam tidak meluber ke latar belakang yang di-blur. Periksa tepi halus seperti rambut pada 1:1."
+          ]
+        },
+        {
           "title": "Sesuaikan kurva nada lokal",
           "steps": [
             "Perluas Kurva Nada untuk masker terpilih dan pilih RGB, Merah, Hijau, atau Biru.",
             "Klik grafik untuk menambahkan titik, lalu seret titik tersebut. Menggerakkan titik ke atas mencerahkan keluarannya; menggerakkannya ke bawah menggelapkannya. Klik dua kali titik interior untuk menghapusnya.",
+            "Aktifkan Hanya luminositas untuk mengubah kecerahan tanpa menggeser warna atau saturasi.",
             "Gunakan Atur ulang kurva untuk mengatur ulang hanya saluran terpilih dari masker ini, atau Urungkan untuk membalikkan edit."
           ],
           "tips": [
@@ -1818,7 +1863,7 @@
       "id": "editing-remove-heal",
       "title": "Hapus bintik dan perhalus koreksi Heal atau Clone",
       "category": "Editing",
-      "summary": "Sapu gangguan dengan kuas, periksa visibilitas spot, dan pindahkan source atau target dari koreksi.",
+      "summary": "Hapus spot dan sapuan yang dilukis, bersihkan debu dan goresan di seluruh foto, serta sempurnakan koreksi Perbaiki atau Klon.",
       "keywords": [
         "hapus",
         "perbaiki",
@@ -1830,7 +1875,18 @@
         "visualisasikan spot",
         "sumber",
         "target",
-        "gangguan"
+        "gangguan",
+        "debu dan goresan",
+        "goresan",
+        "rambut",
+        "kabel",
+        "kuas",
+        "sapuan",
+        "isian",
+        "isian tekstur",
+        "isian sadar konten",
+        "pindaian film",
+        "noda"
       ],
       "sections": [
         {
@@ -1841,22 +1897,44 @@
           ],
           "steps": [
             "Pilih Hapus, Heal, atau Klon, lalu atur Ukuran, Bulu, dan Opasitas.",
-            "Klik bintik atau seret melintasi gangguan pada foto.",
+            "Untuk Hapus, pilih Spot untuk mengeklik atau menyeret koreksi bundar, atau Kuas untuk melukis di sepanjang goresan, rambut, atau kabel.",
+            "Untuk Hapus, pilih Isian. Cocokkan tekstur sekitar menyalin detail di dekatnya dari foto; Paduan halus memadukan tepi ke arah dalam dan cocok untuk area rata seperti langit.",
+            "Klik spot, seret melintasi gangguan, atau lukis sapuan pada foto.",
             "Untuk spot debu kecil, aktifkan Visualize Spots dan sesuaikan Threshold agar tepi lebih mudah diperiksa.",
             "Matikan Visualize Spots dan periksa foto yang sudah dikoreksi."
           ],
           "tips": [
-            "Memilih koreksi lalu memilih mode lain mengubah mode koreksi tersebut."
+            "Memilih koreksi lalu memilih mode lain mengubah mode koreksi tersebut.",
+            "Cocokkan tekstur sekitar menyalin piksel dari foto ini; fitur ini tidak pernah menghasilkan detail baru. Perubahan Isian berlaku untuk koreksi Hapus yang dipilih. Koreksi yang dibuat sebelum pilihan ini tersedia tetap menggunakan Paduan halus.",
+            "Satu sapuan kuas dapat memuat hingga 256 titik. Lepaskan, lalu lukis sapuan lain untuk melanjutkan."
+          ]
+        },
+        {
+          "title": "Hapus debu dan goresan di seluruh foto",
+          "paragraphs": [
+            "Debu dan goresan menemukan noda kecil yang sangat menonjol dari sekitarnya, seperti debu pada pindaian film, lalu mengisinya dengan piksel di dekatnya. Fitur ini bekerja pada seluruh foto sebagai satu koreksi di bagian atas daftar, sehingga koreksi berikutnya mengambil sampel dari gambar yang sudah dibersihkan.",
+            "Noda terbesar menentukan noda terlebar yang dihitung, sebagai proporsi dari sisi pendek foto. Sensitivitas menentukan seberapa besar noda harus berbeda dari sekitarnya. Nilai yang lebih tinggi menemukan noda yang lebih samar dan lebih mungkin menangkap detail halus."
+          ],
+          "steps": [
+            "Buka Hapus dan perluas Debu dan goresan.",
+            "Atur Noda terbesar sedikit lebih lebar daripada debu yang terlihat, dan biarkan Sensitivitas di 50% sebagai awal.",
+            "Klik Hapus Debu. Tampilkan noda terdeteksi menandai temuan dengan garis merah dan melaporkan jumlah noda yang ditemukan.",
+            "Perbesar pada rambut, bintang, pantulan cahaya di mata, dan teks. Jika ikut tertangkap, turunkan Sensitivitas atau Noda terbesar, atau turunkan Opasitas.",
+            "Nonaktifkan Tampilkan noda terdeteksi untuk menilai hasilnya."
+          ],
+          "tips": [
+            "Pilih koreksi Debu di daftar untuk mengubahnya nanti. Aktifkan koreksi ini membandingkan hasilnya, dan Hapus Koreksi menghapusnya.",
+            "Goresan panjang dan tipis ditemukan jika lebarnya di bawah Noda terbesar. Lukis goresan yang lebih lebar dengan kuas Hapus."
           ]
         },
         {
           "title": "Perhalus koreksi yang sudah ada",
           "paragraphs": [
-            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran pada gambar menunjukkan target yang dapat diedit dan, untuk Heal dan Clone, sumbernya.",
+            "Pilih koreksi di daftar untuk menampilkan kontrolnya. Lingkaran atau sapuan pada gambar menunjukkan target yang dapat diedit dan, untuk Perbaiki dan Klon, sumbernya.",
             "Perbesar untuk penempatan yang presisi. Garis luar lingkaran dan pin tetap tajam pada setiap level zoom; lingkaran terus menampilkan area foto yang sama."
           ],
           "steps": [
-            "Seret lingkaran target untuk memindahkan koreksi, atau pilih Move Target dan klik posisi barunya.",
+            "Seret lingkaran target atau sapuan yang dilukis untuk memindahkan koreksi, atau pilih Pindahkan Target lalu klik posisi barunya.",
             "Untuk Heal atau Clone, seret source circle ke area yang lebih baik. Refresh Source mencoba posisi source yang berbeda.",
             "Sesuaikan Feather atau Opacity jika tepi atau kekuatan koreksi perlu disempurnakan.",
             "Alihkan Enable this correction untuk membandingkan, atau gunakan Delete correction untuk menghapusnya."
@@ -2047,7 +2125,15 @@
         "biru",
         "kontras",
         "titik kontrol",
-        "kurva S"
+        "kurva S",
+        "eyedropper",
+        "titik hitam",
+        "titik putih",
+        "titik abu-abu",
+        "titik abu-abu",
+        "netral",
+        "cast warna",
+        "level"
       ],
       "sections": [
         {
@@ -2065,6 +2151,21 @@
           "tips": [
             "Gunakan beberapa titik dan bandingkan foto saat Anda bekerja; kurva kanal dapat menimbulkan cast warna yang kuat.",
             "Kurva yang disimpan atau diimpor mempertahankan tabel tersimpan persisnya sampai Anda mengeditnya. Aplikasi membangun ulang pegangan representatif untuk pengeditan, jadi penyesuaian pertama dapat membentuk ulang kurva yang diimpor melampaui titik yang Anda geser."
+          ]
+        },
+        {
+          "title": "Atur titik hitam, abu-abu, dan putih",
+          "paragraphs": [
+            "Eyedropper di bawah kurva titik mengatur kurva merah, hijau, dan biru berdasarkan satu tempat pada foto. Titik hitam membuat area sampel menjadi hitam, Titik putih membuatnya putih, dan Titik abu-abu membuatnya netral sambil mempertahankan kecerahannya. Ini berguna untuk menghilangkan cast warna dari hasil pindaian."
+          ],
+          "steps": [
+            "Buka Edit, perluas Kurva, lalu pilih Titik hitam, Titik abu-abu, atau Titik putih.",
+            "Klik area foto yang seharusnya hitam, abu-abu netral, atau putih.",
+            "Periksa kurva R, G, dan B, lalu sempurnakan atau atur ulang jika hasilnya terlalu kuat."
+          ],
+          "tips": [
+            "Titik hitam memerlukan area yang lebih gelap daripada abu-abu tengah, dan Titik putih memerlukan area yang lebih terang daripada abu-abu tengah. Tekan Escape untuk membatalkan eyedropper.",
+            "Eyedropper mengubah Kurva ke mode Titik karena eyedropper mengedit kurva kanal."
           ]
         },
         {
@@ -2527,7 +2628,11 @@
         "kualitas",
         "ukuran penuh",
         "resolusi",
-        "preset"
+        "preset",
+        "bingkai",
+        "bingkai foto",
+        "matte",
+        "margin"
       ],
       "sections": [
         {
@@ -2540,6 +2645,17 @@
             "Buka Ekspor dan pilih preset di bagian atas.",
             "Atur Dimensi ke ukuran Penuh atau batas sisi terpanjang.",
             "Periksa Pratinjau keluaran: ukuran yang diekspor mencerminkan rotasi dan pangkasan, dan batas sisi panjang akan mengecilkan gambar yang lebih besar tanpa memperbesar yang lebih kecil."
+          ]
+        },
+        {
+          "title": "Tambahkan bingkai",
+          "paragraphs": [
+            "Bingkai di Lanjutan menambahkan margin polos berwarna putih, abu-abu, atau hitam di sekeliling setiap foto yang diekspor. Margin ditambahkan setelah pengubahan ukuran, sehingga lebarnya merupakan proporsi dari sisi panjang hasil akhir dan keluaran lebih besar daripada foto sebesar margin tersebut di setiap sisi."
+          ],
+          "steps": [
+            "Buka Ekspor dan perluas Lanjutan.",
+            "Pilih Tipis, Sedang, atau Lebar di Bingkai, lalu pilih Warna bingkai.",
+            "Periksa Pratinjau keluaran untuk dimensi akhir."
           ]
         },
         {
@@ -2663,7 +2779,10 @@
         "dinilai",
         "batch",
         "batal",
-        "progres"
+        "progres",
+        "lembar kontak",
+        "lembar cetak coba",
+        "cetak indeks"
       ],
       "sections": [
         {
@@ -2686,6 +2805,22 @@
             "Foto terpilih menggunakan foto terpilih yang masih ditampilkan oleh folder, koleksi, dan filter saat ini. Jika tidak ada bagian dari pilihan yang masih terlihat, maka menggunakan foto aktif. Periksa jumlah foto dan nama di Ekspor sebelum mulai.",
             "Picked only, Rated 1+, dan All except rejected memilih foto diam yang cocok dari katalog aktif, dan dapat menyertakan foto di luar koleksi atau filter yang ditampilkan. Selected photos menyediakan kontrol eksplisit atas set tersebut.",
             "Jika sebuah batch menulis ke beberapa folder, Tampilkan di Finder menampilkan foto pertama yang berhasil diekspor. Tautan ini tidak ada jika tidak ada foto yang diekspor. Gunakan Batalkan ekspor untuk meminta penghentian. Detail ekspor melaporkan jumlah selesai, dilewati, dan dibatalkan, beserta peringatan dan galat; peringatan dapat terjadi setelah foto berhasil ditulis. Klip video tidak dirender oleh alur kerja ekspor foto diam. Jika sebuah asli berubah saat ekornya berada dalam antrean atau sedang dirender, foto tersebut gagal dengan galat; antrekan lagi setelah memeriksa asli."
+          ]
+        },
+        {
+          "title": "Buat lembar kontak",
+          "paragraphs": [
+            "Lembar Kontak… di Ekspor menata foto yang dipilih di bidang Foto pada satu JPEG berketerangan, dengan editan Anda diterapkan. Dapat memuat hingga 200 foto."
+          ],
+          "steps": [
+            "Buka Ekspor lalu atur Foto dan folder tujuan.",
+            "Klik Lembar Kontak… lalu pilih Kolom, Lebar lembar, Latar belakang, dan Judul.",
+            "Pilih keterangan: Nama file, Stok film, dan Rating.",
+            "Klik Buat Lembar. Dialog menampilkan progres, dan notifikasi memberi tahu jalur file yang disimpan."
+          ],
+          "tips": [
+            "Lembar disimpan dengan nama contact-sheet diikuti tanggal dan waktu. Foto yang tidak dapat dirender akan dilewati dan dihitung dalam notifikasi.",
+            "Pilih lebih banyak kolom jika pilihan yang besar membuat lembar terlalu tinggi untuk dibuat."
           ]
         }
       ],
@@ -3285,5 +3420,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "90775436556536d7d6760e09dd0ad4c4184b06737025d1cd003454f1e7c3bf09"
 }
