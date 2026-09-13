@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Verde",
     "Green label": "Etiqueta verde",
     "Greens": "Verdes",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas.",
     "Group and find people": "Agrupar y encontrar personas",
     "Group photos into collections": "Agrupar fotos en colecciones",
     "Group similar faces and search names you add.": "Agrupa rostros similares y busca los nombres que agregues.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Los originales RAW deben renderizarse como TIFF ajustados. Original procesado no está disponible si la selección contiene un archivo RAW. Para fotos procesadas, esa opción abre el original en lugar de preparar un TIFF ajustado.",
     "RAW originals only.": "Solo originales RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Las fotos RAW pueden mostrar controles de reducción de ruido del sensor y denoise aprendido. El denoise aprendido se ejecuta localmente cuando pulsas Aplicar reducción de ruido; mover Intensidad no lo ejecuta en vivo.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. La primera foto sin caché puede tardar un momento en aparecer. La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
     "RAW preview could not finish. Try the photo again.": "La vista previa RAW no pudo terminar. Intenta con la foto otra vez.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "perfil de cámara",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (falta)"
+    "{fileName} (missing)": "{fileName} (falta)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "Las fotos RAW se abren con el revelado de LightTable, incluso cuando Película está desactivada. Con Película activada, el primer fotograma de una foto sin caché usa la vista previa incrustada de la cámara; la conversión precisa la sustituye poco después y, hasta entonces, el estado muestra «Refinando RAW…». La barra de progreso muestra las etapas de procesamiento completadas y desaparece cuando la foto está visible.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "Las vistas previas de la cuadrícula se preparan en segundo plano al añadir o volver a analizar carpetas. Primero aparecen vistas previas grandes de los originales; las vistas previas con tus ediciones las sustituyen cuando están listas. También se prepara una vista previa estándar de cada RAW para que la foto se abra sin esperar una decodificación completa."
   },
   "plurals": {
     " · {count} paired file linked": {
