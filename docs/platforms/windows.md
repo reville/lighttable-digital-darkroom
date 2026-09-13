@@ -87,7 +87,7 @@ desktop before release.
 On Windows x64 with Rust 1.88.0, Git, uv 0.11.28, and NSIS installed:
 
 ```powershell
-.\scripts\windows\build-release.ps1 -Version 0.1.0
+.\scripts\windows\build-release.ps1  # version defaults to app_version.py
 ```
 
 The build downloads a hash-verified embedded Python runtime and pinned render

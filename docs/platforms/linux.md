@@ -234,7 +234,7 @@ rustup toolchain install 1.88.0 --profile minimal --target x86_64-unknown-linux-
 python3 -m venv .build/linux/build-tools
 .build/linux/build-tools/bin/pip install uv==0.11.28
 export PATH="$PWD/.build/linux/build-tools/bin:$PATH"
-./scripts/linux/build-release.sh --version 0.1.0
+./scripts/linux/build-release.sh  # version defaults to app_version.py
 ```
 
 Install Rust/rustup first if unavailable. On Arch, the equivalent

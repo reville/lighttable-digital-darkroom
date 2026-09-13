@@ -82,18 +82,21 @@ listed as supported. Package-index submissions are separate from direct download
 
 1. Complete unit/installer tests on the exact source to release.
 2. Configure the platform credentials below.
-3. Create and push a new stable tag such as `v0.1.0`. The tag workflow uses the
+3. Set the version with `python3 scripts/release/set-version.py X.Y.Z` and merge
+   that change. About, the local API, the CLI and unversioned builds read
+   `app_version.py`, and the release build refuses a tag that disagrees with it.
+4. Create and push the matching stable tag `vX.Y.Z` from the merged source. The tag workflow uses the
    selected release platforms. Manual dispatch accepts an existing tag version
    and can select one platform. See [Linux distribution](../docs/platforms/linux-distribution.md)
    for platform selection. Published release files are immutable; use another
    version for changes.
-4. The workflow builds and tests the actual bundles, signs/notarizes Mac artifacts,
+5. The workflow builds and tests the actual bundles, signs/notarizes Mac artifacts,
    generates checksums and package definitions from the final bytes, stages a draft
    release, and makes it public only after all selected builds succeed.
-5. Publish the generated Homebrew/Scoop files and submit the WinGet/Chocolatey
+6. Publish the generated Homebrew/Scoop files and submit the WinGet/Chocolatey
    packages after native installation validation. The index repositories can sync
    an existing public release without rebuilding or changing its files.
-6. Publish the prepared npm tarball only after its matching desktop assets are
+7. Publish the prepared npm tarball only after its matching desktop assets are
    public. npm's package name and Homebrew's main-catalog acceptance are separate
    from creating a GitHub repository.
 
@@ -121,11 +124,11 @@ The build uses an ephemeral keychain and deletes it after the job.
 For a local build after preparing `scripts/models/requirements-convert.txt`:
 
 ```sh
-LIGHTTABLE_VERSION=0.1.0 LIGHTTABLE_BUILD_NUMBER=1 \
+LIGHTTABLE_BUILD_NUMBER=1 \
   LIGHTTABLE_SIGN_IDENTITY='Developer ID Application: Your Name (TEAMID)' \
   scripts/build-release.sh
 scripts/notarize-app.sh dist/LightTable.app
-scripts/package-release.sh dist/LightTable.app 0.1.0
+scripts/package-release.sh dist/LightTable.app "$(python3 app_version.py)"
 ```
 
 The notarization script reads credentials from the environment. Public releases

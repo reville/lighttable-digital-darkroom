@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-VERSION="${LIGHTTABLE_VERSION:-0.1.0}"
+VERSION="${LIGHTTABLE_VERSION:-$(sed -n 's/^VERSION = "\([^"]*\)"$/\1/p' "$ROOT/app_version.py")}"
 if [[ "$(uname -m)" != arm64 ]]; then
   echo "The macOS release currently supports Apple silicon only." >&2
   exit 1

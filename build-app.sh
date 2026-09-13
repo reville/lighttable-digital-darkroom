@@ -7,6 +7,7 @@ cd "$(dirname "$0")"
 PROJECT="$(pwd)"
 APP="build/LightTable.app"
 BUNDLE_IDENTIFIER="${LIGHTTABLE_BUNDLE_IDENTIFIER:-com.reville.lighttable}"
+VERSION="$(sed -n 's/^VERSION = "\([^"]*\)"$/\1/p' app_version.py)"
 
 # Keep Metal, compiled shaders, and decoded inputs resident across requests.
 # The server discovers this release binary directly from rust-engine/target.
@@ -51,7 +52,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundleTypeRole</key><string>Viewer</string>
   </dict></array>
   <key>CFBundleVersion</key><string>1.0</string>
-  <key>CFBundleShortVersionString</key><string>1.0</string>
+  <key>CFBundleShortVersionString</key><string>$VERSION</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleExecutable</key><string>LightTable</string>
   <key>CFBundleIconFile</key><string>LightTable</string>
