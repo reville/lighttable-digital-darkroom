@@ -170,6 +170,25 @@ float3 sampleEditedNeighbor(texture2d<float> image, texture2d<float> fallback, s
                               grade, texel, redCyan, blueYellow);
 }
 
+// Retouch sources copy pixels of the corrected image: blend the four
+// surrounding corrected pixel centres like the CPU reference's bilinear read
+// of its already-resampled output, instead of resampling the original once.
+float3 sampleHealSource(texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
+                        float2 sourcePixel, float2 dimensions, constant GradeUniforms &grade,
+                        float2 texel, float redCyan, float blueYellow) {
+    float2 base = floor(sourcePixel);
+    float2 fraction = sourcePixel - base;
+    float3 rows[2];
+    for (int row = 0; row < 2; row++) {
+        float3 left = sampleEditedSource(image, fallback, linearSampler,
+            (base + float2(0.0, row) + 0.5) / dimensions, grade, texel, redCyan, blueYellow);
+        float3 right = sampleEditedSource(image, fallback, linearSampler,
+            (base + float2(1.0, row) + 0.5) / dimensions, grade, texel, redCyan, blueYellow);
+        rows[row] = mix(left, right, fraction.x);
+    }
+    return mix(rows[0], rows[1], fraction.y);
+}
+
 // Heal mode matches colour like the CPU reference: the copied patch is shifted
 // by the mean difference between the target and source annuli (0.72–1.0 of
 // the radius). One threadgroup per spot reduces those means before the
@@ -214,11 +233,10 @@ kernel void healRingMeans(
             float distance = length(position - centre) / radius;
             if (distance < 0.72 || distance > 1.0) continue;
             float2 targetUV = (position + 0.5) / dimensions;
-            float2 sourceUV = (position + offset + 0.5) / dimensions;
             target += float4(sampleEditedSource(image, fallback, linearSampler, targetUV,
                 grade, texel, redCyan, blueYellow), 1.0);
-            source += float4(sampleEditedSource(image, fallback, linearSampler, sourceUV,
-                grade, texel, redCyan, blueYellow), 1.0);
+            source += float4(sampleHealSource(image, fallback, linearSampler,
+                position + offset, dimensions, grade, texel, redCyan, blueYellow), 1.0);
         }
     }
     target = simd_sum(target);
@@ -277,9 +295,8 @@ float3 applyHeals(float3 color, float2 uv,
                 + sampleEditedSource(image, fallback, linearSampler, target - float2(0.0, ring.y),
                     grade, texel, redCyan, blueYellow)) * 0.25;
         } else {
-            float2 offset = (source - target) * (dimensions - 1.0) / dimensions;
-            replacement = sampleEditedSource(
-                image, fallback, linearSampler, uv + offset,
+            replacement = sampleHealSource(image, fallback, linearSampler,
+                pixel + (source - target) * (dimensions - 1.0), dimensions,
                 grade, texel, redCyan, blueYellow);
             // Heal (mode 2) adds the annulus colour match reduced by
             // healRingMeans; Clone (mode 3) copies the source unchanged.
@@ -290,6 +307,19 @@ float3 applyHeals(float3 color, float2 uv,
         color = mix(color, replacement, clamp(weight, 0.0, 1.0));
     }
     return color;
+}
+
+// Blur, noise and sharpen taps read the retouched image, as the CPU grade
+// runs after edits.apply_heals.
+float3 sampleHealedNeighbor(texture2d<float> image, texture2d<float> fallback, sampler linearSampler,
+                            float2 outputCoordinate, constant GradeUniforms &grade,
+                            constant HealUniform *heals, constant float4 *healShifts,
+                            float2 texel, float redCyan, float blueYellow) {
+    float2 coordinate = clamp(outputCoordinate, texel * 0.5, 1.0 - texel * 0.5);
+    float3 color = sampleEditedNeighbor(image, fallback, linearSampler, coordinate,
+                                        grade, texel, redCyan, blueYellow);
+    return applyHeals(color, coordinate, image, fallback, linearSampler, grade,
+                      heals, healShifts, texel, redCyan, blueYellow);
 }
 
 float3 srgbToLinear(float3 c) {
@@ -570,14 +600,14 @@ fragment float4 nativePreviewFragment(
 
     if (luminanceNoise != 0.0 || colorNoise != 0.0) {
         float3 blur = (color
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
-                                 grade, texel, redCyan, blueYellow)) / 5.0;
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)) / 5.0;
         float luminance = dot(color, LUMA);
         float blurLuminance = dot(blur, LUMA);
         if (luminanceNoise != 0.0) {
@@ -595,14 +625,14 @@ fragment float4 nativePreviewFragment(
 
     if (texture != 0.0 || clarity != 0.0) {
         float3 blur = (color
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
-                                 grade, texel, redCyan, blueYellow)) / 5.0;
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(texel.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(texel.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(0.0, texel.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(0.0, texel.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         color = clamp(color + detail * texture * 1.1, 0.0, 1.0);
         float middle = clamp(1.0 - abs(dot(color, LUMA) - 0.5) * 2.0, 0.0, 1.0);
@@ -612,14 +642,14 @@ fragment float4 nativePreviewFragment(
     if (sharpness != 0.0) {
         float2 radius = texel * sharpenRadius;
         float3 blur = (color
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(radius.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(radius.x, 0.0),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv + float2(0.0, radius.y),
-                                 grade, texel, redCyan, blueYellow)
-            + sampleEditedNeighbor(image, fallback, linearSampler, uv - float2(0.0, radius.y),
-                                 grade, texel, redCyan, blueYellow)) / 5.0;
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(radius.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(radius.x, 0.0),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv + float2(0.0, radius.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)
+            + sampleHealedNeighbor(image, fallback, linearSampler, uv - float2(0.0, radius.y),
+                                 grade, heals, healShifts, texel, redCyan, blueYellow)) / 5.0;
         float3 detail = color - blur;
         float luminanceDetail = dot(detail, LUMA);
         float3 shaped = luminanceDetail

@@ -87,7 +87,10 @@ class NativeCorrectedPreviewTests(unittest.TestCase):
         spot = {"target": [.35, .5], "source": [.7, .5], "radius": .14, "feather": .4}
         for mode in ("clone", "heal"):
             with self.subTest(mode=mode):
-                response = self.render({"distortion": 0.2}, [dict(spot, mode=mode)] * 16)
+                # Sixteen separate spots: none reads another's target patch.
+                apart = [dict(spot, mode=mode, radius=.02, target=[.05 + i * .058, .5],
+                              source=[.05 + i * .058, .8]) for i in range(16)]
+                response = self.render({"distortion": 0.2}, apart)
                 self.assertFalse(response["baseEditsBaked"])
                 self.assertEqual(response["native"], self.result["native"])
         heals = [dict(spot, mode="remove")]
