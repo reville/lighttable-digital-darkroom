@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pt",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949",
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1351,7 +1351,6 @@
     "Green": "Verde",
     "Green label": "Rótulo verde",
     "Greens": "Verdes",
-    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready.": "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas.",
     "Group and find people": "Agrupar e encontrar pessoas",
     "Group photos into collections": "Agrupar fotos em coleções",
     "Group similar faces and search names you add.": "Agrupe rostos semelhantes e pesquise os nomes que você adicionar.",
@@ -2250,7 +2249,6 @@
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "Os originais RAW devem ser renderizados como TIFFs ajustados. O original processado fica indisponível se a seleção contiver um arquivo RAW. Para fotos processadas, essa opção abre o original em vez de preparar um TIFF ajustado.",
     "RAW originals only.": "Somente originais RAW.",
     "RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live.": "Fotos RAW podem mostrar controles de redução de ruído do sensor e redução de ruído aprendida. A redução de ruído aprendida é executada localmente quando você pressiona Aplicar redução de ruído; mover Intensidade não a executa em tempo real.",
-    "RAW photos open with LightTable’s rendering, including when Film is off. The first uncached photo may take a moment to appear. The progress bar shows completed processing stages and disappears when the photo is visible.": "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. A primeira foto ainda não armazenada em cache pode levar um momento para aparecer. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
     "RAW preview could not finish. Try the photo again.": "A pré-visualização RAW não pôde ser concluída. Tente a foto novamente.",
     "RAW → JPEG": "RAW → JPEG",
     "RGB": "RGB",
@@ -4276,7 +4274,9 @@
     "adobe standard": "adobe standard",
     "camera profile": "perfil de câmera",
     "dcp": "dcp",
-    "{fileName} (missing)": "{fileName} (ausente)"
+    "{fileName} (missing)": "{fileName} (ausente)",
+    "RAW photos open with LightTable’s rendering, including when Film is off. With Film on, the first frame of an uncached photo uses the camera’s embedded preview; the accurate conversion replaces it shortly after, and the status shows Refining RAW… until then. The progress bar shows completed processing stages and disappears when the photo is visible.": "As fotos RAW são abertas com a revelação do LightTable, mesmo quando Filme está desativado. Com Filme ativado, o primeiro quadro de uma foto ainda não armazenada em cache usa a pré-visualização incorporada da câmera; a conversão precisa a substitui pouco depois e, até lá, o estado mostra “Refinando RAW…”. A barra de progresso mostra as etapas de processamento concluídas e desaparece quando a foto fica visível.",
+    "Grid previews are prepared in the background when you add or rescan folders. Large source previews appear first; previews with your edits replace them as they become ready. A standard preview of each RAW is also prepared so the photo opens without waiting for a full decode.": "As prévias da grade são preparadas em segundo plano quando você adiciona ou verifica novamente pastas. Primeiro aparecem prévias grandes dos originais; as prévias com suas edições as substituem quando ficam prontas. Também é preparada uma pré-visualização padrão de cada RAW para que a foto abra sem esperar por uma decodificação completa."
   },
   "plurals": {
     " · {count} paired file linked": {

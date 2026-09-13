@@ -2352,7 +2352,7 @@
           "paragraphs": [
             "Filmvorschauen enthalten die Bearbeitungen des aktuellen Fotos. Durchsuchen und Schließen des Vorschaufensters wenden keinen Film an; das Auswählen einer Vorschau schon.",
             "Ein Filmstock beschreibt den physischen Filmprozess. Eine Bearbeitungsvorgabe kann breitere gespeicherte Anpassungen enthalten und möglicherweise auch Film-Einstellungen. Das Ausgabe-Menü innerhalb von Film wählt ein Scan- oder Druckrezept; es exportiert keine Datei.",
-            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Bei eingeschaltetem Film verwendet das erste Bild eines noch nicht zwischengespeicherten Fotos die in der Kamera eingebettete Vorschau; die genaue Umwandlung ersetzt sie kurz darauf, und der Status zeigt bis dahin „RAW wird verfeinert…“. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist."
           ],
           "tips": [
             "Wenn ein Film nicht verfügbar ist, kann die GPU-Engine erforderlich sein. Die Verfügbarkeit der Engine wird in Einstellungen → Leistung angezeigt."
@@ -3214,8 +3214,8 @@
         {
           "title": "Prüfen, was mit dem Rendern fertig ist",
           "paragraphs": [
-            "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind.",
-            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Das erste noch nicht zwischengespeicherte Foto kann einen Moment benötigen, bis es erscheint. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
+            "Rastervorschauen werden im Hintergrund vorbereitet, wenn Sie Ordner hinzufügen oder erneut einlesen. Zunächst erscheinen große Vorschauen der Originale; Vorschauen mit Ihren Bearbeitungen ersetzen sie, sobald sie bereit sind. Außerdem wird für jedes RAW eine Standardvorschau vorbereitet, damit das Foto geöffnet wird, ohne auf eine vollständige Dekodierung zu warten.",
+            "RAW-Fotos werden mit der Entwicklung von LightTable geöffnet, auch wenn Film ausgeschaltet ist. Bei eingeschaltetem Film verwendet das erste Bild eines noch nicht zwischengespeicherten Fotos die in der Kamera eingebettete Vorschau; die genaue Umwandlung ersetzt sie kurz darauf, und der Status zeigt bis dahin „RAW wird verfeinert…“. Der Fortschrittsbalken zeigt abgeschlossene Verarbeitungsschritte und verschwindet, sobald das Foto sichtbar ist.",
             "Wenn du bei vergrößerter Ansicht das Foto wechselst, zeigt LightTable sofort eine passende Vorschau aus dem Cache, sofern verfügbar. Schärfere Details werden im Hintergrund geladen und benachbarte Fotos für deine Zoomstufe vorgeladen.",
             "Beim Zoomen bleibt die schärfste verfügbare Vorschau erhalten, während zusätzliche Details geladen werden. Beim Herauszoomen wird sie wiederverwendet. Prüfen Sie bei 1:1 den Tooltip der Schaltfläche, bevor Sie feine Details beurteilen.",
             "Wenn der Tooltip des 1:1-Buttons eine kleinere Vorschaubildgröße als die Quelle meldet, sehen Sie eine kleinere ausgelieferte Vorschau. Auto-Auflösung passt die Anzeige an und erhöht die Anforderung für die vergrößerte Ansicht; sehr große Quellen können das Limit für die Vorschauanfrage überschreiten.",
@@ -3285,5 +3285,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "342a7b7ebec37d828be38294916072742d51a50729310dc297f068402d1eb949"
+  "sourceDigest": "7d9c11293b10f0de93645c321f82fa3e38cece94d78c443c75d0b2af0e503e70"
 }
