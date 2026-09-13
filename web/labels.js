@@ -37,7 +37,7 @@ export const cleanLabel = (value) => (
 export const KEY_SCHEMES = {
   lighttable: {
     name: 'LightTable',
-    grid: 'g', squareGrid: 'G', detail: 'd', survey: 'n', compare: '\\',
+    grid: 'g', squareGrid: 'G', detail: 'd', survey: 'n', compareTwo: 'N', compare: '\\',
     crop: 'c', mask: 'm', heal: 'q', before: 'b', fit: 'f', search: '/',
     pick: ['p', 'a'], reject: ['x'], unflag: ['u'],
     speed: { e: 'exposure', j: 'contrast', h: 'highlights', s: 'shadows',
@@ -46,7 +46,7 @@ export const KEY_SCHEMES = {
   },
   classic: {
     name: tr('Classic'),
-    grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compare: 'c',
+    grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compareTwo: 'N', compare: 'c',
     crop: 'r', mask: 'm', heal: 'q', before: 'b', fit: 'f', search: '/',
     pick: ['p'], reject: ['x'], unflag: ['u'],
     speed: { e: 'exposure', j: 'contrast', h: 'highlights', s: 'shadows',

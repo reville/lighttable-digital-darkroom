@@ -445,7 +445,7 @@
     },
     {
       "id": "survey-photos",
-      "title": "Compare several photos in Survey",
+      "title": "Compare several photos in Survey, or two side by side",
       "category": "Library",
       "summary": "Review a group together, mark the active frame, and narrow a set of candidates.",
       "keywords": [
@@ -455,7 +455,10 @@
         "burst",
         "side by side",
         "keeper",
-        "make select"
+        "make select",
+        "a/b compare",
+        "compare two photos",
+        "side by side compare"
       ],
       "sections": [
         {
@@ -476,6 +479,14 @@
           "paragraphs": [
             "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
             "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
+          ]
+        },
+        {
+          "title": "Compare two photos side by side",
+          "paragraphs": [
+            "Compare two photos opens the same Survey view limited to exactly two frames, side by side, for an A/B judgement between candidates rather than an edit's before and after.",
+            "With two photos selected, choose Compare two photos, press Shift+N, or use View → Compare Two Photos. With fewer than two selected, LightTable pairs the current photo with its neighbour in the active view.",
+            "Swap flips which photo sits on which side. The marking toolbar and flag, rating, and label shortcuts apply to the active cell, the same as in a full Survey."
           ]
         }
       ],

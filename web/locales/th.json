@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "คงเมทาดาทาไว้; เก็บไว้ข้างการจับภาพที่จับคู่กัน",
     "Catalog": "แค็ตตาล็อก",
     "Catalog file": "ไฟล์แค็ตตาล็อก",
-    "Catalog loading stopped before all photos arrived": "การโหลดแค็ตตาล็อกหยุดลงก่อนที่ภาพถ่ายทั้งหมดจะมาถึง",
     "Catalog recovered from a verified backup": "กู้คืนแค็ตตาล็อกจากข้อมูลสำรองที่ยืนยันแล้ว",
     "Catalog updated {date}": "อัปเดตแค็ตตาล็อกแล้ว {date}",
     "Catalogs": "แค็ตตาล็อก",
@@ -4478,7 +4477,19 @@
     "← People": "← ผู้คน",
     "☆ Favorites": "☆ รายการโปรด",
     "Imported": "นำเข้าแล้ว",
-    "{name} (Already imported)": "{name} (นำเข้าแล้ว)"
+    "{name} (Already imported)": "{name} (นำเข้าแล้ว)",
+    "Marked {count} photo": "ทำเครื่องหมาย {count} รูปภาพ",
+    "Marked {count} photos": "ทำเครื่องหมาย {count} รูปภาพ",
+    "Compare Two Photos": "เปรียบเทียบสองรูป",
+    "Compare two": "เปรียบเทียบสอง",
+    "Compare two photos side by side (Shift+N)": "เปรียบเทียบสองรูปเคียงกัน (Shift+N)",
+    "Could not load photos": "ไม่สามารถโหลดรูปภาพได้",
+    "No selected photos are in this view": "ไม่มีรูปภาพที่เลือกในมุมมองนี้",
+    "Select two photos to compare": "เลือกสองรูปเพื่อเปรียบเทียบ",
+    "Selecting every photo in view…": "กำลังเลือกรูปภาพทั้งหมดในมุมมอง…",
+    "Some photos could not be marked: {errorMessage}": "บางรูปภาพไม่สามารถทำเครื่องหมายได้: {errorMessage}",
+    "Sort ascending. Click for descending": "เรียงจากน้อยไปมาก คลิกเพื่อจากมากไปน้อย",
+    "Sort descending. Click for ascending": "เรียงจากมากไปน้อย คลิกเพื่อจากน้อยไปมาก"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "การออกโดยไม่คาดคิด {value} ครั้งใน 24 ชั่วโมงที่ผ่านมา"
+    },
+    "Marked {count} photo": {
+      "other": "ทำเครื่องหมาย {count} รูปภาพ"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

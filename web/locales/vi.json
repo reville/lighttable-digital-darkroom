@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Giữ lại siêu dữ liệu; lưu bên cạnh các ảnh đã ghép cặp",
     "Catalog": "Danh mục",
     "Catalog file": "Tệp danh mục",
-    "Catalog loading stopped before all photos arrived": "Tải Danh mục đã dừng trước khi tất cả ảnh được nạp xong",
     "Catalog recovered from a verified backup": "Danh mục đã được khôi phục từ bản sao lưu đã xác minh",
     "Catalog updated {date}": "Danh mục đã cập nhật {date}",
     "Catalogs": "Danh mục",
@@ -4478,7 +4477,19 @@
     "← People": "← Mọi người",
     "☆ Favorites": "☆ Mục yêu thích",
     "Imported": "Đã nhập",
-    "{name} (Already imported)": "{name} (Đã nhập trước đó)"
+    "{name} (Already imported)": "{name} (Đã nhập trước đó)",
+    "Marked {count} photo": "Đã đánh dấu {count} ảnh",
+    "Marked {count} photos": "Đã đánh dấu {count} ảnh",
+    "Compare Two Photos": "So sánh hai ảnh",
+    "Compare two": "So sánh hai",
+    "Compare two photos side by side (Shift+N)": "So sánh hai ảnh cạnh nhau (Shift+N)",
+    "Could not load photos": "Không thể tải ảnh",
+    "No selected photos are in this view": "Không có ảnh nào được chọn trong chế độ xem này",
+    "Select two photos to compare": "Chọn hai ảnh để so sánh",
+    "Selecting every photo in view…": "Đang chọn tất cả ảnh trong chế độ xem…",
+    "Some photos could not be marked: {errorMessage}": "Một số ảnh không thể đánh dấu: {errorMessage}",
+    "Sort ascending. Click for descending": "Sắp xếp tăng dần. Nhấp để giảm dần",
+    "Sort descending. Click for ascending": "Sắp xếp giảm dần. Nhấp để tăng dần"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "{value} lần thoát bất thường trong 24 giờ qua."
+    },
+    "Marked {count} photo": {
+      "other": "Đã đánh dấu {count} ảnh"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "es",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Conservar metadatos; mantener junto a capturas emparejadas",
     "Catalog": "Catálogo",
     "Catalog file": "Archivo de catálogo",
-    "Catalog loading stopped before all photos arrived": "La carga del catálogo se detuvo antes de que llegaran todas las fotos",
     "Catalog recovered from a verified backup": "Catálogo recuperado de una copia de seguridad verificada",
     "Catalog updated {date}": "Catálogo actualizado {date}",
     "Catalogs": "Catálogos",
@@ -4478,7 +4477,19 @@
     "← People": "← Personas",
     "☆ Favorites": "☆ Favoritos",
     "Imported": "Importada",
-    "{name} (Already imported)": "{name} (Ya importada)"
+    "{name} (Already imported)": "{name} (Ya importada)",
+    "Marked {count} photo": "{count} foto marcada",
+    "Marked {count} photos": "{count} fotos marcadas",
+    "Compare Two Photos": "Comparar dos fotos",
+    "Compare two": "Comparar dos",
+    "Compare two photos side by side (Shift+N)": "Comparar dos fotos una al lado de la otra (Shift+N)",
+    "Could not load photos": "No se pudieron cargar las fotos",
+    "No selected photos are in this view": "No hay fotos seleccionadas en esta vista",
+    "Select two photos to compare": "Selecciona dos fotos para comparar",
+    "Selecting every photo in view…": "Seleccionando todas las fotos de la vista…",
+    "Some photos could not be marked: {errorMessage}": "No se pudieron marcar algunas fotos: {errorMessage}",
+    "Sort ascending. Click for descending": "Orden ascendente. Haz clic para descendente",
+    "Sort descending. Click for ascending": "Orden descendente. Haz clic para ascendente"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4845,6 +4856,11 @@
       "one": "{value} salidas inesperadas en las últimas 24 horas.",
       "many": "{value} salidas inesperadas en las últimas 24 horas.",
       "other": "{value} salidas inesperadas en las últimas 24 horas."
+    },
+    "Marked {count} photo": {
+      "one": "{count} foto marcada",
+      "many": "{count} fotos marcadas",
+      "other": "{count} fotos marcadas"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

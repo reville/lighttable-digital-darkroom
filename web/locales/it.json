@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Mantieni i metadati; conserva accanto alle acquisizioni abbinate",
     "Catalog": "Catalogo",
     "Catalog file": "File del Catalogo",
-    "Catalog loading stopped before all photos arrived": "Il caricamento del catalogo si è interrotto prima che arrivassero tutte le foto",
     "Catalog recovered from a verified backup": "Catalogo ripristinato da un backup verificato",
     "Catalog updated {date}": "Catalogo aggiornato {date}",
     "Catalogs": "Cataloghi",
@@ -4478,7 +4477,19 @@
     "← People": "← Persone",
     "☆ Favorites": "☆ Preferiti",
     "Imported": "Importata",
-    "{name} (Already imported)": "{name} (Già importata)"
+    "{name} (Already imported)": "{name} (Già importata)",
+    "Marked {count} photo": "{count} foto contrassegnata",
+    "Marked {count} photos": "{count} foto contrassegnate",
+    "Compare Two Photos": "Confronta due foto",
+    "Compare two": "Confronta due",
+    "Compare two photos side by side (Shift+N)": "Confronta due foto affiancate (Shift+N)",
+    "Could not load photos": "Impossibile caricare le foto",
+    "No selected photos are in this view": "Nessuna foto selezionata in questa vista",
+    "Select two photos to compare": "Seleziona due foto da confrontare",
+    "Selecting every photo in view…": "Selezione di tutte le foto nella vista…",
+    "Some photos could not be marked: {errorMessage}": "Alcune foto non sono state contrassegnate: {errorMessage}",
+    "Sort ascending. Click for descending": "Ordine crescente. Fai clic per decrescente",
+    "Sort descending. Click for ascending": "Ordine decrescente. Fai clic per crescente"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4845,6 +4856,11 @@
       "one": "{value} arresti imprevisti nelle ultime 24 ore.",
       "many": "{value} arresti imprevisti nelle ultime 24 ore.",
       "other": "{value} arresti imprevisti nelle ultime 24 ore."
+    },
+    "Marked {count} photo": {
+      "one": "{count} foto contrassegnata",
+      "many": "{count} foto contrassegnate",
+      "other": "{count} foto contrassegnate"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

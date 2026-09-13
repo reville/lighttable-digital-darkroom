@@ -9708,10 +9708,18 @@ def current_library_state() -> dict:
             members = [catalog_module.qualified_name(
                 row["source_id"], row["relpath"], row["copy_ident"])
                 for row in rows]
+        # The sidebar shows how many photos of the open source each
+        # collection holds. The browser used to count its loaded rows, which
+        # only agreed with the catalog once every row had been paged in.
+        count_spec = {"scope": "collection", "collectionId": record["id"],
+                      "countsOnly": True}
+        if PRIMARY_SOURCE_ID is not None:
+            count_spec["sourceId"] = PRIMARY_SOURCE_ID
         collections.append({
             "id": str(record["id"]), "name": record["name"],
             "type": record["type"], "members": members,
             "rules": record.get("rules") or {},
+            "count": int(browser_catalog_query(count_spec)["total"]),
         })
 
     stacks = []

@@ -41,6 +41,10 @@
       "other": "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes."
     },
     {
+      "one": "Marked {count} photo",
+      "other": "Marked {count} photos"
+    },
+    {
       "one": "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.",
       "other": "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them."
     },

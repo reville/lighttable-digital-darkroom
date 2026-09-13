@@ -3791,6 +3791,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             "view:square": ("g", [.shift]),
             "view:detail": (classic ? "e" : "d", []),
             "survey": ("n", []),
+            "compareTwo": ("n", [.shift]),
             "compare": (classic ? "c" : "\\", []),
             "pane:crop": (classic ? "r" : "c", []),
             "pane:mask": ("m", []),
@@ -3920,7 +3921,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             return ready
         case "exportPhotos":
             return menuBool("hasImages")
-        case "survey":
+        case "survey", "compareTwo":
             return selectedCount > 0 || menuBool("hasImages")
         case "toggleLibrary":
             return ready
@@ -4181,6 +4182,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         addEditorItem(viewMenu, title: L("Detail"), command: "view:detail",
                       schemeShortcut: true)
         addEditorItem(viewMenu, title: L("Survey Selection"), command: "survey",
+                      schemeShortcut: true)
+        addEditorItem(viewMenu, title: L("Compare Two Photos"), command: "compareTwo",
                       schemeShortcut: true)
         viewMenu.addItem(.separator())
         addEditorItem(viewMenu, title: L("Library Panel"),

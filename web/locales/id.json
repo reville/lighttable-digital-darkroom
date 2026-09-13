@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "id",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Sertakan metadata; pertahankan di samping tangkapan berpasangan",
     "Catalog": "Katalog",
     "Catalog file": "Berkas katalog",
-    "Catalog loading stopped before all photos arrived": "Pemuatan katalog berhenti sebelum semua foto tiba",
     "Catalog recovered from a verified backup": "Katalog dipulihkan dari cadangan terverifikasi",
     "Catalog updated {date}": "Katalog diperbarui {date}",
     "Catalogs": "Katalog",
@@ -4478,7 +4477,19 @@
     "← People": "← Orang",
     "☆ Favorites": "☆ Favorit",
     "Imported": "Diimpor",
-    "{name} (Already imported)": "{name} (Sudah diimpor)"
+    "{name} (Already imported)": "{name} (Sudah diimpor)",
+    "Marked {count} photo": "{count} foto ditandai",
+    "Marked {count} photos": "{count} foto ditandai",
+    "Compare Two Photos": "Bandingkan Dua Foto",
+    "Compare two": "Bandingkan dua",
+    "Compare two photos side by side (Shift+N)": "Bandingkan dua foto berdampingan (Shift+N)",
+    "Could not load photos": "Foto tidak dapat dimuat",
+    "No selected photos are in this view": "Tidak ada foto yang dipilih dalam tampilan ini",
+    "Select two photos to compare": "Pilih dua foto untuk dibandingkan",
+    "Selecting every photo in view…": "Memilih semua foto dalam tampilan…",
+    "Some photos could not be marked: {errorMessage}": "Beberapa foto tidak dapat ditandai: {errorMessage}",
+    "Sort ascending. Click for descending": "Urutkan naik. Klik untuk turun",
+    "Sort descending. Click for ascending": "Urutkan turun. Klik untuk naik"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,10 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "{value} keluar tak terduga dalam 24 jam terakhir."
+    },
+    "Marked {count} photo": {
+      "one": "{count} foto ditandai",
+      "other": "{count} foto ditandai"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"
