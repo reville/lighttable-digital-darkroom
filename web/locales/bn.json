@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "metadata বহন করুন; জোড়া captures-এর পাশে রাখুন",
     "Catalog": "ক্যাটালগ",
     "Catalog file": "ক্যাটালগ ফাইল",
-    "Catalog loading stopped before all photos arrived": "সব ফটো আসার আগে ক্যাটালগ লোডিং বন্ধ হয়ে গেছে",
     "Catalog recovered from a verified backup": "যাচাইকৃত ব্যাকআপ থেকে ক্যাটালগ পুনরুদ্ধার করা হয়েছে",
     "Catalog updated {date}": "ক্যাটালগ আপডেট হয়েছে {date}",
     "Catalogs": "ক্যাটালগ",
@@ -4478,7 +4477,19 @@
     "← People": "← মানুষ",
     "☆ Favorites": "☆ পছন্দের",
     "Imported": "আমদানি করা হয়েছে",
-    "{name} (Already imported)": "{name} (ইতিমধ্যেই আমদানি করা হয়েছে)"
+    "{name} (Already imported)": "{name} (ইতিমধ্যেই আমদানি করা হয়েছে)",
+    "Marked {count} photo": "{count}টি ছবি চিহ্নিত হয়েছে",
+    "Marked {count} photos": "{count}টি ছবি চিহ্নিত হয়েছে",
+    "Compare Two Photos": "দুটি ছবি তুলনা করুন",
+    "Compare two": "দুটি তুলনা করুন",
+    "Compare two photos side by side (Shift+N)": "পাশাপাশি দুটি ছবি তুলনা করুন (Shift+N)",
+    "Could not load photos": "ছবি লোড করা যায়নি",
+    "No selected photos are in this view": "এই ভিউতে কোনো নির্বাচিত ছবি নেই",
+    "Select two photos to compare": "তুলনার জন্য দুটি ছবি নির্বাচন করুন",
+    "Selecting every photo in view…": "ভিউয়ের সব ছবি নির্বাচন হচ্ছে…",
+    "Some photos could not be marked: {errorMessage}": "কিছু ছবি চিহ্নিত করা যায়নি: {errorMessage}",
+    "Sort ascending. Click for descending": "ঊর্ধ্বমুখী সাজানো। অবরোহণের জন্য ক্লিক করুন",
+    "Sort descending. Click for ascending": "অবরোহী সাজানো। ঊর্ধ্বমুখীর জন্য ক্লিক করুন"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4772,6 +4783,10 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "গত ২৪ ঘণ্টায় {value}টি অপ্রত্যাশিত প্রস্থান হয়েছে।",
       "other": "গত ২৪ ঘণ্টায় {value}টি অপ্রত্যাশিত প্রস্থান হয়েছে।"
+    },
+    "Marked {count} photo": {
+      "one": "{count}টি ছবি চিহ্নিত হয়েছে",
+      "other": "{count}টি ছবি চিহ্নিত হয়েছে"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

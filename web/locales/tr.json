@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Üstveriyi taşı; eşleştirilmiş çekimlerin yanında koru",
     "Catalog": "Katalog",
     "Catalog file": "Katalog dosyası",
-    "Catalog loading stopped before all photos arrived": "Katalog yükleme, tüm fotoğraflar gelmeden önce durdu",
     "Catalog recovered from a verified backup": "Katalog doğrulanmış bir yedeklemeden kurtarıldı",
     "Catalog updated {date}": "Katalog {date} tarihinde güncellendi",
     "Catalogs": "Kataloglar",
@@ -4478,7 +4477,19 @@
     "← People": "← Kişiler",
     "☆ Favorites": "☆ Sık kullanılanlar",
     "Imported": "İçe aktarıldı",
-    "{name} (Already imported)": "{name} (Zaten içe aktarıldı)"
+    "{name} (Already imported)": "{name} (Zaten içe aktarıldı)",
+    "Marked {count} photo": "{count} fotoğraf işaretlendi",
+    "Marked {count} photos": "{count} fotoğraf işaretlendi",
+    "Compare Two Photos": "İki Fotoğrafı Karşılaştır",
+    "Compare two": "İkisini karşılaştır",
+    "Compare two photos side by side (Shift+N)": "İki fotoğrafı yan yana karşılaştır (Shift+N)",
+    "Could not load photos": "Fotoğraflar yüklenemedi",
+    "No selected photos are in this view": "Bu görünümde seçili fotoğraf yok",
+    "Select two photos to compare": "Karşılaştırmak için iki fotoğraf seçin",
+    "Selecting every photo in view…": "Görünümdeki tüm fotoğraflar seçiliyor…",
+    "Some photos could not be marked: {errorMessage}": "Bazı fotoğraflar işaretlenemedi: {errorMessage}",
+    "Sort ascending. Click for descending": "Artan sırala. Azalan için tıklayın",
+    "Sort descending. Click for ascending": "Azalan sırala. Artan için tıklayın"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4772,6 +4783,10 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "son 24 saatte {value} beklenmeyen çıkış.",
       "other": "son 24 saatte {value} beklenmeyen çıkış."
+    },
+    "Marked {count} photo": {
+      "one": "{count} fotoğraf işaretlendi",
+      "other": "{count} fotoğraf işaretlendi"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Zachowaj metadane; pozostaw obok sparowanych ujęć",
     "Catalog": "Katalog",
     "Catalog file": "Plik katalogu",
-    "Catalog loading stopped before all photos arrived": "Wczytywanie katalogu zatrzymało się, zanim dotarły wszystkie zdjęcia",
     "Catalog recovered from a verified backup": "Katalog odzyskany z zweryfikowanej kopii zapasowej",
     "Catalog updated {date}": "Katalog zaktualizowany {date}",
     "Catalogs": "Katalogi",
@@ -4478,7 +4477,19 @@
     "← People": "← Osoby",
     "☆ Favorites": "☆ Ulubione",
     "Imported": "Zaimportowano",
-    "{name} (Already imported)": "{name} (Już zaimportowano)"
+    "{name} (Already imported)": "{name} (Już zaimportowano)",
+    "Marked {count} photo": "Oznaczono {count} zdjęcie",
+    "Marked {count} photos": "Oznaczono {count} zdjęcia",
+    "Compare Two Photos": "Porównaj dwa zdjęcia",
+    "Compare two": "Porównaj dwa",
+    "Compare two photos side by side (Shift+N)": "Porównaj dwa zdjęcia obok siebie (Shift+N)",
+    "Could not load photos": "Nie można załadować zdjęć",
+    "No selected photos are in this view": "Żadne wybrane zdjęcia nie są w tym widoku",
+    "Select two photos to compare": "Wybierz dwa zdjęcia do porównania",
+    "Selecting every photo in view…": "Zaznaczanie wszystkich zdjęć w widoku…",
+    "Some photos could not be marked: {errorMessage}": "Nie udało się oznaczyć niektórych zdjęć: {errorMessage}",
+    "Sort ascending. Click for descending": "Sortuj rosnąco. Kliknij dla malejącego",
+    "Sort descending. Click for ascending": "Sortuj malejąco. Kliknij dla rosnącego"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4918,6 +4929,12 @@
       "few": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin.",
       "many": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin.",
       "other": "{value} nieoczekiwanych zakończeń w ciągu ostatnich 24 godzin."
+    },
+    "Marked {count} photo": {
+      "one": "Oznaczono {count} zdjęcie",
+      "few": "Oznaczono {count} zdjęcia",
+      "many": "Oznaczono {count} zdjęć",
+      "other": "Oznaczono {count} zdjęcia"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

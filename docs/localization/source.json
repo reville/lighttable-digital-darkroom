@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
-  "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
+  "pluralsDigest": "a03c3b804bc7e2323b145ee619d481e74598d6e166869edc292a66e9ff03d29f",
   "pluralPairs": [
     {
       "one": " · {count} paired file linked",
@@ -42,6 +42,10 @@
     {
       "one": "Local recovery found changes for {count} photo. Restoring replaces their saved edits with these recovered changes.",
       "other": "Local recovery found changes for {count} photos. Restoring replaces their saved edits with these recovered changes."
+    },
+    {
+      "one": "Marked {count} photo",
+      "other": "Marked {count} photos"
     },
     {
       "one": "Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.",
@@ -715,7 +719,6 @@
     "Carry metadata; retain beside paired captures",
     "Catalog",
     "Catalog file",
-    "Catalog loading stopped before all photos arrived",
     "Catalog recovered from a verified backup",
     "Catalog updated {date}",
     "Catalogs",
@@ -1062,8 +1065,11 @@
     "Compact model · 10.1 MB download · on-device processing",
     "Compare",
     "Compare Before & After",
+    "Compare Two Photos",
     "Compare several photos in Survey",
     "Compare similar photos",
+    "Compare two",
+    "Compare two photos side by side (Shift+N)",
     "Compare while zoomed in",
     "Compare with a reference image",
     "Compare your result with the original using the before control, or hold B while the photo is active.",
@@ -1153,6 +1159,7 @@
     "Could not inspect the submission settings",
     "Could not install preset",
     "Could not load available languages. Try again.",
+    "Could not load photos",
     "Could not load presets. Your saved presets are kept.",
     "Could not load this language. Try again.",
     "Could not move {path} to Trash: {error}",
@@ -2154,6 +2161,8 @@
     "Mark keepers and rejects, give star ratings, and control automatic advance.",
     "Mark the active photo or grid selection",
     "Marked the select and rejected the rest",
+    "Marked {count} photo",
+    "Marked {count} photos",
     "Mask",
     "Mask batch finished",
     "Mask batch stopped",
@@ -2309,6 +2318,7 @@
     "No profile in the folder names this camera.",
     "No rejected photos in this view",
     "No sampled colors",
+    "No selected photos are in this view",
     "No similar groups found. Photos need current index analysis and capture times.",
     "No sources yet.",
     "No steps recorded yet.",
@@ -3092,6 +3102,7 @@
     "Select the photos you want, then click the Export photos button in the top bar. Command/Ctrl+Shift+E also opens Export.",
     "Select two or more photos in the library.",
     "Select two or more photos to merge.",
+    "Select two photos to compare",
     "Select up to 500 photos across pages or albums, then choose Import selected originals. LightTable copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. iCloud originals download during import. Your Photos library stays unchanged; albums, videos, and Photos edits are not transferred.",
     "Select up to 500 photos per import.",
     "Selected",
@@ -3106,6 +3117,7 @@
     "Selected preset",
     "Selected: {count}",
     "Selecting a correction and choosing a different mode changes that correction’s mode.",
+    "Selecting every photo in view…",
     "Selecting {tool} on device…",
     "Selections run locally. Inspect the overlay and refine missed or extra areas.",
     "Selects",
@@ -3229,8 +3241,11 @@
     "Some drafts use a partial file identity that cannot verify the whole original. Restore these only if the original photos have not been replaced.",
     "Some edits have not been saved",
     "Some people may appear in separate groups. Review possible matches to combine them.",
+    "Some photos could not be marked: {errorMessage}",
     "Something went wrong. Please try again.",
     "Sort",
+    "Sort ascending. Click for descending",
+    "Sort descending. Click for ascending",
     "Source",
     "Source camera metadata could not be located.",
     "Source dimensions are unavailable",

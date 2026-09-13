@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "احتفظ بالبيانات الوصفية؛ وابقِها بجانب اللقطات المقرونة",
     "Catalog": "الكتالوج",
     "Catalog file": "ملف الكتالوج",
-    "Catalog loading stopped before all photos arrived": "توقف تحميل الكتالوج قبل وصول جميع الصور",
     "Catalog recovered from a verified backup": "تم استرداد الكتالوج من نسخة احتياطية مُتحقق منها",
     "Catalog updated {date}": "تم تحديث الكتالوج {date}",
     "Catalogs": "الكتالوجات",
@@ -4478,7 +4477,19 @@
     "← People": "← أشخاص",
     "☆ Favorites": "☆ المفضلات",
     "Imported": "مستورد",
-    "{name} (Already imported)": "{name} (مستورد بالفعل)"
+    "{name} (Already imported)": "{name} (مستورد بالفعل)",
+    "Marked {count} photo": "تم تمييز {count} صورة",
+    "Marked {count} photos": "تم تمييز {count} صور",
+    "Compare Two Photos": "مقارنة صورتين",
+    "Compare two": "مقارنة صورتين",
+    "Compare two photos side by side (Shift+N)": "مقارنة صورتين جنبًا إلى جنب (Shift+N)",
+    "Could not load photos": "تعذّر تحميل الصور",
+    "No selected photos are in this view": "لا توجد صور محددة في هذا العرض",
+    "Select two photos to compare": "حدد صورتين للمقارنة",
+    "Selecting every photo in view…": "جارٍ تحديد كل الصور في العرض…",
+    "Some photos could not be marked: {errorMessage}": "تعذّر تمييز بعض الصور: {errorMessage}",
+    "Sort ascending. Click for descending": "ترتيب تصاعدي. انقر للترتيب التنازلي",
+    "Sort descending. Click for ascending": "ترتيب تنازلي. انقر للترتيب التصاعدي"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -5064,6 +5075,14 @@
       "few": "‏{value} حالات خروج غير متوقعة خلال آخر 24 ساعة.",
       "many": "‏{value} حالات خروج غير متوقعة خلال آخر 24 ساعة.",
       "other": "‏{value} حالة خروج غير متوقعة خلال آخر 24 ساعة."
+    },
+    "Marked {count} photo": {
+      "zero": "تم تمييز {count} صور",
+      "one": "تم تمييز {count} صورة",
+      "two": "تم تمييز {count} صورتين",
+      "few": "تم تمييز {count} صور",
+      "many": "تم تمييز {count} صورة",
+      "other": "تم تمييز {count} صورة"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

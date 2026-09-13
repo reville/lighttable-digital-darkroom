@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "메타데이터를 유지하고 페어링된 캡처 옆에 보관",
     "Catalog": "카탈로그",
     "Catalog file": "카탈로그 파일",
-    "Catalog loading stopped before all photos arrived": "카탈로그 로딩이 모든 사진이 도착하기 전에 중지되었습니다",
     "Catalog recovered from a verified backup": "검증된 백업에서 복구된 카탈로그",
     "Catalog updated {date}": "카탈로그가 {date}에 업데이트됨",
     "Catalogs": "카탈로그",
@@ -4478,7 +4477,19 @@
     "← People": "← 사람들",
     "☆ Favorites": "☆ 즐겨찾기",
     "Imported": "가져옴",
-    "{name} (Already imported)": "{name} (이미 가져옴)"
+    "{name} (Already imported)": "{name} (이미 가져옴)",
+    "Marked {count} photo": "사진 {count}장 표시됨",
+    "Marked {count} photos": "사진 {count}장 표시됨",
+    "Compare Two Photos": "사진 두 장 비교",
+    "Compare two": "두 장 비교",
+    "Compare two photos side by side (Shift+N)": "사진 두 장을 나란히 비교 (Shift+N)",
+    "Could not load photos": "사진을 불러올 수 없습니다",
+    "No selected photos are in this view": "이 보기에 선택된 사진이 없습니다",
+    "Select two photos to compare": "비교할 사진을 두 장 선택하세요",
+    "Selecting every photo in view…": "보기의 모든 사진을 선택 중…",
+    "Some photos could not be marked: {errorMessage}": "일부 사진을 표시할 수 없습니다: {errorMessage}",
+    "Sort ascending. Click for descending": "오름차순 정렬. 내림차순은 클릭",
+    "Sort descending. Click for ascending": "내림차순 정렬. 오름차순은 클릭"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "지난 24시간 동안 예기치 않은 종료가 {value}번 있었습니다."
+    },
+    "Marked {count} photo": {
+      "other": "사진 {count}장 표시됨"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"
