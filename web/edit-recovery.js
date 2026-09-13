@@ -3,6 +3,32 @@ import { t as tr, tn as trn } from './i18n.js';
 // Pending edits are kept outside the render server, scoped to one catalog.
 // Native hosts persist files; a normal browser uses its own origin storage.
 const clone = value => JSON.parse(JSON.stringify(value));
+
+// Drafts hold complete recipes, so a draft written before a control changed
+// meaning must be translated exactly as the server translates saved edits
+// (edit_schema.py). Version 2 corrected the sign of Whites.
+export const RECOVERY_SCHEMA = 2;
+const negate = value => (typeof value === 'number' && value !== 0 ? -value : value);
+function upgradeGrade(grade) {
+  if (!grade || typeof grade !== 'object' || !('whites' in grade)) return grade;
+  return {...grade, whites: negate(grade.whites)};
+}
+function upgradeEdit(state) {
+  if (!state || typeof state !== 'object') return state;
+  const out = {...state};
+  if (out.grade) out.grade = upgradeGrade(out.grade);
+  if (Array.isArray(out.masks)) out.masks = out.masks.map(mask =>
+    mask && typeof mask === 'object' && mask.grade ? {...mask, grade: upgradeGrade(mask.grade)} : mask);
+  if (Array.isArray(out.versions)) out.versions = out.versions.map(upgradeEdit);
+  return out;
+}
+export function upgradeRecoveryRecord(record) {
+  const version = Number.isFinite(record?.version) ? record.version : 1;
+  if (!record?.payload || version >= RECOVERY_SCHEMA) return record;
+  const payload = {...record.payload, state: upgradeEdit(record.payload.state)};
+  if (payload.history?.state) payload.history = {...payload.history, state: upgradeEdit(payload.history.state)};
+  return {...record, version: RECOVERY_SCHEMA, payload};
+}
 export async function recoveryKey(value) {
   const bytes = new TextEncoder().encode(value);
   const hash = await crypto.subtle.digest('SHA-256', bytes);
@@ -54,10 +80,11 @@ export function createEditRecovery({scope, nativeRequest, storage, hash = recove
       const damaged = records.filter(record => record?.journalError);
       onWarning(damaged.length ? new Error(trn("{count} damaged recovery draft kept for repair; other drafts remain available.", "{count} damaged recovery drafts kept for repair; other drafts remain available.", damaged.length, {damagedLength: damaged.length})) : null);
       return records.filter(record => record?.scope === scope && typeof record.name === 'string'
-        && typeof record.token === 'string' && record.payload?.state?.name === record.name);
+        && typeof record.token === 'string' && record.payload?.state?.name === record.name)
+        .map(upgradeRecoveryRecord);
     },
     put(name, token, payload) {
-      const value = {version: 1, scope, name, token,
+      const value = {version: RECOVERY_SCHEMA, scope, name, token,
         updatedAt: new Date().toISOString(), payload: clone(payload)};
       return serial(() => request('put', name, value));
     },

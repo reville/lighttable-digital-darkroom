@@ -105,3 +105,26 @@ test('saved-state matching checks masks, crop and film changes rather than only 
   saved.masks[0].data[0] = 9;
   assert.equal(recoveryPayloadMatches(value, saved), false);
 });
+
+test('drafts written before the Whites sign correction are translated when listed', async () => {
+  const {upgradeRecoveryRecord, RECOVERY_SCHEMA} = await moduleFor('edit-recovery.js');
+  const storage = memoryStorage();
+  const journal = createEditRecovery({scope: '/catalog', storage});
+  await journal.put('a.RAW', 'rev', payload());
+  const [key] = [...storage.records.keys()];
+  const legacy = JSON.parse(storage.getItem(key));
+  assert.equal(legacy.version, RECOVERY_SCHEMA);
+  legacy.version = 1;
+  legacy.payload.state.grade = {exposure: 1, whites: 0.3};
+  legacy.payload.state.masks = [{id: 'mask', grade: {whites: -0.2}}, {id: 'plain'}];
+  legacy.payload.history.state.grade = {whites: 0.3};
+  storage.setItem(key, JSON.stringify(legacy));
+  const [record] = await createEditRecovery({scope: '/catalog', storage}).list();
+  assert.equal(record.version, RECOVERY_SCHEMA);
+  assert.deepEqual(record.payload.state.grade, {exposure: 1, whites: -0.3});
+  assert.deepEqual(record.payload.state.masks, [{id: 'mask', grade: {whites: 0.2}}, {id: 'plain'}]);
+  assert.deepEqual(record.payload.history.state.grade, {whites: -0.3});
+  assert.deepEqual(upgradeRecoveryRecord(record), record, 'a current record is never translated twice');
+  const current = (await journal.list())[0];
+  assert.deepEqual(current.payload.state.grade, {exposure: 1, whites: -0.3});
+});
