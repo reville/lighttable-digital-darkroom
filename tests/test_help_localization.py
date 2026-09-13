@@ -242,6 +242,39 @@ class HelpLocalizationTests(unittest.TestCase):
         self.write(help_content.BUNDLE, self.bundle)
         self.assertEqual(self.run_command('localization-build'), 1)
 
+    def test_pending_mode_keeps_the_last_complete_bundle_for_a_lagging_locale(self):
+        self.assertEqual(self.run_command('localization-build'), 0)
+        before = self.localized()
+        # A new English tip merges before its translations exist.
+        self.bundle['articles'][1]['sections'][0]['tips'] = ['Save often.']
+        self.write(help_content.BUNDLE, self.bundle)
+        messages = sorted(set(help_content.help_messages(self.bundle) + ['Export {0} photos']))
+        digest = help_content.localization_source_digest(messages)
+        self.write(help_content.LOCALIZATION_SOURCE, {'version': 1, 'messages': messages, 'sourceDigest': digest})
+        self.assertEqual(self.run_command('localization-check'), 1)
+        self.assertEqual(self.run_command('localization-check', '--allow-pending'), 0)
+        self.assertEqual(self.run_command('localization-build', '--allow-pending'), 0)
+        self.assertEqual(self.localized(), before)
+        # Once the catalog catches up, pending mode validates it like strict mode.
+        self.catalog['messages'] = {source: 'Traduction : ' + source for source in messages}
+        self.catalog['sourceDigest'] = digest
+        self.write('web/locales/fr.json', self.catalog)
+        self.assertEqual(self.run_command('localization-check', '--allow-pending'), 1)
+        self.assertEqual(self.run_command('localization-build', '--allow-pending'), 0)
+        self.assertEqual(self.run_command('localization-check', '--allow-pending'), 0)
+        self.assertEqual(self.run_command('localization-check'), 0)
+        self.assertIn('Traduction : Save often.', json.dumps(self.localized(), ensure_ascii=False))
+
+    def test_pending_mode_still_rejects_a_current_but_broken_catalog(self):
+        self.catalog['messages']['Export {0} photos'] = 'Exporter des photos'
+        self.write('web/locales/fr.json', self.catalog)
+        self.assertEqual(self.run_command('localization-check', '--allow-pending'), 1)
+        self.assertEqual(self.run_command('localization-build', '--allow-pending'), 1)
+
+    def test_allow_pending_is_only_for_localization_commands(self):
+        with self.assertRaises(SystemExit):
+            self.run_command('check', '--allow-pending')
+
     def test_localization_never_acknowledges_source_reviews(self):
         self.write(help_content.LOCK, {'sentinel': 'review state must not change'})
         before = (self.root / help_content.LOCK).read_bytes()

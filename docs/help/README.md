@@ -10,11 +10,13 @@
 3. Update the separate `reville/lighttable-site` feature content. Preserve
    existing user-written copy and distinguish implemented features from
    deferred work and unverified compatibility claims.
-4. Once English is settled, refresh the affected UI and Help source strings,
-   every declared translation catalog, and generated localized Help bundles.
-   Preserve placeholders, file formats, paths, keyboard shortcuts, and user
-   data. Run the localization checks provided by that checkout and inspect
-   translated controls and Help in the running interface.
+4. Once English is settled, refresh the affected UI and Help source strings
+   and run the localization checks with `--allow-pending`; a feature may merge
+   while its translations are pending. Complete every declared translation
+   catalog and the generated localized Help bundles before a release with
+   `scripts/translate-locales.py`, never by hand. Preserve placeholders, file
+   formats, paths, keyboard shortcuts, and user data, and inspect translated
+   controls and Help in the running interface once the catalogs are complete.
 
 Keep app, website, and translation changes reviewable together. Report their
 actual source, publication, and installation states separately. If localization
