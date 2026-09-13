@@ -33,7 +33,8 @@ function withPreview(options, run) {
     healHandleAt: () => null, MAX_HEALS: 50, toast: () => {}, editId: () => 'heal-1',
     syncHealPanel: () => {}, syncOverlayCursorClass: () => {}};
   const overlay = options.overlay
-    ? between('function automaticHealSource(', 'function refreshBaseEdits(') +
+    ? between('function drawEditOverlay()', 'const CURVE_KEYS') +
+      between('function automaticHealSource(', 'function refreshBaseEdits(') +
       between('function overlayPoint(', 'function overlayDistance(') +
       between("$('editOverlay').addEventListener('pointerdown'", 'function finishEditGesture(')
     : '';

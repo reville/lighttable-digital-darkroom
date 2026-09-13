@@ -2990,9 +2990,9 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
       S.editGesture = { type: 'heal-create', pointerId: event.pointerId,
         spot, start: point, rect };
     }
-    syncHealPanel();
-    // One coalesced frame carries the new spot to Metal and redraws the overlay.
-    previewFrameScheduler.request({ edits: nativePreviewActive(), overlay: true });
+    syncHealPanel(); drawEditOverlay();
+    // The new spot reaches Metal in the same coalesced frame as the overlay.
+    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3041,9 +3041,10 @@ $('editOverlay').addEventListener('pointermove', (event) => {
         (point[1] - gesture.start[1]) * rect.height) / Math.min(rect.width, rect.height);
       if (radius > 0.008) gesture.spot.radius = clamp(radius, 0.005, 0.25);
     }
-    // A moved spot and its overlay share one animation frame; the WebGL
-    // fallback only redraws the overlay until the gesture ends.
-    previewFrameScheduler.request({ edits: nativePreviewActive(), overlay: true });
+    drawEditOverlay();
+    // A moved spot shares the overlay's animation frame; the WebGL fallback
+    // only redraws the overlay until the gesture ends.
+    if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
   }
 });
 function finishEditGesture(event) {
