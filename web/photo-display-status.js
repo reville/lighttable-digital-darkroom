@@ -31,6 +31,12 @@ export function createPhotoDisplayStatus() {
       // availability until the next catalog scan refreshes the row.
       return states.thumbnail !== false && ['cloud-only', 'unavailable', 'empty'].includes(image.availability);
     },
+    /* Names with a recorded failure, for a query that must leave them out. */
+    failedNames() {
+      return [...results.entries()]
+        .filter(([, result]) => Object.values(result.states).some(Boolean))
+        .map(([name]) => name);
+    },
     retain(images) {
       const names = new Set(images.map(image => image.name));
       for (const name of results.keys()) if (!names.has(name)) results.delete(name);

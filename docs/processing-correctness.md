@@ -122,7 +122,7 @@ nothing.
 | `film --film-gpu` | Actual WGPU film output | Verified CPU output for deterministic recipes; backend identity must say WGPU. A CPU fallback fails. Intermediate GPU buffers are not exposed, so GPU stage-by-stage equivalence is not claimed. |
 | `export` | Actual `render_cli.py` subprocesses and current Rust resident export | Independent NumPy sRGB, linear-light exposure, rotation/crop and Lanczos equations; RGB16 precision and ICC profiles. Python grading/masks independently check Rust postprocessing from the same float film base. |
 | `webgl` | Production `web/gl.js` in Chromium | Python CPU grading for individual positive/negative controls, detail/noise/sharpening, all curve channels and HSL bands, Point Color, tonal color grading and combined operation order. Scores synchronous framebuffer output and composited canvas screenshots, with navigation, portrait geometry, and compare restoration. |
-| `app` | Complete server and browser application | Real UI commands and slider/save/render paths, Film on/off, print exposure, and portrait/landscape navigation. Requires the intended saved recipe and matching ready photo. Scores the actual frame against the CLI render endpoint with an explicit reference recipe, and the visible scaled canvas against its rendered pixels. |
+| `app` | Complete server and browser application | Real UI commands and slider/save/render paths, Film on/off, print exposure, and portrait/landscape navigation. Requires the intended saved recipe and matching ready photo. Scores the actual frame against the CLI render endpoint with an explicit reference recipe, and the visible scaled canvas against its rendered pixels. The browser uploads the engine's raw RGBA8 preview surface, and `/api/render/file` reads the same lossless surface for its film base (never the quality-88 preview JPEG, whose chroma subsampling blends colour edges by up to ~25 code values), so both sides of the comparison are exact engine output. |
 | `native` | Production `NativePreview.swift` and `NativePreview.metal` in a real AppKit window | Python grading against the actual MTKView drawable submitted for display, including image edges. Exercises PNG/FLRA input, all shared grade cases, cached A/B/A navigation, compare sweeps/restoration, and portrait/landscape sizing. Requires GPU completion and drawable presentation. |
 
 The native helper compiles the production renderer and shader; it is not a
@@ -130,6 +130,65 @@ replacement for the full native product journey. Run the existing
 `scripts/run-product-journey.sh pr` as well when changing native bridge wiring,
 window layout, or packaging. The complete browser application is exercised by
 the `app` suite; the Metal helper isolates native rendering correctness.
+
+## Tone working space
+
+The tone stage of the grade (Exposure, Highlights, Shadows, Whites, Blacks,
+Contrast) is defined once in `grade._tone_stage` and reproduced by the Numba
+kernel, `web/gl.js` (`toneStage`), `app/NativePreview.metal` (`toneStage`),
+`rust-engine/src/grade_gpu.wgsl` (`tone_stage`) and `rust-engine/src/export.rs`
+(`tone_stage`). Every implementation takes the display-encoded base frame
+(the cached film render, or the developed RAW/positive) and:
+
+1. decodes it to scene-linear light (sRGB curve; Display P3 shares it, and
+   ProPhoto RGB decodes the ROMM curve on the wide-gamut export path);
+2. applies Exposure as a linear gain of `2^EV`, then the luminance-masked
+   Highlights (`1 + 0.85·h·m`, `m = clamp((Y − 0.35) / 0.65)^1.2`) and Shadows
+   (`1 + 1.5·s·m`, `m = clamp((0.45 − Y) / 0.45)^1.2`) gains, with no clip;
+3. re-encodes with the sRGB curve continued above 1.0 by the same power law,
+   so the extended signal is still a monotone function of linear light;
+4. applies Whites and Blacks as endpoint moves on that extended signal,
+   `(t − b) / (w − b)` with `w = 1 − 0.35·whites`, `b = −0.25·blacks`, and
+   Contrast as the smoothstep blend (`k > 0`) or the flatten toward mid grey
+   (`k < 0`); above 1.0 the smoothstep continues as `min(1 + (t − 1)^2, t)`,
+   which keeps its zero slope at white and rejoins the identity;
+5. rolls everything above the knee off toward white with an exponential
+   shoulder, `knee + (1 − knee)·(1 − exp(−(t − knee) / (1 − knee)))`, and
+   bounds the result to [0, 1].
+
+The knee is a function of the sliders alone (`grade.tone_knee`): the encoded
+value an untouched white reaches after Exposure, Highlights, Whites and
+Blacks, mapped through `1 − 0.15·(1 − exp(−2·excess))`. A recipe that cannot
+push anything past white has `knee = 1` and the stage is the exact hard clip
+it was before, so every value inside [0, 1] renders exactly as it did; the
+shoulder only opens with the headroom a recipe creates, and opens
+continuously (a 0.01 nudge of Exposure moves nothing by more than 0.02).
+
+Dehaze, Temp/Tint, Saturation, Vibrance, HSL, Point Color, Color Grading, the
+curves and the vignette stay display-referred after the stage, as before.
+Local masks run the same stage through `grade.apply` (their Whites and Blacks
+are always zero). Film renders feed the print-scan output through it exactly
+like a Develop frame; the film goldens did not move because their recipes
+carry no headroom.
+
+Measured against the previous clipped stage on the three real-photo fixtures
+and the golden source (luma in 8-bit code values): Exposure −1 and Highlights
+−100 are bit-identical; Exposure +1 moves mid-tones (0.35–0.65) by at most
+0.3 and the highlight mean (> 0.75) by 0.5–2.6 (a pushed white lands on 248
+instead of 255, and the share of clipped pixels drops from 7.5–66% to 0–51%);
+Whites +50 moves mid-tones by at most 0.2 and highlights by 0.1–2.1. No
+saved edit needs a migration factor, so the edit schema stays at version 2.
+The `tone.linear.*` and `tone.headroom` findings in
+`tests/control_semantics.py` hold each control to its direction in linear
+light and prove that a ramp sent past white by +1 EV still rises after
+Whites −100.
+
+Because the stage depends on the transfer function alone, a Display P3 or
+ProPhoto export whose grade uses nothing but these six controls
+(`grade.is_tone_only`) keeps the wider gamut: `wide_develop_edits_supported`
+accepts it and `render_cli.py` grades the delivered encoding directly. Any
+other grade control, mask, retouch or watermark still renders through the
+sRGB preview path with the sRGB-limited warning.
 
 ## Reference contracts and tolerances
 

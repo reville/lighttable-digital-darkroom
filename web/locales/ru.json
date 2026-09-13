@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Сохраняйте метаданные; храните рядом с парными снимками",
     "Catalog": "Каталог",
     "Catalog file": "Файл каталога",
-    "Catalog loading stopped before all photos arrived": "Загрузка каталога остановилась до того, как были получены все фото",
     "Catalog recovered from a verified backup": "Каталог восстановлен из проверенной резервной копии",
     "Catalog updated {date}": "Каталог обновлен {date}",
     "Catalogs": "Каталоги",
@@ -4478,7 +4477,19 @@
     "← People": "← Люди",
     "☆ Favorites": "☆ Избранное",
     "Imported": "Импортировано",
-    "{name} (Already imported)": "{name} (Уже импортировано)"
+    "{name} (Already imported)": "{name} (Уже импортировано)",
+    "Marked {count} photo": "{count} фото помечено",
+    "Marked {count} photos": "{count} фото помечено",
+    "Compare Two Photos": "Сравнить два фото",
+    "Compare two": "Сравнить два",
+    "Compare two photos side by side (Shift+N)": "Сравнить два фото бок о бок (Shift+N)",
+    "Could not load photos": "Не удалось загрузить фото",
+    "No selected photos are in this view": "Нет выбранных фото в этом виде",
+    "Select two photos to compare": "Выберите два фото для сравнения",
+    "Selecting every photo in view…": "Выбираются все фото в виде…",
+    "Some photos could not be marked: {errorMessage}": "Некоторые фото не удалось пометить: {errorMessage}",
+    "Sort ascending. Click for descending": "По возрастанию. Нажмите для убывания",
+    "Sort descending. Click for ascending": "По убыванию. Нажмите для возрастания"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4918,6 +4929,12 @@
       "few": "{value} неожиданных выхода за последние 24 часа.",
       "many": "{value} неожиданных выходов за последние 24 часа.",
       "other": "{value} неожиданных выходов за последние 24 часа."
+    },
+    "Marked {count} photo": {
+      "one": "{count} фото помечено",
+      "few": "{count} фото помечено",
+      "many": "{count} фото помечено",
+      "other": "{count} фото помечено"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

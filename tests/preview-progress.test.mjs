@@ -191,6 +191,7 @@ function renderHarness(overrides = {}) {
       setAttribute(key, value) { this[key] = value; } }); return nodes.get(id); },
     readControls: noop, viewFrameScheduler: { flush: noop }, requestedPreviewWidth: () => 2200,
     requestedViewportRegion: () => null, nativePreviewActive: () => false,
+    rawPreviewTransportSupported: () => true,
     renderRequestKey: () => 'key', presentationCache: { get: noop, set: noop, findPreview: noop },
     previewGeometryKey: noop, shouldPreservePresentationGeometry: () => true,
     previewProgress: { start: label => progress.push(label), advance: noop, finish: () => progress.push('done') },

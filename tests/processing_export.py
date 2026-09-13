@@ -45,7 +45,25 @@ def srgb_decode(encoded):
 
 
 def analytical_exposure(encoded, stops):
-    return srgb_encode(srgb_decode(encoded) * 2 ** stops)
+    """Exposure as a linear-light gain, with the tone stage's highlight shoulder.
+
+    The shoulder contract (docs/processing-correctness.md, "Tone working
+    space") is restated here in NumPy rather than imported: the sRGB curve is
+    continued above white by its own power law, the knee sits where an
+    untouched white lands after the gain, and everything above the knee rolls
+    off exponentially toward white. A negative gain never opens the shoulder.
+    """
+    linear = srgb_decode(encoded) * 2 ** stops
+    extended = np.where(linear <= 0.0031308, linear * 12.92,
+                        1.055 * np.power(linear, 1 / 2.4) - 0.055)
+    white = 2 ** max(stops, 0)
+    white = white * 12.92 if white <= 0.0031308 else 1.055 * white ** (1 / 2.4) - 0.055
+    knee = 1 - 0.15 * (1 - np.exp(-2 * max(white - 1, 0)))
+    if knee < 1:
+        width = 1 - knee
+        extended = (np.minimum(extended, knee)
+                    + width * (1 - np.exp(-np.maximum(extended - knee, 0) / width)))
+    return np.clip(extended, 0, 1)
 
 
 def reference_resize(image, long_edge):

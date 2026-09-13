@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "保留元数据；在配对拍摄旁保留",
     "Catalog": "目录",
     "Catalog file": "目录文件",
-    "Catalog loading stopped before all photos arrived": "目录加载在所有照片到达之前停止了",
     "Catalog recovered from a verified backup": "目录已从已验证的备份中恢复",
     "Catalog updated {date}": "目录已更新 {date}",
     "Catalogs": "目录",
@@ -4478,7 +4477,19 @@
     "← People": "← 人物",
     "☆ Favorites": "☆ 收藏",
     "Imported": "已导入",
-    "{name} (Already imported)": "{name} (已导入)"
+    "{name} (Already imported)": "{name} (已导入)",
+    "Marked {count} photo": "已标记 {count} 张照片",
+    "Marked {count} photos": "已标记 {count} 张照片",
+    "Compare Two Photos": "比较两张照片",
+    "Compare two": "比较两张",
+    "Compare two photos side by side (Shift+N)": "并排比较两张照片 (Shift+N)",
+    "Could not load photos": "无法加载照片",
+    "No selected photos are in this view": "此视图中没有已选照片",
+    "Select two photos to compare": "选择两张照片进行比较",
+    "Selecting every photo in view…": "正在选择视图中的所有照片…",
+    "Some photos could not be marked: {errorMessage}": "部分照片无法标记：{errorMessage}",
+    "Sort ascending. Click for descending": "升序排列，点击切换降序",
+    "Sort descending. Click for ascending": "降序排列，点击切换升序"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "过去 24 小时内有 {value} 次意外退出。"
+    },
+    "Marked {count} photo": {
+      "other": "已标记 {count} 张照片"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

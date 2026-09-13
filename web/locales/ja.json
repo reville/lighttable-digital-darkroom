@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "メタデータを保持し、ペアになったキャプチャの横に保持する",
     "Catalog": "カタログ",
     "Catalog file": "カタログファイル",
-    "Catalog loading stopped before all photos arrived": "すべての写真が到着する前にカタログの読み込みが停止しました",
     "Catalog recovered from a verified backup": "検証済みバックアップからカタログを復元しました",
     "Catalog updated {date}": "カタログを {date} に更新",
     "Catalogs": "カタログ",
@@ -4478,7 +4477,19 @@
     "← People": "← 人物",
     "☆ Favorites": "☆ お気に入り",
     "Imported": "読み込み済み",
-    "{name} (Already imported)": "{name} (既に読み込み済み)"
+    "{name} (Already imported)": "{name} (既に読み込み済み)",
+    "Marked {count} photo": "{count}枚の写真をマーク",
+    "Marked {count} photos": "{count}枚の写真をマーク",
+    "Compare Two Photos": "2枚の写真を比較",
+    "Compare two": "2枚を比較",
+    "Compare two photos side by side (Shift+N)": "2枚の写真を並べて比較（Shift+N）",
+    "Could not load photos": "写真を読み込めませんでした",
+    "No selected photos are in this view": "このビューに選択された写真はありません",
+    "Select two photos to compare": "比較する写真を2枚選択してください",
+    "Selecting every photo in view…": "ビューのすべての写真を選択中…",
+    "Some photos could not be marked: {errorMessage}": "一部の写真をマークできませんでした：{errorMessage}",
+    "Sort ascending. Click for descending": "昇順に並べ替え。クリックで降順",
+    "Sort descending. Click for ascending": "降順に並べ替え。クリックで昇順"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "過去24時間に予期しない終了が {value} 回発生しました。"
+    },
+    "Marked {count} photo": {
+      "other": "{count}枚の写真をマーク"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

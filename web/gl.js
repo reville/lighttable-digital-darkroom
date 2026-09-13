@@ -100,6 +100,58 @@ vec3 linearToSrgb(vec3 c) {
   return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c));
 }
 
+// The tone stage of grade.py, unclipped: Exposure and the luminance-masked
+// Highlights and Shadows in linear light, then the sRGB curve continued
+// above white, Whites/Blacks and Contrast on that extended signal, and a
+// soft shoulder whose knee opens with the headroom the sliders create. Kept
+// identical in grade.py, NativePreview.metal, grade_gpu.wgsl and export.rs.
+float toneKnee(float exposure, float highlights, float whites, float blacks) {
+  float peak = pow(2.0, max(exposure, 0.0)) * (1.0 + 0.85 * max(highlights, 0.0));
+  float top = peak <= 0.0031308 ? peak * 12.92 : 1.055 * pow(peak, 1.0 / 2.4) - 0.055;
+  if (whites != 0.0 || blacks != 0.0) {
+    float w = 1.0 - whites * 0.35;
+    float b = blacks * -0.25;
+    top = (top - b) / max(w - b, 1e-4);
+  }
+  float excess = max(top - 1.0, 0.0);
+  return 1.0 - 0.15 * (1.0 - exp(-2.0 * excess));
+}
+vec3 toneStage(vec3 c, float exposure, float highlights, float shadows,
+  float whites, float blacks, float contrast) {
+  vec3 lin = srgbToLinear(c) * pow(2.0, exposure);
+  if (highlights != 0.0 || shadows != 0.0) {
+    float y = max(dot(lin, LUMA), 0.0);
+    if (highlights != 0.0) {
+      float m = pow(clamp((y - 0.35) / 0.65, 0.0, 1.0), 1.2);
+      lin *= 1.0 + highlights * 0.85 * m;
+    }
+    if (shadows != 0.0) {
+      float m = pow(clamp((0.45 - y) / 0.45, 0.0, 1.0), 1.2);
+      lin *= 1.0 + shadows * 1.5 * m;
+    }
+  }
+  vec3 t = linearToSrgb(lin);
+  if (whites != 0.0 || blacks != 0.0) {
+    float w = 1.0 - whites * 0.35;
+    float b = blacks * -0.25;
+    t = (t - b) / max(w - b, 1e-4);
+  }
+  if (contrast > 0.0) {
+    vec3 shaped = mix(min(1.0 + (t - 1.0) * (t - 1.0), t),
+      t * t * (3.0 - 2.0 * t), step(t, vec3(1.0)));
+    t += (shaped - t) * contrast;
+  } else if (contrast < 0.0) {
+    t = 0.5 + (t - 0.5) * (1.0 + contrast * 0.8);
+  }
+  t = max(t, 0.0);
+  float knee = toneKnee(exposure, highlights, whites, blacks);
+  if (knee < 1.0) {
+    float width = 1.0 - knee;
+    t = min(t, knee) + width * (1.0 - exp(-max(t - knee, 0.0) / width));
+  }
+  return clamp(t, 0.0, 1.0);
+}
+
 // Sample a 256-entry table so it interpolates exactly like numpy's np.interp:
 // texel i sits at (i + 0.5) / 256, so value v maps to (v * 255 + 0.5) / 256.
 float curveAt(float v, int ch) {
@@ -191,28 +243,7 @@ vec3 localGrade(vec3 c, float exposure, float contrast,
     float middle = clamp(1.0 - abs(dot(c, LUMA) - 0.5) * 2.0, 0.0, 1.0);
     c = clamp(c + detail * clarity * 1.8 * middle, 0.0, 1.0);
   }
-  vec3 lin = srgbToLinear(c) * pow(2.0, exposure);
-  if (highlights != 0.0 || shadows != 0.0) {
-    float y = max(dot(lin, LUMA), 0.0);
-    if (highlights != 0.0) {
-      float m = pow(clamp((y - 0.35) / 0.65, 0.0, 1.0), 1.2);
-      lin *= 1.0 + highlights * 0.85 * m;
-    }
-    if (shadows != 0.0) {
-      float m = pow(clamp((0.45 - y) / 0.45, 0.0, 1.0), 1.2);
-      lin *= 1.0 + shadows * 1.5 * m;
-    }
-  }
-  c = clamp(linearToSrgb(lin), 0.0, 1.0);
-  if (contrast != 0.0) {
-    if (contrast > 0.0) {
-      vec3 shaped = c * c * (3.0 - 2.0 * c);
-      c += (shaped - c) * contrast;
-    } else {
-      c = 0.5 + (c - 0.5) * (1.0 + contrast * 0.8);
-    }
-    c = clamp(c, 0.0, 1.0);
-  }
+  c = toneStage(c, exposure, highlights, shadows, 0.0, 0.0, contrast);
   if (temp != 0.0 || tint != 0.0) {
     c = clamp(c * vec3(
       1.0 + temp * 0.18 + tint * 0.06,
@@ -306,37 +337,8 @@ void main() {
     c = clamp(c + shaped * u_sharpness * 1.8 * mask, 0.0, 1.0);
   }
 
-  vec3 lin = srgbToLinear(c);
-  lin *= pow(2.0, u_exposure);
-
-  if (u_highlights != 0.0 || u_shadows != 0.0) {
-    float y = max(dot(lin, LUMA), 0.0);
-    if (u_highlights != 0.0) {
-      float m = pow(clamp((y - 0.35) / 0.65, 0.0, 1.0), 1.2);
-      lin *= 1.0 + u_highlights * 0.85 * m;
-    }
-    if (u_shadows != 0.0) {
-      float m = pow(clamp((0.45 - y) / 0.45, 0.0, 1.0), 1.2);
-      lin *= 1.0 + u_shadows * 1.5 * m;
-    }
-  }
-  c = clamp(linearToSrgb(lin), 0.0, 1.0);
-
-  if (u_whites != 0.0 || u_blacks != 0.0) {
-    float w = 1.0 - u_whites * 0.35;
-    float b = u_blacks * -0.25;
-    c = clamp((c - b) / max(w - b, 1e-4), 0.0, 1.0);
-  }
-
-  if (u_contrast != 0.0) {
-    if (u_contrast > 0.0) {
-      vec3 s = c * c * (3.0 - 2.0 * c);
-      c = c + (s - c) * u_contrast;
-    } else {
-      c = 0.5 + (c - 0.5) * (1.0 + u_contrast * 0.8);
-    }
-    c = clamp(c, 0.0, 1.0);
-  }
+  c = toneStage(c, u_exposure, u_highlights, u_shadows, u_whites, u_blacks,
+    u_contrast);
 
   if (u_dehaze != 0.0) {
     float haze = u_dehaze * 0.12;
@@ -720,6 +722,67 @@ export class GradeRenderer {
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
       entry = { texture, image: img, bytes: imageWidth * imageHeight * 4 };
+      this.imageTextureBytes += entry.bytes;
+    }
+    this.imageTextures.set(key, entry);
+    this.tex = entry.texture;
+    while (this.imageTextures.size > 1 &&
+        (this.imageTextureBytes > this.maxImageTextureBytes ||
+         this.imageTextures.size > this.maxImageTextures)) {
+      const oldest = this.imageTextures.keys().next().value;
+      const removed = this.imageTextures.get(oldest);
+      this.imageTextures.delete(oldest);
+      this.imageTextureBytes -= removed.bytes;
+      gl.deleteTexture(removed.texture);
+    }
+    if (resizeCanvas &&
+        (this.canvas.width !== imageWidth || this.canvas.height !== imageHeight)) {
+      this.canvas.width = imageWidth;
+      this.canvas.height = imageHeight;
+    }
+    gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    gl.useProgram(this.prog);
+    gl.uniform2f(this.uTexel, 1 / imageWidth, 1 / imageHeight);
+    const scale = Math.min(1, 128 / Math.max(imageWidth, imageHeight));
+    const sampleWidth = Math.max(1, Math.round(imageWidth * scale));
+    const sampleHeight = Math.max(1, Math.round(imageHeight * scale));
+    if (this.sampleWidth !== sampleWidth || this.sampleHeight !== sampleHeight) {
+      this.sampleWidth = sampleWidth;
+      this.sampleHeight = sampleHeight;
+      this.samplePixels = new Uint8Array(sampleWidth * sampleHeight * 4);
+      gl.bindTexture(gl.TEXTURE_2D, this.sampleTexture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, sampleWidth,
+        sampleHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    }
+    this.ready = true;
+    return { textureCacheHit };
+  }
+
+  // Uploads a tightly packed RGBA8 buffer (the engine's resident preview
+  // surface, fetched raw over HTTP) directly to a texture: no <img> decode,
+  // no JPEG artefacts. Used by the non-Metal presenter on Windows/Linux (and
+  // in a plain browser) in place of setImage().
+  setImageFromRaw(pixels, imageWidth, imageHeight, { resizeCanvas = true, cacheKey = null } = {}) {
+    const gl = this.gl;
+    const key = cacheKey || Symbol('uncached raw preview');
+    let entry = this.imageTextures.get(key);
+    const textureCacheHit = Boolean(entry);
+    if (entry) {
+      this.imageTextures.delete(key);
+    } else {
+      const texture = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      // RGBA8, tightly packed (rowBytes === width * 4): no alignment padding
+      // to configure, unlike the RGB path setImage() uses for <img> sources.
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageWidth, imageHeight, 0,
+                    gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      entry = { texture, image: null, bytes: imageWidth * imageHeight * 4 };
       this.imageTextureBytes += entry.bytes;
     }
     this.imageTextures.set(key, entry);

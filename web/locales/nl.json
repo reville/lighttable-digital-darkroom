@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "Metagegevens behouden; bewaren naast gekoppelde opnamen",
     "Catalog": "Catalogus",
     "Catalog file": "Catalogusbestand",
-    "Catalog loading stopped before all photos arrived": "Het laden van de catalogus is gestopt voordat alle foto's zijn aangekomen",
     "Catalog recovered from a verified backup": "Catalogus hersteld uit een geverifieerde back-up",
     "Catalog updated {date}": "Catalogus bijgewerkt {date}",
     "Catalogs": "Catalogi",
@@ -4478,7 +4477,19 @@
     "← People": "← Personen",
     "☆ Favorites": "☆ Favorieten",
     "Imported": "Geïmporteerd",
-    "{name} (Already imported)": "{name} (Al geïmporteerd)"
+    "{name} (Already imported)": "{name} (Al geïmporteerd)",
+    "Marked {count} photo": "{count} foto gemarkeerd",
+    "Marked {count} photos": "{count} foto’s gemarkeerd",
+    "Compare Two Photos": "Twee foto’s vergelijken",
+    "Compare two": "Twee vergelijken",
+    "Compare two photos side by side (Shift+N)": "Twee foto’s naast elkaar vergelijken (Shift+N)",
+    "Could not load photos": "Kan foto’s niet laden",
+    "No selected photos are in this view": "Geen geselecteerde foto’s in dit overzicht",
+    "Select two photos to compare": "Selecteer twee foto’s om te vergelijken",
+    "Selecting every photo in view…": "Alle foto’s in het overzicht worden geselecteerd…",
+    "Some photos could not be marked: {errorMessage}": "Sommige foto’s konden niet worden gemarkeerd: {errorMessage}",
+    "Sort ascending. Click for descending": "Oplopend sorteren. Klik voor aflopend",
+    "Sort descending. Click for ascending": "Aflopend sorteren. Klik voor oplopend"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4772,6 +4783,10 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "{value} onverwachte afsluiting in de afgelopen 24 uur.",
       "other": "{value} onverwachte afsluitingen in de afgelopen 24 uur."
+    },
+    "Marked {count} photo": {
+      "one": "{count} foto gemarkeerd",
+      "other": "{count} foto’s gemarkeerd"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

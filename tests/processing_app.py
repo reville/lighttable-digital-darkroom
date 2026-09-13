@@ -130,7 +130,7 @@ def run(output_dir):
         reference = np.asarray(Image.open(case['reference']).convert('RGB')).astype(float) / 255
         actual = np.fromfile(case['raw'], dtype=np.uint8).reshape(frame['height'], frame['width'], 4)
         record = compare_images(case['name'], reference, actual[::-1, :, :3] / 255, output / 'pixels')
-        record.update(photo=frame['photo'], reference='Actual /api/render/file CLI route (Python CPU grade)',
+        record.update(photo=frame['photo'], reference='Actual /api/render/file CLI route (lossless resident film surface, Python CPU grade)',
                       screenshot=case['screenshot'], grade=frame['grade'])
         records.append(record)
         before_reference = np.asarray(Image.open(case['beforeReference']).convert('RGB')).astype(float) / 255

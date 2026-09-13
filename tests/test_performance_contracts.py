@@ -599,7 +599,7 @@ afterVisiblePaint(20).then((paintedAt) => {
         javascript = (ROOT / "web" / "app.js").read_text()
         css = (ROOT / "web" / "style.css").read_text()
         self.assertIn("const STRIP_OVERSCAN", javascript)
-        self.assertIn("list.slice(start, end)", javascript)
+        self.assertIn("LIBRARY_VIEW.ensureRange(start, end, 'strip')", javascript)
         self.assertIn("visibleGridPositions(_gridLayout", javascript)
         self.assertNotIn("_gridRenderLimit", javascript)
         self.assertIn("content-visibility:auto", css)
@@ -1054,7 +1054,7 @@ process.stdout.write(JSON.stringify({
 
     def test_selection_supports_visible_range_extension(self):
         self.assertIn("let selectionAnchorName", self.javascript)
-        self.assertIn("list.slice(first, last + 1)", self.javascript)
+        self.assertIn("for (let index = first; index <= last; index++)", self.javascript)
         self.assertIn("event.shiftKey", self.javascript)
 
     def test_survey_activation_uses_normal_navigation(self):

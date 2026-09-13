@@ -601,6 +601,172 @@ def scan_all(cat: catalog_module.Catalog, **kwargs) -> dict:
     return totals
 
 
+LOCATE_SAMPLE_LIMIT = 12
+LOCATE_WALK_LIMIT = 200000
+
+
+def locate_source(cat: catalog_module.Catalog, source_id: int,
+                  new_path: Path | str, *,
+                  sample: int = LOCATE_SAMPLE_LIMIT) -> dict:
+    """Point a source at the folder's new location after proving it is the
+    same folder.
+
+    A source that went offline (an unplugged drive, a renamed parent folder)
+    keeps every row and edit; only the root is wrong. Before moving the root
+    we check a bounded sample of the catalog's own files at the candidate
+    location by size-plus-header digest. One verified match is enough to
+    accept the folder; any verified mismatch refuses it, because a folder
+    holding *different* bytes under the same names is a different folder.
+    """
+    source = cat.source_by_id(source_id)
+    if not source:
+        raise ValueError("unknown source")
+    root = Path(new_path).expanduser()
+    if not root.is_dir():
+        raise ValueError("that folder does not exist")
+    root = root.resolve()
+    rows = cat.connection.execute(
+        "SELECT relpath, header_hash, size FROM files"
+        " WHERE source_id=? AND header_hash IS NOT NULL AND header_hash!=''"
+        " ORDER BY id LIMIT ?", (int(source_id), max(1, int(sample)))).fetchall()
+    matched = 0
+    checked = 0
+    for row in rows:
+        candidate = root / row["relpath"]
+        try:
+            if not candidate.is_file():
+                continue
+        except OSError:
+            continue
+        checked += 1
+        if header_hash(candidate) == row["header_hash"]:
+            matched += 1
+        else:
+            raise ValueError(
+                f"{row['relpath']} exists there but its content differs;"
+                " this does not look like the same folder")
+    if rows and not matched:
+        raise ValueError(
+            "none of the catalog's photos were found in that folder;"
+            " choose the folder that holds them")
+    resolved = cat.set_source_path(source_id, root)
+    return {"ok": True, "sourceId": int(source_id), "path": resolved,
+            "previousPath": source["path"], "matched": matched,
+            "checked": checked, "sampled": len(rows)}
+
+
+def locate_missing(cat: catalog_module.Catalog, folder: Path | str, *,
+                   limit: int = LOCATE_WALK_LIMIT,
+                   add_source: bool = True) -> dict:
+    """Relink missing catalog rows to files found under ``folder``.
+
+    Identity is content, not the path: each walked file's size-plus-header
+    digest narrows the candidates through the ``files_hash`` index, and the
+    complete content digest confirms the match before a row moves. Every
+    relink runs through ``relocate_files`` so edits, history, versions and
+    collection membership travel with the row. Files that land outside every
+    catalog source get the chosen folder added as a source, once.
+    """
+    root = Path(folder).expanduser()
+    if not root.is_dir():
+        raise ValueError("that folder does not exist")
+    root = root.resolve()
+    summary = {"ok": True, "path": str(root), "scanned": 0, "relinked": 0,
+               "unmatched": 0, "unverifiable": 0, "conflicts": 0,
+               "sourceAdded": None, "complete": True}
+    missing_total = int(cat.connection.execute(
+        "SELECT COUNT(*) FROM files f JOIN sources s ON s.id=f.source_id"
+        " WHERE f.missing=1 AND s.active=1").fetchone()[0])
+    summary["missingBefore"] = missing_total
+    if not missing_total:
+        summary["missingAfter"] = 0
+        return summary
+
+    def source_for(path: Path) -> tuple[int, str] | None:
+        best = None
+        for source in cat.sources():
+            source_root = Path(source["path"])
+            try:
+                relative = path.relative_to(source_root)
+            except ValueError:
+                continue
+            if best is None or len(source_root.parts) > best[0]:
+                best = (len(source_root.parts), int(source["id"]), relative.as_posix())
+        return (best[1], best[2]) if best else None
+
+    def incomplete(message: str) -> None:
+        summary["complete"] = False
+
+    walked = 0
+    for record in walk_source(root, limit=limit, on_incomplete=incomplete):
+        walked += 1
+        if record.get("availability") != "local":
+            continue
+        path = Path(record["path"])
+        digest = header_hash(path)
+        if not digest:
+            continue
+        candidates = cat.connection.execute(
+            "SELECT f.id, f.source_id, f.relpath, f.content_hash"
+            " FROM files f JOIN sources s ON s.id=f.source_id"
+            " WHERE f.header_hash=? AND f.missing=1 AND s.active=1"
+            " ORDER BY f.id LIMIT ?",
+            (digest, catalog_module.RELINK_CANDIDATE_LIMIT)).fetchall()
+        if not candidates:
+            summary["unmatched"] += 1
+            continue
+        try:
+            content = file_identity.content_hash(
+                path, expected_revision=(record["size"], record["mtime_ns"]))
+        except OSError:
+            summary["unmatched"] += 1
+            continue
+        chosen = None
+        for candidate in candidates:
+            if not candidate["content_hash"]:
+                continue  # A legacy row has no full digest to confirm against.
+            if candidate["content_hash"] == content:
+                chosen = candidate
+                break
+        if chosen is None:
+            if any(not c["content_hash"] for c in candidates):
+                summary["unverifiable"] += 1
+            else:
+                summary["unmatched"] += 1
+            continue
+        target = source_for(path)
+        if target is None:
+            if not add_source:
+                summary["unmatched"] += 1
+                continue
+            summary["sourceAdded"] = cat.add_source(root)
+            target = source_for(path)
+            if target is None:
+                summary["unmatched"] += 1
+                continue
+        new_source, new_relpath = target
+        try:
+            cat.relocate_files([(int(chosen["source_id"]), chosen["relpath"],
+                                 new_source, new_relpath)])
+        except (ValueError, sqlite3.IntegrityError):
+            # The destination already holds a row (a rescan registered the
+            # file before its old row was relinked). Leave both for review.
+            summary["conflicts"] += 1
+            continue
+        with cat.write() as conn:
+            conn.execute(
+                "UPDATE files SET missing=0, size=?, mtime_ns=?, mtime_iso=?,"
+                " content_signature=? WHERE id=?",
+                (record["size"], record["mtime_ns"], record["mtime_iso"],
+                 record.get("content_signature"), int(chosen["id"])))
+        summary["relinked"] += 1
+    summary["scanned"] = walked
+    summary["missingAfter"] = int(cat.connection.execute(
+        "SELECT COUNT(*) FROM files f JOIN sources s ON s.id=f.source_id"
+        " WHERE f.missing=1 AND s.active=1").fetchone()[0])
+    return summary
+
+
 def register_file(cat: catalog_module.Catalog, path: Path | str, *,
                   expected_signature: str | None = None,
                   expected_content_hash: str | None = None) -> int:

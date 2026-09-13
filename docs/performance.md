@@ -272,6 +272,101 @@ preview probe complete and every delivered JPEG hash identical across repeats
 and across the two-worker and sized-pool runs. JSON evidence is retained under
 `bench/results/export-perf-2026-09-13/` (ignored).
 
+## Windows/Linux interactive preview transport (2026-09-13)
+
+Windows and Linux (and a plain browser against the review server: neither
+has the macOS WKWebView bridge `NATIVE_PREVIEW` requires) presented every
+film-rendered preview frame as a JPEG: the server encoded it, the browser's
+`<img>` decoded it, and `GradeRenderer.setImage` uploaded the decoded RGB
+into a WebGL texture. The resident engine already produces a packed RGBA8
+surface for the Metal path (`server.py`'s `native_surface`/`FLRA` header);
+this change lets a non-Metal client ask for that same surface instead of a
+JPEG and upload it straight into WebGL with no image codec at all.
+
+- `render_preview`/`_render_preview` in `server.py` take a new `raw` request
+  flag, independent of `native` (which still means "bake for the Metal
+  presenter"). `want_surface = native or raw` now gates whether the resident
+  RGBA8 surface is produced; `need_jpg = not want_surface` skips the eager
+  JPEG encode for a raw request the same way it already did for a native
+  one. The viewport-render gate (`viewport is not None and (engine != "rs"
+  or not want_surface)`) now accepts a raw-transport request too, so the
+  server can already serve the same 1:1 viewport tiles the Metal path uses
+  to a non-Metal client (see "Not done" below for why the client does not
+  ask for them yet). JPEG stays the transport for the non-film source-image
+  passthrough, thumbnails, and edited/baked renditions (`/api/render/png`
+  already serves those losslessly when optics/heals are baked).
+- `web/gl.js` adds `GradeRenderer.setImageFromRaw(pixels, width, height, …)`,
+  a `texImage2D` upload from a typed array, alongside the existing
+  `setImage(img, …)` that takes an `<img>` element.
+- `web/app.js`'s `doRender`/`prefetchImage` send `raw: !nativePreviewActive()`.
+  `setBaseImage` fetches `render.native.url` with `fetch()` +
+  `arrayBuffer()`, validates the `FLRA` header, and calls
+  `setImageFromRaw`; a fetch failure or malformed header falls back to
+  `render.img` (JPEG) if the server also produced one, so a raw request
+  never turns a working preview into a broken one.
+- Adaptive/auto preview width (`requestedPreviewWidth`/`automaticPreviewWidth`
+  in `web/view-performance.js`) was already platform-agnostic — it does not
+  gate on `NATIVE_PREVIEW` — so no change was needed there.
+
+Measurements: `bench/preview_transport_benchmark.py` starts an isolated
+server against a demo asset and issues distinct-per-iteration film renders
+(to defeat the render cache, matching a real slider drag) through the
+legacy JPEG path and the new raw path, 8 iterations each. This Mac is
+darwin, so the server process still takes the shared-memory branch for the
+resident engine's own IPC with Python (`native_shared` in `render_rust`);
+that is orthogonal to this measurement, which is the HTTP transport from
+server to client either way, and would be exercised identically on real
+Windows/Linux hardware, which this environment does not have (see "Not
+done"). Raw numbers: `bench/results/preview-transport-2026-09-13.json`.
+
+| Width | Path | Server render+encode | Fetch | Client decode/parse | End to end | Payload |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1100 px | JPEG | 66.0 ms | 0.74 ms | 4.96 ms | 71.6 ms | 518 KB |
+| 1100 px | raw | 54.3 ms | 2.86 ms | 0.003 ms | 58.0 ms | 5.64 MB |
+| 2200 px | JPEG | 156.3 ms | 2.95 ms | 16.3 ms | 188.6 ms | 1.81 MB |
+| 2200 px | raw | 113.9 ms | 5.84 ms | 0.003 ms | 119.2 ms | 18.6 MB |
+
+(medians of 8 iterations; "server render+encode" also drops because the raw
+path skips the JPEG encode the legacy path paid for on every render, not
+only because of the transport change.) At 2200 px, end-to-end time drops by
+roughly 37%; the client-side JPEG-decode cost (16 ms, comparable to a frame
+budget at 60 Hz) is eliminated outright. The raw payload is roughly 10-11x
+larger in bytes (uncompressed RGBA8 vs. quality-88 JPEG); over the loopback
+connection the actual app uses (the server and the WebView2/WebKitGTK host
+are on the same machine, exactly as tested here) that costs low single-digit
+milliseconds, not the bandwidth-bound cost it would be over a real network.
+
+Not done, and why:
+- **Client-side viewport tiling for the raw/WebGL path.** The server accepts
+  a viewport request from a raw-transport client now, but presenting a
+  partial-frame tile also needs the Metal presenter's virtual-canvas
+  compositing (an oversized canvas, an offset texture write, panning without
+  re-uploading the whole frame — see `S.nativeViewport`/
+  `nativeViewportPayload()`/`scheduleNativeViewportLayout()`). Enabling
+  `viewportRegionEnabled()` for the raw path without that compositing would
+  request a tile and then draw only that tile stretched to fill the canvas,
+  which is a visible regression at 100% zoom pan — so it stays gated to
+  `nativePreviewActive()` until that compositing exists. This is a
+  self-contained follow-up independent of the transport change above.
+- **A GPU-resident presenter (no WebGL texture upload at all) for Windows
+  and Linux.** Design and estimate in
+  [`gpu-preview-design.md`](gpu-preview-design.md); no spike is committed
+  because validating its biggest risk (WebView2/WebKitGTK child-window
+  compositing) needs real Windows/Linux hardware this environment does not
+  have.
+- **Raw transport for the non-film source-image passthrough** (viewing an
+  unrendered JPEG/HEIC/RAW-neutral preview before Film is turned on).
+  Left as JPEG: it is not the hot path this change targets (no per-frame
+  film render or JPEG encode happens there; the JPEG is already a cached
+  file), and building a raw variant would mean decoding that cached JPEG
+  into a native surface on the server for no per-request encode saving.
+- **Real Windows/Linux hardware verification.** Every measurement and test
+  above ran on macOS with the macOS-only Metal path forced off by simply
+  not setting `native: true`/`NATIVE_PREVIEW`, which is exactly the
+  condition `windows-shell` runs under; the actual WebView2/WebKitGTK
+  `fetch()`/`texImage2D` behavior, and real-network (not loopback) HTTP
+  timing, are unverified on real hardware.
+
 ## Repeatable checks
 
 ```sh
@@ -286,6 +381,7 @@ python rust-engine/bench_export_surface.py --data engine/data --width 2200
 python bench/export_pipeline_benchmark.py --photos /path/to/raw-folder --count 4 --repeats 3 --output bench/results/export.json
 python bench/scan_benchmark.py --count 300 --repeats 3 --fixtures /path/to/fixtures --output bench/results/scan.json
 python scripts/native-app-smoke.py --app /path/to/LightTable.app --layer pr
+python bench/preview_transport_benchmark.py --iterations 8 --widths 1100,2200
 ```
 
 The native checks need real Metal/shared-memory access and a connected macOS

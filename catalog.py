@@ -68,7 +68,9 @@ SORT_FIELDS = {
     "name": "f.filename COLLATE NOCASE",
     "rating": "s.rating",
     "status": "s.status",
-    "label": "s.label",
+    "label": ("CASE COALESCE(s.label,'none') WHEN 'none' THEN 0 WHEN 'red' THEN 1"
+              " WHEN 'yellow' THEN 2 WHEN 'green' THEN 3 WHEN 'blue' THEN 4"
+              " WHEN 'purple' THEN 5 ELSE 6 END"),
     "added": "i.created_at",
     "size": "f.size",
 }
@@ -138,6 +140,7 @@ CREATE INDEX IF NOT EXISTS files_hash ON files(header_hash);
 CREATE INDEX IF NOT EXISTS files_folder ON files(folder_id);
 CREATE INDEX IF NOT EXISTS files_source_missing ON files(source_id, missing);
 CREATE INDEX IF NOT EXISTS files_capture ON files(capture_time);
+CREATE INDEX IF NOT EXISTS files_pair_stem ON files(source_id, lower(substr(relpath,1,length(relpath)-length(ext))));
 
 CREATE TABLE IF NOT EXISTS capture_overrides (
     file_id INTEGER PRIMARY KEY REFERENCES files(id) ON DELETE CASCADE,
@@ -1278,13 +1281,51 @@ class Catalog:
             conn.execute("UPDATE sources SET display_name=? WHERE id=? AND active=1",
                          (display_name[:200], source_id))
 
+    def set_source_path(self, source_id: int, new_path: Path | str) -> str:
+        """Point an active source at the folder's new location.
+
+        Every file row keeps its id, so edits, ratings, history, versions and
+        collection membership survive untouched; only the root moves. The
+        caller is responsible for proving the folder is the same one (see
+        ``catalog_scan.locate_source``); this only guards the catalog's own
+        invariants.
+        """
+        resolved = str(Path(new_path).expanduser().resolve())
+        with self.write() as conn:
+            source = conn.execute(
+                "SELECT id, path FROM sources WHERE id=? AND active=1",
+                (int(source_id),)).fetchone()
+            if not source:
+                raise ValueError("unknown source")
+            if source["path"] == resolved:
+                return resolved
+            other = conn.execute("SELECT id, active FROM sources WHERE path=?",
+                                 (resolved,)).fetchone()
+            if other:
+                if other["active"]:
+                    raise ValueError("that folder is already a catalog source")
+                holds_rows = conn.execute(
+                    "SELECT 1 FROM files WHERE source_id=? LIMIT 1",
+                    (int(other["id"]),)).fetchone()
+                if holds_rows:
+                    raise ValueError(
+                        "that folder was removed from the catalog earlier and"
+                        " still holds photos; add it back instead")
+                conn.execute("DELETE FROM sources WHERE id=?", (int(other["id"]),))
+            conn.execute(
+                "UPDATE sources SET path=?, available=1 WHERE id=?",
+                (resolved, int(source_id)))
+        return resolved
+
     def sources(self) -> list[dict]:
         # Count what the browser shows: virtual copies are photos and videos are
         # not, which is how the grid, the folder rows and the totals all count.
         rows = self.connection.execute(
             "SELECT s.*, (SELECT COUNT(*) FROM images i"
             "   JOIN files f ON f.id=i.file_id WHERE f.source_id=s.id"
-            "   AND f.missing=0 AND f.kind!='video') AS photo_count"
+            "   AND f.missing=0 AND f.kind!='video') AS photo_count,"
+            " (SELECT COUNT(*) FROM files f WHERE f.source_id=s.id"
+            "   AND f.missing=1 AND f.kind!='video') AS missing_count"
             " FROM sources s WHERE s.active=1"
             " ORDER BY s.favorite DESC, s.display_name COLLATE NOCASE"
         ).fetchall()
@@ -1300,6 +1341,7 @@ class Catalog:
                 "favorite": bool(row["favorite"]),
                 "available": bool(source_path) and Path(source_path).is_dir(),
                 "count": _int_or(row["photo_count"], 0, minimum=0),
+                "missingCount": _int_or(row["missing_count"], 0, minimum=0),
                 "lastScan": _finite_number_or(row["last_scan_at"]),
             })
         return out
@@ -2295,6 +2337,7 @@ class Catalog:
                 params.append(int(spec["collectionId"]))
 
         for flt in (collection_rules, spec.get("filter") or {}):
+            toolbar = flt is spec.get("filter")
             flt = flt if isinstance(flt, dict) else {}
             status = str(flt.get("status", "all"))
             if status == "unflagged":
@@ -2420,10 +2463,36 @@ class Catalog:
                 params.append(bound)
             query_text = " ".join(str(flt.get("query", "")).split())
             if query_text:
-                where.append(
-                    "i.id IN (SELECT image_id FROM image_search"
-                    " WHERE image_search MATCH ?)")
+                search_clause = ("i.id IN (SELECT image_id FROM image_search"
+                                 " WHERE image_search MATCH ?)")
                 params.append(_fts_query(query_text))
+                # The browser's local index matches descriptions the catalog
+                # never sees. It sends those names so a search stays one
+                # server-ordered result instead of two lists merged by hand.
+                also = spec.get("searchAlsoNames") if toolbar else None
+                if isinstance(also, (list, tuple)) and also:
+                    search_clause = (f"({search_clause} OR i.id IN"
+                                     " (SELECT value FROM json_each(?)))")
+                    params.append(json.dumps(self.image_ids_for_names(also)))
+                where.append(search_clause)
+        if isinstance(spec.get("names"), list):
+            # An explicit name list: the browser resolves a full-view selection
+            # it never loaded into rows for marking, without paging everything.
+            ids = self.image_ids_for_names(spec["names"])
+            where.append("i.id IN (SELECT value FROM json_each(?))")
+            params.append(json.dumps(ids))
+        if spec.get("hideUnavailable"):
+            # Originals the scan found offline, empty, or not yet downloaded.
+            where.append(
+                "COALESCE(f.availability,'local') NOT IN"
+                " ('cloud-only','unavailable','empty')")
+        if isinstance(spec.get("excludeNames"), list) and spec["excludeNames"]:
+            # Photos the browser has learned it cannot display are its
+            # knowledge alone; it hands the names over rather than paging the
+            # whole view to drop them.
+            ids = self.image_ids_for_names(spec["excludeNames"])
+            where.append("i.id NOT IN (SELECT value FROM json_each(?))")
+            params.append(json.dumps(ids))
         sort = spec.get("sort") if isinstance(spec.get("sort"), dict) else {}
         field = SORT_FIELDS.get(str(sort.get("field", "capture")),
                                 SORT_FIELDS["capture"])
@@ -2444,9 +2513,44 @@ class Catalog:
                 " JOIN sources src ON src.id=f.source_id"
                 " LEFT JOIN image_state s ON s.image_id=i.id"
                 " LEFT JOIN capture_overrides ct ON ct.file_id=f.id")
-        base = joins + f" WHERE {clause}"
-        total = self.connection.execute(
-            f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
+        if spec.get("countsOnly"):
+            # Sidebar tallies for a scope. The browser used to count its
+            # loaded rows, which only agreed with the catalog once every row
+            # had been paged in.
+            counts = {"all": 0, "pending": 0, "approved": 0, "skipped": 0,
+                      "rated": 0}
+            for row in self.connection.execute(
+                    "SELECT COALESCE(s.status,'pending') AS status,"
+                    " COUNT(*) AS n, SUM(COALESCE(s.rating,0)>0) AS rated"
+                    f"{joins} WHERE {clause} GROUP BY 1", params).fetchall():
+                status = row["status"] if row["status"] in STATUS_VALUES else "pending"
+                counts[status] += int(row["n"])
+                counts["all"] += int(row["n"])
+                counts["rated"] += int(row["rated"] or 0)
+            return {"total": counts["all"], "counts": counts, "items": []}
+        hiding = self._hidden_member_ctes(spec, joins, clause)
+        if hiding:
+            # The matched CTE binds the filter clause first; the pair rules
+            # that follow it bind after, so the parameter order must match.
+            prefix, params = hiding[0].rstrip(",") + " ", params + hiding[1]
+            cte = hiding[0] + " page AS ("
+            base = joins + " JOIN result ON result.id=i.id"
+            total = self.connection.execute(
+                f"{prefix}SELECT COUNT(*) AS n FROM result",
+                params).fetchone()["n"]
+        else:
+            prefix, cte = "", "WITH page AS ("
+            base = joins + f" WHERE {clause}"
+            total = self.connection.execute(
+                f"SELECT COUNT(*) AS n{base}", params).fetchone()["n"]
+        pair_column = (
+            f", (SELECT f2.relpath FROM files f2 WHERE f2.source_id=f.source_id"
+            f" AND f2.id!=f.id AND f2.missing=0 AND {_stem('f2')}={_stem('f')}"
+            " AND (f2.kind='raw')!=(f.kind='raw')"
+            " AND (f2.kind='raw' OR lower(f2.ext) IN ('.jpg','.jpeg'))"
+            " AND (f.kind='raw' OR lower(f.ext) IN ('.jpg','.jpeg'))"
+            " AND i.virtual=0 LIMIT 1) AS pair_relpath"
+            if spec.get("pairView") in ("raw", "jpeg", "both") else "")
         # The edit blobs are pulled in the same statement when asked for.
         # Fetching them per image turned one page of the grid into hundreds of
         # round trips, which is what made a large library feel unopenable.
@@ -2457,13 +2561,25 @@ class Catalog:
         # Sort and page narrow IDs first. Carrying wide metadata/edit blobs
         # through SQLite's temporary sort made the last page grow with the library.
         ordering = f"{field} {direction}, f.filename COLLATE NOCASE, i.id"
+        located = None
+        if spec.get("locate"):
+            # Where one photo sits in this ordering, so the browser can keep
+            # or resume its place after a filter change without paging up to
+            # it. One window-function pass over the matched ids.
+            wanted = self.image_ids_for_names([str(spec["locate"])])
+            if wanted:
+                row = self.connection.execute(
+                    f"{prefix}SELECT rn FROM (SELECT i.id AS id,"
+                    f" ROW_NUMBER() OVER (ORDER BY {ordering}) - 1 AS rn"
+                    f"{base}) WHERE id=?", (*params, wanted[0])).fetchone()
+                located = int(row["rn"]) if row else None
         if spec.get("namesOnly"):
             try:
                 limit = max(1, min(100000, int(spec.get("limit", 100000))))
             except (TypeError, ValueError):
                 limit = 100000
             rows = self.connection.execute(
-                f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+                f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
                 "SELECT i.id, i.copy_ident, f.relpath, f.source_id "
                 f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
                 (*params, limit, offset)).fetchall()
@@ -2472,19 +2588,21 @@ class Catalog:
                 for row in rows
             ]
             return {"total": int(total), "offset": offset, "limit": limit,
-                    "names": names, "items": []}
+                    "located": located, "names": names, "items": []}
         if spec.get("idsOnly"):
             try:
                 limit = max(1, min(100000, int(spec.get("limit", 100000))))
             except (TypeError, ValueError):
                 limit = 100000
             rows = self.connection.execute(
-                f"SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?",
+                f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+                "SELECT page.id FROM page",
                 (*params, limit, offset)).fetchall()
             return {"total": int(total), "offset": offset, "limit": limit,
-                    "ids": [row["id"] for row in rows], "items": []}
+                    "located": located, "ids": [row["id"] for row in rows],
+                    "items": []}
         rows = self.connection.execute(
-            f"WITH page AS (SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
+            f"{cte}SELECT i.id{base} ORDER BY {ordering} LIMIT ? OFFSET ?) "
             "SELECT i.id, i.virtual, i.copy_ident, i.display_name,"
             " f.id AS file_id, f.relpath, f.filename, f.ext, f.kind, f.size,"
             " f.mtime_ns, COALESCE(ct.capture_time, f.capture_time) AS capture_time,"
@@ -2499,7 +2617,7 @@ class Catalog:
             "  OR s.crop_json IS NOT NULL OR s.masks_json IS NOT NULL"
             "  OR s.heals_json IS NOT NULL OR s.optics_json IS NOT NULL)"
             " AS has_edits"
-            f"{blobs}"
+            f"{blobs}{pair_column}"
             f"{joins} JOIN page ON page.id=i.id ORDER BY {ordering}",
             (*params, limit, offset)).fetchall()
         items = [_item(row) for row in rows]
@@ -2520,7 +2638,104 @@ class Catalog:
                 item["keywords"] = keywords.get(row["id"], [])
                 item["captureTimeOverride"] = row["capture_time_override"]
         return {"total": int(total), "offset": offset, "limit": limit,
-                "items": items}
+                "located": located, "items": items}
+
+    def image_ids_for_names(self, names: Sequence[str]) -> list[int]:
+        """Resolve qualified names to image ids in a few statements.
+
+        A full-view selection can hold every name in the catalog; resolving
+        them one by one turned a batch mark into thousands of round trips.
+        """
+        ids: list[int] = []
+        seen: set[int] = set()
+        wanted = []
+        for name in names:
+            source_id, relpath, copy_ident = parse_name(str(name))
+            if source_id is None:
+                continue
+            wanted.append([int(source_id), relpath, copy_ident])
+        for start in range(0, len(wanted), 2000):
+            chunk = wanted[start:start + 2000]
+            rows = self.connection.execute(
+                "SELECT i.id FROM json_each(?) j"
+                " JOIN files f ON f.source_id=json_extract(j.value,'$[0]')"
+                "  AND f.relpath=json_extract(j.value,'$[1]')"
+                " JOIN images i ON i.file_id=f.id"
+                "  AND ((json_extract(j.value,'$[2]') IS NULL AND i.copy_ident IS NULL)"
+                "   OR i.copy_ident=json_extract(j.value,'$[2]'))",
+                (json.dumps(chunk),)).fetchall()
+            for row in rows:
+                if row["id"] not in seen:
+                    seen.add(row["id"])
+                    ids.append(int(row["id"]))
+        return ids
+
+    def _hidden_member_ctes(self, spec: dict, joins: str,
+                            clause: str) -> tuple[str, list] | None:
+        """CTEs that drop the hidden half of a RAW+JPEG pair and collapsed
+        stack members from the matched set, so totals, paging, and Select All
+        agree with what the grid shows.
+
+        Both rules are evaluated inside the filtered set, the way the browser
+        did it over loaded rows: a JPEG only hides behind a RAW that is itself
+        in the view, and a collapsed stack shows its first member still in the
+        view rather than disappearing when its cover is filtered out.
+        """
+        pair_view = spec.get("pairView")
+        if pair_view not in ("raw", "jpeg"):
+            pair_view = None
+        collapse = bool(spec.get("collapseStacks")) and bool(
+            self.connection.execute(
+                "SELECT 1 FROM stacks WHERE collapsed=1 LIMIT 1").fetchone())
+        if not pair_view and not collapse:
+            return None
+        params: list[Any] = []
+        parts = [
+            "WITH matched AS (SELECT i.id AS id, i.virtual AS virtual,"
+            " f.source_id AS source_id, f.relpath AS relpath, f.kind AS kind,"
+            f" lower(f.ext) AS ext, {_stem('f')} AS stem"
+            f"{joins} WHERE {clause})"]
+        shown = "matched"
+        if pair_view:
+            preferred = []
+            for name in spec.get("pairOverrides") or []:
+                source_id, relpath, copy_ident = parse_name(str(name))
+                if source_id is None or copy_ident:
+                    continue
+                stem = relpath.rsplit(".", 1)[0].lower() if "." in relpath.rsplit("/", 1)[-1] else relpath.lower()
+                preferred.append(
+                    "WHEN m.source_id=? AND m.stem=? THEN m.relpath!=?")
+                params.extend([int(source_id), stem, relpath])
+            params.append(1 if pair_view == "raw" else 0)
+            hidden_rule = "(m.kind='raw')!=?"
+            if preferred:
+                hidden_rule = ("CASE " + " ".join(preferred)
+                               + f" ELSE {hidden_rule} END")
+            parts.append(
+                "members AS (SELECT * FROM matched WHERE virtual=0"
+                " AND (kind='raw' OR (kind='processed' AND ext IN ('.jpg','.jpeg')))),"
+                " pair_groups AS (SELECT source_id, stem FROM members"
+                " GROUP BY source_id, stem HAVING COUNT(*)=2 AND SUM(kind='raw')=1),"
+                " pair_hidden AS (SELECT m.id AS id FROM members m"
+                " JOIN pair_groups g ON g.source_id=m.source_id AND g.stem=m.stem"
+                f" WHERE {hidden_rule}),"
+                " shown AS (SELECT id FROM matched"
+                " WHERE id NOT IN (SELECT id FROM pair_hidden))")
+            shown = "shown"
+        if collapse:
+            parts.append(
+                "stack_hidden AS (SELECT si.image_id AS id FROM stack_images si"
+                " JOIN stacks st ON st.id=si.stack_id"
+                f" JOIN {shown} m ON m.id=si.image_id WHERE st.collapsed=1"
+                " AND EXISTS (SELECT 1 FROM stack_images s2"
+                f" JOIN {shown} m2 ON m2.id=s2.image_id"
+                " WHERE s2.stack_id=si.stack_id AND (s2.position < si.position"
+                " OR (s2.position=si.position AND s2.image_id < si.image_id)))),"
+                f" result AS (SELECT id FROM {shown}"
+                " WHERE id NOT IN (SELECT id FROM stack_hidden))")
+        else:
+            parts.append(f"result AS (SELECT id FROM {shown})")
+        return ", ".join(parts) + ",", params
 
     def _keywords_for_many(self, image_ids: Sequence[int]) -> dict[int, list]:
         """Keywords for a page of images in one statement."""
@@ -2541,24 +2756,70 @@ class Catalog:
 
     # ---------------------------------------------------------- collections
 
+    QUICK_COLLECTION_NAME = "Quick Collection"
+
+    @staticmethod
+    def _collection_record(row) -> dict:
+        return {"id": row["id"], "name": row["name"], "type": row["type"],
+                "parentId": row["parent_id"],
+                "sortOrder": _int_or(row["sort_order"], 0),
+                "rules": _json_or(row["rules_json"])}
+
     def collection(self, collection_id: int) -> dict | None:
         row = self.connection.execute("SELECT * FROM collections WHERE id=?",
                                       (collection_id,)).fetchone()
         if not row:
             return None
-        return {"id": row["id"], "name": row["name"], "type": row["type"],
-                "parentId": row["parent_id"],
-                "rules": _json_or(row["rules_json"])}
+        return self._collection_record(row)
 
     def collections(self) -> list[dict]:
+        """Every collection, quick collection first, then siblings in order.
+
+        The list is flat; ``parentId`` and ``sortOrder`` let the sidebar build
+        the tree without a second query per level.
+        """
         rows = self.connection.execute(
             "SELECT c.*, (SELECT COUNT(*) FROM collection_images ci"
             "   WHERE ci.collection_id=c.id) AS count"
-            " FROM collections c ORDER BY c.sort_order, c.name COLLATE NOCASE"
+            " FROM collections c"
+            " ORDER BY (c.type='quick') DESC, c.sort_order, c.name COLLATE NOCASE, c.id"
         ).fetchall()
-        return [{"id": r["id"], "name": r["name"], "type": r["type"],
-                 "parentId": r["parent_id"], "count": r["count"],
-                 "rules": _json_or(r["rules_json"])} for r in rows]
+        return [dict(self._collection_record(r), count=r["count"]) for r in rows]
+
+    @staticmethod
+    def _next_sort_order(conn: sqlite3.Connection, parent_id: int | None) -> int:
+        row = conn.execute(
+            "SELECT COALESCE(MAX(sort_order), -1) + 1 AS n FROM collections"
+            " WHERE parent_id IS ?", (parent_id,)).fetchone()
+        return int(row["n"])
+
+    @staticmethod
+    def _require_collection(conn: sqlite3.Connection, collection_id: int):
+        row = conn.execute("SELECT * FROM collections WHERE id=?",
+                           (int(collection_id),)).fetchone()
+        if not row:
+            raise ValueError("unknown collection")
+        return row
+
+    @staticmethod
+    def _collection_descendants(conn: sqlite3.Connection,
+                                collection_id: int) -> list[int]:
+        """Children first, depth-first, so deletion can go bottom-up."""
+        out: list[int] = []
+        frontier = [int(collection_id)]
+        seen = {int(collection_id)}
+        while frontier:
+            parent = frontier.pop()
+            for row in conn.execute(
+                    "SELECT id FROM collections WHERE parent_id=?",
+                    (parent,)).fetchall():
+                child = int(row["id"])
+                if child in seen:
+                    continue  # A damaged cycle must not spin forever.
+                seen.add(child)
+                out.append(child)
+                frontier.append(child)
+        return out
 
     def add_collection(self, name: str, *, kind: str = "regular",
                        rules: dict | None = None,
@@ -2566,17 +2827,92 @@ class Catalog:
         if rules:
             rules = dict(rules, **dam_filters.clean_filters(rules))
         with self.write() as conn:
+            parent = int(parent_id) if parent_id else None
+            if parent is not None:
+                parent_row = self._require_collection(conn, parent)
+                if parent_row["type"] == "quick":
+                    raise ValueError("the quick collection cannot hold collections")
             cur = conn.execute(
-                "INSERT INTO collections(parent_id, name, type, rules_json)"
-                " VALUES(?,?,?,?)",
-                (parent_id, " ".join(str(name).split())[:120] or "Collection",
+                "INSERT INTO collections(parent_id, name, type, rules_json,"
+                " sort_order) VALUES(?,?,?,?,?)",
+                (parent, " ".join(str(name).split())[:120] or "Collection",
                  "smart" if kind == "smart" else "regular",
-                 json.dumps(rules) if rules else None))
+                 json.dumps(rules) if rules else None,
+                 self._next_sort_order(conn, parent)))
             return int(cur.lastrowid)
 
-    def delete_collection(self, collection_id: int) -> None:
+    def rename_collection(self, collection_id: int, name: str) -> None:
+        clean = " ".join(str(name).split())[:120]
+        if not clean:
+            raise ValueError("a collection needs a name")
         with self.write() as conn:
-            conn.execute("DELETE FROM collections WHERE id=?", (collection_id,))
+            row = self._require_collection(conn, collection_id)
+            if row["type"] == "quick":
+                raise ValueError("the quick collection keeps its name")
+            conn.execute("UPDATE collections SET name=? WHERE id=?",
+                         (clean, int(collection_id)))
+
+    def move_collection(self, collection_id: int,
+                        parent_id: int | None) -> None:
+        """Re-parent a collection, refusing any move that would form a cycle."""
+        with self.write() as conn:
+            row = self._require_collection(conn, collection_id)
+            if row["type"] == "quick":
+                raise ValueError("the quick collection stays at the top level")
+            parent = int(parent_id) if parent_id else None
+            if parent is not None:
+                if parent == int(collection_id):
+                    raise ValueError("a collection cannot contain itself")
+                parent_row = self._require_collection(conn, parent)
+                if parent_row["type"] == "quick":
+                    raise ValueError("the quick collection cannot hold collections")
+                if parent in self._collection_descendants(conn, collection_id):
+                    raise ValueError(
+                        "a collection cannot move inside one of its own children")
+            if (row["parent_id"] or None) == parent:
+                return
+            conn.execute(
+                "UPDATE collections SET parent_id=?, sort_order=? WHERE id=?",
+                (parent, self._next_sort_order(conn, parent), int(collection_id)))
+
+    def reorder_collections(self, parent_id: int | None,
+                            ordered_ids: Sequence[int]) -> None:
+        """Persist a manual order for the siblings under one parent.
+
+        Siblings left out of the list keep their relative order after the
+        listed ones, so a stale client never drops a collection.
+        """
+        parent = int(parent_id) if parent_id else None
+        with self.write() as conn:
+            siblings = [int(r["id"]) for r in conn.execute(
+                "SELECT id FROM collections WHERE parent_id IS ? AND type!='quick'"
+                " ORDER BY sort_order, name COLLATE NOCASE, id",
+                (parent,)).fetchall()]
+            wanted = [int(i) for i in ordered_ids if int(i) in siblings]
+            final = list(dict.fromkeys(wanted + siblings))
+            conn.executemany(
+                "UPDATE collections SET sort_order=? WHERE id=?",
+                [(n, cid) for n, cid in enumerate(final)])
+
+    def delete_collection(self, collection_id: int) -> int:
+        """Delete a collection and everything nested inside it.
+
+        Returns how many collections went. Membership rows go with them; the
+        photos themselves are untouched, as always.
+        """
+        with self.write() as conn:
+            row = conn.execute("SELECT type FROM collections WHERE id=?",
+                               (int(collection_id),)).fetchone()
+            if not row:
+                return 0
+            if row["type"] == "quick":
+                raise ValueError("the quick collection cannot be deleted; clear it instead")
+            doomed = self._collection_descendants(conn, collection_id)
+            doomed.append(int(collection_id))
+            for cid in doomed:
+                conn.execute("DELETE FROM collection_images WHERE collection_id=?", (cid,))
+                conn.execute("DELETE FROM collections WHERE id=?", (cid,))
+            return len(doomed)
 
     def set_collection_members(self, collection_id: int,
                                image_ids: Sequence[int]) -> None:
@@ -2605,6 +2941,53 @@ class Catalog:
                 " image_id, position) VALUES(?,?,?)",
                 [(collection_id, int(i), start + n)
                  for n, i in enumerate(image_ids)])
+
+    def remove_from_collection(self, collection_id: int,
+                               image_ids: Sequence[int]) -> int:
+        with self.write() as conn:
+            cur = conn.executemany(
+                "DELETE FROM collection_images WHERE collection_id=? AND image_id=?",
+                [(int(collection_id), int(i)) for i in image_ids])
+            return int(cur.rowcount if cur.rowcount is not None and cur.rowcount >= 0 else 0)
+
+    def quick_collection_id(self) -> int:
+        """The one persistent quick collection, created on first use."""
+        with self.write() as conn:
+            row = conn.execute(
+                "SELECT id FROM collections WHERE type='quick' ORDER BY id LIMIT 1"
+            ).fetchone()
+            if row:
+                return int(row["id"])
+            cur = conn.execute(
+                "INSERT INTO collections(parent_id, name, type, rules_json,"
+                " sort_order) VALUES(NULL,?,'quick',NULL,-1)",
+                (self.QUICK_COLLECTION_NAME,))
+            return int(cur.lastrowid)
+
+    def toggle_quick_collection(self, image_ids: Sequence[int]) -> dict:
+        """Add a batch to the quick collection, or remove it when it is all there.
+
+        One key press with a mixed batch adds the stragglers rather than
+        removing the members, which is what a photographer building a set
+        expects; a second press then removes the whole batch.
+        """
+        ids = list(dict.fromkeys(int(i) for i in image_ids))
+        quick = self.quick_collection_id()
+        if not ids:
+            return {"id": quick, "added": 0, "removed": 0}
+        present = set()
+        for start in range(0, len(ids), 500):
+            chunk = ids[start:start + 500]
+            placeholders = ",".join("?" * len(chunk))
+            present.update(int(r["image_id"]) for r in self.connection.execute(
+                f"SELECT image_id FROM collection_images WHERE collection_id=?"
+                f" AND image_id IN ({placeholders})", [quick, *chunk]).fetchall())
+        if len(present) == len(ids):
+            removed = self.remove_from_collection(quick, ids)
+            return {"id": quick, "added": 0, "removed": removed}
+        missing = [i for i in ids if i not in present]
+        self.add_to_collection(quick, missing)
+        return {"id": quick, "added": len(missing), "removed": 0}
 
     def create_collections_for_source_folders(self, source_id: int) -> list[int]:
         """Create a collection for each top-level folder under this source."""
@@ -3048,6 +3431,12 @@ class _WriteTransaction:
         return False
 
 
+def _stem(alias: str) -> str:
+    """The expression behind `files_pair_stem`; queries must spell it the same
+    way for SQLite to use the index."""
+    return f"lower(substr({alias}.relpath,1,length({alias}.relpath)-length({alias}.ext)))"
+
+
 def _fts_query(text: str) -> str:
     """Turn free text into a safe FTS5 prefix query.
 
@@ -3113,6 +3502,8 @@ def _item(row: sqlite3.Row) -> dict:
         **{public: dam_filters.positive_number(row[column])
            for _, column, public in dam_filters.EXPOSURE_FIELDS},
         "hasEdits": bool(row["has_edits"]),
+        "pair": (qualified_name(source_id, _text_or(row["pair_relpath"]))
+                 if "pair_relpath" in row.keys() and row["pair_relpath"] else None),
         "size": _int_or(row["size"], 0, minimum=0),
     }
 

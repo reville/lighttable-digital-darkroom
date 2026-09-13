@@ -277,6 +277,105 @@ fn apply_color_grading(pixel: &mut [f32], settings: &Value) {
     }
 }
 
+/// Where the highlight shoulder of the tone stage begins, in encoded units.
+///
+/// Mirrors `grade.tone_knee`: the knee opens with the headroom the recipe
+/// creates above white, so a recipe that cannot exceed 1.0 keeps a hard
+/// clip and an untouched white stays white.
+pub(crate) fn tone_knee(exposure: f32, highlights: f32, whites: f32, blacks: f32) -> f32 {
+    let peak = 2.0_f32.powf(exposure.max(0.0)) * (1.0 + 0.85 * highlights.max(0.0));
+    let mut top = if peak <= 0.0031308 {
+        peak * 12.92
+    } else {
+        1.055 * peak.powf(1.0 / 2.4) - 0.055
+    };
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35;
+        let black = blacks * -0.25;
+        top = (top - black) / (white - black).max(1e-4);
+    }
+    let excess = (top - 1.0).max(0.0);
+    1.0 - 0.15 * (1.0 - (-2.0 * excess).exp())
+}
+
+/// The tone stage of `grade.py`, unclipped: Exposure and the luminance-masked
+/// Highlights and Shadows in linear light, then the sRGB curve continued
+/// above white, Whites/Blacks and Contrast on that extended signal, and a
+/// soft shoulder above `knee`. Kept identical in grade.py, web/gl.js,
+/// NativePreview.metal and grade_gpu.wgsl.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn tone_stage(
+    pixel: &mut [f32],
+    exposure: f32,
+    highlights: f32,
+    shadows: f32,
+    whites: f32,
+    blacks: f32,
+    contrast: f32,
+    knee: f32,
+) {
+    for channel in pixel.iter_mut() {
+        *channel = if *channel <= 0.04045 {
+            *channel / 12.92
+        } else {
+            ((*channel + 0.055) / 1.055).powf(2.4)
+        } * 2.0_f32.powf(exposure);
+    }
+    let linear_luma = luma(pixel).max(0.0);
+    if highlights != 0.0 {
+        let mask = ((linear_luma - 0.35) / 0.65).clamp(0.0, 1.0).powf(1.2);
+        for channel in pixel.iter_mut() {
+            *channel *= 1.0 + highlights * 0.85 * mask;
+        }
+    }
+    if shadows != 0.0 {
+        let mask = ((0.45 - linear_luma) / 0.45).clamp(0.0, 1.0).powf(1.2);
+        for channel in pixel.iter_mut() {
+            *channel *= 1.0 + shadows * 1.5 * mask;
+        }
+    }
+    for channel in pixel.iter_mut() {
+        let linear = channel.max(0.0);
+        *channel = if linear <= 0.0031308 {
+            linear * 12.92
+        } else {
+            1.055 * linear.powf(1.0 / 2.4) - 0.055
+        };
+    }
+    if whites != 0.0 || blacks != 0.0 {
+        let white = 1.0 - whites * 0.35;
+        let black = blacks * -0.25;
+        let range = (white - black).max(1e-4);
+        for channel in pixel.iter_mut() {
+            *channel = (*channel - black) / range;
+        }
+    }
+    if contrast > 0.0 {
+        for channel in pixel.iter_mut() {
+            let t = *channel;
+            let shaped = if t <= 1.0 {
+                t * t * (3.0 - 2.0 * t)
+            } else {
+                (1.0 + (t - 1.0) * (t - 1.0)).min(t)
+            };
+            *channel = t + (shaped - t) * contrast;
+        }
+    } else if contrast < 0.0 {
+        for channel in pixel.iter_mut() {
+            *channel = 0.5 + (*channel - 0.5) * (1.0 + contrast * 0.8);
+        }
+    }
+    let width = 1.0 - knee;
+    for channel in pixel.iter_mut() {
+        let t = channel.max(0.0);
+        *channel = clamp(if knee < 1.0 {
+            t.min(knee) + width * (1.0 - (-(t - knee).max(0.0) / width).exp())
+        } else {
+            t
+        });
+    }
+}
+
 pub(crate) fn grade_is_identity(grade: &Value) -> bool {
     // Vignette size and feather only shape a nonzero amount, so they do not
     // affect identity on their own.
@@ -473,57 +572,13 @@ pub(crate) fn apply_grade(samples: &mut [f32], width: u32, height: u32, grade: &
     let legacy_vignette = vignette_size == 0.5 && vignette_feather == 1.0;
     let vignette_outer = 0.25 + 1.5 * vignette_size;
     let vignette_width = vignette_outer * vignette_feather.max(0.01);
+    let knee = tone_knee(exposure, highlights, whites, blacks);
 
     samples
         .par_chunks_mut(3)
         .enumerate()
         .for_each(|(index, pixel)| {
-            for channel in pixel.iter_mut() {
-                *channel = if *channel <= 0.04045 {
-                    *channel / 12.92
-                } else {
-                    ((*channel + 0.055) / 1.055).powf(2.4)
-                } * 2.0_f32.powf(exposure);
-            }
-            let linear_luma = luma(pixel).max(0.0);
-            if highlights != 0.0 {
-                let mask = ((linear_luma - 0.35) / 0.65).clamp(0.0, 1.0).powf(1.2);
-                for channel in pixel.iter_mut() {
-                    *channel *= 1.0 + highlights * 0.85 * mask;
-                }
-            }
-            if shadows != 0.0 {
-                let mask = ((0.45 - linear_luma) / 0.45).clamp(0.0, 1.0).powf(1.2);
-                for channel in pixel.iter_mut() {
-                    *channel *= 1.0 + shadows * 1.5 * mask;
-                }
-            }
-            for channel in pixel.iter_mut() {
-                let linear = channel.max(0.0);
-                *channel = clamp(if linear <= 0.0031308 {
-                    linear * 12.92
-                } else {
-                    1.055 * linear.powf(1.0 / 2.4) - 0.055
-                });
-            }
-            if whites != 0.0 || blacks != 0.0 {
-                let white = 1.0 - whites * 0.35;
-                let black = blacks * -0.25;
-                let range = (white - black).max(1e-4);
-                for channel in pixel.iter_mut() {
-                    *channel = clamp((*channel - black) / range);
-                }
-            }
-            if contrast > 0.0 {
-                for channel in pixel.iter_mut() {
-                    let smooth = *channel * *channel * (3.0 - 2.0 * *channel);
-                    *channel = clamp(*channel + (smooth - *channel) * contrast);
-                }
-            } else if contrast < 0.0 {
-                for channel in pixel.iter_mut() {
-                    *channel = clamp(0.5 + (*channel - 0.5) * (1.0 + contrast * 0.8));
-                }
-            }
+            tone_stage(pixel, exposure, highlights, shadows, whites, blacks, contrast, knee);
             if dehaze != 0.0 {
                 let haze = dehaze * 0.12;
                 let denominator = (1.0 - haze).max(0.2);
@@ -719,12 +774,17 @@ fn raster_component(component: &Value, width: u32, height: u32) -> Result<Vec<f3
             let dx = end[0] * width.saturating_sub(1) as f32 - sx;
             let dy = end[1] * height.saturating_sub(1) as f32 - sy;
             let denominator = (dx * dx + dy * dy).max(1.0);
+            // The transition band is centred on the midpoint of the handle
+            // line; 1.0 spans the whole start-to-end distance and 0.0 is a
+            // hard edge. Mirrors edits._raster_component.
+            let half = number(component, "feather", 1.0).clamp(0.0, 1.0) * 0.5;
             (0..width as usize * height as usize)
                 .into_par_iter()
                 .map(|index| {
                     let x = (index as u32 % width) as f32;
                     let y = (index as u32 / width) as f32;
-                    smoothstep(0.0, 1.0, ((x - sx) * dx + (y - sy) * dy) / denominator)
+                    let projection = ((x - sx) * dx + (y - sy) * dy) / denominator;
+                    smoothstep(0.5 - half, 0.5 + half, projection)
                 })
                 .collect()
         }
@@ -895,7 +955,146 @@ fn resize(image: ExportImage, long_edge: u32) -> Result<ExportImage> {
     })
 }
 
+fn resize_to(image: ExportImage, width: u32, height: u32) -> Result<ExportImage> {
+    if width == image.width && height == image.height {
+        return Ok(image);
+    }
+    let buffer =
+        ImageBuffer::<Rgb<f32>, Vec<f32>>::from_raw(image.width, image.height, image.samples)
+            .context("invalid RGB export buffer")?;
+    let resized = image::imageops::resize(&buffer, width, height, FilterType::Lanczos3);
+    Ok(ExportImage {
+        width,
+        height,
+        samples: resized.into_raw(),
+    })
+}
+
+/// The uniform scale a sizing request asks for; 1.0 means no resize.
+///
+/// Mirrors `export_workflow.resize_scale`: every mode is one double-precision
+/// scale from the post-crop size, and "no enlarge" turns any scale of at
+/// least one into an identity.
+pub(crate) fn resize_scale(width: u32, height: u32, spec: &Value) -> f64 {
+    let w = f64::from(width);
+    let h = f64::from(height);
+    let number = |key: &str| spec.get(key).and_then(Value::as_f64).filter(|value| *value > 0.0);
+    let scale = match spec.get("mode").and_then(Value::as_str).unwrap_or("full") {
+        "long-edge" => number("long_edge").map(|edge| edge / w.max(h)),
+        "short-edge" => number("short_edge").map(|edge| edge / w.min(h)),
+        "fit" => match (number("width").map(|v| v / w), number("height").map(|v| v / h)) {
+            (Some(a), Some(b)) => Some(a.min(b)),
+            (Some(a), None) => Some(a),
+            (None, Some(b)) => Some(b),
+            (None, None) => None,
+        },
+        "megapixels" => number("megapixels").map(|mp| (mp * 1_000_000.0 / (w * h)).sqrt()),
+        "percent" => number("percent").map(|percent| percent / 100.0),
+        _ => None,
+    };
+    let Some(scale) = scale else {
+        return 1.0;
+    };
+    let no_enlarge = spec.get("no_enlarge").and_then(Value::as_bool).unwrap_or(true);
+    if no_enlarge && scale >= 1.0 { 1.0 } else { scale }
+}
+
+/// Output pixel size for a sizing request, rounded ties-to-even like Python.
+pub(crate) fn resize_target(width: u32, height: u32, spec: &Value) -> (u32, u32) {
+    let scale = resize_scale(width, height, spec);
+    if scale == 1.0 {
+        return (width, height);
+    }
+    (
+        (f64::from(width) * scale).round_ties_even().max(1.0) as u32,
+        (f64::from(height) * scale).round_ties_even().max(1.0) as u32,
+    )
+}
+
+/// Normalized Gaussian taps; identical construction to `export_workflow.gaussian_taps`.
+pub(crate) fn gaussian_taps(radius: f64) -> Vec<f32> {
+    let sigma = radius.max(0.3);
+    let half = ((3.0 * sigma).ceil() as i64).min(12);
+    let taps: Vec<f64> = (-half..=half)
+        .map(|offset| (-((offset * offset) as f64) / (2.0 * sigma * sigma)).exp())
+        .collect();
+    let total: f64 = taps.iter().sum();
+    taps.iter().map(|tap| (tap / total) as f32).collect()
+}
+
+/// Luminance unsharp mask after resizing: Rec. 709 luma, separable Gaussian
+/// with edge replication, and the gained difference added to every channel.
+pub(crate) fn output_sharpen(image: &mut ExportImage, spec: &Value) {
+    let radius = spec.get("radius").and_then(Value::as_f64).unwrap_or(0.0);
+    let amount = spec.get("amount").and_then(Value::as_f64).unwrap_or(0.0) as f32;
+    if radius <= 0.0 || amount == 0.0 || image.width == 0 || image.height == 0 {
+        return;
+    }
+    let taps = gaussian_taps(radius);
+    let half = (taps.len() / 2) as i64;
+    let width = image.width as usize;
+    let height = image.height as usize;
+    let luma: Vec<f32> = image
+        .samples
+        .par_chunks(3)
+        .map(|pixel| pixel[0] * LUMA[0] + pixel[1] * LUMA[1] + pixel[2] * LUMA[2])
+        .collect();
+    let mut horizontal = vec![0.0_f32; width * height];
+    horizontal
+        .par_chunks_mut(width)
+        .zip(luma.par_chunks(width))
+        .for_each(|(destination, row)| {
+            for (x, value) in destination.iter_mut().enumerate() {
+                let mut sum = 0.0_f32;
+                for (index, tap) in taps.iter().enumerate() {
+                    let source = (x as i64 + index as i64 - half).clamp(0, width as i64 - 1);
+                    sum += row[source as usize] * tap;
+                }
+                *value = sum;
+            }
+        });
+    let mut blurred = vec![0.0_f32; width * height];
+    blurred
+        .par_chunks_mut(width)
+        .enumerate()
+        .for_each(|(y, destination)| {
+            for (x, value) in destination.iter_mut().enumerate() {
+                let mut sum = 0.0_f32;
+                for (index, tap) in taps.iter().enumerate() {
+                    let source = (y as i64 + index as i64 - half).clamp(0, height as i64 - 1);
+                    sum += horizontal[source as usize * width + x] * tap;
+                }
+                *value = sum;
+            }
+        });
+    image
+        .samples
+        .par_chunks_mut(3)
+        .zip(luma.par_iter().zip(blurred.par_iter()))
+        .for_each(|(pixel, (bright, blur))| {
+            let delta = (bright - blur) * amount;
+            for channel in pixel.iter_mut() {
+                *channel = (*channel + delta).clamp(0.0, 1.0);
+            }
+        });
+}
+
 pub(crate) fn postprocess(
+    width: u32,
+    height: u32,
+    samples: Vec<f32>,
+    grade: Option<&Value>,
+    masks: Option<&Value>,
+    crop: Option<&Value>,
+    long_edge: Option<u32>,
+) -> Result<ExportImage> {
+    finish(width, height, samples, grade, masks, crop, long_edge, None, None)
+}
+
+/// Grade, masks, crop, resize (`resize` spec wins over the legacy long edge),
+/// then output sharpening, in the same order as the Python finisher.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn finish(
     width: u32,
     height: u32,
     mut samples: Vec<f32>,
@@ -903,6 +1102,8 @@ pub(crate) fn postprocess(
     masks: Option<&Value>,
     crop: Option<&Value>,
     long_edge: Option<u32>,
+    resize_spec: Option<&Value>,
+    sharpen: Option<&Value>,
 ) -> Result<ExportImage> {
     if let Some(grade) = grade {
         apply_grade(&mut samples, width, height, grade);
@@ -918,8 +1119,14 @@ pub(crate) fn postprocess(
     if let Some(crop) = crop.filter(|crop| !crop.is_null()) {
         image = apply_crop(image, crop)?;
     }
-    if let Some(long_edge) = long_edge {
+    if let Some(spec) = resize_spec.filter(|spec| spec.is_object()) {
+        let (target_width, target_height) = resize_target(image.width, image.height, spec);
+        image = resize_to(image, target_width, target_height)?;
+    } else if let Some(long_edge) = long_edge {
         image = resize(image, long_edge)?;
+    }
+    if let Some(spec) = sharpen.filter(|spec| spec.is_object()) {
+        output_sharpen(&mut image, spec);
     }
     Ok(image)
 }
@@ -1042,6 +1249,76 @@ mod tests {
     }
 
     #[test]
+    fn sizing_modes_match_python_geometry() {
+        // Expected values come from export_workflow.resize_target on the same inputs.
+        for (width, height, spec, expected) in [
+            (6000, 4000, json!({"mode": "long-edge", "long_edge": 2560}), (2560, 1707)),
+            (4000, 6000, json!({"mode": "short-edge", "short_edge": 1000}), (1000, 1500)),
+            (6000, 4000, json!({"mode": "fit", "width": 1920, "height": 1080}), (1620, 1080)),
+            (6000, 4000, json!({"mode": "fit", "width": 1500}), (1500, 1000)),
+            (6000, 4000, json!({"mode": "megapixels", "megapixels": 6.0}), (3000, 2000)),
+            (6000, 4000, json!({"mode": "percent", "percent": 33.3}), (1998, 1332)),
+            (640, 401, json!({"mode": "long-edge", "long_edge": 320}), (320, 200)),
+            (640, 403, json!({"mode": "long-edge", "long_edge": 320}), (320, 202)),
+            (800, 600, json!({"mode": "long-edge", "long_edge": 1600}), (800, 600)),
+            (800, 600, json!({"mode": "long-edge", "long_edge": 1600, "no_enlarge": false}), (1600, 1200)),
+            (800, 600, json!({"mode": "percent", "percent": 150.0, "no_enlarge": false}), (1200, 900)),
+            (800, 600, json!({"mode": "full"}), (800, 600)),
+        ] {
+            assert_eq!(resize_target(width, height, &spec), expected, "{spec}");
+        }
+    }
+
+    #[test]
+    fn gaussian_taps_are_normalized_and_symmetric() {
+        let taps = gaussian_taps(0.8);
+        assert_eq!(taps.len(), 7);
+        assert!((taps.iter().sum::<f32>() - 1.0).abs() < 1e-6);
+        assert_eq!(taps[0], taps[6]);
+        assert_eq!(gaussian_taps(4.0).len(), 25);
+    }
+
+    #[test]
+    fn output_sharpen_raises_local_contrast_at_an_edge_only() {
+        let width = 16;
+        let mut samples = Vec::new();
+        for _ in 0..4 {
+            for x in 0..width {
+                let value = if x < 8 { 0.3 } else { 0.7 };
+                samples.extend_from_slice(&[value, value, value]);
+            }
+        }
+        let mut image = ExportImage { width, height: 4, samples: samples.clone() };
+        output_sharpen(&mut image, &json!({"radius": 0.8, "amount": 0.5}));
+        // Flat areas far from the edge keep their value; the edge gains contrast.
+        assert!((image.samples[0] - 0.3).abs() < 1e-5);
+        assert!((image.samples[(15 * 3) as usize] - 0.7).abs() < 1e-5);
+        assert!(image.samples[(7 * 3) as usize] < 0.3 - 0.01);
+        assert!(image.samples[(8 * 3) as usize] > 0.7 + 0.01);
+        let mut unchanged = ExportImage { width, height: 4, samples: samples.clone() };
+        output_sharpen(&mut unchanged, &json!({"radius": 0.0, "amount": 0.5}));
+        assert_eq!(unchanged.samples, samples);
+    }
+
+    #[test]
+    fn finish_applies_resize_spec_then_sharpen() {
+        let image = finish(
+            40,
+            20,
+            vec![0.25; 40 * 20 * 3],
+            None,
+            None,
+            None,
+            Some(4),
+            Some(&json!({"mode": "percent", "percent": 50.0})),
+            Some(&json!({"radius": 0.8, "amount": 0.5})),
+        )
+        .unwrap();
+        assert_eq!((image.width, image.height), (20, 10));
+        assert!((image.samples[0] - 0.25).abs() < 1e-5);
+    }
+
+    #[test]
     fn crop_dimensions_retain_json_precision_at_pixel_boundaries() {
         for (width, height, crop, expected) in [
             (1000, 2, json!({"w": 0.50149999}), (501, 2)),
@@ -1089,6 +1366,46 @@ mod tests {
         .unwrap();
         assert_eq!((image.width, image.height), (1, 1));
         assert!(image.samples[0] > 0.34);
+    }
+
+    #[test]
+    fn linear_feather_narrows_the_transition_band_symmetrically() {
+        // start=(0.2, 0.5), end=(0.6, 0.5) on a 101-wide raster puts the
+        // handle-line projection at exactly t=0, 0.25, 0.5, 0.75, 1 for
+        // x=20, 30, 40, 50, 60. The same geometry and expected weights are
+        // asserted independently in tests/test_mask_preview_parity.py's
+        // LinearGradientFeatherTests and
+        // tests/linear-gradient-feather-parity.test.mjs.
+        let xs = [20usize, 30, 40, 50, 60];
+        let component = |feather: f64| {
+            json!({"type": "linear", "start": [0.2, 0.5], "end": [0.6, 0.5],
+                   "feather": feather})
+        };
+        let sample = |feather: f64| -> Vec<f32> {
+            let layer = raster_component(&component(feather), 101, 3).unwrap();
+            xs.iter().map(|&x| layer[101 + x]).collect()
+        };
+
+        let full = sample(1.0);
+        for (actual, expected) in full.iter().zip([0.0, 0.15625, 0.5, 0.84375, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
+
+        // f32 arithmetic can land a hair short of the exact midpoint that
+        // f64 (Python, JS) lands on exactly, so the pixel sitting exactly on
+        // a zero-width hard edge is read as either side of it; every other
+        // pixel is unambiguous.
+        let hard = sample(0.0);
+        assert_eq!(hard[0], 0.0);
+        assert_eq!(hard[1], 0.0);
+        assert!(hard[2] == 0.0 || hard[2] == 1.0);
+        assert_eq!(hard[3], 1.0);
+        assert_eq!(hard[4], 1.0);
+
+        let half = sample(0.5);
+        for (actual, expected) in half.iter().zip([0.0, 0.0, 0.5, 1.0, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
     }
 
     #[test]

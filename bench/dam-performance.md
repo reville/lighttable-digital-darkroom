@@ -8,6 +8,7 @@ photo files** and never opens an existing catalog. Fixture insertion uses
 ```sh
 python3 bench/dam_benchmark.py --output bench/results/dam-catalog.json
 node bench/dam_grid_benchmark.mjs --output bench/results/dam-grid.json
+node bench/dam_view_benchmark.mjs --output bench/results/dam-view.json
 python3 -m unittest discover -s tests -p 'test_dam_benchmark.py'
 python3 -m unittest discover -s tests -p 'test_view_performance.py'
 ```
@@ -85,6 +86,67 @@ This proves bounded viewport **geometry work**, not smooth browser scrolling.
 DOM creation, thumbnail decoding/upload, UI event handling, and browser memory
 are outside this harness. Its peak Node RSS at 100,000 records was 127.11 MiB,
 including both layout modes and coverage checks.
+
+## Server-side filtering and sorting (grid-3000, 50k, 100k)
+
+The grid used to page the whole catalog into the browser and filter, sort, and
+locate the current photo in JavaScript. `server.browser_catalog_query` (backed
+by `Catalog.query`) now does this in SQL, so `bench/dam_benchmark.py`'s query
+cases above are also this feature's server-side contract: `rating_filter`,
+`camera_lens_filter`, `numeric_exif_filter`, `capture_year_filter`,
+`fts_caption_search`, `hierarchical_keyword`, `smart_collection`, and
+`regular_collection` all return a filtered, sorted, counted page rather than
+the caller filtering loaded rows.
+
+| Query | 50,000 images | 100,000 images |
+| --- | ---: | ---: |
+| Rating filter | 29.4 ms | 49.9 ms |
+| Camera + lens filter | 71.7 ms | 139.1 ms |
+| Numeric EXIF filter (ISO/focal/aperture/shutter) | 28.6 ms | 45.6 ms |
+| Capture-year filter | 45.4 ms | 96.4 ms |
+| Caption/keyword search (FTS) | 30.9 ms | 44.7 ms |
+| Hierarchical keyword | 60.4 ms | 101.2 ms |
+| Four-star / 50mm / 2026 smart collection | 40.4 ms | 69.4 ms |
+| Sorted first page (name) | 38.2 ms | 67.3 ms |
+
+Medians of seven calls, same run and machine as the table above; see
+`bench/results/dam-catalog.json` for p95/max and the query plans.
+
+`bench/dam_view_benchmark.mjs` exercises the production browser module
+(`web/library-view.js`) directly: it opens a sorted spec, sweeps a synthetic
+scroll across the entire catalog in 60-photo strides calling `ensureRange`
+then `evict` after each stride (matching `web/app.js`'s render loop), then
+changes the filter spec mid-session. A **grid-3000** run (3,000 images, the
+size used for interactive UI review) is included alongside 50,000 and 100,000
+to show the resident page cache does not grow with catalog size:
+
+| | 3,000 images | 50,000 images | 100,000 images |
+| --- | ---: | ---: | ---: |
+| First page | 0.38 ms | 0.18 ms | 0.40 ms |
+| Full-catalog scroll sweep (median stride) | 0.0014 ms | 0.0006 ms | 0.0005 ms |
+| Max resident pages during sweep | 15 | 40 | 40 |
+| Resident page cache bounded (\<= 40 pages / 8,000 rows) | yes | yes | yes |
+| Filter spec change | 0.18 ms | 0.63 ms | 0.82 ms |
+| Server queries issued during sweep | 16 | 251 | 501 |
+| Process RSS growth over the run | 2.8 MiB | 20.5 MiB | 26.0 MiB |
+
+The resident cache tops out at the same 40-page (8,000-row) bound at every
+catalog size once the consumer calls `evict()` after each render, which is
+what makes 50k/100k viable at all: the previous whole-catalog-into-`S.images`
+approach loaded every row's object into the browser up front, so this
+comparison has no "before" number to cite — the old design does not have an
+analogous bounded figure at these sizes. Raw output is in
+`bench/results/dam-view.json`.
+
+This harness stands in for the server with a zero-delay synthetic query, so it
+isolates the view's own bookkeeping (page cache, position index, eviction)
+from HTTP and SQLite latency, which the table above already covers. It does
+**not** measure real network round-trips, DOM creation, thumbnail
+decode/paint, or browser scroll-input handling. A true browser (Playwright)
+measurement of grid-3000/50k/100k end-to-end scrolling, in the style of
+`bench/browser_benchmark.mjs`, is **NOT DONE**: this checkout has no
+`playwright` package installed and `LIGHTTABLE_PLAYWRIGHT_MODULE` is unset, so
+no browser could be launched here.
 
 ## Evidence and limits
 

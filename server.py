@@ -671,7 +671,26 @@ def effective_new_photo_defaults() -> tuple[dict, dict]:
     develop_profile = str(configured.get("developProfile", ""))
     if develop_profile in ("standard", "linear"):
         params["developProfile"] = develop_profile
+    params["camera_profile"] = default_camera_profile_name(configured)
     return fp.clean_params(params), grade.clean(default_grade)
+
+
+def default_camera_profile_name(configured: dict | None = None) -> str:
+    """Develop Defaults: the camera profile a never-edited RAW starts with.
+
+    The bundled LightTable Standard look unless the preference chooses the
+    built-in analytic curve. Saved edits keep whatever they saved, so this
+    changes nothing already rendered. ``DEFAULT_PARAMS`` stays empty for
+    the same reason.
+    """
+    import camera_profile
+    if configured is None:
+        configured = load_preferences().get("newPhotoDefaults")
+        configured = configured if isinstance(configured, dict) else {}
+    choice = str(configured.get("cameraProfile", "standard") or "standard")
+    if choice == "builtin":
+        return ""
+    return camera_profile.BUNDLED_STANDARD_NAME
 
 
 def configured_backup_directory(cat) -> Path:
@@ -2504,7 +2523,9 @@ def neutral_tiff_for(name: str, params: dict | None = None, *,
                         name, params, denoise_status=denoise_status,
                         denoise_cancel=denoise_cancel))
                     display = color_pipeline.linear_prophoto_to_display(
-                        linear, params, output_space=output_space)
+                        linear, params, output_space=output_space,
+                        capture_temperature=color_pipeline.capture_temperature_for(
+                            src, params))
                     tf.imwrite(temporary, color_pipeline.to_uint16(display))
                 else:
                     platform_image.convert_processed_to_tiff(
@@ -2562,7 +2583,10 @@ def build_neutral_preview(name: str, width: int, rotate: float = 0,
             key = (identity, color_pipeline.raw_decode_fingerprint(params),
                    linear.shape) if identity is not None else None
             def develop():
-                display = color_pipeline.linear_prophoto_to_display_srgb(linear, params)
+                display = color_pipeline.linear_prophoto_to_display_srgb(
+                    linear, params,
+                    capture_temperature=color_pipeline.capture_temperature_for(
+                        src_path(name), params))
                 return color_pipeline.to_uint16(display)
             image = NEUTRAL_DISPLAY_CACHE.get_or_build(
                 key, develop, raw_decode_runtime.check_cancel)
@@ -3106,19 +3130,32 @@ def image_mean_luminance(name: str) -> float:
 
 
 
-# Camera profiles are read from the user's own Adobe Camera Raw or Lightroom
-# installation, never bundled: Adobe's profiles are Adobe's. The folder is a
-# preference; when it is empty the platform's standard location is used if
-# it exists. Files are found by bare name so an edit never stores a path.
-CAMERA_PROFILE_DEFAULT_FOLDERS = (
-    [Path("/Library/Application Support/Adobe/CameraRaw/CameraProfiles"),
-     Path.home() / "Library/Application Support/Adobe/CameraRaw/CameraProfiles"]
-    if sys.platform == "darwin" else
-    [Path(os.environ.get("ProgramData", r"C:\ProgramData")) / "Adobe/CameraRaw/CameraProfiles",
-     Path(os.environ.get("APPDATA", str(Path.home()))) / "Adobe/CameraRaw/CameraProfiles"]
-    if os.name == "nt" else [])
+# Camera profiles come from a folder of the user's own .dcp files; the only
+# bundled one is the modelled LightTable Standard look, which needs no folder.
+# The folder is a preference (``cameraProfileFolder``); when it is empty the
+# first existing default is used: LightTable's own CameraProfiles folder in
+# its data directory on every platform (the XDG data home on Linux,
+# %LOCALAPPDATA% on Windows, Application Support on macOS), then the
+# locations Adobe Camera Raw and Lightroom install their DCP profiles to on
+# macOS and Windows. Files are found by bare name so an edit never stores a
+# path.
+def camera_profile_default_folders() -> list[Path]:
+    folders = [platform_paths.data_directory() / "CameraProfiles"]
+    if sys.platform == "darwin":
+        folders += [
+            Path("/Library/Application Support/Adobe/CameraRaw/CameraProfiles"),
+            Path.home() / "Library/Application Support/Adobe/CameraRaw/CameraProfiles"]
+    elif os.name == "nt":
+        folders += [
+            Path(os.environ.get("ProgramData", r"C:\ProgramData")) / "Adobe/CameraRaw/CameraProfiles",
+            Path(os.environ.get("APPDATA", str(Path.home()))) / "Adobe/CameraRaw/CameraProfiles"]
+    return folders
+
+
+CAMERA_PROFILE_DEFAULT_FOLDERS = camera_profile_default_folders()
 _CAMERA_PROFILE_INDEX: dict = {}
 _CAMERA_PROFILE_INDEX_LOCK = threading.Lock()
+_CAMERA_PROFILE_IDENTITIES: dict = {}
 
 
 def camera_profile_folder() -> Path | None:
@@ -3127,7 +3164,7 @@ def camera_profile_folder() -> Path | None:
     if configured:
         folder = Path(configured).expanduser()
         return folder if folder.is_dir() else None
-    for folder in CAMERA_PROFILE_DEFAULT_FOLDERS:
+    for folder in camera_profile_default_folders():
         if folder.is_dir():
             return folder
     return None
@@ -3185,19 +3222,56 @@ def camera_profile_index() -> dict[str, Path]:
 
 
 def resolve_camera_profile(name: str) -> Path | None:
+    import camera_profile
     clean = fp.camera_profile_name(name)
-    return camera_profile_index().get(clean) if clean else None
+    if not clean:
+        return None
+    bundled = camera_profile.bundled_profile_path(clean)
+    if bundled is not None:
+        return bundled
+    return camera_profile_index().get(clean)
 
 
 color_pipeline.CAMERA_PROFILE_RESOLVER = resolve_camera_profile
 
 
+def camera_profile_identity(path: Path) -> dict:
+    """The name and camera tags of a profile file, parsed once per version."""
+    import camera_profile
+    try:
+        stat = path.stat()
+    except OSError:
+        return {"name": None, "cameraModel": None}
+    key = (str(path), stat.st_size, stat.st_mtime_ns)
+    with _CAMERA_PROFILE_INDEX_LOCK:
+        cached = _CAMERA_PROFILE_IDENTITIES.get(key)
+    if cached is None:
+        cached = camera_profile.profile_identity(path)
+        with _CAMERA_PROFILE_INDEX_LOCK:
+            if len(_CAMERA_PROFILE_IDENTITIES) > 8000:
+                _CAMERA_PROFILE_IDENTITIES.clear()
+            _CAMERA_PROFILE_IDENTITIES[key] = cached
+    return cached
+
+
+def _profile_text_key(text) -> str:
+    return " ".join(str(text or "").split()).casefold()
+
+
 def camera_profiles_for(name: str) -> dict:
-    """The profiles in the folder that name this photo's camera model."""
+    """The bundled look plus the folder's profiles that name this camera.
+
+    A file matches when the camera model appears in its file name, in its
+    UniqueCameraModel tag, or in its ProfileName tag. The tags are read
+    from the file header only, so scanning a large folder stays cheap.
+    """
+    import camera_profile
     folder = camera_profile_folder()
+    bundled = {"file": camera_profile.BUNDLED_STANDARD_NAME,
+               "name": camera_profile.BUNDLED_STANDARD_LABEL, "bundled": True}
     result = {"folder": str(folder) if folder else "",
               "available": folder is not None, "raw": is_raw(name),
-              "camera": "", "profiles": []}
+              "camera": "", "profiles": [bundled]}
     if not is_raw(name) or folder is None:
         return result
     identity = raw_camera_identity(name)
@@ -3215,8 +3289,18 @@ def camera_profiles_for(name: str) -> dict:
             look = stem[stem.index(model) + len(model):].strip(" -_")
             matches.append({"file": file_name, "name": look.title() or file_name[:-4],
                             "adobe": "adobe standard" in stem, "path": str(path)})
+            continue
+        tags = camera_profile_identity(path)
+        camera_tag = _profile_text_key(tags.get("cameraModel"))
+        profile_tag = _profile_text_key(tags.get("name"))
+        if model in camera_tag or model in profile_tag:
+            label = tags.get("name") or file_name[:-4]
+            matches.append({"file": file_name, "name": label,
+                            "adobe": "adobe standard" in profile_tag,
+                            "path": str(path)})
     matches.sort(key=lambda item: (not item["adobe"], item["name"].lower()))
-    result["profiles"] = [{"file": item["file"], "name": item["name"]} for item in matches[:40]]
+    result["profiles"] += [{"file": item["file"], "name": item["name"]}
+                           for item in matches[:40]]
     return result
 
 
@@ -3578,7 +3662,7 @@ RUST_WORKER_BIN = next((path for path in (
 RUST_DATA = APP / "engine" / "data"
 RUST_AVAILABLE = bool((RUST_WORKER_BIN or RUST_BIN.exists())
                       and RUST_DATA.is_dir())
-RENDER_CACHE_VERSION = 15  # Film input expansion now preserves RGB ratios
+RENDER_CACHE_VERSION = 17  # Linear tone stage with highlight shoulder; LightTable Standard default develop
 EDIT_PREVIEW_CACHE_VERSION = 1
 EDITED_THUMB_CACHE_VERSION = 3  # separate Retina grid and filmstrip renditions
 EDITED_THUMB_LOCK = threading.Lock()
@@ -4392,7 +4476,7 @@ def render_preview(name: str, params: dict, width: int,
                    generation: int | None = None,
                    native: bool = False,
                    priority: str = "interactive", viewport: dict | None = None,
-                   allow_draft: bool = True) -> dict:
+                   allow_draft: bool = True, raw: bool = False) -> dict:
     viewport = clean_viewport(viewport)
     # A decoder or engine crash takes the whole process down, so the photo
     # being processed is recorded first; the next launch reads that marker.
@@ -4411,7 +4495,7 @@ def render_preview(name: str, params: dict, width: int,
                 preview_progress.advance(1)
                 return _render_preview(name, params, width, engine, client,
                                        generation, native, priority, viewport,
-                                       allow_draft)
+                                       allow_draft, raw)
         except RenderCancelled:
             return {"cancelled": True, "reason": "superseded"}
         finally:
@@ -4424,7 +4508,12 @@ def _render_preview(name: str, params: dict, width: int,
                     generation: int | None = None,
                     native: bool = False,
                     priority: str = "interactive", viewport: dict | None = None,
-                    allow_draft: bool = True) -> dict:
+                    allow_draft: bool = True, raw: bool = False) -> dict:
+    """``raw`` asks for the resident RGBA8 surface as a transport for a
+    non-Metal (WebGL) presenter, on any platform. It never changes where
+    grading happens: unlike ``native`` it does not switch the client to the
+    Metal presenter or bake edits server-side, it only lets a WebGL client
+    skip the JPEG encode/decode round trip for the base frame."""
     params = dict(params)
     params["linear_input"] = is_raw(name)
     cp = fp.clean_params(params)
@@ -4474,7 +4563,10 @@ def _render_preview(name: str, params: dict, width: int,
         engine = "rs"
     elif engine == "rs" and not RUST_AVAILABLE:
         engine = "py"
-    if viewport is not None and (engine != "rs" or not native):
+    # A raw-transport request needs the same resident RGBA8 surface as the
+    # Metal presenter; it just consumes it over HTTP/WebGL instead.
+    want_surface = native or raw
+    if viewport is not None and (engine != "rs" or not want_surface):
         raise ValueError(T("viewport rendering requires the resident native preview"))
     variant = "full" if viewport else preview_variant(name, width, params)
 
@@ -4487,13 +4579,13 @@ def _render_preview(name: str, params: dict, width: int,
     jpg = CACHE / "render" / f"{key}.jpg"
     native_surface = CACHE / "render" / f"{key}.rgba"
     meta = CACHE / "render" / f"{key}.json"
-    # Native presentation must not wait for JPEG encoding. A small WebGL
-    # helper is generated lazily after interaction settles for histogram,
-    # sampling, and reference tools.
-    need_jpg = not native
+    # Native and raw-transport presentation must not wait for JPEG encoding.
+    # A small WebGL helper is generated lazily after interaction settles for
+    # histogram, sampling, and reference tools.
+    need_jpg = not want_surface
     cached_meta = _render_bundle_metadata(meta, jpg, native_surface)
     if cached_meta is not None:
-        if native:
+        if want_surface:
             try:
                 ensure_native_surface(native_surface, jpg)
             except (OSError, ValueError):
@@ -4503,7 +4595,7 @@ def _render_preview(name: str, params: dict, width: int,
                 ensure_jpeg_surface(jpg, native_surface)
             except (OSError, ValueError, struct.error):
                 native_surface.unlink(missing_ok=True)
-    if cached_meta is not None and (not native or native_surface_exists(native_surface)) and (
+    if cached_meta is not None and (not want_surface or native_surface_exists(native_surface)) and (
             not need_jpg or jpg.exists()):
         return preview_response(
             cached_meta, key, jpg, native_surface, cached=True,
@@ -4527,7 +4619,7 @@ def _render_preview(name: str, params: dict, width: int,
                     return {"cancelled": True}
         cached_meta = _render_bundle_metadata(meta, jpg, native_surface)
         if cached_meta is not None:
-            if native:
+            if want_surface:
                 try:
                     ensure_native_surface(native_surface, jpg)
                 except (OSError, ValueError):
@@ -4538,7 +4630,7 @@ def _render_preview(name: str, params: dict, width: int,
                 except (OSError, ValueError, struct.error):
                     native_surface.unlink(missing_ok=True)
         if cached_meta is not None and (
-                not native or native_surface_exists(native_surface)) and (
+                not want_surface or native_surface_exists(native_surface)) and (
                 not need_jpg or jpg.exists()):      # raced with prefetch
             return dict(preview_response(
                 cached_meta, key, jpg, native_surface, cached=True,
@@ -4550,8 +4642,8 @@ def _render_preview(name: str, params: dict, width: int,
             rust_metrics = render_rust(
                 name, params, width,
                 jpg if need_jpg else None,
-                native_surface if native else None, viewport, variant)
-            if native and rust_metrics.get("native_shared"):
+                native_surface if want_surface else None, viewport, variant)
+            if want_surface and rust_metrics.get("native_shared"):
                 retain_native_shared(native_surface, rust_metrics["native_shared"])
             film_mean = float(rust_metrics["mean"])
         else:
@@ -4570,7 +4662,7 @@ def _render_preview(name: str, params: dict, width: int,
             film_mean = float(out.mean()) / 255.0
             if need_jpg:
                 durable_io.cache_write_bytes(jpg, jpeg_bytes(out))
-            if native:
+            if want_surface:
                 write_native_surface(native_surface, out)
         m = {"ms": ms, "engine": engine}
         if viewport is None:
@@ -4619,6 +4711,26 @@ def _preview_source_bytes(result: dict, name: str, width: int,
         if image.is_file():
             return image.read_bytes()
     return orig_jpeg(name, width, rotate)
+
+
+def _preview_source_pixels(result: dict, name: str, width: int,
+                           rotate: float) -> np.ndarray:
+    """Float RGB pixels of a preview result, lossless when a surface exists.
+
+    A resident RGBA8 surface is the exact film render. Only source previews
+    that never had a surface (film off, embedded RAW previews) fall back to
+    decoding their image bytes.
+    """
+    native_url = str((result.get("native") or {}).get("url", ""))
+    if native_url.startswith("/api/render/native?"):
+        key = parse_qs(urlparse(native_url).query).get("key", [""])[0]
+        surface = CACHE / "render" / f"{key}.rgba"
+        if native_surface_exists(surface):
+            rgba, _ = read_native_surface(surface)
+            return rgba[..., :3].astype(np.float32) / 255.0
+    base = Image.open(io.BytesIO(_preview_source_bytes(
+        result, name, width, rotate))).convert("RGB")
+    return np.asarray(base, dtype=np.float32) / 255.0
 
 
 # The Metal preview applies this many Heal and Clone spots live. Keep the rule
@@ -4811,7 +4923,8 @@ MERGE = {"running": False, "mode": "", "progress": 0, "total": 0,
          "timings": {}, "output": "", "error": ""}
 MERGE_LOCK = threading.Lock()
 MERGE_POOL = ThreadPoolExecutor(max_workers=1)
-MERGE_MAX_EDGE = int(os.environ.get("LIGHTTABLE_MERGE_MAX_EDGE", "6000"))
+# 0 means full resolution, bounded only by the memory-aware merge plan.
+MERGE_MAX_EDGE = int(os.environ.get("LIGHTTABLE_MERGE_MAX_EDGE", "0") or 0)
 DENOISE = {"running": False, "name": "", "progress": 0, "total": 0,
            "error": "", "cancelled": False, "done": False}
 DENOISE_LOCK = threading.Lock()
@@ -5032,7 +5145,11 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         y1 = min(height, y0 + max(1, int(round(crop["h"] * height))))
         out = np.ascontiguousarray(out[y0:y1, x0:x1])
 
-    out = color_pipeline.resize_float(out, job.get("longEdge"))
+    out = color_pipeline.resize_float_to_size(
+        out, export_workflow.resize_target(out.shape[1], out.shape[0], job))
+    # Output sharpening follows the resize so its radius is in delivered pixels.
+    out = export_workflow.output_sharpen(out, export_workflow.sharpen_parameters(
+        job.get("sharpen"), job.get("resolutionPpi")))
     # The mark is applied after resizing so it scales with the delivered image
     # rather than being enlarged or shrunk with the pixels beneath it.
     out = export_workflow.apply_watermark(out, job.get("watermark"), APP)
@@ -5047,10 +5164,23 @@ def finish_export(film_png: Path | np.ndarray, dst: Path, job: dict) -> tuple[in
         metadata_source=metadata_source if is_heif else None,
         metadata_policy=policy if is_heif else "none",
         metadata_fields=metadata_fields if is_heif else None,
-        warnings=job.setdefault("warnings", []))
+        warnings=job.setdefault("warnings", []),
+        resolution_ppi=job.get("resolutionPpi"),
+        max_bytes=export_max_bytes(job))
     if not is_heif:
         embed_export_metadata(dst, job)
     return size
+
+
+def export_max_bytes(job: dict) -> int | None:
+    """The JPEG size bound, in bytes; other formats ignore the limit."""
+    if str(job.get("format", "jpeg")).lower() not in ("jpeg", "jpg"):
+        return None
+    try:
+        kilobytes = int(job.get("maxFileKb") or 0)
+    except (TypeError, ValueError):
+        return None
+    return kilobytes * 1024 if kilobytes > 0 else None
 
 
 def export_metadata_fields(name: str, *, state: dict | None = None) -> dict:
@@ -5090,9 +5220,14 @@ def embed_export_metadata(dst: Path, job: dict) -> bool:
     the recipe so a web JPEG and an archive master can differ.
     """
     policy, source, fields = _export_metadata_payload(job)
-    if policy == "none":
-        return False
     warnings = job.setdefault("warnings", [])
+    ppi = job.get("resolutionPpi")
+    if policy == "none":
+        if ppi:
+            platform_image.write_resolution(dst, ppi, warnings=warnings)
+        return False
+    if ppi:
+        fields = dict(fields, resolutionPpi=ppi)
     before = len(warnings)
     succeeded = platform_image.write_metadata(
         dst, source, policy, fields, warnings=warnings)
@@ -5114,6 +5249,13 @@ def rust_direct_export_supported(job: dict) -> bool:
         return False
     if export_workflow.clean_border(job.get("border"))["enabled"]:
         return False
+    # The bounded-quality size search re-encodes with Pillow, so a file-size
+    # limit finishes on the Python path.
+    if export_max_bytes(job):
+        return False
+    # Output sharpening runs the identical unsharp-mask taps in the resident
+    # engine (rust-engine/src/export.rs `output_sharpen`), so it stays on the
+    # Rust delivery path; only the file-size search above forces Python.
     # Rust reproduces geometric and bitmap masks. Brush rasterization still
     # uses Pillow's Gaussian stroke contract and therefore stays on Python.
     # Radial ellipses/rotation, collapsed linear gradients, and the adjustable
@@ -5300,6 +5442,9 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             "masks": edits.clean_masks(job.get("masks")),
             "crop": clean_crop(job.get("crop")),
             "long_edge": job.get("longEdge"),
+            "resize": export_workflow.rust_resize_request(job),
+            "sharpen": export_workflow.sharpen_parameters(
+                job.get("sharpen"), job.get("resolutionPpi")),
         }
         try:
             metrics = _direct_export_render(name, params, request, dst, job)
@@ -6209,7 +6354,10 @@ def prepare_export(opts: dict) -> tuple[list, Path]:
             "opticsSaved": e.get("opticsSaved", bool(e.get("optics"))),
             "format": recipe["format"],
             "quality": recipe["quality"],
-            "longEdge": recipe["longEdge"],
+            **{key: recipe[key] for key in export_workflow.SIZING_KEYS},
+            "sharpen": recipe["sharpen"],
+            "maxFileKb": recipe["maxFileKb"],
+            "bitDepth": recipe["bitDepth"],
             "engine": opts.get("engine", "rs"),
             "outputSpace": color_pipeline.normalise_output_space(
                 recipe["outputSpace"]),
@@ -6314,8 +6462,7 @@ def preview_export(opts: dict) -> dict:
         width, height = export_source_dimensions(name)
         width, height = export_workflow.output_dimensions(
             width, height, rotate=fp.clean_params(job["params"])["rotate"],
-            crop=job.get("crop"), long_edge=job.get("longEdge"),
-            border=job.get("border"))
+            crop=job.get("crop"), sizing=job, border=job.get("border"))
         sample.update(width=width, height=height, dimensionsExact=True)
     except Exception:  # Header support can differ from the full decoder.
         sample["dimensionsNote"] = "Dimensions will be available after rendering."
@@ -6368,14 +6515,28 @@ def _merge_source_path(name: str, st: dict) -> Path:
     return neutral_tiff_for(name, entry.get("params") or default_params)
 
 
-def _load_merge_source(source: Path) -> np.ndarray:
+def _load_merge_source(source: Path, edge: int | None = None) -> np.ndarray:
     return color_pipeline.resize_float(
-        color_pipeline.load_float_rgb(source), MERGE_MAX_EDGE)
+        color_pipeline.load_float_rgb(source), edge)
+
+
+def merge_input_plan(mode: str, names: list[str]) -> dict:
+    """Size merge inputs against available memory; the env cap still applies."""
+    import merge_plan
+
+    dimensions = []
+    for name in names:
+        try:
+            dimensions.append(export_source_dimensions(name))
+        except Exception:  # noqa: BLE001 - unknown geometry means no reduction
+            continue
+    return merge_plan.plan_input_edge(
+        mode, dimensions, hard_cap=MERGE_MAX_EDGE or None)
 
 
 def _merge_source(name: str, st: dict) -> np.ndarray:
     """Compatibility helper for tests and direct callers."""
-    return _load_merge_source(_merge_source_path(name, st))
+    return _load_merge_source(_merge_source_path(name, st), MERGE_MAX_EDGE or None)
 
 
 def _run_merge(mode: str, names: list[str], output: Path) -> None:
@@ -6421,7 +6582,9 @@ def _run_merge(mode: str, names: list[str], output: Path) -> None:
         for index, name in enumerate(names, 1):
             sources.append(_merge_source_path(name, st))
             report_progress("preparing", index, len(names))
-        loaders = [lambda path=path: _load_merge_source(path)
+        with MERGE_LOCK:
+            input_edge = MERGE.get("inputEdge")
+        loaders = [lambda path=path: _load_merge_source(path, input_edge)
                    for path in sources]
         if mode == "hdr":
             result = merge_workflow.hdr_merge(loaders, progress=report_progress)
@@ -6486,6 +6649,7 @@ def start_merge(body: dict) -> dict:
         raise ValueError(T("{mode} merge needs 2 to {limit} distinct originals", mode=f'{mode}', limit=f'{limit}'))
     for name in names:
         src_path(name)
+    plan = merge_input_plan(mode, names)
     with MERGE_LOCK:
         if MERGE["running"]:
             return {"error": T("a merge is already running")}
@@ -6499,11 +6663,24 @@ def start_merge(body: dict) -> dict:
         MERGE.update(running=True, mode=mode, progress=0, total=len(names),
                      phase="preparing", phaseProgress=0,
                      phaseTotal=len(names), alignmentInliers=0,
-                     elapsedSeconds=0.0, timings={}, output="", error="")
+                     elapsedSeconds=0.0, timings={}, output="", error="",
+                     inputEdge=plan["edge"], effectiveEdge=plan["effectiveEdge"],
+                     inputNotice=plan["notice"] or "")
         MERGE["jobId"] = JOBS.create(
             f"merge.{mode}", total=len(names), state="running")["id"]
     MERGE_POOL.submit(_run_merge, mode, names, output)
-    return {"queued": len(names), "mode": mode}
+    return {"queued": len(names), "mode": mode, "inputEdge": plan["edge"],
+            "effectiveEdge": plan["effectiveEdge"], "inputNotice": plan["notice"] or ""}
+
+
+def preview_merge(body: dict) -> dict:
+    """Report the input size a merge would use, without starting one."""
+    mode = str(body.get("mode", "hdr"))
+    if mode not in ("hdr", "panorama", "focus"):
+        raise ValueError(T("unknown merge mode"))
+    names = list(dict.fromkeys(
+        library_workflow.source_name(str(name)) for name in body.get("names", [])))
+    return dict(merge_input_plan(mode, names), mode=mode, names=names)
 
 
 class PreviewPregenQueue:
@@ -7032,9 +7209,14 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
     if body.get("before"):
         return Image.open(io.BytesIO(orig_jpeg(
             name, width, params.get("rotate", 0), quality="full"))).convert("RGB")
+    # The file route is the lossless reference for exports, comparisons and
+    # the processing gates. Ask for the resident RGBA8 surface so the film
+    # render is read back exactly instead of through the lossy preview JPEG
+    # (quality 88 with chroma subsampling blends colour edges by up to ~25
+    # code values, which the raw browser transport no longer shares).
     result = render_preview(
         name, params, width, str(body.get("engine", "rs")),
-        str(body.get("client", "cli"))[:80], None, False, priority)
+        str(body.get("client", "cli"))[:80], None, False, priority, raw=True)
     if result.get("refining"):
         # File/analysis requests have no browser refinement loop. Finish the
         # RAW source before encoding their one authoritative result.
@@ -7046,14 +7228,12 @@ def program_render_image(body: dict, *, priority: str = "background") -> Image.I
                 build_neutral_preview(name, width, params.get("rotate", 0), params)
         result = render_preview(
             name, params, width, str(body.get("engine", "rs")),
-            str(body.get("client", "cli"))[:80], None, False, priority)
+            str(body.get("client", "cli"))[:80], None, False, priority, raw=True)
         if result.get("refining"):
             raise RuntimeError(T("Accurate RAW preview is unavailable"))
     if result.get("cancelled"):
         raise RuntimeError(result.get("reason") or "render cancelled")
-    base = Image.open(io.BytesIO(_preview_source_bytes(
-        result, name, width, params.get("rotate", 0)))).convert("RGB")
-    image = np.asarray(base, dtype=np.float32) / 255.0
+    image = _preview_source_pixels(result, name, width, params.get("rotate", 0))
     image = edits.apply_base(
         image, state.get("optics"), state.get("heals"),
         edits.lens_profile_for(exif_for(name),
@@ -7891,7 +8071,8 @@ class Handler(BaseHTTPRequestHandler):
                     generation if isinstance(generation, int) else None,
                     bool(b.get("native", False)),
                     str(b.get("priority", "interactive")), b.get("viewport"),
-                    allow_draft=b.get("allow_draft") is not False)
+                    allow_draft=b.get("allow_draft") is not False,
+                    raw=bool(b.get("raw", False)))
                 if bool(b.get("native", False)):
                     result = apply_preview_edits(
                         result, b["name"], width,
@@ -8334,6 +8515,8 @@ class Handler(BaseHTTPRequestHandler):
             elif u.path == "/api/export":
                 result = start_export(self._body())
                 self._json(result, 409 if result.get("error") else 200)
+            elif u.path == "/api/merge/preview":
+                self._json(preview_merge(self._body()))
             elif u.path == "/api/heal/dust-detect":
                 self._json(detect_dust(self._body()))
             elif u.path == "/api/contact-sheet":
@@ -9047,6 +9230,34 @@ def catalog_sources_action(body: dict) -> dict:
     elif action == "rescan":
         if SCANNER is not None:
             SCANNER.request(int(body["id"]) if body.get("id") else None)
+    elif action == "locate":
+        # The folder moved; the rows did not. Prove it is the same folder,
+        # move the root, then let the scanner clear the missing flags.
+        source_id = int(body["id"])
+        path = str(body.get("path", "")).strip()
+        if not path:
+            raise ValueError(T("choose the folder's new location"))
+        try:
+            located = catalog_scan.locate_source(cat, source_id, path)
+        except ValueError as error:
+            raise ValueError(T("Could not relink that folder: {error}", error=str(error))) from error
+        invalidate_library_cache()
+        if SCANNER is not None:
+            SCANNER.request(source_id)
+        return {"ok": True, "located": located, "sources": cat.sources()}
+    elif action == "locate_missing":
+        path = str(body.get("path", "")).strip()
+        if not path:
+            raise ValueError(T("choose a folder to search"))
+        try:
+            summary = catalog_scan.locate_missing(cat, path)
+        except ValueError as error:
+            raise ValueError(T("Could not search that folder: {error}", error=str(error))) from error
+        invalidate_library_cache()
+        _queue_mirror()
+        if summary.get("sourceAdded") and SCANNER is not None:
+            SCANNER.request(int(summary["sourceAdded"]))
+        return {"ok": True, "summary": summary, "sources": cat.sources()}
     elif action != "list":
         raise ValueError(T("unknown source action: {action}", action=f'{action}'))
     return {"ok": True, "sources": cat.sources()}
@@ -9068,20 +9279,42 @@ def catalog_collections_action(body: dict) -> dict:
         return {"ok": True, "id": collection_id,
                 "collections": cat.collections(),
                 "library": current_library_state()}
+    extra: dict = {}
     if action == "delete":
-        cat.delete_collection(int(body["id"]))
+        extra["deleted"] = cat.delete_collection(int(body["id"]))
     elif action == "add":
         cat.add_to_collection(int(body["id"]),
                               [int(i) for i in body.get("imageIds", [])])
+    elif action == "remove":
+        extra["removed"] = cat.remove_from_collection(
+            int(body["id"]), [int(i) for i in body.get("imageIds", [])])
     elif action == "set":
         cat.set_collection_members(int(body["id"]),
                                    [int(i) for i in body.get("imageIds", [])])
+    elif action == "rename":
+        cat.rename_collection(int(body["id"]), str(body.get("name", "")))
+    elif action == "move":
+        cat.move_collection(int(body["id"]),
+                            int(body["parentId"]) if body.get("parentId") else None)
+    elif action == "reorder":
+        cat.reorder_collections(
+            int(body["parentId"]) if body.get("parentId") else None,
+            [int(i) for i in body.get("ids", [])])
+    elif action == "quick":
+        extra["quick"] = {"id": cat.quick_collection_id()}
+    elif action == "quick_toggle":
+        extra["quick"] = cat.toggle_quick_collection(
+            [int(i) for i in body.get("imageIds", [])])
+    elif action == "quick_clear":
+        quick = cat.quick_collection_id()
+        cat.set_collection_members(quick, [])
+        extra["quick"] = {"id": quick, "added": 0, "removed": 0}
     elif action != "list":
         raise ValueError(T("unknown collection action: {action}", action=f'{action}'))
     if action != "list":
         _queue_mirror()
     return {"ok": True, "collections": cat.collections(),
-            "library": current_library_state()}
+            "library": current_library_state(), **extra}
 
 
 def keyword_rename_action(body: dict) -> dict:
@@ -9697,7 +9930,7 @@ def current_library_state() -> dict:
     collections = []
     for record in cat.collections():
         members: list[str] = []
-        if record["type"] == "regular":
+        if record["type"] != "smart":
             rows = cat.connection.execute(
                 "SELECT i.copy_ident, f.relpath, f.source_id"
                 " FROM collection_images ci"
@@ -9708,10 +9941,21 @@ def current_library_state() -> dict:
             members = [catalog_module.qualified_name(
                 row["source_id"], row["relpath"], row["copy_ident"])
                 for row in rows]
+        # The sidebar shows how many photos of the open source each
+        # collection holds. The browser used to count its loaded rows, which
+        # only agreed with the catalog once every row had been paged in.
+        count_spec = {"scope": "collection", "collectionId": record["id"],
+                      "countsOnly": True}
+        if PRIMARY_SOURCE_ID is not None:
+            count_spec["sourceId"] = PRIMARY_SOURCE_ID
         collections.append({
             "id": str(record["id"]), "name": record["name"],
             "type": record["type"], "members": members,
+            "parentId": (str(record["parentId"])
+                         if record.get("parentId") is not None else None),
+            "sortOrder": int(record.get("sortOrder") or 0),
             "rules": record.get("rules") or {},
+            "count": int(browser_catalog_query(count_spec)["total"]),
         })
 
     stacks = []

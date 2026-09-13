@@ -48,15 +48,15 @@ COLOUR_SPACE_NAMES = {
 }
 
 SRGB_LIMITED_EXPORT_WARNING = (
-    "This export uses sRGB-limited colors: film rendering and adjusted "
-    "Develop images do not yet retain colors outside sRGB. "
-    "The requested output profile is embedded.")
+    "This export uses sRGB-limited colors: film rendering, color and detail "
+    "adjustments, masks, retouching and watermarks do not yet retain colors "
+    "outside sRGB. The requested output profile is embedded.")
 
 
 def srgb_limited_export_warning() -> str:
-    return T("This export uses sRGB-limited colors: film rendering and adjusted "
-             "Develop images do not yet retain colors outside sRGB. "
-             "The requested output profile is embedded.")
+    return T("This export uses sRGB-limited colors: film rendering, color and detail "
+             "adjustments, masks, retouching and watermarks do not yet retain colors "
+             "outside sRGB. The requested output profile is embedded.")
 
 RAW_WB_MODES = {
     "as_shot", "auto", "daylight", "cloudy", "shade", "tungsten", "fluorescent", "flash", "custom"
@@ -223,10 +223,21 @@ def _normalise_develop_profile(value: object) -> str:
 
 
 def camera_profile_path(params: dict | None):
-    """The resolved ``.dcp`` path an edit asks for, or None."""
+    """The resolved ``.dcp`` path an edit asks for, or None.
+
+    The bundled ``LightTable Standard`` resolves without a resolver or a
+    profile folder, so command-line renders and exports see the same default
+    look the editor does.
+    """
     name = str((params or {}).get("camera_profile", "") or "")
+    if not name:
+        return None
+    import camera_profile
+    bundled = camera_profile.bundled_profile_path(name)
+    if bundled is not None:
+        return bundled
     resolver = CAMERA_PROFILE_RESOLVER
-    if not name or resolver is None:
+    if resolver is None:
         return None
     try:
         path = resolver(name)
@@ -244,7 +255,9 @@ def _camera_profile_identity(params: dict | None) -> str:
         stat = path.stat()
     except OSError:
         return ""
-    return f"{path.name}|{stat.st_size}|{stat.st_mtime_ns}"
+    import camera_calibration
+    return (f"{path.name}|{stat.st_size}|{stat.st_mtime_ns}|"
+            f"{camera_calibration.PIPELINE_VERSION}")
 
 
 @functools.lru_cache(maxsize=8)
@@ -253,28 +266,78 @@ def _read_camera_profile(path: str, signature: str) -> dict:
     return camera_profile.read_profile(path)
 
 
-def apply_camera_profile(linear: np.ndarray, params: dict | None) -> tuple[np.ndarray, bool]:
+def apply_camera_profile(linear: np.ndarray, params: dict | None, *,
+                         expose=None,
+                         capture_temperature: float | None = None
+                         ) -> tuple[np.ndarray, bool]:
     """Apply the edit's camera profile to linear ProPhoto, if it resolves.
+
+    ``expose`` is the Develop exposure normalisation; the profile's tables
+    go around it in DNG order (hue/sat map, exposure, offset, look, curve),
+    and without a profile it is simply applied. ``capture_temperature`` is
+    the capture white balance the dual-illuminant tables blend at; None
+    blends at the daylight default.
 
     Returns the image and whether the profile supplied its own tone curve.
     A profile with a curve replaces the built-in develop curve, as the DNG
-    pipeline does; Adobe's own "Adobe Standard" files carry none and rely
-    on the converter's default curve, so those keep LightTable's Standard
-    curve for tone and contribute their hue and saturation tables only.
+    pipeline does; a profile without one (the "Adobe Standard" files carry
+    none and rely on the converter's default curve) keeps LightTable's
+    Standard curve for tone and contributes its tables only.
     """
     path = camera_profile_path(params)
     if path is None:
-        return linear, False
+        return (linear if expose is None else expose(linear)), False
     identity = _camera_profile_identity(params)
     if not identity:
-        return linear, False
+        return (linear if expose is None else expose(linear)), False
     try:
         profile = _read_camera_profile(str(path), identity)
         import camera_profile
-        applied = camera_profile.apply_profile(linear, profile)
+        applied = camera_profile.apply_profile(
+            linear, profile, temperature=capture_temperature, expose=expose)
     except Exception:  # noqa: BLE001 - an unreadable profile renders built-in
-        return linear, False
+        return (linear if expose is None else expose(linear)), False
     return np.asarray(applied, dtype=np.float32), profile.get("toneCurve") is not None
+
+
+def camera_profile_for(params: dict | None) -> dict | None:
+    """The parsed profile an edit selects, or None when it does not resolve."""
+    path = camera_profile_path(params)
+    if path is None:
+        return None
+    identity = _camera_profile_identity(params)
+    if not identity:
+        return None
+    try:
+        return _read_camera_profile(str(path), identity)
+    except Exception:  # noqa: BLE001 - an unreadable profile renders built-in
+        return None
+
+
+def _capture_temperature_key(identity, params: dict | None) -> tuple | None:
+    """The key the decode remembers a capture temperature under."""
+    if identity is None:
+        return None
+    import camera_calibration
+    mode = str((params or {}).get("wb_mode", "as_shot"))
+    return (identity, camera_calibration.white_balance_basis(mode),
+            _camera_profile_identity(params))
+
+
+def capture_temperature_for(path: Path | str, params: dict | None) -> float | None:
+    """The capture white-balance temperature the edit's profile blends at.
+
+    Known from the decode when the RAW was decoded in this process, else
+    estimated from the header without a demosaic. None when the profile has
+    nothing to blend, or when there is no profile.
+    """
+    profile = camera_profile_for(params)
+    if profile is None:
+        return None
+    import camera_calibration
+    mode = str((params or {}).get("wb_mode", "as_shot"))
+    return camera_calibration.capture_temperature_for(
+        path, mode, profile, _capture_temperature_key(source_identity(path), params))
 
 
 def develop_profile_for(params: dict | None) -> str:
@@ -408,6 +471,45 @@ def apply_custom_raw_white_balance(image: np.ndarray, temperature: float,
                    0.0, 1.0).astype(np.float32)
 
 
+def _decode_calibration(raw, decoder, kwargs: dict, params: dict | None,
+                        identity) -> np.ndarray | None:
+    """Switch LibRaw to camera-native output when the profile has matrices.
+
+    Returns the camera-to-ProPhoto matrix to apply after the demosaic, or
+    None to keep LibRaw's own ProPhoto conversion. Also remembers the
+    capture temperature the Develop stage blends the profile's tables at.
+    """
+    import camera_calibration
+    profile = camera_profile_for(params)
+    if not camera_calibration.has_calibration(profile):
+        return None
+    if int(getattr(raw, "num_colors", 3) or 3) != 3:
+        return None
+    mode = str((params or {}).get("wb_mode", "as_shot"))
+    try:
+        as_shot = list(raw.camera_whitebalance)
+        daylight = list(raw.daylight_whitebalance)
+    except Exception:  # noqa: BLE001 - LibRaw keeps its own matrix for this file
+        return None
+    if camera_calibration.white_balance_basis(mode) == "as_shot":
+        neutral = camera_calibration.neutral_from_multipliers(as_shot, daylight)
+    else:
+        neutral = camera_calibration.neutral_from_multipliers(daylight, as_shot)
+    try:
+        temperature = camera_calibration.estimate_capture_temperature(profile, neutral)
+        matrix = camera_calibration.camera_to_prophoto(profile, neutral, temperature)
+    except camera_calibration.CalibrationError:
+        return None
+    import rawpy
+    import raw_decode_runtime
+    kwargs.update(raw_decode_runtime.native_options(
+        {"output_color": rawpy.ColorSpace.raw}, decoder))
+    key = _capture_temperature_key(identity, params)
+    if key is not None:
+        camera_calibration.remember_capture_temperature(key, temperature)
+    return matrix
+
+
 def decode_raw(path: Path | str, params: dict | None = None,
                *, half_size: bool = False,
                max_width: int | None = None, learned_denoise_runner=None,
@@ -445,6 +547,11 @@ def decode_raw(path: Path | str, params: dict | None = None,
             kwargs["use_auto_wb"] = True
         else:
             kwargs["user_wb"] = list(raw.daylight_whitebalance)
+        # A profile with colour matrices replaces LibRaw's embedded matrix:
+        # LibRaw then hands back white-balanced camera-native RGB and the
+        # profile's blended matrices take it to ProPhoto below. The changed
+        # output_color option keys a separate demosaic cache entry.
+        calibration = _decode_calibration(raw, decoder, kwargs, params, identity)
         # Key only the actual LibRaw decisions. Custom temperature/tint,
         # Develop curves and learned-denoise strength act on these pixels
         # afterwards and therefore do not require another demosaic.
@@ -469,6 +576,9 @@ def decode_raw(path: Path | str, params: dict | None = None,
         rgb = RAW_DEMOSAIC_CACHE.get_or_build(
             key, demosaic, raw_decode_runtime.check_cancel,
             retain=raw_decode_runtime.retain_pixels())
+    if calibration is not None:
+        import camera_calibration
+        rgb = camera_calibration.convert_camera_native(rgb, calibration)
     if mode in RAW_WB_PRESETS and mode != "daylight":
         temperature, tint = RAW_WB_PRESETS[mode]
         balanced = apply_custom_raw_white_balance(
@@ -503,16 +613,19 @@ def decode_raw(path: Path | str, params: dict | None = None,
 
 def linear_prophoto_to_display_srgb(
         image: np.ndarray, params: dict | None = None,
-        *, develop_profile: str | None = None) -> np.ndarray:
+        *, develop_profile: str | None = None,
+        capture_temperature: float | None = None) -> np.ndarray:
     """Render the existing bounded sRGB Develop preview, unchanged."""
     return linear_prophoto_to_display(
-        image, params, develop_profile=develop_profile, output_space="srgb")
+        image, params, develop_profile=develop_profile, output_space="srgb",
+        capture_temperature=capture_temperature)
 
 
 def linear_prophoto_to_display(
         image: np.ndarray, params: dict | None = None,
         *, develop_profile: str | None = None,
-        output_space: str = "srgb") -> np.ndarray:
+        output_space: str = "srgb",
+        capture_temperature: float | None = None) -> np.ndarray:
     """Convert scene-linear ProPhoto to an encoded Develop rendering.
 
     ``params`` is the same cleaned parameter dict the decode already takes;
@@ -550,16 +663,19 @@ def linear_prophoto_to_display(
         kernels = _develop_kernels()
         if kernels is not None:
             return _develop_with_kernels(
-                kernels, image, params, profile, output_space)
+                kernels, image, params, profile, output_space,
+                capture_temperature=capture_temperature)
     except Exception:  # noqa: BLE001 - the reference renders the same pixels
         pass
     return _linear_prophoto_to_display_reference(
-        image, params, profile, output_space)
+        image, params, profile, output_space,
+        capture_temperature=capture_temperature)
 
 
 def _linear_prophoto_to_display_reference(
         image: np.ndarray, params: dict | None, profile: str,
-        output_space: str) -> np.ndarray:
+        output_space: str, *,
+        capture_temperature: float | None = None) -> np.ndarray:
     """The colour-science Develop rendering that the kernels reproduce."""
     import colour
 
@@ -581,13 +697,18 @@ def _linear_prophoto_to_display_reference(
         if normalise:
             encoded = encoded * min(4.0, 0.96 / white)
     else:
+        expose = None
         if normalise:
             # The code-value gain, expressed as the exposure that reaches the
             # same target, so the curve shapes a correctly exposed frame.
             target = min(0.96, 4.0 * white)
             gain = float(_srgb_decode(target) / _srgb_decode(white))
-            linear = np.clip(linear * np.float32(gain), 0.0, 1.0)
-        linear, profile_has_curve = apply_camera_profile(linear, params)
+
+            def expose(scene: np.ndarray, gain=np.float32(gain)) -> np.ndarray:
+                return np.clip(scene * gain, 0.0, 1.0)
+        linear, profile_has_curve = apply_camera_profile(
+            linear, params, expose=expose,
+            capture_temperature=capture_temperature)
         if not profile_has_curve:
             curve = standard_base_curve() if profile == "standard" else soft_base_curve()
             linear = np.interp(linear, standard_base_curve_domain(),
@@ -849,7 +970,8 @@ def _develop_white_point(encoded: np.ndarray, kernels, *,
 
 
 def _develop_with_kernels(kernels, image: np.ndarray, params: dict | None,
-                          profile: str, output_space: str) -> np.ndarray:
+                          profile: str, output_space: str, *,
+                          capture_temperature: float | None = None) -> np.ndarray:
     """:func:`_linear_prophoto_to_display_reference` on the parallel kernels.
 
     Everything the reference does before its gamut matrix, from the integer
@@ -906,8 +1028,10 @@ def _develop_with_kernels(kernels, image: np.ndarray, params: dict | None,
                           curve).astype(np.float32)
         values = codes
     else:
-        linear = expose(table[codes] if table is not None else codes)
-        linear, profile_has_curve = apply_camera_profile(linear, params)
+        linear = table[codes] if table is not None else codes
+        linear, profile_has_curve = apply_camera_profile(
+            linear, params, expose=expose,
+            capture_temperature=capture_temperature)
         if not profile_has_curve:
             linear = np.interp(linear, standard_base_curve_domain(),
                                curve).astype(np.float32)
@@ -1205,19 +1329,28 @@ def _convert_from_srgb_with_kernels(image: np.ndarray,
     return converted
 
 
+def grade_encoding(output_space: str | None) -> str:
+    """The transfer function :func:`grade.apply` must decode for this space."""
+    return "romm" if normalise_output_space(output_space) == "prophoto" else "srgb"
+
+
 def wide_develop_edits_supported(job: dict) -> bool:
     """Whether only gamut-independent Develop operations were requested.
 
-    The current grade, local edit and watermark implementations are defined
-    in bounded sRGB. Feeding P3/ProPhoto values to them would silently change
-    the previewed look. Rotation, crop and resize operate on the selected
-    encoded output and are safe on this path.
+    The tone stage of the grade (Exposure, Highlights, Shadows, Whites,
+    Blacks, Contrast) is defined on linear light and on the transfer
+    function alone, so it renders the same look in the delivered P3 or
+    ProPhoto encoding. Every other grade control, the local edits and the
+    watermark are defined in bounded sRGB; feeding P3/ProPhoto values to
+    them would silently change the previewed look. Rotation, crop and resize
+    operate on the selected encoded output and are safe on this path.
     """
     import edits
     import export_workflow
     import grade
 
-    return (grade.is_identity(job.get("grade") or {})
+    recipe = job.get("grade") or {}
+    return ((grade.is_identity(recipe) or grade.is_tone_only(recipe))
             and edits.base_edits_are_identity(job.get("optics"), job.get("heals"))
             and not any(mask["enabled"] for mask in edits.clean_masks(job.get("masks")))
             and not export_workflow.clean_watermark(job.get("watermark"))["enabled"])
@@ -1249,13 +1382,18 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
                       metadata_source: Path | str | None = None,
                       metadata_policy: str = "none",
                       metadata_fields: dict | None = None,
-                      warnings: list[str] | None = None) -> tuple[int, int]:
+                      warnings: list[str] | None = None,
+                      resolution_ppi: int | None = None,
+                      max_bytes: int | None = None) -> tuple[int, int]:
     """Encode tagged RGB, retaining 16 bits for TIFF.
 
     ``input_space`` describes the supplied pixels; it is sRGB for film and
     adjusted renders, or the selected space for unadjusted Develop exports.
+    ``resolution_ppi`` stamps the container's density tag (JFIF, pHYs, or TIFF
+    resolution). ``max_bytes`` bounds a JPEG by searching lower qualities.
     """
     destination = Path(destination)
+    ppi = int(resolution_ppi) if resolution_ppi else None
     output_space = normalise_output_space(output_space)
     converted = convert_output_space(as_float_rgb(image_srgb), output_space,
                                      input_space=input_space)
@@ -1270,8 +1408,9 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
         if profile:
             # 34675 is the TIFF InterColorProfile tag; type 7 is UNDEFINED.
             extras.append((34675, 7, len(profile), profile, False))
+        density = {"resolution": (ppi, ppi), "resolutionunit": "INCH"} if ppi else {}
         tifffile.imwrite(destination, encoded, photometric="rgb",
-                         metadata=None, extratags=extras)
+                         metadata=None, extratags=extras, **density)
     elif fmt in ("heif", "heic"):
         helper = Path(os.environ.get(
             "LIGHTTABLE_VISION_HELPER",
@@ -1316,9 +1455,64 @@ def save_export_image(image_srgb: np.ndarray, destination: Path | str,
         encoded = (converted * 255.0 + 0.5).astype(np.uint8)
         image = Image.fromarray(encoded, "RGB")
         kwargs = {"icc_profile": profile} if profile else {}
+        if ppi:
+            kwargs["dpi"] = (ppi, ppi)
         if fmt == "png":
             image.save(destination, "PNG", **kwargs)
         else:
-            image.save(destination, "JPEG", quality=int(quality),
-                       subsampling=1, **kwargs)
+            encoded_jpeg, used_quality = encode_jpeg_within(
+                image, int(quality), max_bytes, **kwargs)
+            if max_bytes and len(encoded_jpeg) > int(max_bytes) and warnings is not None:
+                warnings.append(T(
+                    "The file-size limit could not be met at quality {quality}; "
+                    "the export is {size} KB.",
+                    quality=str(used_quality),
+                    size=str(-(-len(encoded_jpeg) // 1024))))
+            destination.write_bytes(encoded_jpeg)
     return width, height
+
+
+JPEG_QUALITY_FLOOR = 40
+MAX_JPEG_SIZE_ENCODES = 6
+
+
+def encode_jpeg_within(image, quality: int, max_bytes: int | None,
+                       **kwargs) -> tuple[bytes, int]:
+    """Encode a JPEG at ``quality``, then binary-search lower qualities to fit.
+
+    At most ``MAX_JPEG_SIZE_ENCODES`` encodes run, and quality never drops below
+    ``JPEG_QUALITY_FLOOR``; the best fitting encode wins, or the floor encode
+    when nothing fits so the caller can warn instead of failing.
+    """
+    def encode(value: int) -> bytes:
+        buffer = io.BytesIO()
+        image.save(buffer, "JPEG", quality=int(value), subsampling=1, **kwargs)
+        return buffer.getvalue()
+
+    quality = max(1, min(100, int(quality)))
+    data = encode(quality)
+    if not max_bytes or len(data) <= int(max_bytes):
+        return data, quality
+    limit = int(max_bytes)
+    low, high = JPEG_QUALITY_FLOOR, quality - 1
+    best: tuple[bytes, int] | None = None
+    smallest = (data, quality)
+    encodes = 1
+    while low <= high and encodes < MAX_JPEG_SIZE_ENCODES:
+        middle = (low + high) // 2
+        candidate = encode(middle)
+        encodes += 1
+        if len(candidate) < len(smallest[0]):
+            smallest = (candidate, middle)
+        if len(candidate) <= limit:
+            best = (candidate, middle)
+            low = middle + 1
+        else:
+            high = middle - 1
+    if best is not None:
+        return best
+    if smallest[1] > JPEG_QUALITY_FLOOR and encodes < MAX_JPEG_SIZE_ENCODES + 1:
+        floor = encode(JPEG_QUALITY_FLOOR)
+        if len(floor) < len(smallest[0]):
+            smallest = (floor, JPEG_QUALITY_FLOOR)
+    return smallest

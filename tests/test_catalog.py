@@ -485,6 +485,232 @@ class RelocationTransactionTests(unittest.TestCase):
             cat.close()
 
 
+class CollectionTreeTests(unittest.TestCase):
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        directory = Path(self._dir.name)
+        root = directory / "photos"
+        root.mkdir()
+        for n in range(4):
+            write_photo(root, f"f{n}.jpg", f"tree-{n}".encode() * 50)
+        self.cat = make_catalog(directory)
+        self.source = self.cat.add_source(root)
+        catalog_scan.scan_source(self.cat, self.source,
+                                 read_metadata_for_new=False)
+        self.items = {i["relpath"]: i["id"]
+                      for i in self.cat.query({"limit": 100})["items"]}
+
+    def tearDown(self):
+        self.cat.close()
+        self._dir.cleanup()
+
+    def by_id(self):
+        return {c["id"]: c for c in self.cat.collections()}
+
+    def test_nested_collections_record_their_parent_and_order(self):
+        trips = self.cat.add_collection("Trips")
+        rome = self.cat.add_collection("Rome", parent_id=trips)
+        oslo = self.cat.add_collection("Oslo", parent_id=trips)
+        rows = self.by_id()
+        self.assertIsNone(rows[trips]["parentId"])
+        self.assertEqual(rows[rome]["parentId"], trips)
+        self.assertEqual([rows[rome]["sortOrder"], rows[oslo]["sortOrder"]], [0, 1])
+
+    def test_unknown_parent_is_refused(self):
+        with self.assertRaises(ValueError):
+            self.cat.add_collection("Orphan", parent_id=9999)
+
+    def test_rename_keeps_membership(self):
+        cid = self.cat.add_collection("Draft")
+        self.cat.add_to_collection(cid, [self.items["f0.jpg"]])
+        self.cat.rename_collection(cid, "  Final   cut ")
+        record = self.by_id()[cid]
+        self.assertEqual(record["name"], "Final cut")
+        self.assertEqual(record["count"], 1)
+        with self.assertRaises(ValueError):
+            self.cat.rename_collection(cid, "   ")
+
+    def test_move_rejects_cycles_and_self(self):
+        a = self.cat.add_collection("A")
+        b = self.cat.add_collection("B", parent_id=a)
+        c = self.cat.add_collection("C", parent_id=b)
+        with self.assertRaises(ValueError):
+            self.cat.move_collection(a, a)
+        with self.assertRaises(ValueError):
+            self.cat.move_collection(a, c)
+        with self.assertRaises(ValueError):
+            self.cat.move_collection(b, 9999)
+        self.cat.move_collection(c, None)
+        rows = self.by_id()
+        self.assertIsNone(rows[c]["parentId"])
+        self.assertEqual(rows[b]["parentId"], a)
+
+    def test_reorder_persists_and_keeps_unlisted_siblings(self):
+        first = self.cat.add_collection("First")
+        second = self.cat.add_collection("Second")
+        third = self.cat.add_collection("Third")
+        self.cat.reorder_collections(None, [third, first])
+        order = [c["id"] for c in self.cat.collections()]
+        self.assertEqual(order, [third, first, second])
+        self.cat.reorder_collections(None, [second, third, first])
+        self.assertEqual([c["id"] for c in self.cat.collections()],
+                         [second, third, first])
+
+    def test_deleting_a_parent_removes_its_children_but_not_photos(self):
+        parent = self.cat.add_collection("Parent")
+        child = self.cat.add_collection("Child", parent_id=parent)
+        grandchild = self.cat.add_collection("Grandchild", parent_id=child)
+        self.cat.add_to_collection(grandchild, [self.items["f1.jpg"]])
+        self.cat.save_state(self.items["f1.jpg"], {"rating": 4})
+        self.assertEqual(self.cat.delete_collection(parent), 3)
+        self.assertEqual(self.cat.collections(), [])
+        self.assertEqual(self.cat.connection.execute(
+            "SELECT COUNT(*) FROM collection_images").fetchone()[0], 0)
+        result = self.cat.query({"filter": {"ratingMin": 4}})
+        self.assertEqual(result["total"], 1)
+
+    def test_quick_collection_is_persistent_and_toggles(self):
+        quick = self.cat.quick_collection_id()
+        self.assertEqual(self.cat.quick_collection_id(), quick)
+        ids = [self.items["f0.jpg"], self.items["f1.jpg"]]
+        added = self.cat.toggle_quick_collection(ids)
+        self.assertEqual((added["added"], added["removed"]), (2, 0))
+        mixed = self.cat.toggle_quick_collection(ids + [self.items["f2.jpg"]])
+        self.assertEqual((mixed["added"], mixed["removed"]), (1, 0))
+        removed = self.cat.toggle_quick_collection(ids + [self.items["f2.jpg"]])
+        self.assertEqual((removed["added"], removed["removed"]), (0, 3))
+        record = self.cat.collections()[0]
+        self.assertEqual(record["type"], "quick")
+        self.assertEqual(record["count"], 0)
+        with self.assertRaises(ValueError):
+            self.cat.delete_collection(quick)
+        with self.assertRaises(ValueError):
+            self.cat.rename_collection(quick, "Other")
+        with self.assertRaises(ValueError):
+            self.cat.add_collection("Inside", parent_id=quick)
+        self.cat.toggle_quick_collection(ids)
+        scoped = self.cat.query({"scope": "collection", "collectionId": quick})
+        self.assertEqual(scoped["total"], 2)
+
+    def test_quick_collection_sorts_before_others(self):
+        self.cat.add_collection("Aardvark")
+        quick = self.cat.quick_collection_id()
+        self.assertEqual(self.cat.collections()[0]["id"], quick)
+
+
+class LocateTests(unittest.TestCase):
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.base = Path(self._dir.name)
+        self.root = self.base / "photos"
+        self.root.mkdir()
+        for n in range(3):
+            write_photo(self.root, f"f{n}.jpg", f"locate-{n}".encode() * 50)
+        write_photo(self.root, "sub/deep.jpg", b"deep-file" * 80)
+        self.cat = make_catalog(self.base)
+        self.source = self.cat.add_source(self.root)
+        catalog_scan.scan_source(self.cat, self.source,
+                                 read_metadata_for_new=False)
+        self.items = {i["relpath"]: i["id"]
+                      for i in self.cat.query({"limit": 100})["items"]}
+
+    def tearDown(self):
+        self.cat.close()
+        self._dir.cleanup()
+
+    def test_locate_source_keeps_edits_and_collections_by_catalog_id(self):
+        image = self.items["f1.jpg"]
+        self.cat.save_state(image, {"rating": 5, "grade": {"exposure": 0.4},
+                                    "keywords": ["Places > Rome"]})
+        collection = self.cat.add_collection("Keepers")
+        self.cat.add_to_collection(collection, [image])
+        moved = self.base / "moved-photos"
+        os.rename(self.root, moved)
+        self.assertFalse(self.cat.sources()[0]["available"])
+
+        result = catalog_scan.locate_source(self.cat, self.source, moved)
+
+        self.assertGreaterEqual(result["matched"], 1)
+        self.assertEqual(result["previousPath"], str(self.root.resolve()))
+        source = self.cat.sources()[0]
+        self.assertEqual(source["path"], str(moved.resolve()))
+        self.assertTrue(source["available"])
+        self.assertEqual(self.cat.image_id_for(self.source, "f1.jpg"), image)
+        state = self.cat.state_for(image)
+        self.assertEqual(state["rating"], 5)
+        self.assertEqual(state["grade"]["exposure"], 0.4)
+        self.assertEqual(self.cat.keywords_for(image), ["Places > Rome"])
+        scoped = self.cat.query({"scope": "collection", "collectionId": collection})
+        self.assertEqual([i["id"] for i in scoped["items"]], [image])
+        rescanned = catalog_scan.scan_source(self.cat, self.source,
+                                             read_metadata_for_new=False)
+        self.assertEqual(rescanned["added"], 0)
+        self.assertEqual(self.cat.stats()["missing"], 0)
+
+    def test_locate_source_refuses_a_folder_with_different_content(self):
+        other = self.base / "other"
+        other.mkdir()
+        for n in range(3):
+            write_photo(other, f"f{n}.jpg", f"different-{n}".encode() * 50)
+        with self.assertRaisesRegex(ValueError, "does not look like the same folder"):
+            catalog_scan.locate_source(self.cat, self.source, other)
+        empty = self.base / "empty"
+        empty.mkdir()
+        with self.assertRaisesRegex(ValueError, "none of the catalog's photos"):
+            catalog_scan.locate_source(self.cat, self.source, empty)
+        self.assertEqual(self.cat.sources()[0]["path"], str(self.root.resolve()))
+
+    def test_locate_source_refuses_another_active_source(self):
+        second = self.base / "second"
+        second.mkdir()
+        self.cat.add_source(second)
+        with self.assertRaisesRegex(ValueError, "already a catalog source"):
+            self.cat.set_source_path(self.source, second)
+
+    def test_locate_missing_relinks_by_content_and_reports_counts(self):
+        image = self.items["sub/deep.jpg"]
+        self.cat.save_state(image, {"rating": 3})
+        elsewhere = self.base / "elsewhere"
+        (elsewhere / "archive").mkdir(parents=True)
+        os.rename(self.root / "sub" / "deep.jpg", elsewhere / "archive" / "renamed.jpg")
+        write_photo(elsewhere, "stranger.jpg", b"unrelated" * 90)
+        catalog_scan.scan_source(self.cat, self.source, read_metadata_for_new=False)
+        self.assertEqual(self.cat.stats()["missing"], 1)
+        self.assertEqual(self.cat.query({"missingOnly": True})["total"], 1)
+
+        summary = catalog_scan.locate_missing(self.cat, elsewhere)
+
+        self.assertEqual(summary["relinked"], 1)
+        self.assertEqual(summary["unmatched"], 1)
+        self.assertEqual(summary["missingAfter"], 0)
+        self.assertIsNotNone(summary["sourceAdded"])
+        new_source = summary["sourceAdded"]
+        self.assertEqual(self.cat.image_id_for(new_source, "archive/renamed.jpg"), image)
+        self.assertEqual(self.cat.state_for(image)["rating"], 3)
+        self.assertEqual(self.cat.query({"missingOnly": True})["total"], 0)
+
+    def test_locate_missing_inside_an_existing_source_keeps_that_source(self):
+        image = self.items["f2.jpg"]
+        (self.root / "moved").mkdir()
+        os.rename(self.root / "f2.jpg", self.root / "moved" / "f2.jpg")
+        with self.cat.write() as conn:
+            conn.execute("UPDATE files SET missing=1 WHERE id=(SELECT file_id"
+                         " FROM images WHERE id=?)", (image,))
+        summary = catalog_scan.locate_missing(self.cat, self.root / "moved")
+        self.assertEqual(summary["relinked"], 1)
+        self.assertIsNone(summary["sourceAdded"])
+        self.assertEqual(self.cat.image_id_for(self.source, "moved/f2.jpg"), image)
+
+    def test_missing_filter_lists_missing_rows_and_sources_count_them(self):
+        os.remove(self.root / "f0.jpg")
+        catalog_scan.scan_source(self.cat, self.source, read_metadata_for_new=False)
+        self.assertEqual(self.cat.query({})["total"], 3)
+        only = self.cat.query({"filter": {"missingOnly": True}})
+        self.assertEqual([i["relpath"] for i in only["items"]], ["f0.jpg"])
+        self.assertTrue(only["items"][0]["missing"])
+        self.assertEqual(self.cat.sources()[0]["missingCount"], 1)
+
+
 class QueryTests(unittest.TestCase):
     def setUp(self):
         self._dir = tempfile.TemporaryDirectory()

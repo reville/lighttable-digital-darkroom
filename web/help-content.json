@@ -199,7 +199,7 @@
             "Collections are collections here as well; the cloud app’s albums arrive only through a Lightroom Classic catalog.",
             "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
             "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
-            "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+            "Camera profile in Edit offers the bundled LightTable Standard look and the DCP profiles in your camera profile folder, which on macOS and Windows defaults to the profiles that Camera Raw or Lightroom installed. A profile’s colour matrices are applied to the RAW decode following the DNG specification; its look and tone curve apply to the Film-off develop."
           ]
         },
         {
@@ -435,17 +435,26 @@
             "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
             "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
           ]
+        },
+        {
+          "title": "Reconnect a moved or offline source",
+          "paragraphs": [
+            "A source that went offline — a drive unplugged, a folder renamed or moved outside LightTable — shows Locate… instead of Rescan. Choosing it and picking the folder's new location checks a sample of the catalog's own photos there by content, not just name, before moving the source; edits, ratings, and collections stay attached to the same rows. It refuses a folder whose files do not match.",
+            "Folders ••• → Locate missing photos… searches one chosen folder for files matching any of the catalog's currently missing photos by content, wherever they ended up, and relinks the matches. It reports how many it relinked and how many it could not find there.",
+            "Show only missing photos, under the source list, filters the library down to photos the catalog currently cannot find, so you can review or export the list before hunting for the originals."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ]
     },
     {
       "id": "survey-photos",
-      "title": "Compare several photos in Survey",
+      "title": "Compare several photos in Survey, or two side by side",
       "category": "Library",
       "summary": "Review a group together, mark the active frame, and narrow a set of candidates.",
       "keywords": [
@@ -455,7 +464,10 @@
         "burst",
         "side by side",
         "keeper",
-        "make select"
+        "make select",
+        "a/b compare",
+        "compare two photos",
+        "side by side compare"
       ],
       "sections": [
         {
@@ -476,6 +488,14 @@
           "paragraphs": [
             "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
             "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
+          ]
+        },
+        {
+          "title": "Compare two photos side by side",
+          "paragraphs": [
+            "Compare two photos opens the same Survey view limited to exactly two frames, side by side, for an A/B judgement between candidates rather than an edit's before and after.",
+            "With two photos selected, choose Compare two photos, press Shift+N, or use View → Compare Two Photos. With fewer than two selected, LightTable pairs the current photo with its neighbour in the active view.",
+            "Swap flips which photo sits on which side. The marking toolbar and flag, rating, and label shortcuts apply to the active cell, the same as in a full Survey."
           ]
         }
       ],
@@ -726,20 +746,25 @@
       "id": "collections",
       "title": "Group photos into collections",
       "category": "Library",
-      "summary": "Create named groups without moving the original files.",
+      "summary": "Create nested collection groups, reorder them, and build a fast, temporary set with the Quick Collection.",
       "keywords": [
         "collection",
         "album",
         "organize",
         "group",
         "selected",
-        "delete collection"
+        "delete collection",
+        "nested collection",
+        "collection set",
+        "quick collection",
+        "rename collection",
+        "reorder"
       ],
       "sections": [
         {
           "title": "Create and add photos",
           "paragraphs": [
-            "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+            "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk. Collections work only with a catalog; folder mode keeps the flat, unnested list it always had."
           ],
           "steps": [
             "Select the photos you want to group.",
@@ -749,16 +774,28 @@
           ]
         },
         {
+          "title": "Nest, rename, and reorder",
+          "paragraphs": [
+            "Collections can hold other collections. The + on a collection row creates a new collection inside it; a triangle appears once it has children and toggles whether they are shown. Rename with the pencil icon. The up and down arrows move a collection within its current siblings; the left arrow on a nested collection moves it back to the top level. Order is saved and reopens the same way next time."
+          ]
+        },
+        {
           "title": "Delete a collection",
           "paragraphs": [
-            "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+            "The × beside a collection deletes it and everything nested inside it. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+          ]
+        },
+        {
+          "title": "The Quick Collection",
+          "paragraphs": [
+            "The Quick Collection is one persistent collection for building a set fast while culling, without naming anything first. Press Cmd+B (bare B is already before/after) with photos selected to add them, or press it again on the same selection to remove them. The × on its row clears it entirely. It behaves like any regular collection otherwise: add photos to it manually, or open it to review and remove individual photos."
           ]
         },
         {
           "title": "Folders and collections",
           "paragraphs": [
             "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
-            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+            "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections. Importing a Lightroom Classic catalog maps its collection sets onto this same nesting."
           ]
         }
       ],
@@ -1149,7 +1186,8 @@
         {
           "title": "Start with Light",
           "paragraphs": [
-            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation."
+            "Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.",
+            "These Light controls work on the light behind the displayed image rather than on its clipped pixels. Tones that Exposure pushes past white stay available for Highlights and Whites to bring back, and the brightest tones roll off softly instead of clipping."
           ],
           "steps": [
             "Set Exposure for the main subject.",
@@ -1629,10 +1667,12 @@
             "Try Auto level for a tilted horizon, then refine Straighten if needed.",
             "Use Rotate left, Rotate right, or the flip buttons for orientation changes.",
             "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.",
+            "If Auto upright can’t find enough lines, or picks the wrong ones, click Guided, draw 2 to 4 lines along edges that should be vertical or horizontal, then click Apply guides.",
             "Inspect the edges and final framing, then click Done."
           ],
           "tips": [
             "Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.",
+            "In Guided mode, choose Vertical line or Horizontal line before each drag so the line is tagged correctly; Undo line removes the last one and Clear starts over.",
             "Crop’s Reset resets the crop, rotation, flips, and perspective together."
           ]
         }
@@ -1693,7 +1733,7 @@
           "tips": [
             "Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.",
             "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.",
-            "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.",
+            "The editor allows up to sixteen local masks. Duplicate Mask copies the selected mask, including its shape, strokes, and adjustments, and inserts the copy directly after it; Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.",
             "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."
           ]
         },
@@ -1713,7 +1753,8 @@
           "title": "Shape a linear gradient",
           "paragraphs": [
             "In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.",
-            "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file."
+            "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.",
+            "Feather widens or narrows the transition band, centred on the line between the two dots. Lower it for a harder edge, raise it for a softer, wider blend."
           ],
           "tips": [
             "Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."
@@ -1802,7 +1843,7 @@
           ],
           "tips": [
             "Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.",
-            "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.",
+            "Merge inputs default to full resolution. If the sequence would need more memory than the machine can spare, LightTable automatically reduces every input to a smaller long edge and shows the effective size before you start; a fixed limit can also be set with the LIGHTTABLE_MERGE_MAX_EDGE environment variable.",
             "If a merge reports an error, read the specific message and correct the input selection before trying again."
           ]
         },
@@ -2066,8 +2107,8 @@
         {
           "title": "Create a smart selection",
           "paragraphs": [
-            "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.",
-            "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.",
+            "Mask offers Subject, Sky, Object, Depth, and People selections. These run locally on every platform; available methods and precision depend on the selection type and platform.",
+            "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. On Windows and Linux, Subject uses the same bundled local model as Person when it finds a person in the photo, and otherwise falls back to an image-based estimate. Fine boundaries still need inspection and painted refinement.",
             "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added."
           ],
           "steps": [
@@ -2086,7 +2127,8 @@
           "title": "Select people or facial regions",
           "paragraphs": [
             "People offers Person and Hair on every platform. Face skin, Eyes, Eyebrows, Lips, Teeth, and Soften skin require the Vision helper on macOS 14 or later. Face skin is estimated, and no identity is inferred.",
-            "Hair uses a bundled model that runs locally and selects hair beyond the face, including shoulder-length hair. Inspect fine strands, bright highlights, wigs, and small background people; these can still be missed. Older or source builds without the model use the earlier Vision estimate when available. Existing saved masks keep their selections."
+            "Hair uses a bundled model that runs locally and selects hair beyond the face, including shoulder-length hair. Inspect fine strands, bright highlights, wigs, and small background people; these can still be missed. Older or source builds without the model use the earlier Vision estimate when available. Existing saved masks keep their selections.",
+            "Person uses the same bundled local model on Windows and Linux (and on Mac when the Vision helper is unavailable) to trace a person's outline directly, rather than an image-based estimate. If it does not find a person, Person falls back to that estimate instead of leaving the selection empty."
           ],
           "steps": [
             "Choose People, then the part you want to adjust.",
@@ -2274,7 +2316,7 @@
             "Inspect the completed preview at 1:1."
           ],
           "tips": [
-            "Learned denoise requires the macOS inference helper and a compatible local model. It is unavailable on Linux and Windows. Ordinary noise reduction and sharpening remain available. Development builds may lack the model; read the availability message before starting."
+            "Learned denoise runs through Core ML on macOS and through onnxruntime on Windows and Linux, using the same converted model. Ordinary noise reduction and sharpening remain available everywhere. Development builds may lack the converted model or runtime; read the availability message before starting."
           ]
         },
         {
@@ -2667,13 +2709,27 @@
         {
           "title": "Formats and presets",
           "paragraphs": [
-            "The export dialog offers JPEG, PNG, and 16-bit TIFF. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. The quality slider applies to JPEG and HEIF.",
+            "The export dialog offers JPEG, PNG, and TIFF. TIFF defaults to 16-bit; choose 8-bit TIFF depth in Advanced for a smaller archive file. On macOS it also offers 8-bit HEIF; HEIF is hidden on Linux and Windows. A saved HEIF recipe cannot be applied there, so choose another format. PNG and HEIF always encode at 8-bit. The quality slider applies to JPEG and HEIF.",
             "JPG (Large) uses full-size JPEG at quality 92 in sRGB. JPG (Small) uses a 2048-pixel long edge at quality 90 in sRGB. 16-bit TIFF uses full size and ProPhoto RGB. Changing these settings selects Custom."
           ],
           "steps": [
             "Open Export and choose a preset across the top.",
             "Set Dimensions to Full size or a long-edge limit.",
             "Check Output preview: the exported size reflects rotation and crop, and a long-edge limit downsizes larger images without enlarging smaller ones."
+          ]
+        },
+        {
+          "title": "Custom size, resolution, and output sharpening",
+          "paragraphs": [
+            "Custom size in Advanced replaces the Dimensions preset with any resize rule: long edge, short edge, fit within a width and height, megapixels, or a percent of the original. Enlarge smaller photos to fit allows the rule to upsize a smaller source; otherwise a photo already at or under the requested size exports unchanged. Resolution (ppi) writes only the resolution metadata tag read by print and page-layout software; it never changes the pixel dimensions.",
+            "Sharpen for applies output sharpening after resizing, matched to how the file will be viewed: Screen for on-screen viewing, or Matte paper/Glossy paper for printing. Sharpen amount (Low/Standard/High) sets its strength. Print sharpening scales its radius with Resolution (ppi), so the same physical sharpening halo holds at any print size.",
+            "Limit JPEG file size to (KB) lowers JPEG quality automatically until the file fits the limit or the quality floor is reached; a warning explains when the limit could not be met."
+          ],
+          "steps": [
+            "Open Export and expand Advanced.",
+            "Choose Custom size and enter the resize rule's value, or leave it at Use Dimensions above to keep the simple preset.",
+            "Choose Sharpen for and Sharpen amount if the export needs output sharpening.",
+            "For a JPEG with a hard size budget, set Limit JPEG file size to (KB)."
           ]
         },
         {
@@ -2691,7 +2747,7 @@
           "title": "Color space limits",
           "paragraphs": [
             "Every export embeds the selected ICC profile. Choose sRGB, Display P3, or ProPhoto RGB in Colour space.",
-            "Wide-gamut Develop exports preserve source colors when color and local adjustments are off. Film rendering and adjusted Develop exports are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."
+            "Wide-gamut Develop exports preserve source colors when only the Light adjustments (Exposure, Highlights, Shadows, Whites, Blacks, and Contrast) are applied; those controls work on light rather than on sRGB colors. Film rendering and Develop exports with color or detail adjustments, masks, retouching, or a watermark are limited to sRGB colors. Encoding one of those results in P3 or ProPhoto does not restore colors already limited by rendering."
           ]
         }
       ],
@@ -3009,7 +3065,8 @@
         {
           "title": "Defaults for unedited photos",
           "paragraphs": [
-            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, and apply a default preset.",
+            "Develop Defaults apply only to photos that do not already have saved edits. They can start Film enabled, choose a workflow and neutral Develop profile, choose the Camera profile a never-edited RAW photo starts with, and apply a default preset.",
+            "Camera profile defaults to LightTable Standard, the bundled look. Choose Built-in to start new RAW photos from the analytic Standard curve instead. Photos with saved edits keep whatever they saved.",
             "Apply matched lens profile automatically, on by default, switches on the lens profile for photos whose camera and lens exactly match one profile and whose lens settings were never saved. Turn it off to open every photo with the profile off."
           ],
           "steps": [
@@ -3018,14 +3075,16 @@
             "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.",
             "Choose matching by camera model, serial number, or camera and ISO, then click Use current RAW settings.",
             "Use Reset in the Current camera area to remove that camera default.",
-            "To render RAW photos with a camera profile, leave Camera profile folder empty to use the profiles that Adobe Camera Raw or Lightroom installed on this computer, or enter another folder of .dcp files."
+            "To use your own DCP profiles, leave Camera profile folder empty to use the CameraProfiles folder in LightTable’s data directory, or on macOS and Windows the profiles that Adobe Camera Raw or Lightroom installed, or enter another folder of .dcp files."
           ]
         },
         {
           "title": "Camera profiles",
           "paragraphs": [
-            "A RAW photo’s Profile section offers a Camera profile menu with the .dcp files in the folder that name its camera, such as Adobe Standard or the camera-matching looks. LightTable never ships these profiles; they belong to your own Adobe installation.",
-            "The profile is applied to the Film-off develop only, and approximately: its hue and saturation tables and, when it carries one, its tone curve, which then replaces the Standard develop curve. Dual-illuminant blending and forward matrices are not applied, so a profile can render slightly warmer or cooler than the same file in Lightroom. Film rendering always starts from the neutral scene data."
+            "A RAW photo’s Profile section offers a Camera profile menu with LightTable Standard and the .dcp files in your camera profile folder that name its camera, either in the file name or in the profile’s own camera and name tags, such as Adobe Standard or the camera-matching looks. Only LightTable Standard ships with LightTable; other profiles belong to your own installation.",
+            "LightTable Standard is a modelled generic look: a modest hue and saturation map and a tone curve that lands middle grey and rolls highlights off the way a camera-matching rendition does. It is not measured from any camera and carries no colour matrices, so the decoder’s own camera colour stays in charge.",
+            "A DCP profile with colour matrices is applied following the DNG specification. At the RAW decode, its colour and forward matrices, blended for the capture white balance, replace the decoder’s embedded matrix, so Film and Develop both start from the profile’s camera colour. In the Film-off develop, the hue and saturation tables blend at the same white balance, then the baseline exposure offset, look table and tone curve follow; a profile tone curve replaces the Standard develop curve. Linux has no vendor profile location, so point Camera profile folder at your own .dcp files there.",
+            "What remains approximate: demosaic and highlight reconstruction come from LibRaw rather than a reference converter, and Auto white balance estimates its temperature from the as-shot balance, so a profile can still render slightly differently from the same file in Lightroom."
           ]
         },
         {

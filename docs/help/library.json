@@ -37,7 +37,7 @@
       {
         "title": "Choose photos from Apple Photos",
         "paragraphs": [
-          "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.",
+          "In the macOS app, use File \u2192 Import from Apple Photos\u2026 or Choose a few\u2026 in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.",
           "Select photos, then click Add. LightTable shows progress while downloading and copying them. Stop Import keeps completed copies and stops the remaining transfers. Your Photos library stays unchanged.",
           "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten."
         ],
@@ -64,7 +64,7 @@
       {
         "title": "Bring new files into an existing folder",
         "paragraphs": [
-          "Use the Folders ••• menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card… in that menu."
+          "Use the Folders \u2022\u2022\u2022 menu and Rescan folders after adding files outside LightTable. To copy photos from a card into a destination folder, use Import from card\u2026 in that menu."
         ]
       }
     ],
@@ -101,7 +101,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren’t transferred."
+        "anchor": "This imports photo originals, including RAW files. Albums, videos, and edits made in Photos aren\u2019t transferred."
       },
       {
         "path": "app/main.swift",
@@ -142,7 +142,7 @@
           "Import from card copies files into the destination you choose. The card originals stay in place. Duplicate skipping compares complete file contents; a matching filename or camera header alone is not enough."
         ],
         "steps": [
-          "Open Folders ••• → Import from card….",
+          "Open Folders \u2022\u2022\u2022 \u2192 Import from card\u2026.",
           "Choose the Source and Destination. Set Folder template and Rename to before scanning. The defaults keep filenames and organize copies as year/year-month-day.",
           "Choose verification: Full hash, Size only, or None. Set Duplicates to Skip or Copy anyway, and optionally choose Second copy to.",
           "Click Scan. Use Previous and Next to review every page, and check the selected count and destination preview before clicking Import. Import is unavailable when no photos are selected.",
@@ -221,36 +221,45 @@
       {
         "title": "Choose what is in view",
         "paragraphs": [
-          "Folders → Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
+          "Folders \u2192 Browse lists your added folders. Include subfolders controls whether a selected folder also shows its descendants. Other library filters still apply.",
           "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo."
         ],
         "steps": [
           "Click a folder under Folders.",
           "Turn Include subfolders on to include child folders, or off to view only that folder.",
-          "Click the star beside a folder, or open its ••• menu and choose Add as Favorite.",
-          "Use Folders → Favorites to return to your saved folders."
+          "Click the star beside a folder, or open its \u2022\u2022\u2022 menu and choose Add as Favorite.",
+          "Use Folders \u2192 Favorites to return to your saved folders."
         ]
       },
       {
         "title": "Folder actions",
         "paragraphs": [
-          "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Folders ••• → Rescan folders scans the catalog sources.",
-          "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
+          "A folder\u2019s \u2022\u2022\u2022 menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Folders \u2022\u2022\u2022 \u2192 Rescan folders scans the catalog sources.",
+          "Remove from LightTable removes an added root from the app\u2019s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
         ]
       },
       {
         "title": "Manage watched folders",
         "paragraphs": [
-          "Open Folders ••• → Watch folder… to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
+          "Open Folders \u2022\u2022\u2022 \u2192 Watch folder\u2026 to add a watched folder. Choose how arriving photos should be handled. Save is unavailable until a folder is specified; copying into the library also requires a destination.",
           "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
           "The Watching shortcut opens the first active watch. Save errors stay in the dialog so you can correct the settings."
+        ]
+      },
+      {
+        "title": "Reconnect a moved or offline source",
+        "paragraphs": [
+          "A source that went offline — a drive unplugged, a folder renamed or moved outside LightTable — shows Locate… instead of Rescan. Choosing it and picking the folder's new location checks a sample of the catalog's own photos there by content, not just name, before moving the source; edits, ratings, and collections stay attached to the same rows. It refuses a folder whose files do not match.",
+          "Folders ••• → Locate missing photos… searches one chosen folder for files matching any of the catalog's currently missing photos by content, wherever they ended up, and relinks the matches. It reports how many it relinked and how many it could not find there.",
+          "Show only missing photos, under the source list, filters the library down to photos the catalog currently cannot find, so you can review or export the list before hunting for the originals."
         ]
       }
     ],
     "related": [
       "add-photos",
       "search-filter-sort",
-      "trash-rejected"
+      "trash-rejected",
+      "catalog-health-recovery"
     ],
     "sources": [
       {
@@ -272,6 +281,26 @@
       {
         "path": "web/catalog-ui.js",
         "anchor": "el('watchExisting')?.addEventListener('change'"
+      },
+      {
+        "path": "web/catalog-ui.js",
+        "anchor": "function openLocateDialog({ title, hint, confirmLabel, onConfirm }) {"
+      },
+      {
+        "path": "catalog_scan.py",
+        "anchor": "def locate_source(cat: catalog_module.Catalog, source_id: int,"
+      },
+      {
+        "path": "catalog_scan.py",
+        "anchor": "def locate_missing(cat: catalog_module.Catalog, folder: Path | str, *,"
+      },
+      {
+        "path": "server.py",
+        "anchor": "elif action == \"locate\":"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "missing_only = bool(spec.get(\"missingOnly\")"
       },
       {
         "path": "web/catalog-ui.js",
@@ -327,8 +356,8 @@
         "title": "Combine and clear filters",
         "paragraphs": [
           "Select RAW, JPEG, HEIC / HEIF, TIFF, or PNG. Multiple file types include any of those formats; flag, rating, color label, edit status, and search narrow that set further. No selected file types means all file types.",
-          "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its ×, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
-          "Edit status offers Edited, Unedited, and Virtual copies. A virtual copy uses its original file’s type. Press Escape or click outside the panel to close it without clearing your choices."
+          "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its \u00d7, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
+          "Edit status offers Edited, Unedited, and Virtual copies. A virtual copy uses its original file\u2019s type. Press Escape or click outside the panel to close it without clearing your choices."
         ]
       },
       {
@@ -434,8 +463,8 @@
           "The right sidebar uses icon buttons for Edit, Film, Crop, Remove, Masking, Info, History, and Presets. Hover over an icon to see its name.",
           "Fit may enlarge small photos. 1:1 shows actual pixels even when the photo becomes smaller than Fit, and keeps the same pixel scale when you resize the window.",
           "Hover over the photo counter in the top bar to see what its numbers mean.",
-          "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
-          "While the window is open, LightTable remembers each photo’s pan position and keeps the current zoom level when you switch photos. New photos start centered.",
+          "Smooth zoom in Settings \u2192 Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
+          "While the window is open, LightTable remembers each photo\u2019s pan position and keeps the current zoom level when you switch photos. New photos start centered.",
           "On Mac, pinch on the trackpad over the photo in Detail to zoom around the pointer. Move the pointer over the area you want to inspect before pinching."
         ],
         "steps": [
@@ -462,7 +491,7 @@
         "title": "Build a selection",
         "paragraphs": [
           "Click selects a single active photo. Shift-click selects a contiguous range. Command-click on Mac or Control-click adds or removes individual photos.",
-          "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar’s context before a batch action.",
+          "In a grid, flag, rating, and colour-label actions apply to the selected set. In Detail, those marking actions apply to the active photo. In Survey, they apply to the active survey cell. Check the marking toolbar\u2019s context before a batch action.",
           "A batch action reaches only the selected photos that the current filter, folder, and search still show. Changing a filter therefore narrows what the next action touches, and the marking toolbar counts what it would reach.",
           "Open Info beside either grid to view metadata or tag selected photos. The grid narrows to make room for the inspector. Choose another inspector tool to return to the wider grid."
         ]
@@ -488,7 +517,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "for (const item of list.slice(first, last + 1)) S.msel.add(item.name);"
+        "anchor": "for (let index = first; index <= last; index++) {"
       },
       {
         "path": "web/app.js",
@@ -552,9 +581,9 @@
         ],
         "steps": [
           "Use Pick, Reject, and Unflag in the marking toolbar or Info. The P, X, and U keys perform the same actions.",
-          "Click a star or press 1–5 to rate. Press 0 to clear the rating.",
+          "Click a star or press 1\u20135 to rate. Press 0 to clear the rating.",
           "To clear an existing pick, reject, or rating, apply that same mark again.",
-          "Use the sidebar’s Picked, Rejected, and Rated views to review your decisions."
+          "Use the sidebar\u2019s Picked, Rejected, and Rated views to review your decisions."
         ]
       },
       {
@@ -615,7 +644,7 @@
       {
         "title": "Apply and filter a label",
         "paragraphs": [
-          "Colour labels are yours to assign meaning to—for example, red for retouching or green for delivery. They do not change star ratings or pick/reject status."
+          "Colour labels are yours to assign meaning to\u2014for example, red for retouching or green for delivery. They do not change star ratings or pick/reject status."
         ],
         "steps": [
           "Select a photo, or a set in a grid, and open Info.",
@@ -666,14 +695,14 @@
       {
         "title": "Choose a scheme",
         "paragraphs": [
-          "Open Settings → Shortcuts & Hardware and choose Shortcut scheme. LightTable and Classic share most culling shortcuts, but differ for Detail, Crop, and before/after Compare."
+          "Open Settings \u2192 Shortcuts & Hardware and choose Shortcut scheme. LightTable and Classic share most culling shortcuts, but differ for Detail, Crop, and before/after Compare."
         ],
         "steps": [
           "Choose LightTable for D = Detail, C = Crop, and backslash (\\) = before/after Compare.",
           "Choose Classic for E = Detail, R = Crop, and C = before/after Compare."
         ],
         "tips": [
-          "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0–5 for stars.",
+          "Both schemes use G for Photo Grid, Shift+G for Culling Grid, N for Survey, P/X/U for flags, and 0\u20135 for stars.",
           "Hold B to show the original without Film, local masks, or finishing adjustments; release B to restore the edit. Slash (/) focuses photo search.",
           "Photo shortcuts are ignored while typing in text, number, or selection fields. Leave the field before using a photo command."
         ]
@@ -688,11 +717,11 @@
     "sources": [
       {
         "path": "web/labels.js",
-        "anchor": "grid: 'g', squareGrid: 'G', detail: 'd', survey: 'n', compare: '\\\\',"
+        "anchor": "grid: 'g', squareGrid: 'G', detail: 'd', survey: 'n', compareTwo: 'N', compare: '\\\\',"
       },
       {
         "path": "web/labels.js",
-        "anchor": "grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compare: 'c',"
+        "anchor": "grid: 'g', squareGrid: 'G', detail: 'e', survey: 'n', compareTwo: 'N', compare: 'c',"
       },
       {
         "path": "web/index.html",
@@ -708,20 +737,25 @@
     "id": "collections",
     "title": "Group photos into collections",
     "category": "Library",
-    "summary": "Create named groups without moving the original files.",
+    "summary": "Create nested collection groups, reorder them, and build a fast, temporary set with the Quick Collection.",
     "keywords": [
       "collection",
       "album",
       "organize",
       "group",
       "selected",
-      "delete collection"
+      "delete collection",
+      "nested collection",
+      "collection set",
+      "quick collection",
+      "rename collection",
+      "reorder"
     ],
     "sections": [
       {
         "title": "Create and add photos",
         "paragraphs": [
-          "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk."
+          "A regular collection stores a chosen set of photos. It is separate from the folder arrangement on disk. Collections work only with a catalog; folder mode keeps the flat, unnested list it always had."
         ],
         "steps": [
           "Select the photos you want to group.",
@@ -731,16 +765,28 @@
         ]
       },
       {
+        "title": "Nest, rename, and reorder",
+        "paragraphs": [
+          "Collections can hold other collections. The + on a collection row creates a new collection inside it; a triangle appears once it has children and toggles whether they are shown. Rename with the pencil icon. The up and down arrows move a collection within its current siblings; the left arrow on a nested collection moves it back to the top level. Order is saved and reopens the same way next time."
+        ]
+      },
+      {
         "title": "Delete a collection",
         "paragraphs": [
-          "The × beside a collection deletes the collection. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+          "The × beside a collection deletes it and everything nested inside it. This removes the grouping rather than moving original files to the Trash. Search and filters can further narrow the photos shown inside a collection."
+        ]
+      },
+      {
+        "title": "The Quick Collection",
+        "paragraphs": [
+          "The Quick Collection is one persistent collection for building a set fast while culling, without naming anything first. Press Cmd+B (bare B is already before/after) with photos selected to add them, or press it again on the same selection to remove them. The × on its row clears it entirely. It behaves like any regular collection otherwise: add photos to it manually, or open it to review and remove individual photos."
         ]
       },
       {
         "title": "Folders and collections",
         "paragraphs": [
           "Folders represent the physical disk hierarchy where files reside. Collections are flexible, lightweight groups inside LightTable that can gather photos across multiple folders without moving or duplicating any files on disk.",
-          "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections."
+          "When importing a catalog or adding a source folder, enabling Create collection for each top-level folder automatically creates matching collections for every top-level folder so your existing structure is immediately accessible in Collections. Importing a Lightroom Classic catalog maps its collection sets onto this same nesting."
         ]
       }
     ],
@@ -765,6 +811,30 @@
       {
         "path": "web/app.js",
         "anchor": "await runLibraryAction({ action: 'delete_collection', id: collection.id });"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "async function toggleQuickCollection() {"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "function collectionChildren(collections) {"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def toggle_quick_collection(self, image_ids: Sequence[int]) -> dict:"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def move_collection(self, collection_id: int,"
+      },
+      {
+        "path": "catalog.py",
+        "anchor": "def reorder_collections(self, parent_id: int | None,"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "command: \"toggleQuickCollection\", key: \"b\")"
       },
       {
         "path": "web/index.html",
@@ -797,9 +867,9 @@
         ],
         "steps": [
           "Set the search text and desired choices in Filter beside Sort.",
-          "Click the ✦ beside Collections, labelled Save filters as smart collection.",
+          "Click the \u2726 beside Collections, labelled Save filters as smart collection.",
           "Name the collection and save.",
-          "Click its name to view matching photos. Changing a photo’s relevant metadata changes whether it matches."
+          "Click its name to view matching photos. Changing a photo\u2019s relevant metadata changes whether it matches."
         ]
       },
       {
@@ -841,7 +911,7 @@
   },
   {
     "id": "survey-photos",
-    "title": "Compare several photos in Survey",
+    "title": "Compare several photos in Survey, or two side by side",
     "category": "Library",
     "summary": "Review a group together, mark the active frame, and narrow a set of candidates.",
     "keywords": [
@@ -851,7 +921,10 @@
       "burst",
       "side by side",
       "keeper",
-      "make select"
+      "make select",
+      "a/b compare",
+      "compare two photos",
+      "side by side compare"
     ],
     "sections": [
       {
@@ -860,10 +933,10 @@
           "Survey displays original previews for choosing between photos. It shows up to 16 selected photos. If there is no explicit selection, it uses up to six nearby photos in the current view."
         ],
         "steps": [
-          "Select candidates in a grid and press N, or open Info → Survey selection.",
+          "Select candidates in a grid and press N, or open Info \u2192 Survey selection.",
           "Click a photo to make that survey cell active. Use left and right arrows to move between cells, and up and down arrows to move between rows.",
           "Use the marking toolbar or flag, rating, and label shortcuts on the active cell.",
-          "Click × on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
+          "Click \u00d7 on a cell to remove it from the survey without deleting or rejecting it. Double-click a cell to open that photo in Detail.",
           "Click Close or press Escape to leave Survey."
         ]
       },
@@ -872,6 +945,14 @@
         "paragraphs": [
           "When Survey is opened from Assisted culling, compare the suggested group and flag photos individually. Make select is available in a regular Survey: it picks the active survey photo and rejects the other photos still in the survey. This changes their flags. Linked RAW and JPEG metadata can extend those flag changes to companions.",
           "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames."
+        ]
+      },
+      {
+        "title": "Compare two photos side by side",
+        "paragraphs": [
+          "Compare two photos opens the same Survey view limited to exactly two frames, side by side, for an A/B judgement between candidates rather than an edit's before and after.",
+          "With two photos selected, choose Compare two photos, press Shift+N, or use View \u2192 Compare Two Photos. With fewer than two selected, LightTable pairs the current photo with its neighbour in the active view.",
+          "Swap flips which photo sits on which side. The marking toolbar and flag, rating, and label shortcuts apply to the active cell, the same as in a full Survey."
         ]
       }
     ],
@@ -892,15 +973,31 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "chosen = list.slice(start, start + 6).map((image) => image.name);"
+        "anchor": "chosen = list.slice(start, start + 6).filter(Boolean).map((image) => image.name);"
       },
       {
         "path": "web/survey.js",
-        "anchor": "<button class=\"survey-remove\" title=\"${i18nHTML(tr(\"Remove from survey\"))}\">×</button>"
+        "anchor": "<button class=\"survey-remove\" title=\"${i18nHTML(tr(\"Remove from survey\"))}\">\u00d7</button>"
       },
       {
         "path": "web/app.js",
         "anchor": "toast(tr(\"Marked the select and rejected the rest\"));"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "if (mode === 'compare') {"
+      },
+      {
+        "path": "web/survey.js",
+        "anchor": "if (nextMode === 'compare') names = names.slice(0, 2);"
+      },
+      {
+        "path": "web/survey.js",
+        "anchor": "swapButton.hidden = mode !== 'compare';"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "addEditorItem(viewMenu, title: L(\"Compare Two Photos\"), command: \"compareTwo\","
       }
     ]
   },
@@ -926,9 +1023,9 @@
         ],
         "steps": [
           "Make the source photo active.",
-          "Open the Photo actions ••• menu beside Sort and Size, then choose Create virtual copy.",
+          "Open the Photo actions \u2022\u2022\u2022 menu beside Sort and Size, then choose Create virtual copy.",
           "Name the copy and save. The new copy becomes active.",
-          "Edit the copy. Use Filter → Edit status → Virtual copies to find copies later."
+          "Edit the copy. Use Filter \u2192 Edit status \u2192 Virtual copies to find copies later."
         ],
         "tips": [
           "Delete virtual copy in Photo actions removes the active virtual copy. For a real second file on disk, export a rendered image."
@@ -937,7 +1034,7 @@
       {
         "title": "Collapse a group",
         "paragraphs": [
-          "Select at least two photos, then choose Photo actions ••• → Stack selected photos and enter a name. The stack’s grid badge shows the member count; click it to expand or collapse. Unstack selected photos removes the grouping."
+          "Select at least two photos, then choose Photo actions \u2022\u2022\u2022 \u2192 Stack selected photos and enter a name. The stack\u2019s grid badge shows the member count; click it to expand or collapse. Unstack selected photos removes the grouping."
         ]
       }
     ],
@@ -990,9 +1087,9 @@
           "LightTable recognizes a pair when one RAW and one JPEG share the same base filename in the same source and folder. Each file keeps its own edits; virtual copies remain independent."
         ],
         "steps": [
-          "Open Settings → Files & Metadata and turn on Pair RAW and JPEG captures.",
+          "Open Settings \u2192 Files & Metadata and turn on Pair RAW and JPEG captures.",
           "Set Show paired captures to Both files, Prefer RAW, or Prefer JPEG.",
-          "When viewing a paired photo, use RAW → JPEG or JPEG → RAW near the top to switch to its companion."
+          "When viewing a paired photo, use RAW \u2192 JPEG or JPEG \u2192 RAW near the top to switch to its companion."
         ]
       },
       {
@@ -1028,7 +1125,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "button.textContent = image.raw ? tr(\"RAW → JPEG\") : tr(\"JPEG → RAW\");"
+        "anchor": "button.textContent = image.raw ? tr(\"RAW \u2192 JPEG\") : tr(\"JPEG \u2192 RAW\");"
       }
     ]
   },
@@ -1054,7 +1151,7 @@
         ],
         "steps": [
           "Select the photos to rename.",
-          "Open Info → Rename… (or Photo → Rename… in the Mac menu).",
+          "Open Info \u2192 Rename\u2026 (or Photo \u2192 Rename\u2026 in the Mac menu).",
           "Enter a Template such as {custom}_{sequence}. Set Custom text and Start at as needed.",
           "Review the before-and-after filenames in the preview.",
           "Click Rename to apply."
@@ -1121,18 +1218,18 @@
         "steps": [
           "Choose the folder or collection and filters that define the photos you want to review.",
           "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
-          "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
+          "On Mac, choose Photo \u2192 Move Rejected Photos to Trash\u2026, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.",
           "Read the photo count in the confirmation and confirm only when it matches your intended set."
         ],
         "tips": [
           "Adjacent XMP sidecars move with the originals, except shared XMP stays with any paired original left in the library. Hidden RAW or JPEG companions stay in the library; choose Both files in paired-capture settings to include them.",
-          "Move Rejected Photos to Trash skips virtual copies. Use Photo actions → Delete virtual copy to remove a copy without touching its original."
+          "Move Rejected Photos to Trash skips virtual copies. Use Photo actions \u2192 Delete virtual copy to remove a copy without touching its original."
         ]
       },
       {
         "title": "Recover a mistaken removal",
         "paragraphs": [
-          "Use Finder’s Trash on Mac, the desktop Trash on Linux, or the Recycle Bin on Windows to restore the original and its sidecars to their previous folder, then rescan in LightTable. The app does not have an in-app Trash browser."
+          "Use Finder\u2019s Trash on Mac, the desktop Trash on Linux, or the Recycle Bin on Windows to restore the original and its sidecars to their previous folder, then rescan in LightTable. The app does not have an in-app Trash browser."
         ]
       }
     ],
@@ -1149,7 +1246,7 @@
       },
       {
         "path": "web/app.js",
-        "anchor": "const rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);"
+        "anchor": "rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);"
       },
       {
         "path": "web/app.js",
@@ -1157,7 +1254,7 @@
       },
       {
         "path": "app/main.swift",
-        "anchor": "title: L(\"Move Rejected Photos to Trash…\")"
+        "anchor": "title: L(\"Move Rejected Photos to Trash\u2026\")"
       },
       {
         "path": "app/main.swift",
@@ -1194,7 +1291,7 @@
       {
         "title": "Add searchable keywords",
         "paragraphs": [
-          "Open Info on the active photo. Enter keywords in Add keywords and click Add to photo or press Enter. Commas separate keywords; Settings → Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
+          "Open Info on the active photo. Enter keywords in Add keywords and click Add to photo or press Enter. Commas separate keywords; Settings \u2192 Files & Metadata can also enable semicolon separators and catalog keyword suggestions.",
           "Use a hierarchical path such as Places > Boston to keep related terms together. The Keyword tree lists catalog terms; click a term to search, or double-click it to rename that catalog keyword."
         ],
         "tips": [
@@ -1215,7 +1312,7 @@
       {
         "title": "Describe the photo",
         "paragraphs": [
-          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo’s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
+          "In Info, expand Description for title, caption, and headline; Rights for creator, copyright, and credit; or Place for location and coordinates. Changes save to the catalog as you type. Open in Maps is available after this photo\u2019s metadata loads and both latitude and longitude are valid. It opens the location in your browser.",
           "Apply to selection copies the current metadata form to selected photos, including its blank fields. Review the whole form first. Metadata is included in exports according to the export recipe; editing these fields does not rewrite the original image file."
         ]
       }
@@ -1291,7 +1388,7 @@
           "Capture-time corrections change catalog dates used for capture-date sorting and exported metadata. Original image files and filesystem dates stay unchanged."
         ],
         "steps": [
-          "Select the affected photos and open Info → Correct capture time.",
+          "Select the affected photos and open Info \u2192 Correct capture time.",
           "Enter Shift clock by hours, such as -1 or 5.5.",
           "Optionally enter Assign time zone as an offset such as -04:00 or +05:30. Leave it blank to keep the existing zone, or enter remove to clear it.",
           "Choose whether to Include RAW + JPEG companions.",
@@ -1303,7 +1400,7 @@
         "title": "Restore a correction",
         "paragraphs": [
           "Assigning a time zone does not also shift the camera clock. Use the shift field when the displayed time itself is wrong.",
-          "Undo last correction reverses the most recent correction held in this window. Restore camera times… previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged."
+          "Undo last correction reverses the most recent correction held in this window. Restore camera times\u2026 previews removing catalog corrections; review the preview and apply it to restore original camera times. Capture-time steps are also available in History. When XMP writing is enabled, resetting a correction restores the sidecar dates saved before LightTable applied it. Capture dates in older sidecars without that saved date remain unchanged."
         ]
       }
     ],
@@ -1362,7 +1459,7 @@
           "Preview compatibility reports matches in the current library without changing it. Photos not yet added may show as unmatched in the preview; importing with Add the photo folders enabled registers available originals before matching again."
         ],
         "steps": [
-          "Open Folders ••• → Import catalog…, or choose Import from Lightroom in setup.",
+          "Open Folders \u2022\u2022\u2022 \u2192 Import catalog\u2026, or choose Import from Lightroom in setup.",
           "Choose the .lrcat file and review its counts and warnings.",
           "Choose the categories to import, the policy for existing edits, and whether to add the referenced photo folders.",
           "Click Preview compatibility and review mapped and skipped settings. Try 20 variants creates separate trial edits before a larger import.",
@@ -1372,8 +1469,8 @@
       {
         "title": "Review translated edits",
         "paragraphs": [
-          "Develop settings are approximate and cannot promise Lightroom’s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
-          "Folders ••• → Import sidecars… is a separate action for reading supported metadata from adjacent sidecars. It applies develop settings and crop only when you turn those options on. Its results dialog shows progress, applied counts, skipped settings, and errors."
+          "Develop settings are approximate and cannot promise Lightroom\u2019s rendered appearance. Unsupported local masks, camera profiles, .lrcat-data AI masks or LUT payloads, and unsupported smart-collection rules are reported as skipped. Imported develop settings turn Film off.",
+          "Folders \u2022\u2022\u2022 \u2192 Import sidecars\u2026 is a separate action for reading supported metadata from adjacent sidecars. It applies develop settings and crop only when you turn those options on. Its results dialog shows progress, applied counts, skipped settings, and errors."
         ]
       }
     ],
@@ -1444,8 +1541,8 @@
         "title": "What comes across",
         "paragraphs": [
           "From a Lightroom Classic catalog: photos stay in their current folders and are referenced, not copied. The importer reads ratings, flags, labels, and IPTC fields; keywords; collections and supported smart collections; stacks; virtual copies; crop and straightening; approximate develop settings; and, when chosen, edit history. Your .lrcat file is never changed.",
-          "From XMP sidecars beside your photos: star ratings, pick and reject flags, standard colour labels, keywords, and descriptive IPTC fields. Folders ••• → Import sidecars… can also apply develop settings and crop when you turn those options on.",
-          "Both routes use the same converter, so a setting maps the same way whichever way it arrives: tone, white balance offsets, texture, clarity, dehaze, the colour mixer, black and white conversion with its mixer, point curves, vignette amount, sharpening, and noise reduction. A value outside LightTable’s range, such as exposure beyond ±5 EV, is clamped and named in the report."
+          "From XMP sidecars beside your photos: star ratings, pick and reject flags, standard colour labels, keywords, and descriptive IPTC fields. Folders \u2022\u2022\u2022 \u2192 Import sidecars\u2026 can also apply develop settings and crop when you turn those options on.",
+          "Both routes use the same converter, so a setting maps the same way whichever way it arrives: tone, white balance offsets, texture, clarity, dehaze, the colour mixer, black and white conversion with its mixer, point curves, vignette amount, sharpening, and noise reduction. A value outside LightTable\u2019s range, such as exposure beyond \u00b15 EV, is clamped and named in the report."
         ]
       },
       {
@@ -1458,19 +1555,19 @@
       {
         "title": "Vocabulary",
         "paragraphs": [
-          "Collections are collections here as well; the cloud app’s albums arrive only through a Lightroom Classic catalog.",
+          "Collections are collections here as well; the cloud app\u2019s albums arrive only through a Lightroom Classic catalog.",
           "Pick and Reject flags work the same way, and the bottom rail shows them for the selected photos.",
           "Develop is called Edit. Film is off by default for new and imported photos; turn it on when you want a film treatment on top of the edit.",
-          "Camera profile in Edit lists the Adobe DCP profiles that Camera Raw or Lightroom installed on this computer, or the Camera profile folder chosen in Settings. Profiles apply approximately and only to the Film-off develop."
+          "Camera profile in Edit offers the bundled LightTable Standard look and the DCP profiles in your camera profile folder, which on macOS and Windows defaults to the profiles that Camera Raw or Lightroom installed. A profile’s colour matrices are applied to the RAW decode following the DNG specification; its look and tone curve apply to the Film-off develop."
         ]
       },
       {
         "title": "Import your presets",
         "paragraphs": [
-          "Presets → Manage… → Import… accepts Lightroom and Camera Raw .xmp presets, legacy .lrtemplate presets, and Capture One .costyle styles. After a catalog or folder import, setup also offers Import presets…. Each imported preset shows how many settings mapped and which were skipped before you apply it."
+          "Presets \u2192 Manage\u2026 \u2192 Import\u2026 accepts Lightroom and Camera Raw .xmp presets, legacy .lrtemplate presets, and Capture One .costyle styles. After a catalog or folder import, setup also offers Import presets\u2026. Each imported preset shows how many settings mapped and which were skipped before you apply it."
         ],
         "steps": [
-          "Open Presets, click Manage…, then Import… and choose the preset files or, in the Mac app, a whole preset folder.",
+          "Open Presets, click Manage\u2026, then Import\u2026 and choose the preset files or, in the Mac app, a whole preset folder.",
           "Review the conversion report, then apply the preset from Yours."
         ]
       }
@@ -1513,7 +1610,7 @@
       },
       {
         "path": "web/index.html",
-        "anchor": "Applied approximately, to the Film-off develop only."
+        "anchor": "Colour matrices apply to the RAW decode; the look applies to the Film-off develop."
       },
       {
         "path": "web/first-run.js",
@@ -1543,7 +1640,7 @@
       {
         "title": "Read metadata from another editor",
         "paragraphs": [
-          "Ask the other editor to save its metadata to adjacent XMP files, then choose Folders ••• → Import sidecars…. The action reads the catalog’s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
+          "Ask the other editor to save its metadata to adjacent XMP files, then choose Folders \u2022\u2022\u2022 \u2192 Import sidecars\u2026. The action reads the catalog\u2019s originals, including all pages of large libraries up to 100,000 photos per import. Virtual copies keep their own metadata.",
           "Supported metadata includes star ratings, pick/reject marks, standard color labels, flat and hierarchical keywords, and descriptive IPTC fields. An explicit empty value clears that field; an absent value leaves it unchanged. Custom color labels that do not match a LightTable color are reported as skipped.",
           "The importer reads supported Photo Mechanic and digiKam metadata conventions. Each application has additional conventions, so review a small sample in both applications before exchanging a whole library. Develop settings and crop are applied only when you turn those options on in the Import sidecars dialog."
         ]
@@ -1551,7 +1648,7 @@
       {
         "title": "Write changes beside originals",
         "paragraphs": [
-          "Turn on automatic XMP writing in Settings → Files & Metadata. LightTable queues changed fields and writes them beside available originals. It preserves unrelated metadata and saves a backup of the existing sidecar before first updating it. Offline or failed writes stay queued for retry.",
+          "Turn on automatic XMP writing in Settings \u2192 Files & Metadata. LightTable queues changed fields and writes them beside available originals. It preserves unrelated metadata and saves a backup of the existing sidecar before first updating it. Offline or failed writes stay queued for retry.",
           "If another application changes the same XMP property after the last read or sync, LightTable reports a conflict and leaves that sidecar unchanged. Review the external metadata, then import sidecars to accept those metadata values before making further changes in LightTable.",
           "Use either photo.xmp or photo.RAW.xmp for one original. If both are present, import and sync report the ambiguity instead of choosing one. Keep one naming convention after checking their contents.",
           "XMP exchanges supported metadata; it is not a complete catalog backup. Keep catalog backups for collections, history, and variants, and enable portable LightTable edits when you need the full editing recipe to travel with a folder."

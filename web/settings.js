@@ -191,6 +191,7 @@ export function installSettings(context) {
     byId('newPhotoLensProfile').checked = defaults.lensProfileAuto !== false;
     byId('newPhotoWorkflow').value = defaults.workflow || 'authentic';
     byId('newPhotoDevelopProfile').value = defaults.developProfile || 'standard';
+    byId('newPhotoCameraProfile').value = defaults.cameraProfile === 'builtin' ? 'builtin' : 'standard';
     const presets = await fetch('/api/presets').then((response) => response.json())
       .catch(() => []);
     byId('newPhotoPreset').replaceChildren(new Option(tr("None"), ''),
@@ -328,12 +329,13 @@ export function installSettings(context) {
     lensProfileAuto: byId('newPhotoLensProfile').checked,
     workflow: byId('newPhotoWorkflow').value,
     developProfile: byId('newPhotoDevelopProfile').value,
+    cameraProfile: byId('newPhotoCameraProfile').value,
     preset: byId('newPhotoPreset').value,
     } }, tr('Saved · applies to unedited photos'));
     await context.reloadDefaults();
   };
   for (const id of ['newPhotoFilmEnabled', 'newPhotoLensProfile', 'newPhotoWorkflow',
-    'newPhotoDevelopProfile', 'newPhotoPreset']) {
+    'newPhotoDevelopProfile', 'newPhotoCameraProfile', 'newPhotoPreset']) {
     byId(id).addEventListener('change', saveDefaults);
   }
   byId('backupDirectory').addEventListener('change', (event) =>

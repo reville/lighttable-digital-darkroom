@@ -45,8 +45,9 @@ import {
   LABELS, LABEL_KEYS, LABEL_COLORS, LABEL_TITLES, KEY_SCHEMES,
   cleanLabel, labelSwatch, renderLabelRow,
 } from '/web/labels.js';
-import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally, aiSkippedSummary } from '/web/local-ai.js';
+import { CULL_SELECT, CULL_REJECT, cullVerdict, cullMatches, cullTally, aiSkippedSummary, aiSearchTerms } from '/web/local-ai.js';
 import { createSurvey } from '/web/survey.js';
+import { createLibraryView } from '/web/library-view.js';
 import { createHistoryPanel } from '/web/history-panel.js';
 import { createMetadataPanel } from '/web/metadata-panel.js';
 import { createCatalogUI } from '/web/catalog-ui.js';
@@ -64,6 +65,8 @@ installDialogFocus();
 /* Declared here, built at the end of the file once every function they close
  * over exists, so start-up code never touches a `const` before it exists. */
 let SURVEY = null;
+/* The server-ordered view behind the grid in catalog mode; null in folder mode. */
+let LIBRARY_VIEW = null;
 let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
@@ -134,6 +137,29 @@ const RESET_GROUPS = {
   optics: ['chromaticAberrationRedCyan', 'chromaticAberrationBlueYellow'],
 };
 const S = createAppState(GRADE_DEFAULTS, OPTICS_DEFAULTS);
+
+/* The rows the window holds, keyed by name. In folder mode this is the whole
+ * folder; in catalog mode it is a bounded pool fed by the server view, so a
+ * lookup by name must never walk the catalog. */
+const IMAGE_POOL = new Map();
+function setImagePool(images) {
+  S.images = images;
+  IMAGE_POOL.clear();
+  for (const image of images) IMAGE_POOL.set(image.name, image);
+}
+function poolImage(name) {
+  return IMAGE_POOL.get(name) || null;
+}
+function poolAdd(image) {
+  const existing = IMAGE_POOL.get(image.name);
+  if (existing) return existing;
+  IMAGE_POOL.set(image.name, image);
+  S.images.push(image);
+  return image;
+}
+function poolIndex(image) {
+  return image ? S.images.indexOf(image) : -1;
+}
 S.priorPhotoSettings = null;
 const photoUndo = createPhotoUndoHistory();
 const APP_PREFS = {};
@@ -271,7 +297,7 @@ function nativeMenuState() {
   return {
     ready: !!S.params,
     textEditing: menuTextEditing(),
-    hasImages: S.images.length > 0,
+    hasImages: S.images.length > 0 || visible().length > 0,
     hasPhoto: !!image,
     editablePhoto: !!image && !isVideo(image),
     canCopyPhoto: !!image && !isVideo(image) && !!S.params && S.editingName === image.name &&
@@ -284,7 +310,8 @@ function nativeMenuState() {
     currentLabel: cleanLabel(image?.label),
     hasPreviousPhoto: visibleIndex > 0,
     hasNextPhoto: visibleIndex >= 0 && visibleIndex < ordered.length - 1,
-    hasRejected: visible().some((item) => item.status === 'skipped'),
+    hasRejected: S.catalogEnabled && S.scopeCounts
+      ? S.scopeCounts.skipped > 0 : visible().some((item) => item?.status === 'skipped'),
     canUndo: S.undo.length > 0,
     canRedo: S.redo.length > 0,
     canPaste: !!S.clipboard && targets.length > 0,
@@ -301,6 +328,7 @@ function nativeMenuState() {
     canUnstack: targets.some((item) => !!stackForImage(item.name)),
     canAddToCollection: !!collection && collection.type === 'regular' &&
       targets.length > 0,
+    canUseQuickCollection: !!S.catalogEnabled && targets.length > 0,
     catalogEnabled: !!S.catalogEnabled,
     viewMode: S.viewMode,
     activePane: S.activePane,
@@ -410,6 +438,7 @@ function performNativeMenuCommand(command) {
       case 'newCollection': $('addCollection').click(); break;
       case 'newSmartCollection': $('addSmartCollection').click(); break;
       case 'addToCollection': $('addToCollection').click(); break;
+      case 'toggleQuickCollection': void toggleQuickCollection(); break;
       case 'virtualCopy': $('virtualCopyBtn').click(); break;
       case 'deleteVirtualCopy': $('deleteVirtualBtn').click(); break;
       case 'stack': $('stackBtn').click(); break;
@@ -447,6 +476,7 @@ function performNativeMenuCommand(command) {
       case 'importPreset': $('presetImport').click(); break;
       case 'exportPreset': $('presetExport').click(); break;
       case 'survey': openSurvey('survey'); break;
+      case 'compareTwo': openSurvey('compare'); break;
       case 'toggleLibrary': $('leftPanelToggle').click(); break;
       case 'toggleFilmstrip': $('filmstripToggle').click(); break;
       case 'compare': setCompareActive(!S.compareActive); break;
@@ -1202,6 +1232,13 @@ function displaySourcePixelWidth() {
 }
 
 function viewportRegionEnabled() {
+  // The server now accepts a viewport request for a raw-transport (WebGL)
+  // client too (see render_preview's `want_surface` gate in server.py), but
+  // presenting a viewport tile also needs the Metal presenter's virtual-canvas
+  // compositing (positioning a partial-frame texture at an offset while
+  // panning, tracking S.nativeViewport). The WebGL/raw path does not have
+  // that yet, so it keeps requesting whole frames; see the "Viewport tiling"
+  // note in docs/platforms/gpu-preview-design.md. Restrict to native for now.
   return nativePreviewActive() && $('engine').value === 'rs' &&
     S.zoomMode === '100' && S.params.profile_enabled !== false &&
     S.presentedPhotoName === cur()?.name && !S.crop && !S.cropSession &&
@@ -1716,11 +1753,6 @@ function resizeMaskValues(source, sourceWidth, sourceHeight, width, height) {
 }
 
 function canvasGeometryValues(component, width, height) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, width, height);
   if (component.type === 'linear') {
     /* Judge a collapsed gradient in normalized coordinates, exactly as
      * edits.py does. A one-pixel test answers differently on this canvas than
@@ -1732,16 +1764,21 @@ function canvasGeometryValues(component, width, height) {
     }
     const sx = component.start[0] * (width - 1);
     const sy = component.start[1] * (height - 1);
-    const ex = component.end[0] * (width - 1);
-    const ey = component.end[1] * (height - 1);
-    const gradient = ctx.createLinearGradient(sx, sy, ex, ey);
-    for (let index = 0; index <= 16; index++) {
-      const position = index / 16;
-      const value = Math.round(smoothStep(0, 1, position) * 255);
-      gradient.addColorStop(position, `rgb(${value},${value},${value})`);
+    const dx = component.end[0] * (width - 1) - sx;
+    const dy = component.end[1] * (height - 1) - sy;
+    const denominator = dx * dx + dy * dy;
+    /* Feather is the width of the transition band as a share of the span,
+     * centred between the two handles; zero is a hard edge at the midpoint.
+     * The same expression, pixel for pixel, lives in edits._raster_component
+     * and rust-engine/src/export.rs so the export matches this preview. */
+    const half = clamp(+(component.feather ?? 1), 0, 1) / 2;
+    const values = new Uint8Array(width * height);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const projection = ((x - sx) * dx + (y - sy) * dy) / denominator;
+      const weight = half <= 0 ? +(projection >= 0.5) : smoothStep(0.5 - half, 0.5 + half, projection);
+      values[y * width + x] = Math.round(weight * 255);
     }
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    return values;
   } else {
     const minimum = Math.min(width, height);
     const cx = component.center[0] * (width - 1);
@@ -1759,12 +1796,6 @@ function canvasGeometryValues(component, width, height) {
     }
     return values;
   }
-  const pixels = ctx.getImageData(0, 0, width, height).data;
-  const values = new Uint8Array(width * height);
-  for (let index = 0; index < values.length; index++) {
-    values[index] = pixels[index * 4];
-  }
-  return values;
 }
 
 function componentGeometryValues(component, width, height) {
@@ -1894,7 +1925,8 @@ function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
   const active = canvas.width && canvas.height &&
-    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+    (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+     (S.activePane === 'cropPane' && S.geometryGuideMode));
   const geometry = active ? screenOverlayGeometry(
     canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
     $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
@@ -2037,6 +2069,24 @@ function drawEditOverlayNow() {
     }
     if (cursor === 'none') drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    const drawGuide = (points, kind, live) => {
+      const [[x0, y0], [x1, y1]] = points;
+      ctx.save();
+      ctx.lineWidth = live ? 1.5 : 2;
+      ctx.strokeStyle = kind === 'horizontal' ? '#f5384b' : '#4b9cf5';
+      ctx.globalAlpha = live ? 0.75 : 1;
+      ctx.beginPath();
+      ctx.moveTo(x0 * surface.width, y0 * surface.height);
+      ctx.lineTo(x1 * surface.width, y1 * surface.height);
+      ctx.stroke();
+      ctx.restore();
+    };
+    for (const guide of S.geometryGuides) drawGuide(guide.points, guide.kind, false);
+    const gesture = S.editGesture;
+    if (gesture?.type === 'geometry-guide' && gesture.end) {
+      drawGuide([gesture.start, gesture.end], S.geometryGuideKind, true);
+    }
   }
 }
 
@@ -2215,7 +2265,7 @@ function renderEditItems(kind) {
   }
   list.forEach((item, index) => {
     const row = document.createElement('div');
-    row.className = 'edit-item' + (item.id === selectedId ? ' on' : '');
+    row.className = 'edit-item' + (isMask ? ' mask-item' : '') + (item.id === selectedId ? ' on' : '');
     const button = document.createElement('button');
     button.className = 'edit-item-main';
     button.type = 'button';
@@ -2266,11 +2316,21 @@ function renderEditItems(kind) {
       more.textContent = '×'; more.title = tr("Delete correction"); more.setAttribute('aria-label', tr("Delete correction {value}", {value: index + 1}));
       more.onclick = (event) => { event.stopPropagation(); deleteHeal(item.id); };
     }
-    row.append(button, visibility, more);
+    if (isMask) {
+      const duplicate = document.createElement('button');
+      duplicate.className = 'item-more item-duplicate'; duplicate.type = 'button';
+      duplicate.textContent = '⧉'; duplicate.title = tr("Duplicate mask");
+      duplicate.setAttribute('aria-label', tr("Duplicate {itemName}", {itemName: item.name}));
+      duplicate.disabled = S.masks.length >= MAX_MASKS;
+      duplicate.onclick = (event) => { event.stopPropagation(); duplicateMask(item.id); };
+      row.append(button, visibility, duplicate, more);
+    } else row.append(button, visibility, more);
     host.appendChild(row);
   });
 }
 
+const MASK_SHAPE_CONTROLS = [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
+  ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']];
 function syncMaskPanel() {
   renderEditItems('mask');
   MASK_CURVE?.sync();
@@ -2289,6 +2349,7 @@ function syncMaskPanel() {
   $('maskControls').hidden = !mask;
   if (!mask) { syncOverlayCursorClass(); return; }
   $('maskSelectedName').textContent = mask.name;
+  $('maskDuplicate').disabled = S.masks.length >= MAX_MASKS;
   $('maskVisible').checked = mask.enabled !== false;
   $('maskInvert').checked = !!mask.invert;
   $('maskOpacity').value = mask.opacity;
@@ -2329,9 +2390,10 @@ function syncMaskPanel() {
   const brushing = mask.type === 'brush' || !!S.maskRefineMode;
   document.querySelectorAll('.mask-brush-control').forEach((row) => { row.hidden = !brushing; });
   $('maskBrushToleranceRow').hidden = !brushing || !S.brushAutoMask;
-  $('maskShapeControls').hidden = mask.type !== 'radial';
-  if (mask.type === 'radial') for (const [id, key] of [
-    ['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'], ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+  $('maskShapeControls').hidden = !['radial', 'linear'].includes(mask.type);
+  document.querySelectorAll('.mask-radial-shape').forEach((row) => { row.hidden = mask.type !== 'radial'; });
+  if (mask.type === 'radial' || mask.type === 'linear') for (const [id, key] of MASK_SHAPE_CONTROLS) {
+    if (mask.type === 'linear' && key !== 'feather') continue;
     $(id).value = mask[key];
     $(id + 'V').textContent = key === 'angle' ? `${Math.round(mask[key])}°` : `${Math.round(mask[key] * 100)}%`;
   }
@@ -2489,7 +2551,7 @@ function addMask(type) {
     intersectStrokes: [],
   };
   if (type === 'brush') mask.strokes = [];
-  else if (type === 'linear') { mask.start = [0.25, 0.5]; mask.end = [0.75, 0.5]; }
+  else if (type === 'linear') { mask.start = [0.25, 0.5]; mask.end = [0.75, 0.5]; mask.feather = 1; }
   else { mask.center = [0.5, 0.5]; mask.radius = 0.25; mask.feather = 0.65; }
   const normalized = normalizeMasks([mask])[0];
   S.masks.push(normalized); S.selectedMaskId = normalized.id; S.maskTextureDirty = true;
@@ -2609,6 +2671,26 @@ function deleteMask(id = S.selectedMaskId) {
   syncMaskPanel(); drawGrade(); saveState();
 }
 $('maskDelete').onclick = () => deleteMask();
+/* A duplicate is a deep copy inserted directly after its source: components,
+ * brush and refinement strokes, Auto Mask edge bitmaps, the local grade and
+ * its curves all travel with it, under fresh mask and component identities so
+ * the raster caches and stroke caches never confuse the two. */
+function duplicateMask(id = S.selectedMaskId) {
+  const index = S.masks.findIndex((mask) => mask.id === id);
+  if (index < 0) return null;
+  if (S.masks.length >= MAX_MASKS) { toast(tr("Up to sixteen local masks can be active")); return null; }
+  const source = S.masks[index];
+  const copy = normalizeMasks([{ ...cloneValue({ ...source, components: maskComponents(source) }),
+    id: null, name: tr('{name} copy', {name: source.name}).slice(0, 60) }])[0];
+  copy.components.forEach((component) => { component.id = editId('component'); });
+  pushUndo();
+  S.masks.splice(index + 1, 0, copy);
+  S.selectedMaskId = copy.id; S.maskTextureDirty = true;
+  S.maskCreateOpen = false; S.maskRefineMode = copy.type === 'brush' ? 'add' : null;
+  syncMaskPanel(); drawGrade(); saveState();
+  return copy;
+}
+$('maskDuplicate').onclick = () => duplicateMask();
 $('maskRename').onclick = async () => {
   const mask = selectedMask(); if (!mask) return;
   const photoName = cur()?.name;
@@ -2641,11 +2723,13 @@ $('maskBrushAutoMask').onchange = () => {
 MASK_CURVE = installMaskCurve({canvas: $('maskCurve'), reset: $('maskCurveReset'),
   channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo, dropUndo,
   changed: () => drawGrade(), save: () => saveState()});
-for (const [id, key] of [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
-  ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+for (const [id, key] of MASK_SHAPE_CONTROLS) {
   $(id).addEventListener('pointerdown', pushUndo);
   $(id).addEventListener('input', () => {
-    const mask = selectedMask(); if (mask?.type !== 'radial') return;
+    const mask = selectedMask();
+    // A linear gradient's only shape slider is Feather; its geometry is the
+    // two handles on the photo.
+    if (!(mask?.type === 'radial' || (mask?.type === 'linear' && key === 'feather'))) return;
     mask[key] = +$(id).value;
     S.maskTextureDirty = true; syncMaskPanel(); drawGrade();
   });
@@ -3180,6 +3264,11 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
     syncHealPanel(); drawEditOverlay();
     // The new spot reaches Metal in the same coalesced frame as the overlay.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    $('editOverlay').setPointerCapture(event.pointerId);
+    S.editGesture = { type: 'geometry-guide', pointerId: event.pointerId,
+      start: point, end: point, rect };
+    drawEditOverlay();
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3250,10 +3339,32 @@ $('editOverlay').addEventListener('pointermove', (event) => {
     // A moved spot shares the overlay's animation frame; the WebGL fallback
     // only redraws the overlay until the gesture ends.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+  } else if (S.activePane === 'cropPane' && gesture.type === 'geometry-guide') {
+    gesture.end = point;
+    drawEditOverlay();
   }
 });
 function finishEditGesture(event) {
   if (!S.editGesture || S.editGesture.pointerId !== event.pointerId) return;
+  if (S.editGesture.type === 'geometry-guide') {
+    const gesture = S.editGesture;
+    S.editGesture = null;
+    if ($('editOverlay').hasPointerCapture(event.pointerId)) {
+      $('editOverlay').releasePointerCapture(event.pointerId);
+    }
+    if (event.type === 'pointerup') {
+      const end = overlayPoint(event, gesture.rect);
+      const length = Math.hypot((end[0] - gesture.start[0]) * gesture.rect.width,
+        (end[1] - gesture.start[1]) * gesture.rect.height);
+      if (length >= 8 && S.geometryGuides.length < 4) {
+        S.geometryGuides.push({ kind: S.geometryGuideKind,
+          points: [gesture.start, end] });
+        syncGuidedPanel();
+      }
+    }
+    drawEditOverlay();
+    return;
+  }
   if (S.editGesture.type === 'mask-color-sample') {
     const gesture = S.editGesture;
     S.editGesture = null;
@@ -3664,7 +3775,7 @@ async function runEditRecoveryJourney() {
 
 async function runNativeSmokeJourney(width, layer = 'pr') {
   const startImage = cur()?.name || null;
-  const next = visible().find((image) => image.name !== startImage);
+  const next = visible().find((image) => image && image.name !== startImage);
   if (!startImage || !next) {
     throw new Error('Native smoke journey requires two visible photos');
   }
@@ -4036,6 +4147,10 @@ async function doRender(scheduledAt = performance.now(), options = {}) {
       // computed that could not be displayed.
       allow_draft: phase === 'navigation',
       native: nativePreviewActive(),
+      // Ask for the resident RGBA8 surface instead of a JPEG whenever there
+      // is no Metal presenter to feed; a plain browser (this review server,
+      // or the Windows/Linux shell) uploads it straight to a WebGL texture.
+      raw: !nativePreviewActive() && rawPreviewTransportSupported(),
       ...(viewport ? { viewport } : {}),
     };
     if (phase === 'navigation') {
@@ -4504,6 +4619,73 @@ function rememberPresentedRender(state, identity, backend, timing) {
   state.presentedBackend = backend;
 }
 
+// True whenever the browser can fetch the resident preview surface as raw
+// bytes and hand them straight to WebGL: no <img>/JPEG decode. Supported by
+// every engine that runs the Windows/Linux shell (and a plain review
+// browser); guarded defensively rather than platform-sniffed.
+function rawPreviewTransportSupported() {
+  return typeof fetch === 'function' && typeof Uint8Array !== 'undefined';
+}
+
+// Fetches the engine's packed RGBA8 preview surface over the existing
+// keep-alive HTTP connection and uploads it directly as a WebGL texture:
+// the non-Metal equivalent of setNativeBaseImage's zero-copy presentation,
+// used on Windows/Linux (and this review server) in place of a JPEG <img>.
+async function setRawBaseImage(surface, {
+  preserveCanvasSize = false, generation = null, cacheKey = null,
+} = {}) {
+  const startedAt = performance.now();
+  let buffer;
+  try {
+    const response = await fetch(surface.url);
+    if (!response.ok) throw new Error(`raw preview fetch failed (${response.status})`);
+    buffer = await response.arrayBuffer();
+  } catch {
+    return null; // caller falls back to the JPEG transport
+  }
+  if (generation !== null && generation !== S.seq) {
+    const cancelledAt = performance.now();
+    return { decodeMs: cancelledAt - startedAt, uploadMs: 0,
+      uploadedAt: cancelledAt, cancelled: true };
+  }
+  const headerBytes = surface.headerBytes || 16;
+  const header = new DataView(buffer, 0, headerBytes);
+  const magic = String.fromCharCode(
+    header.getUint8(0), header.getUint8(1), header.getUint8(2), header.getUint8(3));
+  const width = header.getUint32(4, true);
+  const height = header.getUint32(8, true);
+  const rowBytes = header.getUint32(12, true);
+  if (magic !== 'FLRA' || rowBytes !== width * 4 || width <= 0 || height <= 0 ||
+      buffer.byteLength < headerBytes + rowBytes * height) {
+    return null; // malformed surface; fall back to JPEG rather than fail
+  }
+  const pixels = new Uint8Array(buffer, headerBytes, rowBytes * height);
+  const decodedAt = performance.now();
+  if (!S.gl) {
+    try { S.gl = new GradeRenderer($('cv')); }
+    catch (e) {
+      toast(tr("WebGL unavailable: {eMessage}", {eMessage: e.message}));
+      return { decodeMs: decodedAt - startedAt, uploadMs: 0,
+        uploadedAt: performance.now(), failed: true,
+        error: previewFailureMessage(tr('WebGL preview could not be initialized'), e) };
+    }
+    browserOriginalTextureURL = null;
+    browserReferenceTextureURL = null;
+  }
+  const { textureCacheHit } = S.gl.setImageFromRaw(
+    pixels, width, height, { resizeCanvas: !preserveCanvasSize, cacheKey });
+  installBrowserOriginal();
+  installBrowserReference();
+  S.maskTextureDirty = true;
+  const uploadedAt = performance.now();
+  drawGrade();
+  scheduleHistogram(true);
+  applyCropVisual();
+  cropFrameScheduler.flush();
+  return { decodeMs: decodedAt - startedAt, uploadMs: uploadedAt - decodedAt,
+    uploadedAt, textureCacheHit };
+}
+
 async function setBaseImage(render, generation, { preserveCanvasSize = false } = {}) {
   const previousGradeState = [S.presentedGradeKey, S.gradeEditsBaked];
   S.presentedGradeKey = render.previewGradeKey ?? null;
@@ -4522,9 +4704,18 @@ async function setBaseImage(render, generation, { preserveCanvasSize = false } =
   S.previewLoadGeneration = generation;
   let timing;
   try {
-    timing = native
-      ? await setNativeBaseImage(render, generation, { preserveCanvasSize })
-      : await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+    if (native) {
+      timing = await setNativeBaseImage(render, generation, { preserveCanvasSize });
+    } else if (render.native && rawPreviewTransportSupported()) {
+      timing = await setRawBaseImage(render.native, { generation, preserveCanvasSize, cacheKey: identity });
+      // A raw fetch can fail (network hiccup, unsupported response); the
+      // JPEG the server already keeps as a fallback still presents.
+      if (!timing && render.img) {
+        timing = await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+      }
+    } else {
+      timing = await setWebGLBaseImage(render.img, { generation, preserveCanvasSize, cacheKey: identity });
+    }
     if (generation === S.seq && timing.failed) {
       [S.presentedGradeKey, S.gradeEditsBaked] = previousGradeState;
     }
@@ -4856,6 +5047,7 @@ async function prefetchImage(target, epoch, generation, detail = false) {
       // The small pass must not start a demosaic; the detail pass may.
       ...(detail ? {} : { prepared_only: true }),
       native: nativePreviewActive(),
+      raw: !nativePreviewActive() && rawPreviewTransportSupported(),
     };
     const key = renderRequestKey(target, request);
     const result = presentationCache.get(key) || await api('/api/render', request);
@@ -5051,7 +5243,7 @@ window.addEventListener('beforeunload', (event) => {
   event.returnValue = '';
 });
 
-function saveState(immediate = false) {
+function saveState(immediate = false, { historyLabel = null } = {}) {
   _controlDirty = false;
   globalThis._controlDirty = false;
   if (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review') return Promise.resolve(true);
@@ -5069,7 +5261,7 @@ function saveState(immediate = false) {
   const current = JSON.stringify(edits);
   const pending = editSaveQueue.getPending(im.name);
   const history = current !== _lastHistorySnapshot
-    ? { label: PANE_STEP_LABELS[S.activePane] || 'Edit', state: edits }
+    ? { label: historyLabel || PANE_STEP_LABELS[S.activePane] || 'Edit', state: edits }
     : pending?.history;
   _lastHistorySnapshot = current;
   const state = { name: im.name, status: im.status, rating: im.rating,
@@ -5085,6 +5277,8 @@ function saveState(immediate = false) {
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
     refreshLists();
+    // The Edited/Unedited filters and smart collections follow the save.
+    scheduleCatalogViewRefresh(1500);
   }
   return immediate ? flushEditSaves() : Promise.resolve(true);
 }
@@ -5135,6 +5329,7 @@ function activeFolderId() {
 }
 
 function collectionScope() {
+  if (S.catalogEnabled && typeof LIBRARY_VIEW !== 'undefined' && LIBRARY_VIEW) return LIBRARY_VIEW.list.filter(Boolean);
   const collection = activeCollection();
   if (!collection) return S.images.filter(inFolderScope);
   if (collection.type === 'smart') {
@@ -5165,9 +5360,18 @@ function photoPairs() {
 function linkedMetadataTargets(targets) {
   return pairedTargets(targets, photoPairs(), APP_PREFS.pairRawJPEG !== false && APP_PREFS.linkPairedMetadata === true);
 }
+/* The other half of a RAW+JPEG pair. The server names it on every row in
+ * catalog mode (the hidden half is never paged in); folder mode indexes it. */
+function pairCompanion(image) {
+  if (!image || APP_PREFS.pairRawJPEG === false) return null;
+  if (S.catalogEnabled) {
+    return image.pair ? (poolImage(image.pair) || { name: image.pair, sourceName: image.pair, raw: !image.raw, displayName: image.pair.split('/').pop() }) : null;
+  }
+  return (photoPairs().get(image.name) || []).find(member => member.raw !== image.raw) || null;
+}
 function syncPairControls() {
-  const image = cur(), members = APP_PREFS.pairRawJPEG === false ? [] : photoPairs().get(image?.name) || [];
-  const companion = members.find(member => member.raw !== image?.raw);
+  const image = cur();
+  const companion = pairCompanion(image);
   const button = $('switchPair');
   button.hidden = !companion;
   if (companion) {
@@ -5179,7 +5383,7 @@ function syncPairControls() {
 }
 $('switchPair').onclick = async () => {
   const image = cur();
-  const companion = photoPairs().get(image?.name)?.find(member => member.raw !== image.raw);
+  const companion = pairCompanion(image);
   if (!companion) return;
   pairOverrides.set(pairKey(companion), companion.name);
   invalidateVisibleCache();
@@ -5188,11 +5392,21 @@ $('switchPair').onclick = async () => {
   if (['raw', 'processed'].includes($('kindFilter').value)) $('kindFilter').value = 'all';
   LIBRARY_FILTERS.setTypes([]);
   if (S.msel.delete(image.name)) S.msel.add(companion.name);
-  await go(S.images.indexOf(companion));
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    // The companion takes the pair's slot once the override reaches the server.
+    const result = await LIBRARY_VIEW.setSpec(buildCatalogQuerySpec(), { immediate: true, locate: companion.name });
+    const listed = result?.located != null ? await LIBRARY_VIEW.ensureIndex(result.located) : null;
+    if (listed) await go(poolIndex(listed));
+  } else {
+    await go(S.images.indexOf(companion));
+  }
   refreshLists(); savePrefs();
 };
 
 function visible() {
+  // Catalog mode: the server owns membership and order; this is its sparse
+  // list, holes standing for rows not paged in yet.
+  if (S.catalogEnabled && typeof LIBRARY_VIEW !== 'undefined' && LIBRARY_VIEW) return LIBRARY_VIEW.list;
   const f = $('filter')?.value || 'all';
   const rf = $('ratingFilter')?.value || 'all';
   const kind = $('kindFilter')?.value || 'all';
@@ -5207,7 +5421,8 @@ function visible() {
   const pairMode = pairViewPreference(APP_PREFS);
   const cullKey = `${S.cull.review}|${CULL_SELECT.filter((k) => S.cull.on[k]).join(',')}`
     + `|${CULL_REJECT.filter((k) => S.cull.on[k]).join(',')}|${S.cull.revision}`;
-  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${hideUndisplayable}|${PHOTO_DISPLAY_STATUS.revision}|${search}|${s}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
+  const direction = typeof sortDirection === 'function' ? sortDirection() : '';
+  const cacheKey = `${S.libraryRevision || 0}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${f}|${rf}|${kind}|${labelFilter}|${editState}|${fileTypes.join(",")}|${JSON.stringify(metadata)}|${hideUndisplayable}|${PHOTO_DISPLAY_STATUS.revision}|${search}|${s}|${direction}|${stacksKey}|${pairMode}|${cullKey}|${S.images.length}`;
   if (_cachedVisibleList && _cachedVisibleKey === cacheKey &&
       _cachedVisibleImages === S.images && _cachedVisibleLibrary === S.library) {
     return _cachedVisibleList;
@@ -5267,6 +5482,11 @@ function visible() {
     list = [...list].sort((a, b) =>
       LABELS.indexOf(cleanLabel(a.label)) - LABELS.indexOf(cleanLabel(b.label)));
   }
+  // The natural order above is best rating first and everything else
+  // ascending; the direction toggle flips whichever applies.
+  if (typeof sortDirection === 'function' && (sortDirection() === 'desc') !== (s === 'rating')) {
+    list = [...list].reverse();
+  }
   _visibleEpoch++;
   _cachedVisibleKey = cacheKey;
   _cachedVisibleList = list;
@@ -5310,9 +5530,10 @@ function stripItemPitch() {
 function listKey(list) {
   const len = list.length;
   const sample = len === 0 ? '' : `${list[0]?.name}:${list[len - 1]?.name}:${list[len >> 1]?.name}`;
+  const view = typeof LIBRARY_VIEW !== 'undefined' && LIBRARY_VIEW ? `${LIBRARY_VIEW.key}#${LIBRARY_VIEW.revision}` : '';
   return [S.libraryRevision || 0, $('filter')?.value, $('ratingFilter')?.value, $('kindFilter')?.value,
     _cachedVisibleKey, $('sort')?.value, $('search')?.value, S.activeCollection,
-    S.activeFolder, S.includeSubfolders, len, sample].join('|');
+    S.activeFolder, S.includeSubfolders, len, sample, view].join('|');
 }
 
 function thumbnailURL(im, edge = 240) {
@@ -5571,6 +5792,20 @@ function stackForImage(name) {
   return (S.library.stacks || []).find((stack) => stack.members.includes(name)) || null;
 }
 
+/* A row the view has not paged in yet. It keeps its slot and size so the
+ * scroll position holds; the real cell replaces it when the page lands. */
+const GRID_PLACEHOLDER = Object.freeze({ width: 3, height: 2 });
+function placeholderKey(index) {
+  return `\u0000${index}`;
+}
+function createPlaceholder(kind, index) {
+  const element = document.createElement('div');
+  element.className = `${kind} placeholder`;
+  element.dataset.name = placeholderKey(index);
+  element.setAttribute('aria-hidden', 'true');
+  return element;
+}
+
 function createStripItem(im) {
   const element = document.createElement('div');
   element.innerHTML = `<img loading="lazy" decoding="async">
@@ -5586,7 +5821,7 @@ function createStripItem(im) {
 
 function syncPairBadge(element, im) {
   const badge = element.querySelector('.pair-badge');
-  badge.hidden = APP_PREFS.pairRawJPEG === false || !photoPairs().has(im.name);
+  badge.hidden = APP_PREFS.pairRawJPEG === false || !(S.catalogEnabled ? im.pair : photoPairs().has(im.name));
   badge.textContent = im.raw ? tr("RAW + J") : tr("J + RAW");
   badge.title = tr("RAW + JPEG capture. Switch file in the top bar; edits stay separate.");
 }
@@ -5613,6 +5848,7 @@ function renderStrip(fromScroll = false) {
     end = Math.min(list.length, start + viewportCount + STRIP_OVERSCAN * 2);
   }
   const key = `${listKey(list)}|${start}:${end}`;
+  if (S.catalogEnabled && LIBRARY_VIEW) LIBRARY_VIEW.ensureRange(start, end, 'strip');
   if (key !== _stripKey) {
     _stripKey = key;
     const before = host.querySelector(':scope > .strip-spacer:first-child')
@@ -5621,12 +5857,16 @@ function renderStrip(fromScroll = false) {
     before.style.flexBasis = `${start * itemPitch}px`;
     const ordered = [before];
     const nextElements = new Map();
-    list.slice(start, end).forEach((im) => {
-      const element = _stripEls.get(im.name) || createStripItem(im);
-      syncStripItem(element, im);
-      nextElements.set(im.name, element);
+    for (let index = start; index < end; index++) {
+      const im = list[index];
+      const elementKey = im ? im.name : placeholderKey(index);
+      const element = im
+        ? (_stripEls.get(im.name) || createStripItem(im))
+        : (_stripEls.get(elementKey) || createPlaceholder('thumb', index));
+      if (im) syncStripItem(element, im);
+      nextElements.set(elementKey, element);
       ordered.push(element);
-    });
+    }
     const after = host.querySelector(':scope > .strip-spacer:last-child:not(:first-child)')
       || document.createElement('span');
     after.className = 'strip-spacer';
@@ -5636,12 +5876,14 @@ function renderStrip(fromScroll = false) {
     _stripEls.clear();
     nextElements.forEach((element, name) => _stripEls.set(name, element));
   }
-  list.slice(start, end).forEach((im) => {
+  for (let index = start; index < end; index++) {
+    const im = list[index];
+    if (!im) continue;
     const d = _stripEls.get(im.name);
     if (d) d.className = 'thumb ' + im.status + (im === c ? ' cur' : '')
       + (S.msel.has(im.name) ? ' msel' : '');
     if (d) paintLabelDot(d, im);
-  });
+  }
   if (!fromScroll && activeIndex >= 0) {
     const left = activeIndex * itemPitch;
     const right = left + itemPitch;
@@ -5767,7 +6009,10 @@ function renderGrid() {
     _gridList = list;
     _gridIndexByName.clear();
     list.forEach((im, index) => _gridIndexByName.set(im.name, index));
-    _gridLayout = createGridLayout(list, { width, cell: +$('gridSize').value, photo });
+    // Geometry needs every slot; a hole takes a landscape placeholder until
+    // its page arrives and the real aspect ratio re-lays the grid.
+    _gridLayout = createGridLayout(Array.from(list, (im) => im || GRID_PLACEHOLDER),
+      { width, cell: +$('gridSize').value, photo });
     grid.style.height = `${_gridLayout.height}px`;
     if (anchor && _gridIndexByName.has(anchor.name)) {
       const position = _gridLayout.positions[_gridIndexByName.get(anchor.name)];
@@ -5775,6 +6020,9 @@ function renderGrid() {
     }
   }
   const positions = visibleGridPositions(_gridLayout, gridViewportTop(), library.clientHeight);
+  if (S.catalogEnabled && LIBRARY_VIEW && positions.length) {
+    LIBRARY_VIEW.ensureRange(positions[0].index, positions[positions.length - 1].index + 1, 'grid');
+  }
   const key = `${layoutKey}|${positions.map((p) => p.index).join(',')}`;
   if (layoutChanged || key !== _gridKey) {
     _gridKey = key;
@@ -5782,11 +6030,14 @@ function renderGrid() {
     const nextElements = new Map();
     positions.forEach((position) => {
       const im = list[position.index];
-      const element = _gridEls.get(im.name) || createGridCell(im);
-      syncGridCell(element, im);
+      const elementKey = im ? im.name : placeholderKey(position.index);
+      const element = im
+        ? (_gridEls.get(im.name) || createGridCell(im))
+        : (_gridEls.get(elementKey) || createPlaceholder('cell', position.index));
+      if (im) syncGridCell(element, im);
       Object.assign(element.style, { left: `${position.left}px`, top: `${position.top}px`,
         width: `${position.width}px`, height: `${position.height}px` });
-      nextElements.set(im.name, element);
+      nextElements.set(elementKey, element);
       ordered.push(element);
     });
     reconcileChildren(grid, ordered);
@@ -5795,7 +6046,7 @@ function renderGrid() {
   }
   const c = cur();
   positions.forEach(({ index }) => {
-    const im = list[index], d = _gridEls.get(im.name);
+    const im = list[index], d = im && _gridEls.get(im.name);
     if (!d) return;
     const stack = stackForImage(im.name);
     const isCover = stack && stack.members.find((name) => _gridIndexByName.has(name)) === im.name;
@@ -5821,13 +6072,7 @@ function renderGrid() {
     d.querySelector('.idx').textContent = S.msel?.has(im.name) ? '✓' : '';
     paintLabelDot(d, im);
   });
-  if (S.catalogEnabled && S.images.length < S.catalogTotal && positions.length) {
-    const lastVisible = positions[positions.length - 1].index;
-    if (lastVisible + LIBRARY_CHUNK_SIZE >= S.images.length) {
-      loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
-    }
-  }
-  $('emptyState').classList.toggle('show', list.length === 0);
+  $('emptyState').classList.toggle('show', list.length === 0 && !(LIBRARY_VIEW?.pending));
   applyGridStyle();
   syncUndisplayableLink();
 }
@@ -5871,22 +6116,61 @@ if ('ResizeObserver' in window) {
 const cachedLibrarySummary = createSummaryCache();
 let _countsPaintKey = '';
 
+/* Sidebar tallies for the folder or collection scope. In catalog mode the
+ * server counts them; the browser used to tally its loaded rows, which only
+ * agreed with the catalog once every row had been paged in. */
+const EMPTY_COUNTS = Object.freeze({ all: 0, pending: 0, approved: 0, skipped: 0, rated: 0 });
+let scopeCountsTimer = null, scopeCountsGeneration = 0;
+function scopeCountsSpec() {
+  const full = buildCatalogQuerySpec();
+  const spec = { scope: full.scope, countsOnly: true, ...sourceScopeSpec() };
+  if (full.scope === 'folder') { spec.folderId = full.folderId; spec.includeSubfolders = full.includeSubfolders; }
+  if (full.collectionId) spec.collectionId = full.collectionId;
+  return spec;
+}
+function refreshScopeCounts(delay = 150) {
+  if (!S.catalogEnabled) return;
+  clearTimeout(scopeCountsTimer);
+  const generation = ++scopeCountsGeneration;
+  scopeCountsTimer = setTimeout(async () => {
+    try {
+      const [scope, source] = await Promise.all([
+        api('/api/catalog/query', scopeCountsSpec()),
+        api('/api/catalog/query', { scope: 'source', countsOnly: true, ...sourceScopeSpec() }),
+      ]);
+      if (generation !== scopeCountsGeneration) return;
+      if (scope?.counts) S.scopeCounts = scope.counts;
+      if (source?.counts) S.sourceCounts = source.counts;
+      counts();
+      scheduleNativeMenuState();
+    } catch (_) { /* The previous tallies stand until the next refresh. */ }
+  }, delay);
+}
+
 function counts() {
   LIBRARY_FILTERS.sync();
-  // Selection changes do not alter catalog counts or collection membership.
-  const summaryKey = `${S.libraryRevision || 0}|${_visibleEpoch}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${S.images.length}`;
-  const summary = cachedLibrarySummary(summaryKey, S.images, () => {
-    const scope = collectionScope();
-    let a = 0, s = 0, p = 0, rated = 0;
-    for (const im of scope) {
-      if (im.status === 'approved') a++;
-      else if (im.status === 'skipped') s++;
-      else p++;
-      if ((im.rating || 0) > 0) rated++;
-    }
-    return { scope, a, s, p, rated };
-  });
-  const { scope, a, s, p, rated } = summary;
+  let summaryKey, scopeLength, a, s, p, rated;
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    const tally = S.scopeCounts || EMPTY_COUNTS;
+    summaryKey = `${S.libraryRevision || 0}|${LIBRARY_VIEW.key}|${LIBRARY_VIEW.revision}|${JSON.stringify(tally)}`;
+    ({ all: scopeLength, approved: a, skipped: s, pending: p, rated } = tally);
+  } else {
+    // Selection changes do not alter catalog counts or collection membership.
+    summaryKey = `${S.libraryRevision || 0}|${_visibleEpoch}|${S.activeFolder}|${S.includeSubfolders}|${S.activeCollection}|${S.images.length}`;
+    const summary = cachedLibrarySummary(summaryKey, S.images, () => {
+      const scope = collectionScope();
+      let approved = 0, skipped = 0, pending = 0, ratedCount = 0;
+      for (const im of scope) {
+        if (im.status === 'approved') approved++;
+        else if (im.status === 'skipped') skipped++;
+        else pending++;
+        if ((im.rating || 0) > 0) ratedCount++;
+      }
+      return { scopeLength: scope.length, a: approved, s: skipped, p: pending, rated: ratedCount };
+    });
+    ({ scopeLength, a, s, p, rated } = summary);
+  }
+  const scope = { length: scopeLength };
   const selected = activeCollection();
   $('addToCollection').disabled = !selected || selected.type !== 'regular' || !transferTargets().length;
   const paintKey = `${summaryKey}|${_cachedVisibleKey}|${$('search').value}`;
@@ -5931,24 +6215,151 @@ function collectionImages(collection) {
   return S.images.filter((image) => members.has(image.name));
 }
 
+/* Collapse state is per-browser convenience, not library state: it is never
+ * sent to the server and a stale entry for a deleted collection just goes
+ * unused, so a bare Set with a best-effort save is enough. */
+let collapsedCollections;
+try {
+  collapsedCollections = new Set(JSON.parse(localStorage.getItem('lt.collectionsCollapsed') || '[]'));
+} catch { collapsedCollections = new Set(); }
+function saveCollapsedCollections() {
+  try { localStorage.setItem('lt.collectionsCollapsed', JSON.stringify([...collapsedCollections])); } catch {}
+}
+
+/* `parentId`/`sortOrder` make the sidebar tree from one flat list instead of
+ * a query per level. The quick collection is rendered separately, pinned
+ * above the tree, so it never competes for a parent slot. */
+function collectionChildren(collections) {
+  const byParent = new Map();
+  for (const collection of collections) {
+    if (collection.type === 'quick') continue;
+    const key = collection.parentId ? String(collection.parentId) : '';
+    if (!byParent.has(key)) byParent.set(key, []);
+    byParent.get(key).push(collection);
+  }
+  for (const list of byParent.values()) {
+    list.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+  return byParent;
+}
+
+function flattenCollectionTree(byParent) {
+  const out = [];
+  const walk = (key, depth) => {
+    for (const collection of byParent.get(key) || []) {
+      out.push({ collection, depth });
+      if (!collapsedCollections.has(String(collection.id))) {
+        walk(String(collection.id), depth + 1);
+      }
+    }
+  };
+  walk('', 0);
+  return out;
+}
+
 function renderCollections() {
   const host = $('collectionList');
   if (!host) return;
   host.replaceChildren();
-  for (const collection of S.library.collections || []) {
+  const all = S.library.collections || [];
+  const quick = all.find((collection) => collection.type === 'quick');
+  if (quick) {
     const row = document.createElement('div');
-    row.className = 'collection-row' +
-      (collection.id === S.activeCollection ? ' on' : '');
-    row.innerHTML = `<button class="collection-main" type="button"><span></span><b>${collectionImages(collection).length}</b></button><button class="collection-delete" type="button" title="${i18nHTML(tr("Delete collection"))}">×</button>`;
-    row.querySelector('span').textContent =
+    const count = collectionImages(quick).length;
+    row.className = 'collection-row collection-row-quick' +
+      (quick.id === S.activeCollection ? ' on' : '');
+    row.innerHTML = `<button class="collection-main" type="button"><span class="collection-toggle-spacer"></span><span class="collection-name"></span><b>${count}</b></button><span class="collection-actions"><button class="collection-clear" type="button" title="${i18nHTML(tr("Clear Quick Collection"))}" ${count ? '' : 'disabled'}>×</button></span>`;
+    row.querySelector('.collection-name').textContent = `⌘ ${quick.name}`;
+    row.querySelector('.collection-main').onclick = () => {
+      S.activeCollection = S.activeCollection === quick.id ? '' : quick.id;
+      refreshFilteredView(); savePrefs();
+    };
+    row.querySelector('.collection-clear').onclick = async (event) => {
+      event.stopPropagation();
+      await runLibraryAction({ action: 'quick_clear_collection' });
+      refreshLists(); toast(tr("Quick Collection cleared"));
+    };
+    host.appendChild(row);
+  }
+  const byParent = collectionChildren(all);
+  for (const { collection, depth } of flattenCollectionTree(byParent)) {
+    const siblings = byParent.get(collection.parentId ? String(collection.parentId) : '') || [];
+    const idx = siblings.findIndex((item) => item.id === collection.id);
+    const hasChildren = (byParent.get(String(collection.id)) || []).length > 0;
+    const collapsed = collapsedCollections.has(String(collection.id));
+    const row = document.createElement('div');
+    row.className = 'collection-row' + (collection.id === S.activeCollection ? ' on' : '');
+    row.innerHTML = `
+      <button class="collection-main" type="button" style="padding-left:${8 + depth * 14}px">
+        ${hasChildren ? `<button class="collection-toggle" type="button" aria-label="${i18nHTML(tr('Show or hide nested collections'))}">${collapsed ? '▸' : '▾'}</button>` : '<span class="collection-toggle-spacer"></span>'}
+        <span class="collection-name"></span><b>${S.catalogEnabled && Number.isInteger(collection.count) ? collection.count : collectionImages(collection).length}</b>
+      </button>
+      <span class="collection-actions">
+        ${collection.type !== 'smart' ? `<button class="collection-add-child" type="button" title="${i18nHTML(tr('New collection inside {collectionName}', {collectionName: collection.name}))}">+</button>` : ''}
+        <button class="collection-rename" type="button" title="${i18nHTML(tr('Rename'))}">✎</button>
+        ${depth > 0 ? `<button class="collection-outdent" type="button" title="${i18nHTML(tr('Move to top level'))}">⇤</button>` : ''}
+        <button class="collection-up" type="button" title="${i18nHTML(tr('Move up'))}" ${idx <= 0 ? 'disabled' : ''}>↑</button>
+        <button class="collection-down" type="button" title="${i18nHTML(tr('Move down'))}" ${idx < 0 || idx >= siblings.length - 1 ? 'disabled' : ''}>↓</button>
+        <button class="collection-delete" type="button" title="${i18nHTML(tr("Delete collection"))}">×</button>
+      </span>`;
+    row.querySelector('.collection-name').textContent =
       `${collection.type === 'smart' ? '✦ ' : ''}${collection.name}`;
     row.querySelector('.collection-delete').setAttribute(
       'aria-label', tr("Delete {collectionName}", {collectionName: collection.name}));
-    row.querySelector('.collection-main').onclick = () => {
+    const toggle = row.querySelector('.collection-toggle');
+    if (toggle) {
+      toggle.onclick = (event) => {
+        event.stopPropagation();
+        const id = String(collection.id);
+        if (collapsedCollections.has(id)) collapsedCollections.delete(id);
+        else collapsedCollections.add(id);
+        saveCollapsedCollections();
+        renderCollections();
+      };
+    }
+    row.querySelector('.collection-main').onclick = (event) => {
+      if (event.target.closest('.collection-toggle')) return;
       S.activeCollection = S.activeCollection === collection.id ? '' : collection.id;
       refreshFilteredView(); savePrefs();
     };
-    row.querySelector('.collection-delete').onclick = async () => {
+    row.querySelector('.collection-add-child')?.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      const name = await askName(tr("New collection"));
+      if (!name) return;
+      collapsedCollections.delete(String(collection.id)); saveCollapsedCollections();
+      await runLibraryAction({ action: 'create_collection', name, parentId: collection.id });
+      refreshLists(); toast(tr("Collection created"));
+    });
+    row.querySelector('.collection-rename').onclick = async (event) => {
+      event.stopPropagation();
+      const name = await askName(tr("Rename collection"), collection.name);
+      if (!name || name === collection.name) return;
+      await runLibraryAction({ action: 'rename_collection', id: collection.id, name });
+      refreshLists();
+    };
+    row.querySelector('.collection-outdent')?.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await runLibraryAction({ action: 'move_collection', id: collection.id, parentId: null });
+      refreshLists();
+    });
+    row.querySelector('.collection-up').onclick = async (event) => {
+      event.stopPropagation();
+      if (idx <= 0) return;
+      const order = siblings.map((item) => item.id);
+      [order[idx - 1], order[idx]] = [order[idx], order[idx - 1]];
+      await runLibraryAction({ action: 'reorder_collections', parentId: collection.parentId || null, ids: order });
+      refreshLists();
+    };
+    row.querySelector('.collection-down').onclick = async (event) => {
+      event.stopPropagation();
+      if (idx < 0 || idx >= siblings.length - 1) return;
+      const order = siblings.map((item) => item.id);
+      [order[idx], order[idx + 1]] = [order[idx + 1], order[idx]];
+      await runLibraryAction({ action: 'reorder_collections', parentId: collection.parentId || null, ids: order });
+      refreshLists();
+    };
+    row.querySelector('.collection-delete').onclick = async (event) => {
+      event.stopPropagation();
       await runLibraryAction({ action: 'delete_collection', id: collection.id });
       if (S.activeCollection === collection.id) S.activeCollection = '';
       refreshLists(); savePrefs(); toast(tr("Collection deleted"));
@@ -5962,19 +6373,42 @@ function renderCollections() {
     !transferTargets().length;
 }
 
+/* One key toggles the active batch in and out of the persistent Quick
+ * Collection — the fast, no-naming set a photographer builds while culling. */
+async function toggleQuickCollection() {
+  if (!S.catalogEnabled) return toast(tr("Quick Collection needs the catalog"));
+  const targets = transferTargets();
+  if (!targets.length) return toast(tr("Select photos to use the Quick Collection"));
+  const result = await runLibraryAction({
+    action: 'quick_toggle_collection',
+    members: targets.map((image) => image.name),
+  });
+  const quick = result?.quick;
+  if (!quick) return;
+  if (quick.added) toast(trn('Added {count} photo to Quick Collection', 'Added {count} photos to Quick Collection', quick.added, {count: quick.added}));
+  else if (quick.removed) toast(trn('Removed {count} photo from Quick Collection', 'Removed {count} photos from Quick Collection', quick.removed, {count: quick.removed}));
+}
+
 async function runLibraryAction(body) {
   const collectionActions = {
     create_collection: 'create', create_smart_collection: 'create_smart',
     delete_collection: 'delete', add_to_collection: 'add',
+    rename_collection: 'rename', move_collection: 'move',
+    reorder_collections: 'reorder',
+    quick_toggle_collection: 'quick_toggle', quick_clear_collection: 'quick_clear',
   };
   let path = '/api/library';
   let request = body;
+  // Nesting, reorder, and the Quick Collection live only in the catalog
+  // schema (parent_id, sort_order, the one persistent quick row); folder mode
+  // keeps the flat collections it always had.
   if (S.catalogEnabled && collectionActions[body.action]) {
     const rules = { ...(body.rules || {}) };
     if (rules.flag && rules.flag !== 'all') rules.status = rules.flag;
     delete rules.flag;
     request = {
       action: collectionActions[body.action], id: body.id, name: body.name,
+      parentId: body.parentId, ids: body.ids,
       rules, imageIds: (body.members || []).map((name) => {
         const image = S.images.find((item) => item.name === name);
         return image?.catalogId || image?.id;
@@ -5986,6 +6420,7 @@ async function runLibraryAction(body) {
   if (result.error) { toast(result.error); return null; }
   if (result.library) S.library = result.library;
   _stripKey = _gridKey = ''; refreshLists();
+  scheduleCatalogViewRefresh(0);
   return result;
 }
 
@@ -6007,9 +6442,19 @@ async function createVirtualCopy() {
     masks: normalizeMasks(result.copy.masks), heals: normalizeHeals(result.copy.heals),
     optics: normalizeOptics(result.copy.optics),
   };
-  const index = S.images.indexOf(source) + 1;
-  S.images.splice(index, 0, copy);
-  _stripKey = _gridKey = ''; go(index); toast(tr("Virtual copy created"));
+  _stripKey = _gridKey = '';
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    poolAdd(copy);
+    const result = await LIBRARY_VIEW.refresh({ locate: copy.name });
+    const listed = result?.located != null ? await LIBRARY_VIEW.ensureIndex(result.located) : null;
+    go(poolIndex(listed || copy));
+  } else {
+    const index = S.images.indexOf(source) + 1;
+    S.images.splice(index, 0, copy);
+    IMAGE_POOL.set(copy.name, copy);
+    go(index);
+  }
+  toast(tr("Virtual copy created"));
 }
 
 $('virtualCopyBtn').onclick = createVirtualCopy;
@@ -6017,12 +6462,19 @@ $('deleteVirtualBtn').onclick = async () => {
   const image = cur();
   if (!image?.virtual) return;
   const oldIndex = S.idx;
+  const at = S.catalogEnabled && LIBRARY_VIEW ? LIBRARY_VIEW.indexOf(image.name) : -1;
   const result = await runLibraryAction({ action: 'delete_virtual', name: image.name });
   if (!result) return;
-  S.images = S.images.filter((item) => item.name !== image.name);
+  setImagePool(S.images.filter((item) => item.name !== image.name));
   S.msel.delete(image.name);
   _stripKey = _gridKey = '';
-  go(Math.min(oldIndex, Math.max(0, S.images.length - 1)));
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    S.idx = -1;
+    const refreshed = await LIBRARY_VIEW.refresh();
+    if (refreshed) await settleCurrentPhoto(null, null, at, false, true);
+  } else {
+    go(Math.min(oldIndex, Math.max(0, S.images.length - 1)));
+  }
   toast(tr("Virtual copy deleted"));
 };
 $('stackBtn').onclick = async () => {
@@ -6156,11 +6608,11 @@ function selectFolder(relative) {
   if (S.rootFolder) S.activeFolders[S.rootFolder] = S.activeFolder;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
-  const first = visible()[0];
-  if (first) {
-    go(S.images.indexOf(first));
-    refreshLists();
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    refreshFilteredView(-1, { toFirst: true });
   } else {
+    const first = visible()[0];
+    if (first) go(S.images.indexOf(first));
     refreshLists();
   }
   setViewMode(S.gridViewMode);
@@ -6258,7 +6710,7 @@ function renderFolders() {
   const fragment = document.createDocumentFragment();
   const rootData = S.folders.find((item) => item.path === '') || {
     path: '', name: S.rootFolder.split('/').pop(), depth: 0,
-    directCount: 0, totalCount: S.images.length,
+    directCount: 0, totalCount: S.catalogEnabled ? S.catalogTotal : S.images.length,
   };
   for (const source of sources) {
     if (S.folderMode === 'browse') {
@@ -6525,10 +6977,14 @@ function photoAfterMark(list, im, resumeAt = -1) {
 /* `resumeAt` is the current photo's index from before a mark changed what the
  * filter admits. Without it a filter change lands on the top of the new list,
  * which is what changing a filter should do. */
-function refreshFilteredView(resumeAt = -1) {
+function refreshFilteredView(resumeAt = -1, options = {}) {
   const leaving = cur();
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
+  if (S.catalogEnabled && typeof LIBRARY_VIEW !== 'undefined' && LIBRARY_VIEW) {
+    refreshCatalogView(leaving, Number.isInteger(resumeAt) ? resumeAt : -1, options);
+    return;
+  }
   const list = visible();
   if (list.length && !list.includes(cur())) {
     const resume = photoAfterMark(list, leaving, resumeAt) || list[0];
@@ -6539,6 +6995,51 @@ function refreshFilteredView(resumeAt = -1) {
   } else {
     refreshLists();
   }
+}
+
+/* Catalog mode: ask the server for the new view and settle the current photo
+ * once it answers. The old list stays on screen meanwhile, so typing in the
+ * search field or flipping a filter never waits on the catalog. */
+function refreshCatalogView(leaving, resumeAt = -1, { toFirst = false, immediate = false } = {}) {
+  refreshScopeCounts();
+  LIBRARY_VIEW.setSpec(buildCatalogQuerySpec(), {
+    immediate, locate: !toFirst && leaving ? leaving.name : null,
+  }).then((result) => {
+    if (result) settleCurrentPhoto(leaving, result.located, resumeAt, toFirst);
+  });
+  refreshLists();
+}
+
+/* After the view answered: keep the current photo when it is still listed,
+ * otherwise resume at the slot it left (the photo that shifted up into it)
+ * or at the top when asked for the first photo. Rows are fetched on demand. */
+async function settleCurrentPhoto(leaving, located, resumeAt = -1, toFirst = false, force = false) {
+  const list = LIBRARY_VIEW.list;
+  if (!list.length) { refreshLists(); return; }
+  const stillListed = cur() && LIBRARY_VIEW.indexOf(cur().name) >= 0;
+  if (stillListed && !toFirst) { refreshLists(); return; }
+  const target = toFirst ? 0 : Math.min(Math.max(0, resumeAt), list.length - 1);
+  const next = await LIBRARY_VIEW.ensureIndex(target);
+  // A navigation the user made meanwhile wins over the resume.
+  const moved = !force && cur() !== leaving;
+  if (next && !moved && cur() !== next) go(poolIndex(next));
+  refreshLists();
+}
+
+/* A mark or an external change may have moved photos in or out of the
+ * view. Re-run it once the save has landed, holding the current position. */
+let catalogRefreshTimer = null;
+function scheduleCatalogViewRefresh(delay = 60) {
+  if (!S.catalogEnabled || !LIBRARY_VIEW) return;
+  clearTimeout(catalogRefreshTimer);
+  catalogRefreshTimer = setTimeout(() => {
+    const leaving = cur();
+    const resumeAt = leaving ? LIBRARY_VIEW.indexOf(leaving.name) : -1;
+    refreshScopeCounts(0);
+    LIBRARY_VIEW.refresh({ locate: leaving?.name }).then((result) => {
+      if (result) settleCurrentPhoto(leaving, result.located, resumeAt, false);
+    });
+  }, delay);
 }
 
 function setViewMode(mode, persist = true) {
@@ -6637,8 +7138,14 @@ function switchPane(id, { fromCompare = false } = {}) {
   });
   if (id === 'cropPane') { beginCropSession(); setCropMode(true); }
   else if (S.cropping) setCropMode(false);
+  if (id !== 'cropPane') {
+    S.geometryGuideMode = false; S.geometryGuides = [];
+    if ($('guidedPanel')) $('guidedPanel').hidden = true;
+    if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
+  }
   S.editGesture = null;
-  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane'));
+  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane' ||
+    (id === 'cropPane' && S.geometryGuideMode)));
   if (compareEditingBlocked()) setCompareActive(false);
   else syncCompareControl();
   if (id === 'maskPane') syncMaskPanel();
@@ -7162,6 +7669,12 @@ function showCurrentImage(im) {
   if (pending && !pending.expectedRecoverySourceKey) Object.assign(im, pending.state);
   const hadSavedParams = !!im.params;
   S.params = normalizeFilmParams(im.params);
+  // An edit saved before the camera-profile control existed rendered with the
+  // built-in curve; the LightTable Standard default is for never-edited photos
+  // only, so a saved edit without the key keeps Built-in rather than adopting it.
+  if (hadSavedParams && !Object.prototype.hasOwnProperty.call(im.params, 'camera_profile')) {
+    S.params.camera_profile = '';
+  }
   const isRaw = im.raw === true || isRawInput();
   const rawDefaults = (isRaw && !im.hasEdits && !im.grade) ? rawGradeDefaults() : {};
   S.grade = { ...(S.newPhotoGradeDefaults || GRADE_DEFAULTS), ...rawDefaults, ...(im.grade || {}) };
@@ -7192,6 +7705,9 @@ function showCurrentImage(im) {
   S.exif = {};
   S.rawDefault = null;
   S.pointColorPick = false; S.maskColorPick = false; S.wbPick = false;
+  S.geometryGuideMode = false; S.geometryGuides = [];
+  if ($('guidedPanel')) $('guidedPanel').hidden = true;
+  if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
   $('wbBtn').classList.remove('on');
   $('cmp').classList.remove('wb-picking', 'color-picking');
   setCurvePick(null, false); setSamplerMode(false, false);
@@ -7202,7 +7718,8 @@ function showCurrentImage(im) {
   Object.assign(S, photoUndo.activate(im.name));
   updateUndoRedoButtons();
   syncControls(); syncGrade(); syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
-  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane');
+  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+    (S.activePane === 'cropPane' && S.geometryGuideMode));
   applyView();
   if (S.activePane === 'cropPane') beginCropSession();
   setCropMode(S.activePane === 'cropPane');
@@ -7340,6 +7857,11 @@ function goRelative(direction) {
   if (next) {
     scrollGridToImage(next);
     go(S.images.indexOf(next));
+  } else if (nextIndex >= 0 && nextIndex < list.length && S.catalogEnabled && LIBRARY_VIEW) {
+    // The neighbour's page is not in yet: fetch it, then move.
+    LIBRARY_VIEW.ensureIndex(nextIndex).then((image) => {
+      if (image && list === visible()) { scrollGridToImage(image); go(S.images.indexOf(image)); }
+    });
   }
 }
 
@@ -7356,10 +7878,18 @@ function goGridRow(direction) {
   renderGrid();
   if (!_gridLayout || _gridList !== list) return false;
   const index = _gridIndexByName.get(cur()?.name);
-  const next = index === undefined
-    ? (direction > 0 ? list[0] : list[list.length - 1])
-    : list[gridRowNeighbour(_gridLayout, index, direction)];
-  if (!next) return false;
+  const nextIndex = index === undefined
+    ? (direction > 0 ? 0 : list.length - 1)
+    : gridRowNeighbour(_gridLayout, index, direction);
+  if (nextIndex < 0 || nextIndex >= list.length) return false;
+  const next = list[nextIndex];
+  if (!next) {
+    if (!(S.catalogEnabled && LIBRARY_VIEW)) return false;
+    LIBRARY_VIEW.ensureIndex(nextIndex).then((image) => {
+      if (image && list === visible()) { scrollGridToImage(image); go(S.images.indexOf(image)); }
+    });
+    return true;
+  }
   scrollGridToImage(next);
   go(S.images.indexOf(next));
   return true;
@@ -7396,11 +7926,12 @@ async function loadCameraProfiles(name) {
     }
     if (cur()?.name !== name) return;
     populateCameraProfiles(result.profiles || []);
+    const fromFolder = (result.profiles || []).filter((item) => !item.bundled).length;
     $('cameraProfileHint').textContent = !result.available
-      ? tr("No camera profile folder was found. Choose one in Settings › Develop Defaults.")
-      : (result.profiles || []).length
-        ? tr("Profiles from Adobe Camera Raw or Lightroom on this computer. Applied approximately, to the Film-off develop only.")
-        : tr("No profile in the folder names this camera.");
+      ? tr("LightTable Standard is bundled. To add DCP profiles, choose a camera profile folder in Settings › Develop Defaults.")
+      : fromFolder
+        ? tr("LightTable Standard plus the DCP profiles in your camera profile folder. Colour matrices apply to the RAW decode; the look applies to the Film-off develop.")
+        : tr("LightTable Standard is bundled. No profile in the folder names this camera.");
   } catch (_) {
     if (cur()?.name === name) populateCameraProfiles([]);
   }
@@ -7518,7 +8049,17 @@ function persistMark(targets, entry) {
     editSaveQueue.enqueue(image.name, { sourceKey: image.recoverySourceKey || null, ...pending,
       state: { ...pending?.state, name: image.name, ...entry } }, { immediate: true });
   }
-  void flushEditSaves();
+  void flushEditSaves().then(() => {
+    if (typeof scheduleCatalogViewRefresh === 'function') scheduleCatalogViewRefresh();
+  });
+}
+
+/* How many selected photos the current view holds. A selection made in this
+ * exact view (Select All, a range) is counted whole; after the view changed,
+ * only the paged-in rows can be counted until the server intersects them. */
+function selectedCountInView(loaded) {
+  if (!S.catalogEnabled || !LIBRARY_VIEW || !S.msel.size) return loaded;
+  return S.mselScopeKey === selectionScope() ? S.msel.size : loaded;
 }
 
 function syncCullBars() {
@@ -7526,11 +8067,12 @@ function syncCullBars() {
   const active = targets[0] || null;
   const status = commonMarkValue(targets, 'status', 'pending');
   const rating = commonMarkValue(targets, 'rating', 0);
-  const multiple = targets.length > 1;
+  const selectedCount = selectedCountInView(targets.length);
+  const multiple = selectedCount > 1;
   let title = tr("No photo selected");
   let detail = '';
   if (active && multiple) {
-    title = trn('{count} photo selected', '{count} photos selected', targets.length);
+    title = trn('{count} photo selected', '{count} photos selected', selectedCount);
     detail = tr('Flags and ratings apply to selection');
   } else if (active) {
     title = displayName(active);
@@ -7543,8 +8085,7 @@ function syncCullBars() {
       detail = (index >= 0 ? tr("{value} of {orderedLength}", {value: index + 1, orderedLength: ordered.length}) : tr("Current photo"));
     }
   }
-  if (SELECTION_REQUEST?.pending) { title = 'Loading the full selection…'; detail = `${S.images.length} of ${S.catalogTotal} photos loaded`; }
-  else if (S.catalogLoadError) detail += ' · Catalog loading paused; Select All retries';
+  if (SELECTION_REQUEST?.pending) { title = tr('Selecting every photo in view…'); detail = ''; }
   const linkedCount = linkedMetadataTargets(targets).length;
   if (linkedCount > targets.length) detail += trn(" · {count} paired file linked", " · {count} paired files linked", linkedCount - targets.length, {value: linkedCount - targets.length});
   document.querySelectorAll('[data-cull-context-title]').forEach((element) => {
@@ -7577,8 +8118,51 @@ function syncCullBars() {
   });
 }
 
+/* A selection that reaches beyond the rows paged in cannot be marked from
+ * loaded objects. The server intersects the selected names with the current
+ * view and writes the mark in bounded chunks; loaded rows update in place. */
+function selectionNeedsServerMark() {
+  if (!S.catalogEnabled || !LIBRARY_VIEW || !S.msel.size) return false;
+  if (SURVEY && SURVEY.isOpen) return false;
+  for (const name of S.msel) if (LIBRARY_VIEW.indexOf(name) < 0) return true;
+  return false;
+}
+async function markSelectionOnServer(entry) {
+  if (SELECTION_REQUEST?.pending) return;
+  let names;
+  try {
+    names = await LIBRARY_VIEW.allNames({ names: [...S.msel] });
+  } catch (error) { toast(error.message); return; }
+  if (!names) return;
+  if (!names.length) { toast(tr("No selected photos are in this view")); return; }
+  const queued = [], remote = [];
+  for (const name of names) {
+    const image = poolImage(name);
+    if (image) Object.assign(image, entry);
+    if (image && editSaveQueue.getPending(name)) queued.push(image); else remote.push(name);
+  }
+  S.libraryRevision = (S.libraryRevision || 0) + 1;
+  refreshLists();
+  if (queued.length) persistMark(queued, entry);
+  try {
+    for (let start = 0; start < remote.length; start += 2000) {
+      const result = await api('/api/state/bulk', { names: remote.slice(start, start + 2000), entry });
+      if (result?.error) throw new Error(result.error);
+    }
+  } catch (error) { toast(tr("Some photos could not be marked: {errorMessage}", {errorMessage: error.message})); }
+  toast(trn('Marked {count} photo', 'Marked {count} photos', names.length));
+  scheduleCatalogViewRefresh(0);
+}
+
 function setStatus(st) {
-  const targets = markingTargets(); if (!targets.length) return;
+  const targets = markingTargets();
+  if (selectionNeedsServerMark()) {
+    const next = st !== 'pending' && targets.length && targets.every((image) => image.status === st)
+      ? 'pending' : st;
+    void markSelectionOnServer({ status: next });
+    return;
+  }
+  if (!targets.length) return;
   const next = st !== 'pending' && targets.every((image) => image.status === st)
     ? 'pending' : st;
   /* Read the position before the mark. A flag or rating filter drops the photo
@@ -7599,7 +8183,12 @@ function setStatus(st) {
   }
 }
 function setRating(r, advance = false) {
-  const targets = markingTargets(); if (!targets.length) return;
+  const targets = markingTargets();
+  if (selectionNeedsServerMark()) {
+    void markSelectionOnServer({ rating: targets.length && targets.every((image) => (image.rating || 0) === r) ? 0 : r });
+    return;
+  }
+  if (!targets.length) return;
   const next = targets.every((image) => (image.rating || 0) === r) ? 0 : r;
   const resumeAt = markResumeIndex(targets[0]);
   const linked = linkedMetadataTargets(targets);
@@ -7617,8 +8206,13 @@ function setRating(r, advance = false) {
 }
 
 function setLabel(label) {
-  const targets = markingTargets(); if (!targets.length) return;
+  const targets = markingTargets();
   const labelValue = cleanLabel(label);
+  if (selectionNeedsServerMark()) {
+    void markSelectionOnServer({ label: targets.length && targets.every(image => cleanLabel(image.label) === labelValue) ? 'none' : labelValue });
+    return;
+  }
+  if (!targets.length) return;
   const next = targets.every(image => cleanLabel(image.label) === labelValue) ? 'none' : labelValue;
   const linked = linkedMetadataTargets(targets);
   for (const image of linked) image.label = next;
@@ -7636,12 +8230,23 @@ function surveyTarget() {
 
 function advanceAfterMark(im, resumeAt = -1) {
   if (SURVEY && SURVEY.isOpen) { SURVEY.step(1); refreshLists(); return; }
-  const next = photoAfterMark(visible(), im, resumeAt);
+  const list = visible();
+  const next = photoAfterMark(list, im, resumeAt);
   if (next) {
     go(S.images.indexOf(next));
-  } else {
-    refreshLists();
+    return;
   }
+  if (S.catalogEnabled && LIBRARY_VIEW) {
+    const here = list.indexOf(im);
+    const index = here >= 0 ? here + 1 : resumeAt;
+    if (index >= 0 && index < list.length) {
+      LIBRARY_VIEW.ensureIndex(index).then((image) => {
+        if (image && cur() === im) go(poolIndex(image)); else refreshLists();
+      });
+      return;
+    }
+  }
+  refreshLists();
 }
 
 // Every local state mutation joins the same per-photo chain. A partial patch
@@ -7705,10 +8310,16 @@ function matchesCullReview(image) {
 }
 
 function syncCullPanel() {
-  const scope = collectionScope().filter((im) => im.kind !== 'video');
+  // In catalog mode the index holds every verdict for the open source, so
+  // the tallies do not depend on which rows happen to be paged in.
+  const prefix = S.primarySourceId != null ? `${S.primarySourceId}:` : '';
+  const scope = S.catalogEnabled && S.aiResults
+    ? Object.entries(S.aiResults).filter(([name]) => name.startsWith(prefix)).map(([name, ai]) => ({ name, ai }))
+    : collectionScope().filter((im) => im.kind !== 'video');
   const scored = scope.filter((im) => im.ai?.cull?.criteria).length;
   const tally = cullTally(scope, [...CULL_SELECT, ...CULL_REJECT]);
   const ready = S.ai.enabled && scored > 0;
+  const scopeLength = S.catalogEnabled ? (S.sourceCounts || EMPTY_COUNTS).all || scope.length : scope.length;
 
   for (const name of [...CULL_SELECT, ...CULL_REJECT]) {
     const box = $(`cull${name[0].toUpperCase()}${name.slice(1)}`);
@@ -7726,7 +8337,7 @@ function syncCullPanel() {
   $('cullEnableIndex').hidden = !!S.ai.enabled;
   $('cullIntroText').textContent = !S.ai.enabled ? '' : !scored
     ? (S.ai.running ? tr('Scoring photos as the index reaches them.') : tr('No photos have been scored yet.'))
-    : tr('{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.', {scored, scopeLength: scope.length});
+    : tr('{scored} of {scopeLength} photos scored. Nothing is flagged until you ask for it.', {scored, scopeLength});
 
   for (const button of document.querySelectorAll('.cull-review button')) {
     button.classList.toggle('on', button.dataset.review === S.cull.review);
@@ -7734,13 +8345,14 @@ function syncCullPanel() {
   }
   const reviewing = S.cull.review !== 'all';
   const shown = reviewing ? visible() : [];
+  const loadedShown = shown.filter(Boolean);
   const group = S.cull.review === 'selects' ? CULL_SELECT : CULL_REJECT;
   const criteria = chosenCull(group).map(name => CULL_LABELS[name]).join(', ');
   $('cullReviewHint').textContent = !reviewing ? tr("Choose Selects or Rejects to review matches before applying flags.")
     : !chosenCull(group).length ? tr("Choose criteria above.")
     : trn("{count} matching photo shown: {criteria}.", "{count} matching photos shown: {criteria}.", shown.length, {criteria});
   const replace = $('cullReplaceFlags').checked;
-  const linked = linkedMetadataTargets(shown);
+  const linked = linkedMetadataTargets(loadedShown);
   const picks = cullFlagTargets(linked, 'approved', replace).length;
   const rejects = cullFlagTargets(linked, 'skipped', replace).length;
   $('cullApplyPicks').hidden = S.cull.review !== 'selects';
@@ -7763,9 +8375,7 @@ function syncCullPanel() {
 function setCullReview(review) {
   S.cull.review = review;
   if (review !== 'all') setViewMode(S.gridViewMode || 'photo', false);
-  invalidateVisibleCache();
-  _stripKey = _gridKey = '';
-  refreshLists();
+  refreshFilteredView();
   syncCullPanel();
   savePrefs();
 }
@@ -7788,9 +8398,15 @@ const CULL_BATCH = createCullBatch({
 async function applyCullFlags(group, status) {
   if (S.cull.review !== (status === 'approved' ? 'selects' : 'rejects')) return;
   if (!chosenCull(group).length) return;
-  const targets = linkedMetadataTargets(visible());
-  const result = await CULL_BATCH.apply(targets, status, $('cullReplaceFlags').checked);
+  // In catalog mode the review is a server view; fetch its rows before
+  // flagging so a batch never covers only the rows that happened to be paged in.
+  const paged = typeof withViewRows === 'function' && S.catalogEnabled && LIBRARY_VIEW;
+  const result = paged
+    ? await withViewRows(async (rows) =>
+      CULL_BATCH.apply(linkedMetadataTargets(rows), status, $('cullReplaceFlags').checked))
+    : await CULL_BATCH.apply(linkedMetadataTargets(visible().filter(Boolean)), status, $('cullReplaceFlags').checked);
   if (!result?.saved) return;
+  if (paged) scheduleCatalogViewRefresh(0);
   toast(status === 'approved'
     ? trn('Picked {count} photo', 'Picked {count} photos', result.count)
     : trn('Rejected {count} photo', 'Rejected {count} photos', result.count),
@@ -7929,11 +8545,13 @@ async function refreshAIResults() {
   const response = await fetch('/api/ai-index/results');
   const results = await response.json();
   if (results.error) throw new Error(results.error);
+  S.aiResults = results;
   for (const image of S.images) image.ai = results[image.name] || null;
   S.cull.revision += 1;
   invalidateVisibleCache();
   _stripKey = _gridKey = '';
-  refreshLists();
+  if (S.catalogEnabled && (S.cull.review !== 'all' || $('search').value.trim())) refreshFilteredView();
+  else refreshLists();
   syncAIPhoto();
   syncCullPanel();
 }
@@ -7968,6 +8586,7 @@ async function runAIAction(action) {
     if (status.enabled) scheduleAIStatusPoll(true);
     else {
       clearTimeout(aiPollTimer);
+      S.aiResults = null;
       for (const image of S.images) image.ai = null;
       S.cull.revision += 1;
       S.cull.review = 'all';
@@ -7993,8 +8612,59 @@ function catalogIdleTurn() {
   });
 }
 
-const LIBRARY_CHUNK_SIZE = 600;
+/* Sorting: the field comes from the Sort select; the direction from the
+ * toggle beside it, falling back to the natural order for the field (best
+ * rating first, everything else ascending). */
+const SORT_DEFAULT_DESC = new Set(['rating']);
+function sortField() {
+  const value = $('sort')?.value || 'capture';
+  return value === 'date' ? 'capture' : value;
+}
+function sortDirection() {
+  const explicit = APP_PREFS?.sortDir;
+  if (explicit === 'asc' || explicit === 'desc') return explicit;
+  return SORT_DEFAULT_DESC.has(sortField()) ? 'desc' : 'asc';
+}
+function syncSortDirection() {
+  const button = $('sortDir');
+  if (!button) return;
+  const descending = sortDirection() === 'desc';
+  button.textContent = descending ? '↓' : '↑';
+  button.title = descending ? tr("Sort descending. Click for ascending") : tr("Sort ascending. Click for descending");
+  button.setAttribute('aria-label', button.title);
+  button.setAttribute('aria-pressed', String(descending));
+}
 
+/* Photos the browser's local index matched for a search term. The catalog
+ * never sees generated descriptions or people labels, so their matches
+ * travel with the query and the server folds them into one ordered result. */
+function localSearchMatches(query) {
+  const needle = String(query || '').trim().toLocaleLowerCase();
+  if (!needle) return [];
+  const names = new Set();
+  for (const [name, ai] of Object.entries(S.aiResults || {})) {
+    if (aiSearchTerms(ai).some((value) => String(value || '').toLocaleLowerCase().includes(needle))) names.add(name);
+  }
+  for (const [name, people] of Object.entries(S.peopleLabels || {})) {
+    if ((people || []).some((value) => String(value || '').toLocaleLowerCase().includes(needle))) names.add(name);
+  }
+  return [...names].slice(0, 20000);
+}
+
+/* The photos an assisted-culling review admits. Verdicts live in the local
+ * index, so the review is an explicit name list rather than a catalog rule. */
+function cullReviewNames() {
+  const criteria = chosenCull(S.cull.review === 'selects' ? CULL_SELECT : CULL_REJECT);
+  if (!criteria.length) return [];
+  return Object.entries(S.aiResults || {})
+    .filter(([, ai]) => cullMatches(ai, criteria))
+    .map(([name]) => name);
+}
+
+/* Everything the grid used to decide in JavaScript, as one server query:
+ * scope, toolbar filters, metadata rules, search, sort, pair and stack
+ * hiding, and the browser-only knowledge (display failures, local-index
+ * matches, culling verdicts) as explicit name lists. */
 function buildCatalogQuerySpec(extra = {}) {
   const f = $('filter')?.value || 'all';
   const rf = $('ratingFilter')?.value || 'all';
@@ -8004,7 +8674,6 @@ function buildCatalogQuerySpec(extra = {}) {
   const fileTypes = typeof LIBRARY_FILTERS?.types === 'function' ? LIBRARY_FILTERS.types() : [];
   const metadata = typeof LIBRARY_FILTERS?.metadata === 'function' ? LIBRARY_FILTERS.metadata() : {};
   const search = $('search')?.value?.trim() || '';
-  const s = $('sort')?.value || 'capture';
 
   const filter = { ...metadata };
   if (f === 'rated') filter.ratingMin = 1;
@@ -8022,6 +8691,10 @@ function buildCatalogQuerySpec(extra = {}) {
   if (editState !== 'all') filter.editState = editState;
   if (fileTypes.length) filter.fileTypes = fileTypes;
   if (search) filter.query = search;
+  // The sources panel's "Show only missing photos" checkbox, not one of the
+  // flag/rating dropdowns: a source going offline or a card ejecting mid-
+  // rescan is a library-health question, not a triage one.
+  if (S.showMissingOnly) filter.missingOnly = true;
 
   let scope = 'all';
   let folderId, collectionId;
@@ -8040,10 +8713,9 @@ function buildCatalogQuerySpec(extra = {}) {
     scope,
     filter,
     ...sourceScopeSpec(),
-    sort: {
-      field: s === 'date' ? 'capture' : s,
-      dir: 'desc',
-    },
+    sort: { field: sortField(), dir: sortDirection() },
+    pairView: pairViewPreference(APP_PREFS),
+    collapseStacks: S.cull.review === 'all',
     ...extra,
   };
   if (scope === 'folder') {
@@ -8051,49 +8723,83 @@ function buildCatalogQuerySpec(extra = {}) {
     spec.includeSubfolders = S.includeSubfolders !== false;
   }
   if (collectionId) spec.collectionId = collectionId;
-
+  const overrides = [...pairOverrides.values()];
+  if (overrides.length) spec.pairOverrides = overrides;
+  if (typeof LIBRARY_FILTERS?.hideUndisplayable === 'function' && LIBRARY_FILTERS.hideUndisplayable()) {
+    spec.hideUnavailable = true;
+    const failed = PHOTO_DISPLAY_STATUS.failedNames();
+    if (failed.length) spec.excludeNames = failed;
+  }
+  if (S.cull.review !== 'all') spec.names = cullReviewNames();
+  if (search) {
+    const also = localSearchMatches(search);
+    if (also.length) spec.searchAlsoNames = also;
+  }
   return spec;
 }
 
-let catalogPageTask = null;
-function loadRemainingCatalogRows(total) {
-  if (catalogPageTask?.images === S.images) return catalogPageTask.promise;
-  const images = S.images;
-  const generation = ++catalogPageGeneration;
-  S.catalogLoadError = '';
-  const promise = (async () => {
-    let offset = images.length;
-    const known = new Set(images.map(image => image.name));
-    while (S.catalogEnabled && generation === catalogPageGeneration && images === S.images && offset < total) {
-      await catalogIdleTurn();
-      const page = await api('/api/catalog/query', {limit: LIBRARY_CHUNK_SIZE, offset, sort: {field: 'capture', dir: 'desc'},
-        ...sourceScopeSpec()});
-      if (generation !== catalogPageGeneration || images !== S.images) throw new Error(tr('The library changed; select photos again'));
-      if (page.error || !Array.isArray(page.items)) throw new Error(page.error || 'Could not load the full catalog');
-      total = Number.isFinite(+page.total) ? +page.total : total;
-      if (!page.items.length && offset < total) throw new Error(tr('Catalog loading stopped before all photos arrived'));
-      for (const row of page.items) {
-        if (known.has(row.name)) continue;
-        known.add(row.name);
-        images.push(normalizeLibraryImage(row, false));
-      }
-      offset += page.items.length;
-      S.catalogTotal = total;
-      _stripKey = _gridKey = '';
-      refreshLists();
-    }
-    if (images !== S.images) throw new Error(tr('The library changed; select photos again'));
-  })().catch(error => {
-    if (images === S.images) { S.catalogLoadError = error.message; syncCullBars(); }
-    throw error;
-  }).finally(() => {
-    if (catalogPageTask?.images === images) catalogPageTask = null;
+/* The server view behind the grid in catalog mode. Rows it pages in join the
+ * pool through `materializeCatalogRow`; rows it evicts leave the pool unless
+ * something still holds them. */
+function installLibraryView() {
+  LIBRARY_VIEW = createLibraryView({
+    query: (spec) => api('/api/catalog/query', spec),
+    materialize: materializeCatalogRow,
+    debounce: 60,
+    onChange: onLibraryViewChange,
+    onError: (error) => toast(error?.message || tr('Could not load photos')),
   });
-  catalogPageTask = {images, promise};
-  return promise;
 }
 
-let catalogPageGeneration = 0;
+/* Fields the browser owns for a row it already holds: loaded edit state,
+ * thumbnail knowledge, and a mark whose save is still in flight. */
+const ROW_LOCAL_FIELDS = ['stateLoaded', 'params', 'grade', 'crop', 'masks', 'heals', 'optics',
+  'preset', 'provenance', 'versions', 'stateLoadEdits', 'thumbnailRevision',
+  'thumbnailAspectRatio', 'peerSyncGeneration'];
+const ROW_MARK_FIELDS = ['status', 'rating', 'label', 'keywords'];
+function materializeCatalogRow(item) {
+  const row = normalizeLibraryImage(item, false);
+  if (S.aiResults) row.ai = S.aiResults[row.name] || null;
+  if (S.peopleLabels) row.people = S.peopleLabels[row.name.split('::lighttable-copy::')[0]] || [];
+  const existing = poolImage(row.name);
+  if (!existing) return poolAdd(row);
+  const saving = editSaveQueue.getPending(row.name);
+  for (const [key, value] of Object.entries(row)) {
+    if (ROW_LOCAL_FIELDS.includes(key) && existing[key] !== undefined) continue;
+    if (saving && ROW_MARK_FIELDS.includes(key)) continue;
+    existing[key] = value;
+  }
+  return existing;
+}
+
+function onLibraryViewChange() {
+  _stripKey = _gridKey = '';
+  dropPooledImages(LIBRARY_VIEW.evict(cur()?.name));
+  if ($('library').classList.contains('show')) scheduleGridLayout();
+  renderStrip();
+  counts();
+  scheduleNativeMenuState(100);
+}
+
+/* Rows the view let go of leave the pool, unless the editor, the survey, a
+ * pending save, or a batch still needs them. The current photo's index is
+ * recomputed so `cur()` keeps pointing at the same object. */
+function dropPooledImages(evicted) {
+  if (!evicted.length) return;
+  const current = cur();
+  const drop = new Set();
+  for (const image of evicted) {
+    if (image === current || PINNED_NAMES.has(image.name)) continue;
+    if (SURVEY?.isOpen && SURVEY.names.includes(image.name)) continue;
+    if (editSaveQueue.getPending(image.name) || _pendingStateFetches.has(image.name)) continue;
+    if (LIBRARY_VIEW.indexOf(image.name) >= 0) continue;
+    drop.add(image.name);
+  }
+  if (!drop.size) return;
+  setImagePool(S.images.filter((image) => !drop.has(image.name)));
+  S.idx = current ? S.images.indexOf(current) : -1;
+}
+
 var catalogScanWatchActive = false;
 async function watchCatalogScan() {
   if (!S.catalogEnabled || catalogScanWatchActive) return;
@@ -8285,9 +8991,8 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   S.library = d.library || { collections: [], stacks: [], virtualCopies: [] };
   S.libraryLoaded = true;
   applyPendingActiveCollection();
-  S.images = d.images.map((im) => normalizeLibraryImage(
-    im, !S.catalogEnabled));
-  PHOTO_DISPLAY_STATUS.retain(S.images);
+  setImagePool(S.catalogEnabled ? [] : d.images.map((im) => normalizeLibraryImage(im, true)));
+  if (S.catalogEnabled) installLibraryView(); else PHOTO_DISPLAY_STATUS.retain(S.images);
   await initializeEditRecovery(d);
   syncAI(d.aiIndex || S.ai);
   if (S.ai.enabled && !S.ai.scanComplete) scheduleAIStatusPoll(true);
@@ -8297,22 +9002,30 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
   else if (S.ai.enabled) refreshAIResults().catch(() => {});
   if (!S.folders.some((item) => item.path === S.activeFolder)) S.activeFolder = '';
   renderFolders();
-  const initialScope = visible();
-  const firstImage = initialScope.find((im) => im.status === 'pending')
-    || initialScope[0];
-  const first = firstImage ? S.images.indexOf(firstImage) : -1;
   const benchmarkImage = window.__LIGHTTABLE_NATIVE_BENCHMARK_IMAGE__;
-  const benchmarkIndex = benchmarkImage
-    ? S.images.findIndex((im) => im.name === benchmarkImage) : -1;
+  let first = -1, benchmarkIndex = -1;
+  if (S.catalogEnabled) {
+    // The first page of the server view; the benchmark photo is located in
+    // the same request so its page arrives with it.
+    const result = await LIBRARY_VIEW.setSpec(buildCatalogQuerySpec(), { immediate: true, locate: benchmarkImage || null });
+    refreshScopeCounts(0);
+    if (result?.located != null) benchmarkIndex = poolIndex(await LIBRARY_VIEW.ensureIndex(result.located));
+    const list = LIBRARY_VIEW.list;
+    first = poolIndex(list.find((im) => im && im.status === 'pending') || list[0]);
+  } else {
+    const initialScope = visible();
+    const firstImage = initialScope.find((im) => im.status === 'pending')
+      || initialScope[0];
+    first = firstImage ? S.images.indexOf(firstImage) : -1;
+    benchmarkIndex = benchmarkImage
+      ? S.images.findIndex((im) => im.name === benchmarkImage) : -1;
+  }
   if (benchmarkIndex >= 0 || first >= 0) {
     await go(benchmarkIndex >= 0 ? benchmarkIndex : first);
   } else {
     refreshLists();
   }
   if (S.activePane === 'cropPane') setCropMode(true);
-  if (S.catalogEnabled && S.images.length < S.catalogTotal) {
-    loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
-  }
   watchCatalogScan();
   postNative('requestSources', {}, true);
   const benchmarkWidth = +window.__LIGHTTABLE_NATIVE_BENCHMARK_WIDTH__;
@@ -8545,7 +9258,13 @@ $('filter').onchange = refreshFilteredView;
 $('editFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
 $('ratingFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
 $('kindFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
-$('sort').onchange = refreshFilteredView;
+$('sort').onchange = () => { syncSortDirection(); refreshFilteredView(); };
+$('sortDir')?.addEventListener('click', () => {
+  APP_PREFS.sortDir = sortDirection() === 'asc' ? 'desc' : 'asc';
+  syncSortDirection();
+  refreshFilteredView();
+  savePrefs();
+});
 document.querySelectorAll('[data-source]').forEach((b) => {
   b.onclick = () => {
     S.activeCollection = '';
@@ -8591,8 +9310,12 @@ $('search').addEventListener('keydown', (e) => {
     $('search').blur();
     e.preventDefault();
   } else if (e.key === 'Enter') {
-    const first = visible()[0];
-    if (first) go(S.images.indexOf(first));
+    if (S.catalogEnabled && LIBRARY_VIEW) {
+      refreshFilteredView(-1, { toFirst: true, immediate: true });
+    } else {
+      const first = visible()[0];
+      if (first) go(S.images.indexOf(first));
+    }
     $('search').blur();
     e.preventDefault();
   }
@@ -9092,7 +9815,7 @@ async function pasteSettingsTo(targets) {
 
 }
 $('pasteBtn').onclick = () => pasteSettingsTo(transferTargets());
-$('pasteAllBtn').onclick = () => pasteSettingsTo(visible());
+$('pasteAllBtn').onclick = () => withViewRows((rows) => pasteSettingsTo(rows));
 async function applyPreviousSettings() {
   if (!S.priorPhotoSettings || !cur()) return toast(tr("No previous photo settings to apply"));
   const image = cur();
@@ -9387,18 +10110,77 @@ function exportModalOptions() {
     ...(which === 'selected' ? { names: transferTargets().map((im) => im.name) } : {}),
     format: $('modalExFormat').value,
     quality: +$('modalExQuality').value,
-    longEdge: $('modalExSize').value ? +$('modalExSize').value : null,
+    ...exportModalSizing(),
     outputSpace: $('modalExColorSpace').value,
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
     border: exportModalBorder(),
+    sharpen: exportModalSharpen(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
   };
 }
 
 function exportModalBorder() {
   const size = +$('modalExBorder').value || 0;
   return { enabled: size > 0, size: size || 0.03, tone: +$('modalExBorderTone').value };
+}
+
+// The Dimensions dropdown covers full size and the common long-edge presets.
+// Custom size overrides it with any other resize rule; "" keeps the dropdown
+// in charge, matching the legacy longEdge-only recipe shape when unset.
+function exportModalSizing() {
+  const mode = $('modalExSizeMode').value;
+  const noEnlarge = !$('modalExEnlarge').checked;
+  const resolutionPpi = +$('modalExPpi').value || null;
+  if (!mode) {
+    const longEdge = $('modalExSize').value ? +$('modalExSize').value : null;
+    return {
+      sizeMode: longEdge ? 'long-edge' : 'full', longEdge,
+      maxWidth: null, maxHeight: null, shortEdge: null, megapixels: null, percent: null,
+      noEnlarge, resolutionPpi,
+    };
+  }
+  const value = +$('modalExSizeValue').value || null;
+  return {
+    sizeMode: mode,
+    longEdge: mode === 'long-edge' ? value : null,
+    shortEdge: mode === 'short-edge' ? value : null,
+    maxWidth: mode === 'fit' ? value : null,
+    maxHeight: mode === 'fit' ? (+$('modalExSizeHeight').value || null) : null,
+    megapixels: mode === 'megapixels' ? value : null,
+    percent: mode === 'percent' ? value : null,
+    noEnlarge, resolutionPpi,
+  };
+}
+
+function exportModalSharpen() {
+  return { target: $('modalExSharpenTarget').value, amount: $('modalExSharpenAmount').value };
+}
+
+const EXPORT_SIZE_VALUE_LABELS = {
+  'long-edge': tr("Long edge (px)"), 'short-edge': tr("Short edge (px)"),
+  fit: tr("Max width (px)"), megapixels: tr("Megapixels"), percent: tr("Percent of original"),
+};
+
+function updateExportModalSizeMode() {
+  const mode = $('modalExSizeMode').value;
+  $('modalExSizeValueRow').hidden = !mode;
+  $('modalExSizeHeightField').hidden = mode !== 'fit';
+  $('modalExSize').disabled = !!mode;
+  if (mode) $('modalExSizeValueLabel').textContent = EXPORT_SIZE_VALUE_LABELS[mode] || tr("Value");
+}
+
+function updateExportModalFormatRows() {
+  const format = $('modalExFormat').value;
+  $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes(format) ? '' : 'none';
+  $('modalExMaxFileRow').hidden = format !== 'jpeg';
+  $('modalExBitDepthRow').hidden = format !== 'tif';
+}
+
+function updateExportModalSharpenRow() {
+  $('modalExSharpenAmountRow').hidden = $('modalExSharpenTarget').value === 'none';
 }
 
 function nearestOptionValue(select, value) {
@@ -9473,16 +10255,29 @@ function applyExportPreset(presetKey) {
   $('modalExQuality').value = p.quality;
   $('modalExQualityV').textContent = p.quality;
   $('modalExColorSpace').value = p.colorSpace;
-  $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes(p.format) ? '' : 'none';
+  updateExportModalFormatRows();
   scheduleExportPreview();
+}
+
+/* Picked, rated and not-rejected tallies for Export's catalog-wide choices.
+ * Those choices search the open source, so in catalog mode the numbers come
+ * from the server rather than from whichever rows are paged in. */
+function exportScopeCounts() {
+  if (S.catalogEnabled && S.sourceCounts) {
+    const tally = S.sourceCounts;
+    return { pickedCount: tally.approved, ratedCount: tally.rated, allCount: tally.all - tally.skipped };
+  }
+  return {
+    pickedCount: S.images.filter((im) => im.status === 'approved').length,
+    ratedCount: S.images.filter((im) => (im.rating || 0) >= 1).length,
+    allCount: S.images.filter((im) => im.status !== 'skipped').length,
+  };
 }
 
 function updateExportModalScope() {
   const which = $('modalExWhich').value;
   const targets = transferTargets();
-  const pickedCount = S.images.filter((im) => im.status === 'approved').length;
-  const ratedCount = S.images.filter((im) => (im.rating || 0) >= 1).length;
-  const allCount = S.images.filter((im) => im.status !== 'skipped').length;
+  const { pickedCount, ratedCount, allCount } = exportScopeCounts();
 
   let count = 0;
   let label = '';
@@ -9531,6 +10326,23 @@ function openExportModal() {
   for (const key of EXPORT_EXTRA_FIELDS) $('modalEx' + key).value = $('ex' + key).value;
   syncExportDestination('modalEx');
 
+  const advancedModes = ['short-edge', 'fit', 'megapixels', 'percent'];
+  const recipeSizeMode = advancedModes.includes(EXPORT_RECIPE_EXTRAS.sizeMode) ? EXPORT_RECIPE_EXTRAS.sizeMode : '';
+  $('modalExSizeMode').value = recipeSizeMode;
+  $('modalExSizeValue').value = recipeSizeMode
+    ? (EXPORT_RECIPE_EXTRAS.shortEdge || EXPORT_RECIPE_EXTRAS.maxWidth
+      || EXPORT_RECIPE_EXTRAS.megapixels || EXPORT_RECIPE_EXTRAS.percent || '') : '';
+  $('modalExSizeHeight').value = recipeSizeMode === 'fit' ? (EXPORT_RECIPE_EXTRAS.maxHeight || '') : '';
+  $('modalExEnlarge').checked = EXPORT_RECIPE_EXTRAS.noEnlarge === false;
+  $('modalExPpi').value = EXPORT_RECIPE_EXTRAS.resolutionPpi || '';
+  $('modalExSharpenTarget').value = EXPORT_RECIPE_EXTRAS.sharpen?.target || 'none';
+  $('modalExSharpenAmount').value = EXPORT_RECIPE_EXTRAS.sharpen?.amount || 'standard';
+  $('modalExMaxFileKb').value = EXPORT_RECIPE_EXTRAS.maxFileKb || '';
+  $('modalExBitDepth').value = EXPORT_RECIPE_EXTRAS.bitDepth === 8 ? '8' : '16';
+  updateExportModalSizeMode();
+  updateExportModalFormatRows();
+  updateExportModalSharpenRow();
+
   const thumbEl = $('exportTargetThumb');
   if (thumbEl) {
     if (activeImage) {
@@ -9543,9 +10355,7 @@ function openExportModal() {
     }
   }
 
-  const pickedCount = S.images.filter((im) => im.status === 'approved').length;
-  const ratedCount = S.images.filter((im) => (im.rating || 0) >= 1).length;
-  const allCount = S.images.filter((im) => im.status !== 'skipped').length;
+  const { pickedCount, ratedCount, allCount } = exportScopeCounts();
 
   const select = $('modalExWhich');
   select.innerHTML = '';
@@ -9613,13 +10423,18 @@ document.querySelectorAll('.export-preset-pill').forEach((pill) => {
       $('modalExQualityV').textContent = $('modalExQuality').value;
     }
     if (id === 'modalExFormat') {
-      $('modalExQualityRow').style.display = ['jpeg', 'heif'].includes($('modalExFormat').value) ? '' : 'none';
+      updateExportModalFormatRows();
     }
   });
 });
 
+$('modalExSizeMode').addEventListener('change', updateExportModalSizeMode);
+$('modalExSharpenTarget').addEventListener('change', updateExportModalSharpenRow);
+
 ['modalExFormat', 'modalExSize', 'modalExQuality', 'modalExColorSpace',
   'modalExDestination', 'modalExFilenameTemplate', 'modalExCollision', 'modalExBorder', 'modalExBorderTone',
+  'modalExSizeMode', 'modalExSizeValue', 'modalExSizeHeight', 'modalExEnlarge', 'modalExPpi',
+  'modalExSharpenTarget', 'modalExSharpenAmount', 'modalExMaxFileKb', 'modalExBitDepth',
   ...EXPORT_EXTRA_FIELDS.map((key) => 'modalEx' + key)].forEach((id) => {
   $(id).addEventListener('input', scheduleExportPreview);
   $(id).addEventListener('change', scheduleExportPreview);
@@ -9651,7 +10466,12 @@ $('exportModalRun').onclick = async () => {
   $('exFilenameTemplate').value = $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}';
   $('exCollision').value = $('modalExCollision').value;
   for (const key of EXPORT_EXTRA_FIELDS) $('ex' + key).value = $('modalEx' + key).value;
-  EXPORT_RECIPE_EXTRAS = { ...EXPORT_RECIPE_EXTRAS, border: exportModalBorder() };
+  EXPORT_RECIPE_EXTRAS = {
+    ...EXPORT_RECIPE_EXTRAS, border: exportModalBorder(), sharpen: exportModalSharpen(),
+    ...exportModalSizing(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
+  };
   savePrefs();
   closeExportModal();
   await runExport({
@@ -9660,12 +10480,15 @@ $('exportModalRun').onclick = async () => {
     names,
     format: $('modalExFormat').value,
     quality: +$('modalExQuality').value,
-    longEdge: $('modalExSize').value ? +$('modalExSize').value : null,
+    ...exportModalSizing(),
     outputSpace: $('modalExColorSpace').value,
     destination: $('modalExDestination').value.trim() || 'film-exports',
     filenameTemplate: $('modalExFilenameTemplate').value.trim() || '{filename}_{stock}',
     collision: $('modalExCollision').value,
     border: exportModalBorder(),
+    sharpen: exportModalSharpen(),
+    maxFileKb: +$('modalExMaxFileKb').value || null,
+    bitDepth: $('modalExBitDepth').value === '8' ? 8 : 16,
   });
 };
 
@@ -10423,6 +11246,12 @@ document.addEventListener('keydown', (e) => {
   if (meta && !e.shiftKey && e.key.toLowerCase() === 'f') {
     e.preventDefault(); $('search').focus(); $('search').select(); return;
   }
+  if (meta && !e.shiftKey && !e.altKey && e.key.toLowerCase() === 'b') {
+    // Bare "b" already holds before/after in both key schemes, so the Quick
+    // Collection toggle sits on Cmd+B instead — free in this app and in the
+    // native menu (see toggleQuickCollectionItem in app/main.swift).
+    e.preventDefault(); void toggleQuickCollection(); return;
+  }
   if (meta && (e.key === 'Backspace' || e.key === 'Delete')) {
     e.preventDefault(); trashRejected(); return;
   }
@@ -10552,7 +11381,7 @@ document.addEventListener('keydown', (e) => {
   else if (KEYS.pick.includes(k)) setStatus('approved');
   else if (KEYS.reject.includes(k)) setStatus('skipped');
   else if (KEYS.unflag.includes(k)) setStatus('pending');
-  else if (k === KEYS.survey) openSurvey('survey');
+  else if (k === KEYS.survey) openSurvey(e.shiftKey ? 'compare' : 'survey');
   else if (k === 'g') setViewMode(e.shiftKey ? 'square' : 'photo');
   else if (k === KEYS.detail) setViewMode('detail');
   else if (k === KEYS.crop) {
@@ -10739,7 +11568,43 @@ KEYWORD_BATCH = installKeywordBatch({
   },
 });
 
-/* ------------------------------------------------------------- versions */
+/* ------------------------------------------------------------ snapshots */
+/* Snapshots are the catalog's `versions` rows: named, non-destructive
+ * checkpoints saved beside History through the same edit-save queue. A
+ * virtual copy starts with copies of its source's snapshots. Restoring one is
+ * an undoable edit that records its own History step. */
+const SNAPSHOT_LIMIT = 50;
+function snapshotDefaultName(now = new Date()) {
+  return now.toLocaleString([], {
+    year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+  });
+}
+function restoreSnapshot(version) {
+  pushUndo();
+  S.params = normalizeFilmParams(cloneValue(version.params || {}));
+  S.grade = { ...GRADE_DEFAULTS, ...cloneValue(version.grade || {}) };
+  S.crop = cloneValue(version.crop) || null;
+  S.masks = normalizeMasks(cloneValue(version.masks));
+  S.heals = normalizeHeals(cloneValue(version.heals));
+  S.optics = normalizeOptics(cloneValue(version.optics));
+  S.maskTextureDirty = true;
+  S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
+  syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
+  syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
+  drawGrade(); applyCropVisual();
+  saveState(true, { historyLabel: tr("Restore snapshot {versionName}", {versionName: version.name}) });
+  renderFilm(0);
+  toast(tr("Applied {versionName}", {versionName: version.name}));
+}
+async function renameSnapshot(version) {
+  const im = cur(); if (!im) return;
+  const photoName = im.name;
+  const name = await askName(tr("Rename snapshot"), version.name);
+  if (!name || !name.trim() || name.trim() === version.name) return;
+  if (cur()?.name !== photoName || !(im.versions || []).includes(version)) return;
+  version.name = name.trim().slice(0, 80);
+  saveState(true); renderVersions(); toast(tr("Snapshot renamed"));
+}
 function renderVersions() {
   const box = $('versionList');
   box.replaceChildren();
@@ -10747,7 +11612,7 @@ function renderVersions() {
   if (!versions.length) {
     const empty = document.createElement('div');
     empty.className = 'version-empty';
-    empty.textContent = tr("No named versions yet");
+    empty.textContent = tr("No snapshots yet");
     box.appendChild(empty);
     return;
   }
@@ -10764,21 +11629,14 @@ function renderVersions() {
       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
     });
     apply.append(name, when);
-    apply.onclick = () => {
-      pushUndo();
-      S.params = normalizeFilmParams(cloneValue(version.params || {}));
-      S.grade = { ...GRADE_DEFAULTS, ...cloneValue(version.grade || {}) };
-      S.crop = cloneValue(version.crop) || null;
-      S.masks = normalizeMasks(cloneValue(version.masks));
-      S.heals = normalizeHeals(cloneValue(version.heals));
-      S.optics = normalizeOptics(cloneValue(version.optics));
-      S.maskTextureDirty = true;
-      S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
-      syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
-      syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
-      drawGrade(); applyCropVisual(); saveState(true); renderFilm(0);
-      toast(tr("Applied {versionName}", {versionName: version.name}));
-    };
+    apply.onclick = () => restoreSnapshot(version);
+    const rename = document.createElement('button');
+    rename.className = 'version-rename';
+    rename.type = 'button';
+    rename.title = tr("Rename snapshot");
+    rename.setAttribute('aria-label', tr("Rename {itemName}", {itemName: version.name}));
+    rename.textContent = '•••';
+    rename.onclick = () => renameSnapshot(version);
     const del = document.createElement('button');
     del.className = 'version-delete';
     del.title = tr("Delete {versionName}", {versionName: version.name});
@@ -10787,9 +11645,9 @@ function renderVersions() {
     del.onclick = () => {
       const im = cur();
       im.versions = im.versions.filter((v) => v.id !== version.id);
-      saveState(true); renderVersions(); toast(tr("Version deleted"));
+      saveState(true); renderVersions(); toast(tr("Snapshot deleted"));
     };
-    row.append(apply, del);
+    row.append(apply, rename, del);
     box.appendChild(row);
   }
 }
@@ -10798,19 +11656,18 @@ $('versionCreate').onclick = async () => {
   const im = cur();
   if (!im) return;
   const photoName = im.name;
-  const proposed = tr("Version {value}", {value: (im.versions || []).length + 1});
-  const name = await askName(tr("Create version"), proposed);
+  const name = await askName(tr("Create snapshot"), snapshotDefaultName());
   if (!name || !name.trim()) return;
   if (cur()?.name !== photoName) return;
   readControls();
   const version = {
     id: (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random()}`,
-    name: name.trim(), created: new Date().toISOString(),
+    name: name.trim().slice(0, 80), created: new Date().toISOString(),
     params: cloneValue(S.params), grade: cloneValue(S.grade), crop: cloneValue(S.crop),
     masks: cloneValue(serializableMasks()), heals: cloneValue(S.heals), optics: cloneValue(S.optics),
   };
-  im.versions = [version, ...(im.versions || [])].slice(0, 50);
-  saveState(true); renderVersions(); toast(tr("Version created"));
+  im.versions = [version, ...(im.versions || [])].slice(0, SNAPSHOT_LIMIT);
+  saveState(true); renderVersions(); toast(tr("Snapshot created"));
 };
 
 /* -------------------------------------------------------------- presets */
@@ -12120,6 +12977,7 @@ for (const id of ['cropCustomWidth', 'cropCustomHeight']) {
 function paintSelectionState() {
   KEYWORD_BATCH?.sync();
   CAPTURE_TIME?.selectionChanged();
+  S.mselScopeKey = selectionScope();
   const currentName = cur()?.name;
   document.querySelectorAll('.cell').forEach((c) => {
     c.classList.toggle('sel', c.dataset.name === currentName);
@@ -12138,6 +12996,7 @@ function paintSelectionState() {
   updateTransferActions();
 }
 
+let rangeSelectionTicket = 0;
 function toggleSel(name, additive) {
   SELECTION_REQUEST?.cancel();
   if (!additive) S.msel.clear();
@@ -12152,14 +13011,29 @@ async function selectPhotoFromPointer(image, event) {
   if (event.shiftKey) {
     const list = visible();
     const anchorName = selectionAnchorName || cur()?.name || image.name;
-    const anchorIndex = Math.max(0,
-      list.findIndex((item) => item.name === anchorName));
-    const targetIndex = list.findIndex((item) => item.name === image.name);
+    const indexOfName = (name) => S.catalogEnabled && LIBRARY_VIEW
+      ? LIBRARY_VIEW.indexOf(name) : list.findIndex((item) => item.name === name);
+    const anchorIndex = Math.max(0, indexOfName(anchorName));
+    const targetIndex = indexOfName(image.name);
     if (!additive) S.msel.clear();
     if (targetIndex >= 0) {
       const first = Math.min(anchorIndex, targetIndex);
       const last = Math.max(anchorIndex, targetIndex);
-      for (const item of list.slice(first, last + 1)) S.msel.add(item.name);
+      let complete = true;
+      for (let index = first; index <= last; index++) {
+        const item = list[index];
+        if (item) S.msel.add(item.name); else complete = false;
+      }
+      if (!complete && S.catalogEnabled && LIBRARY_VIEW) {
+        // Rows between the ends that are not paged in: the server names them.
+        const ticket = ++rangeSelectionTicket;
+        api('/api/catalog/query', { ...LIBRARY_VIEW.spec, namesOnly: true, offset: first, limit: last - first + 1 })
+          .then((page) => {
+            if (ticket !== rangeSelectionTicket || !Array.isArray(page?.names)) return;
+            for (const name of page.names) S.msel.add(name);
+            paintSelectionState();
+          }).catch(() => {});
+      }
     }
   } else if (additive) {
     // A plain click represents one selection through cur(), until a modifier
@@ -12185,6 +13059,7 @@ async function savePrefs() {
   const patch = {
     engine: $('engine').value,
     filter: $('filter').value, sort: $('sort').value,
+    sortDir: APP_PREFS.sortDir === 'desc' || APP_PREFS.sortDir === 'asc' ? APP_PREFS.sortDir : null,
     gridSize: $('gridSize').value, activePane: S.activePane,
     activeFolder: S.activeFolder, includeSubfolders: S.includeSubfolders,
     activeFolders: S.activeFolders, favoriteFolders: S.favoriteFolders,
@@ -12314,6 +13189,7 @@ fetch('/api/prefs').then((r) => r.json()).then((p) => {
   syncEngineForProfile();
   setViewMode(['photo', 'square', 'detail'].includes(p.viewMode)
     ? p.viewMode : 'detail', false);
+  syncSortDirection();
   refreshFilteredView();
   renderFolders();
 }).catch(() => {});
@@ -12496,6 +13372,27 @@ CATALOG_UI = createCatalogUI({
   onCatalogImportClosed: () => FIRST_RUN?.catalogClosed(),
   selection: () => (S.msel.size ? [...S.msel] : (cur() ? [cur().name] : [])),
   onLibraryChanged: () => { reloadLibrary(); },
+  onMissingOnlyChanged: async (checked) => {
+    // Missing rows are excluded from every ordinary query, so this cannot be
+    // a client-side filter over the images already loaded — it needs its own
+    // fetch of exactly the rows the checkbox asks for.
+    S.showMissingOnly = checked;
+    if (!S.catalogEnabled) return;
+    if (!checked) { await reloadLibrary(); return; }
+    try {
+      const result = await api('/api/catalog/query',
+        { scope: 'all', filter: { missingOnly: true },
+          sort: { field: 'capture', dir: 'desc' }, limit: 20000 });
+      if (result.error) throw new Error(result.error);
+      S.images = (result.images || []).map((image) => normalizeLibraryImage(image, false));
+      S.catalogTotal = S.images.length;
+      _stripKey = _gridKey = '';
+      S.idx = S.images.length ? 0 : -1;
+      refreshLists();
+    } catch (error) {
+      toast(String(error?.message || error));
+    }
+  },
   onWatchArrival: async (status) => {
     const follow = status.follow
       && performance.now() - lastUserNavigationAt > 5000;
@@ -12520,20 +13417,27 @@ async function reloadLibrary() {
     S.folders = Array.isArray(data.folders) ? data.folders : S.folders;
     S.folderIds = data.folderIds && typeof data.folderIds === 'object'
       ? data.folderIds : S.folderIds;
-    S.images = data.images.map((image) => normalizeLibraryImage(
-      image, !S.catalogEnabled));
-    PHOTO_DISPLAY_STATUS.retain(S.images);
     if (data.library) S.library = data.library;
     S.libraryLoaded = true;
     applyPendingActiveCollection();
     _stripKey = _gridKey = '';
-    const index = previous
-      ? S.images.findIndex((image) => image.name === previous) : -1;
-    S.idx = index >= 0 ? index : (S.images.length ? 0 : -1);
-    if (S.idx >= 0) await go(S.idx);
-    else refreshLists();
-    if (S.catalogEnabled && S.images.length < S.catalogTotal) {
-      loadRemainingCatalogRows(S.catalogTotal).catch(() => {});
+    if (S.catalogEnabled) {
+      // Rows keep their objects; the view is rebuilt around the current photo.
+      if (!LIBRARY_VIEW) installLibraryView();
+      const leaving = cur();
+      LIBRARY_VIEW.invalidate();
+      const result = await LIBRARY_VIEW.setSpec(buildCatalogQuerySpec(), { immediate: true, locate: previous });
+      refreshScopeCounts(0);
+      if (result) await settleCurrentPhoto(leaving, result.located, -1, false, !leaving);
+      else refreshLists();
+    } else {
+      setImagePool(data.images.map((image) => normalizeLibraryImage(image, true)));
+      PHOTO_DISPLAY_STATUS.retain(S.images);
+      const index = previous
+        ? S.images.findIndex((image) => image.name === previous) : -1;
+      S.idx = index >= 0 ? index : (S.images.length ? 0 : -1);
+      if (S.idx >= 0) await go(S.idx);
+      else refreshLists();
     }
     watchCatalogScan();
     renderFolders();
@@ -12565,27 +13469,81 @@ function presentVideo(im) {
   }
 }
 
-function openSurvey(mode = 'survey') {
+async function openSurvey(mode = 'survey') {
   $('cullSimilarNavigation').hidden = true;
-  $('surveyKeep').hidden = false;
+  $('surveyKeep').hidden = mode === 'compare';
   const list = visible();
+  const paged = S.catalogEnabled && LIBRARY_VIEW;
   let chosen = S.msel.size
     ? list.filter((image) => S.msel.has(image.name)).map((image) => image.name)
     : [];
-  if (!chosen.length && list.length) {
+  if (mode === 'compare') {
+    // A/B wants exactly two: the first two selected, or the current photo
+    // beside its neighbour in the view.
+    if (chosen.length >= 2) chosen = chosen.slice(0, 2);
+    else {
+      const anchorName = chosen[0] || cur()?.name;
+      const anchorIndex = anchorName ? list.findIndex((image) => image?.name === anchorName) : -1;
+      if (anchorIndex >= 0) {
+        const other = anchorIndex + 1 < list.length ? anchorIndex + 1 : anchorIndex - 1;
+        if (other >= 0 && paged) await LIBRARY_VIEW.ensureIndex(other);
+        chosen = [list[anchorIndex], list[other]].filter(Boolean).map((image) => image.name);
+      }
+    }
+    if (chosen.length < 2) { toast(tr("Select two photos to compare")); return; }
+  } else if (!chosen.length && list.length) {
     const currentIndex = Math.max(0, list.indexOf(cur()));
     const start = clamp(currentIndex - 2, 0, Math.max(0, list.length - 6));
-    chosen = list.slice(start, start + 6).map((image) => image.name);
+    if (paged) await LIBRARY_VIEW.ensureRange(start, start + 6, 'nav');
+    chosen = list.slice(start, start + 6).filter(Boolean).map((image) => image.name);
   }
   if (!chosen.length) { toast(tr("Select photos to survey")); return; }
   if (!SURVEY.open(chosen, mode)) toast(tr("Nothing to survey"));
+}
+
+/* Every row of the current view as loaded objects, for actions that apply
+ * edits in the browser. The rows join the pool, pinned until the caller is
+ * done with them, and are evicted like any other page afterwards. */
+const PINNED_NAMES = new Set();
+async function loadViewRows(limit = 100000) {
+  if (!(S.catalogEnabled && LIBRARY_VIEW)) return visible();
+  const rows = [];
+  const spec = LIBRARY_VIEW.spec;
+  for (let offset = 0; offset < Math.min(limit, LIBRARY_VIEW.total); offset += 1000) {
+    const page = await api('/api/catalog/query', { ...spec, offset, limit: 1000 });
+    if (!Array.isArray(page?.items)) throw new Error(page?.error || tr('Could not load photos'));
+    for (const item of page.items) {
+      const image = materializeCatalogRow(item);
+      PINNED_NAMES.add(image.name);
+      rows.push(image);
+    }
+    if (!page.items.length) break;
+  }
+  return rows;
+}
+async function withViewRows(action, limit) {
+  let rows;
+  try { rows = await loadViewRows(limit); }
+  catch (error) { toast(error.message); return; }
+  try { return await action(rows); }
+  finally { for (const image of rows) PINNED_NAMES.delete(image.name); }
 }
 
 /* Move every rejected photo in the current view to the Trash, through the
  * host. The server resolves and validates the paths but never unlinks. */
 async function trashRejected() {
   if (!await saveState(true)) return;
-  const rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);
+  let rejected;
+  if (typeof LIBRARY_VIEW !== 'undefined' && LIBRARY_VIEW && S.catalogEnabled) {
+    // The view's rejected names from the server; the trash route refuses
+    // virtual copies on its own.
+    try {
+      const names = await LIBRARY_VIEW.allNames({ filter: { ...LIBRARY_VIEW.spec.filter, status: 'skipped' } });
+      rejected = (names || []).map((name) => poolImage(name) || { name }).filter((image) => !image.virtual);
+    } catch (error) { toast(error.message); return; }
+  } else {
+    rejected = visible().filter((image) => image.status === 'skipped' && !image.virtual);
+  }
   if (!rejected.length) { toast(tr("No rejected photos in this view")); return; }
   if (!window.confirm(
     trn("Move {count} rejected photo to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", "Move {count} rejected photos to the Trash? Sidecars go with them. Paired files hidden from this view stay in the library. Choose Both in pair settings to include them.", rejected.length, {rejectedLength: rejected.length}))) return;
@@ -12624,19 +13582,20 @@ if ($('surveyKeep')) $('surveyKeep').onclick = keepSurveySelection;
 
 /* --------------------------------------------------- lens: auto-straighten */
 if ($('autoLevel')) {
-  const runGeometry = async (mode) => {
+  const runGeometry = async (mode, { guides, noteEl = $('autoLevelNote') } = {}) => {
     const im = cur();
     if (!im) return;
     const session = cropSession;
-    $('autoLevelNote').textContent = tr("Looking for lines…");
+    noteEl.textContent = guides ? tr("Solving from the drawn guides…") : tr("Looking for lines…");
     try {
-      const result = await api('/api/geometry/auto',
-                               { name: im.name, mode, rotate: S.params?.rotate || 0 });
+      const payload = { name: im.name, mode, rotate: S.params?.rotate || 0 };
+      if (guides) payload.guides = guides;
+      const result = await api('/api/geometry/auto', payload);
       if (cur()?.name !== im.name || cropSession !== session) return;
-      if (result.error) { $('autoLevelNote').textContent = result.error; return; }
+      if (result.error) { noteEl.textContent = result.error; return; }
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
-        $('autoLevelNote').textContent =
+        noteEl.textContent =
           (((result.notes || []).join(' ') || tr("No usable lines found.")));
         return;
       }
@@ -12646,14 +13605,79 @@ if ($('autoLevel')) {
       saveState(true);
       refreshBaseEdits();
       const confidence = Math.round((result.confidence || 0) * 100);
-      $('autoLevelNote').textContent =
+      noteEl.textContent =
         tr("{value} lines · {confidence}% confidence{value2}", {value: (result.lines || 0), confidence: confidence, value2: (result.notes || []).length ? ` · ${result.notes.join(' ')}` : ''});
+      return true;
     } catch (error) {
-      $('autoLevelNote').textContent = tr("Could not analyse this photo.");
+      noteEl.textContent = tr("Could not analyse this photo.");
     }
   };
   $('autoLevel').onclick = () => runGeometry('level');
   if ($('autoUpright')) $('autoUpright').onclick = () => runGeometry('full');
+
+  /* Guided upright: the operator draws 2-4 lines along edges that should be
+   * vertical or horizontal; those replace automatic line detection. Drawing
+   * claims the edit overlay exclusively, the same pointer-ownership model
+   * masks and heals use, so the ordinary crop-drag handlers stand down while
+   * a guide is being drawn. */
+  function syncEditOverlayActive() {
+    $('editOverlay').classList.toggle('active', !!cur() &&
+      (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+       (S.activePane === 'cropPane' && S.geometryGuideMode)));
+  }
+  function exitGuidedUpright() {
+    S.geometryGuideMode = false;
+    S.geometryGuides = [];
+    S.editGesture = null;
+    syncEditOverlayActive();
+    drawEditOverlay();
+    syncGuidedPanel();
+  }
+  function syncGuidedPanel() {
+    $('guidedUpright').setAttribute('aria-pressed', String(S.geometryGuideMode));
+    $('guidedPanel').hidden = !S.geometryGuideMode;
+    $('guidedKindVertical').setAttribute('aria-pressed', String(S.geometryGuideKind === 'vertical'));
+    $('guidedKindHorizontal').setAttribute('aria-pressed', String(S.geometryGuideKind === 'horizontal'));
+    $('guidedUndo').disabled = !S.geometryGuides.length;
+    $('guidedClear').disabled = !S.geometryGuides.length;
+    $('guidedApply').disabled = S.geometryGuides.length < 2;
+    if (S.geometryGuideMode) {
+      $('guidedNote').textContent = S.geometryGuides.length >= 2
+        ? tr("{count} lines drawn.", {count: S.geometryGuides.length})
+        : tr("Draw at least 2 lines.");
+    }
+  }
+  if ($('guidedUpright')) {
+    $('guidedUpright').onclick = () => {
+      if (S.activePane !== 'cropPane') return;
+      if (S.geometryGuideMode) { exitGuidedUpright(); return; }
+      S.geometryGuideMode = true;
+      S.geometryGuides = [];
+      syncEditOverlayActive();
+      syncGuidedPanel();
+      drawEditOverlay();
+    };
+    $('guidedKindVertical').onclick = () => {
+      S.geometryGuideKind = 'vertical'; syncGuidedPanel();
+    };
+    $('guidedKindHorizontal').onclick = () => {
+      S.geometryGuideKind = 'horizontal'; syncGuidedPanel();
+    };
+    $('guidedUndo').onclick = () => {
+      S.geometryGuides.pop(); syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedClear').onclick = () => {
+      S.geometryGuides = []; syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedApply').onclick = async () => {
+      if (S.geometryGuides.length < 2) return;
+      const guides = S.geometryGuides.map((guide) => ({
+        kind: guide.kind, points: guide.points,
+      }));
+      const ok = await runGeometry('full', { guides, noteEl: $('guidedNote') });
+      if (ok) exitGuidedUpright();
+    };
+  }
 }
 
 /* --------------------------------------------------------------- enhance */
@@ -12741,14 +13765,19 @@ if ($('enhanceRun')) {
 const PEOPLE = createPeoplePanel({
   api,
   onLabels: (labels) => {
+    S.peopleLabels = labels;
     for (const image of S.images) image.people = labels[image.name.split('::lighttable-copy::')[0]] || [];
     invalidateVisibleCache();
     _stripKey = _gridKey = '';
-    refreshLists();
+    if (S.catalogEnabled && $('search').value.trim()) refreshFilteredView();
+    else refreshLists();
   },
   onPhoto: async (name) => {
-    await loadRemainingCatalogRows(S.catalogTotal);
-    const index = S.images.findIndex(image => image.name === name);
+    let index = S.images.findIndex(image => image.name === name);
+    if (index < 0 && S.catalogEnabled && LIBRARY_VIEW) {
+      const at = await LIBRARY_VIEW.locate(name);
+      index = at == null ? -1 : S.images.indexOf(await LIBRARY_VIEW.ensureIndex(at));
+    }
     if (index < 0) throw new Error(tr('This photo is no longer in the catalog. Scan People again.'));
     setViewMode('detail');
     await go(index);
@@ -12791,6 +13820,7 @@ PRESETS_READY.then(() => nativeBridge()?.postMessage({ action: 'requestPresetLin
 /* ------------------------------------------------------------- selection */
 if ($('renameOpen')) $('renameOpen').onclick = () => CATALOG_UI.openRename();
 if ($('surveyOpen')) $('surveyOpen').onclick = () => openSurvey('survey');
+if ($('compareTwoOpen')) $('compareTwoOpen').onclick = () => openSurvey('compare');
 if ($('unflagBtn')) $('unflagBtn').onclick = () => setStatus('pending');
 if ($('labelFilter')) {
   $('labelFilter').onchange = () => { refreshFilteredView(); savePrefs(); };
@@ -12876,6 +13906,7 @@ function uiStateReport() {
       query: $('search')?.value || '',
     },
     sort: $('sort')?.value || 'capture',
+    sortDir: sortDirection(),
     activeTool: S.cropping ? 'crop' : S.maskRefineMode || null,
     allowAutomation: APP_PREFS.allowAutomation !== false,
   };
@@ -12969,11 +14000,17 @@ async function applyServerStateEvent(event) {
   refreshLists();
   renderKeywords();
   renderVersions();
+  if (typeof scheduleCatalogViewRefresh === 'function') scheduleCatalogViewRefresh(200);
 }
 
 async function executeUICommand(command, args = {}, event = {}) {
   if (command === 'goto') {
-    const index = S.images.findIndex((image) => image.name === args.name);
+    let index = S.images.findIndex((image) => image.name === args.name);
+    if (index < 0 && S.catalogEnabled && LIBRARY_VIEW) {
+      // Not paged in: ask the server where it sits, then fetch that page.
+      const at = await LIBRARY_VIEW.locate(args.name);
+      index = at == null ? -1 : S.images.indexOf(await LIBRARY_VIEW.ensureIndex(at));
+    }
     if (index < 0) throw new Error(tr("Photo is not in the current library"));
     await go(index);
   } else if (command === 'select') {
@@ -12985,6 +14022,7 @@ async function executeUICommand(command, args = {}, event = {}) {
     else if (args.action === 'add') names.forEach((name) => S.msel.add(name));
     else if (args.action === 'remove') names.forEach((name) => S.msel.delete(name));
     else throw new Error(tr("select action must be set, add, remove, or clear"));
+    S.mselScopeKey = selectionScope();
     refreshLists();
   } else if (command === 'filter') {
     const fields = { status: 'filter', rating: 'ratingFilter', kind: 'kindFilter',
@@ -12996,7 +14034,9 @@ async function executeUICommand(command, args = {}, event = {}) {
     }
     refreshFilteredView();
   } else if (command === 'sort') {
-    $('sort').value = String(args.value || args.sort || 'capture');
+    if (args.value || args.sort) $('sort').value = String(args.value || args.sort);
+    if (args.dir === 'asc' || args.dir === 'desc') APP_PREFS.sortDir = args.dir;
+    if (typeof syncSortDirection === 'function') syncSortDirection();
     refreshFilteredView();
   } else if (command === 'slider') {
     const input = document.querySelector(`[data-g="${CSS.escape(String(args.key))}"]`)
@@ -13050,19 +14090,18 @@ if ($('allowAutomation')) {
 }
 
 SELECTION_REQUEST = createSelectionRequest({
-  load: () => S.catalogEnabled && S.images.length < S.catalogTotal
-    ? loadRemainingCatalogRows(S.catalogTotal) : Promise.resolve(),
+  load: () => Promise.resolve(),
   queryNames: async () => {
-    if (!S.catalogEnabled) return null;
-    const spec = buildCatalogQuerySpec({ namesOnly: true, limit: 100000 });
-    const res = await api('/api/catalog/query', spec);
-    // The loaded-row path already resolves the complete view. Retain it for
-    // catalogs larger than a single names page rather than selecting a subset.
-    if (res?.names?.length < res?.total) return null;
-    return res?.names || null;
+    if (!S.catalogEnabled || !LIBRARY_VIEW) return null;
+    // Every name of the view from the server, page by page; the rows never
+    // need to be loaded for the selection to be complete.
+    const names = await LIBRARY_VIEW.allNames();
+    if (!names) throw new Error(tr('The library changed; select photos again'));
+    return names;
   },
-  scope: selectionScope, visible, selection: () => S.msel,
-  changed: () => refreshLists(), onError: error => toast(error.message),
+  scope: selectionScope, visible: () => visible().filter(Boolean), selection: () => S.msel,
+  changed: () => { S.mselScopeKey = selectionScope(); refreshLists(); },
+  onError: error => toast(error.message),
 });
 MASK_BATCH = installMaskBatch({el: $, post: api, get: getJSON,
   flush: flushEditSaves, targets: transferTargets, toast});

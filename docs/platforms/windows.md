@@ -236,6 +236,24 @@ replacement for the macOS implementation.
 This separation is intentional: platform work should not add a conditional to
 the measured render loop unless the operating system genuinely requires one.
 
+Learned denoise (Detail panel and Photo → Enhance Photo…) has no Core ML on
+Windows. `scripts/convert-models.py --format onnx` exports the same traced,
+bit-identity-gated SCUNet network to ONNX at the fixed 512×512 input Core ML
+uses, and `enhance_workflow.onnx_runner`/`onnx_batch_runner` run it in-process
+through onnxruntime (`onnxruntime-directml`, pinned in
+`packaging/runtime-windows.lock`) instead of the Swift helper subprocess. The
+DirectML execution provider accelerates on whatever GPU is present and falls
+back to CPU on its own; strength blends against the original with the same
+formula the Swift helper uses, so a strength value means the same thing on
+every platform. `scripts/smoke-denoise.py` exercises the packaged ONNX model
+after relocation, the same way `scripts/smoke-hair-mask.py` exercises the
+LiteRT hair model. The build bundles the converted model only when
+`scripts/models/onnx/denoise.onnx` is present (set
+`LIGHTTABLE_REQUIRE_DENOISE_MODEL=1` to make its absence a build failure);
+hosted CI does not yet convert it, so a runtime built there reports learned
+denoise as unavailable until a conversion step like the macOS release job's is
+added.
+
 Full-resolution portable processed-image conversion decodes through OpenImageIO
 and applies ICC transforms through LittleCMS via the pinned `imagecodecs`
 runtime. 16-bit and floating-point intermediates preserve source detail instead of
@@ -296,11 +314,26 @@ new size skip the disk as well. The TIFF route remains the fallback, and an
 engine that reports the exchange unavailable is remembered so later renders go
 straight to TIFF.
 
-If future measurement shows that webview texture upload and paint dominate at
-large preview sizes, each native host can add a child WGPU viewport while
-retaining the webview for controls. The resident render protocol and shared
-editing/export math are already outside the host, so that experiment does not
-require another application rewrite or a forked Windows pipeline.
+The interactive preview frame itself used to reach the webview as a JPEG:
+the resident engine's packed RGBA8 surface, encoded to JPEG on the server,
+decoded again by an `<img>` element, then uploaded to a WebGL texture. Since
+the resident engine already produces that RGBA8 surface for the Mac's Metal
+path, a non-Metal client can now ask for it directly (`raw: true` on
+`/api/render`) and upload it with `texImage2D` from a `fetch()` +
+`ArrayBuffer`, skipping the JPEG encode and decode entirely; JPEG remains the
+transport for thumbnails and edited/baked renditions. Measured end-to-end
+improvement and remaining gaps (viewport-tile compositing for this path, a
+non-film source-image passthrough that stays on JPEG) are in
+[`../performance.md`](../performance.md#windowslinux-interactive-preview-transport-2026-09-13).
+
+If future measurement shows that webview texture upload and paint still
+dominate at large preview sizes even with that JPEG round trip removed, each
+native host can add a child WGPU viewport while retaining the webview for
+controls. The resident render protocol and shared editing/export math are
+already outside the host, so that experiment does not require another
+application rewrite or a forked Windows pipeline; a concrete crate/API plan,
+risks (WebView2 airspace foremost), and an estimate are in
+[`gpu-preview-design.md`](gpu-preview-design.md).
 
 ## Required proof before release
 

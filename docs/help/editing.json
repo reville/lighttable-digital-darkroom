@@ -54,7 +54,7 @@
       {"path": "web/history-panel.js", "anchor": "The pane lists\n * steps newest first; restoring one creates another undoable edit."},
       {"path": "web/history-panel.js", "anchor": "Persistent history is available in catalog libraries. Undo and redo still work in this session."},
       {"path": "web/history-panel.js", "anchor": "const COALESCE_MS = 2000;"},
-      {"path": "web/app.js", "anchor": "im.versions = [version, ...(im.versions || [])].slice(0, 50);"},
+      {"path": "web/app.js", "anchor": "im.versions = [version, ...(im.versions || [])].slice(0, SNAPSHOT_LIMIT);"},
       {"path": "web/index.html", "anchor": "Undo (Ctrl/⌘Z)"},
       {"path": "web/index.html", "anchor": "Redo (Ctrl/⌘Shift+Z)"}
     ]
@@ -68,7 +68,7 @@
     "sections": [
       {
         "title": "Start with Light",
-        "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation."],
+        "paragraphs": ["Open Edit and expand Light. Exposure changes overall brightness; Highlights and Shadows let you target bright and dark regions. Whites and Blacks adjust the ends of the tonal range: raise Whites to brighten the brightest tones, raise Blacks to lift the darkest, and lower either to pull that end back. Contrast changes their separation.", "These Light controls work on the light behind the displayed image rather than on its clipped pixels. Tones that Exposure pushes past white stay available for Highlights and Whites to bring back, and the brightest tones roll off softly instead of clipping."],
         "steps": ["Set Exposure for the main subject.", "Adjust Highlights and Shadows to balance bright and dark regions, then refine Whites, Blacks, and Contrast.", "Use the Clipping warning button beside the histogram or press J to toggle highlight and shadow clipping indicators directly on the image (red for clipped highlights, blue for clipped shadows).", "Compare your result with the original using the before control, or hold B while the photo is active."],
         "tips": ["Light’s Reset resets that group. Use Undo when you want to reverse just your latest adjustment."]
       },
@@ -89,7 +89,7 @@
     "sources": [
       {"path": "web/index.html", "anchor": "<details class=\"sec\" id=\"lightSection\" open>"},
       {"path": "web/index.html", "anchor": "Clipping warning"},
-      {"path": "web/index.html", "anchor": "data-scope=\"vectorscope\""},
+      {"path": "web/index.html", "anchor": "data-scope=\"vectorscope\""}, {"path": "grade.py", "anchor": "def _tone_stage(c: np.ndarray, g: dict, encoding: str = \"srgb\") -> np.ndarray:"},
       {"path": "web/app.js", "anchor": "S.grade.exposure = clamp(Math.log2(0.45 / Math.max(mean, 0.02)), -1.5, 1.5);"},
       {"path": "web/app.js", "anchor": "Auto tone: waiting for image preview…"},
       {"path": "web/index.html", "anchor": "Show original"},
@@ -240,7 +240,7 @@
         "title": "Run learned denoise on a RAW photo",
         "paragraphs": ["RAW photos can show Sensor noise reduction and Learned denoise controls. Learned denoise runs locally when you press Apply denoise; moving Strength does not run it live."],
         "steps": ["Select a RAW photo and expand Detail.", "Check that Apply denoise is available, choose Strength, and click Apply denoise.", "Watch the progress message. Use Cancel if you need to stop the job.", "Inspect the completed preview at 1:1."],
-        "tips": ["Learned denoise requires the macOS inference helper and a compatible local model. It is unavailable on Linux and Windows. Ordinary noise reduction and sharpening remain available. Development builds may lack the model; read the availability message before starting."]
+        "tips": ["Learned denoise runs through Core ML on macOS and through onnxruntime on Windows and Linux, using the same converted model. Ordinary noise reduction and sharpening remain available everywhere. Development builds may lack the converted model or runtime; read the availability message before starting."]
       },
       {
         "title": "Create an enhanced derivative in the Mac app",
@@ -305,7 +305,7 @@
         "title": "Start a merge in the Mac app",
         "paragraphs": ["Photo Merge uses a neutral render of each original and creates a new 16-bit TIFF in LightTable Merges. Apply your final look, crop, and local adjustments to the merged result. The source originals remain available."],
         "steps": ["Select at least two distinct originals in the library. Multiple virtual copies of one original count as one source.", "Choose Photo → Photo Merge… in the Mac menu.", "Choose HDR · exposure fusion, Panorama · feature aligned, or Focus stack · sharpness fused.", "Optionally enter a Result name, then click Merge.", "Watch the preparation, alignment, blending, and saving progress. When the app reports completion and refreshes the library, open the TIFF in LightTable Merges and inspect it."],
-        "tips": ["Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.", "Merge normally processes each input at up to 6,000 pixels on its long edge. The merged result may therefore have less detail than the full-resolution source sequence.", "If a merge reports an error, read the specific message and correct the input selection before trying again."]
+        "tips": ["Only one merge can run at a time. An existing filename is preserved; a new merge with the same name receives a numbered suffix.", "Merge inputs default to full resolution. If the sequence would need more memory than the machine can spare, LightTable automatically reduces every input to a smaller long edge and shows the effective size before you start; a fixed limit can also be set with the LIGHTTABLE_MERGE_MAX_EDGE environment variable.", "If a merge reports an error, read the specific message and correct the input selection before trying again."]
       },
       {
         "title": "Choose suitable inputs",
@@ -322,7 +322,8 @@
       {"path": "server.py", "anchor": "return neutral_tiff_for(name, entry.get(\"params\") or default_params)"},
       {"path": "server.py", "anchor": "folder = FOLDER / \"LightTable Merges\""},
       {"path": "server.py", "anchor": "\"outputSpace\": \"prophoto\", \"bitDepth\": 16,"},
-      {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"6000\"))"},
+      {"path": "server.py", "anchor": "MERGE_MAX_EDGE = int(os.environ.get(\"LIGHTTABLE_MERGE_MAX_EDGE\", \"0\") or 0)"},
+      {"path": "merge_plan.py", "anchor": "default is now full resolution, bounded by an estimate of the float32 working"},
       {"path": "server.py", "anchor": "return {\"error\": T(\"a merge is already running\")}"},
       {"path": "merge_workflow.py", "anchor": "Align and exposure-fuse 2-9 bracketed, display-referred frames."},
       {"path": "merge_workflow.py", "anchor": "HDR inputs must have matching dimensions"},
@@ -377,10 +378,12 @@
           "Try Auto level for a tilted horizon, then refine Straighten if needed.",
           "Use Rotate left, Rotate right, or the flip buttons for orientation changes.",
           "Expand Perspective and try Auto upright, or adjust Vertical, Horizontal, and Scale manually.",
+          "If Auto upright can’t find enough lines, or picks the wrong ones, click Guided, draw 2 to 4 lines along edges that should be vertical or horizontal, then click Apply guides.",
           "Inspect the edges and final framing, then click Done."
         ],
         "tips": [
           "Auto level uses lines it can find; inspect the result instead of assuming the detected angle suits the photograph.",
+          "In Guided mode, choose Vertical line or Horizontal line before each drag so the line is tagged correctly; Undo line removes the last one and Clear starts over.",
           "Crop’s Reset resets the crop, rotation, flips, and perspective together."
         ]
       }
@@ -410,6 +413,14 @@
       {
         "path": "web/index.html",
         "anchor": "id=\"autoUpright\""
+      },
+      {
+        "path": "web/index.html",
+        "anchor": "id=\"guidedUpright\""
+      },
+      {
+        "path": "geometry_auto.py",
+        "anchor": "def _from_guides(guides) -> tuple:"
       }
     ]
   },
@@ -453,7 +464,7 @@
         "title": "Create a manual mask",
         "paragraphs": ["Open Mask in the editing toolbar and choose a tool under Create New Mask. Click Create New Mask to show or hide the tools. Each mask has its own Light, Color, and Tone Curve adjustments.", "Texture, Clarity, Whites, Blacks, and Tone Curve use the image after global adjustments and earlier masks. These controls require a preview update; wait for it to finish before judging the result. Preview and export apply them in the same order."],
         "steps": ["Choose Brush to paint, Linear for a graduated adjustment, or Radial for a round or oval adjustment.", "For Brush, choose Size, Feather, Flow, and Density, then paint over the photo. For Linear or Radial, drag on the photo to set the shape.", "Keep Show Overlay enabled while checking the selected area, then turn it off to judge the photo.", "Raise Exposure to lighten an area or lower it to darken it. Use the other Light and Color controls as needed, and Amount in Range to reduce the mask’s overall strength.", "Rename the mask using its ••• button so its purpose is easy to recognize later."],
-        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
+        "tips": ["Add, Subtract, and Intersect put you in painting refinement modes. For a Linear or Radial mask, choose Edit Shape to return to manipulating its shape.", "Enable temporarily switches a mask’s effect off or on. Invert reverses its selection.", "The editor allows up to sixteen local masks. Duplicate Mask copies the selected mask, including its shape, strokes, and adjustments, and inserts the copy directly after it; Delete Mask removes the selected mask; Clear All removes the photo’s masks and is unavailable when there are none.", "Mask pins and brush outlines stay sharp and the same thickness as you zoom. The outline grows with the area it covers in the photo."]
       },
       {
         "title": "Build brush coverage gradually",
@@ -462,7 +473,7 @@
       },
       {
         "title": "Shape a linear gradient",
-        "paragraphs": ["In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.", "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file."],
+        "paragraphs": ["In Edit Shape, drag either dot to adjust that end of the gradient. Drag the connecting line to move the whole gradient while keeping its angle and transition width. Drag elsewhere on the photo to redraw it.", "Dragging the two dots onto each other leaves the gradient with no direction, so it selects nothing until you separate them again. A very short gradient is a valid hard edge and applies the same way in the preview and in the exported file.", "Feather widens or narrows the transition band, centred on the line between the two dots. Lower it for a harder edge, raise it for a softer, wider blend."],
         "tips": ["Select an existing Linear mask to adjust it again. If you have been painting with Add, Subtract, or Intersect, choose Edit Shape first. Press H if the dots are hidden."]
       },
       {
@@ -500,6 +511,8 @@
       {"path": "web/index.html", "anchor": "data-local=\"blacks\""},
       {"path": "web/app.js", "anchor": "Up to sixteen local masks can be active"},
       {"path": "web/app.js", "anchor": "$('maskEditShape').onclick = () => { S.maskRefineMode = null;"},
+      {"path": "web/app.js", "anchor": "function duplicateMask(id = S.selectedMaskId) {"},
+      {"path": "edits.py", "anchor": "component[\"feather\"] = _clamp(raw.get(\"feather\"), 0.0, 1.0, 1.0)"},
       {"path": "web/screen-overlay.js", "anchor": "export function prepareScreenOverlay("},
       {"path": "web/index.html", "anchor": "data-local=\"blur\""},
       {"path": "web/index.html", "anchor": "id=\"maskCurveLuminosity\""},
@@ -517,13 +530,13 @@
     "sections": [
       {
         "title": "Create a smart selection",
-        "paragraphs": ["Mask offers Subject, Sky, Object, Depth, and People selections. These run locally; available methods depend on the selection type and platform.", "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. Fine boundaries still need inspection and painted refinement.", "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added."],
+        "paragraphs": ["Mask offers Subject, Sky, Object, Depth, and People selections. These run locally on every platform; available methods and precision depend on the selection type and platform.", "Subject, Sky, and Object selections retain up to 1,024 pixels along their longest edge. Edges are refined against image colors, and Vision subject selections preserve soft transitions. On Windows and Linux, Subject uses the same bundled local model as Person when it finds a person in the photo, and otherwise falls back to an image-based estimate. Fine boundaries still need inspection and painted refinement.", "A selection is cut from the photo it was started on. Moving to another photo before it finishes cancels it, so stay on the photo until the mask appears. If the selection cannot be completed, the mask panel reports it and nothing is added."],
         "steps": ["Open Mask and expand Create New Mask.", "Choose Subject or Sky for an automatic selection. For Object, click Object and then click the object in the photo.", "Choose Depth to make a selection from relative distance, then open Range and adjust Far limit and Near limit. Depth runs from far to near.", "Inspect Show Overlay and refine missed or extra areas before adjusting Light or Color."],
         "tips": ["Subject, Sky, and Object can use local image-based estimates. They can miss edges or select the wrong region, especially where subject and background look alike.", "Depth uses embedded capture depth when available, otherwise a local estimate. Estimated depth is relative and can be inaccurate.", "Use Invert if you want to adjust the area outside the resulting selection."]
       },
       {
         "title": "Select people or facial regions",
-        "paragraphs": ["People offers Person and Hair on every platform. Face skin, Eyes, Eyebrows, Lips, Teeth, and Soften skin require the Vision helper on macOS 14 or later. Face skin is estimated, and no identity is inferred.", "Hair uses a bundled model that runs locally and selects hair beyond the face, including shoulder-length hair. Inspect fine strands, bright highlights, wigs, and small background people; these can still be missed. Older or source builds without the model use the earlier Vision estimate when available. Existing saved masks keep their selections."],
+        "paragraphs": ["People offers Person and Hair on every platform. Face skin, Eyes, Eyebrows, Lips, Teeth, and Soften skin require the Vision helper on macOS 14 or later. Face skin is estimated, and no identity is inferred.", "Hair uses a bundled model that runs locally and selects hair beyond the face, including shoulder-length hair. Inspect fine strands, bright highlights, wigs, and small background people; these can still be missed. Older or source builds without the model use the earlier Vision estimate when available. Existing saved masks keep their selections.", "Person uses the same bundled local model on Windows and Linux (and on Mac when the Vision helper is unavailable) to trace a person's outline directly, rather than an image-based estimate. If it does not find a person, Person falls back to that estimate instead of leaving the selection empty."],
         "steps": ["Choose People, then the part you want to adjust.", "Inspect the overlay and use painted refinements around boundaries as needed.", "For Soften skin, review the automatically applied Texture and Clarity reduction, then adjust it to suit the portrait."],
         "tips": ["Read any availability or detection error in the mask panel. A tool appearing in the menu does not guarantee that the required helper or a usable selection is available."]
       }
@@ -538,6 +551,7 @@
       {"path": "web/index.html", "anchor": "Depth runs from far to near. Embedded capture depth is used when available; otherwise LightTable estimates locally."},
       {"path": "web/index.html", "anchor": "Selections run locally. Inspect the overlay and refine missed or extra areas."},
       {"path": "film_lab_ai/hair_segmentation.py", "anchor": "def hair_mask("},
+      {"path": "film_lab_ai/subject_segmentation.py", "anchor": "def person_mask("},
       {"path": "web/app.js", "anchor": "mask.grade.texture = -0.4;"},
       {"path": "web/app.js", "anchor": "Click the object to select."}
     ]

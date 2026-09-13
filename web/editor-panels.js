@@ -80,6 +80,9 @@ export function normalizeMasks(raw) {
       else if (type === 'linear') {
         component.start = Array.isArray(source?.start) ? source.start : [0.25, 0.5];
         component.end = Array.isArray(source?.end) ? source.end : [0.75, 0.5];
+        // Band width as a share of the span, centred between the handles.
+        // Earlier gradients carry no feather and keep their full-span ramp.
+        component.feather = clamp(+(source?.feather ?? 1), 0, 1);
       } else if (type === 'radial') {
         component.center = Array.isArray(source?.center) ? source.center : [0.5, 0.5];
         component.radius = clamp(+(source?.radius ?? 0.25), 0.01, 1.5);
@@ -132,6 +135,7 @@ export function normalizeMasks(raw) {
     if (type === 'brush') result.strokes = primary.strokes;
     else if (type === 'linear') {
       result.start = primary.start; result.end = primary.end;
+      result.feather = primary.feather;
     } else if (type === 'radial') {
       result.center = primary.center; result.radius = primary.radius;
       result.radiusX = primary.radiusX; result.radiusY = primary.radiusY;

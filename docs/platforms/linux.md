@@ -189,6 +189,21 @@ parity. `--require-hardware` rejects software/unknown adapters. Without a
 separate baseline binary it compares the current engine with caching disabled
 and enabled; it does not measure a before/after patch speedup.
 
+The interactive preview frame reaches the WebKitGTK webview the same way it
+reaches WebView2 on Windows: since Linux has no Metal-equivalent GPU-resident
+presenter, the resident engine's packed RGBA8 surface used to be JPEG-encoded
+on the server, decoded again by the browser's `<img>`, then uploaded to a
+WebGL texture. A non-Metal client can now request that surface directly
+(`raw: true` on `/api/render`) and upload it with `texImage2D` from a
+`fetch()` + `ArrayBuffer`, removing the JPEG round trip for the base frame;
+see [`../performance.md`](../performance.md#windowslinux-interactive-preview-transport-2026-09-13)
+for measurements and what is not yet covered (viewport-tile compositing for
+this path). A design for a GPU-resident presenter (a wgpu child surface under
+the webview, matching the Metal approach) — including the WebKitGTK
+compositing and X11/Wayland embedding risks specific to Linux — is in
+[`gpu-preview-design.md`](gpu-preview-design.md); it has not been spiked
+because it needs real Linux hardware to validate compositing behavior.
+
 ### Storage
 
 Linux uses the XDG directories, with `lighttable` beneath each root:
@@ -243,7 +258,9 @@ additional build packages include `base-devel`, `git`, `pkgconf`, `cmake`,
 
 `packaging/linux/runtime.json` pins CPython 3.13.12, the uv release that selects
 and verifies its standalone distribution, Rust 1.88.0, and both upstream film
-source revisions. Python dependencies reuse `requirements-runtime.lock`; only
+source revisions. Python dependencies come from `packaging/runtime-linux.lock`,
+which layers a small Linux-only overlay (Ed25519 update verification, the
+CPU-only `onnxruntime` build) on top of `requirements-runtime.lock`; only
 binary wheels are accepted so missing Linux wheels fail the build visibly.
 ICC downloads have fixed revisions and SHA-256 checksums. Build source revision,
 dirty state, platform, pins, and requirements checksum are recorded in
@@ -256,6 +273,22 @@ and runs the packaged runtime smoke there. Only then does it produce
 `dist/LightTable-VERSION-linux-x86_64.tar.gz` and its `.sha256` file.
 The archive needs the distribution libraries listed above and is not an
 AppImage, Flatpak, DEB, or RPM.
+
+Learned denoise has no Core ML on Linux. `scripts/convert-models.py --format
+onnx` exports the same traced, bit-identity-gated SCUNet network to ONNX at
+the fixed 512×512 input Core ML uses, and `enhance_workflow.onnx_runner`/
+`onnx_batch_runner` run it in-process through onnxruntime's CPU execution
+provider instead of a subprocess helper, blending strength against the
+original with the same formula the macOS Swift helper uses. The converted
+`.onnx` package is staged into `Resources/models` alongside the LiteRT hair
+model before the bundle is relocated, and `scripts/smoke-denoise.py` exercises
+it for real after relocation, the same way `scripts/smoke-hair-mask.py`
+exercises the hair model. The build bundles the converted model only when
+`scripts/models/onnx/denoise.onnx` is present (set
+`LIGHTTABLE_REQUIRE_DENOISE_MODEL=1` to make its absence a build failure);
+hosted CI does not yet convert it, so a runtime built there reports learned
+denoise as unavailable. Flatpak packaging does not yet carry this model or
+`onnxruntime`; only the portable tarball build above does.
 
 Native ARM64 Linux builders may pass `--experimental-aarch64` for a validation
 bundle. It uses the same pinned versions with ARM64 Python and Rust targets,

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "मेटाडेटा साथ रखें; जोड़ी गई कैप्चर के साथ बनाए रखें",
     "Catalog": "कैटलॉग",
     "Catalog file": "कैटलॉग फ़ाइल",
-    "Catalog loading stopped before all photos arrived": "कैटलॉग लोड होना सभी फ़ोटो आने से पहले रुक गया",
     "Catalog recovered from a verified backup": "सत्यापित बैकअप से कैटलॉग पुनर्प्राप्त किया गया",
     "Catalog updated {date}": "कैटलॉग अद्यतन {date}",
     "Catalogs": "कैटलॉग",
@@ -4478,7 +4477,19 @@
     "← People": "← लोग",
     "☆ Favorites": "☆ पसंदीदा",
     "Imported": "आयातित",
-    "{name} (Already imported)": "{name} (पहले से आयातित)"
+    "{name} (Already imported)": "{name} (पहले से आयातित)",
+    "Marked {count} photo": "{count} फ़ोटो चिह्नित",
+    "Marked {count} photos": "{count} फ़ोटो चिह्नित",
+    "Compare Two Photos": "दो फ़ोटो की तुलना करें",
+    "Compare two": "दो की तुलना करें",
+    "Compare two photos side by side (Shift+N)": "दो फ़ोटो को साथ-साथ रखकर तुलना करें (Shift+N)",
+    "Could not load photos": "फ़ोटो लोड नहीं हो सकीं",
+    "No selected photos are in this view": "इस व्यू में कोई चुनी हुई फ़ोटो नहीं है",
+    "Select two photos to compare": "तुलना के लिए दो फ़ोटो चुनें",
+    "Selecting every photo in view…": "व्यू में सभी फ़ोटो चुनी जा रही हैं…",
+    "Some photos could not be marked: {errorMessage}": "कुछ फ़ोटो चिह्नित नहीं की जा सकीं: {errorMessage}",
+    "Sort ascending. Click for descending": "आरोही क्रम में। अवरोही के लिए क्लिक करें",
+    "Sort descending. Click for ascending": "अवरोही क्रम में। आरोही के लिए क्लिक करें"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4772,6 +4783,10 @@
     "{value} unexpected exit in the last 24 hours.": {
       "one": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।",
       "other": "पिछले 24 घंटों में {value} अप्रत्याशित निकास।"
+    },
+    "Marked {count} photo": {
+      "one": "{count} फ़ोटो चिह्नित",
+      "other": "{count} फ़ोटो चिह्नित"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

@@ -15,6 +15,7 @@ import tifffile
 
 import color_pipeline as color
 import film_pipeline
+import grade
 import render_cli
 import server
 
@@ -92,8 +93,42 @@ class WideDevelopColorTests(unittest.TestCase):
                 np.testing.assert_array_equal(image.asarray(),
                     np.round(pixels * 65535).astype(np.uint16))
 
+    def test_tone_only_grade_keeps_the_wide_gamut(self):
+        for recipe in ({'exposure': .2}, {'whites': .3, 'blacks': -.2},
+                       {'contrast': .4, 'highlights': -.5, 'shadows': .3}):
+            with self.subTest(recipe=recipe):
+                job = dict(base_job(), grade=recipe)
+                self.assertEqual(server.export_input_color_space(job), 'display_p3')
+                self.assertNotIn('warnings', job)
+
+    def test_tone_grade_in_the_delivered_encoding_matches_the_preview_tones(self):
+        raw = raw_patches()
+        recipe = {'exposure': .35, 'highlights': -.3, 'shadows': .2,
+                  'whites': .15, 'blacks': -.1, 'contrast': .25}
+        preview = grade.apply(color.linear_prophoto_to_display_srgb(
+            raw, develop_profile='linear'), recipe)
+        for space in ('display_p3', 'prophoto'):
+            with self.subTest(space=space):
+                wide = grade.apply(color.linear_prophoto_to_display(
+                    raw, develop_profile='linear', output_space=space), recipe,
+                    encoding=color.grade_encoding(space))
+                self.assertTrue(np.all(np.isfinite(wide)))
+                displayed = color.convert_output_space(wide, 'srgb', input_space=space)
+                # Neutral patches are primaries-independent, so the graded
+                # delivery shows the preview's tones exactly. Saturated
+                # patches keep their wide colors; their channels differ by
+                # the preview's gamut clip, so compare their brightness.
+                np.testing.assert_allclose(displayed[:, 3:], preview[:, 3:], atol=2e-3)
+                luma = np.array([.2126, .7152, .0722])
+                np.testing.assert_allclose(
+                    grade._srgb_to_linear(displayed[:, :3]) @ luma,
+                    grade._srgb_to_linear(preview[:, :3]) @ luma, atol=.02)
+                self.assertGreater(float(np.max(abs(wide - color.convert_output_space(
+                    preview, space)))), .02)
+
     def test_unsupported_color_operations_keep_preview_and_warn(self):
-        for delta in ({'grade': {'exposure': .2}},
+        for delta in ({'grade': {'saturation': .2}},
+                      {'grade': {'exposure': .2, 'temp': .1}},
                       {'masks': [{'type': 'linear', 'enabled': True,
                                   'grade': {'exposure': .2}}]},
                       {'optics': {'vignette': .2}},
@@ -112,7 +147,7 @@ class WideDevelopColorTests(unittest.TestCase):
         self.assertNotIn('warnings', narrow)
 
     def test_cli_refuses_wide_pixels_with_srgb_grade(self):
-        job = dict(base_job(), inputColorSpace='display_p3', grade={'exposure': .2})
+        job = dict(base_job(), inputColorSpace='display_p3', grade={'saturation': .2})
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             job_path = root / 'job.json'

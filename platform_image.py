@@ -871,6 +871,53 @@ def _write_catalog_fields(xmp, fields: dict, *, rights_only: bool) -> None:
     xmp["Xmp.xmp.Rating"] = str(max(0, min(5, rating)))
 
 
+def _stamp_resolution(exif, ppi) -> None:
+    """Record the delivery density in EXIF so print software sees one answer."""
+    try:
+        value = int(ppi)
+    except (TypeError, ValueError):
+        return
+    if value <= 0:
+        return
+    exif["Exif.Image.XResolution"] = f"{value}/1"
+    exif["Exif.Image.YResolution"] = f"{value}/1"
+    exif["Exif.Image.ResolutionUnit"] = 2
+
+
+def write_resolution(dst: Path | str, ppi, warnings: list[str] | None = None) -> bool:
+    """Stamp only the EXIF resolution tags, for exports that carry no metadata."""
+    try:
+        value = int(ppi)
+    except (TypeError, ValueError):
+        return False
+    if value <= 0:
+        return False
+    destination = Path(dst)
+    staged = None
+    try:
+        import exiv2
+
+        staged = durable_io.temporary_path(destination, "resolution")
+        shutil.copyfile(destination, staged)
+        image = exiv2.ImageFactory.open(str(staged))
+        image.readMetadata()
+        exif = image.exifData()
+        _stamp_resolution(exif, value)
+        image.setExifData(exif)
+        image.writeMetadata()
+        del image
+        durable_io.publish_file(staged, destination)
+        return True
+    except Exception as error:  # noqa: BLE001 - the pixels must survive
+        print(f"write_resolution: {destination.name}: {error}", file=sys.stderr)
+        if warnings is not None:
+            warnings.append("The resolution tag could not be saved.")
+        return False
+    finally:
+        if staged is not None:
+            staged.unlink(missing_ok=True)
+
+
 def write_metadata(dst: Path | str, source: Path | str | None = None,
                    policy: str = "all-except-location",
                    fields: dict | None = None,
@@ -921,6 +968,7 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
         if width > 0 and height > 0:
             exif["Exif.Photo.PixelXDimension"] = width
             exif["Exif.Photo.PixelYDimension"] = height
+        _stamp_resolution(exif, fields.get("resolutionPpi"))
         xmp = image.xmpData()
         _write_catalog_fields(xmp, fields, rights_only=policy == "copyright")
         if fields.get("captureTime") and policy in ("all", "all-except-location"):

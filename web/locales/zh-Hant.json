@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -425,7 +425,6 @@
     "Carry metadata; retain beside paired captures": "保留中繼資料；並保留在配對拍攝旁",
     "Catalog": "目錄",
     "Catalog file": "目錄檔案",
-    "Catalog loading stopped before all photos arrived": "在所有相片載入完成前，目錄載入已停止",
     "Catalog recovered from a verified backup": "目錄已從已驗證的備份還原",
     "Catalog updated {date}": "目錄已於 {date} 更新",
     "Catalogs": "目錄",
@@ -4478,7 +4477,19 @@
     "← People": "← 人群",
     "☆ Favorites": "☆ 最愛",
     "Imported": "已匯入",
-    "{name} (Already imported)": "{name} (已匯入)"
+    "{name} (Already imported)": "{name} (已匯入)",
+    "Marked {count} photo": "已標記 {count} 張照片",
+    "Marked {count} photos": "已標記 {count} 張照片",
+    "Compare Two Photos": "比較兩張照片",
+    "Compare two": "比較兩張",
+    "Compare two photos side by side (Shift+N)": "並排比較兩張照片 (Shift+N)",
+    "Could not load photos": "無法載入照片",
+    "No selected photos are in this view": "此檢視中沒有已選照片",
+    "Select two photos to compare": "選擇兩張照片進行比較",
+    "Selecting every photo in view…": "正在選擇檢視中的所有照片…",
+    "Some photos could not be marked: {errorMessage}": "部分照片無法標記：{errorMessage}",
+    "Sort ascending. Click for descending": "升序排列，點按切換降序",
+    "Sort descending. Click for ascending": "降序排列，點按切換升序"
   },
   "plurals": {
     " · {count} paired file linked": {
@@ -4699,6 +4710,9 @@
     },
     "{value} unexpected exit in the last 24 hours.": {
       "other": "過去 24 小時內有 {value} 次非預期結束。"
+    },
+    "Marked {count} photo": {
+      "other": "已標記 {count} 張照片"
     }
   },
   "pluralsDigest": "8479e74fada768f166221b8208d03d6dd42ce7a5e1888cfbbcbe15fd6e76eda3"

@@ -27,7 +27,7 @@ class NeutralPreviewCacheTests(unittest.TestCase):
                 mock.patch.object(server, 'file_key', return_value='capture'),
                 mock.patch.object(server.color_pipeline, 'decode_raw', return_value=pixels) as decode,
                 mock.patch.object(server.color_pipeline, 'linear_prophoto_to_display_srgb',
-                                  side_effect=lambda image, params: image) as develop,
+                                  side_effect=lambda image, params, **_: image) as develop,
             ):
                 first = server.build_neutral_preview('photo.dng', 64)
                 larger = server.build_neutral_preview('photo.dng', 96)
