@@ -1751,11 +1751,6 @@ function resizeMaskValues(source, sourceWidth, sourceHeight, width, height) {
 }
 
 function canvasGeometryValues(component, width, height) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, width, height);
   if (component.type === 'linear') {
     /* Judge a collapsed gradient in normalized coordinates, exactly as
      * edits.py does. A one-pixel test answers differently on this canvas than
@@ -1767,16 +1762,21 @@ function canvasGeometryValues(component, width, height) {
     }
     const sx = component.start[0] * (width - 1);
     const sy = component.start[1] * (height - 1);
-    const ex = component.end[0] * (width - 1);
-    const ey = component.end[1] * (height - 1);
-    const gradient = ctx.createLinearGradient(sx, sy, ex, ey);
-    for (let index = 0; index <= 16; index++) {
-      const position = index / 16;
-      const value = Math.round(smoothStep(0, 1, position) * 255);
-      gradient.addColorStop(position, `rgb(${value},${value},${value})`);
+    const dx = component.end[0] * (width - 1) - sx;
+    const dy = component.end[1] * (height - 1) - sy;
+    const denominator = dx * dx + dy * dy;
+    /* Feather is the width of the transition band as a share of the span,
+     * centred between the two handles; zero is a hard edge at the midpoint.
+     * The same expression, pixel for pixel, lives in edits._raster_component
+     * and rust-engine/src/export.rs so the export matches this preview. */
+    const half = clamp(+(component.feather ?? 1), 0, 1) / 2;
+    const values = new Uint8Array(width * height);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const projection = ((x - sx) * dx + (y - sy) * dy) / denominator;
+      const weight = half <= 0 ? +(projection >= 0.5) : smoothStep(0.5 - half, 0.5 + half, projection);
+      values[y * width + x] = Math.round(weight * 255);
     }
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    return values;
   } else {
     const minimum = Math.min(width, height);
     const cx = component.center[0] * (width - 1);
@@ -1794,12 +1794,6 @@ function canvasGeometryValues(component, width, height) {
     }
     return values;
   }
-  const pixels = ctx.getImageData(0, 0, width, height).data;
-  const values = new Uint8Array(width * height);
-  for (let index = 0; index < values.length; index++) {
-    values[index] = pixels[index * 4];
-  }
-  return values;
 }
 
 function componentGeometryValues(component, width, height) {
@@ -1929,7 +1923,8 @@ function drawEditOverlayNow() {
   const overlay = $('editOverlay');
   const canvas = $('cv');
   const active = canvas.width && canvas.height &&
-    (S.activePane === 'maskPane' || S.activePane === 'healPane');
+    (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+     (S.activePane === 'cropPane' && S.geometryGuideMode));
   const geometry = active ? screenOverlayGeometry(
     canvas.getBoundingClientRect(), $('cmp').getBoundingClientRect(),
     $('zoomwrap').getBoundingClientRect(), window.devicePixelRatio) : null;
@@ -2072,6 +2067,24 @@ function drawEditOverlayNow() {
     }
     if (cursor === 'none') drawBrushCursor(ctx, surface, S.overlayHoverPoint,
       S.healBrush.radius * 2, S.healBrush.feather);
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    const drawGuide = (points, kind, live) => {
+      const [[x0, y0], [x1, y1]] = points;
+      ctx.save();
+      ctx.lineWidth = live ? 1.5 : 2;
+      ctx.strokeStyle = kind === 'horizontal' ? '#f5384b' : '#4b9cf5';
+      ctx.globalAlpha = live ? 0.75 : 1;
+      ctx.beginPath();
+      ctx.moveTo(x0 * surface.width, y0 * surface.height);
+      ctx.lineTo(x1 * surface.width, y1 * surface.height);
+      ctx.stroke();
+      ctx.restore();
+    };
+    for (const guide of S.geometryGuides) drawGuide(guide.points, guide.kind, false);
+    const gesture = S.editGesture;
+    if (gesture?.type === 'geometry-guide' && gesture.end) {
+      drawGuide([gesture.start, gesture.end], S.geometryGuideKind, true);
+    }
   }
 }
 
@@ -2250,7 +2263,7 @@ function renderEditItems(kind) {
   }
   list.forEach((item, index) => {
     const row = document.createElement('div');
-    row.className = 'edit-item' + (item.id === selectedId ? ' on' : '');
+    row.className = 'edit-item' + (isMask ? ' mask-item' : '') + (item.id === selectedId ? ' on' : '');
     const button = document.createElement('button');
     button.className = 'edit-item-main';
     button.type = 'button';
@@ -2301,11 +2314,21 @@ function renderEditItems(kind) {
       more.textContent = '×'; more.title = tr("Delete correction"); more.setAttribute('aria-label', tr("Delete correction {value}", {value: index + 1}));
       more.onclick = (event) => { event.stopPropagation(); deleteHeal(item.id); };
     }
-    row.append(button, visibility, more);
+    if (isMask) {
+      const duplicate = document.createElement('button');
+      duplicate.className = 'item-more item-duplicate'; duplicate.type = 'button';
+      duplicate.textContent = '⧉'; duplicate.title = tr("Duplicate mask");
+      duplicate.setAttribute('aria-label', tr("Duplicate {itemName}", {itemName: item.name}));
+      duplicate.disabled = S.masks.length >= MAX_MASKS;
+      duplicate.onclick = (event) => { event.stopPropagation(); duplicateMask(item.id); };
+      row.append(button, visibility, duplicate, more);
+    } else row.append(button, visibility, more);
     host.appendChild(row);
   });
 }
 
+const MASK_SHAPE_CONTROLS = [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
+  ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']];
 function syncMaskPanel() {
   renderEditItems('mask');
   MASK_CURVE?.sync();
@@ -2324,6 +2347,7 @@ function syncMaskPanel() {
   $('maskControls').hidden = !mask;
   if (!mask) { syncOverlayCursorClass(); return; }
   $('maskSelectedName').textContent = mask.name;
+  $('maskDuplicate').disabled = S.masks.length >= MAX_MASKS;
   $('maskVisible').checked = mask.enabled !== false;
   $('maskInvert').checked = !!mask.invert;
   $('maskOpacity').value = mask.opacity;
@@ -2364,9 +2388,10 @@ function syncMaskPanel() {
   const brushing = mask.type === 'brush' || !!S.maskRefineMode;
   document.querySelectorAll('.mask-brush-control').forEach((row) => { row.hidden = !brushing; });
   $('maskBrushToleranceRow').hidden = !brushing || !S.brushAutoMask;
-  $('maskShapeControls').hidden = mask.type !== 'radial';
-  if (mask.type === 'radial') for (const [id, key] of [
-    ['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'], ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+  $('maskShapeControls').hidden = !['radial', 'linear'].includes(mask.type);
+  document.querySelectorAll('.mask-radial-shape').forEach((row) => { row.hidden = mask.type !== 'radial'; });
+  if (mask.type === 'radial' || mask.type === 'linear') for (const [id, key] of MASK_SHAPE_CONTROLS) {
+    if (mask.type === 'linear' && key !== 'feather') continue;
     $(id).value = mask[key];
     $(id + 'V').textContent = key === 'angle' ? `${Math.round(mask[key])}°` : `${Math.round(mask[key] * 100)}%`;
   }
@@ -2524,7 +2549,7 @@ function addMask(type) {
     intersectStrokes: [],
   };
   if (type === 'brush') mask.strokes = [];
-  else if (type === 'linear') { mask.start = [0.25, 0.5]; mask.end = [0.75, 0.5]; }
+  else if (type === 'linear') { mask.start = [0.25, 0.5]; mask.end = [0.75, 0.5]; mask.feather = 1; }
   else { mask.center = [0.5, 0.5]; mask.radius = 0.25; mask.feather = 0.65; }
   const normalized = normalizeMasks([mask])[0];
   S.masks.push(normalized); S.selectedMaskId = normalized.id; S.maskTextureDirty = true;
@@ -2644,6 +2669,26 @@ function deleteMask(id = S.selectedMaskId) {
   syncMaskPanel(); drawGrade(); saveState();
 }
 $('maskDelete').onclick = () => deleteMask();
+/* A duplicate is a deep copy inserted directly after its source: components,
+ * brush and refinement strokes, Auto Mask edge bitmaps, the local grade and
+ * its curves all travel with it, under fresh mask and component identities so
+ * the raster caches and stroke caches never confuse the two. */
+function duplicateMask(id = S.selectedMaskId) {
+  const index = S.masks.findIndex((mask) => mask.id === id);
+  if (index < 0) return null;
+  if (S.masks.length >= MAX_MASKS) { toast(tr("Up to sixteen local masks can be active")); return null; }
+  const source = S.masks[index];
+  const copy = normalizeMasks([{ ...cloneValue({ ...source, components: maskComponents(source) }),
+    id: null, name: tr('{name} copy', {name: source.name}).slice(0, 60) }])[0];
+  copy.components.forEach((component) => { component.id = editId('component'); });
+  pushUndo();
+  S.masks.splice(index + 1, 0, copy);
+  S.selectedMaskId = copy.id; S.maskTextureDirty = true;
+  S.maskCreateOpen = false; S.maskRefineMode = copy.type === 'brush' ? 'add' : null;
+  syncMaskPanel(); drawGrade(); saveState();
+  return copy;
+}
+$('maskDuplicate').onclick = () => duplicateMask();
 $('maskRename').onclick = async () => {
   const mask = selectedMask(); if (!mask) return;
   const photoName = cur()?.name;
@@ -2676,11 +2721,13 @@ $('maskBrushAutoMask').onchange = () => {
 MASK_CURVE = installMaskCurve({canvas: $('maskCurve'), reset: $('maskCurveReset'),
   channel: $('maskCurveChannel'), getMask: selectedMask, pushUndo, dropUndo,
   changed: () => drawGrade(), save: () => saveState()});
-for (const [id, key] of [['maskRadiusX', 'radiusX'], ['maskRadiusY', 'radiusY'],
-  ['maskAngle', 'angle'], ['maskShapeFeather', 'feather']]) {
+for (const [id, key] of MASK_SHAPE_CONTROLS) {
   $(id).addEventListener('pointerdown', pushUndo);
   $(id).addEventListener('input', () => {
-    const mask = selectedMask(); if (mask?.type !== 'radial') return;
+    const mask = selectedMask();
+    // A linear gradient's only shape slider is Feather; its geometry is the
+    // two handles on the photo.
+    if (!(mask?.type === 'radial' || (mask?.type === 'linear' && key === 'feather'))) return;
     mask[key] = +$(id).value;
     S.maskTextureDirty = true; syncMaskPanel(); drawGrade();
   });
@@ -3215,6 +3262,11 @@ $('editOverlay').addEventListener('pointerdown', (event) => {
     syncHealPanel(); drawEditOverlay();
     // The new spot reaches Metal in the same coalesced frame as the overlay.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+  } else if (S.activePane === 'cropPane' && S.geometryGuideMode) {
+    $('editOverlay').setPointerCapture(event.pointerId);
+    S.editGesture = { type: 'geometry-guide', pointerId: event.pointerId,
+      start: point, end: point, rect };
+    drawEditOverlay();
   }
 });
 $('editOverlay').addEventListener('pointermove', (event) => {
@@ -3285,10 +3337,32 @@ $('editOverlay').addEventListener('pointermove', (event) => {
     // A moved spot shares the overlay's animation frame; the WebGL fallback
     // only redraws the overlay until the gesture ends.
     if (nativePreviewActive()) previewFrameScheduler.request({ edits: true });
+  } else if (S.activePane === 'cropPane' && gesture.type === 'geometry-guide') {
+    gesture.end = point;
+    drawEditOverlay();
   }
 });
 function finishEditGesture(event) {
   if (!S.editGesture || S.editGesture.pointerId !== event.pointerId) return;
+  if (S.editGesture.type === 'geometry-guide') {
+    const gesture = S.editGesture;
+    S.editGesture = null;
+    if ($('editOverlay').hasPointerCapture(event.pointerId)) {
+      $('editOverlay').releasePointerCapture(event.pointerId);
+    }
+    if (event.type === 'pointerup') {
+      const end = overlayPoint(event, gesture.rect);
+      const length = Math.hypot((end[0] - gesture.start[0]) * gesture.rect.width,
+        (end[1] - gesture.start[1]) * gesture.rect.height);
+      if (length >= 8 && S.geometryGuides.length < 4) {
+        S.geometryGuides.push({ kind: S.geometryGuideKind,
+          points: [gesture.start, end] });
+        syncGuidedPanel();
+      }
+    }
+    drawEditOverlay();
+    return;
+  }
   if (S.editGesture.type === 'mask-color-sample') {
     const gesture = S.editGesture;
     S.editGesture = null;
@@ -5167,7 +5241,7 @@ window.addEventListener('beforeunload', (event) => {
   event.returnValue = '';
 });
 
-function saveState(immediate = false) {
+function saveState(immediate = false, { historyLabel = null } = {}) {
   _controlDirty = false;
   globalThis._controlDirty = false;
   if (window.__LIGHTTABLE_BENCHMARK__ && window.__LIGHTTABLE_NATIVE_JOURNEY_LAYER__ !== 'visual-review') return Promise.resolve(true);
@@ -5185,7 +5259,7 @@ function saveState(immediate = false) {
   const current = JSON.stringify(edits);
   const pending = editSaveQueue.getPending(im.name);
   const history = current !== _lastHistorySnapshot
-    ? { label: PANE_STEP_LABELS[S.activePane] || 'Edit', state: edits }
+    ? { label: historyLabel || PANE_STEP_LABELS[S.activePane] || 'Edit', state: edits }
     : pending?.history;
   _lastHistorySnapshot = current;
   const state = { name: im.name, status: im.status, rating: im.rating,
@@ -6914,8 +6988,14 @@ function switchPane(id, { fromCompare = false } = {}) {
   });
   if (id === 'cropPane') { beginCropSession(); setCropMode(true); }
   else if (S.cropping) setCropMode(false);
+  if (id !== 'cropPane') {
+    S.geometryGuideMode = false; S.geometryGuides = [];
+    if ($('guidedPanel')) $('guidedPanel').hidden = true;
+    if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
+  }
   S.editGesture = null;
-  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane'));
+  $('editOverlay').classList.toggle('active', !!cur() && (id === 'maskPane' || id === 'healPane' ||
+    (id === 'cropPane' && S.geometryGuideMode)));
   if (compareEditingBlocked()) setCompareActive(false);
   else syncCompareControl();
   if (id === 'maskPane') syncMaskPanel();
@@ -7469,6 +7549,9 @@ function showCurrentImage(im) {
   S.exif = {};
   S.rawDefault = null;
   S.pointColorPick = false; S.maskColorPick = false; S.wbPick = false;
+  S.geometryGuideMode = false; S.geometryGuides = [];
+  if ($('guidedPanel')) $('guidedPanel').hidden = true;
+  if ($('guidedUpright')) $('guidedUpright').setAttribute('aria-pressed', 'false');
   $('wbBtn').classList.remove('on');
   $('cmp').classList.remove('wb-picking', 'color-picking');
   setCurvePick(null, false); setSamplerMode(false, false);
@@ -7479,7 +7562,8 @@ function showCurrentImage(im) {
   Object.assign(S, photoUndo.activate(im.name));
   updateUndoRedoButtons();
   syncControls(); syncGrade(); syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
-  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane');
+  $('editOverlay').classList.toggle('active', S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+    (S.activePane === 'cropPane' && S.geometryGuideMode));
   applyView();
   if (S.activePane === 'cropPane') beginCropSession();
   setCropMode(S.activePane === 'cropPane');
@@ -11317,7 +11401,43 @@ KEYWORD_BATCH = installKeywordBatch({
   },
 });
 
-/* ------------------------------------------------------------- versions */
+/* ------------------------------------------------------------ snapshots */
+/* Snapshots are the catalog's `versions` rows: named, non-destructive
+ * checkpoints saved beside History through the same edit-save queue. A
+ * virtual copy starts with copies of its source's snapshots. Restoring one is
+ * an undoable edit that records its own History step. */
+const SNAPSHOT_LIMIT = 50;
+function snapshotDefaultName(now = new Date()) {
+  return now.toLocaleString([], {
+    year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+  });
+}
+function restoreSnapshot(version) {
+  pushUndo();
+  S.params = normalizeFilmParams(cloneValue(version.params || {}));
+  S.grade = { ...GRADE_DEFAULTS, ...cloneValue(version.grade || {}) };
+  S.crop = cloneValue(version.crop) || null;
+  S.masks = normalizeMasks(cloneValue(version.masks));
+  S.heals = normalizeHeals(cloneValue(version.heals));
+  S.optics = normalizeOptics(cloneValue(version.optics));
+  S.maskTextureDirty = true;
+  S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
+  syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
+  syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
+  drawGrade(); applyCropVisual();
+  saveState(true, { historyLabel: tr("Restore snapshot {versionName}", {versionName: version.name}) });
+  renderFilm(0);
+  toast(tr("Applied {versionName}", {versionName: version.name}));
+}
+async function renameSnapshot(version) {
+  const im = cur(); if (!im) return;
+  const photoName = im.name;
+  const name = await askName(tr("Rename snapshot"), version.name);
+  if (!name || !name.trim() || name.trim() === version.name) return;
+  if (cur()?.name !== photoName || !(im.versions || []).includes(version)) return;
+  version.name = name.trim().slice(0, 80);
+  saveState(true); renderVersions(); toast(tr("Snapshot renamed"));
+}
 function renderVersions() {
   const box = $('versionList');
   box.replaceChildren();
@@ -11325,7 +11445,7 @@ function renderVersions() {
   if (!versions.length) {
     const empty = document.createElement('div');
     empty.className = 'version-empty';
-    empty.textContent = tr("No named versions yet");
+    empty.textContent = tr("No snapshots yet");
     box.appendChild(empty);
     return;
   }
@@ -11342,21 +11462,14 @@ function renderVersions() {
       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
     });
     apply.append(name, when);
-    apply.onclick = () => {
-      pushUndo();
-      S.params = normalizeFilmParams(cloneValue(version.params || {}));
-      S.grade = { ...GRADE_DEFAULTS, ...cloneValue(version.grade || {}) };
-      S.crop = cloneValue(version.crop) || null;
-      S.masks = normalizeMasks(cloneValue(version.masks));
-      S.heals = normalizeHeals(cloneValue(version.heals));
-      S.optics = normalizeOptics(cloneValue(version.optics));
-      S.maskTextureDirty = true;
-      S.selectedMaskId = S.masks[0]?.id || null; S.selectedHealId = S.heals[0]?.id || null;
-      syncControls(); syncGrade(); syncCurveFromGrade(); syncHsl();
-      syncMaskPanel(); syncHealPanel(); syncOpticsPanel();
-      drawGrade(); applyCropVisual(); saveState(true); renderFilm(0);
-      toast(tr("Applied {versionName}", {versionName: version.name}));
-    };
+    apply.onclick = () => restoreSnapshot(version);
+    const rename = document.createElement('button');
+    rename.className = 'version-rename';
+    rename.type = 'button';
+    rename.title = tr("Rename snapshot");
+    rename.setAttribute('aria-label', tr("Rename {itemName}", {itemName: version.name}));
+    rename.textContent = '•••';
+    rename.onclick = () => renameSnapshot(version);
     const del = document.createElement('button');
     del.className = 'version-delete';
     del.title = tr("Delete {versionName}", {versionName: version.name});
@@ -11365,9 +11478,9 @@ function renderVersions() {
     del.onclick = () => {
       const im = cur();
       im.versions = im.versions.filter((v) => v.id !== version.id);
-      saveState(true); renderVersions(); toast(tr("Version deleted"));
+      saveState(true); renderVersions(); toast(tr("Snapshot deleted"));
     };
-    row.append(apply, del);
+    row.append(apply, rename, del);
     box.appendChild(row);
   }
 }
@@ -11376,19 +11489,18 @@ $('versionCreate').onclick = async () => {
   const im = cur();
   if (!im) return;
   const photoName = im.name;
-  const proposed = tr("Version {value}", {value: (im.versions || []).length + 1});
-  const name = await askName(tr("Create version"), proposed);
+  const name = await askName(tr("Create snapshot"), snapshotDefaultName());
   if (!name || !name.trim()) return;
   if (cur()?.name !== photoName) return;
   readControls();
   const version = {
     id: (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random()}`,
-    name: name.trim(), created: new Date().toISOString(),
+    name: name.trim().slice(0, 80), created: new Date().toISOString(),
     params: cloneValue(S.params), grade: cloneValue(S.grade), crop: cloneValue(S.crop),
     masks: cloneValue(serializableMasks()), heals: cloneValue(S.heals), optics: cloneValue(S.optics),
   };
-  im.versions = [version, ...(im.versions || [])].slice(0, 50);
-  saveState(true); renderVersions(); toast(tr("Version created"));
+  im.versions = [version, ...(im.versions || [])].slice(0, SNAPSHOT_LIMIT);
+  saveState(true); renderVersions(); toast(tr("Snapshot created"));
 };
 
 /* -------------------------------------------------------------- presets */
@@ -13282,19 +13394,20 @@ if ($('surveyKeep')) $('surveyKeep').onclick = keepSurveySelection;
 
 /* --------------------------------------------------- lens: auto-straighten */
 if ($('autoLevel')) {
-  const runGeometry = async (mode) => {
+  const runGeometry = async (mode, { guides, noteEl = $('autoLevelNote') } = {}) => {
     const im = cur();
     if (!im) return;
     const session = cropSession;
-    $('autoLevelNote').textContent = tr("Looking for lines…");
+    noteEl.textContent = guides ? tr("Solving from the drawn guides…") : tr("Looking for lines…");
     try {
-      const result = await api('/api/geometry/auto',
-                               { name: im.name, mode, rotate: S.params?.rotate || 0 });
+      const payload = { name: im.name, mode, rotate: S.params?.rotate || 0 };
+      if (guides) payload.guides = guides;
+      const result = await api('/api/geometry/auto', payload);
       if (cur()?.name !== im.name || cropSession !== session) return;
-      if (result.error) { $('autoLevelNote').textContent = result.error; return; }
+      if (result.error) { noteEl.textContent = result.error; return; }
       const patch = result.optics || {};
       if (!Object.keys(patch).length) {
-        $('autoLevelNote').textContent =
+        noteEl.textContent =
           (((result.notes || []).join(' ') || tr("No usable lines found.")));
         return;
       }
@@ -13304,14 +13417,79 @@ if ($('autoLevel')) {
       saveState(true);
       refreshBaseEdits();
       const confidence = Math.round((result.confidence || 0) * 100);
-      $('autoLevelNote').textContent =
+      noteEl.textContent =
         tr("{value} lines · {confidence}% confidence{value2}", {value: (result.lines || 0), confidence: confidence, value2: (result.notes || []).length ? ` · ${result.notes.join(' ')}` : ''});
+      return true;
     } catch (error) {
-      $('autoLevelNote').textContent = tr("Could not analyse this photo.");
+      noteEl.textContent = tr("Could not analyse this photo.");
     }
   };
   $('autoLevel').onclick = () => runGeometry('level');
   if ($('autoUpright')) $('autoUpright').onclick = () => runGeometry('full');
+
+  /* Guided upright: the operator draws 2-4 lines along edges that should be
+   * vertical or horizontal; those replace automatic line detection. Drawing
+   * claims the edit overlay exclusively, the same pointer-ownership model
+   * masks and heals use, so the ordinary crop-drag handlers stand down while
+   * a guide is being drawn. */
+  function syncEditOverlayActive() {
+    $('editOverlay').classList.toggle('active', !!cur() &&
+      (S.activePane === 'maskPane' || S.activePane === 'healPane' ||
+       (S.activePane === 'cropPane' && S.geometryGuideMode)));
+  }
+  function exitGuidedUpright() {
+    S.geometryGuideMode = false;
+    S.geometryGuides = [];
+    S.editGesture = null;
+    syncEditOverlayActive();
+    drawEditOverlay();
+    syncGuidedPanel();
+  }
+  function syncGuidedPanel() {
+    $('guidedUpright').setAttribute('aria-pressed', String(S.geometryGuideMode));
+    $('guidedPanel').hidden = !S.geometryGuideMode;
+    $('guidedKindVertical').setAttribute('aria-pressed', String(S.geometryGuideKind === 'vertical'));
+    $('guidedKindHorizontal').setAttribute('aria-pressed', String(S.geometryGuideKind === 'horizontal'));
+    $('guidedUndo').disabled = !S.geometryGuides.length;
+    $('guidedClear').disabled = !S.geometryGuides.length;
+    $('guidedApply').disabled = S.geometryGuides.length < 2;
+    if (S.geometryGuideMode) {
+      $('guidedNote').textContent = S.geometryGuides.length >= 2
+        ? tr("{count} lines drawn.", {count: S.geometryGuides.length})
+        : tr("Draw at least 2 lines.");
+    }
+  }
+  if ($('guidedUpright')) {
+    $('guidedUpright').onclick = () => {
+      if (S.activePane !== 'cropPane') return;
+      if (S.geometryGuideMode) { exitGuidedUpright(); return; }
+      S.geometryGuideMode = true;
+      S.geometryGuides = [];
+      syncEditOverlayActive();
+      syncGuidedPanel();
+      drawEditOverlay();
+    };
+    $('guidedKindVertical').onclick = () => {
+      S.geometryGuideKind = 'vertical'; syncGuidedPanel();
+    };
+    $('guidedKindHorizontal').onclick = () => {
+      S.geometryGuideKind = 'horizontal'; syncGuidedPanel();
+    };
+    $('guidedUndo').onclick = () => {
+      S.geometryGuides.pop(); syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedClear').onclick = () => {
+      S.geometryGuides = []; syncGuidedPanel(); drawEditOverlay();
+    };
+    $('guidedApply').onclick = async () => {
+      if (S.geometryGuides.length < 2) return;
+      const guides = S.geometryGuides.map((guide) => ({
+        kind: guide.kind, points: guide.points,
+      }));
+      const ok = await runGeometry('full', { guides, noteEl: $('guidedNote') });
+      if (ok) exitGuidedUpright();
+    };
+  }
 }
 
 /* --------------------------------------------------------------- enhance */

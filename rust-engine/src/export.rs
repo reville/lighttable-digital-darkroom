@@ -774,12 +774,17 @@ fn raster_component(component: &Value, width: u32, height: u32) -> Result<Vec<f3
             let dx = end[0] * width.saturating_sub(1) as f32 - sx;
             let dy = end[1] * height.saturating_sub(1) as f32 - sy;
             let denominator = (dx * dx + dy * dy).max(1.0);
+            // The transition band is centred on the midpoint of the handle
+            // line; 1.0 spans the whole start-to-end distance and 0.0 is a
+            // hard edge. Mirrors edits._raster_component.
+            let half = number(component, "feather", 1.0).clamp(0.0, 1.0) * 0.5;
             (0..width as usize * height as usize)
                 .into_par_iter()
                 .map(|index| {
                     let x = (index as u32 % width) as f32;
                     let y = (index as u32 / width) as f32;
-                    smoothstep(0.0, 1.0, ((x - sx) * dx + (y - sy) * dy) / denominator)
+                    let projection = ((x - sx) * dx + (y - sy) * dy) / denominator;
+                    smoothstep(0.5 - half, 0.5 + half, projection)
                 })
                 .collect()
         }
@@ -1361,6 +1366,46 @@ mod tests {
         .unwrap();
         assert_eq!((image.width, image.height), (1, 1));
         assert!(image.samples[0] > 0.34);
+    }
+
+    #[test]
+    fn linear_feather_narrows_the_transition_band_symmetrically() {
+        // start=(0.2, 0.5), end=(0.6, 0.5) on a 101-wide raster puts the
+        // handle-line projection at exactly t=0, 0.25, 0.5, 0.75, 1 for
+        // x=20, 30, 40, 50, 60. The same geometry and expected weights are
+        // asserted independently in tests/test_mask_preview_parity.py's
+        // LinearGradientFeatherTests and
+        // tests/linear-gradient-feather-parity.test.mjs.
+        let xs = [20usize, 30, 40, 50, 60];
+        let component = |feather: f64| {
+            json!({"type": "linear", "start": [0.2, 0.5], "end": [0.6, 0.5],
+                   "feather": feather})
+        };
+        let sample = |feather: f64| -> Vec<f32> {
+            let layer = raster_component(&component(feather), 101, 3).unwrap();
+            xs.iter().map(|&x| layer[101 + x]).collect()
+        };
+
+        let full = sample(1.0);
+        for (actual, expected) in full.iter().zip([0.0, 0.15625, 0.5, 0.84375, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
+
+        // f32 arithmetic can land a hair short of the exact midpoint that
+        // f64 (Python, JS) lands on exactly, so the pixel sitting exactly on
+        // a zero-width hard edge is read as either side of it; every other
+        // pixel is unambiguous.
+        let hard = sample(0.0);
+        assert_eq!(hard[0], 0.0);
+        assert_eq!(hard[1], 0.0);
+        assert!(hard[2] == 0.0 || hard[2] == 1.0);
+        assert_eq!(hard[3], 1.0);
+        assert_eq!(hard[4], 1.0);
+
+        let half = sample(0.5);
+        for (actual, expected) in half.iter().zip([0.0, 0.0, 0.5, 1.0, 1.0]) {
+            assert!((actual - expected).abs() < 1e-4, "{actual} != {expected}");
+        }
     }
 
     #[test]
