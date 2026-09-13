@@ -296,11 +296,26 @@ new size skip the disk as well. The TIFF route remains the fallback, and an
 engine that reports the exchange unavailable is remembered so later renders go
 straight to TIFF.
 
-If future measurement shows that webview texture upload and paint dominate at
-large preview sizes, each native host can add a child WGPU viewport while
-retaining the webview for controls. The resident render protocol and shared
-editing/export math are already outside the host, so that experiment does not
-require another application rewrite or a forked Windows pipeline.
+The interactive preview frame itself used to reach the webview as a JPEG:
+the resident engine's packed RGBA8 surface, encoded to JPEG on the server,
+decoded again by an `<img>` element, then uploaded to a WebGL texture. Since
+the resident engine already produces that RGBA8 surface for the Mac's Metal
+path, a non-Metal client can now ask for it directly (`raw: true` on
+`/api/render`) and upload it with `texImage2D` from a `fetch()` +
+`ArrayBuffer`, skipping the JPEG encode and decode entirely; JPEG remains the
+transport for thumbnails and edited/baked renditions. Measured end-to-end
+improvement and remaining gaps (viewport-tile compositing for this path, a
+non-film source-image passthrough that stays on JPEG) are in
+[`../performance.md`](../performance.md#windowslinux-interactive-preview-transport-2026-09-13).
+
+If future measurement shows that webview texture upload and paint still
+dominate at large preview sizes even with that JPEG round trip removed, each
+native host can add a child WGPU viewport while retaining the webview for
+controls. The resident render protocol and shared editing/export math are
+already outside the host, so that experiment does not require another
+application rewrite or a forked Windows pipeline; a concrete crate/API plan,
+risks (WebView2 airspace foremost), and an estimate are in
+[`gpu-preview-design.md`](gpu-preview-design.md).
 
 ## Required proof before release
 
