@@ -202,7 +202,7 @@
             "Las colecciones también son colecciones aquí; los álbumes de la app en la nube solo llegan a través de un catálogo de Lightroom Classic.",
             "Las marcas Seleccionar y Rechazar funcionan igual, y la barra inferior las muestra para las fotos seleccionadas.",
             "Revelar se llama Editar. Película está desactivada de forma predeterminada en las fotos nuevas e importadas; actívela cuando quiera un tratamiento de película sobre la edición.",
-            "Perfil de cámara en Editar muestra los perfiles DCP de Adobe que Camera Raw o Lightroom instalaron en este equipo, o la carpeta de perfiles de cámara elegida en Configuración. Los perfiles se aplican de forma aproximada y solo al revelado con Película desactivada."
+            "Perfil de cámara en Editar ofrece el aspecto incluido LightTable Standard y los perfiles DCP de tu carpeta de perfiles de cámara, que en macOS y Windows usa por defecto los perfiles que instaló Camera Raw o Lightroom. Las matrices de color de un perfil se aplican al decodificado RAW siguiendo la especificación DNG; su aspecto y su curva de tonos se aplican al revelado con Película desactivada."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Para editar una vigilancia existente, elígela en Carpetas vigiladas. Cada vigilancia guardada aparece en esta lista. Elige Nueva carpeta vigilada para otra carpeta, o usa Eliminar punto de control para dejar de vigilar la carpeta seleccionada. Esto no elimina sus fotos.",
             "El atajo de Vigilancia abre la primera vigilancia activa. Los errores de guardado permanecen en el cuadro de diálogo para que puedas corregir la configuración."
           ]
+        },
+        {
+          "title": "Reconecte un origen movido o sin conexión",
+          "paragraphs": [
+            "Un origen que pasó a estar desconectado —una unidad desconectada, una carpeta renombrada o movida fuera de LightTable— muestra Localizar… en lugar de Reescanear. Elegirlo y seleccionar la nueva ubicación de la carpeta comprueba allí una muestra de las fotos del propio catálogo por contenido, no solo por nombre, antes de mover el origen; las ediciones, las calificaciones y las colecciones siguen asociadas a las mismas filas. Rechaza una carpeta cuyos archivos no coincidan.",
+            "Carpetas ••• → Localizar fotos faltantes… busca en una carpeta elegida archivos que coincidan, por contenido, con cualquiera de las fotos faltantes actuales del catálogo, estén donde estén, y vuelve a vincular las coincidencias. Indica cuántas volvió a vincular y cuántas no pudo encontrar allí.",
+            "Mostrar solo fotos faltantes, debajo de la lista de origen, filtra la biblioteca para mostrar solo las fotos que el catálogo no puede encontrar actualmente, para que puedas revisar o exportar la lista antes de buscar los originales."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Biblioteca"
     },
     {
       "id": "survey-photos",
-      "title": "Comparar varias fotos en Vista general",
+      "title": "Comparar varias fotos en Vista general, o dos lado a lado",
       "category": "Library",
       "summary": "Revisa un grupo en conjunto, marca el fotograma activo y acota un conjunto de candidatos.",
       "keywords": [
@@ -463,7 +472,10 @@
         "ráfaga",
         "lado a lado",
         "conservado",
-        "hacer selección"
+        "hacer selección",
+        "comparación a/b",
+        "comparar dos fotos",
+        "comparar lado a lado"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "Cuando Vista general se abre desde Descartado asistido, compara el grupo sugerido y marca las fotos individualmente. Hacer selección está disponible en una Vista general normal: selecciona la foto activa de la vista general y rechaza las otras fotos que aún están en la vista general. Esto cambia sus marcas. Los metadatos vinculados RAW y JPEG pueden extender esos cambios de marca a los compañeros.",
             "Para juzgar una edición frente a su original, use Comparar antes/después en Detalle; Vista general sirve para elegir entre distintos fotogramas."
+          ]
+        },
+        {
+          "title": "Comparar dos fotos lado a lado",
+          "paragraphs": [
+            "Comparar dos fotos abre la misma vista Vista general, limitada exactamente a dos marcos, lado a lado, para un juicio A/B entre candidatos en lugar de un antes y después de la edición.",
+            "Con dos fotos seleccionadas, elige Comparar dos fotos, pulsa Shift+N o usa Vista → Comparar dos fotos. Con menos de dos seleccionadas, LightTable empareja la foto actual con su vecina en la vista activa.",
+            "Intercambiar cambia qué foto está en cada lado. La barra de herramientas de marcado y los atajos de bandera, calificación y etiqueta se aplican a la celda activa, igual que en una Vista general completa."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Agrupar fotos en colecciones",
       "category": "Library",
-      "summary": "Crea grupos con nombre sin mover los archivos originales.",
+      "summary": "Cree grupos de colecciones anidadas, reordénelos y construya un conjunto rápido y temporal con la Colección rápida.",
       "keywords": [
         "colección",
         "álbum",
         "organizar",
         "grupo",
         "seleccionado",
-        "eliminar colección"
+        "eliminar colección",
+        "colección anidada",
+        "conjunto de colecciones",
+        "colección rápida",
+        "renombrar colección",
+        "reordenar"
       ],
       "sections": [
         {
           "title": "Crear y agregar fotos",
           "paragraphs": [
-            "Una colección regular almacena un conjunto elegido de fotos. Es independiente de la organización de carpetas en el disco."
+            "Una colección normal almacena un conjunto elegido de fotos. Es independiente de la organización de carpetas en el disco. Las colecciones solo funcionan con un catálogo; el modo de carpetas conserva la lista plana, sin anidar, que siempre ha tenido."
           ],
           "steps": [
             "Seleccione las fotos que desea agrupar.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "Anidar, renombrar y reordenar",
+          "paragraphs": [
+            "Las colecciones pueden contener otras colecciones. El + en una fila de colección crea una nueva colección dentro de ella; aparece un triángulo una vez que tiene elementos secundarios y alterna si se muestran. Renombra con el icono de lápiz. Las flechas arriba y abajo mueven una colección dentro de sus elementos hermanos actuales; la flecha izquierda en una colección anidada la mueve de vuelta al nivel superior. El orden se guarda y se abre del mismo modo la próxima vez."
+          ]
+        },
+        {
           "title": "Eliminar una colección",
           "paragraphs": [
-            "El menú ••• de una colección elimina la colección. Esto quita el grupo en lugar de mover los archivos originales a la Papelera. La búsqueda y los filtros pueden refinar aún más las fotos mostradas dentro de una colección."
+            "La × junto a una colección la elimina a ella y a todo lo anidado dentro de ella. Esto elimina el grupo en lugar de mover los archivos originales a la Papelera. La búsqueda y los filtros pueden refinar aún más las fotos mostradas dentro de una colección."
+          ]
+        },
+        {
+          "title": "La Colección rápida",
+          "paragraphs": [
+            "La Colección rápida es una colección persistente para construir un conjunto con rapidez mientras descartas, sin nombrar nada primero. Pulsa Cmd+B (la B suelta ya está en antes/después) con fotos seleccionadas para agregarlas, o vuelve a pulsarlo sobre la misma selección para quitarlas. La × en su fila la vacía por completo. Por lo demás se comporta como cualquier colección normal: agrega fotos manualmente a ella, o ábrela para revisar y quitar fotos individuales."
           ]
         },
         {
           "title": "Carpetas y colecciones",
           "paragraphs": [
             "Las carpetas representan la jerarquía física del disco donde residen los archivos. Las colecciones son grupos flexibles y ligeros dentro de LightTable que pueden reunir fotos de varias carpetas sin mover ni duplicar ningún archivo en el disco.",
-            "Al importar un catálogo o añadir una carpeta de origen, activar Crear colección para cada carpeta de nivel superior crea automáticamente colecciones coincidentes para cada carpeta de nivel superior, de modo que tu estructura existente quede accesible de inmediato en Colecciones."
+            "Al importar un catálogo o agregar una carpeta de origen, activar Crear colección para cada carpeta de nivel superior crea automáticamente colecciones coincidentes para cada carpeta de nivel superior para que tu estructura existente esté inmediatamente accesible en Colecciones. Importar un catálogo de Lightroom Classic asigna sus conjuntos de colecciones a este mismo anidamiento."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Empezar con Luz",
           "paragraphs": [
-            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal: suba Blancos para aclarar los tonos más luminosos, suba Negros para levantar los más oscuros y baje cualquiera de los dos para retraer ese extremo. Contraste cambia su separación."
+            "Abra Editar y expanda Luz. Exposición cambia el brillo general; Iluminaciones y Sombras le permiten apuntar a regiones claras y oscuras. Blancos y Negros ajustan los extremos del rango tonal: suba Blancos para aclarar los tonos más luminosos, suba Negros para levantar los más oscuros y baje cualquiera de los dos para retraer ese extremo. Contraste cambia su separación.",
+            "Estos controles de Luz actúan sobre la luz detrás de la imagen mostrada, en lugar de sobre sus píxeles recortados. Los tonos que Exposición empuja más allá del blanco siguen disponibles para que Iluminaciones y Blancos los recuperen, y los tonos más brillantes se atenúan suavemente en lugar de recortarse."
           ],
           "steps": [
             "Configure Exposición para el sujeto principal.",
@@ -1657,10 +1695,12 @@
             "Prueba Nivel automático para un horizonte inclinado y luego refina Enderezar si es necesario.",
             "Usa Rotar a la izquierda, Rotar a la derecha o los botones de voltear para cambiar la orientación.",
             "Amplía Perspectiva y prueba Enderezado automático, o ajusta Vertical, Horizontal y Escala manualmente.",
+            "Si Auto vertical no puede encontrar suficientes líneas, o elige las incorrectas, haz clic en Guiado, dibuja de 2 a 4 líneas a lo largo de los bordes que deberían ser verticales u horizontales y luego haz clic en Aplicar guías.",
             "Inspecciona los bordes y el encuadre final, luego haz clic en Listo."
           ],
           "tips": [
             "Nivel automático usa las líneas que puede encontrar; inspeccione el resultado en lugar de asumir que el ángulo detectado es adecuado para la fotografía.",
+            "En modo Guiado, elija Línea vertical o Línea horizontal antes de cada arrastre para que la línea se etiquete correctamente; Deshacer línea quita la última y Borrar comienza de nuevo.",
             "Restablecer de Recortar restablece juntos el recorte, la rotación, los volteos y la perspectiva."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Agregar, Restar e Intersecar te ponen en modos de refinamiento con pintura. Para una máscara Lineal o Radial, elige Editar forma para volver a manipular su forma.",
             "Activar cambia temporalmente el efecto de una máscara a apagado o encendido. Invertir revierte su selección.",
-            "El editor permite hasta dieciséis máscaras locales. Eliminar máscara quita la máscara seleccionada; Borrar todo elimina las máscaras de la foto y no está disponible cuando no hay ninguna.",
+            "El editor permite hasta dieciséis máscaras locales. Duplicar máscara copia la máscara seleccionada, incluida su forma, trazos y ajustes, e inserta la copia justo después; Eliminar máscara quita la máscara seleccionada; Borrar todo elimina las máscaras de la foto y no está disponible cuando no hay ninguna.",
             "Los pines de la máscara y los contornos del pincel se mantienen nítidos y con el mismo grosor a medida que haces zoom. El contorno crece junto con el área que cubre en la foto."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Dar forma a un degradado lineal",
           "paragraphs": [
             "En Editar forma, arrastra cualquiera de los puntos para ajustar ese extremo del degradado. Arrastra la línea que los une para mover todo el degradado manteniendo su ángulo y la anchura de la transición. Arrastra en otra zona de la foto para volver a dibujarlo.",
-            "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado."
+            "Arrastrar un punto sobre el otro deja el degradado sin dirección, por lo que no selecciona nada hasta que los separes de nuevo. Un degradado muy corto es un borde duro válido y se aplica igual en la previsualización y en el archivo exportado.",
+            "Desvanecer ensancha o estrecha la banda de transición, centrada en la línea entre los dos puntos. Bájelo para un borde más duro, súbalo para una mezcla más suave y amplia."
           ],
           "tips": [
             "Selecciona una máscara Lineal existente para ajustarla de nuevo. Si has estado pintando con Agregar, Restar o Intersecar, elige primero Editar forma. Pulsa H si los puntos están ocultos."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Solo puede ejecutarse una combinación a la vez. Se conserva un nombre de archivo existente; una nueva combinación con el mismo nombre recibe un sufijo numérico.",
-            "Combinar normalmente procesa cada entrada hasta 6.000 píxeles en su borde largo. Por lo tanto, el resultado combinado puede tener menos detalle que la secuencia de origen a resolución completa.",
+            "Las entradas de Combinar usan por defecto resolución completa. Si la secuencia necesitaría más memoria de la que la máquina puede ceder, LightTable reduce automáticamente cada entrada a un borde largo más pequeño y muestra el tamaño efectivo antes de empezar; también se puede establecer un límite fijo con la variable de entorno LIGHTTABLE_MERGE_MAX_EDGE.",
             "Si una combinación informa un error, lee el mensaje específico y corrige la selección de entrada antes de intentarlo de nuevo."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Crear una selección inteligente",
           "paragraphs": [
-            "Máscara ofrece selecciones de Subject, Sky, Object, Depth y People. Estas se ejecutan localmente; los métodos disponibles dependen del tipo de selección y la plataforma.",
-            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1 024 píxeles a lo largo de su borde más largo. Los bordes se refinan contra los colores de la imagen y las selecciones de sujeto con Vision conservan transiciones suaves. Los límites finos aún necesitan inspección y refinamiento pintado.",
+            "Máscara ofrece selecciones de Sujeto, Cielo, Objeto, Profundidad y Personas. Estas se ejecutan localmente en todas las plataformas; los métodos disponibles y la precisión dependen del tipo de selección y de la plataforma.",
+            "Las selecciones de Sujeto, Cielo y Objeto conservan hasta 1.024 píxeles a lo largo de su borde más largo. Los bordes se refinan con los colores de la imagen, y las selecciones de sujeto de Vision conservan transiciones suaves. En Windows y Linux, Sujeto usa el mismo modelo local incluido que Persona cuando encuentra a una persona en la foto, y de lo contrario recurre a una estimación basada en la imagen. Los límites finos aún requieren inspección y refinamiento pintado.",
             "Una selección se recorta de la foto en la que se inició. Pasar a otra foto antes de que termine la cancela, así que permanece en la foto hasta que aparezca la máscara. Si la selección no puede completarse, el panel de máscara lo indica y no se añade nada."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Seleccionar personas o regiones faciales",
           "paragraphs": [
             "Personas ofrece Persona y Cabello en todas las plataformas. Piel de la cara, Ojos, Cejas, Labios, Dientes y Suavizar piel requieren el asistente Vision en macOS 14 o posterior. Piel de la cara se estima y no se infiere la identidad.",
-            "Cabello usa un modelo incluido que se ejecuta localmente y selecciona cabello más allá de la cara, incluido el cabello hasta los hombros. Inspeccione mechones finos, iluminaciones brillantes, pelucas y personas pequeñas en el fondo; aun así, pueden omitirse. Las compilaciones anteriores o de origen sin el modelo usan la estimación anterior de Vision cuando está disponible. Las máscaras guardadas existentes conservan sus selecciones."
+            "Cabello usa un modelo incluido que se ejecuta localmente y selecciona cabello más allá de la cara, incluido el cabello hasta los hombros. Inspeccione mechones finos, iluminaciones brillantes, pelucas y personas pequeñas en el fondo; aun así, pueden omitirse. Las compilaciones anteriores o de origen sin el modelo usan la estimación anterior de Vision cuando está disponible. Las máscaras guardadas existentes conservan sus selecciones.",
+            "Persona usa el mismo modelo local incluido en Windows y Linux (y en Mac cuando el asistente Vision no está disponible) para trazar directamente el contorno de una persona, en lugar de una estimación basada en la imagen. Si no encuentra a una persona, Persona recurre a esa estimación en lugar de dejar la selección vacía."
           ],
           "steps": [
             "Elija Personas y luego la parte que desea ajustar.",
@@ -2311,7 +2353,7 @@
             "Inspeccione la vista previa completada en 1:1."
           ],
           "tips": [
-            "La reducción de ruido aprendida requiere el asistente de inferencia de macOS y un modelo local compatible. No está disponible en Linux ni en Windows. La reducción de ruido y el enfoque normales siguen disponibles. Las compilaciones de desarrollo pueden no incluir el modelo; lea el mensaje de disponibilidad antes de iniciar."
+            "Reducción de ruido aprendida se ejecuta mediante Core ML en macOS y mediante onnxruntime en Windows y Linux, usando el mismo modelo convertido. La reducción de ruido y el enfoque normales siguen disponibles en todas partes. Las compilaciones de desarrollo pueden no incluir el modelo convertido o el tiempo de ejecución; lee el mensaje de disponibilidad antes de comenzar."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "Para Personalizado, ajuste Temperatura y Tono de captura."
           ],
           "tips": [
-            "Un archivo JPEG, HEIF, TIFF u otro archivo procesado ya lleva una curva de tono, así que LightTable lo expande de vuelta hacia la luz de la escena alrededor del gris medio antes de aplicar la película: las altas luces recuperan su rango y las sombras caen donde las tenía la escena, mientras que la exposición en el gris medio no cambia. Los archivos RAW ya son luz de escena y no se expanden."
+            "Un archivo JPEG, HEIF, TIFF u otro archivo procesado ya lleva una curva de tonos. Antes de revelar, LightTable amplía su rango de brillo preservando las proporciones de rojo, verde y azul, de modo que esta preparación no exagera una dominante de color existente. La medición automática de la escena mantiene la misma referencia de exposición. Esto aproxima el contraste de la escena; no puede recuperar detalle ya perdido en la foto procesada. Los archivos RAW ya son luz de escena y no se expanden."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Formatos y ajustes preestablecidos",
           "paragraphs": [
-            "El cuadro de exportación ofrece JPEG, PNG y TIFF de 16 bits. En macOS también ofrece HEIF de 8 bits; HEIF está oculto en Linux y Windows. Una receta HEIF guardada no puede aplicarse allí, así que elija otro formato. El deslizador de calidad se aplica a JPEG y HEIF.",
+            "El cuadro de diálogo de exportación ofrece JPEG, PNG y TIFF. TIFF usa 16 bits de forma predeterminada; elige profundidad TIFF de 8 bits en Avanzado para un archivo de archivo más pequeño. En macOS también ofrece HEIF de 8 bits; HEIF está oculto en Linux y Windows. Una receta HEIF guardada no se puede aplicar allí, así que elige otro formato. PNG y HEIF siempre codifican a 8 bits. El control deslizante de calidad se aplica a JPEG y HEIF.",
             "JPG (Grande) usa JPEG a tamaño completo con calidad 92 en sRGB. JPG (Pequeño) usa un borde largo de 2048 píxeles con calidad 90 en sRGB. TIFF de 16 bits usa tamaño completo y ProPhoto RGB. Cambiar estos ajustes selecciona Personalizado."
           ],
           "steps": [
             "Abra Exportar y elija un ajuste preestablecido en la parte superior.",
             "Define Dimensiones en tamaño Completo o en un límite del lado largo.",
             "Compruebe la vista previa de salida: el tamaño exportado refleja la rotación y el recorte, y un límite en el borde largo reduce imágenes más grandes sin ampliar las más pequeñas."
+          ]
+        },
+        {
+          "title": "Tamaño personalizado, resolución y enfoque de salida",
+          "paragraphs": [
+            "Tamaño personalizado en Avanzado reemplaza el preajuste Dimensiones por cualquier regla de cambio de tamaño: borde largo, borde corto, ajustar dentro de un ancho y alto, megapíxeles o un porcentaje del original. Aumentar fotos más pequeñas para ajustar permite que la regla amplíe una fuente más pequeña; de lo contrario, una foto que ya está en el tamaño solicitado o por debajo de él se exporta sin cambios. Resolución (ppi) solo escribe la etiqueta de metadatos de resolución que leen los programas de impresión y maquetación; nunca cambia las dimensiones en píxeles.",
+            "Ajustar para aplica enfoque de salida después de cambiar el tamaño, adaptado a cómo se verá el archivo: Pantalla para visualización en pantalla, o Papel mate/Papel brillante para impresión. La cantidad de enfoque (Baja/Estándar/Alta) establece su intensidad. El enfoque de impresión escala su radio con Resolución (ppi), de modo que el mismo halo físico de enfoque se mantiene en cualquier tamaño de impresión.",
+            "Limitar el tamaño del archivo JPEG a (KB) reduce automáticamente la calidad JPEG hasta que el archivo cabe en el límite o se alcanza el mínimo de calidad; un aviso explica cuándo no se pudo cumplir el límite."
+          ],
+          "steps": [
+            "Abre Exportar y expande Avanzado.",
+            "Elija Tamaño personalizado e ingrese el valor de la regla de cambio de tamaño, o déjelo en Usar Dimensiones arriba para conservar el ajuste preestablecido simple.",
+            "Elija Enfocar para y Cantidad de enfoque si la exportación necesita enfoque de salida.",
+            "Para un JPEG con un límite estricto de tamaño, configure Limitar tamaño de archivo JPEG a (KB)."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Límites del espacio de color",
           "paragraphs": [
             "Cada exportación incrusta el perfil ICC seleccionado. Elige sRGB, Display P3 o ProPhoto RGB en Espacio de color.",
-            "Las exportaciones de Develop de gamut amplio conservan los colores de origen cuando color y los ajustes locales están desactivados. El renderizado de Film y las exportaciones de Develop ajustadas se limitan a colores sRGB. Codificar uno de esos resultados en P3 o ProPhoto no restaura los colores ya limitados por el renderizado."
+            "Las exportaciones de Revelar de gama amplia conservan los colores de origen cuando solo se aplican los ajustes de Luz (Exposición, Iluminaciones, Sombras, Blancos, Negros y Contraste); esos controles actúan sobre la luz y no sobre colores sRGB. La representación de película y las exportaciones de Revelar con ajustes de color o detalle, máscaras, retoque o una marca de agua se limitan a colores sRGB. Codificar uno de esos resultados en P3 o ProPhoto no restaura colores ya limitados por la representación."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Predeterminados para fotos sin editar",
           "paragraphs": [
-            "Los valores predeterminados de revelado se aplican solo a fotos que aún no tienen ediciones guardadas. Pueden activar Película por defecto, elegir un flujo de trabajo y un perfil de revelado neutro, y aplicar un ajuste preestablecido predeterminado.",
+            "Los Valores predeterminados de revelado solo se aplican a las fotos que aún no tienen ediciones guardadas. Pueden iniciar Película activada, elegir un flujo de trabajo y un perfil de Revelar neutral, elegir el Perfil de cámara con el que empieza una foto RAW nunca editada y aplicar un ajuste preestablecido predeterminado.",
+            "Perfil de cámara usa de forma predeterminada LightTable Standard, el aspecto incluido. Elige Integrado para empezar las nuevas fotos RAW desde la curva analítica Standard en su lugar. Las fotos con ediciones guardadas conservan lo que ya tenían guardado.",
             "Aplicar automáticamente el perfil de objetivo coincidente, activado de forma predeterminada, activa el perfil de objetivo en las fotos cuya cámara y objetivo coinciden exactamente con un solo perfil y cuyos ajustes de objetivo nunca se guardaron. Desactívelo para abrir todas las fotos con el perfil desactivado."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Para establecer valores predeterminados RAW específicos de cámara, abre una foto RAW y ajusta sus parámetros RAW.",
             "Elige coincidencia por modelo de cámara, número de serie o cámara e ISO, y luego haz clic en Usar ajustes RAW actuales.",
             "Usa Restablecer en el área Cámara actual para quitar ese valor predeterminado de cámara.",
-            "Para revelar fotos RAW con un perfil de cámara, deje vacía la Carpeta de perfiles de cámara para usar los perfiles que Adobe Camera Raw o Lightroom instalaron en este equipo, o indique otra carpeta de archivos .dcp."
+            "Para usar tus propios perfiles DCP, deja Carpeta de perfiles de cámara vacía para usar la carpeta CameraProfiles del directorio de datos de LightTable, o en macOS y Windows los perfiles que instaló Adobe Camera Raw o Lightroom, o introduce otra carpeta de archivos .dcp."
           ]
         },
         {
           "title": "Perfiles de cámara",
           "paragraphs": [
-            "La sección Perfil de una foto RAW ofrece un menú Perfil de cámara con los archivos .dcp de la carpeta que nombran su cámara, como Adobe Standard o los estilos que imitan a la cámara. LightTable nunca incluye estos perfiles; pertenecen a su propia instalación de Adobe.",
-            "El perfil se aplica solo al revelado con la película desactivada, y de forma aproximada: sus tablas de tono y saturación y, cuando la incluye, su curva de tono, que entonces sustituye a la curva de revelado Estándar. No se aplican la mezcla de dos iluminantes ni las matrices directas, por lo que un perfil puede verse algo más cálido o más frío que el mismo archivo en Lightroom. El render de película siempre parte de los datos neutros de la escena."
+            "La sección Perfil de una foto RAW ofrece un menú Perfil de cámara con LightTable Standard y los archivos .dcp de tu carpeta de perfiles de cámara que nombran su cámara, ya sea en el nombre del archivo o en las propias etiquetas de cámara y nombre del perfil, como Adobe Standard o los aspectos coincidentes con la cámara. Solo LightTable Standard se incluye con LightTable; los demás perfiles pertenecen a tu propia instalación.",
+            "LightTable Standard es un aspecto genérico modelado: una modesta asignación de tono y saturación y una curva de tonos que sitúa el gris medio y atenúa las iluminaciones como lo hace una interpretación coincidente con la cámara. No está medido a partir de ninguna cámara y no lleva matrices de color, así que el color de cámara propio del decodificador sigue mandando.",
+            "Un perfil DCP con matrices de color se aplica siguiendo la especificación DNG. En el decodificado RAW, sus matrices de color y directas, mezcladas para el balance de blancos de captura, reemplazan la matriz incorporada del decodificador, de modo que tanto Película como Revelar parten del color de cámara del perfil. En el revelado con Película desactivada, las tablas de tono y saturación se mezclan con el mismo balance de blancos, luego siguen el desplazamiento base de exposición, la tabla de aspecto y la curva de tonos; una curva de tonos de perfil reemplaza la curva de revelado Standard. Linux no tiene ubicación de perfiles del fabricante, así que apunta Carpeta de perfiles de cámara a tus propios archivos .dcp allí.",
+            "Lo que sigue siendo aproximado: el demosaico y la reconstrucción de iluminaciones provienen de LibRaw y no de un convertidor de referencia, y el balance de blancos automático calcula su temperatura a partir del balance tomado en cámara, por lo que un perfil aún puede renderizar de forma ligeramente distinta del mismo archivo en Lightroom."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }

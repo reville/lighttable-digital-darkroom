@@ -202,7 +202,7 @@
             "Collecties heten hier ook collecties; de albums van de cloud-app komen alleen binnen via een Lightroom Classic-catalogus.",
             "Kies- en afwijsmarkeringen werken hetzelfde, en de onderste balk toont ze voor de geselecteerde foto's.",
             "Ontwikkelen heet hier Bewerken. Film staat standaard uit voor nieuwe en geïmporteerde foto's; zet het aan als je een filmbehandeling boven op de bewerking wilt.",
-            "Cameraprofiel in Bewerken toont de Adobe DCP-profielen die Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of de map met cameraprofielen die in Instellingen is gekozen. Profielen werken bij benadering en alleen op de ontwikkeling met Film uit."
+            "Cameraprofiel in Bewerken biedt de meegeleverde LightTable Standard-weergave en de DCP-profielen in uw map met cameraprofielen, die op macOS en Windows standaard de profielen bevat die Camera Raw of Lightroom heeft geïnstalleerd. De kleurmatrices van een profiel worden volgens de DNG-specificatie toegepast op de RAW-decodering; de look en tooncurve gelden voor de ontwikkelen-met-film-uit-weergave."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Om een bestaande watch te bewerken, kiest u deze in Bewaakte mappen. Elke opgeslagen watch verschijnt in deze lijst. Kies Nieuwe bewaakte map voor een andere map, of gebruik Watch verwijderen om het bewaken van de geselecteerde map te stoppen. Dit verwijdert de foto's niet.",
             "De sneltoets voor Bewaken opent de eerste actieve watch. Slaffouten blijven in het dialoogvenster staan zodat u de instellingen kunt corrigeren."
           ]
+        },
+        {
+          "title": "Maak opnieuw verbinding met een verplaatste of offline bron",
+          "paragraphs": [
+            "Een bron die offline is geraakt — een losgekoppelde schijf, een map die buiten LightTable is hernoemd of verplaatst — toont Locatie zoeken… in plaats van Opnieuw scannen. Als u dit kiest en de nieuwe locatie van de map selecteert, wordt daar op inhoud een steekproef van de eigen foto's van de catalogus gecontroleerd, niet alleen op naam, voordat de bron wordt verplaatst; bewerkingen, beoordelingen en collecties blijven gekoppeld aan dezelfde rijen. Het weigert een map waarvan de bestanden niet overeenkomen.",
+            "Mappen ••• → Ontbrekende foto's zoeken… zoekt één gekozen map naar bestanden die inhoudelijk overeenkomen met een van de momenteel ontbrekende foto's in de catalogus, waar ze ook terecht zijn gekomen, en koppelt de overeenkomsten opnieuw. Er wordt gemeld hoeveel foto's opnieuw zijn gekoppeld en hoeveel daar niet konden worden gevonden.",
+            "Alleen ontbrekende foto's weergeven, onder de bronlijst, filtert de bibliotheek terug tot foto's die de catalogus momenteel niet kan vinden, zodat u de lijst kunt controleren of exporteren voordat u naar de originelen zoekt."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Bibliotheek"
     },
     {
       "id": "survey-photos",
-      "title": "Meerdere foto's vergelijken in Overzicht",
+      "title": "Vergelijk meerdere foto's in Overzicht, of twee naast elkaar",
       "category": "Library",
       "summary": "Beoordeel een groep samen, markeer het actieve frame en beperk een set kandidaten.",
       "keywords": [
@@ -463,7 +472,10 @@
         "burst",
         "Zij aan zij",
         "bewaker",
-        "selectie maken"
+        "selectie maken",
+        "a/b-vergelijken",
+        "twee foto's vergelijken",
+        "zijde aan zijde vergelijken"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "Wanneer Overzicht wordt geopend vanuit Ondersteund selecteren, vergelijk dan de voorgestelde groep en markeer foto's afzonderlijk. Selectie maken is beschikbaar in een normaal Overzicht: het kiest de actieve overzichtsfoto en wijst de andere foto's die nog in het overzicht staan af. Dit wijzigt hun markeringen. Gekoppelde RAW- en JPEG-metagegevens kunnen die markeringswijzigingen uitbreiden naar metgezellen.",
             "Om een bewerking te beoordelen tegenover het origineel, gebruikt u voor/na Vergelijken in Details; Overzicht is bedoeld om tussen verschillende frames te kiezen."
+          ]
+        },
+        {
+          "title": "Twee foto's naast elkaar vergelijken",
+          "paragraphs": [
+            "Vergelijk twee foto’s opent dezelfde Overzicht-weergave, beperkt tot precies twee kaders, naast elkaar, voor een A/B-beoordeling tussen kandidaten in plaats van voor het voor en na van een bewerking.",
+            "Met twee geselecteerde foto's kiest u Vergelijk twee foto's, drukt u op Shift+N, of gebruikt u Weergave → Twee foto's vergelijken. Met minder dan twee geselecteerde foto's koppelt LightTable de huidige foto aan de buur in de actieve weergave.",
+            "Wisselen draait om welke foto aan welke kant staat. De markeringstoolbalk en de sneltoetsen voor vlag, beoordeling en label gelden voor de actieve cel, net als in een volledig Overzicht."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Foto's groeperen in collecties",
       "category": "Library",
-      "summary": "Maak benoemde groepen zonder de oorspronkelijke bestanden te verplaatsen.",
+      "summary": "Maak geneste collectiegroepen, orden ze opnieuw en bouw een snelle, tijdelijke set met de Snelle Collectie.",
       "keywords": [
         "collectie",
         "album",
         "ordenen",
         "groep",
         "geselecteerd",
-        "collectie verwijderen"
+        "collectie verwijderen",
+        "geneste collectie",
+        "collectieset",
+        "snelle collectie",
+        "collectie hernoemen",
+        "opnieuw ordenen"
       ],
       "sections": [
         {
           "title": "Foto's maken en toevoegen",
           "paragraphs": [
-            "Een gewone verzameling bewaart een gekozen set foto’s. Deze staat los van de mapindeling op de schijf."
+            "Een gewone collectie slaat een gekozen set foto's op. Deze staat los van de mappenstructuur op schijf. Collecties werken alleen met een catalogus; de mapmodus behoudt de platte, niet-geneste lijst die hij altijd had."
           ],
           "steps": [
             "Selecteer de foto’s die u wilt groeperen.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "Nesten, hernoemen en opnieuw ordenen",
+          "paragraphs": [
+            "Collecties kunnen andere collecties bevatten. De + op een collectieregel maakt daarin een nieuwe collectie; een driehoek verschijnt zodra er onderliggende items zijn en schakelt het tonen daarvan in of uit. Naam wijzigen doet u met het potloodpictogram. De pijlen omhoog en omlaag verplaatsen een collectie binnen de huidige zusteritems; de pijl naar links op een geneste collectie verplaatst die terug naar het hoogste niveau. De volgorde wordt opgeslagen en opent de volgende keer op dezelfde manier."
+          ]
+        },
+        {
           "title": "Een collectie verwijderen",
           "paragraphs": [
-            "Het ×-teken naast een verzameling verwijdert de verzameling. Hiermee wordt de groepering verwijderd in plaats van de originele bestanden naar de Prullenbak te verplaatsen. Zoeken en filters kunnen de foto’s die binnen een verzameling worden getoond verder beperken."
+            "Het ×-teken naast een collectie verwijdert die en alles wat eronder genest is. Hiermee wordt de groepering verwijderd in plaats van dat de originele bestanden naar de Prullenbak worden verplaatst. Zoeken en filters kunnen de foto's die binnen een collectie worden getoond verder beperken."
+          ]
+        },
+        {
+          "title": "De Snelle Collectie",
+          "paragraphs": [
+            "De Snelle collectie is één blijvende collectie om snel een set op te bouwen tijdens het selecteren, zonder eerst iets te benoemen. Druk op Cmd+B (losse B is al voor/na) met geselecteerde foto's om ze toe te voegen, of druk nogmaals op dezelfde selectie om ze te verwijderen. Het ×-teken op de rij wist de collectie volledig. Verder gedraagt deze zich als elke gewone collectie: voeg er handmatig foto's aan toe of open haar om individuele foto's te bekijken en te verwijderen."
           ]
         },
         {
           "title": "Mappen en collecties",
           "paragraphs": [
             "Mappen stellen de fysieke schijphiërarchie voor waarin bestanden zich bevinden. Collecties zijn flexibele, lichte groepen binnen LightTable die foto's uit meerdere mappen kunnen verzamelen zonder bestanden op schijf te verplaatsen of te dupliceren.",
-            "Bij het importeren van een catalogus of het toevoegen van een bronmap worden met Collectie maken voor elke map op het hoogste niveau automatisch overeenkomende collecties gemaakt voor elke topniveau-map, zodat uw bestaande structuur direct beschikbaar is in Collecties."
+            "Wanneer u een catalogus importeert of een bronmap toevoegt, maakt het inschakelen van Collectie maken voor elke map op het hoogste niveau automatisch overeenkomende collecties voor elke map op het hoogste niveau, zodat uw bestaande structuur direct toegankelijk is in Collecties. Het importeren van een Lightroom Classic-catalogus mapt de collectiesets op dezelfde nesting."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Begin met Licht",
           "paragraphs": [
-            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding."
+            "Open Bewerken en vouw Licht uit. Belichting wijzigt de algehele helderheid; Hooglichten en Schaduwen laten u de lichte en donkere gebieden gericht aanpassen. Witten en Zwartwaarden passen de uiteinden van het toonbereik aan: verhoog Witten om de helderste tonen lichter te maken, verhoog Zwartwaarden om de donkerste op te tillen, en verlaag een van beide om dat uiteinde weer terug te trekken. Contrast wijzigt hun scheiding.",
+            "Deze Licht-regelaars werken op het licht achter het weergegeven beeld in plaats van op de geknipte pixels. Tonen die Belichting voorbij wit duwt, blijven beschikbaar voor Hooglichten en Witten om terug te halen, en de helderste tonen lopen zacht af in plaats van te clippen."
           ],
           "steps": [
             "Stel Belichting in voor het hoofdonderwerp.",
@@ -1657,10 +1695,12 @@
             "Probeer Automatisch nivelleren voor een scheve horizon en verfijn daarna indien nodig Rechtzetten.",
             "Gebruik Draai links, Draai rechts of de spiegelknoppen voor oriëntatiewijzigingen.",
             "Breid Perspectief uit en probeer Automatisch rechtzetten, of pas Verticaal, Horizontaal en Schaal handmatig aan.",
+            "Als Automatisch rechtzetten niet genoeg lijnen kan vinden, of de verkeerde kiest, klik dan op Geleid, teken 2 tot 4 lijnen langs randen die verticaal of horizontaal moeten zijn, en klik vervolgens op Hulplijnen toepassen.",
             "Inspecteer de randen en de uiteindelijke uitsnede en klik vervolgens op Gereed."
           ],
           "tips": [
             "Automatisch niveau gebruikt lijnen die het kan vinden; controleer het resultaat in plaats van aan te nemen dat de gedetecteerde hoek bij de foto past.",
+            "Kies in Begeleid-modus vóór elke sleepbeweging Verticale lijn of Horizontale lijn, zodat de lijn correct wordt getagd; Lijn ongedaan maken verwijdert de laatste en Wissen begint opnieuw.",
             "Opnieuw instellen van Bijsnijden zet samen bijsnijden, draaien, spiegelen en perspectief terug."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Toevoegen, Verwijderen en Snijden plaatsen u in verfverfijningsmodi. Kies bij een Lineair of Radiaal masker Bewerken van vorm om terug te keren naar het aanpassen van de vorm.",
             "Inschakelen schakelt het effect van een masker tijdelijk uit of in. Omkeren draait de selectie om.",
-            "De editor staat maximaal zestien lokale maskers toe. Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto en is niet beschikbaar wanneer er geen zijn.",
+            "De editor staat maximaal zestien lokale maskers toe. Masker dupliceren kopieert het geselecteerde masker, inclusief vorm, penseelstreken en aanpassingen, en voegt de kopie direct erna in; Masker verwijderen verwijdert het geselecteerde masker; Alles wissen verwijdert de maskers van de foto en is niet beschikbaar wanneer er geen zijn.",
             "Maskerpinnen en penseelcontouren blijven scherp en even dik terwijl u inzoomt. De contour wordt groter naarmate het gebied dat deze in de foto bedekt groter wordt."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Een lineair verloop vormgeven",
           "paragraphs": [
             "Versleep in Vorm bewerken een van de punten om dat uiteinde van het verloop aan te passen. Versleep de verbindingslijn om het hele verloop te verplaatsen met behoud van de hoek en overgangsbreedte. Sleep ergens anders op de foto om het opnieuw te tekenen.",
-            "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand."
+            "Als je de twee punten op elkaar sleept, heeft het verloop geen richting meer en selecteert het niets tot je ze weer uit elkaar haalt. Een heel kort verloop is een geldige harde rand en wordt in de voorvertoning net zo toegepast als in het geëxporteerde bestand.",
+            "Vervaging vergroot of verkleint de overgangszone, gecentreerd op de lijn tussen de twee punten. Verlaag voor een hardere rand, verhoog voor een zachtere, bredere overgang."
           ],
           "tips": [
             "Selecteer een bestaand lineair masker om het opnieuw aan te passen. Als je met Toevoegen, Aftrekken of Doorsnede hebt geschilderd, kies dan eerst Vorm bewerken. Druk op H als de punten verborgen zijn."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Er kan maar één samenvoeging tegelijk lopen. Een bestaande bestandsnaam blijft behouden; een nieuwe samenvoeging met dezelfde naam krijgt een numeriek achtervoegsel.",
-            "Samenvoegen verwerkt normaal elk invoerbestand tot maximaal 6.000 pixels op de lange zijde. Het samengevoegde resultaat kan daardoor minder detail hebben dan de bronreeks met volledige resolutie.",
+            "Samenvoegen-inputs gebruiken standaard volledige resolutie. Als de reeks meer geheugen zou nodig hebben dan het systeem kan missen, verlaagt LightTable automatisch elke input naar een kleinere lange zijde en toont de effectieve grootte voordat u begint; een vaste limiet kan ook worden ingesteld met de omgevingsvariabele LIGHTTABLE_MERGE_MAX_EDGE.",
             "Als een samenvoeging een fout meldt, lees dan de specifieke melding en corrigeer de invoerselectie voordat je het opnieuw probeert."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Een slimme selectie maken",
           "paragraphs": [
-            "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze werken lokaal; beschikbare methoden zijn afhankelijk van het selectietype en het platform.",
-            "Selecties voor Onderwerp, Lucht en Object behouden tot 1.024 pixels langs hun langste rand. Randen worden verfijnd aan de hand van beeldkleuren, en Vision-onderwerpsselecties behouden zachte overgangen. Fijne grenzen moeten nog steeds worden gecontroleerd en geschilderd verfijnd.",
+            "Masker biedt selecties voor Onderwerp, Lucht, Object, Diepte en Personen. Deze worden lokaal uitgevoerd op elk platform; beschikbare methoden en nauwkeurigheid hangen af van het type selectie en het platform.",
+            "Selecties voor Onderwerp, Lucht en Object behouden tot 1.024 pixels langs hun langste zijde. Randen worden verfijnd tegen de beeldkleuren, en Vision-selecties voor onderwerp behouden zachte overgangen. Op Windows en Linux gebruikt Onderwerp hetzelfde meegeleverde lokale model als Persoon wanneer het een persoon in de foto vindt, en valt anders terug op een schatting op basis van het beeld. Fijne grenzen hebben nog steeds inspectie en handmatige verfijning nodig.",
             "Een selectie wordt gemaakt op de foto waarop ze is gestart. Naar een andere foto gaan voordat ze klaar is annuleert haar, dus blijf op de foto tot het masker verschijnt. Als de selectie niet kan worden voltooid, meldt het maskerpaneel dat en wordt er niets toegevoegd."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Personen of gezichtsgebieden selecteren",
           "paragraphs": [
             "Personen biedt Persoon en Haar op elk platform. Gezichtshuid, Ogen, Wenkbrauwen, Lippen, Tanden en Huid verzachten vereisen de Vision-helper op macOS 14 of later. Gezichtshuid wordt geschat en er wordt geen identiteit afgeleid.",
-            "Haar gebruikt een meegeleverd model dat lokaal draait en haar selecteert buiten het gezicht, inclusief haar tot op de schouders. Controleer fijne haarstrengen, heldere hooglichten, pruiken en kleine personen op de achtergrond; deze kunnen nog steeds worden gemist. Oudere versies of bron-builds zonder het model gebruiken de eerdere Vision-schatting wanneer beschikbaar. Bestaande opgeslagen maskers behouden hun selecties."
+            "Haar gebruikt een meegeleverd model dat lokaal draait en haar selecteert buiten het gezicht, inclusief haar tot op de schouders. Controleer fijne haarstrengen, heldere hooglichten, pruiken en kleine personen op de achtergrond; deze kunnen nog steeds worden gemist. Oudere versies of bron-builds zonder het model gebruiken de eerdere Vision-schatting wanneer beschikbaar. Bestaande opgeslagen maskers behouden hun selecties.",
+            "Persoon gebruikt hetzelfde meegeleverde lokale model op Windows en Linux (en op Mac wanneer de Vision-helper niet beschikbaar is) om direct de omtrek van een persoon te volgen, in plaats van een schatting op basis van het beeld. Als er geen persoon wordt gevonden, valt Persoon terug op die schatting in plaats van de selectie leeg te laten."
           ],
           "steps": [
             "Kies Personen en daarna het onderdeel dat u wilt aanpassen.",
@@ -2311,7 +2353,7 @@
             "Inspecteer het voltooide voorbeeld op 1:1."
           ],
           "tips": [
-            "Aangeleerde ruis vermindering vereist de macOS-inferentiehelper en een compatibel lokaal model. Het is niet beschikbaar op Linux en Windows. Gewone ruisvermindering en verscherpen blijven beschikbaar. Ontwikkelbuilds kunnen het model missen; lees de beschikbaarheidsmelding voordat je start."
+            "Aangeleerde ruisvermindering wordt op macOS uitgevoerd via Core ML en op Windows en Linux via onnxruntime, met gebruik van hetzelfde geconverteerde model. Gewone ruisvermindering en verscherping blijven overal beschikbaar. Ontwikkelbuilds kunnen het geconverteerde model of de runtime missen; lees het beschikbaarheidsbericht voordat u begint."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "Pas bij Aangepast Temperatuur en Opname-tint aan."
           ],
           "tips": [
-            "Een JPEG-, HEIF-, TIFF- of ander verwerkt bestand bevat al een tooncurve, dus LightTable rekt het vóór de filmsimulatie rond middengrijs weer op naar scènelicht: hooglichten krijgen hun bereik terug en schaduwen vallen terug naar waar de scène ze had, terwijl de belichting bij middengrijs onveranderd blijft. RAW-bestanden zijn al scènelicht en worden niet opgerekt."
+            "Een JPEG-, HEIF-, TIFF- of ander verwerkt bestand bevat al een tooncurve. Voor het filmen vergroot LightTable zijn helderheidsbereik terwijl de verhoudingen van rood, groen en blauw behouden blijven, zodat deze voorbereiding een bestaande kleurzweem niet overdrijft. Automatische scènemeting houdt dezelfde belichtingsreferentie aan. Dit benadert scènecontrast; het kan details die al verloren zijn in de verwerkte foto niet herstellen. RAW-bestanden zijn al scène-licht en worden niet vergroot."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Indelingen en voorinstellingen",
           "paragraphs": [
-            "Het exportdialoogvenster biedt JPEG, PNG en 16-bits TIFF. Op macOS biedt het ook 8-bits HEIF; HEIF is verborgen op Linux en Windows. Een opgeslagen HEIF-recept kan daar niet worden toegepast, dus kies een ander formaat. De kwaliteitschuifregelaar geldt voor JPEG en HEIF.",
+            "Het exportdialoogvenster biedt JPEG, PNG en TIFF. TIFF staat standaard op 16-bit; kies 8-bit TIFF-diepte in Geavanceerd voor een kleiner archiefbestand. Op macOS biedt het ook 8-bit HEIF; HEIF is verborgen op Linux en Windows. Een opgeslagen HEIF-recept kan daar niet worden toegepast, kies dus een ander formaat. PNG en HEIF coderen altijd op 8-bit. De kwaliteitschuifregelaar geldt voor JPEG en HEIF.",
             "JPG (Groot) gebruikt JPEG op volledige grootte met kwaliteit 92 in sRGB. JPG (Klein) gebruikt een lange zijde van 2048 pixels met kwaliteit 90 in sRGB. 16-bits TIFF gebruikt volledige grootte en ProPhoto RGB. Door deze instellingen te wijzigen wordt Aangepast geselecteerd."
           ],
           "steps": [
             "Open Exporteren en kies bovenaan een voorinstelling.",
             "Stel Afmetingen in op Volledige grootte of een limiet voor de lange zijde.",
             "Controleer Uitvoervoorvertoning: de geëxporteerde grootte weerspiegelt rotatie en bijsnijden, en een limiet voor de lange zijde verkleint grotere afbeeldingen zonder kleinere te vergroten."
+          ]
+        },
+        {
+          "title": "Aangepaste grootte, resolutie en uitvoerverscherping",
+          "paragraphs": [
+            "Aangepaste grootte in Geavanceerd vervangt de voorinstelling Afmetingen door elke wijzigingsregel: lange zijde, korte zijde, passend binnen een breedte en hoogte, megapixels of een percentage van het origineel. Kleinere foto's vergroten om passend te maken laat de regel een kleinere bron opschalen; anders exporteert een foto die al op of onder de gevraagde grootte ligt ongewijzigd. Resolutie (ppi) schrijft alleen de resolutiemetadatatag die door afdruk- en paginalay-outsoftware wordt gelezen; deze verandert nooit de pixelafmetingen.",
+            "Verscherpen voor past uitvoerverscherping toe na het schalen, afgestemd op hoe het bestand wordt bekeken: Scherm voor weergave op het scherm, of Mat papier/Glanzend papier voor afdrukken. Hoeveelheid verscherpen (Laag/Standaard/Hoog) bepaalt de sterkte. Afdrukverscherping schaalt de straal met Resolutie (ppi), zodat dezelfde fysieke verscherpingshalo op elke afdrukgrootte behouden blijft.",
+            "Beperk bestandsgrootte JPEG tot (KB) verlaagt de JPEG-kwaliteit automatisch totdat het bestand binnen de limiet past of de kwaliteitsdrempel is bereikt; een waarschuwing legt uit wanneer niet aan de limiet kon worden voldaan."
+          ],
+          "steps": [
+            "Open Exporteren en vouw Geavanceerd uit.",
+            "Kies Aangepaste grootte en voer de waarde van de grootte-aanpassingsregel in, of laat dit op Bovenstaande Afmetingen gebruiken staan om de eenvoudige voorinstelling te behouden.",
+            "Kies Verscherpen voor en Verscherpingshoeveelheid als de export uitvoerverscherping nodig heeft.",
+            "Voor een JPEG met een harde groottebeperking stelt u JPEG-bestandsgrootte beperken tot (KB) in."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Kleurruimtelimieten",
           "paragraphs": [
             "Elke export sluit het geselecteerde ICC-profiel in. Kies sRGB, Display P3 of ProPhoto RGB in Kleurruimte.",
-            "Ontwikkel-exporten met breed gamut behouden bronkleuren wanneer kleur en lokale aanpassingen zijn uitgeschakeld. Filmweergave en aangepaste Ontwikkel-exporten zijn beperkt tot sRGB-kleuren. Het coderen van een van deze resultaten in P3 of ProPhoto herstelt geen kleuren die al door weergave zijn beperkt."
+            "Ontwikkel-exporten met breed gamut behouden de bronkleuren wanneer alleen de Licht-aanpassingen (Belichting, Hooglichten, Schaduwen, Witten, Zwartwaarden en Contrast) worden toegepast; die regelaars werken op licht in plaats van op sRGB-kleuren. Filmweergave en ontwikkel-exporten met kleur- of detailaanpassingen, maskers, retoucheren of een watermerk zijn beperkt tot sRGB-kleuren. Het coderen van een van die resultaten in P3 of ProPhoto herstelt geen kleuren die al door de weergave zijn beperkt."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Standaarden voor onbewerkte foto's",
           "paragraphs": [
-            "Ontwikkelstandaarden worden alleen toegepast op foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen beginnen met Film ingeschakeld, een workflow en neutraal ontwikkelprofiel kiezen en een standaardvoorinstelling toepassen.",
+            "Ontwikkelstandaarden gelden alleen voor foto's die nog geen opgeslagen bewerkingen hebben. Ze kunnen Film ingeschakeld starten, een workflow en neutraal Ontwikkelprofiel kiezen, het Cameraprofiel kiezen waarmee een nooit-bewerkte RAW-foto begint, en een standaardvoorinstelling toepassen.",
+            "Cameraprofiel staat standaard op LightTable Standard, de meegeleverde weergave. Kies Ingebouwd om nieuwe RAW-foto's in plaats daarvan te starten vanaf de analytische Standaard-kromme. Foto's met opgeslagen bewerkingen behouden wat ze hebben opgeslagen.",
             "Overeenkomend lensprofiel automatisch toepassen, standaard ingeschakeld, zet het lensprofiel aan voor foto's waarvan camera en lens exact met één profiel overeenkomen en waarvan de lensinstellingen nooit zijn opgeslagen. Schakel het uit om elke foto met het profiel uit te openen."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Om cameraspecifieke raw-standaarden in te stellen, open je een raw-foto en pas je de raw-instellingen aan.",
             "Kies afstemmen op cameramodel, serienummer of camera en ISO en klik daarna op Huidige RAW-instellingen gebruiken.",
             "Gebruik Opnieuw instellen in het gebied Huidige camera om die camera-standaard te verwijderen.",
-            "Om RAW-foto’s met een cameraprofiel te ontwikkelen, laat je Map met cameraprofielen leeg om de profielen te gebruiken die Adobe Camera Raw of Lightroom op deze computer heeft geïnstalleerd, of geef je een andere map met .dcp-bestanden op."
+            "Om uw eigen DCP-profielen te gebruiken, laat u Map met cameraprofielen leeg om de CameraProfiles-map in de gegevensmap van LightTable te gebruiken, of op macOS en Windows de profielen die Adobe Camera Raw of Lightroom heeft geïnstalleerd, of voert u een andere map met .dcp-bestanden in."
           ]
         },
         {
           "title": "Cameraprofielen",
           "paragraphs": [
-            "Het gedeelte Profiel van een RAW-foto biedt een menu Cameraprofiel met de .dcp-bestanden in de map die de camera noemen, zoals Adobe Standard of de camera-imiterende looks. LightTable levert deze profielen nooit mee; ze horen bij je eigen Adobe-installatie.",
-            "Het profiel wordt alleen toegepast op de ontwikkeling met Film uit, en bij benadering: zijn tint- en verzadigingstabellen en, als het er een bevat, zijn tooncurve, die dan de Standaard-ontwikkelcurve vervangt. Menging van twee lichtbronnen en voorwaartse matrices worden niet toegepast, dus een profiel kan iets warmer of koeler ogen dan hetzelfde bestand in Lightroom. De filmweergave begint altijd bij de neutrale scènegegevens."
+            "De sectie Profiel van een RAW-foto biedt een menu voor Cameraprofiel met LightTable Standard en de .dcp-bestanden in uw map met cameraprofielen die de camera benoemen, hetzij in de bestandsnaam, hetzij in de cameratags en naamtags van het profiel zelf, zoals Adobe Standard of de camera-overeenkomende looks. Alleen LightTable Standard wordt met LightTable meegeleverd; andere profielen horen bij uw eigen installatie.",
+            "LightTable Standard is een gemodelleerde algemene weergave: een bescheiden kaart voor tint en verzadiging en een tooncurve die middengrijs goed plaatst en hooglichten afrolt zoals een camera-overeenkomende weergave doet. Het is niet gemeten van een camera en bevat geen kleurmatrices, dus de eigen camerakleur van de decoder blijft bepalend.",
+            "Een DCP-profiel met kleurmatrices wordt toegepast volgens de DNG-specificatie. Bij de RAW-decodering vervangen zijn kleur- en voorwaartse matrices, geblend voor de opname-witbalans, de ingebedde matrix van de decoder, zodat Film en Ontwikkelen beide beginnen vanuit de camerakleur van het profiel. In de ontwikkelen-met-film-uit-weergave worden de tabellen voor tint en verzadiging op dezelfde witbalans geblend, daarna volgen de basisbelichtingsoffset, looktabel en tooncurve; een profieltooncurve vervangt de standaard ontwikkelkromme. Linux heeft geen locatie voor leveranciersprofielen, dus wijs Map met cameraprofielen daar naar uw eigen .dcp-bestanden.",
+            "Wat benaderend blijft: demosaic en hooglichtreconstructie komen uit LibRaw in plaats van uit een referentieconverter, en Automatische witbalans schat de temperatuur op basis van de opnamebalans, dus een profiel kan een bestand nog steeds iets anders weergeven dan hetzelfde bestand in Lightroom."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }
