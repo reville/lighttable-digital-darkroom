@@ -261,8 +261,45 @@ jobs:
           keychain="$RUNNER_TEMP/lighttable-signing.keychain-db"
           if [[ -f "$keychain" ]]; then security delete-keychain "$keychain"; fi
 
-  windows:
+  denoise-onnx:
     needs: [prepare, translations]
+    if: needs.prepare.outputs.windows == 'true' || needs.prepare.outputs.linux == 'true'
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.source_ref }}
+      - name: Identify the model conversion environment
+        id: model-environment
+        run: echo "image=${ImageOS:?}-${ImageVersion:?}" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        id: converted-onnx
+        with:
+          path: scripts/models/onnx
+          key: denoise-onnx-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.model-environment.outputs.image }}-py311-${{ hashFiles('scripts/convert-models.py', 'scripts/fetch-models.py', 'scripts/models/*.py', 'scripts/models/requirements-convert.txt', 'scripts/models/requirements-convert-onnx.txt', 'scripts/ci/check-converted-model.py') }}
+      - name: Install build tools
+        if: steps.converted-onnx.outputs.cache-hit != 'true'
+        run: brew install uv
+      - name: Export the pinned denoising model to ONNX on a cache miss
+        if: steps.converted-onnx.outputs.cache-hit != 'true'
+        run: |
+          uv venv --python 3.11 .build/model-conversion
+          uv pip install --python .build/model-conversion/bin/python -r scripts/models/requirements-convert.txt -r scripts/models/requirements-convert-onnx.txt
+          .build/model-conversion/bin/python scripts/fetch-models.py
+          .build/model-conversion/bin/python scripts/convert-models.py --format onnx
+      - name: Verify the exported model before packaging
+        run: python3 scripts/ci/check-converted-model.py --onnx
+      - name: Share the exported model with the Windows and Linux packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: denoise-onnx
+          path: scripts/models/onnx
+          if-no-files-found: error
+          retention-days: 7
+
+  windows:
+    needs: [prepare, translations, denoise-onnx]
     if: needs.prepare.outputs.windows == 'true'
     permissions:
       actions: read
@@ -274,6 +311,7 @@ jobs:
       source_ref: ${{ needs.prepare.outputs.source_ref }}
       require_signing: true
       store_candidate: true
+      denoise_artifact: denoise-onnx
     secrets: inherit
 
   linux-preflight:
@@ -292,12 +330,13 @@ jobs:
           echo 'Linux signing configuration present. Final artifact signatures still require verification.' >> "$GITHUB_STEP_SUMMARY"
 
   linux:
-    needs: [prepare, linux-preflight]
+    needs: [prepare, linux-preflight, denoise-onnx]
     if: needs.prepare.outputs.linux == 'true'
     uses: ./.github/workflows/linux-build.yml
     with:
       version: ${{ needs.prepare.outputs.version }}
       source_ref: ${{ needs.prepare.outputs.source_ref }}
+      denoise_artifact: denoise-onnx
 
   summary:
     needs: [prepare, translations, macos, windows, linux]

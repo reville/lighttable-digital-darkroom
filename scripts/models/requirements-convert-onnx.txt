@@ -1,0 +1,10 @@
+# Development-only additions for `scripts/convert-models.py --format onnx`,
+# installed on top of requirements-convert.txt. Never installed into the
+# application runtime: Windows and Linux runtimes pin their own onnxruntime in
+# packaging/runtime-*.lock and never import torch or onnx.
+#
+# The exporter validates the fp16 graph through onnxruntime's CPU provider
+# against the traced PyTorch network before writing models.json.
+onnx==1.17.0
+onnxconverter-common==1.14.0
+onnxruntime==1.20.1

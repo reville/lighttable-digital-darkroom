@@ -286,8 +286,12 @@ it for real after relocation, the same way `scripts/smoke-hair-mask.py`
 exercises the hair model. The build bundles the converted model only when
 `scripts/models/onnx/denoise.onnx` is present (set
 `LIGHTTABLE_REQUIRE_DENOISE_MODEL=1` to make its absence a build failure);
-hosted CI does not yet convert it, so a runtime built there reports learned
-denoise as unavailable. Flatpak packaging does not yet carry this model or
+the release workflow's `denoise-onnx` job exports it with the pinned
+`scripts/models/requirements-convert-onnx.txt` environment, verifies it with
+`scripts/ci/check-converted-model.py --onnx`, and hands it to the Windows and
+Linux package jobs, which then require it. Pull-request builds never convert
+it, so a runtime built there reports learned denoise as unavailable. Flatpak
+packaging does not yet carry this model or
 `onnxruntime`; only the portable tarball build above does.
 
 Native ARM64 Linux builders may pass `--experimental-aarch64` for a validation

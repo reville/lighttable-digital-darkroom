@@ -43,6 +43,11 @@ on:
         required: false
         default: false
         type: boolean
+      denoise_artifact:
+        description: Name of an uploaded artifact holding the exported ONNX denoise model; when set, the package must bundle it
+        required: false
+        default: ''
+        type: string
     secrets:
       WINDOWS_CERTIFICATE_BASE64:
         required: false
@@ -230,6 +235,13 @@ jobs:
         with:
           ref: ${{ inputs.source_ref || github.sha }}
 
+      - name: Stage the exported denoise model
+        if: inputs.denoise_artifact != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.denoise_artifact }}
+          path: scripts/models/onnx
+
       - name: Validate Store candidate selection
         if: inputs.store_candidate
         shell: pwsh
@@ -297,6 +309,7 @@ jobs:
           STORE_CANDIDATE: ${{ inputs.store_candidate && 'true' || 'false' }}
           PACKAGE_VERSION: ${{ inputs.version }}
           REQUIRE_SIGNING: ${{ (inputs.require_signing || inputs.store_candidate) && 'true' || 'false' }}
+          LIGHTTABLE_REQUIRE_DENOISE_MODEL: ${{ inputs.denoise_artifact != '' && '1' || '' }}
           WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
           WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}

@@ -28,6 +28,11 @@ on:
         description: Exact source commit selected by the release workflow
         required: false
         type: string
+      denoise_artifact:
+        description: Name of an uploaded artifact holding the exported ONNX denoise model; when set, the package must bundle it
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -141,6 +146,13 @@ jobs:
         with:
           ref: ${{ inputs.source_ref || github.sha }}
 
+      - name: Stage the exported denoise model
+        if: inputs.denoise_artifact != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.denoise_artifact }}
+          path: scripts/models/onnx
+
       - name: Install Node.js for shared interface tests
         uses: actions/setup-node@v4
         with:
@@ -250,6 +262,8 @@ jobs:
 
       - name: Build and smoke-test relocated package
         if: github.event_name != 'pull_request' || inputs.build_package
+        env:
+          LIGHTTABLE_REQUIRE_DENOISE_MODEL: ${{ inputs.denoise_artifact != '' && '1' || '' }}
         run: ./scripts/linux/build-release.sh --version "$PACKAGE_VERSION"
 
       - name: Retain completed portable bundle before native acceptance

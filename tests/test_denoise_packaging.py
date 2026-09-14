@@ -79,6 +79,32 @@ class DenoisePackagingTests(unittest.TestCase):
         for asset in ONNX_ASSETS:
             self.assertIn(asset, source[onnx_copy:denoise_smoke])
 
+    def test_release_workflow_exports_and_shares_the_onnx_model(self):
+        release = (ROOT / ".github/workflows/release.yml").read_text()
+        self.assertIn("scripts/convert-models.py --format onnx", release)
+        self.assertIn("scripts/ci/check-converted-model.py --onnx", release)
+        self.assertIn("requirements-convert-onnx.txt", release)
+        self.assertIn("name: denoise-onnx", release)
+        self.assertIn("denoise_artifact: denoise-onnx", release)
+        for workflow in ("windows-build.yml", "linux-build.yml"):
+            source = (ROOT / ".github/workflows" / workflow).read_text()
+            self.assertIn("denoise_artifact:", source)
+            self.assertIn("path: scripts/models/onnx", source)
+            self.assertIn("LIGHTTABLE_REQUIRE_DENOISE_MODEL: ${{ inputs.denoise_artifact != '' && '1' || '' }}", source)
+
+    def test_build_scripts_require_the_onnx_model_only_when_asked(self):
+        for script in ("scripts/windows/build-release.ps1", "scripts/linux/build-release.py"):
+            source = (ROOT / script).read_text()
+            self.assertIn("LIGHTTABLE_REQUIRE_DENOISE_MODEL", source)
+
+    def test_model_check_script_verifies_the_onnx_export(self):
+        source = (ROOT / "scripts/ci/check-converted-model.py").read_text()
+        self.assertIn("def verify_onnx(", source)
+        self.assertIn("'runtime': 'onnxruntime'", source)
+        pins = (ROOT / "scripts/models/requirements-convert-onnx.txt").read_text()
+        for package in ("onnx==", "onnxconverter-common==", "onnxruntime=="):
+            self.assertIn(package, pins)
+
     def test_smoke_denoise_script_exists_and_needs_no_required_arguments(self):
         source = (ROOT / "scripts/smoke-denoise.py").read_text()
         self.assertIn("import enhance_workflow", source)
