@@ -571,7 +571,7 @@
     "xmp-interchange": {
       "content": "e4ee2ebc021666bdda92ef1acb560b10bbbddb753a1efb2dfd2d4aefbae5c8dd",
       "sources": {
-        "server.py": "7fbdd59d8352da404369e11b65015ba6bb272936d78de26741f5cac4e1d7dafa",
+        "server.py": "792c36a64b69bc50c33a64a9fdb31e3802d1b83f90dcac8d8cc2c139e140d4f7",
         "web/catalog-ui.js": "cfa90778c85924df1219a33493e460ee5ec4d5e5e4440c2eccb92af1e38882d3",
         "xmp_sidecar.py": "9d5e8f3e81b6b2a1efc8470a2f4750dcf75e9761c4be62e412365778a686f7c8"
       }

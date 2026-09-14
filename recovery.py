@@ -56,19 +56,15 @@ def _stamp() -> str:
 
 def _write_json(path: Path, value: Any) -> bool:
     """Best-effort durable write; recovery bookkeeping must never raise."""
-    for attempt in range(6):
-        try:
-            durable_io.atomic_write_json(path, value, keep_backup=False)
-            return True
-        except OSError as error:
-            # A launcher polling the phase file, or a Windows virus scanner,
-            # can briefly deny replacement. Losing the final ready record
-            # leaves a healthy server looking stuck at its previous phase.
-            # Keep permanent failures best-effort, with at most 310 ms of delay.
-            if getattr(error, "winerror", None) not in (5, 32, 33) or attempt == 5:
-                return False
-            time.sleep(0.01 * 2 ** attempt)
-    return False
+    try:
+        # A launcher polling the phase file, or a Windows virus scanner, can
+        # briefly deny replacement. Losing the final ready record leaves a
+        # healthy server looking stuck at its previous phase.
+        durable_io.retry_windows_sharing(
+            lambda: durable_io.atomic_write_json(path, value, keep_backup=False))
+        return True
+    except OSError:
+        return False
 
 
 # ----------------------------------------------------------------- startup --

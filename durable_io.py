@@ -173,6 +173,29 @@ def atomic_write_json(
     )
 
 
+# Windows refuses to replace a file while another process has it open: a
+# launcher polling a phase file, a command-line client reading the instance
+# registry, or a virus scanner. Access denied, sharing violation and lock
+# violation clear once that handle closes.
+WINDOWS_SHARING_ERRORS = (5, 32, 33)
+
+
+def retry_windows_sharing(operation: Callable[[], Any], *, attempts: int = 6) -> Any:
+    """Run ``operation``, retrying briefly while Windows reports a sharing conflict.
+
+    Any other error, or a conflict that outlasts the attempts (at most 310 ms
+    of delay by default), is raised unchanged.
+    """
+    for attempt in range(attempts):
+        try:
+            return operation()
+        except OSError as error:
+            if (getattr(error, "winerror", None) not in WINDOWS_SHARING_ERRORS
+                    or attempt == attempts - 1):
+                raise
+            time.sleep(0.01 * 2 ** attempt)
+
+
 def load_json(path: Path | str, default: Any) -> Any:
     """Read JSON, falling back to its last valid backup without rewriting."""
     path = Path(path)
