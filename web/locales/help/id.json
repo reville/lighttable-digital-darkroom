@@ -202,7 +202,7 @@
             "Koleksi tetap disebut koleksi di sini; album dari aplikasi cloud hanya masuk melalui katalog Lightroom Classic.",
             "Tanda Pilih dan Tolak bekerja dengan cara yang sama, dan bilah bawah menampilkannya untuk foto yang dipilih.",
             "Pengembangan di sini disebut Edit. Film mati secara default untuk foto baru dan foto impor; nyalakan saat Anda ingin perlakuan film di atas penyuntingan.",
-            "Profil kamera di Edit menampilkan profil Adobe DCP yang dipasang Camera Raw atau Lightroom di komputer ini, atau folder profil kamera yang dipilih di Pengaturan. Profil diterapkan secara kira-kira dan hanya pada pengembangan dengan Film mati."
+            "Profil kamera dalam Edit menawarkan tampilan LightTable Standar bawaan dan profil DCP di folder profil kamera Anda, yang di macOS dan Windows secara default menggunakan profil yang dipasang Camera Raw atau Lightroom. Matriks warna sebuah profil diterapkan pada dekode RAW mengikuti spesifikasi DNG; tampilan dan kurva nada profil diterapkan pada Pengembangan dengan Film mati."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Untuk mengedit watch yang sudah ada, pilih di Folder yang dipantau. Setiap watch yang disimpan muncul di daftar ini. Pilih Folder yang dipantau baru untuk folder lain, atau gunakan Hapus watch untuk berhenti memantau folder terpilih. Ini tidak menghapus fotonya.",
             "Pintasan Watching membuka watch aktif pertama. Kesalahan penyimpanan tetap ada di dialog sehingga Anda dapat memperbaiki pengaturan."
           ]
+        },
+        {
+          "title": "Sambungkan kembali sumber yang dipindahkan atau luring",
+          "paragraphs": [
+            "Sumber yang sedang luring — drive dicabut, folder diubah namanya, atau dipindahkan keluar dari LightTable — menampilkan Temukan… alih-alih Pindai ulang. Memilihnya dan memilih lokasi baru folder memeriksa sampel foto milik katalog di sana berdasarkan isi, bukan hanya nama, sebelum memindahkan sumber; edit, peringkat, dan koleksi tetap terikat pada baris yang sama. Fitur ini menolak folder yang file-file di dalamnya tidak cocok.",
+            "Folder ••• → Temukan foto yang hilang… mencari di satu folder yang dipilih untuk file yang cocok dengan salah satu foto katalog yang saat ini hilang berdasarkan isi, di mana pun file itu berada, lalu menautkan ulang kecocokan tersebut. Fitur ini melaporkan berapa banyak yang berhasil ditautkan ulang dan berapa banyak yang tidak dapat ditemukan di sana.",
+            "Tampilkan hanya foto yang hilang, di bawah daftar sumber, memfilter pustaka menjadi foto yang saat ini tidak dapat ditemukan oleh katalog, sehingga Anda dapat meninjau atau mengekspor daftar tersebut sebelum mencari file aslinya."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Pustaka"
     },
     {
       "id": "survey-photos",
-      "title": "Bandingkan beberapa foto di Survey",
+      "title": "Bandingkan beberapa foto di Survey, atau dua foto berdampingan",
       "category": "Library",
       "summary": "Tinjau satu grup bersama, tandai frame aktif, dan persempit kumpulan kandidat.",
       "keywords": [
@@ -463,7 +472,10 @@
         "burst",
         "berdampingan",
         "pilihan terbaik",
-        "buat pilihan"
+        "buat pilihan",
+        "bandingkan a/b",
+        "bandingkan dua foto",
+        "bandingkan berdampingan"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "Saat Survey dibuka dari Seleksi terbantu, bandingkan grup yang disarankan dan beri bendera pada foto satu per satu. Buat pilihan tersedia dalam Survey biasa: ini memilih foto survei aktif dan menolak foto lain yang masih ada di survei. Ini mengubah benderanya. Metadata RAW dan JPEG tertaut dapat memperluas perubahan bendera tersebut ke pendamping.",
             "Untuk menilai edit terhadap originalnya, gunakan perbandingan sebelum/sesudah di Detail; Survey digunakan untuk memilih di antara bingkai yang berbeda."
+          ]
+        },
+        {
+          "title": "Bandingkan dua foto berdampingan",
+          "paragraphs": [
+            "Bandingkan dua foto membuka tampilan Survey yang sama, dibatasi tepat pada dua bingkai foto, berdampingan, untuk penilaian A/B antara kandidat, bukan sebelum dan sesudah dari sebuah edit.",
+            "Dengan dua foto dipilih, pilih Bandingkan dua foto, tekan Shift+N, atau gunakan Tampilan → Bandingkan Dua Foto. Dengan kurang dari dua foto dipilih, LightTable memasangkan foto saat ini dengan tetangganya di tampilan aktif.",
+            "Tukar membalik foto mana yang berada di sisi mana. Toolbar penandaan dan pintasan bendera, rating, dan label berlaku untuk sel aktif, sama seperti di Survey penuh."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Kelompokkan foto ke dalam koleksi",
       "category": "Library",
-      "summary": "Buat grup bernama tanpa memindahkan file asli.",
+      "summary": "Buat grup koleksi bertingkat, susun ulang, dan bangun set cepat sementara dengan Koleksi Cepat.",
       "keywords": [
         "koleksi",
         "album",
         "atur",
         "grup",
         "terpilih",
-        "hapus koleksi"
+        "hapus koleksi",
+        "koleksi bertingkat",
+        "set koleksi",
+        "koleksi cepat",
+        "ubah nama koleksi",
+        "susun ulang"
       ],
       "sections": [
         {
           "title": "Buat dan tambahkan foto",
           "paragraphs": [
-            "Koleksi biasa menyimpan set foto yang dipilih. Ini terpisah dari susunan folder di disk."
+            "Sebuah koleksi biasa menyimpan set foto yang dipilih. Koleksi ini terpisah dari susunan folder di disk. Koleksi hanya bekerja dengan katalog; mode folder mempertahankan daftar datar tanpa hierarki yang selalu dimilikinya."
           ],
           "steps": [
             "Pilih foto yang ingin Anda grupkan.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "Buat bertingkat, ubah nama, dan susun ulang",
+          "paragraphs": [
+            "Koleksi dapat menampung koleksi lain. Tanda + pada baris koleksi membuat koleksi baru di dalamnya; sebuah segitiga muncul setelah koleksi memiliki anak dan beralih untuk menampilkan atau menyembunyikannya. Ubah Nama dengan ikon pensil. Panah atas dan bawah memindahkan koleksi dalam saudara-saudaranya saat ini; panah kiri pada koleksi bersarang memindahkannya kembali ke tingkat teratas. Urutan disimpan dan akan terbuka lagi dengan susunan yang sama pada berikutnya."
+          ]
+        },
+        {
           "title": "Hapus koleksi",
           "paragraphs": [
-            "Menu ••• di sebelah koleksi menghapus koleksi. Ini menghapus pengelompokan, bukan memindahkan file asli ke Tempat Sampah. Cari dan filter dapat mempersempit foto yang ditampilkan di dalam koleksi."
+            "Simbol × di sebelah koleksi menghapus koleksi tersebut beserta semua yang bersarang di dalamnya. Ini menghapus pengelompokan, bukan memindahkan file asli ke Sampah. Pencarian dan filter dapat semakin mempersempit foto yang ditampilkan di dalam koleksi."
+          ]
+        },
+        {
+          "title": "Koleksi Cepat",
+          "paragraphs": [
+            "Koleksi Cepat adalah satu koleksi persisten untuk membangun set dengan cepat saat seleksi, tanpa memberi nama apa pun terlebih dahulu. Tekan Cmd+B (huruf B sendiri sudah untuk sebelum/sesudah) saat foto dipilih untuk menambahkannya, atau tekan lagi pada seleksi yang sama untuk menghapusnya. Simbol × pada barisnya mengosongkannya sepenuhnya. Selain itu, perilakunya sama seperti koleksi biasa: tambahkan foto secara manual, atau buka untuk meninjau dan menghapus foto satu per satu."
           ]
         },
         {
           "title": "Folder dan koleksi",
           "paragraphs": [
             "Folder mewakili hierarki disk fisik tempat file berada. Koleksi adalah grup fleksibel dan ringan di dalam LightTable yang dapat mengumpulkan foto dari beberapa folder tanpa memindahkan atau menggandakan file apa pun di disk.",
-            "Saat mengimpor katalog atau menambahkan folder sumber, mengaktifkan Buat koleksi untuk setiap folder tingkat teratas secara otomatis membuat koleksi yang cocok untuk setiap folder tingkat teratas sehingga struktur yang sudah ada langsung dapat diakses di Koleksi."
+            "Saat mengimpor katalog atau menambahkan folder sumber, mengaktifkan Buat koleksi untuk setiap folder tingkat teratas secara otomatis membuat koleksi yang cocok untuk setiap folder tingkat teratas sehingga struktur Anda yang ada langsung dapat diakses di Koleksi. Mengimpor katalog Lightroom Classic memetakan set koleksinya ke struktur bertingkat yang sama."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Mulai dengan Cahaya",
           "paragraphs": [
-            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal: naikkan Whites untuk mencerahkan nada paling terang, naikkan Blacks untuk mengangkat nada paling gelap, dan turunkan salah satunya untuk menarik kembali ujung tersebut. Contrast mengubah pemisahan di antaranya."
+            "Buka Edit dan perluas Light. Exposure mengubah kecerahan keseluruhan; Highlights dan Shadows memungkinkan Anda menargetkan area terang dan gelap. Whites dan Blacks menyesuaikan ujung rentang tonal: naikkan Whites untuk mencerahkan nada paling terang, naikkan Blacks untuk mengangkat nada paling gelap, dan turunkan salah satunya untuk menarik kembali ujung tersebut. Contrast mengubah pemisahan di antaranya.",
+            "Kontrol Cahaya ini bekerja pada cahaya di belakang gambar yang ditampilkan, bukan pada piksel yang terkliping. Nada yang didorong Eksposur melewati putih tetap tersedia untuk Sorotan dan Putih agar dapat dipulihkan, dan nada paling terang meredup secara halus alih-alih terkliping."
           ],
           "steps": [
             "Atur Eksposur untuk subjek utama.",
@@ -1657,10 +1695,12 @@
             "Coba level Otomatis untuk horizon yang miring, lalu perhalus Luruskan jika perlu.",
             "Gunakan Putar kiri, Putar kanan, atau tombol balik untuk perubahan orientasi.",
             "Buka Perspective dan coba Auto upright, atau sesuaikan Vertical, Horizontal, dan Scale secara manual.",
+            "Jika Tegak otomatis tidak dapat menemukan cukup garis, atau memilih garis yang salah, klik Terpandu, gambar 2 sampai 4 garis di sepanjang tepi yang seharusnya vertikal atau horizontal, lalu klik Terapkan panduan.",
             "Periksa tepi dan framing akhir, lalu klik Selesai."
           ],
           "tips": [
             "Level otomatis menggunakan garis yang dapat ditemukannya; periksa hasilnya, jangan langsung menganggap sudut yang terdeteksi sesuai untuk foto.",
+            "Dalam mode Terpandu, pilih Garis vertikal atau Garis horizontal sebelum setiap seret agar garis diberi tag dengan benar; Urungkan garis menghapus yang terakhir dan Bersihkan memulai ulang.",
             "Atur Ulang Pangkas mengatur ulang pangkas, rotasi, balik, dan perspektif sekaligus."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Add, Subtract, dan Intersect menempatkan Anda dalam mode penyempurnaan lukisan. Untuk masker Linear atau Radial, pilih Edit Shape untuk kembali memanipulasi bentuknya.",
             "Enable sementara mematikan atau menghidupkan efek masker. Invert membalik seleksinya.",
-            "Penyunting memungkinkan hingga enam belas masker lokal. Hapus Masker menghapus masker terpilih; Bersihkan Semua menghapus masker foto dan tidak tersedia jika tidak ada.",
+            "Penyunting memungkinkan hingga enam belas masker lokal. Duplikat Masker menyalin masker yang dipilih, termasuk bentuk, goresan, dan penyesuaiannya, lalu menyisipkan salinannya tepat setelahnya; Hapus Masker menghapus masker yang dipilih; Bersihkan Semua menghapus masker foto dan tidak tersedia ketika tidak ada masker.",
             "Pin masker dan garis luar kuas tetap tajam dan memiliki ketebalan yang sama saat Anda melakukan zoom. Garis luar bertambah sesuai area yang dicakupnya di foto."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Mengubah bentuk gradien linear",
           "paragraphs": [
             "Dalam Edit Bentuk, seret salah satu titik untuk menyesuaikan ujung gradien tersebut. Seret garis penghubung untuk memindahkan seluruh gradien sambil mempertahankan sudut dan lebar transisinya. Seret di bagian lain foto untuk menggambar ulang.",
-            "Menyeret kedua titik hingga bertemu membuat gradien tidak memiliki arah, sehingga tidak memilih apa pun sampai Anda memisahkannya lagi. Gradien yang sangat pendek adalah tepi keras yang sah dan diterapkan sama di pratinjau maupun di berkas hasil ekspor."
+            "Menyeret kedua titik hingga bertemu membuat gradien tidak memiliki arah, sehingga tidak memilih apa pun sampai Anda memisahkannya lagi. Gradien yang sangat pendek adalah tepi keras yang sah dan diterapkan sama di pratinjau maupun di berkas hasil ekspor.",
+            "Kehalusan Tepi memperlebar atau mempersempit pita transisi, berpusat pada garis di antara dua titik. Turunkan untuk tepi yang lebih keras, naikkan untuk perpaduan yang lebih lembut dan lebih lebar."
           ],
           "tips": [
             "Pilih masker Linear yang sudah ada untuk menyesuaikannya lagi. Jika Anda sebelumnya melukis dengan Tambahkan, Kurangi, atau Irisan, pilih Edit Bentuk terlebih dahulu. Tekan H jika titik-titiknya tersembunyi."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Hanya satu merge yang dapat berjalan pada satu waktu. Nama file yang sudah ada dipertahankan; merge baru dengan nama sama akan mendapat akhiran bernomor.",
-            "Merge biasanya memproses setiap input hingga 6.000 piksel pada sisi panjangnya. Hasil gabungan karena itu mungkin memiliki detail yang lebih sedikit daripada rangkaian sumber resolusi penuh.",
+            "Input Gabung default ke resolusi penuh. Jika urutan akan membutuhkan lebih banyak memori daripada yang dapat disediakan mesin, LightTable secara otomatis mengurangi setiap input ke sisi panjang yang lebih kecil dan menampilkan ukuran efektif sebelum Anda mulai; batas tetap juga dapat ditetapkan dengan variabel lingkungan LIGHTTABLE_MERGE_MAX_EDGE.",
             "Jika merge melaporkan error, baca pesan spesifiknya dan perbaiki pilihan input sebelum mencoba lagi."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Buat pilihan cerdas",
           "paragraphs": [
-            "Masker menawarkan seleksi Subjek, Langit, Objek, Depth, dan Orang. Ini berjalan secara lokal; metode yang tersedia bergantung pada jenis seleksi dan platform.",
-            "Pilihan Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan pilihan subjek Vision mempertahankan transisi lembut. Batas halus tetap perlu diperiksa dan disempurnakan secara manual.",
+            "Masker menawarkan pilihan Subjek, Langit, Objek, Kedalaman, dan Orang. Fitur ini berjalan secara lokal di setiap platform; metode dan ketepatan yang tersedia bergantung pada jenis seleksi dan platform.",
+            "Seleksi Subjek, Langit, dan Objek mempertahankan hingga 1.024 piksel di sepanjang sisi terpanjangnya. Tepi disempurnakan terhadap warna gambar, dan seleksi subjek Vision mempertahankan transisi halus. Di Windows dan Linux, Subjek menggunakan model lokal bawaan yang sama seperti Orang saat menemukan seseorang di foto, dan jika tidak maka kembali ke perkiraan berbasis gambar. Batas halus tetap perlu diperiksa dan disempurnakan dengan sapuan.",
             "Pemilihan diambil dari foto tempat pemilihan itu dimulai. Berpindah ke foto lain sebelum selesai akan membatalkannya, jadi tetaplah pada foto tersebut sampai masker muncul. Jika pemilihan tidak dapat diselesaikan, panel masker melaporkannya dan tidak ada yang ditambahkan."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Pilih orang atau area wajah",
           "paragraphs": [
             "People menawarkan Orang dan Rambut di setiap platform. Kulit wajah, Mata, Alis, Bibir, Gigi, dan Haluskan kulit memerlukan helper Vision di macOS 14 atau lebih baru. Kulit wajah diperkirakan, dan tidak ada identitas yang disimpulkan.",
-            "Rambut menggunakan model bawaan yang berjalan secara lokal dan memilih rambut di luar wajah, termasuk rambut sebahu. Periksa helai halus, highlight terang, wig, dan orang kecil di latar belakang; ini masih bisa terlewat. Build lama atau source tanpa model menggunakan perkiraan Vision sebelumnya jika tersedia. Masker tersimpan yang sudah ada mempertahankan pilihannya."
+            "Rambut menggunakan model bawaan yang berjalan secara lokal dan memilih rambut di luar wajah, termasuk rambut sebahu. Periksa helai halus, highlight terang, wig, dan orang kecil di latar belakang; ini masih bisa terlewat. Build lama atau source tanpa model menggunakan perkiraan Vision sebelumnya jika tersedia. Masker tersimpan yang sudah ada mempertahankan pilihannya.",
+            "Orang menggunakan model lokal bawaan yang sama di Windows dan Linux (dan di Mac saat helper Vision tidak tersedia) untuk menelusuri garis luar seseorang secara langsung, bukan perkiraan berbasis gambar. Jika tidak menemukan orang, Orang kembali ke perkiraan tersebut alih-alih membiarkan seleksi kosong."
           ],
           "steps": [
             "Pilih Orang, lalu bagian yang ingin Anda sesuaikan.",
@@ -2311,7 +2353,7 @@
             "Periksa pratinjau yang selesai pada 1:1."
           ],
           "tips": [
-            "Kurangi noise terlatih memerlukan helper inferensi macOS dan model lokal yang kompatibel. Fitur ini tidak tersedia di Linux dan Windows. Pengurangan noise dan penajaman biasa tetap tersedia. Build pengembangan mungkin tidak memiliki model; baca pesan ketersediaan sebelum memulai."
+            "Kurangi noise terlatih berjalan melalui Core ML di macOS dan melalui onnxruntime di Windows dan Linux, menggunakan model yang telah dikonversi yang sama. Pengurangan noise dan penajaman biasa tetap tersedia di semua tempat. Build pengembangan mungkin tidak memiliki model yang dikonversi atau runtime; baca pesan ketersediaan sebelum memulai."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "Untuk Kustom, sesuaikan Temperature dan tint Capture."
           ],
           "tips": [
-            "File JPEG, HEIF, TIFF, atau file terproses lainnya sudah membawa kurva tone, jadi LightTable memperluasnya kembali ke cahaya adegan di sekitar abu-abu tengah sebelum simulasi film: sorotan mendapatkan kembali rentangnya dan bayangan turun ke tempat adegan menempatkannya, sementara eksposur di abu-abu tengah tidak berubah. File RAW sudah berupa cahaya adegan dan tidak diperluas."
+            "Sebuah file JPEG, HEIF, TIFF, atau file terproses lain sudah membawa kurva nada. Sebelum pemrosesan film, LightTable memperluas rentang kecerahannya sambil mempertahankan proporsi merah, hijau, dan biru, sehingga persiapan ini tidak melebih-lebihkan cast warna yang sudah ada. Metering adegan otomatis mempertahankan referensi eksposur yang sama. Ini mendekati kontras adegan; ini tidak dapat memulihkan detail yang sudah hilang di foto terproses. File RAW sudah berupa cahaya adegan dan tidak diperluas."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Format dan preset",
           "paragraphs": [
-            "Dialog ekspor menawarkan JPEG, PNG, dan TIFF 16-bit. Di macOS juga tersedia HEIF 8-bit; HEIF disembunyikan di Linux dan Windows. Resep HEIF yang disimpan tidak dapat diterapkan di sana, jadi pilih format lain. Penggeser kualitas berlaku untuk JPEG dan HEIF.",
+            "Dialog ekspor menawarkan JPEG, PNG, dan TIFF. TIFF default ke 16-bit; pilih kedalaman TIFF 8-bit di Lanjutan untuk file arsip yang lebih kecil. Di macOS dialog ini juga menawarkan HEIF 8-bit; HEIF disembunyikan di Linux dan Windows. Resep HEIF yang disimpan tidak dapat diterapkan di sana, jadi pilih format lain. PNG dan HEIF selalu dienkode pada 8-bit. Penggeser kualitas berlaku untuk JPEG dan HEIF.",
             "JPG (Large) menggunakan JPEG ukuran penuh pada kualitas 92 dalam sRGB. JPG (Small) menggunakan sisi panjang 2048 piksel pada kualitas 90 dalam sRGB. TIFF 16-bit menggunakan ukuran penuh dan ProPhoto RGB. Mengubah pengaturan ini memilih Kustom."
           ],
           "steps": [
             "Buka Ekspor dan pilih preset di bagian atas.",
             "Atur Dimensi ke ukuran Penuh atau batas sisi terpanjang.",
             "Periksa Pratinjau keluaran: ukuran yang diekspor mencerminkan rotasi dan pangkasan, dan batas sisi panjang akan mengecilkan gambar yang lebih besar tanpa memperbesar yang lebih kecil."
+          ]
+        },
+        {
+          "title": "Ukuran kustom, resolusi, dan penajaman keluaran",
+          "paragraphs": [
+            "Ukuran kustom di Lanjutan menggantikan preset Dimensi dengan aturan pengubahan ukuran apa pun: sisi panjang, sisi pendek, muat dalam lebar dan tinggi, megapiksel, atau persentase dari ukuran asli. Perbesar foto yang lebih kecil agar pas memungkinkan aturan tersebut memperbesar sumber yang lebih kecil; jika tidak, foto yang sudah sama dengan atau di bawah ukuran yang diminta akan diekspor tanpa perubahan. Resolusi (ppi) hanya menulis tag metadata resolusi yang dibaca oleh perangkat lunak cetak dan tata letak halaman; itu tidak pernah mengubah dimensi piksel.",
+            "Tajamkan untuk menerapkan penajaman keluaran setelah pengubahan ukuran, disesuaikan dengan cara file akan dilihat: Layar untuk tampilan di layar, atau Kertas matte/Kertas mengilap untuk pencetakan. Jumlah penajaman (Rendah/Standar/Tinggi) mengatur kekuatannya. Penajaman cetak menskalakan radiusnya dengan Resolusi (ppi), sehingga halo penajaman fisik yang sama tetap ada pada ukuran cetak berapa pun.",
+            "Batasi ukuran file JPEG hingga (KB) menurunkan kualitas JPEG secara otomatis sampai file muat dalam batas atau batas bawah kualitas tercapai; sebuah peringatan menjelaskan ketika batas tidak dapat dipenuhi."
+          ],
+          "steps": [
+            "Buka Ekspor dan perluas Lanjutan.",
+            "Pilih Ukuran kustom dan masukkan nilai aturan pengubahan ukuran, atau biarkan pada Gunakan Dimensi di atas untuk mempertahankan preset sederhana.",
+            "Pilih Tajamkan untuk dan Jumlah penajaman jika ekspor memerlukan penajaman keluaran.",
+            "Untuk JPEG dengan batas ukuran yang ketat, atur Batasi ukuran file JPEG hingga (KB)."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Batas ruang warna",
           "paragraphs": [
             "Setiap ekspor menyematkan profil ICC yang dipilih. Pilih sRGB, Display P3, atau ProPhoto RGB di Colour space.",
-            "Ekspor Develop gamut lebar mempertahankan warna sumber ketika color dan local adjustment dimatikan. Perenderan Film dan ekspor Develop yang disesuaikan dibatasi pada warna sRGB. Mengodekan salah satu hasil tersebut ke P3 atau ProPhoto tidak akan memulihkan warna yang sudah dibatasi oleh perenderan."
+            "Ekspor Pengembangan gamut lebar mempertahankan warna sumber saat hanya penyesuaian Cahaya (Eksposur, Sorotan, Bayangan, Putih, Hitam, dan Kontras) yang diterapkan; kontrol tersebut bekerja pada cahaya, bukan pada warna sRGB. Rendering Film dan ekspor Pengembangan dengan penyesuaian warna atau detail, masker, retouching, atau tanda air terbatas pada warna sRGB. Mengenkode salah satu hasil ini dalam P3 atau ProPhoto tidak akan memulihkan warna yang sudah dibatasi oleh rendering."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Default untuk foto tanpa edit",
           "paragraphs": [
-            "Develop Defaults hanya berlaku untuk foto yang belum memiliki pengeditan tersimpan. Itu dapat memulai Film aktif, memilih alur kerja dan profil Develop netral, dan menerapkan preset bawaan.",
+            "Default Pengembangan hanya diterapkan pada foto yang belum memiliki edit tersimpan. Fitur ini dapat memulai Film dalam keadaan aktif, memilih alur kerja dan profil Pengembangan netral, memilih profil Kamera yang menjadi titik awal foto RAW yang belum pernah diedit, dan menerapkan preset default.",
+            "Profil kamera default ke LightTable Standar, tampilan bawaan. Pilih Bawaan untuk memulai foto RAW baru dari kurva Standar analitik sebagai gantinya. Foto yang sudah menyimpan edit tetap menggunakan apa pun yang telah disimpannya.",
             "Terapkan profil lensa yang cocok secara otomatis, aktif secara default, menyalakan profil lensa untuk foto yang kamera dan lensanya cocok persis dengan satu profil dan pengaturan lensanya belum pernah disimpan. Matikan untuk membuka setiap foto dengan profil nonaktif."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Untuk mengatur default RAW khusus kamera, buka foto RAW dan sesuaikan pengaturan RAW-nya.",
             "Pilih pencocokan berdasarkan model kamera, nomor serial, atau kamera dan ISO, lalu klik Use current RAW settings.",
             "Gunakan Atur Ulang di area Kamera Saat Ini untuk menghapus default kamera tersebut.",
-            "Untuk mengembangkan foto RAW dengan profil kamera, biarkan Folder profil kamera kosong agar menggunakan profil yang dipasang Adobe Camera Raw atau Lightroom di komputer ini, atau masukkan folder lain berisi file .dcp."
+            "Untuk menggunakan profil DCP Anda sendiri, biarkan Folder profil kamera kosong agar menggunakan folder CameraProfiles di direktori data LightTable, atau di macOS dan Windows gunakan profil yang dipasang Adobe Camera Raw atau Lightroom, atau masukkan folder lain yang berisi file .dcp."
           ]
         },
         {
           "title": "Profil kamera",
           "paragraphs": [
-            "Bagian Profil pada foto RAW menyediakan menu Profil kamera dengan file .dcp di folder yang menyebutkan nama kameranya, seperti Adobe Standard atau tampilan yang meniru kamera. LightTable tidak pernah menyertakan profil ini; profil tersebut milik instalasi Adobe Anda sendiri.",
-            "Profil hanya diterapkan pada pengembangan dengan Film mati, dan secara kira-kira: tabel hue dan saturasinya serta, jika ada, kurva tone-nya, yang kemudian menggantikan kurva pengembangan Standar. Pencampuran dua iluminan dan matriks maju tidak diterapkan, sehingga sebuah profil bisa tampak sedikit lebih hangat atau lebih dingin daripada file yang sama di Lightroom. Rendering film selalu dimulai dari data adegan netral."
+            "Bagian Profil dari foto RAW menawarkan menu profil Kamera dengan LightTable Standar dan file .dcp di folder profil kamera Anda yang menamai kameranya, baik di nama file maupun di tag kamera dan nama profilnya sendiri, seperti Adobe Standard atau tampilan yang cocok dengan kamera. Hanya LightTable Standar yang disertakan bersama LightTable; profil lain adalah milik instalasi Anda sendiri.",
+            "LightTable Standar adalah tampilan generik termodelkan: peta hue dan saturasi yang moderat serta kurva nada yang menempatkan abu-abu tengah dan meredupkan highlight seperti yang dilakukan rendition yang cocok dengan kamera. Ini tidak diukur dari kamera apa pun dan tidak membawa matriks warna, jadi warna kamera milik dekoder tetap memegang kendali.",
+            "Profil DCP dengan matriks warna diterapkan mengikuti spesifikasi DNG. Pada dekode RAW, matriks warna dan forward-nya, yang dicampur untuk white balance saat pengambilan, menggantikan matriks bawaan dekoder, sehingga Film dan Pengembangan sama-sama dimulai dari warna kamera milik profil. Dalam Pengembangan dengan Film mati, tabel hue dan saturasi bercampur pada white balance yang sama, lalu offset eksposur dasar, tabel tampilan, dan kurva nada mengikuti; kurva nada profil menggantikan kurva pengembangan Standar. Linux tidak memiliki lokasi profil vendor, jadi arahkan Folder profil kamera ke file .dcp Anda sendiri di sana.",
+            "Yang masih bersifat perkiraan: demosaic dan rekonstruksi highlight berasal dari LibRaw, bukan dari konverter referensi, dan white balance Otomatis memperkirakan suhunya dari balance saat pengambilan, sehingga sebuah profil masih dapat merender sedikit berbeda dari file yang sama di Lightroom."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }

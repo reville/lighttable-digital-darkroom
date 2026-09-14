@@ -202,7 +202,7 @@
             "Koleksiyonlar burada da koleksiyondur; bulut uygulamasının albümleri yalnızca bir Lightroom Classic kataloğu üzerinden gelir.",
             "Seç ve Reddet bayrakları aynı şekilde çalışır ve alt şerit bunları seçili fotoğraflar için gösterir.",
             "Geliştir burada Düzenle olarak adlandırılır. Yeni ve içe aktarılan fotoğraflar için Film varsayılan olarak kapalıdır; düzenlemenin üzerine bir film işlemesi istediğinizde açın.",
-            "Düzenle’deki Kamera profili, Camera Raw veya Lightroom’un bu bilgisayara yüklediği Adobe DCP profillerini ya da Ayarlar’da seçilen kamera profili klasörünü listeler. Profiller yaklaşık olarak ve yalnızca Film kapalı geliştirmeye uygulanır."
+            "Düzenle bölümündeki Kamera profili, birlikte gelen LightTable Standard görünümünü ve kamera profili klasörünüzdeki DCP profillerini sunar; macOS ve Windows'ta bu klasör varsayılan olarak Camera Raw veya Lightroom'un yüklediği profilleri içerir. Bir profilin renk matrisleri, DNG belirtimine göre RAW çözümlemesine uygulanır; görünümü ve ton eğrisi, Film kapalı geliştirmeye uygulanır."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Var olan bir izlemi düzenlemek için onu İzlenen klasörler içinde seçin. Kaydedilmiş her izlem bu listede görünür. Başka bir klasör için Yeni izlenen klasör seçin veya seçili klasörü izlemeyi durdurmak için İzlemeyi sil’i kullanın. Bu işlem fotoğraflarını silmez.",
             "İzleme kısayolu ilk etkin izlemi açar. Kaydetme hataları, ayarları düzeltebilmeniz için iletişim kutusunda kalır."
           ]
+        },
+        {
+          "title": "Taşınmış veya çevrimdışı bir kaynağı yeniden bağlayın",
+          "paragraphs": [
+            "Çevrimdışı kalan bir kaynak — fişi çekilmiş bir sürücü, LightTable dışında yeniden adlandırılmış ya da taşınmış bir klasör — Yeniden Tara yerine Bul… olarak görünür. Bunu seçip klasörün yeni konumunu belirlemek, kaynağı taşımadan önce katalogdaki fotoğrafların bir örneğini orada içerik bakımından, yalnızca ada göre değil, denetler; düzenlemeler, derecelendirmeler ve koleksiyonlar aynı satırlara bağlı kalır. Dosyaları eşleşmeyen bir klasörü reddeder.",
+            "Klasörler ••• → Eksik fotoğrafları bul… komutu, katalogun şu anda eksik olan fotoğraflarından herhangi biriyle içerik bakımından eşleşen dosyalar için seçilmiş tek bir klasörü, nerede olduklarına bakmadan arar ve eşleşenleri yeniden bağlar. Kaç tanesini yeniden bağladığını ve orada kaç tanesini bulamadığını bildirir.",
+            "Kaynak listesinin altında yalnızca eksik fotoğrafları göster, katalogun şu anda bulamadığı fotoğraflara göre kitaplığı filtreler; böylece orijinalleri aramadan önce listeyi gözden geçirebilir veya dışa aktarabilirsiniz."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Kütüphane"
     },
     {
       "id": "survey-photos",
-      "title": "Survey'de birkaç fotoğrafı karşılaştır",
+      "title": "Survey'de birkaç fotoğrafı karşılaştırın ya da ikisini yan yana",
       "category": "Library",
       "summary": "Bir grubu birlikte inceleyin, etkin çerçeveyi işaretleyin ve bir aday kümesini daraltın.",
       "keywords": [
@@ -463,7 +472,10 @@
         "seri çekim",
         "yan yana",
         "korunan",
-        "seçim yap"
+        "seçim yap",
+        "a/b karşılaştırması",
+        "iki fotoğrafı karşılaştır",
+        "yan yana karşılaştırma"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "İncele Yardımlı ayıklama'dan açıldığında, önerilen grubu karşılaştırın ve fotoğrafları tek tek bayraklayın. Normal bir İncele'de Seçim yap kullanılabilir: etkin inceleme fotoğrafını seçer ve incelemedeki diğer fotoğrafları reddeder. Bu, bayraklarını değiştirir. Bağlı RAW ve JPEG üstverisi bu bayrak değişikliklerini eşlikçilere yayabilir.",
             "Bir düzenlemeyi özgünüyle değerlendirmek için Ayrıntı'da önce/sonra Karşılaştırma'yı kullanın; İncele, farklı kareler arasında seçim yapmak içindir."
+          ]
+        },
+        {
+          "title": "İki fotoğrafı yan yana karşılaştır",
+          "paragraphs": [
+            "İki fotoğrafı karşılaştır, editin önce/sonra görünümü yerine adaylar arasında A/B değerlendirmesi için tam olarak iki çerçeveyle sınırlı, yan yana aynı İncele görünümünü açar.",
+            "İki fotoğraf seçiliyken, İki fotoğrafı karşılaştır'ı seçin, Shift+N tuşlarına basın veya Görünüm → İki Fotoğrafı Karşılaştır'ı kullanın. İkiden az fotoğraf seçiliyse, LightTable geçerli fotoğrafı etkin görünümdeki komşusuyla eşleştirir.",
+            "Değiştir, fotoğrafların hangi tarafta yer alacağını değiştirir. İşaretleme araç çubuğu ile bayrak, derecelendirme ve etiket kısayolları, tam bir Survey'dekiyle aynı şekilde etkin hücreye uygulanır."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Fotoğrafları koleksiyonlara gruplandır",
       "category": "Library",
-      "summary": "Özgün dosyaları taşımadan adlandırılmış gruplar oluşturun.",
+      "summary": "İç içe koleksiyon grupları oluşturun, bunları yeniden sıralayın ve Hızlı Koleksiyon ile hızlı, geçici bir küme oluşturun.",
       "keywords": [
         "koleksiyon",
         "albüm",
         "düzenle",
         "grup",
         "seçildi",
-        "koleksiyonu sil"
+        "koleksiyonu sil",
+        "iç içe koleksiyon",
+        "koleksiyon kümesi",
+        "hızlı koleksiyon",
+        "koleksiyonu yeniden adlandır",
+        "yeniden sırala"
       ],
       "sections": [
         {
           "title": "Fotoğraflar oluştur ve ekle",
           "paragraphs": [
-            "Normal bir koleksiyon, seçilmiş bir fotoğraf kümesini saklar. Diskteki klasör düzeninden ayrıdır."
+            "Normal bir koleksiyon seçilmiş bir fotoğraf kümesini saklar. Bu, diskteki klasör düzeninden ayrı tutulur. Koleksiyonlar yalnızca bir katalogla çalışır; klasör modu, her zaman sahip olduğu düz, iç içe olmayan listeyi korur."
           ],
           "steps": [
             "Gruplamak istediğiniz fotoğrafları seçin.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "İç içe yerleştir, yeniden adlandır ve yeniden sırala",
+          "paragraphs": [
+            "Koleksiyonlar başka koleksiyonlar içerebilir. Bir koleksiyon satırındaki +, onun içine yeni bir koleksiyon oluşturur; alt öğeleri olduğunda bir üçgen görünür ve bunların gösterilip gösterilmeyeceğini değiştirir. Kalem simgesiyle yeniden adlandırın. Yukarı ve aşağı oklar, bir koleksiyonu mevcut kardeşleri içinde taşır; iç içe bir koleksiyondaki sol ok, onu yeniden en üst düzeye taşır. Sıra kaydedilir ve bir sonraki açılışta aynı şekilde açılır."
+          ]
+        },
+        {
           "title": "Bir koleksiyonu sil",
           "paragraphs": [
-            "Bir koleksiyonun yanındaki × işareti koleksiyonu siler. Bu, orijinal dosyaları Çöp Kutusuna taşımak yerine gruplamayı kaldırır. Arama ve filtreler, bir koleksiyon içinde gösterilen fotoğrafları daha da daraltabilir."
+            "Bir koleksiyonun yanındaki × işareti onu ve içindeki tüm iç içe öğeleri siler. Bu, özgün dosyaları Çöp Kutusu'na taşımak yerine grubu kaldırır. Arama ve filtreler, bir koleksiyon içinde gösterilen fotoğrafları ayrıca daraltabilir."
+          ]
+        },
+        {
+          "title": "Hızlı Koleksiyon",
+          "paragraphs": [
+            "Hızlı Koleksiyon, adlandırmadan hızlıca bir küme oluşturmak için, ayıklama sırasında kullanılan kalıcı bir koleksiyondur. Fotoğraflar seçiliyken onları eklemek için Cmd+B'ye basın (tek başına B zaten önce/sonra içindir) ya da aynı seçilimde onları kaldırmak için tekrar basın. Satırındaki ×, onu tamamen temizler. Bunun dışında diğer normal koleksiyonlar gibi davranır: fotoğrafları elle ekleyebilir veya açıp tek tek fotoğrafları gözden geçirip kaldırabilirsiniz."
           ]
         },
         {
           "title": "Klasörler ve koleksiyonlar",
           "paragraphs": [
             "Klasörler, dosyaların bulunduğu fiziksel disk hiyerarşisini temsil eder. Koleksiyonlar ise LightTable içindeki esnek, hafif gruplardır; diskteki hiçbir dosyayı taşımadan ya da çoğaltmadan birden çok klasörden fotoğrafları bir araya getirebilir.",
-            "Bir katalog içe aktarırken veya bir kaynak klasör eklerken, Her üst düzey klasör için koleksiyon oluştur seçeneğini etkinleştirmek, her üst düzey klasör için eşleşen koleksiyonları otomatik olarak oluşturur; böylece mevcut yapınız Koleksiyonlar içinde hemen erişilebilir olur."
+            "Bir katalog içe aktarırken veya bir kaynak klasör eklerken, her üst düzey klasör için Koleksiyon oluştur seçeneğini etkinleştirmek, her üst düzey klasör için eşleşen koleksiyonları otomatik olarak oluşturur; böylece mevcut yapınız Koleksiyonlar içinde hemen erişilebilir olur. Bir Lightroom Classic kataloğunu içe aktarmak, koleksiyon kümelerini bu aynı iç içe yapıya eşler."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Işık ile başla",
           "paragraphs": [
-            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar: en parlak tonları aydınlatmak için Beyazlar'ı yükseltin, en koyu tonları kaldırmak için Siyahlar'ı yükseltin ve o ucu geri çekmek için herhangi birini düşürün. Kontrast, bunların ayrımını değiştirir."
+            "Düzenle'yi açın ve Işık'ı genişletin. Pozlama genel parlaklığı değiştirir; Işıklar ve Gölgeler parlak ve karanlık bölgeleri hedeflemenizi sağlar. Beyazlar ve Siyahlar ton aralığının uçlarını ayarlar: en parlak tonları aydınlatmak için Beyazlar'ı yükseltin, en koyu tonları kaldırmak için Siyahlar'ı yükseltin ve o ucu geri çekmek için herhangi birini düşürün. Kontrast, bunların ayrımını değiştirir.",
+            "Bu Işık kontrolleri, kırpılmış pikseller üzerinde değil, gösterilen görüntünün arkasındaki ışık üzerinde çalışır. Pozlama'nın beyazın ötesine ittiği tonlar, Vurgular ve Beyazlar tarafından geri getirilebilmek için kullanılabilir kalır ve en parlak tonlar kırpılmak yerine yumuşakça düşer."
           ],
           "steps": [
             "Ana konu için Pozlama’yı ayarlayın.",
@@ -1657,10 +1695,12 @@
             "Eğimli bir ufuk için Otomatik seviye’yi deneyin, ardından gerekirse Düzelt’i ince ayarlayın.",
             "Yön değişiklikleri için sola döndür, sağa döndür veya çevir düğmelerini kullanın.",
             "Perspective’i genişletin ve Auto upright’ı deneyin ya da Vertical, Horizontal ve Scale’i elle ayarlayın.",
+            "Otomatik düzelt yeterince çizgi bulamazsa ya da yanlış olanları seçerse, Kılavuzlu'ya tıklayın, dikey veya yatay olması gereken kenarlar boyunca 2 ila 4 çizgi çizin, ardından Kılavuzları Uygula'ya tıklayın.",
             "Kenarları ve son kadrajı inceleyin, ardından Bitti’ye tıklayın."
           ],
           "tips": [
             "Otomatik seviye, bulabildiği çizgileri kullanır; algılanan açının fotoğrafa uygun olduğunu varsaymak yerine sonucu inceleyin.",
+            "Yönlendirmeli modda, çizginin doğru etiketlenmesi için her sürüklemeden önce Dikey çizgi veya Yatay çizgi seçin; Çizgiyi geri al sonuncuyu kaldırır ve Temizle yeniden başlatır.",
             "Kırp’nın Sıfırla’sı kırpma, döndürme, çevirme ve perspektifi birlikte sıfırlar."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Ekle, Çıkar ve Kesiştir sizi boyama iyileştirme modlarına sokar. Doğrusal veya Radyal bir maske için, şekli düzenlemek üzere Edit Shape’i seçin.",
             "Etkinleştir, bir maskenin etkisini geçici olarak kapatır ya da açar. Tersine Çevir, seçimini tersler.",
-            "Düzenleyici en fazla on altı yerel maskeye izin verir. Maskeyi Sil, seçili maskeyi kaldırır; Tümünü Temizle, fotoğrafın maskelerini kaldırır ve bunların hiçbiri yoksa kullanılamaz.",
+            "Düzenleyici en fazla on altı yerel maske kabul eder. Maskeyi Çoğalt, seçili maskeyi şekli, çizgileri ve ayarlamalarıyla birlikte kopyalar ve kopyayı hemen arkasına ekler; Maskeyi Sil, seçili maskeyi kaldırır; Tümünü Temizle, fotoğrafın maskelerini kaldırır ve hiç maske yoksa kullanılamaz.",
             "Maske sabitleme noktaları ve fırça konturları, yakınlaştırdıkça keskin ve aynı kalınlıkta kalır. Kontur, fotoğrafta kapladığı alanla birlikte büyür."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Doğrusal geçişi şekillendirme",
           "paragraphs": [
             "Şekli Düzenle modunda, geçişin ilgili ucunu ayarlamak için noktalardan birini sürükleyin. Açısını ve geçiş genişliğini koruyarak tüm geçişi taşımak için bağlantı çizgisini sürükleyin. Yeniden çizmek için fotoğrafın başka bir yerinde sürükleyin.",
-            "İki noktayı üst üste sürüklemek degradeyi yönsüz bırakır, bu yüzden onları yeniden ayırana kadar hiçbir şey seçmez. Çok kısa bir degrade geçerli bir sert kenardır ve önizlemede olduğu gibi dışa aktarılan dosyada da aynı şekilde uygulanır."
+            "İki noktayı üst üste sürüklemek degradeyi yönsüz bırakır, bu yüzden onları yeniden ayırana kadar hiçbir şey seçmez. Çok kısa bir degrade geçerli bir sert kenardır ve önizlemede olduğu gibi dışa aktarılan dosyada da aynı şekilde uygulanır.",
+            "Yumuşatma, iki nokta arasındaki çizginin merkezinde yer alan geçiş bandını genişletir veya daraltır. Daha sert bir kenar için azaltın, daha yumuşak ve geniş bir karışım için artırın."
           ],
           "tips": [
             "Mevcut bir Doğrusal maskeyi yeniden ayarlamak için seçin. Ekle, Çıkar veya Kesiştir ile boyama yaptıysanız önce Şekli Düzenle seçeneğini seçin. Noktalar gizliyse H tuşuna basın."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Aynı anda yalnızca bir birleştirme çalışabilir. Var olan bir dosya adı korunur; aynı ada sahip yeni bir birleştirme numaralı bir sonek alır.",
-            "Birleştir, normalde her girdi dosyasını uzun kenarda en fazla 6.000 piksele kadar işler. Bu nedenle birleşik sonuç, tam çözünürlüklü kaynak diziden daha az ayrıntıya sahip olabilir.",
+            "Birleştir girişleri varsayılan olarak tam çözünürlüktedir. Dizi, makinenin ayırabileceğinden daha fazla bellek gerektirirse, LightTable her girişi otomatik olarak daha küçük bir uzun kenara indirger ve başlamadan önce etkili boyutu gösterir; LIGHTTABLE_MERGE_MAX_EDGE ortam değişkeniyle sabit bir sınır da ayarlanabilir.",
             "Birleştirme hata bildirirse, özel mesajı okuyun ve yeniden denemeden önce giriş seçimini düzeltin."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Akıllı bir seçim oluştur",
           "paragraphs": [
-            "Maske, Konu, Gökyüzü, Nesne, Derinlik ve Kişiler seçimlerini sunar. Bunlar yerel olarak çalışır; kullanılabilir yöntemler seçim türüne ve platforma bağlıdır.",
-            "Konu, Gökyüzü ve Nesne seçimleri en uzun kenar boyunca 1.024 piksele kadar korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. İnce sınırlar yine de inceleme ve boyanmış ayrıntılandırma gerektirir.",
+            "Maske, Konu, Gökyüzü, Nesne, Derinlik ve Kişiler seçimleri sunar. Bunlar her platformda yerel olarak çalışır; kullanılabilir yöntemler ve hassasiyet seçim türüne ve platforma bağlıdır.",
+            "Konu, Gökyüzü ve Nesne seçimleri, en uzun kenarı boyunca en fazla 1.024 piksel korur. Kenarlar görüntü renklerine göre iyileştirilir ve Vision konu seçimleri yumuşak geçişleri korur. Windows ve Linux'ta, Konu seçimi fotoğrafta bir kişi bulduğunda Kişi ile aynı birlikte gelen yerel modeli kullanır; aksi halde görüntüye dayalı bir tahmine geri döner. İnce sınırlar yine de inceleme ve boyalı iyileştirme gerektirir.",
             "Seçim, başlatıldığı fotoğraftan alınır. Bitmeden başka bir fotoğrafa geçmek onu iptal eder, bu yüzden maske görünene kadar o fotoğrafta kalın. Seçim tamamlanamazsa maske paneli bunu bildirir ve hiçbir şey eklenmez."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Kişileri veya yüz bölgelerini seçin",
           "paragraphs": [
             "Kişiler, her platformda Kişi ve Saç sunar. Yüz cildi, Gözler, Kaşlar, Dudaklar, Dişler ve Cildi yumuşat, macOS 14 veya sonraki sürümlerde Vision yardımcı aracını gerektirir. Yüz cildi tahmin edilir ve kimlik çıkarımı yapılmaz.",
-            "Saç, yerel olarak çalışan ve yüzün ötesindeki saçı, omuz hizasındaki saçlar dahil, seçen gömülü bir model kullanır. İnce telleri, parlak vurguları, perukları ve arka plandaki küçük kişileri inceleyin; bunlar yine de kaçabilir. Modeli içermeyen eski veya kaynak derlemeler, kullanılabildiğinde önceki Vision tahminini kullanır. Mevcut kaydedilmiş maskeler seçimlerini korur."
+            "Saç, yerel olarak çalışan ve yüzün ötesindeki saçı, omuz hizasındaki saçlar dahil, seçen gömülü bir model kullanır. İnce telleri, parlak vurguları, perukları ve arka plandaki küçük kişileri inceleyin; bunlar yine de kaçabilir. Modeli içermeyen eski veya kaynak derlemeler, kullanılabildiğinde önceki Vision tahminini kullanır. Mevcut kaydedilmiş maskeler seçimlerini korur.",
+            "Kişi, Windows ve Linux'ta aynı birlikte gelen yerel modeli kullanır; Mac'te ise Vision yardımcısı kullanılamadığında, bir kişinin konturunu doğrudan izler, görüntüye dayalı bir tahmin yerine. Bir kişi bulamazsa, Kişi seçimi boş bırakmak yerine bu tahmine geri döner."
           ],
           "steps": [
             "Kişiler’i seçin, ardından ayarlamak istediğiniz bölümü seçin.",
@@ -2311,7 +2353,7 @@
             "Tamamlanan önizlemeyi 1:1’de inceleyin."
           ],
           "tips": [
-            "Öğrenilmiş gürültü azaltma, macOS çıkarım yardımcısını ve uyumlu bir yerel modeli gerektirir. Linux ve Windows'ta kullanılamaz. Olağan gürültü azaltma ve keskinleştirme kullanılabilir durumda kalır. Geliştirme sürümlerinde model eksik olabilir; başlamadan önce kullanılabilirlik mesajını okuyun."
+            "Öğrenilmiş gürültü azaltma, macOS'ta Core ML üzerinden ve Windows ile Linux'ta onnxruntime üzerinden, aynı dönüştürülmüş modeli kullanarak çalışır. Normal gürültü azaltma ve keskinleştirme her yerde kullanılabilir. Geliştirme sürümlerinde dönüştürülmüş model veya çalışma zamanı eksik olabilir; başlamadan önce kullanılabilirlik mesajını okuyun."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "Özel için, Sıcaklık ve Yakalama tonunu ayarlayın."
           ],
           "tips": [
-            "Bir JPEG, HEIF, TIFF veya başka bir işlenmiş dosya zaten bir ton eğrisi taşır; bu yüzden LightTable film uygulamadan önce onu orta gri etrafında sahne ışığına geri genişletir: parlak alanlar aralığını geri kazanır, gölgeler sahnedeki yerlerine iner ve orta gride pozlama değişmez. RAW dosyaları zaten sahne ışığıdır ve genişletilmez."
+            "JPEG, HEIF, TIFF ya da başka işlenmiş bir dosya zaten bir ton eğrisi taşır. Filmlemeden önce, LightTable kırmızı, yeşil ve mavi oranlarını korurken parlaklık aralığını genişletir; böylece bu hazırlık var olan bir renk tonunu abartmaz. Otomatik sahne ölçümü aynı pozlama referansını korur. Bu, sahne kontrastını yaklaşık olarak yansıtır; işlenmiş fotoğrafta zaten kaybedilmiş ayrıntıyı geri getiremez. RAW dosyaları zaten sahne ışığıdır ve genişletilmez."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Biçimler ve hazır ayarlar",
           "paragraphs": [
-            "Dışa aktarma iletişim kutusu JPEG, PNG ve 16-bit TIFF sunar. macOS'ta ayrıca 8-bit HEIF de sunar; HEIF Linux ve Windows'ta gizlidir. Kaydedilmiş bir HEIF iş akışı orada uygulanamaz, bu yüzden başka bir biçim seçin. Kalite kaydırıcısı JPEG ve HEIF için geçerlidir.",
+            "Dışa aktarma iletişim kutusu JPEG, PNG ve TIFF sunar. TIFF varsayılan olarak 16 bittir; daha küçük bir arşiv dosyası için Gelişmiş'te 8 bit TIFF derinliğini seçin. macOS'ta ayrıca 8 bit HEIF de sunar; HEIF Linux ve Windows'ta gizlidir. Kaydedilmiş bir HEIF iş akışı orada uygulanamaz, bu yüzden başka bir biçim seçin. PNG ve HEIF her zaman 8 bit olarak kodlanır. Kalite kaydırıcısı JPEG ve HEIF için geçerlidir.",
             "JPG (Büyük), kalite 92 ile sRGB içinde tam boyutlu JPEG kullanır. JPG (Küçük), kalite 90 ile sRGB içinde 2048 piksel uzun kenar kullanır. 16-bit TIFF tam boyutu ve ProPhoto RGB'yi kullanır. Bu ayarları değiştirmek Özel seçimini yapar."
           ],
           "steps": [
             "Dışa Aktar’ı açın ve üst kısımdan bir hazır ayar seçin.",
             "Boyutları Tam boyut veya uzun kenar sınırı olarak ayarlayın.",
             "Çıkış önizlemesini kontrol edin: dışa aktarılan boyut döndürme ve kırpma sonucunu yansıtır ve uzun kenar sınırı daha büyük görüntüleri küçültür, daha küçük olanları büyütmez."
+          ]
+        },
+        {
+          "title": "Özel boyut, çözünürlük ve çıkış keskinleştirme",
+          "paragraphs": [
+            "Gelişmiş'teki Özel boyut, Boyutlar önayarını herhangi bir yeniden boyutlandırma kuralıyla değiştirir: uzun kenar, kısa kenar, bir genişlik ve yükseklik içine sığdırma, megapiksel veya özgünün yüzdesi. Daha küçük fotoğrafları sığdırmak için büyüt, kuralın daha küçük bir kaynağı büyütmesine izin verir; aksi halde istenen boyutta ya da daha altında olan bir fotoğraf değişmeden dışa aktarılır. Çözünürlük (ppi) yalnızca yazdırma ve sayfa düzeni yazılımının okuduğu çözünürlük üstveri etiketini yazar; piksel boyutlarını asla değiştirmez.",
+            "Şunun için keskinleştir, yeniden boyutlandırmadan sonra, dosyanın nasıl görüntüleneceğine göre eşleştirilmiş çıkış keskinleştirme uygular: ekran üzerinde görüntüleme için Ekran ya da yazdırma için Mat kağıt/Parlak kağıt. Keskinleştirme miktarı (Düşük/Standart/Yüksek) gücünü belirler. Yazdırma keskinleştirmesi yarıçapını Çözünürlük (ppi) ile ölçekler, böylece aynı fiziksel keskinleştirme halesi her yazdırma boyutunda korunur.",
+            "JPEG dosya boyutunu (KB) ile sınırla, dosya sınıra sığana veya kalite tabanına ulaşılana kadar JPEG kalitesini otomatik olarak düşürür; sınırın karşılanamadığı durumlarda bir uyarı bunu açıklar."
+          ],
+          "steps": [
+            "Dışa Aktar’ı açın ve Gelişmiş’i genişletin.",
+            "Özel boyut'u seçin ve yeniden boyutlandırma kuralının değerini girin ya da basit hazır ayarı korumak için Yukarıdaki Boyutları Kullan'da bırakın.",
+            "Dışa aktarmada çıkış keskinleştirme gerekiyorsa İçin keskinleştir ve Keskinleştirme miktarı seçeneklerini belirleyin.",
+            "Sıkı bir boyut sınırı olan bir JPEG için, JPEG dosya boyutunu şu değere sınırla (KB) ayarını yapın."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Renk uzayı sınırları",
           "paragraphs": [
             "Her dışa aktarma seçili ICC profilini gömer. Colour space içinde sRGB, Display P3 veya ProPhoto RGB seçin.",
-            "Geniş gamutlu geliştirme dışa aktarımları, color ve local adjustments kapalıyken kaynak renkleri korur. Film işleme ve ayarlanmış geliştirme dışa aktarımları sRGB renkleriyle sınırlıdır. Bu sonuçlardan birini P3 veya ProPhoto olarak kodlamak, işleme nedeniyle zaten sınırlanmış renkleri geri getirmez."
+            "Geniş gamutlu Geliştir dışa aktarmaları, yalnızca Işık ayarlamaları (Pozlama, Vurgular, Gölgeler, Beyazlar, Siyahlar ve Kontrast) uygulandığında kaynak renkleri korur; bu kontroller sRGB renkleri üzerinde değil, ışık üzerinde çalışır. Film işleme ve renk ya da ayrıntı ayarlamaları, maskeler, rötuş veya filigran içeren Geliştir dışa aktarmaları sRGB renkleriyle sınırlıdır. Bu sonuçlardan birini P3 veya ProPhoto olarak kodlamak, işleme nedeniyle zaten sınırlandırılmış renkleri geri getirmez."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Düzenlenmemiş fotoğraflar için varsayılanlar",
           "paragraphs": [
-            "Develop Defaults yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film etkin başlayabilir, bir iş akışı ve nötr Develop profili seçebilir ve varsayılan bir hazır ayar uygulayabilirler.",
+            "Geliştirme Varsayılanları yalnızca zaten kaydedilmiş düzenlemeleri olmayan fotoğraflara uygulanır. Film'i açık başlatabilir, bir iş akışı ve nötr Geliştir profilini seçebilir, hiç düzenlenmemiş bir RAW fotoğrafın başlayacağı Kamera profilini seçebilir ve bir varsayılan hazır ayar uygulayabilirler.",
+            "Kamera profili varsayılan olarak LightTable Standard, yani birlikte gelen görünüm olur. Bunun yerine yeni RAW fotoğrafları analitik Standart eğriyle başlatmak için Yerleşik'i seçin. Kaydedilmiş düzenlemeleri olan fotoğraflar, kaydedilmiş olanı korur.",
             "Varsayılan olarak açık olan Eşleşen objektif profilini otomatik uygula, kamerası ve objektifi tek bir profille tam eşleşen ve objektif ayarları hiç kaydedilmemiş fotoğraflar için objektif profilini açar. Her fotoğrafı profil kapalı açmak için kapatın."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Kameraya özgü RAW varsayılanlarını ayarlamak için bir RAW fotoğrafı açın ve RAW ayarlarını düzenleyin.",
             "Kamera modeli, seri numarası veya kamera ve ISO ile eşleştirmeyi seçin, ardından Use current RAW settings’e tıklayın.",
             "Geçerli kamera alanında Sıfırla’yı kullanarak o kameranın varsayılanını kaldırın.",
-            "RAW fotoğrafları bir kamera profiliyle geliştirmek için, bu bilgisayarda Adobe Camera Raw veya Lightroom tarafından kurulan profilleri kullanmak üzere Kamera profili klasörünü boş bırakın ya da .dcp dosyaları içeren başka bir klasör girin."
+            "Kendi DCP profillerinizi kullanmak için, Kamera profili klasörünü boş bırakın; böylece LightTable'ın veri dizinindeki CameraProfiles klasörü ya da macOS ve Windows'ta Adobe Camera Raw veya Lightroom'un yüklediği profiller kullanılır; ya da .dcp dosyaları içeren başka bir klasör girin."
           ]
         },
         {
           "title": "Kamera profilleri",
           "paragraphs": [
-            "Bir RAW fotoğrafın Profil bölümü, klasördeki ve kamerasını adlandıran .dcp dosyalarını içeren bir Kamera profili menüsü sunar; örneğin Adobe Standard veya kamerayı taklit eden görünümler. LightTable bu profilleri asla dağıtmaz; onlar kendi Adobe kurulumunuza aittir.",
-            "Profil yalnızca film kapalıyken geliştirmeye ve yaklaşık olarak uygulanır: ton ve doygunluk tabloları ile, varsa, Standart geliştirme eğrisinin yerini alan ton eğrisi. Çift ışık kaynağı karışımı ve ileri matrisler uygulanmaz; bu yüzden bir profil, aynı dosyanın Lightroom’daki hâlinden biraz daha sıcak veya soğuk görünebilir. Film işleme her zaman nötr sahne verilerinden başlar."
+            "Bir RAW fotoğrafın Profil bölümü, kamera profil klasörünüzdeki LightTable Standard ve .dcp dosyalarını sunan bir Kamera profili menüsü içerir; bu dosyalar, kamera adını dosya adında ya da profilin kendi kamera ve ad etiketlerinde belirtir; örneğin Adobe Standard veya kamerayla eşleşen görünümler. LightTable ile birlikte yalnızca LightTable Standard gelir; diğer profiller kendi kurulumunuza aittir.",
+            "LightTable Standard, modellenmiş genel bir görünümdür: ölçülü bir ton ve doygunluk haritası ile orta griye inen ve vurguları bir kamera eşleşmeli işleme benzer biçimde yumuşatan bir ton eğrisi. Hiçbir kameradan ölçülmüş değildir ve renk matrisleri taşımaz; bu yüzden çözücünün kendi kamera rengi denetimde kalır.",
+            "Renk matrisleri olan bir DCP profili, DNG belirtimine göre uygulanır. RAW çözümlemesinde, yakalama beyaz dengesi için harmanlanmış renk ve ileri matrisleri, çözücünün gömülü matrisinin yerini alır; böylece Film ve Geliştir ikisi de profilin kamera renginden başlar. Film kapalı geliştirmede, ton ve doygunluk tabloları aynı beyaz dengesinde harmanlanır; ardından temel pozlama ofseti, görünüm tablosu ve ton eğrisi gelir; profil ton eğrisi Standart geliştirme eğrisinin yerini alır. Linux'ta üretici profil konumu yoktur, bu yüzden Kamera profili klasörünü oradaki kendi .dcp dosyalarınıza yönlendirin.",
+            "Yaklaşık kalanlar şunlardır: demosaicing ve parlak vurgu geri kazanımı bir referans dönüştürücü yerine LibRaw'dan gelir ve Otomatik beyaz dengesi, sıcaklığını çekim anındaki dengeden tahmin eder; bu yüzden bir profil aynı dosyayı Lightroom'dakinden biraz farklı işleyebilir."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }

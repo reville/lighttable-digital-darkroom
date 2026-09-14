@@ -202,7 +202,7 @@
             "Bộ sưu tập ở đây cũng là bộ sưu tập; album của ứng dụng đám mây chỉ vào được qua danh mục Lightroom Classic.",
             "Cờ Chọn và Từ chối hoạt động giống nhau, và thanh dưới cùng hiển thị chúng cho các ảnh đã chọn.",
             "Phát triển ở đây gọi là Chỉnh sửa. Phim mặc định tắt với ảnh mới và ảnh đã nhập; bật lên khi bạn muốn phủ hiệu ứng phim lên trên chỉnh sửa.",
-            "Hồ sơ máy ảnh trong Chỉnh sửa liệt kê các hồ sơ Adobe DCP mà Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc thư mục hồ sơ máy ảnh đã chọn trong Cài đặt. Hồ sơ được áp dụng gần đúng và chỉ cho phát triển khi Phim tắt."
+            "Hồ sơ máy ảnh trong Chỉnh sửa cung cấp giao diện LightTable Standard đi kèm và các hồ sơ DCP trong thư mục hồ sơ máy ảnh của bạn, mà trên macOS và Windows mặc định là các hồ sơ do Camera Raw hoặc Lightroom cài đặt. Các ma trận màu của một hồ sơ được áp dụng cho quá trình giải mã RAW theo đặc tả DNG; giao diện và đường cong tông của nó áp dụng cho quá trình phát triển tắt Phim."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Để chỉnh sửa một mục theo dõi hiện có, hãy chọn nó trong Các thư mục được theo dõi. Mọi mục theo dõi đã lưu đều xuất hiện trong danh sách này. Chọn Thư mục được theo dõi mới cho một thư mục khác, hoặc dùng Xóa theo dõi để ngừng theo dõi thư mục đã chọn. Thao tác này không xóa ảnh của nó.",
             "Phím tắt Watching mở mục theo dõi đang hoạt động đầu tiên. Các lỗi lưu vẫn ở trong hộp thoại để bạn có thể sửa cài đặt."
           ]
+        },
+        {
+          "title": "Kết nối lại một nguồn đã di chuyển hoặc ngoại tuyến",
+          "paragraphs": [
+            "Một nguồn đã ngoại tuyến — ổ đĩa bị ngắt kết nối, thư mục bị đổi tên hoặc di chuyển ra ngoài LightTable — sẽ hiển thị Định vị… thay vì Quét lại. Chọn mục đó và chọn vị trí mới của thư mục sẽ kiểm tra nội dung của một mẫu ảnh thuộc danh mục ngay tại đó, không chỉ theo tên, trước khi di chuyển nguồn; chỉnh sửa, xếp hạng và bộ sưu tập vẫn gắn với cùng các hàng. Nó từ chối một thư mục mà tệp không khớp.",
+            "Thư mục ••• → Định vị ảnh bị thiếu… tìm trong một thư mục đã chọn các tệp khớp với bất kỳ ảnh nào hiện đang bị thiếu trong danh mục theo nội dung, bất kể chúng đã ở đâu, rồi liên kết lại các tệp khớp. Nó báo cáo đã liên kết lại bao nhiêu ảnh và không thể tìm thấy bao nhiêu ảnh ở đó.",
+            "Hiển thị chỉ ảnh bị thiếu, trong danh sách nguồn, sẽ lọc thư viện còn lại chỉ các ảnh mà danh mục hiện không tìm thấy, để bạn có thể xem lại hoặc xuất danh sách trước khi tìm bản gốc."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Thư viện"
     },
     {
       "id": "survey-photos",
-      "title": "So sánh nhiều ảnh trong Xem nhanh",
+      "title": "So sánh nhiều ảnh trong Xem nhanh, hoặc hai ảnh song song",
       "category": "Library",
       "summary": "Xem lại một nhóm cùng nhau, đánh dấu khung đang hoạt động và thu hẹp một tập ảnh ứng viên.",
       "keywords": [
@@ -463,7 +472,10 @@
         "chụp liên tiếp",
         "song song",
         "giữ lại",
-        "tạo vùng chọn"
+        "tạo vùng chọn",
+        "so sánh a/b",
+        "so sánh hai ảnh",
+        "so sánh song song"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "Khi Xem nhanh được mở từ Lọc ảnh có hỗ trợ, hãy so sánh nhóm được gợi ý và gắn cờ từng ảnh riêng lẻ. Tạo vùng chọn có sẵn trong một Xem nhanh bình thường: nó chọn ảnh Xem nhanh đang hoạt động và từ chối các ảnh khác vẫn còn trong Xem nhanh. Điều này sẽ thay đổi cờ của chúng. Siêu dữ liệu RAW và JPEG được liên kết có thể mở rộng các thay đổi cờ đó sang các ứng dụng đi kèm.",
             "Để đánh giá một chỉnh sửa so với bản gốc, dùng so sánh trước/sau trong Detail; Survey dùng để chọn giữa các khung hình khác nhau."
+          ]
+        },
+        {
+          "title": "So sánh hai ảnh song song",
+          "paragraphs": [
+            "So sánh hai ảnh mở cùng chế độ Xem nhanh nhưng chỉ giới hạn đúng hai khung, đặt cạnh nhau, để đánh giá A/B giữa các phương án thay vì so sánh trước và sau khi chỉnh sửa.",
+            "Khi đã chọn hai ảnh, hãy chọn So sánh hai ảnh, nhấn Shift+N, hoặc dùng Xem → So sánh hai ảnh. Khi chọn ít hơn hai ảnh, LightTable ghép ảnh hiện tại với ảnh kế bên trong chế độ xem đang hoạt động.",
+            "Hoán đổi sẽ lật xem ảnh nào ở bên nào. Thanh công cụ đánh dấu và các phím tắt cờ, xếp hạng và nhãn áp dụng cho ô đang hoạt động, giống như trong một Xem nhanh đầy đủ."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Nhóm ảnh vào các bộ sưu tập",
       "category": "Library",
-      "summary": "Tạo các nhóm có tên mà không di chuyển các tệp gốc.",
+      "summary": "Tạo các nhóm bộ sưu tập lồng nhau, sắp xếp lại chúng và dựng một bộ nhanh, tạm thời với Bộ sưu tập nhanh.",
       "keywords": [
         "bộ sưu tập",
         "album",
         "tổ chức",
         "nhóm",
         "đã chọn",
-        "xóa bộ sưu tập"
+        "xóa bộ sưu tập",
+        "bộ sưu tập lồng nhau",
+        "bộ sưu tập",
+        "bộ sưu tập nhanh",
+        "đổi tên bộ sưu tập",
+        "sắp xếp lại"
       ],
       "sections": [
         {
           "title": "Tạo và thêm ảnh",
           "paragraphs": [
-            "Một bộ sưu tập thông thường lưu trữ một tập ảnh đã chọn. Nó tách biệt với cách sắp xếp thư mục trên đĩa."
+            "Một bộ sưu tập thông thường lưu một tập ảnh đã chọn. Nó tách biệt với cách sắp xếp thư mục trên đĩa. Bộ sưu tập chỉ hoạt động với một danh mục; chế độ thư mục giữ nguyên danh sách phẳng, không lồng như trước."
           ],
           "steps": [
             "Chọn các ảnh bạn muốn nhóm.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "Lồng, đổi tên và sắp xếp lại",
+          "paragraphs": [
+            "Bộ sưu tập có thể chứa các bộ sưu tập khác. Dấu + trên một hàng bộ sưu tập sẽ tạo một bộ sưu tập mới bên trong nó; một hình tam giác sẽ xuất hiện khi nó có con và bật/tắt việc hiển thị chúng. Đổi tên bằng biểu tượng bút chì. Các mũi tên lên và xuống di chuyển một bộ sưu tập trong các mục anh chị em hiện tại của nó; mũi tên trái trên một bộ sưu tập lồng sẽ đưa nó trở lại cấp cao nhất. Thứ tự được lưu và lần sau sẽ mở lại như cũ."
+          ]
+        },
+        {
           "title": "Xóa một bộ sưu tập",
           "paragraphs": [
-            "Menu ••• bên cạnh một thư mục sẽ xóa thư mục đó. Thao tác này xóa nhóm thay vì chuyển tệp gốc vào Thùng rác. Tìm kiếm và bộ lọc có thể thu hẹp thêm các ảnh hiển thị bên trong một bộ sưu tập."
+            "Dấu × bên cạnh một bộ sưu tập sẽ xóa nó và mọi thứ lồng bên trong. Thao tác này xóa nhóm chứ không chuyển tệp gốc vào Thùng rác. Tìm kiếm và bộ lọc có thể thu hẹp thêm các ảnh hiển thị trong một bộ sưu tập."
+          ]
+        },
+        {
+          "title": "Bộ sưu tập nhanh",
+          "paragraphs": [
+            "Bộ sưu tập Nhanh là một bộ sưu tập bền vững duy nhất để tạo tập ảnh thật nhanh trong khi lọc ảnh, mà không cần đặt tên trước. Nhấn Cmd+B (chỉ B đơn lẻ đã là trước/sau) khi đã chọn ảnh để thêm chúng, hoặc nhấn lại trên cùng lựa chọn đó để xóa chúng. Dấu × trên hàng của nó sẽ xóa sạch hoàn toàn. Ngoài ra nó hoạt động như bất kỳ bộ sưu tập thông thường nào: thêm ảnh thủ công vào nó, hoặc mở nó để xem lại và xóa từng ảnh riêng lẻ."
           ]
         },
         {
           "title": "Thư mục và bộ sưu tập",
           "paragraphs": [
             "Thư mục đại diện cho cấu trúc phân cấp trên đĩa vật lý nơi tệp được lưu. Bộ sưu tập là các nhóm linh hoạt, nhẹ bên trong LightTable có thể gom ảnh từ nhiều thư mục mà không di chuyển hay nhân bản bất kỳ tệp nào trên đĩa.",
-            "Khi nhập một danh mục hoặc thêm một thư mục nguồn, bật Tạo bộ sưu tập cho mỗi thư mục cấp cao nhất sẽ tự động tạo các bộ sưu tập khớp cho mọi thư mục cấp cao nhất để cấu trúc hiện có của bạn có thể truy cập ngay trong Bộ sưu tập."
+            "Khi nhập một danh mục hoặc thêm một thư mục nguồn, bật Tạo bộ sưu tập cho mỗi thư mục cấp cao nhất sẽ tự động tạo các bộ sưu tập tương ứng cho mọi thư mục cấp cao nhất để cấu trúc hiện có của bạn ngay lập tức khả dụng trong Bộ sưu tập. Nhập một danh mục Lightroom Classic sẽ ánh xạ các tập bộ sưu tập của nó vào cùng kiểu lồng này."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Bắt đầu với Sáng",
           "paragraphs": [
-            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông: tăng Whites để làm sáng các tông sáng nhất, tăng Blacks để nâng các tông tối nhất, và giảm một trong hai để kéo đầu đó trở lại. Contrast thay đổi độ tách biệt của chúng."
+            "Mở Edit và mở rộng Light. Exposure thay đổi độ sáng tổng thể; Highlights và Shadows cho phép bạn nhắm đến vùng sáng và vùng tối. Whites và Blacks điều chỉnh hai đầu của dải tông: tăng Whites để làm sáng các tông sáng nhất, tăng Blacks để nâng các tông tối nhất, và giảm một trong hai để kéo đầu đó trở lại. Contrast thay đổi độ tách biệt của chúng.",
+            "Các điều khiển Sáng này tác động lên ánh sáng phía sau hình ảnh hiển thị thay vì trên các điểm ảnh bị cắt xén của nó. Những tông mà Phơi sáng đẩy vượt quá trắng vẫn còn để Vùng sáng và Trắng khôi phục, và các tông sáng nhất sẽ giảm dần mềm thay vì bị cắt xén."
           ],
           "steps": [
             "Đặt Phơi sáng cho đối tượng chính.",
@@ -1657,10 +1695,12 @@
             "Thử mức Tự động cho đường chân trời bị nghiêng, rồi tinh chỉnh Làm thẳng nếu cần.",
             "Dùng Xoay trái, Xoay phải hoặc các nút lật để thay đổi hướng.",
             "Mở rộng Perspective và thử Auto upright, hoặc chỉnh Vertical, Horizontal và Scale thủ công.",
+            "Nếu Tự động thẳng đứng không tìm được đủ đường thẳng, hoặc chọn nhầm, hãy bấm Hướng dẫn, vẽ 2 đến 4 đường dọc theo các cạnh lẽ ra phải thẳng đứng hoặc nằm ngang, rồi bấm Áp dụng hướng dẫn.",
             "Kiểm tra các mép và khung hình cuối cùng, rồi nhấp Xong."
           ],
           "tips": [
             "Mức tự động dùng các đường mà nó có thể tìm thấy; hãy kiểm tra kết quả thay vì cho rằng góc được phát hiện phù hợp với bức ảnh.",
+            "Trong chế độ Có hướng dẫn, hãy chọn Đường dọc hoặc Đường ngang trước mỗi lần kéo để đường được gắn nhãn đúng; Hoàn tác đường sẽ xóa đường cuối cùng và Xóa sẽ bắt đầu lại.",
             "Đặt lại của Cắt xén sẽ đặt lại cùng lúc cắt xén, xoay, lật, và phối cảnh."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Thêm, Trừ, và Giao nhau đưa bạn vào các chế độ tinh chỉnh bằng tô vẽ. Với mặt nạ Tuyến tính hoặc Hình tròn, chọn Chỉnh sửa hình dạng để quay lại thao tác với hình dạng của nó.",
             "Bật tạm thời sẽ tắt hoặc bật hiệu ứng của một mặt nạ. Đảo ngược sẽ đảo vùng chọn của nó.",
-            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Xóa mặt nạ sẽ xóa mặt nạ đã chọn; Xóa tất cả sẽ xóa các mặt nạ của ảnh và không khả dụng khi không có mặt nạ nào.",
+            "Trình chỉnh sửa cho phép tối đa mười sáu mặt nạ cục bộ. Nhân đôi mặt nạ sao chép mặt nạ đã chọn, bao gồm hình dạng, nét vẽ và các điều chỉnh của nó, rồi chèn bản sao ngay sau nó; Xóa mặt nạ sẽ xóa mặt nạ đã chọn; Xóa tất cả sẽ xóa các mặt nạ của ảnh và không khả dụng khi không có mặt nạ nào.",
             "Các ghim mặt nạ và đường viền cọ vẫn sắc nét và có cùng độ dày khi bạn thu phóng. Đường viền sẽ lớn lên theo vùng nó bao phủ trong ảnh."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Điều chỉnh hình dạng chuyển sắc tuyến tính",
           "paragraphs": [
             "Trong Chỉnh sửa hình dạng, kéo một trong hai chấm để điều chỉnh đầu tương ứng của chuyển sắc. Kéo đường nối để di chuyển toàn bộ chuyển sắc mà vẫn giữ nguyên góc và độ rộng chuyển tiếp. Kéo ở chỗ khác trên ảnh để vẽ lại.",
-            "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất."
+            "Kéo hai chấm chồng lên nhau khiến chuyển sắc không còn hướng, nên nó không chọn gì cho đến khi bạn tách chúng ra. Một chuyển sắc rất ngắn là một cạnh cứng hợp lệ và được áp dụng như nhau trong bản xem trước và trong tệp đã xuất.",
+            "Làm mềm mép sẽ mở rộng hoặc thu hẹp dải chuyển tiếp, tâm nằm trên đường giữa hai điểm. Giảm để có cạnh cứng hơn, tăng để có pha trộn mềm hơn, rộng hơn."
           ],
           "tips": [
             "Chọn một mặt nạ Tuyến tính hiện có để điều chỉnh lại. Nếu vừa tô bằng Thêm, Trừ hoặc Giao nhau, hãy chọn Chỉnh sửa hình dạng trước. Nhấn H nếu các chấm bị ẩn."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Chỉ một thao tác hợp nhất có thể chạy tại một thời điểm. Tên tệp hiện có được giữ nguyên; một lần hợp nhất mới cùng tên sẽ nhận hậu tố số.",
-            "Hợp nhất thường xử lý mỗi đầu vào tối đa ở cạnh dài 6.000 pixel. Do đó, kết quả hợp nhất có thể có ít chi tiết hơn chuỗi nguồn độ phân giải đầy đủ.",
+            "Đầu vào Hợp nhất mặc định ở độ phân giải đầy đủ. Nếu chuỗi đó cần nhiều bộ nhớ hơn mức máy có thể cấp, LightTable sẽ tự động giảm mọi đầu vào xuống một cạnh dài nhỏ hơn và hiển thị kích thước thực tế trước khi bạn bắt đầu; cũng có thể đặt một giới hạn cố định bằng biến môi trường LIGHTTABLE_MERGE_MAX_EDGE.",
             "Nếu một lần hợp nhất báo lỗi, hãy đọc thông báo cụ thể và sửa vùng chọn đầu vào trước khi thử lại."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Tạo một vùng chọn thông minh",
           "paragraphs": [
-            "Mask cung cấp các lựa chọn Subject, Sky, Object, Depth, và People. Chúng chạy cục bộ; các phương pháp khả dụng phụ thuộc vào loại lựa chọn và nền tảng.",
-            "Các vùng chọn Đối tượng, Bầu trời và Đối tượng giữ tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các mép được tinh chỉnh dựa trên màu ảnh, và các vùng chọn đối tượng Vision giữ lại các chuyển tiếp mềm. Các ranh giới mảnh vẫn cần được kiểm tra và tinh chỉnh bằng nét vẽ.",
+            "Mặt nạ hỗ trợ các lựa chọn Đối tượng, Bầu trời, Đối tượng, Độ sâu và Mọi người. Các chức năng này chạy cục bộ trên mọi nền tảng; phương pháp và độ chính xác sẵn có phụ thuộc vào loại lựa chọn và nền tảng.",
+            "Các lựa chọn Đối tượng, Bầu trời và Đối tượng giữ lại tối đa 1.024 pixel theo cạnh dài nhất của chúng. Các cạnh được tinh chỉnh theo màu của ảnh, và các lựa chọn Đối tượng của Vision giữ nguyên các chuyển tiếp mềm. Trên Windows và Linux, Đối tượng dùng cùng mô hình cục bộ đi kèm như Người khi tìm thấy một người trong ảnh, và nếu không thì sẽ dùng ước tính dựa trên hình ảnh thay thế. Các ranh giới tinh vẫn cần được kiểm tra và tinh chỉnh bằng vẽ.",
             "Vùng chọn được cắt từ chính bức ảnh nơi nó bắt đầu. Chuyển sang ảnh khác trước khi hoàn tất sẽ hủy nó, vì vậy hãy ở lại ảnh đó cho đến khi mặt nạ xuất hiện. Nếu không thể hoàn tất vùng chọn, bảng mặt nạ sẽ báo và không có gì được thêm vào."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Chọn người hoặc vùng khuôn mặt",
           "paragraphs": [
             "People cung cấp Person và Hair trên mọi nền tảng. Face skin, Eyes, Eyebrows, Lips, Teeth và Soften skin yêu cầu Vision helper trên macOS 14 trở lên. Face skin là ước tính và không suy ra danh tính.",
-            "Hair sử dụng một mô hình đi kèm chạy cục bộ và chọn tóc vượt ra ngoài khuôn mặt, bao gồm cả tóc dài ngang vai. Hãy kiểm tra các sợi tóc mảnh, vùng sáng mạnh, tóc giả và những người nhỏ ở nền; những phần này vẫn có thể bị bỏ sót. Các bản build cũ hơn hoặc bản source không có mô hình sẽ dùng ước tính Vision trước đây khi khả dụng. Các mặt nạ đã lưu hiện có sẽ giữ nguyên các vùng chọn của chúng."
+            "Hair sử dụng một mô hình đi kèm chạy cục bộ và chọn tóc vượt ra ngoài khuôn mặt, bao gồm cả tóc dài ngang vai. Hãy kiểm tra các sợi tóc mảnh, vùng sáng mạnh, tóc giả và những người nhỏ ở nền; những phần này vẫn có thể bị bỏ sót. Các bản build cũ hơn hoặc bản source không có mô hình sẽ dùng ước tính Vision trước đây khi khả dụng. Các mặt nạ đã lưu hiện có sẽ giữ nguyên các vùng chọn của chúng.",
+            "Người dùng cùng mô hình cục bộ đi kèm trên Windows và Linux (và trên Mac khi tiện ích Vision không khả dụng) để lần theo trực tiếp đường viền của một người, thay vì ước tính dựa trên hình ảnh. Nếu không tìm thấy người, Người sẽ dùng ước tính đó thay thế thay vì để lựa chọn trống."
           ],
           "steps": [
             "Chọn Mọi người, rồi phần bạn muốn điều chỉnh.",
@@ -2311,7 +2353,7 @@
             "Kiểm tra bản xem trước đã hoàn tất ở 1:1."
           ],
           "tips": [
-            "Khử nhiễu đã học yêu cầu trình trợ giúp suy luận của macOS và một mô hình cục bộ tương thích. Nó không khả dụng trên Linux và Windows. Khử nhiễu và làm sắc nét thông thường vẫn khả dụng. Bản dựng phát triển có thể thiếu mô hình; hãy đọc thông báo khả dụng trước khi bắt đầu."
+            "Khử nhiễu đã học chạy qua Core ML trên macOS và qua onnxruntime trên Windows và Linux, dùng cùng mô hình đã chuyển đổi. Khử nhiễu và làm nét thông thường vẫn có ở mọi nơi. Các bản dựng phát triển có thể thiếu mô hình đã chuyển đổi hoặc runtime; hãy đọc thông báo khả dụng trước khi bắt đầu."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "Với Tùy chỉnh, điều chỉnh Nhiệt độ và Sắc thái chụp."
           ],
           "tips": [
-            "Tệp JPEG, HEIF, TIFF hoặc tệp đã xử lý khác đã mang sẵn một đường cong tông màu, nên trước khi giả lập film, LightTable mở rộng nó trở lại ánh sáng cảnh quanh xám trung bình: vùng sáng lấy lại dải của mình, vùng tối lùi về nơi cảnh vốn có, còn phơi sáng ở xám trung bình không đổi. Tệp RAW vốn đã là ánh sáng cảnh và không được mở rộng."
+            "Một tệp JPEG, HEIF, TIFF hoặc tệp đã xử lý khác đã mang sẵn một đường cong tông. Trước khi phát triển, LightTable mở rộng dải độ sáng của nó trong khi giữ nguyên tỷ lệ của đỏ, xanh lá và xanh dương, nên bước chuẩn bị này không làm phóng đại một ám màu sẵn có. Đo sáng cảnh tự động giữ nguyên cùng tham chiếu phơi sáng. Việc này xấp xỉ tương phản cảnh; nó không thể khôi phục chi tiết đã mất trong ảnh đã xử lý. Tệp RAW vốn là ánh sáng của cảnh và không được mở rộng."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Định dạng và thiết lập sẵn",
           "paragraphs": [
-            "Hộp thoại xuất cung cấp JPEG, PNG và TIFF 16-bit. Trên macOS, nó cũng cung cấp HEIF 8-bit; HEIF bị ẩn trên Linux và Windows. Một quy trình HEIF đã lưu không thể được áp dụng ở đó, vì vậy hãy chọn định dạng khác. Thanh trượt chất lượng áp dụng cho JPEG và HEIF.",
+            "Hộp thoại xuất cung cấp JPEG, PNG và TIFF. TIFF mặc định 16-bit; chọn độ sâu TIFF 8-bit trong Nâng cao để có tệp lưu trữ nhỏ hơn. Trên macOS nó cũng cung cấp HEIF 8-bit; HEIF bị ẩn trên Linux và Windows. Một quy trình HEIF đã lưu không thể áp dụng ở đó, vì vậy hãy chọn định dạng khác. PNG và HEIF luôn mã hóa ở 8-bit. Thanh trượt chất lượng áp dụng cho JPEG và HEIF.",
             "JPG (Large) dùng JPEG kích thước đầy đủ ở chất lượng 92 trong sRGB. JPG (Small) dùng cạnh dài 2048 pixel ở chất lượng 90 trong sRGB. TIFF 16-bit dùng kích thước đầy đủ và ProPhoto RGB. Thay đổi các thiết lập này sẽ chọn Custom."
           ],
           "steps": [
             "Mở Xuất và chọn một thiết lập sẵn ở phía trên.",
             "Đặt Kích thước thành cỡ Đầy đủ hoặc giới hạn cạnh dài.",
             "Kiểm tra Output preview: kích thước xuất phản ánh xoay và cắt xén, và giới hạn cạnh dài sẽ giảm kích thước ảnh lớn hơn mà không phóng to ảnh nhỏ hơn."
+          ]
+        },
+        {
+          "title": "Kích thước tùy chỉnh, độ phân giải và làm sắc nét đầu ra",
+          "paragraphs": [
+            "Kích thước tùy chỉnh trong Nâng cao thay thế thiết lập sẵn Kích thước bằng bất kỳ quy tắc thay đổi kích thước nào: cạnh dài, cạnh ngắn, vừa trong một chiều rộng và chiều cao, megapixel, hoặc phần trăm của bản gốc. Cho phép phóng to ảnh nhỏ hơn để vừa sẽ cho phép quy tắc phóng lớn một nguồn nhỏ hơn; nếu không, một ảnh đã ở hoặc dưới kích thước yêu cầu sẽ được xuất nguyên trạng. Độ phân giải (ppi) chỉ ghi thẻ siêu dữ liệu độ phân giải mà phần mềm in và dàn trang đọc; nó không bao giờ thay đổi kích thước điểm ảnh.",
+            "Làm nét cho sẽ áp dụng làm nét đầu ra sau khi thay đổi kích thước, khớp với cách tệp sẽ được xem: Màn hình cho xem trên màn hình, hoặc Giấy mờ/Giấy bóng cho in. Mức làm nét (Thấp/Tiêu chuẩn/Cao) đặt cường độ của nó. Làm nét khi in sẽ thay đổi bán kính theo Độ phân giải (ppi), nên quầng làm nét vật lý giống nhau sẽ giữ nguyên ở mọi kích thước in.",
+            "Giới hạn kích thước tệp JPEG ở (KB) sẽ tự động giảm chất lượng JPEG cho đến khi tệp vừa giới hạn hoặc chạm mức chất lượng tối thiểu; một cảnh báo sẽ giải thích khi không thể đáp ứng giới hạn."
+          ],
+          "steps": [
+            "Mở Xuất và mở rộng Nâng cao.",
+            "Chọn Kích thước tùy chỉnh và nhập giá trị của quy tắc thay đổi kích thước, hoặc để ở Dùng Kích thước ở trên để giữ thiết lập sẵn đơn giản.",
+            "Chọn Làm sắc nét cho và Lượng làm sắc nét nếu bản xuất cần làm sắc nét đầu ra.",
+            "Đối với JPEG có giới hạn kích thước chặt, hãy đặt Giới hạn kích thước tệp JPEG thành (KB)."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Giới hạn không gian màu",
           "paragraphs": [
             "Mỗi lần xuất đều nhúng hồ sơ ICC đã chọn. Chọn sRGB, Display P3 hoặc ProPhoto RGB trong Colour space.",
-            "Các lần xuất Phát triển gamut rộng giữ nguyên màu sắc nguồn khi màu sắc và điều chỉnh cục bộ đang tắt. Kết xuất Phim và các lần xuất Phát triển đã điều chỉnh bị giới hạn ở màu sắc sRGB. Mã hóa một trong các kết quả đó trong P3 hoặc ProPhoto không khôi phục được các màu đã bị giới hạn bởi kết xuất."
+            "Xuất Phát triển dải màu rộng giữ nguyên màu nguồn khi chỉ áp dụng các điều chỉnh Sáng (Phơi sáng, Vùng sáng, Bóng tối, Trắng, Đen và Tương phản); các điều khiển đó tác động lên ánh sáng thay vì lên màu sRGB. Kết xuất phim và các bản xuất Phát triển có điều chỉnh màu sắc hoặc chi tiết, mặt nạ, chỉnh sửa hoặc hình mờ bị giới hạn trong các màu sRGB. Mã hóa một trong các kết quả đó sang P3 hoặc ProPhoto không khôi phục các màu đã bị giới hạn bởi quá trình kết xuất."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Mặc định cho ảnh chưa chỉnh sửa",
           "paragraphs": [
-            "Mặc định Phát triển chỉ áp dụng cho các ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim được bật, chọn quy trình làm việc và profile Phát triển trung tính, và áp dụng một thiết lập sẵn mặc định.",
+            "Mặc định phát triển chỉ áp dụng cho ảnh chưa có chỉnh sửa đã lưu. Chúng có thể bắt đầu với Phim bật, chọn quy trình và hồ sơ Phát triển trung tính, chọn Hồ sơ máy ảnh mà một ảnh RAW chưa chỉnh sửa sẽ bắt đầu với, và áp dụng một thiết lập sẵn mặc định.",
+            "Hồ sơ máy ảnh mặc định là LightTable Standard, giao diện đi kèm. Chọn Tích hợp sẵn để bắt đầu ảnh RAW mới từ đường cong Standard phân tích thay thế. Ảnh đã lưu chỉnh sửa sẽ giữ nguyên những gì đã lưu.",
             "Tự động áp dụng hồ sơ ống kính đã khớp, bật theo mặc định, sẽ bật hồ sơ ống kính cho các ảnh có máy ảnh và ống kính khớp chính xác với một hồ sơ và chưa từng lưu cài đặt ống kính. Tắt để mở mọi ảnh với hồ sơ đã tắt."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Để đặt mặc định RAW theo từng máy ảnh, hãy mở một ảnh RAW và điều chỉnh cài đặt RAW của nó.",
             "Chọn khớp theo kiểu máy ảnh, số sê-ri, hoặc camera and ISO, rồi nhấp Use current RAW settings.",
             "Dùng Đặt lại trong vùng Máy ảnh hiện tại để xóa mặc định của máy ảnh đó.",
-            "Để phát triển ảnh RAW với hồ sơ máy ảnh, hãy để trống Thư mục hồ sơ máy ảnh để dùng các hồ sơ mà Adobe Camera Raw hoặc Lightroom đã cài trên máy tính này, hoặc nhập một thư mục khác chứa tệp .dcp."
+            "Để dùng hồ sơ DCP của riêng bạn, hãy để trống Thư mục hồ sơ máy ảnh để dùng thư mục CameraProfiles trong thư mục dữ liệu của LightTable, hoặc trên macOS và Windows dùng các hồ sơ mà Adobe Camera Raw hoặc Lightroom đã cài đặt, hoặc nhập một thư mục khác chứa các tệp .dcp."
           ]
         },
         {
           "title": "Hồ sơ máy ảnh",
           "paragraphs": [
-            "Mục Hồ sơ của ảnh RAW có menu Hồ sơ máy ảnh với các tệp .dcp trong thư mục có tên máy ảnh đó, chẳng hạn Adobe Standard hoặc các kiểu mô phỏng máy ảnh. LightTable không bao giờ kèm theo các hồ sơ này; chúng thuộc bản cài đặt Adobe của riêng bạn.",
-            "Hồ sơ chỉ được áp dụng cho bước phát triển khi Film tắt, và chỉ gần đúng: các bảng sắc độ và độ bão hòa của nó và, nếu có, đường cong tông màu của nó, khi đó sẽ thay thế đường cong phát triển Tiêu chuẩn. Việc pha trộn hai nguồn sáng và ma trận thuận không được áp dụng, nên một hồ sơ có thể hiển thị hơi ấm hơn hoặc lạnh hơn so với cùng tệp đó trong Lightroom. Việc kết xuất film luôn bắt đầu từ dữ liệu cảnh trung tính."
+            "Mục Hồ sơ của một ảnh RAW cung cấp menu Hồ sơ máy ảnh với LightTable Standard và các tệp .dcp trong thư mục hồ sơ máy ảnh của bạn, những tệp đặt tên máy ảnh của nó, hoặc trong tên tệp hoặc trong các thẻ máy ảnh và tên riêng của hồ sơ, chẳng hạn như Adobe Standard hoặc các giao diện khớp máy ảnh. Chỉ LightTable Standard được cung cấp kèm LightTable; các hồ sơ khác thuộc về bản cài đặt của riêng bạn.",
+            "LightTable Standard là một giao diện tổng quát được mô hình hóa: một bản đồ sắc độ và bão hòa vừa phải cùng một đường cong tông màu đưa xám trung tính về giữa và làm vùng sáng giảm dần theo cách giống như một bản dựng khớp máy ảnh. Nó không được đo từ bất kỳ máy ảnh nào và không mang ma trận màu, vì vậy màu máy ảnh vốn có của bộ giải mã vẫn giữ vai trò quyết định.",
+            "Một hồ sơ DCP có ma trận màu được áp dụng theo đặc tả DNG. Ở bước giải mã RAW, các ma trận màu và ma trận chuyển tiếp của nó, được hòa trộn theo cân bằng trắng khi chụp, sẽ thay thế ma trận nhúng của bộ giải mã, vì vậy cả Phim và Phát triển đều bắt đầu từ màu máy ảnh của hồ sơ. Trong quá trình phát triển tắt Phim, các bảng sắc độ và bão hòa hòa trộn ở cùng cân bằng trắng, rồi theo sau là độ lệch phơi sáng cơ sở, bảng giao diện và đường cong tông; đường cong tông của hồ sơ sẽ thay thế đường cong phát triển Standard. Linux không có vị trí hồ sơ của nhà cung cấp, vì vậy hãy trỏ Thư mục hồ sơ máy ảnh đến các tệp .dcp của riêng bạn ở đó.",
+            "Những gì vẫn còn xấp xỉ: khử moiré và tái tạo vùng sáng đến từ LibRaw chứ không phải từ một bộ chuyển đổi tham chiếu, và Tự động cân bằng trắng ước tính nhiệt độ từ cân bằng khi chụp, nên một hồ sơ vẫn có thể hiển thị hơi khác so với cùng tệp đó trong Lightroom."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }

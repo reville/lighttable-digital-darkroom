@@ -202,7 +202,7 @@
             "Kolekcje to tutaj również kolekcje; albumy z aplikacji chmurowej trafiają tu tylko przez katalog Lightroom Classic.",
             "Flagi Wybierz i Odrzuć działają tak samo, a dolny pasek pokazuje je dla zaznaczonych zdjęć.",
             "Wywoływanie nazywa się tu Edytuj. Film jest domyślnie wyłączony dla nowych i zaimportowanych zdjęć; włącz go, gdy chcesz nałożyć obróbkę filmową na edycję.",
-            "Profil aparatu w Edytuj wyświetla profile Adobe DCP zainstalowane na tym komputerze przez Camera Raw lub Lightroom albo folder profili aparatu wybrany w Ustawieniach. Profile działają w przybliżeniu i tylko na wywoływanie z wyłączonym Film."
+            "Profil aparatu w Edytuj oferuje dołączony wygląd LightTable Standard oraz profile DCP w folderze profili aparatu, który na macOS i Windows domyślnie wskazuje profile zainstalowane przez Camera Raw lub Lightroom. Macierze kolorów profilu są stosowane do dekodowania RAW zgodnie ze specyfikacją DNG; jego wygląd i krzywa tonalna są stosowane przy Wywoływanie z wyłączonym Film."
           ]
         },
         {
@@ -442,18 +442,27 @@
             "Aby edytować istniejącą obserwację, wybierz ją w Obserwowanych folderach. Każda zapisania obserwacja pojawia się na tej liście. Wybierz Nowy obserwowany folder dla innego folderu albo użyj Usuń obserwację, aby przestać obserwować zaznaczony folder. To nie usuwa jego zdjęć.",
             "Skrót Obserwowanie otwiera pierwszy aktywny obserwowany folder. Błędy zapisu pozostają w oknie dialogowym, abyś mógł poprawić ustawienia."
           ]
+        },
+        {
+          "title": "Połącz ponownie przeniesione lub niedostępne źródło",
+          "paragraphs": [
+            "Źródło, które przeszło w tryb offline — odłączony dysk, folder przemianowany lub przeniesiony poza LightTable — pokazuje Zlokalizuj… zamiast Przeskanuj ponownie. Wybranie tej opcji i wskazanie nowej lokalizacji folderu sprawdza tam próbkę własnych zdjęć katalogu na podstawie zawartości, a nie tylko nazwy, zanim źródło zostanie przeniesione; edycje, oceny i kolekcje pozostają przypisane do tych samych wierszy. Program odrzuca folder, którego pliki nie pasują.",
+            "Foldery ••• → Znajdź brakujące zdjęcia… przeszukuje jeden wybrany folder w poszukiwaniu plików odpowiadających dowolnym aktualnie brakującym zdjęciom z katalogu na podstawie zawartości, gdziekolwiek się znalazły, i ponownie łączy dopasowania. Podaje, ile ponownie połączył, a ilu nie udało się tam znaleźć.",
+            "Pokaż tylko brakujące zdjęcia, pod listą źródeł, filtruje bibliotekę do zdjęć, których katalog obecnie nie może znaleźć, aby można było przejrzeć lub wyeksportować listę przed szukaniem oryginałów."
+          ]
         }
       ],
       "related": [
         "add-photos",
         "search-filter-sort",
-        "trash-rejected"
+        "trash-rejected",
+        "catalog-health-recovery"
       ],
       "categoryLabel": "Biblioteka"
     },
     {
       "id": "survey-photos",
-      "title": "Porównaj kilka zdjęć w Przegląd",
+      "title": "Porównaj kilka zdjęć w Przeglądzie lub dwa obok siebie",
       "category": "Library",
       "summary": "Przejrzyj grupę razem, oznacz aktywną klatkę i zawęź zestaw kandydatów.",
       "keywords": [
@@ -463,7 +472,10 @@
         "seria",
         "Obok siebie",
         "zachowaj",
-        "ustaw zaznaczenie"
+        "ustaw zaznaczenie",
+        "porównanie a/b",
+        "porównaj dwa zdjęcia",
+        "porównanie obok siebie"
       ],
       "sections": [
         {
@@ -484,6 +496,14 @@
           "paragraphs": [
             "Gdy Przegląd zostanie otwarty z Wspomaganej selekcji, porównaj sugerowaną grupę i oznaczaj zdjęcia pojedynczo. Opcja Ustaw zaznaczenie jest dostępna w zwykłym widoku Przegląd: zaznacza aktywne zdjęcie z przeglądu i odrzuca pozostałe zdjęcia nadal znajdujące się w przeglądzie. Zmienia to ich flagi. Powiązane metadane RAW i JPEG mogą rozszerzyć te zmiany flag na towarzyszy.",
             "Aby ocenić edycję względem oryginału, użyj porównania przed/po w Szczegóły; Przegląd służy do wyboru spośród różnych kadrów."
+          ]
+        },
+        {
+          "title": "Porównaj dwa zdjęcia obok siebie",
+          "paragraphs": [
+            "Porównywanie dwóch zdjęć otwiera ten sam widok Przegląd, ograniczony dokładnie do dwóch kadrów, obok siebie, do oceny A/B między kandydatami, a nie do porównania przed i po edycji.",
+            "Mając zaznaczone dwa zdjęcia, wybierz Porównaj dwa zdjęcia, naciśnij Shift+N albo użyj Widok → Porównaj dwa zdjęcia. Przy zaznaczeniu mniejszym niż dwa LightTable łączy bieżące zdjęcie z jego sąsiadem w aktywnym widoku.",
+            "Zamień odwraca, które zdjęcie znajduje się po której stronie. Pasek narzędzi oznaczania oraz skróty flagi, oceny i etykiety działają dla aktywnej komórki, tak samo jak w pełnym Przeglądzie."
           ]
         }
       ],
@@ -739,20 +759,25 @@
       "id": "collections",
       "title": "Grupuj zdjęcia w kolekcje",
       "category": "Library",
-      "summary": "Twórz nazwane grupy bez przenoszenia oryginalnych plików.",
+      "summary": "Twórz zagnieżdżone grupy kolekcji, porządkuj je i buduj szybką, tymczasową zestaw za pomocą Szybkiej Kolekcji.",
       "keywords": [
         "kolekcja",
         "album",
         "organizuj",
         "grupa",
         "wybrany",
-        "usuń kolekcję"
+        "usuń kolekcję",
+        "zagnieżdżona kolekcja",
+        "zestaw kolekcji",
+        "szybka kolekcja",
+        "zmień nazwę kolekcji",
+        "zmień kolejność"
       ],
       "sections": [
         {
           "title": "Utwórz i dodaj zdjęcia",
           "paragraphs": [
-            "Zwykła kolekcja przechowuje wybrany zestaw zdjęć. Jest oddzielna od układu folderów na dysku."
+            "Zwykła kolekcja przechowuje wybrany zestaw zdjęć. Jest oddzielona od układu folderów na dysku. Kolekcje działają tylko z katalogiem; tryb folderów zachowuje płaską, nienazwaną listę, którą zawsze miał."
           ],
           "steps": [
             "Wybierz zdjęcia, które chcesz pogrupować.",
@@ -762,16 +787,28 @@
           ]
         },
         {
+          "title": "Zagnieżdżaj, zmieniaj nazwę i porządkuj",
+          "paragraphs": [
+            "Kolekcje mogą zawierać inne kolekcje. Znak + w wierszu kolekcji tworzy w niej nową kolekcję; trójkąt pojawia się, gdy ma potomków, i przełącza ich wyświetlanie. Zmień nazwę za pomocą ikony ołówka. Strzałki w górę i w dół przenoszą kolekcję w obrębie jej bieżących sąsiadów; lewa strzałka na zagnieżdżonej kolekcji przenosi ją z powrotem na najwyższy poziom. Kolejność jest zapisywana i następnym razem otwiera się tak samo."
+          ]
+        },
+        {
           "title": "Usuń kolekcję",
           "paragraphs": [
-            "Menu ••• obok kolekcji usuwa kolekcję. Usuwa to grupowanie, a nie przenosi oryginalne pliki do Kosza. Wyszukiwanie i filtry mogą dodatkowo zawęzić zdjęcia wyświetlane w kolekcji."
+            "Znak × obok kolekcji usuwa ją i wszystko, co jest w niej zagnieżdżone. Usuwa to grupowanie, zamiast przenosić oryginalne pliki do Kosza. Wyszukiwanie i filtry mogą dodatkowo zawęzić zdjęcia wyświetlane w kolekcji."
+          ]
+        },
+        {
+          "title": "Szybka Kolekcja",
+          "paragraphs": [
+            "Szybka kolekcja to jedna trwała kolekcja do szybkiego budowania zestawu podczas selekcji, bez wcześniejszego nadawania nazwy. Naciśnij Cmd+B (sam B jest już przed/po) z zaznaczonymi zdjęciami, aby je dodać, albo naciśnij ponownie na tym samym zaznaczeniu, aby je usunąć. Znak × w jej wierszu czyści ją całkowicie. Poza tym działa jak każda zwykła kolekcja: można dodawać do niej zdjęcia ręcznie albo otworzyć ją, aby przejrzeć i usunąć pojedyncze zdjęcia."
           ]
         },
         {
           "title": "Foldery i kolekcje",
           "paragraphs": [
             "Foldery reprezentują fizyczną hierarchię dysku, w której znajdują się pliki. Kolekcje to elastyczne, lekkie grupy w LightTable, które mogą gromadzić zdjęcia z wielu folderów bez przenoszenia ani duplikowania jakichkolwiek plików na dysku.",
-            "Podczas importowania katalogu lub dodawania folderu źródłowego włączenie opcji Utwórz kolekcję dla każdego folderu najwyższego poziomu automatycznie tworzy pasujące kolekcje dla każdego folderu najwyższego poziomu, dzięki czemu istniejąca struktura jest natychmiast dostępna w Kolekcje."
+            "Podczas importowania katalogu lub dodawania folderu źródłowego, włączenie Utwórz kolekcję dla każdego folderu najwyższego poziomu automatycznie tworzy dopasowane kolekcje dla każdego folderu najwyższego poziomu, dzięki czemu istniejąca struktura jest od razu dostępna w Kolekcje. Import katalogu Lightroom Classic mapuje zbiory kolekcji na to samo zagnieżdżenie."
           ]
         }
       ],
@@ -1171,7 +1208,8 @@
         {
           "title": "Zacznij od Jasny",
           "paragraphs": [
-            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie."
+            "Otwórz Edytuj i rozwiń Jasny. Ekspozycja zmienia ogólną jasność; Światła i Cienie pozwalają celować w jasne i ciemne obszary. Biały i Czarny regulują końce zakresu tonalnego: zwiększ Biały, aby rozjaśnić najjaśniejsze tony, zwiększ Czarny, aby podnieść najciemniejsze, a zmniejsz dowolny z nich, aby cofnąć ten koniec. Kontrast zmienia ich rozdzielenie.",
+            "Te kontrole Jasny działają na świetle za wyświetlanym obrazem, a nie na jego obciętych pikselach. Tony, które Ekspozycja wypycha poza biel, pozostają dostępne dla Świateł i Świateł, aby je odzyskać, a najjaśniejsze tony łagodnie się wycofują zamiast ulegać obcięciu."
           ],
           "steps": [
             "Ustaw Ekspozycję dla głównego obiektu.",
@@ -1657,10 +1695,12 @@
             "Spróbuj Autom. poziom dla przekrzywionego horyzontu, a potem dopracuj Wyrównaj, jeśli to konieczne.",
             "Użyj Obróć w lewo, Obróć w prawo lub przycisków odbicia, aby zmienić orientację.",
             "Rozwiń Perspektywę i wypróbuj Autom. wyprostowanie albo ręcznie dostosuj Pion, Poziom i Skalę.",
+            "Jeśli Automatycznie wyprostuj nie może znaleźć wystarczającej liczby linii albo wybiera niewłaściwe, kliknij Prowadzone, narysuj 2 do 4 linii wzdłuż krawędzi, które powinny być pionowe lub poziome, a następnie kliknij Zastosuj prowadnice.",
             "Sprawdź krawędzie i końcowe kadrowanie, a potem kliknij Gotowe."
           ],
           "tips": [
             "Autom. poziom używa linii, które potrafi znaleźć; sprawdź wynik zamiast zakładać, że wykryty kąt pasuje do fotografii.",
+            "W trybie Prowadzone wybieraj Linia pionowa lub Linia pozioma przed każdym przeciągnięciem, aby linia była poprawnie oznaczona; Cofnij linię usuwa ostatnią, a Wyczyść zaczyna od nowa.",
             "Resetuj Kadruj resetuje razem kadrowanie, obrót, odbicie i perspektywę."
           ]
         }
@@ -1722,7 +1762,7 @@
           "tips": [
             "Dodaj, Odejmij i Przecięcie wprowadzają tryby dopracowywania malowaniem. W przypadku maski Liniowej lub Promieniowej wybierz Edytuj kształt, aby wrócić do manipulowania jej kształtem.",
             "Włącz tymczasowo wyłącza lub włącza efekt maski. Odwróć odwraca jej zaznaczenie.",
-            "Edytor umożliwia maksymalnie szesnaście lokalnych masek. Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
+            "Edytor pozwala na maksymalnie szesnaście lokalnych masek. Duplikuj maskę kopiuje zaznaczoną maskę, włącznie z jej kształtem, pociągnięciami i korektami, i wstawia kopię bezpośrednio za nią; Usuń maskę usuwa zaznaczoną maskę; Wyczyść wszystko usuwa maski zdjęcia i jest niedostępne, gdy nie ma żadnych masek.",
             "Punkty maski i obrysy pędzla pozostają ostre i mają tę samą grubość podczas powiększania. Obrys rośnie wraz z obszarem, który obejmuje na zdjęciu."
           ]
         },
@@ -1742,7 +1782,8 @@
           "title": "Zmienianie kształtu gradientu liniowego",
           "paragraphs": [
             "W trybie Edytuj kształt przeciągnij dowolny punkt, aby dostosować ten koniec gradientu. Przeciągnij linię łączącą punkty, aby przesunąć cały gradient, zachowując jego kąt i szerokość przejścia. Przeciągnij w innym miejscu zdjęcia, aby narysować go ponownie.",
-            "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku."
+            "Przeciągnięcie obu punktów na siebie pozbawia gradient kierunku, więc nic nie zaznacza, dopóki ich nie rozsuniesz. Bardzo krótki gradient jest prawidłową twardą krawędzią i działa tak samo w podglądzie i w wyeksportowanym pliku.",
+            "Wtapianie poszerza lub zawęża pas przejścia, wyśrodkowany na linii między dwoma punktami. Zmniejsz je, aby uzyskać ostrzejszą krawędź, zwiększ, aby uzyskać łagodniejsze i szersze mieszanie."
           ],
           "tips": [
             "Wybierz istniejącą maskę liniową, aby ponownie ją dostosować. Jeśli malowano w trybie Dodaj, Odejmij lub Przecięcie, najpierw wybierz Edytuj kształt. Naciśnij H, jeśli punkty są ukryte."
@@ -1832,7 +1873,7 @@
           ],
           "tips": [
             "Tylko jedno scalanie może działać jednocześnie. Istniejąca nazwa pliku jest zachowywana; nowe scalanie o tej samej nazwie otrzymuje sufiks liczbowy.",
-            "Scal zwykle przetwarza każdy plik wejściowy do 6 000 pikseli na dłuższej krawędzi. Scalony wynik może więc mieć mniej szczegółów niż pełnorozdzielcza sekwencja źródłowa.",
+            "Wejścia Scal używają domyślnie pełnej rozdzielczości. Jeśli sekwencja wymagałaby więcej pamięci, niż komputer może udostępnić, LightTable automatycznie zmniejsza każde wejście do krótszego długiego boku i pokazuje rzeczywisty rozmiar przed rozpoczęciem; można też ustawić stały limit zmienną środowiskową LIGHTTABLE_MERGE_MAX_EDGE.",
             "Jeśli scalanie zgłosi błąd, przeczytaj konkretny komunikat i popraw zaznaczenie wejściowe przed ponowną próbą."
           ]
         },
@@ -2100,8 +2141,8 @@
         {
           "title": "Utwórz inteligentne zaznaczenie",
           "paragraphs": [
-            "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie; dostępne metody zależą od typu zaznaczenia i platformy.",
-            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż dłuższej krawędzi. Krawędzie są doprecyzowywane na podstawie kolorów obrazu, a zaznaczenia obiektów Vision zachowują miękkie przejścia. Drobne granice nadal wymagają sprawdzenia i malowanej korekty.",
+            "Maska oferuje zaznaczenia Obiekt, Niebo, Obiekt, Głębia i Osoby. Działają one lokalnie na każdej platformie; dostępne metody i precyzja zależą od typu zaznaczenia i platformy.",
+            "Zaznaczenia Obiekt, Niebo i Obiekt zachowują do 1 024 pikseli wzdłuż najdłuższego boku. Krawędzie są dopracowywane względem kolorów obrazu, a zaznaczenia obiektu Vision zachowują miękkie przejścia. W Windows i Linux Obiekt używa tego samego dołączonego lokalnego modelu co Osoba, gdy znajdzie osobę na zdjęciu, a w przeciwnym razie przechodzi do oszacowania na podstawie obrazu. Drobne granice nadal wymagają sprawdzenia i ręcznego dopracowania.",
             "Zaznaczenie jest wycinane ze zdjęcia, na którym je rozpoczęto. Przejście do innego zdjęcia przed jego ukończeniem anuluje je, więc pozostań na zdjęciu, aż pojawi się maska. Jeśli zaznaczenia nie da się ukończyć, panel maski zgłasza to i nic nie zostaje dodane."
           ],
           "steps": [
@@ -2120,7 +2161,8 @@
           "title": "Wybierz osoby lub obszary twarzy",
           "paragraphs": [
             "Osoby oferuje Person i Hair na każdej platformie. Face skin, Eyes, Eyebrows, Lips, Teeth i Soften skin wymagają pomocnika Vision w macOS 14 lub nowszym. Face skin jest szacowana i nie jest wnioskowana tożsamość.",
-            "Hair używa dołączonego modelu, który działa lokalnie i wybiera włosy poza twarzą, w tym włosy do ramion. Sprawdź cienkie pasma, jasne światła, peruki i małe osoby w tle; te elementy nadal mogą zostać pominięte. Starsze wersje lub kompilacje źródłowe bez modelu używają wcześniejszego oszacowania Vision, jeśli jest dostępne. Istniejące zapisane maski zachowują swoje zaznaczenia."
+            "Hair używa dołączonego modelu, który działa lokalnie i wybiera włosy poza twarzą, w tym włosy do ramion. Sprawdź cienkie pasma, jasne światła, peruki i małe osoby w tle; te elementy nadal mogą zostać pominięte. Starsze wersje lub kompilacje źródłowe bez modelu używają wcześniejszego oszacowania Vision, jeśli jest dostępne. Istniejące zapisane maski zachowują swoje zaznaczenia.",
+            "Osoba używa tego samego dołączonego lokalnego modelu w Windows i Linux (oraz na Macu, gdy pomocnik Vision jest niedostępny), aby bezpośrednio śledzić obrys osoby, zamiast oszacowania na podstawie obrazu. Jeśli nie znajdzie osoby, Osoba przechodzi do tego oszacowania zamiast pozostawiać zaznaczenie puste."
           ],
           "steps": [
             "Wybierz Osoby, a potem część, którą chcesz dostosować.",
@@ -2311,7 +2353,7 @@
             "Sprawdź gotowy podgląd w 1:1."
           ],
           "tips": [
-            "Nauczone usuwanie szumu wymaga pomocnika wnioskowania w macOS i zgodnego lokalnego modelu. Jest niedostępne w systemach Linux i Windows. Zwykła redukcja szumu i wyostrzanie pozostają dostępne. Wydania deweloperskie mogą nie zawierać modelu; przed uruchomieniem przeczytaj komunikat o dostępności."
+            "Nauczone usuwanie szumu działa przez Core ML w macOS i przez onnxruntime w Windows i Linux, używając tego samego przekonwertowanego modelu. Zwykła redukcja szumu i wyostrzanie pozostają dostępne wszędzie. Kompilacje deweloperskie mogą nie zawierać przekonwertowanego modelu lub środowiska uruchomieniowego; przed rozpoczęciem przeczytaj komunikat o dostępności."
           ]
         },
         {
@@ -2618,7 +2660,7 @@
             "W przypadku Niestandardowy dostosuj Temperaturę i odcień przechwytywania."
           ],
           "tips": [
-            "Plik JPEG, HEIF, TIFF lub inny przetworzony plik ma już krzywą tonalną, więc przed symulacją filmu LightTable rozciąga go z powrotem w stronę światła sceny wokół szarości średniej: światła odzyskują swój zakres, cienie wracają tam, gdzie miała je scena, a ekspozycja w szarości średniej pozostaje bez zmian. Pliki RAW są już światłem sceny i nie są rozciągane."
+            "Plik JPEG, HEIF, TIFF lub inny przetworzony już zawiera krzywą tonalną. Przed wywoływaniem LightTable rozszerza jego zakres jasności, zachowując proporcje czerwieni, zieleni i niebieskiego, więc to przygotowanie nie przesadza istniejącej dominanty koloru. Automatyczny pomiar sceny utrzymuje ten sam punkt odniesienia ekspozycji. To przybliża kontrast sceny; nie może odzyskać szczegółów już utraconych w przetworzonym zdjęciu. Pliki RAW są już światłem sceny i nie są rozszerzane."
           ]
         },
         {
@@ -2712,13 +2754,27 @@
         {
           "title": "Formaty i presety",
           "paragraphs": [
-            "Okno eksportu oferuje JPEG, PNG i 16-bitowy TIFF. W macOS oferuje też 8-bitowy HEIF; HEIF jest ukryty w systemach Linux i Windows. Zapisana receptura HEIF nie może tam zostać zastosowana, więc wybierz inny format. Suwak jakości dotyczy JPEG i HEIF.",
+            "Okno eksportu oferuje JPEG, PNG i TIFF. TIFF domyślnie ma 16 bitów; wybierz głębię 8-bitowy TIFF w Zaawansowane, aby uzyskać mniejszy plik archiwalny. Na macOS oferuje też 8-bitowy HEIF; HEIF jest ukryty w Linux i Windows. Zapisanej receptury HEIF nie można tam zastosować, więc wybierz inny format. PNG i HEIF zawsze kodują w 8 bitach. Suwak jakości dotyczy JPEG i HEIF.",
             "JPG (Duży) używa pełnowymiarowego JPEG o jakości 92 w sRGB. JPG (Mały) używa dłuższego boku 2048 pikseli przy jakości 90 w sRGB. 16-bitowy TIFF używa pełnego rozmiaru i ProPhoto RGB. Zmiana tych ustawień wybiera Niestandardowy."
           ],
           "steps": [
             "Otwórz Eksportuj i wybierz preset z górnego paska.",
             "Ustaw Wymiary na Pełny rozmiar albo limit dłuższego boku.",
             "Sprawdź Podgląd wyjściowy: wyeksportowany rozmiar uwzględnia obrót i kadr, a limit dłuższego boku zmniejsza większe obrazy bez powiększania mniejszych."
+          ]
+        },
+        {
+          "title": "Rozmiar niestandardowy, rozdzielczość i wyostrzanie wyjściowe",
+          "paragraphs": [
+            "Niestandardowy rozmiar w Zaawansowane zastępuje preset Wymiary dowolną regułą zmiany rozmiaru: dłuższy bok, krótszy bok, dopasuj do szerokości i wysokości, megapiksele lub procent oryginału. Powiększ mniejsze zdjęcia, aby dopasować, pozwala regule powiększyć mniejsze źródło; w przeciwnym razie zdjęcie już na lub poniżej żądanego rozmiaru eksportuje się bez zmian. Rozdzielczość (ppi) zapisuje tylko znacznik metadanych rozdzielczości odczytywany przez oprogramowanie do druku i składu stron; nigdy nie zmienia wymiarów w pikselach.",
+            "Wyostrz dla stosuje wyostrzanie wyjściowe po zmniejszeniu lub zwiększeniu rozmiaru, dopasowane do sposobu wyświetlania pliku: Ekran do oglądania na ekranie albo Papier matowy/Papier błyszczący do drukowania. Ilość wyostrzania (Niska/Standard/Wysoka) ustala jego siłę. Wyostrzanie do druku skaluje promień wraz z Rozdzielczość (ppi), więc ten sam fizyczny halo wyostrzania pozostaje przy każdym rozmiarze wydruku.",
+            "Ogranicz rozmiar pliku JPEG do (KB) automatycznie obniża jakość JPEG, aż plik zmieści się w limicie albo zostanie osiągnięta minimalna jakość; komunikat ostrzega, gdy nie udało się spełnić limitu."
+          ],
+          "steps": [
+            "Otwórz Eksportuj i rozwiń Zaawansowane.",
+            "Wybierz Rozmiar niestandardowy i wpisz wartość reguły zmiany rozmiaru albo pozostaw opcję Użyj Wymiary powyżej, aby zachować prosty preset.",
+            "Wybierz Wyostrz dla i Ilość wyostrzania, jeśli eksport wymaga wyostrzania wyjściowego.",
+            "W przypadku JPEG z twardym limitem rozmiaru ustaw opcję Ogranicz rozmiar pliku JPEG do (KB)."
           ]
         },
         {
@@ -2736,7 +2792,7 @@
           "title": "Ograniczenia przestrzeni kolorów",
           "paragraphs": [
             "Każdy eksport osadza wybrany profil ICC. Wybierz sRGB, Display P3 lub ProPhoto RGB w Przestrzeń kolorów.",
-            "Eksporty wywoływania w szerokim gamucie zachowują kolory źródłowe, gdy kolor i lokalne korekty są wyłączone. Renderowanie Film i wyeksportowane wywoływanie z korektami są ograniczone do kolorów sRGB. Zakodowanie jednego z tych wyników w P3 lub ProPhoto nie przywraca kolorów już ograniczonych przez renderowanie."
+            "Eksporty Wywoływania w szerokim gamucie zachowują kolory źródłowe, gdy zastosowano tylko korekty Jasny (Ekspozycja, Światła, Cienie, Światła i Cienie oraz Kontrast); te kontrole działają na świetle, a nie na kolorach sRGB. Renderowanie filmu i eksporty Wywoływania z korektami koloru lub szczegółów, maskami, retuszem albo znakiem wodnym są ograniczone do kolorów sRGB. Zakodowanie jednego z tych wyników w P3 lub ProPhoto nie przywraca kolorów już ograniczonych przez renderowanie."
           ]
         }
       ],
@@ -3061,7 +3117,8 @@
         {
           "title": "Domyślne dla nieedytowanych zdjęć",
           "paragraphs": [
-            "Domyślne wywoływania stosują się tylko do zdjęć, które nie mają jeszcze zapisanych edycji. Mogą uruchamiać Film włączony, wybierać przepływ pracy i neutralny profil wywoływania oraz stosować domyślny preset.",
+            "Domyślne ustawienia wywoływania dotyczą tylko zdjęć, które nie mają jeszcze zapisanych edycji. Mogą zaczynać z włączonym Film, wybierać przepływ pracy i neutralny profil Wywoływania, wybierać profil aparatu, od którego startuje nigdy nieedytowane zdjęcie RAW, oraz zastosować domyślny preset.",
+            "Profil aparatu domyślnie używa LightTable Standard, dołączonego wyglądu. Wybierz Wbudowane, aby nowe zdjęcia RAW zaczynały zamiast tego od analitycznej krzywej Standard. Zdjęcia z zapisanymi edycjami zachowują to, co zostało zapisane.",
             "Automatycznie stosuj dopasowany profil obiektywu, domyślnie włączone, włącza profil obiektywu dla zdjęć, których aparat i obiektyw dokładnie pasują do jednego profilu i których ustawienia obiektywu nigdy nie zostały zapisane. Wyłącz, aby otwierać każde zdjęcie z wyłączonym profilem."
           ],
           "steps": [
@@ -3070,14 +3127,16 @@
             "Aby ustawić domyślne RAW dla konkretnego aparatu, otwórz zdjęcie RAW i dostosuj jego ustawienia RAW.",
             "Wybierz dopasowanie według modelu aparatu, numeru seryjnego albo aparatu i ISO, a następnie kliknij Użyj bieżących ustawień RAW.",
             "Użyj Resetuj w obszarze Bieżący aparat, aby usunąć domyślne ustawienie tego aparatu.",
-            "Aby wywoływać zdjęcia RAW z profilem aparatu, pozostaw Folder profili aparatu pusty, by używać profili zainstalowanych na tym komputerze przez Adobe Camera Raw lub Lightroom, albo podaj inny folder z plikami .dcp."
+            "Aby używać własnych profili DCP, pozostaw Folder profili aparatu pusty, aby użyć folderu CameraProfiles w katalogu danych LightTable, albo na macOS i Windows profili zainstalowanych przez Adobe Camera Raw lub Lightroom, albo wpisz inny folder plików .dcp."
           ]
         },
         {
           "title": "Profile aparatu",
           "paragraphs": [
-            "Sekcja Profil zdjęcia RAW oferuje menu Profil aparatu z plikami .dcp z folderu, które wymieniają jego aparat, na przykład Adobe Standard lub style naśladujące aparat. LightTable nigdy nie dostarcza tych profili; należą do Twojej własnej instalacji Adobe.",
-            "Profil jest stosowany tylko do wywoływania z wyłączonym filmem, i to w przybliżeniu: jego tabele barwy i nasycenia oraz, jeśli ją zawiera, jego krzywa tonalna, która zastępuje wtedy standardową krzywą wywoływania. Mieszanie dwóch iluminantów i macierze wprost nie są stosowane, więc profil może wyglądać nieco cieplej lub chłodniej niż ten sam plik w Lightroom. Renderowanie filmu zawsze zaczyna się od neutralnych danych sceny."
+            "Sekcja Profil zdjęcia RAW oferuje menu Profil aparatu z LightTable Standard oraz plikami .dcp w folderze profili aparatu, które nazywają jego aparat, albo w nazwie pliku, albo we własnych znacznikach aparatu i nazwy profilu, takich jak Adobe Standard lub wyglądy dopasowane do aparatu. Z LightTable jest dostarczany tylko LightTable Standard; pozostałe profile należą do własnej instalacji użytkownika.",
+            "LightTable Standard to modelowany, ogólny wygląd: umiarkowana mapa barwy i nasycenia oraz krzywa tonalna, która prowadzi szarą średnią i łagodnie wycofuje światła tak, jak robi to odwzorowanie dopasowane do aparatu. Nie jest mierzony z żadnego aparatu i nie zawiera macierzy kolorów, więc własny kolor aparatu dekodera nadal pozostaje nadrzędny.",
+            "Profil DCP z macierzami kolorów jest stosowany zgodnie ze specyfikacją DNG. Przy dekodowaniu RAW jego macierze kolorów i macierze forward, zmieszane dla balansu bieli z chwili wykonania zdjęcia, zastępują osadzoną macierz dekodera, więc Film i Wywoływanie oba zaczynają od koloru aparatu z profilu. W Wywoływanie z wyłączonym Film tabele barwy i nasycenia mieszają się przy tym samym balansie bieli, a następnie pojawiają się bazowe przesunięcie ekspozycji, tabela wyglądu i krzywa tonalna; krzywa tonalna profilu zastępuje standardową krzywą wywoływania. Linux nie ma lokalizacji profili producenta, więc wskaż Folder profili aparatu na własne pliki .dcp.",
+            "To, co pozostaje przybliżone: demosaikowanie i rekonstrukcja świateł pochodzą z LibRaw, a nie z referencyjnego konwertera, a Automatyczny balans bieli szacuje temperaturę na podstawie balansu z wykonania zdjęcia, więc profil może nadal renderować się nieco inaczej niż ten sam plik w Lightroom."
           ]
         },
         {
@@ -3495,5 +3554,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "8ceb3178eea44a1b3facef07cbf018aae0d2b44217fea7bd8aa6341c5d61e96b"
+  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
 }
