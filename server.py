@@ -7066,11 +7066,23 @@ def library_health_summary() -> dict:
     }
 
 
-def write_instance_file() -> Path:
+def write_instance_file() -> Path | None:
+    """Register this server for command-line discovery.
+
+    A previous session on this port can leave its file behind, and Windows
+    denies replacing it while a client or virus scanner reads it. Registration
+    only serves those clients, so a conflict that persists must not stop the
+    window's own server from starting.
+    """
     path = instance_path()
-    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    durable_io.atomic_write_json(path, health_payload(include_token=True),
-                                  keep_backup=False)
+    payload = health_payload(include_token=True)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        durable_io.retry_windows_sharing(
+            lambda: durable_io.atomic_write_json(path, payload, keep_backup=False))
+    except OSError as error:
+        print(f"LightTable: could not register this instance for command-line clients ({error})")
+        return None
     try:
         path.chmod(0o600)
     except OSError:
@@ -8733,9 +8745,12 @@ def _watch_launcher_stdin(reader) -> None:
 
 def _exit_with_parent(reason: str = "parent-gone") -> None:
     # `os._exit` skips atexit, so record the ending first: a launcher that
-    # vanished is not a server crash and must not be counted as one.
+    # vanished is not a server crash and must not be counted as one. The
+    # instance registration goes too; otherwise the next launch on this port
+    # must replace a stale file that command-line clients may be reading.
     SESSION.end(reason)
     STARTUP.remove()
+    remove_instance_file()
     os._exit(0)
 
 
