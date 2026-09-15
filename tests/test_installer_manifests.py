@@ -192,7 +192,7 @@ class InstallerManifestTests(unittest.TestCase):
     def test_update_files_are_included_in_checksums(self):
         self.artifact("macos-arm64.dmg")
         self.artifact("macos-arm64.zip", b"Sparkle fixture")
-        (self.artifacts / "appcast.xml").write_text("<rss/>")
+        (self.artifacts / "appcast-macos-arm64.xml").write_text("<rss/>")
         self.generate()
         lines = (self.output / "SHA256SUMS").read_text().splitlines()
         self.assertEqual(len(lines), 3)
