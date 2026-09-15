@@ -38,10 +38,7 @@ def main():
             "format": "UDZO",
             "create_hook": verify_staged_app,
             "filesystem": "HFS+",
-            "files": [
-                (str(app), "LightTable.app"),
-                str(assets / "READ ME FIRST.txt"),
-            ],
+            "files": [(str(app), "LightTable.app")],
             "symlinks": {"Applications": "/Applications"},
             "background": str(assets / "background.png"),
             "window_rect": ((100, 100), (760, 520)),
@@ -60,11 +57,9 @@ def main():
             "show_icon_preview": False,
             # Setting FinderInfo on the app invalidates its strict code seal.
             # Finder already hides the standard .app extension.
-            "hide_extensions": ["READ ME FIRST.txt"],
             "icon_locations": {
                 "LightTable.app": (176, 169),
                 "Applications": (584, 169),
-                "READ ME FIRST.txt": (380, 444),
             },
         },
     )
