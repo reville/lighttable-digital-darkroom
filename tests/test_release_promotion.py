@@ -109,6 +109,12 @@ class PromotionProofTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 promote.check_feed_forward(old, new, 'linux-x86_64')
 
+    def test_sparkle_item_child_version_is_supported(self):
+        feed = ('<rss xmlns:sparkle="' + promote.SPARKLE + '"><channel><item>'
+                '<sparkle:version>0.7.6-beta.2</sparkle:version>'
+                '<enclosure sparkle:edSignature="fixture"/></item></channel></rss>')
+        self.assertEqual(promote.feed_version(feed.encode(), 'macos-arm64'), '0.7.6-beta.2')
+
     def test_windows_feed_signature_must_match_installer_and_embedded_key(self):
         try:
             from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey

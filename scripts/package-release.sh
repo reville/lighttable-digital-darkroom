@@ -16,7 +16,11 @@ APPCAST_DIR="$OUTPUT_DIR/appcast"
 ARCHIVE_NAME="LightTable-$VERSION-macos-arm64.zip"
 ARCHIVE="$APPCAST_DIR/$ARCHIVE_NAME"
 DMG="$OUTPUT_DIR/LightTable-$VERSION-macos-arm64.dmg"
-TAG="v$VERSION"
+if [[ "$VERSION" == *-beta.* ]]; then
+  TAG="macos-v$VERSION"
+else
+  TAG="v$VERSION"
+fi
 
 if [[ ! -d "$APP/Contents" ]]; then
   echo "Not an application bundle: $APP" >&2
