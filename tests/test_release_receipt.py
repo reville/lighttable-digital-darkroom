@@ -1,11 +1,19 @@
 # SPDX-License-Identifier: GPL-3.0-only
-import copy, importlib.util, json, unittest
+import copy, importlib.util, unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('receipt',ROOT/'scripts/release/generate-receipt.py'); receipt=importlib.util.module_from_spec(spec); spec.loader.exec_module(receipt)
 class ReceiptTests(unittest.TestCase):
  def setUp(self):
-  self.aggregate=json.loads((ROOT/'release/manifest.json').read_text()); self.version=self.aggregate['version']; self.source=self.aggregate['source_revision']
+  # Receipt scenarios describe one source release; the live catalog may retain
+  # independently released platform versions and must not serve as a fixture.
+  self.version='0.7.8'; self.source='a'*40
+  self.aggregate={'schema_version':1,'version':self.version,'source_revision':self.source,'tag':'v'+self.version,'platforms':{}}
+  for platform, signing, suffix in [('linux-x86_64','ed25519','.tar.gz'),('macos-arm64','ad-hoc','.dmg')]:
+   version=self.version+'-beta.1' if platform=='macos-arm64' else self.version
+   tag=('macos-v' if platform=='macos-arm64' else 'v')+version
+   name=f'LightTable-{version}-{platform}{suffix}'
+   self.aggregate['platforms'][platform]={'version':version,'source_revision':self.source,'tag':tag,'channel':'beta' if '-beta.' in version else 'stable','state':'published','minimum_os':'test OS','update_owner':'manual','signing':signing,'gates':[],'build_run_id':'123','validation':{'status':'passed','receipts':['test-native-receipt.json']},'artifacts':[{'name':name,'url':f'https://github.com/reville/lighttable-digital-darkroom/releases/download/{tag}/{name}','bytes':100,'sha256':'1'*64}]}
  def promotion(self, platform='linux-x86_64', **flags):
   entry=copy.deepcopy(self.aggregate['platforms'][platform]); m={'schema_version':1,'version':entry['version'],'source_revision':self.source,'tag':entry.get('tag',self.aggregate.get('tag','v'+entry['version'])),'platforms':{platform:entry}}
   out={'platform':platform,'version':m['version'],'source_revision':self.source,'tag':m['tag'],'build_run_id':entry['build_run_id'],'manifest':m,'applied':True,'public_bytes_verified':True,'published_release':True,'receipts_verified':True,'published_at':'2026-09-13T00:00:00Z'}; out.update(flags); return out
