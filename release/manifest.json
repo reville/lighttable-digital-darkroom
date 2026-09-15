@@ -65,6 +65,18 @@
           "name": "LightTable-0.7.6-beta.1-macos-arm64.zip.sha256",
           "sha256": "088fc45dddeabeb7cff446b7db144f977b4f55c4953ede70db582da810615659",
           "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64.zip.sha256"
+        },
+        {
+          "name": "LightTable-0.7.6-beta.1-macos-arm64-notarized.dmg",
+          "bytes": 381000487,
+          "sha256": "b2cd8afda31dab51a6f62b0ca50eb40b703dd381907611ced67277c21941c45d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64-notarized.dmg"
+        },
+        {
+          "name": "LightTable-0.7.6-beta.1-macos-arm64-notarized.dmg.sha256",
+          "bytes": 116,
+          "sha256": "26a5f4b29a011054ed3005738bfb9ccf51c1953d4e13f9908864995c92361d9d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64-notarized.dmg.sha256"
         }
       ],
       "build_run_id": "34773993435",
@@ -72,7 +84,7 @@
       "channel": "beta",
       "gates": [],
       "minimum_os": "macOS 14 Sonoma or later",
-      "published_at": "2026-09-15T13:25:00.781648Z",
+      "published_at": "2026-09-15T13:46:41Z",
       "signing": "developer-id-notarized",
       "source_revision": "d1ef234ec2a67d5bdcdcb94cda5a0bbf07738c13",
       "state": "published",
@@ -80,7 +92,8 @@
       "update_owner": "manual",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64-cloud-signing-proof.json"
+          "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64-cloud-signing-proof.json",
+          "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.1/LightTable-0.7.6-beta.1-macos-arm64-dmg-layout-proof.json"
         ],
         "status": "passed"
       },
