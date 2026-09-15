@@ -271,30 +271,19 @@ def check_feed_forward(current, candidate, platform):
 
 def advance_feed(manifest, platform, feed, temporary):
     tag = manifest.get('tag', 'v' + manifest['version'])
-    if platform == 'macos-arm64':
-        latest = json.loads(release.gh('release', 'view', '--repo', release.REPOSITORY, '--json', 'tagName,assets'))
-        if any(a['name'] == feed.name for a in latest['assets']):
-            prior = temporary / 'current-feed'
-            prior.mkdir()
-            release.gh('release', 'download', latest['tagName'], '--repo', release.REPOSITORY,
-                       '--pattern', feed.name, '--dir', str(prior))
-            check_feed_forward((prior / feed.name).read_bytes(), feed.read_bytes(), platform)
-        # The Mac app reads the dedicated mutable desktop-updates feed.
-        pointer = f'https://github.com/{release.REPOSITORY}/releases/download/desktop-updates/{feed.name}'
-    else:
-        current = json.loads(release.gh('release', 'view', 'desktop-updates', '--repo', release.REPOSITORY,
-                                      '--json', 'isDraft,assets'))
-        require(current['isDraft'] is False, 'Desktop update channel must already be public')
-        previous = next((a for a in current['assets'] if a['name'] == feed.name), None)
-        if previous:
-            prior = temporary / 'current-feed'
-            prior.mkdir()
-            release.gh('release', 'download', 'desktop-updates', '--repo', release.REPOSITORY,
-                       '--pattern', feed.name, '--dir', str(prior))
-            check_feed_forward((prior / feed.name).read_bytes(), feed.read_bytes(), platform)
-        # The only replaceable object is this platform's mutable signed pointer.
-        release.gh('release', 'upload', 'desktop-updates', str(feed), '--repo', release.REPOSITORY, '--clobber')
-        pointer = f'https://github.com/{release.REPOSITORY}/releases/download/desktop-updates/{feed.name}'
+    current = json.loads(release.gh('release', 'view', 'desktop-updates', '--repo', release.REPOSITORY,
+                                  '--json', 'isDraft,assets'))
+    require(current['isDraft'] is False, 'Desktop update channel must already be public')
+    previous = next((a for a in current['assets'] if a['name'] == feed.name), None)
+    if previous:
+        prior = temporary / 'current-feed'
+        prior.mkdir()
+        release.gh('release', 'download', 'desktop-updates', '--repo', release.REPOSITORY,
+                   '--pattern', feed.name, '--dir', str(prior))
+        check_feed_forward((prior / feed.name).read_bytes(), feed.read_bytes(), platform)
+    # The only replaceable object is this platform's mutable signed pointer.
+    release.gh('release', 'upload', 'desktop-updates', str(feed), '--repo', release.REPOSITORY, '--clobber')
+    pointer = f'https://github.com/{release.REPOSITORY}/releases/download/desktop-updates/{feed.name}'
     downloaded = temporary / 'public-feed'
     public_download(pointer, downloaded)
     require(downloaded.read_bytes() == feed.read_bytes(), 'Public updater pointer does not match the verified feed')
