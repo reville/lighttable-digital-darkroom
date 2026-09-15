@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "匯入支援的中繼資料與近似編輯，然後檢視轉換報告。",
     "Import the originals from your Photos library.": "從您的 Photos 圖庫匯入原始檔。",
     "Import your presets": "匯入你的預設集",
+    "Imported": "已匯入",
     "Imported {count} photo from Apple Photos{value}": "已從 Apple Photos 匯入 {count} 張相片{value}",
     "Imported {count} photos from Apple Photos{value}": "已從 Apple Photos 匯入 {count} 張相片{value}",
     "Imported {value} preset": "已匯入 {value} 個預設集",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "舊的已儲存預覽寬度選項在升級到此行為時會重設為自動。在進階中選取的固定覆寫會儲存在之後的工作階段。當手動覆寫啟用時，效能會顯示。",
     "On": "開啟",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "在 Linux 上，設定 → 效能會在啟動後回報作用中的 Rust 轉譯器與偵測到的介面卡。當沒有硬體 GPU 可用時，GPU · Rust 選項可改用 CPU 轉譯。軟體 Vulkan 不是硬體加速。",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "在 Linux 上，選擇「更新」以下載並驗證套件，然後選擇「重新啟動並更新」。Windows 使用原生更新對話框。請先完成匯入、匯出及其他工作；LightTable 會在關閉前儲存待處理的編輯並備份目錄。",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "在 Linux 上，控制項會遵循系統的淺色或深色外觀。在 Omarchy 上，工具列、側邊欄、選單和對話框會遵循目前的桌面調色盤，並在主題變更後幾秒內更新。相片像素、檢視器背景偏好設定，以及中性色彩範圍會保留各自的色彩。",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "在 Mac 上：Dropbox 的僅限線上預留位置檔案可能顯示為 0 位元組，但這不代表雲端原始檔案是空的。在 Finder 中選擇「設為可離線存取」，然後在 LightTable 中選擇「重試」。對於沒有雲端標記的空檔案，請下載或還原原始檔案。重試前，請重新連接無法使用的資料夾或磁碟機。",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "在 Mac 上，選擇相片 → 將已拒絕相片移至垃圾桶…，或按 Command+Delete。在 Linux 或 Windows 桌面應用程式中，按 Ctrl+Delete。",
@@ -2058,6 +2058,7 @@
     "On disk": "在磁碟上",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "首次使用時，非英文的主要系統語言會提示您進行選擇。Mac 應用程式會在初次選擇資料夾與啟動前詢問；其他應用程式視窗則會在編輯器打開前詢問。系統會建議一種支援的語言，若系統語言不受支援則建議 English。語言會以其母語名稱列出。",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "在 macOS 上，「說明 → 診斷」提供「重新載入介面」、「重新啟動轉譯服務」、「顯示伺服器記錄」、「資料庫健全性…」以及「在安全模式下重新啟動」。",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "在 macOS 上，選擇 LightTable →「檢查更新…」以下載並安裝已簽署的正式版。在 Linux 上，選擇「更新」以下載並驗證套件，然後重新啟動並更新。Windows 使用其原生更新對話框。請先完成匯入、匯出及其他作業；LightTable 會在關閉前儲存待處理的編輯並備份目錄。",
     "On-device capabilities": "裝置上功能",
     "On-device description": "裝置上描述",
     "One destination folder": "一個目的地資料夾",
@@ -2901,7 +2902,7 @@
     "Shutter": "快門",
     "Sidecars are up to date.": "旁側檔案已是最新。",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "已讀取旁側檔案：{read}。已套用：{applied}。沒有旁側檔案的相片：{missing}。",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "已簽署的 Windows 安裝和已設定的 Linux 可攜式安裝，可在「設定 → 一般」中使用「檢查更新…」。自動檢查會在編輯器開啟後執行，每天最多一次。",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "已簽署的 macOS 安裝在 LightTable 選單中提供「檢查更新…」，而已簽署的 Windows 安裝與已設定的 Linux 可攜式安裝則在「設定」→「一般」中提供。自動檢查在編輯器開啟後每天最多執行一次。臨時 Mac 測試版仍僅限手動更新。",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "相似的臉部會分組在一起。您可以加入名稱、檢視可能的匹配，並在需要時更正群組。",
     "Simulate paper and ink": "模擬紙張與墨水",
     "Size": "大小",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} 毫秒",
     "{mode} failed": "{mode} 失敗",
     "{mode} merge needs 2 to {limit} distinct originals": "{mode} 合併需要 2 到 {limit} 個不同的原始檔",
+    "{name} (Already imported)": "{name} (已匯入)",
     "{name} (partial identity)": "{name}（部分身分）",
     "{name} already exists in that folder": "資料夾中已存在 {name}",
     "{name} already exists; no files were moved": "{name} 已存在；未移動任何檔案",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛",
-    "Imported": "已匯入",
-    "{name} (Already imported)": "{name} (已匯入)"
+    "☆ Favorites": "☆ 最愛"
   },
   "plurals": {
     " · {count} paired file linked": {

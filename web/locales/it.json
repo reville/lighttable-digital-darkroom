@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "Importa metadati supportati e modifiche approssimative, quindi rivedi il rapporto di conversione.",
     "Import the originals from your Photos library.": "Importa gli originali dalla tua libreria Foto.",
     "Import your presets": "Importa i tuoi predefiniti",
+    "Imported": "Importata",
     "Imported {count} photo from Apple Photos{value}": "Importata {count} foto da Apple Photos{value}",
     "Imported {count} photos from Apple Photos{value}": "Importate {count} foto da Apple Photos{value}",
     "Imported {value} preset": "Importata {value} preimpostazione",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Le vecchie scelte salvate per la larghezza di anteprima vengono reimpostate su Automatico passando a questo comportamento. Un override fisso scelto in Avanzate viene salvato per le sessioni successive. Prestazioni mostra quando un override manuale è attivo.",
     "On": "Attivo",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Su Linux, Impostazioni → Prestazioni mostra il renderer Rust attivo e l'adattatore rilevato dopo l'avvio. La scelta GPU · Rust può usare il rendering CPU quando non è disponibile una GPU hardware. Vulkan software non è accelerazione hardware.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Su Linux, scegli Aggiorna per scaricare e verificare il pacchetto, poi Riavvia e aggiorna. Windows usa la sua finestra nativa di aggiornamento. Completa prima importazioni, esportazioni e altre attività; LightTable salva le modifiche in sospeso ed esegue il backup del catalogo prima di chiudersi.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Su Linux, i controlli seguono l'aspetto chiaro o scuro del sistema. Su Omarchy, barre degli strumenti, barre laterali, menu e finestre di dialogo seguono la tavolozza attiva del desktop e si aggiornano entro pochi secondi da un cambio di tema. I pixel della foto, la preferenza per lo sfondo del visualizzatore e gli ambiti di colore neutro mantengono i propri colori.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Su Mac: I segnaposto Dropbox disponibili solo online possono indicare 0 byte senza che l’originale nel cloud sia vuoto. Nel Finder, scegli Rendi disponibile offline, poi Riprova in LightTable. Per un file vuoto senza contrassegno cloud, scarica o ripristina l’originale. Ricollega le cartelle o le unità non disponibili prima di riprovare.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Su Mac, scegli Foto → Sposta le foto rifiutate nel Cestino…, oppure premi Command+Delete. Nell'app desktop Linux o Windows, premi Ctrl+Delete.",
@@ -2058,6 +2058,7 @@
     "On disk": "Su disco",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Al primo utilizzo, una lingua principale di sistema non inglese ti invita a scegliere. L'app Mac chiede prima della scelta iniziale della cartella e dell'avvio; le altre finestre dell'app chiedono prima dell'apertura dell'editor. Viene suggerita una lingua supportata, oppure l'inglese quando la lingua di sistema non è supportata. Le lingue sono elencate con i rispettivi nomi nativi.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "Su macOS, Aiuto → Diagnostica offre Ricarica interfaccia, Riavvia servizio di rendering, Mostra log server, Integrità libreria…, e Riavvia in modalità provvisoria.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Su macOS, scegli LightTable → Controlla aggiornamenti… per scaricare e installare una versione firmata. Su Linux, scegli Aggiorna per scaricare e verificare il bundle, quindi Riavvia e aggiorna. Windows usa la propria finestra di dialogo di aggiornamento nativa. Completa prima importazioni, esportazioni e altri lavori; LightTable salva le modifiche in sospeso e crea un backup del catalogo prima di chiudersi.",
     "On-device capabilities": "Funzionalità sul dispositivo",
     "On-device description": "Descrizione sul dispositivo",
     "One destination folder": "Una cartella di destinazione",
@@ -2901,7 +2902,7 @@
     "Shutter": "Otturatore",
     "Sidecars are up to date.": "Gli sidecar sono aggiornati.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Sidecar letti: {read}. Applicati: {applied}. Foto senza sidecar: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "Le installazioni Windows firmate e le installazioni portatili Linux configurate offrono Controlla aggiornamenti… in Impostazioni → Generale. I controlli automatici avvengono al massimo una volta al giorno dopo l’apertura dell’editor.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "Le installazioni firmate di macOS offrono Controlla aggiornamenti… nel menu LightTable, mentre le installazioni firmate di Windows e le installazioni portatili di Linux configurate lo offrono in Impostazioni → Generale. I controlli automatici vengono eseguiti al massimo una volta al giorno dopo l'avvio dell'editor. Le beta ad hoc per Mac restano disponibili solo con aggiornamento manuale.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "I volti simili vengono raggruppati insieme. Aggiungi nomi, rivedi le possibili corrispondenze e correggi un gruppo ogni volta che ne hai bisogno.",
     "Simulate paper and ink": "Simula carta e inchiostro",
     "Size": "Dimensione",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ms",
     "{mode} failed": "{mode} non riuscito",
     "{mode} merge needs 2 to {limit} distinct originals": "L'unione {mode} richiede da 2 a {limit} originali distinti",
+    "{name} (Already imported)": "{name} (Già importata)",
     "{name} (partial identity)": "{name} (identità parziale)",
     "{name} already exists in that folder": "{name} esiste già in quella cartella",
     "{name} already exists; no files were moved": "{name} esiste già; nessun file è stato spostato",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti",
-    "Imported": "Importata",
-    "{name} (Already imported)": "{name} (Già importata)"
+    "☆ Favorites": "☆ Preferiti"
   },
   "plurals": {
     " · {count} paired file linked": {

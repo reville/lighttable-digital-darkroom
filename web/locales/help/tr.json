@@ -3090,8 +3090,8 @@
         {
           "title": "LightTable'ı güncelle",
           "paragraphs": [
-            "İmzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları, Ayarlar → Genel altında Güncellemeleri Denetle… seçeneğini sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez yapılır.",
-            "Linux'ta paketi indirip doğrulamak için Güncelle'yi, ardından Yeniden başlat ve güncelle'yi seçin. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri bitirin; LightTable kapanmadan önce bekleyen düzenlemeleri kaydeder ve kataloğu yedekler.",
+            "İmzalı macOS kurulumları, LightTable menüsünde Güncellemeleri Denetle… seçeneğini sunar; imzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları ise bunu Ayarlar → Genel altında sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez çalışır. Ad hoc Mac beta sürümleri yalnızca manuel güncelleme ile kalır.",
+            "macOS’ta imzalı bir sürümü indirmek ve yüklemek için LightTable → Güncellemeleri Denetle… seçeneğini kullanın. Linux’ta paketi indirmek ve doğrulamak için Güncelle’yi seçin, ardından Yeniden başlat ve güncelle komutunu kullanın. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri tamamlayın; LightTable, kapatmadan önce bekleyen düzenlemeleri kaydeder ve katalogu yedekler.",
             "Güncellemeler fotoğrafları, düzenlemeleri ve tercihleri korur. Linux kurtarma için önceki paketi saklar ancak kataloğu otomatik olarak geri yüklemez veya eski bir sürümü yeniden açmaz.",
             "Scoop, WinGet, Chocolatey, AUR, Flatpak veya Snap tarafından yönetilen kurulumları ilgili yöneticiyle güncelleyin. Windows taşınabilir kopyaları için yeni bir ZIP indirin. Güncelleme imzası yapılandırılmamış derlemeler kendilerini güncelleyemez."
           ]
@@ -3495,5 +3495,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732"
 }

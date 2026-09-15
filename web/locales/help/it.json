@@ -3090,8 +3090,8 @@
         {
           "title": "Aggiorna LightTable",
           "paragraphs": [
-            "Le installazioni Windows firmate e le installazioni portatili Linux configurate offrono Controlla aggiornamenti… in Impostazioni → Generale. I controlli automatici avvengono al massimo una volta al giorno dopo l’apertura dell’editor.",
-            "Su Linux, scegli Aggiorna per scaricare e verificare il pacchetto, poi Riavvia e aggiorna. Windows usa la sua finestra nativa di aggiornamento. Completa prima importazioni, esportazioni e altre attività; LightTable salva le modifiche in sospeso ed esegue il backup del catalogo prima di chiudersi.",
+            "Le installazioni firmate di macOS offrono Controlla aggiornamenti… nel menu LightTable, mentre le installazioni firmate di Windows e le installazioni portatili di Linux configurate lo offrono in Impostazioni → Generale. I controlli automatici vengono eseguiti al massimo una volta al giorno dopo l'avvio dell'editor. Le beta ad hoc per Mac restano disponibili solo con aggiornamento manuale.",
+            "Su macOS, scegli LightTable → Controlla aggiornamenti… per scaricare e installare una versione firmata. Su Linux, scegli Aggiorna per scaricare e verificare il bundle, quindi Riavvia e aggiorna. Windows usa la propria finestra di dialogo di aggiornamento nativa. Completa prima importazioni, esportazioni e altri lavori; LightTable salva le modifiche in sospeso e crea un backup del catalogo prima di chiudersi.",
             "Gli aggiornamenti conservano foto, modifiche e preferenze. Linux mantiene il pacchetto precedente per il ripristino, ma non ripristina automaticamente un catalogo né riapre una versione precedente.",
             "Usa Scoop, WinGet, Chocolatey, AUR, Flatpak o Snap per aggiornare le installazioni che gestiscono. Scarica un nuovo ZIP per le copie portatili di Windows. Le build senza la firma degli aggiornamenti configurata non possono aggiornarsi da sole."
           ]
@@ -3495,5 +3495,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732"
 }

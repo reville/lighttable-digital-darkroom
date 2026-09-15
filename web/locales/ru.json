@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "Импортируйте поддерживаемые метаданные и приблизительные правки, затем просмотрите отчет о преобразовании.",
     "Import the originals from your Photos library.": "Импортируйте оригиналы из вашей библиотеки Фото.",
     "Import your presets": "Импортируйте свои пресеты",
+    "Imported": "Импортировано",
     "Imported {count} photo from Apple Photos{value}": "Импортировано {count} фото из Apple Photos{value}",
     "Imported {count} photos from Apple Photos{value}": "Импортировано {count} фото из Apple Photos{value}",
     "Imported {value} preset": "Импортировано {value} предустановка",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Старые сохранённые значения ширины предпросмотра при обновлении до этого поведения сбрасываются в Авто. Фиксированное переопределение, выбранное в Дополнительно, сохраняется для последующих сеансов. Производительность показывается, когда активно ручное переопределение.",
     "On": "Вкл.",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "В Linux, Настройки → Производительность сообщает активный рендерер Rust и обнаруженный адаптер после разогрева. Выбор GPU · Rust может использовать рендеринг на CPU, если аппаратный GPU недоступен. Программный Vulkan — это не аппаратное ускорение.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "В Linux выберите «Обновить», чтобы загрузить и проверить пакет, затем «Перезапустить и обновить». Windows использует собственное диалоговое окно обновления. Сначала завершите импорт, экспорт и другие задачи; перед закрытием LightTable сохраняет ожидающие правки и создаёт резервную копию каталога.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "В Linux элементы управления следуют системному светлому или тёмному оформлению. В Omarchy панели инструментов, боковые панели, меню и диалоги следуют активной палитре рабочего стола и обновляются в течение нескольких секунд после смены темы. Пиксели фото, настройка фона просмотра и нейтральные цветовые области сохраняют свои собственные цвета.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "На Mac: Файлы-заполнители Dropbox, доступные только онлайн, могут показывать 0 байт, даже если оригинал в облаке не пуст. В Finder выберите Сделать доступным офлайн, затем Повторить в LightTable. Если файл пуст и не имеет облачной метки, скачайте или восстановите оригинал. Перед повторной попыткой подключите недоступные папки или диски.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "На Mac выберите Фото → Переместить отклоненные фото в корзину… или нажмите Command+Delete. В приложении для Linux или Windows нажмите Ctrl+Delete.",
@@ -2058,6 +2058,7 @@
     "On disk": "На диске",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "При первом запуске неанглийский основной системный язык предлагает сделать выбор. Приложение Mac спрашивает перед первым выбором папки и запуском; другие окна приложения спрашивают перед открытием редактора. Предлагается поддерживаемый язык или английский, если системный язык не поддерживается. Языки перечислены на своих родных названиях.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "В macOS «Справка → Диагностика» предлагает «Перезагрузить интерфейс», «Перезапустить службу рендеринга», «Показать журнал сервера», «Состояние библиотеки…» и «Перезапустить в безопасном режиме».",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "В macOS выберите LightTable → Проверить обновления…, чтобы загрузить и установить подписанный выпуск. В Linux выберите Обновить, чтобы загрузить и проверить пакет, затем Перезапустить и обновить. В Windows используется собственный диалог обновления. Сначала завершите импорт, экспорт и другие задачи; LightTable сохраняет ожидающие правки и создает резервную копию каталога перед закрытием.",
     "On-device capabilities": "Возможности на устройстве",
     "On-device description": "Описание на устройстве",
     "One destination folder": "Одна папка назначения",
@@ -2901,7 +2902,7 @@
     "Shutter": "Затвор",
     "Sidecars are up to date.": "Сайдкары актуальны.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Сайдкары прочитаны: {read}. Применено: {applied}. Фото без сайдкаров: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "В подписанных установках Windows и настроенных портативных установках Linux доступна команда «Проверить обновления…» в разделе «Настройки → Общие». Автоматическая проверка выполняется не чаще одного раза в день после открытия редактора.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "В подписанных установках macOS пункт Проверить обновления… доступен в меню LightTable, а в подписанных установках Windows и настроенных портативных установках Linux он доступен в Настройки → Общие. Автоматические проверки выполняются не чаще одного раза в день после того, как редактор откроется. Разовые бета-версии для Mac по-прежнему обновляются только вручную.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Похожие лица группируются вместе. Добавляйте имена, проверяйте возможные совпадения и при необходимости исправляйте группу.",
     "Simulate paper and ink": "Сымитировать бумагу и чернила",
     "Size": "Размер",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} мс",
     "{mode} failed": "{mode} не выполнено",
     "{mode} merge needs 2 to {limit} distinct originals": "Для объединения {mode} требуется от 2 до {limit} различных оригиналов",
+    "{name} (Already imported)": "{name} (Уже импортировано)",
     "{name} (partial identity)": "{name} (частичная идентичность)",
     "{name} already exists in that folder": "{name} уже существует в этой папке",
     "{name} already exists; no files were moved": "{name} уже существует; файлы не были перемещены",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ Назад",
     "← Back to articles": "← Назад к статьям",
     "← People": "← Люди",
-    "☆ Favorites": "☆ Избранное",
-    "Imported": "Импортировано",
-    "{name} (Already imported)": "{name} (Уже импортировано)"
+    "☆ Favorites": "☆ Избранное"
   },
   "plurals": {
     " · {count} paired file linked": {

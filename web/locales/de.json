@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "Importieren Sie unterstützte Metadaten und ungefähre Bearbeitungen und prüfen Sie dann den Konvertierungsbericht.",
     "Import the originals from your Photos library.": "Die Originale aus deiner Fotos-Mediathek importieren.",
     "Import your presets": "Ihre Vorgaben importieren",
+    "Imported": "Importiert",
     "Imported {count} photo from Apple Photos{value}": "{count} Foto aus Apple Fotos importiert{value}",
     "Imported {count} photos from Apple Photos{value}": "{count} Fotos aus Apple Fotos importiert{value}",
     "Imported {value} preset": "{value} Voreinstellung importiert",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Ältere gespeicherte Auswahlwerte für die Vorschau-Breite werden beim Upgrade auf dieses Verhalten auf Automatisch zurückgesetzt. Eine feste Überschreibung, die unter Erweitert gewählt wurde, wird für spätere Sitzungen gespeichert. Leistung wird angezeigt, wenn eine manuelle Überschreibung aktiv ist.",
     "On": "Ein",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Unter Linux meldet Einstellungen → Leistung nach der Startphase den aktiven Rust-Renderer und den erkannten Adapter. Die Auswahl GPU · Rust kann CPU-Rendering verwenden, wenn keine Hardware-GPU verfügbar ist. Software-Vulkan ist keine Hardwarebeschleunigung.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Wähle unter Linux Aktualisieren, um das Paket herunterzuladen und zu prüfen, und dann Neu starten und aktualisieren. Windows verwendet seinen nativen Aktualisierungsdialog. Beende zuerst Importe, Exporte und andere Aufgaben; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Unter Linux folgen die Steuerelemente dem hellen oder dunklen Erscheinungsbild des Systems. Unter Omarchy folgen Symbolleisten, Seitenleisten, Menüs und Dialoge der aktiven Desktop-Palette und werden innerhalb weniger Sekunden nach einer Designänderung aktualisiert. Die Bildpixel, die Hintergrundvoreinstellung des Betrachters und neutrale Farbbereiche behalten ihre eigenen Farben.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Auf dem Mac: Dropbox-Platzhalter für reine Onlinedateien können 0 Byte anzeigen, obwohl das Original in der Cloud nicht leer ist. Wähle im Finder Offline verfügbar machen und dann Erneut versuchen in LightTable. Lade bei einer leeren Datei ohne Cloud-Markierung das Original herunter oder stelle es wieder her. Verbinde nicht verfügbare Ordner oder Laufwerke erneut, bevor du es noch einmal versuchst.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Wählen Sie auf dem Mac Foto → Abgelehnte Fotos in den Papierkorb verschieben…, oder drücken Sie Command+Delete. In der Linux- oder Windows-Desktop-App drücken Sie Ctrl+Delete.",
@@ -2058,6 +2058,7 @@
     "On disk": "Auf Datenträger",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Bei der ersten Verwendung fordert eine nicht englische primäre Systemsprache Sie zur Auswahl auf. Die Mac-App fragt vor der ersten Ordnerauswahl und dem Starten; andere App-Fenster fragen, bevor der editor geöffnet wird. Eine unterstützte Sprache wird vorgeschlagen, oder Englisch, wenn die Systemsprache nicht unterstützt wird. Sprachen werden in ihren nativen Namen aufgeführt.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "Unter macOS bietet Hilfe → Diagnose die Optionen Benutzeroberfläche neu laden, Rendering-Dienst neu starten, Serverprotokoll anzeigen, Bibliothekszustand… und Im sicheren Modus neu starten.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Wählen Sie unter macOS LightTable → Nach Updates suchen…, um eine signierte Version herunterzuladen und zu installieren. Unter Linux wählen Sie Aktualisieren, um das Bundle herunterzuladen und zu überprüfen, und anschließend Neu starten und aktualisieren. Windows verwendet seinen nativen Update-Dialog. Schließen Sie zuerst Importe, Exporte und andere Aufgaben ab; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
     "On-device capabilities": "Funktionen auf dem Gerät",
     "On-device description": "Beschreibung auf dem Gerät",
     "One destination folder": "Ein Zielordner",
@@ -2901,7 +2902,7 @@
     "Shutter": "Auslöser",
     "Sidecars are up to date.": "Sidecars sind auf dem neuesten Stand.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Sidecars gelesen: {read}. Angewendet: {applied}. Fotos ohne Sidecars: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "Signierte Windows-Installationen und konfigurierte portable Linux-Installationen bieten Nach Updates suchen… unter Einstellungen → Allgemein. Automatische Prüfungen erfolgen höchstens einmal täglich nach dem Öffnen des Editors.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "Signierte macOS-Installationen bieten Nach Updates suchen… im LightTable-Menü an, während signierte Windows-Installationen und konfigurierte portable Linux-Installationen dies unter Einstellungen → Allgemein anbieten. Automatische Prüfungen werden höchstens einmal täglich nach dem Öffnen des Editors ausgeführt. Ad-hoc-Macs-Betas bleiben ausschließlich für manuelle Updates.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Ähnliche Gesichter werden zusammen gruppiert. Fügen Sie Namen hinzu, überprüfen Sie mögliche Übereinstimmungen und korrigieren Sie eine Gruppe jederzeit nach Bedarf.",
     "Simulate paper and ink": "Papier und Tinte simulieren",
     "Size": "Größe",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ms",
     "{mode} failed": "{mode} fehlgeschlagen",
     "{mode} merge needs 2 to {limit} distinct originals": "Zusammenführen im Modus {mode} benötigt 2 bis {limit} unterschiedliche Originale",
+    "{name} (Already imported)": "{name} (Bereits importiert)",
     "{name} (partial identity)": "{name} (teilweise Identität)",
     "{name} already exists in that folder": "{name} existiert in diesem Ordner bereits",
     "{name} already exists; no files were moved": "{name} existiert bereits; keine Dateien wurden verschoben",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ Zurück",
     "← Back to articles": "← Zurück zu Artikeln",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favoriten",
-    "Imported": "Importiert",
-    "{name} (Already imported)": "{name} (Bereits importiert)"
+    "☆ Favorites": "☆ Favoriten"
   },
   "plurals": {
     " · {count} paired file linked": {

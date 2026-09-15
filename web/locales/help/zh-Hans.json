@@ -3090,8 +3090,8 @@
         {
           "title": "更新 LightTable",
           "paragraphs": [
-            "已签名的 Windows 安装和已配置的 Linux 便携安装可在“设置 → 通用”中使用“检查更新…”。自动检查在编辑器打开后执行，每天最多一次。",
-            "在 Linux 上，选择“更新”以下载并验证软件包，然后选择“重启并更新”。Windows 使用原生更新对话框。请先完成导入、导出和其他任务；LightTable 会在关闭前保存待处理的编辑并备份目录。",
+            "已签名的 macOS 安装版本会在 LightTable 菜单中提供“检查更新…”，而已签名的 Windows 安装版本和已配置的 Linux 便携式安装版本则会在“设置”→“通用”中提供该选项。自动检查在编辑器打开后最多每天运行一次。临时 Mac 测试版仍然只能手动更新。",
+            "在 macOS 上，选择 LightTable → 检查更新… 以下载并安装已签名的正式版本。在 Linux 上，选择“更新”以下载并验证软件包，然后选择“重启并更新”。Windows 使用其原生更新对话框。请先完成导入、导出和其他任务；LightTable 会在关闭前保存待处理的编辑并备份目录。",
             "更新会保留照片、编辑和偏好设置。Linux 会保留旧软件包以便恢复，但不会自动还原目录或重新打开旧版本。",
             "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它们管理的安装。Windows 便携版需下载新的 ZIP。未配置更新签名的构建无法自行更新。"
           ]
@@ -3495,5 +3495,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "Importeer ondersteunde metadata en benaderde bewerkingen en bekijk daarna het conversierapport.",
     "Import the originals from your Photos library.": "Importeer de originelen uit je Foto's-bibliotheek.",
     "Import your presets": "Je voorinstellingen importeren",
+    "Imported": "Geïmporteerd",
     "Imported {count} photo from Apple Photos{value}": "{count} foto geïmporteerd uit Apple Photos{value}",
     "Imported {count} photos from Apple Photos{value}": "{count} foto's geïmporteerd uit Apple Photos{value}",
     "Imported {value} preset": "{value} voorinstelling geïmporteerd",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Oudere opgeslagen keuzes voor voorvertoningsbreedte worden bij het upgraden naar dit gedrag teruggezet naar Automatisch. Een vaste overschrijving die in Geavanceerd is gekozen, wordt voor latere sessies opgeslagen. Prestaties worden getoond wanneer een handmatige overschrijving actief is.",
     "On": "Aan",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Op Linux rapporteert Instellingen → Prestaties na opstarten de actieve Rust-renderer en de gedetecteerde adapter. De keuze GPU · Rust kan CPU-weergave gebruiken wanneer een hardware-GPU niet beschikbaar is. Softwarematige Vulkan is geen hardwareversnelling.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Kies in Linux Bijwerken om de bundel te downloaden en te verifiëren, en daarna Opnieuw starten en bijwerken. Windows gebruikt zijn eigen updatedialoog. Rond eerst importeren, exporteren en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een catalogusback-up voordat het sluit.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Op Linux volgen bedieningselementen het lichte of donkere uiterlijk van het systeem. Op Omarchy volgen werkbalken, zijbalken, menu's en dialoogvensters het actieve bureaubladpalet en worden ze binnen enkele seconden na een themawijziging bijgewerkt. Fotopixels, de voorkeur voor de achtergrond van de viewer en neutrale kleurscopes behouden hun eigen kleuren.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Op de Mac: Dropbox-plaatsaanduidingen voor bestanden die alleen online staan kunnen 0 bytes aangeven terwijl het origineel in de cloud niet leeg is. Kies in Finder Offline beschikbaar maken en daarna Opnieuw proberen in LightTable. Download of herstel het origineel van een leeg bestand zonder cloudmarkering. Verbind niet-beschikbare mappen of schijven opnieuw voordat je het nogmaals probeert.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Kies op Mac Foto → Afgewezen foto's naar Prullenmand verplaatsen…, of druk op Command+Delete. Druk in de Linux- of Windows-desktopapp op Ctrl+Delete.",
@@ -2058,6 +2058,7 @@
     "On disk": "Op schijf",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "Bij eerste gebruik vraagt een niet-Engelse primaire systeemtaal je om een keuze te maken. De Mac-app vraagt dit vóór de eerste mapkeuze en het opstarten; andere appvensters vragen dit voordat de editor wordt geopend. Een ondersteunde taal wordt voorgesteld, of Engels wanneer de systeemtaal niet wordt ondersteund. Talen worden vermeld onder hun eigen naam.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "Op macOS biedt Help → Diagnostiek Opnieuw laden interface, Herstart renderingservice, Serverlog tonen, Bibliotheekgezondheid…, en Opnieuw starten in veilige modus.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Kies op macOS LightTable → Controleren op updates… om een ondertekende release te downloaden en te installeren. Kies op Linux Bijwerken om het pakket te downloaden en te verifiëren, en kies vervolgens Opnieuw starten en bijwerken. Windows gebruikt het eigen updatemeldingsvenster. Rond eerst import-, export- en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een back-up van de catalogus voordat het wordt afgesloten.",
     "On-device capabilities": "Mogelijkheden op het apparaat",
     "On-device description": "Beschrijving op apparaat",
     "One destination folder": "Eén doelmap",
@@ -2901,7 +2902,7 @@
     "Shutter": "Sluiter",
     "Sidecars are up to date.": "Sidecars zijn up-to-date.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Sidecars gelezen: {read}. Toegepast: {applied}. Foto's zonder sidecars: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "Ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties bieden Controleren op updates… onder Instellingen → Algemeen. Automatische controles vinden hoogstens eenmaal per dag plaats nadat de editor is geopend.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "Ondertekende macOS-installaties bieden Controleren op updates… in het LightTable-menu, terwijl ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties dit aanbieden in Instellingen → Algemeen. Automatische controles worden hoogstens één keer per dag uitgevoerd nadat de editor is geopend. Ad-hoc Mac-bèta's blijven alleen handmatig bijwerken ondersteunen.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Vergelijkbare gezichten worden samen gegroepeerd. Voeg namen toe, beoordeel mogelijke matches en corrigeer een groep wanneer je maar wilt.",
     "Simulate paper and ink": "Papier en inkt simuleren",
     "Size": "Grootte",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ms",
     "{mode} failed": "{mode} mislukt",
     "{mode} merge needs 2 to {limit} distinct originals": "Samenvoegen van {mode} vereist 2 tot {limit} verschillende originelen",
+    "{name} (Already imported)": "{name} (Al geïmporteerd)",
     "{name} (partial identity)": "{name} (gedeeltelijke identiteit)",
     "{name} already exists in that folder": "{name} bestaat al in die map",
     "{name} already exists; no files were moved": "{name} bestaat al; er zijn geen bestanden verplaatst",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten",
-    "Imported": "Geïmporteerd",
-    "{name} (Already imported)": "{name} (Al geïmporteerd)"
+    "☆ Favorites": "☆ Favorieten"
   },
   "plurals": {
     " · {count} paired file linked": {

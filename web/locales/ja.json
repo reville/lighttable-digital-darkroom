@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ja",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "対応メタデータと近似編集を読み込み、変換レポートを確認します。",
     "Import the originals from your Photos library.": "Photosライブラリからオリジナルを読み込みます。",
     "Import your presets": "プリセットを読み込む",
+    "Imported": "読み込み済み",
     "Imported {count} photo from Apple Photos{value}": "Apple Photos から写真を {count} 枚読み込みました{value}",
     "Imported {count} photos from Apple Photos{value}": "Apple Photos から写真を {count} 枚読み込みました{value}",
     "Imported {value} preset": "{value}件のプリセットを読み込みました",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "以前の保存済みプレビュー幅の選択は、この仕様へ更新すると自動にリセットされます。［詳細］で選んだ固定の上書き設定は、以後のセッション用に保存されます。手動の上書きが有効な場合は［パフォーマンス］が表示されます。",
     "On": "オン",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Linuxでは、［設定］→［パフォーマンス］で、起動後のアクティブなRustレンダラーと検出されたアダプターを表示します。［GPU · Rust］は、ハードウェアGPUが利用できない場合にCPUレンダリングを使用できます。ソフトウェアVulkanはハードウェアアクセラレーションではありません。",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Linux では「更新」でパッケージをダウンロードして検証し、「再起動して更新」を選びます。Windows はネイティブの更新ダイアログを使います。先に読み込み、書き出し、その他の処理を完了してください。LightTable は終了前に未保存の編集を保存し、カタログをバックアップします。",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Linuxでは、コントロールはシステムのライトまたはダークの外観に従います。Omarchyでは、ツールバー、サイドバー、メニュー、ダイアログはアクティブなデスクトップパレットに従い、テーマ変更後数秒以内に更新されます。写真のピクセル、ビューアー背景の設定、ニュートラルなカラースコープは、それぞれ独自の色を保持します。",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac の場合：Dropbox のオンラインのみのプレースホルダーは、クラウド上の元のファイルが空でなくても 0 バイトと表示される場合があります。Finder で「オフラインアクセスを許可」を選択し、LightTable で「再試行」を選択してください。クラウドのマーカーがない空のファイルは、元のファイルをダウンロードするか復元してください。利用できないフォルダーやドライブは、再試行する前に再接続してください。",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Macでは［写真］→［却下済みの写真をゴミ箱へ移動…］を選ぶか、Command+Deleteを押します。LinuxまたはWindowsのデスクトップアプリでは、Ctrl+Deleteを押します。",
@@ -2058,6 +2058,7 @@
     "On disk": "ディスク上",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "初回使用時、システムの主要言語が英語以外の場合は選択を求められます。Macアプリは、最初のフォルダー選択と起動の前に確認を求めます。ほかのアプリウィンドウは、エディターが開く前に確認を求めます。対応言語が提案され、システム言語が未対応の場合は英語が提案されます。言語は各言語の自国語名で一覧表示されます。",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "macOS では、ヘルプ → Diagnostics に Reload Interface、Restart Rendering Service、Show Server Log、Library Health…、Restart in Safe Mode があります。",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "macOS では、LightTable → アップデートを確認… を選んで、署名付きリリースをダウンロードしてインストールします。Linux では、更新 を選んでバンドルをダウンロードして検証し、その後 再起動して更新 を選びます。Windows では、ネイティブの更新ダイアログが使用されます。まず読み込み、書き出し、その他の作業を完了してください。LightTable は終了前に保留中の編集を保存し、カタログをバックアップします。",
     "On-device capabilities": "デバイス上の機能",
     "On-device description": "デバイス上の説明",
     "One destination folder": "保存先フォルダーは1つ",
@@ -2901,7 +2902,7 @@
     "Shutter": "シャッター",
     "Sidecars are up to date.": "サイドカーは最新です。",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "読み込んだサイドカー: {read}。適用: {applied}。サイドカーのない写真: {missing}。",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "署名済みの Windows インストールと設定済みの Linux ポータブルインストールでは、「設定 → 一般」に「アップデートを確認…」があります。自動確認はエディターを開いた後、1日1回まで実行されます。",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "署名付きの macOS インストールでは、LightTable メニューに「アップデートを確認…」が表示されます。署名付きの Windows インストールおよび設定済みの Linux ポータブル インストールでは、設定 → 一般 に表示されます。自動チェックは、エディターが開いた後、1日に最大1回実行されます。Mac のアドホック beta は、引き続き手動更新のみです。",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "類似した顔はまとめてグループ化されます。名前を追加し、候補の一致を確認し、必要に応じていつでもグループを修正できます。",
     "Simulate paper and ink": "紙とインクをシミュレート",
     "Size": "サイズ",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ミリ秒",
     "{mode} failed": "{mode}に失敗しました",
     "{mode} merge needs 2 to {limit} distinct originals": "{mode} マージには 2 から {limit} 個の異なるオリジナルが必要です",
+    "{name} (Already imported)": "{name} (既に読み込み済み)",
     "{name} (partial identity)": "{name}（部分的な識別情報）",
     "{name} already exists in that folder": "そのフォルダーにはすでに {name} があります",
     "{name} already exists; no files were moved": "{name} はすでに存在するため、ファイルは移動されませんでした",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ 戻る",
     "← Back to articles": "← 記事に戻る",
     "← People": "← 人物",
-    "☆ Favorites": "☆ お気に入り",
-    "Imported": "読み込み済み",
-    "{name} (Already imported)": "{name} (既に読み込み済み)"
+    "☆ Favorites": "☆ お気に入り"
   },
   "plurals": {
     " · {count} paired file linked": {

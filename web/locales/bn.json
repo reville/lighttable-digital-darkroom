@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "সমর্থিত metadata এবং আনুমানিক edit আমদানি করুন, তারপর conversion report পর্যালোচনা করুন।",
     "Import the originals from your Photos library.": "আপনার Photos লাইব্রেরি থেকে মূলগুলো আমদানি করুন।",
     "Import your presets": "আপনার প্রিসেট আমদানি করুন",
+    "Imported": "আমদানি করা হয়েছে",
     "Imported {count} photo from Apple Photos{value}": "Apple Photos থেকে {count}টি ফটো আমদানি করা হয়েছে{value}",
     "Imported {count} photos from Apple Photos{value}": "Apple Photos থেকে {count}টি ফটো আমদানি করা হয়েছে{value}",
     "Imported {value} preset": "{value}টি প্রিসেট আমদানি করা হয়েছে",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "পুরোনো সংরক্ষিত preview-width পছন্দগুলো এই আচরণে আপগ্রেড করার সময় Automatic-এ রিসেট হয়। Advanced-এ বেছে নেওয়া একটি নির্দিষ্ট override পরে সেশনের জন্য সংরক্ষিত হয়। একটি ম্যানুয়াল override সক্রিয় থাকলে Performance দেখায়।",
     "On": "চালু",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Linux-এ, সেটিংস → কর্মক্ষমতা ওয়ার্ম-আপের পরে সক্রিয় Rust রেন্ডারার এবং শনাক্ত অ্যাডাপ্টার দেখায়। GPU · Rust নির্বাচনটি হার্ডওয়্যার GPU অনুপলব্ধ হলে CPU রেন্ডারিং ব্যবহার করতে পারে। Software Vulkan কোনো হার্ডওয়্যার অ্যাক্সেলারেশন নয়।",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Linux-এ বান্ডল ডাউনলোড ও যাচাই করতে আপডেট করুন বেছে নিন, তারপর পুনরায় চালু করে আপডেট করুন। Windows তার নিজস্ব আপডেট ডায়ালগ ব্যবহার করে। আগে আমদানি, রপ্তানি ও অন্যান্য কাজ শেষ করুন; বন্ধ হওয়ার আগে LightTable বাকি সম্পাদনা সংরক্ষণ করে এবং ক্যাটালগের ব্যাকআপ তৈরি করে।",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Linux-এ, নিয়ন্ত্রণগুলো সিস্টেমের হালকা বা গাঢ় চেহারা অনুসরণ করে। Omarchy-তে, টুলবার, সাইডবার, মেনু, এবং ডায়ালগ সক্রিয় ডেস্কটপ প্যালেট অনুসরণ করে এবং থিম পরিবর্তনের কয়েক সেকেন্ডের মধ্যে আপডেট হয়। ফটো পিক্সেল, ভিউয়ার ব্যাকগ্রাউন্ড পছন্দ, এবং নিরপেক্ষ রঙের স্কোপগুলো তাদের নিজস্ব রং বজায় রাখে।",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac-এ: Dropbox-এর শুধু অনলাইনে থাকা প্লেসহোল্ডার ফাইল 0 বাইট দেখাতে পারে, অথচ ক্লাউডে থাকা মূল ফাইলটি খালি নাও হতে পারে। Finder-এ অফলাইনে উপলব্ধ করুন বেছে নিন, তারপর LightTable-এ আবার চেষ্টা করুন বেছে নিন। ক্লাউড চিহ্নবিহীন খালি ফাইলের ক্ষেত্রে মূল ফাইলটি ডাউনলোড করুন বা পুনরুদ্ধার করুন। আবার চেষ্টা করার আগে অনুপলব্ধ ফোল্ডার বা ড্রাইভ পুনরায় সংযুক্ত করুন।",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Mac-এ, Photo → প্রত্যাখ্যাত ফটোগুলো ট্র্যাশে সরান… বেছে নিন, অথবা Command+Delete চাপুন। Linux বা Windows ডেস্কটপ অ্যাপে Ctrl+Delete চাপুন।",
@@ -2058,6 +2058,7 @@
     "On disk": "ডিস্কে",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "প্রথম ব্যবহারের সময়, ইংরেজি নয় এমন primary system language আপনাকে নির্বাচন করতে বলে। Mac অ্যাপ তার প্রাথমিক folder choice এবং startup-এর আগে জিজ্ঞেস করে; অন্য অ্যাপ উইন্ডোগুলো editor খোলার আগে জিজ্ঞেস করে। সমর্থিত ভাষা প্রস্তাব করা হয়, অথবা system language সমর্থিত না হলে English। ভাষাগুলো তাদের নিজস্ব নাম অনুযায়ী তালিকাভুক্ত থাকে।",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "macOS-এ, Help → Diagnostics-এ Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, এবং Restart in Safe Mode আছে।",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "macOS-এ, সাইন করা release ডাউনলোড ও ইনস্টল করতে LightTable → আপডেটের জন্য পরীক্ষা করুন… নির্বাচন করুন। Linux-এ, bundle ডাউনলোড ও যাচাই করতে আপডেট করুন নির্বাচন করুন, তারপর পুনরায় চালু করে আপডেট করুন। Windows তার নিজস্ব native update dialog ব্যবহার করে। আগে import, export, এবং অন্যান্য কাজ শেষ করুন; বন্ধ করার আগে LightTable মুলতুবি edits সংরক্ষণ করে এবং ক্যাটালগ ব্যাকআপ করে।",
     "On-device capabilities": "ডিভাইসে সক্ষমতা",
     "On-device description": "ডিভাইসে বর্ণনা",
     "One destination folder": "একটি গন্তব্য ফোল্ডার",
@@ -2901,7 +2902,7 @@
     "Shutter": "শাটার",
     "Sidecars are up to date.": "সাইডকারসমূহ হালনাগাদ আছে।",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "সাইডকার পড়া হয়েছে: {read}। প্রয়োগ করা হয়েছে: {applied}। সাইডকারবিহীন ফটো: {missing}।",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "স্বাক্ষরিত Windows ইনস্টলেশন এবং কনফিগার করা Linux পোর্টেবল ইনস্টলেশনে সেটিংস → সাধারণ-এ আপডেটের জন্য পরীক্ষা করুন… পাওয়া যায়। এডিটর খোলার পরে স্বয়ংক্রিয় পরীক্ষা দিনে সর্বোচ্চ একবার হয়।",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "সাইন করা macOS ইনস্টলেশনে LightTable মেনুতে আপডেটের জন্য পরীক্ষা করুন… থাকে, আর সাইন করা Windows ইনস্টলেশন এবং কনফিগার করা Linux পোর্টেবল ইনস্টলেশনে এটি সেটিংস → সাধারণ-এ থাকে। স্বয়ংক্রিয় পরীক্ষা এডিটর খোলার পরে দিনে সর্বোচ্চ একবার চালানো হয়। বিশেষ Mac beta-গুলো কেবলমাত্র ম্যানুয়াল আপডেটের জন্যই থাকে।",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "সদৃশ মুখসমূহ একত্রে গ্রুপ করা হয়। নাম যোগ করুন, সম্ভাব্য মিল পর্যালোচনা করুন, এবং প্রয়োজন অনুযায়ী কোনো গ্রুপ সংশোধন করুন।",
     "Simulate paper and ink": "কাগজ ও ink অনুকরণ করুন",
     "Size": "আকার",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ms",
     "{mode} failed": "{mode} ব্যর্থ হয়েছে",
     "{mode} merge needs 2 to {limit} distinct originals": "{mode} merge-এর জন্য 2 থেকে {limit}টি পৃথক মূল প্রয়োজন",
+    "{name} (Already imported)": "{name} (ইতিমধ্যেই আমদানি করা হয়েছে)",
     "{name} (partial identity)": "{name} (আংশিক পরিচয়)",
     "{name} already exists in that folder": "সেই ফোল্ডারে {name} ইতিমধ্যেই আছে",
     "{name} already exists; no files were moved": "{name} ইতিমধ্যেই আছে; কোনো ফাইল সরানো হয়নি",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের",
-    "Imported": "আমদানি করা হয়েছে",
-    "{name} (Already imported)": "{name} (ইতিমধ্যেই আমদানি করা হয়েছে)"
+    "☆ Favorites": "☆ পছন্দের"
   },
   "plurals": {
     " · {count} paired file linked": {

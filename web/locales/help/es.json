@@ -3090,8 +3090,8 @@
         {
           "title": "Actualizar LightTable",
           "paragraphs": [
-            "Las instalaciones firmadas de Windows y las instalaciones portátiles de Linux configuradas ofrecen Buscar actualizaciones… en Configuración → General. Las comprobaciones automáticas se realizan como máximo una vez al día después de abrir el editor.",
-            "En Linux, elige Actualizar para descargar y verificar el paquete y luego Reiniciar y actualizar. Windows usa su diálogo nativo de actualización. Termina primero las importaciones, exportaciones y demás tareas; LightTable guarda las ediciones pendientes y crea una copia de seguridad del catálogo antes de cerrarse.",
+            "Las instalaciones firmadas de macOS ofrecen Buscar actualizaciones… en el menú de LightTable, mientras que las instalaciones firmadas de Windows y las instalaciones portátiles de Linux configuradas lo ofrecen en Configuración → General. Las comprobaciones automáticas se ejecutan como máximo una vez al día después de que se abre el editor. Las betas ad hoc para Mac siguen siendo solo de actualización manual.",
+            "En macOS, elija LightTable → Buscar actualizaciones… para descargar e instalar una versión firmada. En Linux, elija Actualizar para descargar y verificar el paquete, y luego Reiniciar y actualizar. Windows usa su propio cuadro de diálogo de actualización. Termine primero las importaciones, exportaciones y otros trabajos; LightTable guarda las ediciones pendientes y hace una copia de seguridad del catálogo antes de cerrar.",
             "Las actualizaciones conservan las fotos, las ediciones y las preferencias. Linux mantiene el paquete anterior para la recuperación, pero no restaura automáticamente un catálogo ni vuelve a abrir una versión anterior.",
             "Usa Scoop, WinGet, Chocolatey, AUR, Flatpak o Snap para actualizar las instalaciones que administran. Descarga un ZIP nuevo para las copias portátiles de Windows. Las compilaciones sin firma de actualizaciones configurada no pueden actualizarse solas."
           ]
@@ -3495,5 +3495,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732"
 }

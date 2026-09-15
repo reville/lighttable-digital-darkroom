@@ -3090,8 +3090,8 @@
         {
           "title": "Cập nhật LightTable",
           "paragraphs": [
-            "Các bản cài đặt Windows đã ký và bản cài đặt Linux di động đã cấu hình có mục Kiểm tra cập nhật… trong Cài đặt → Chung. Việc kiểm tra tự động diễn ra tối đa một lần mỗi ngày sau khi mở trình chỉnh sửa.",
-            "Trên Linux, chọn Cập nhật để tải xuống và xác minh gói, rồi chọn Khởi động lại và cập nhật. Windows dùng hộp thoại cập nhật gốc. Hãy hoàn tất nhập, xuất và các tác vụ khác trước; LightTable lưu các chỉnh sửa đang chờ và sao lưu danh mục trước khi đóng.",
+            "Các bản cài đặt macOS đã ký cung cấp Kiểm tra cập nhật… trong menu LightTable, còn các bản cài đặt Windows đã ký và các bản cài đặt Linux di động đã được cấu hình cung cấp tùy chọn này trong Cài đặt → Chung. Các lần kiểm tra tự động chạy nhiều nhất một lần mỗi ngày sau khi trình chỉnh sửa mở. Các bản beta Mac phát hành riêng vẫn chỉ cập nhật thủ công.",
+            "Trên macOS, chọn LightTable → Kiểm tra cập nhật… để tải xuống và cài đặt một bản phát hành đã ký. Trên Linux, chọn Cập nhật để tải xuống và xác minh gói, rồi Khởi động lại và cập nhật. Windows sử dụng hộp thoại cập nhật gốc của hệ thống. Hãy hoàn tất trước các tác vụ nhập, xuất và các công việc khác; LightTable sẽ lưu các chỉnh sửa đang chờ và sao lưu danh mục trước khi đóng.",
             "Bản cập nhật giữ nguyên ảnh, chỉnh sửa và tùy chọn. Linux giữ lại gói trước để phục hồi, nhưng không tự động khôi phục danh mục hoặc mở lại phiên bản cũ.",
             "Dùng Scoop, WinGet, Chocolatey, AUR, Flatpak hoặc Snap để cập nhật các bản cài đặt do chúng quản lý. Tải ZIP mới cho các bản Windows di động. Các bản dựng chưa cấu hình chữ ký cập nhật không thể tự cập nhật."
           ]
@@ -3495,5 +3495,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56"
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732"
 }

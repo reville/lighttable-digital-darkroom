@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "78dc7fc92cbc7a8d13e419e432be550b7c5ee1f988d1c483248f75992a015d56",
+  "sourceDigest": "c3eedc5ad5c2633495d71be89bfd8e96b2a8fd160f56bca58f31819823e2b732",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1582,6 +1582,7 @@
     "Import supported metadata and approximate edits, then review the conversion report.": "Desteklenen meta verileri ve yaklaşık düzenlemeleri içe aktarın, ardından dönüştürme raporunu gözden geçirin.",
     "Import the originals from your Photos library.": "Orijinalleri Fotoğraflar kitaplığınızdan içe aktarın.",
     "Import your presets": "Hazır ayarlarınızı içe aktarın",
+    "Imported": "İçe aktarıldı",
     "Imported {count} photo from Apple Photos{value}": "Apple Photos'tan {count} fotoğraf içe aktarıldı{value}",
     "Imported {count} photos from Apple Photos{value}": "Apple Photos'tan {count} fotoğraf içe aktarıldı{value}",
     "Imported {value} preset": "{value} hazır ayar içe aktarıldı",
@@ -2047,7 +2048,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "Önceki kayıtlı önizleme genişliği seçimleri, bu davranışa yükseltirken Otomatik’e sıfırlanır. Gelişmiş’te seçilen sabit bir geçersiz kılma, sonraki oturumlar için kaydedilir. El ile geçersiz kılma etkin olduğunda Performans görünür.",
     "On": "Açık",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Linux'ta, Ayarlar → Performans etkin Rust işlemciyi ve ısınma sonrası algılanan bağdaştırıcıyı bildirir. GPU · Rust seçeneği, donanım GPU'su kullanılamadığında CPU işlemesi kullanabilir. Yazılım Vulkan, donanım hızlandırma değildir.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Linux'ta paketi indirip doğrulamak için Güncelle'yi, ardından Yeniden başlat ve güncelle'yi seçin. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri bitirin; LightTable kapanmadan önce bekleyen düzenlemeleri kaydeder ve kataloğu yedekler.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Linux'ta kontroller sistemin açık veya koyu görünümünü izler. Omarchy'de araç çubukları, kenar çubukları, menüler ve iletişim kutuları etkin masaüstü paletini izler ve tema değişikliğinden sonraki birkaç saniye içinde güncellenir. Fotoğraf pikselleri, görüntüleyici arka plan tercihi ve nötr renk kapsamları kendi renklerini korur.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac’te: Dropbox’ın yalnızca çevrimiçi yer tutucu dosyaları, buluttaki orijinal boş olmasa da 0 bayt gösterebilir. Finder’da Çevrimdışı kullanılabilir yap, ardından LightTable’da Tekrar dene seçeneğini seçin. Bulut işareti olmayan boş bir dosya için orijinali indirin veya geri yükleyin. Tekrar denemeden önce kullanılamayan klasörleri veya sürücüleri yeniden bağlayın.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Mac'te Fotoğraf → Reddedilen Fotoğrafları Çöp Sepetine Taşı… seçin ya da Command+Delete tuşlarına basın. Linux veya Windows masaüstü uygulamasında Ctrl+Delete tuşlarına basın.",
@@ -2058,6 +2058,7 @@
     "On disk": "Diskte",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "İlk kullanımda, İngilizce olmayan birincil sistem dili sizden seçim yapmanızı ister. Mac uygulaması ilk klasör seçimi ve başlangıçtan önce sorar; diğer uygulama pencereleri düzenleyici açılmadan önce sorar. Desteklenen bir dil önerilir veya sistem dili desteklenmiyorsa İngilizce seçilir. Diller yerel adlarıyla listelenir.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "macOS'ta Yardım → Tanılama, Arayüzü Yeniden Yükle, Oluşturma Hizmetini Yeniden Başlat, Sunucu Günlüğünü Göster, Kitaplık Sağlığı… ve Güvenli Modda Yeniden Başlat seçeneklerini sunar.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "macOS’ta imzalı bir sürümü indirmek ve yüklemek için LightTable → Güncellemeleri Denetle… seçeneğini kullanın. Linux’ta paketi indirmek ve doğrulamak için Güncelle’yi seçin, ardından Yeniden başlat ve güncelle komutunu kullanın. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri tamamlayın; LightTable, kapatmadan önce bekleyen düzenlemeleri kaydeder ve katalogu yedekler.",
     "On-device capabilities": "Cihaz içi özellikler",
     "On-device description": "Cihaz içi açıklama",
     "One destination folder": "Bir hedef klasör",
@@ -2901,7 +2902,7 @@
     "Shutter": "Deklanşör",
     "Sidecars are up to date.": "Yardımcı dosyalar güncel.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "Yardımcı dosyalar okundu: {read}. Uygulanan: {applied}. Yardımcı dosyası olmayan fotoğraflar: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "İmzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları, Ayarlar → Genel altında Güncellemeleri Denetle… seçeneğini sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez yapılır.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "İmzalı macOS kurulumları, LightTable menüsünde Güncellemeleri Denetle… seçeneğini sunar; imzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları ise bunu Ayarlar → Genel altında sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez çalışır. Ad hoc Mac beta sürümleri yalnızca manuel güncelleme ile kalır.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "Benzer yüzler birlikte gruplandırılır. Ad ekleyin, olası eşleşmeleri inceleyin ve gerektiğinde bir grubu düzeltin.",
     "Simulate paper and ink": "Kağıdı ve mürekkebi simüle et",
     "Size": "Boyut",
@@ -4397,6 +4398,7 @@
     "{milliseconds} ms": "{milliseconds} ms",
     "{mode} failed": "{mode} başarısız oldu",
     "{mode} merge needs 2 to {limit} distinct originals": "{mode} birleştirme için 2 ile {limit} arasında farklı orijinal gerekir",
+    "{name} (Already imported)": "{name} (Zaten içe aktarıldı)",
     "{name} (partial identity)": "{name} (kısmi kimlik)",
     "{name} already exists in that folder": "{name} o klasörde zaten var",
     "{name} already exists; no files were moved": "{name} zaten var; hiçbir dosya taşınmadı",
@@ -4476,9 +4478,7 @@
     "‹ Back": "‹ Geri",
     "← Back to articles": "← Makalelere geri dön",
     "← People": "← Kişiler",
-    "☆ Favorites": "☆ Sık kullanılanlar",
-    "Imported": "İçe aktarıldı",
-    "{name} (Already imported)": "{name} (Zaten içe aktarıldı)"
+    "☆ Favorites": "☆ Sık kullanılanlar"
   },
   "plurals": {
     " · {count} paired file linked": {
