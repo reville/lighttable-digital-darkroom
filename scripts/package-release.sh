@@ -37,7 +37,7 @@ GENERATE_ARGS=(
   --maximum-versions 1
   --maximum-deltas 0
   --embed-release-notes
-  -o "$APPCAST_DIR/appcast.xml"
+  -o "$APPCAST_DIR/appcast-macos-arm64.xml"
 )
 
 if [[ -n "${SPARKLE_PRIVATE_KEY:-}" ]]; then
@@ -52,5 +52,5 @@ fi
 "$ROOT/scripts/package-dmg.sh" "$APP" "$DMG"
 
 echo "Created update archive: $ARCHIVE"
-echo "Created signed appcast: $APPCAST_DIR/appcast.xml"
+echo "Created signed appcast: $APPCAST_DIR/appcast-macos-arm64.xml"
 echo "Created installer image: $DMG"

@@ -24,7 +24,7 @@ VERSION = re.compile(r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 REVISION = re.compile(r"[0-9a-f]{40}\Z")
 NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
-FEEDS = {"linux-x86_64": "linux-x86_64.json", "windows-x64": "appcast-windows-x64.xml", "macos-arm64": "appcast.xml"}
+FEEDS = {"linux-x86_64": "linux-x86_64.json", "windows-x64": "appcast-windows-x64.xml", "macos-arm64": "appcast-macos-arm64.xml"}
 
 
 def require(condition, message):

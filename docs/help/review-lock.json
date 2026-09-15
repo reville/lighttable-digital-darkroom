@@ -479,7 +479,7 @@
       }
     },
     "settings-and-defaults": {
-      "content": "ddd133a1222c434ccc5fec22076756811b859439193b9cd276e5c5a94f4ffbdc",
+      "content": "c53ca6d54d4a43c828734d3642c82bcef0620dea67c8e82213b3cc158bd04d3b",
       "sources": {
         "camera_calibration.py": "3c7a6a3ec1b284d2b44deb95983b7c64b0d21350766910fc03af2ef85ad53cf9",
         "color_pipeline.py": "6ff2ce0c729cd353a3fc9043dec0822e4fbaba1c6238ebd52e85c3819bddc659",

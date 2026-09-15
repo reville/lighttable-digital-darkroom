@@ -211,7 +211,7 @@ jobs:
         run: |
           scripts/package-release.sh dist/LightTable.app "$VERSION"
           tools="$(scripts/fetch-update-tools.sh)"
-          printf '%s' "$SPARKLE_PRIVATE_KEY" | "$tools/bin/sign_update" --verify --ed-key-file - dist/appcast/appcast.xml
+          printf '%s' "$SPARKLE_PRIVATE_KEY" | "$tools/bin/sign_update" --verify --ed-key-file - dist/appcast/appcast-macos-arm64.xml
           codesign --verify --deep --strict dist/LightTable.app
           xcrun stapler validate dist/LightTable.app
           spctl --assess --type execute dist/LightTable.app
@@ -221,7 +221,7 @@ jobs:
           xcrun stapler staple "$dmg"
           xcrun stapler validate "$dmg"
           cp "dist/appcast/LightTable-$VERSION-macos-arm64.zip" dist/
-          cp dist/appcast/appcast.xml dist/
+          cp dist/appcast/appcast-macos-arm64.xml dist/
       - name: Package the explicitly selected manual beta
         if: inputs.macos_channel == 'beta'
         env:
@@ -239,7 +239,7 @@ jobs:
           CHANNEL: ${{ inputs.macos_channel }}
         run: |
           arguments=()
-          for artifact in dist/LightTable-*-macos-arm64.dmg dist/LightTable-*-macos-arm64.zip dist/appcast.xml; do
+          for artifact in dist/LightTable-*-macos-arm64.dmg dist/LightTable-*-macos-arm64.zip dist/appcast-macos-arm64.xml; do
             [[ ! -f "$artifact" ]] || arguments+=(--artifact "$artifact")
           done
           python3 scripts/release/macos_receipt.py --app dist/LightTable.app \
@@ -252,7 +252,7 @@ jobs:
             dist/LightTable-*-macos-arm64.dmg
             dist/LightTable-*-macos-arm64.zip
             dist/LightTable-*-macos-arm64.dmg.sha256
-            dist/appcast.xml
+            dist/appcast-macos-arm64.xml
             dist/macos-release-proof.json
             dist/macos-native-acceptance.json
       - name: Remove the temporary signing keychain
