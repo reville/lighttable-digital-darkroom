@@ -67,13 +67,14 @@ class SignedDefaultTests(unittest.TestCase):
         incoming = copy.deepcopy(index)
         incoming['platforms'] = {'macos-arm64': copy.deepcopy(mac)}
         old_version = mac['version']
-        version = old_version.split('-')[0] + '-beta.99'
+        major, minor, patch = map(int, old_version.split('-')[0].split('.'))
+        version = f'{major}.{minor}.{patch + 1}-beta.99'
         incoming.update(version=version, tag='macos-v'+version)
         entry = incoming['platforms']['macos-arm64']
         entry.update(version=version, tag='macos-v'+version, channel='beta', signing='ad-hoc', update_owner='manual')
         for asset in entry['artifacts']:
             asset['name'] = asset['name'].replace(old_version, version)
-            asset['url'] = asset['url'].replace(old_version, version)
+            asset['url'] = f"https://github.com/reville/lighttable-digital-darkroom/releases/download/{entry['tag']}/{asset['name']}"
         result = dict(applied=True, public_bytes_verified=True, published_release=True, receipts_verified=True, manifest=incoming, platform='macos-arm64', version=version, source_revision=incoming['source_revision'], published_at='2026-09-15T00:00:00Z')
         with self.assertRaisesRegex(ValueError, 'notarized Mac default'):
             merge(index, result)
