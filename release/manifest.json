@@ -53,60 +53,60 @@
       "version": "0.7.8"
     },
     "macos-arm64": {
-      "version": "0.7.6-beta.2",
-      "tag": "macos-v0.7.6-beta.2",
+      "version": "0.7.6",
+      "tag": "v0.7.6",
       "source_revision": "b89a5c9c594111a65286ab761857f1fb372fe829",
       "build_workflow_revision": "d1ef234ec2a67d5bdcdcb94cda5a0bbf07738c13",
       "build_run_id": "34773993435",
-      "channel": "beta",
+      "channel": "stable",
       "gates": [],
       "minimum_os": "macOS 14 Sonoma or later",
-      "published_at": "2026-09-15T14:44:07.719972Z",
+      "published_at": "2026-09-15T16:31:55.577983Z",
       "signing": "developer-id-notarized",
       "state": "published",
       "update_owner": "app",
       "validation": {
         "status": "passed",
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64-macos-release-proof.json"
+          "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-macos-release-proof.json"
         ]
       },
       "artifacts": [
         {
-          "name": "LightTable-0.7.6-beta.2-macos-arm64.zip",
-          "bytes": 367386660,
-          "sha256": "1a9698387935670b329f0ac19cf5cc0eb0d3c0bce85424cc60f5f4d320cfff92",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64.zip"
+          "name": "LightTable-0.7.6-macos-arm64.zip",
+          "bytes": 367386775,
+          "sha256": "58de0f87bab3371a353a9f2bf46e5ffaf74af05955208726b898b437b63b69c7",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip"
         },
         {
-          "name": "LightTable-0.7.6-beta.2-macos-arm64.zip.sha256",
-          "bytes": 106,
-          "sha256": "26b1deeaea958a2e96198485029b2b4cf552481d254c6d0504c7d237e6f9e72b",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64.zip.sha256"
+          "name": "LightTable-0.7.6-macos-arm64.zip.sha256",
+          "bytes": 99,
+          "sha256": "79b772b224193e6cb38d725117c33e3b622e94be4a1991a57035e19e17162b07",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip.sha256"
         },
         {
-          "name": "LightTable-0.7.6-beta.2-macos-arm64-notarized.dmg",
-          "bytes": 381010243,
-          "sha256": "8cad7028e9d1432394da250af8b55e3766ff40d0a518448474352295190217f5",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64-notarized.dmg"
+          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg",
+          "bytes": 381009941,
+          "sha256": "f78353b0799a738bf0da1cabaa62f6d9090fa32c3f3a04459e205daeacf1a496",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg"
         },
         {
-          "name": "LightTable-0.7.6-beta.2-macos-arm64-notarized.dmg.sha256",
-          "bytes": 116,
-          "sha256": "0a1a59f00bdefeb6be2e582ce2711d341a9dd03bafb9bc7e0119974a4d1704ee",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64-notarized.dmg.sha256"
+          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg.sha256",
+          "bytes": 109,
+          "sha256": "c6d23f81361857579e88e5751287028364eb4a6012b303d4c3730fd74bda60c1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg.sha256"
         },
         {
           "name": "appcast-macos-arm64.xml",
-          "bytes": 1628,
-          "sha256": "6c29537f52223528cfc9b18e748afd62ee0b0e89e28c591c0d4eb2630b81b451",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/appcast-macos-arm64.xml"
+          "bytes": 1586,
+          "sha256": "30fb778672c57b2e3b774da308dfb502daa804bb75276cab77879b3300f5c673",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/appcast-macos-arm64.xml"
         },
         {
-          "name": "LightTable-0.7.6-beta.2-macos-arm64-macos-release-proof.json",
-          "bytes": 3258,
-          "sha256": "003166315bb77c1d681d62b6af22dbc31fd84e4b4a7ec1465d25b715e291bf0d",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/macos-v0.7.6-beta.2/LightTable-0.7.6-beta.2-macos-arm64-macos-release-proof.json"
+          "name": "LightTable-0.7.6-macos-arm64-macos-release-proof.json",
+          "bytes": 4135,
+          "sha256": "f89cf0acced2689f6251c9b567592ae0e6396858cadd53da289bdb26d6836f41",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-macos-release-proof.json"
         }
       ]
     },
