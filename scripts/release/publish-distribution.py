@@ -7,6 +7,8 @@ claims npm/Scoop publication merely because a workflow was dispatched.
 """
 from __future__ import annotations
 import argparse
+import base64
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -15,6 +17,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.request
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts/release'))
@@ -185,6 +188,63 @@ def sync_npm(version, promotion, directory, apply=False, dispatch_npm=False):
     return result
 
 
+def public_bytes(url):
+    """Bound each public read; verification never starts a watcher or retries."""
+    with urllib.request.urlopen(url, timeout=30) as response:
+        payload = response.read(10 * 1024 * 1024 + 1)
+    if len(payload) > 10 * 1024 * 1024:
+        raise ValueError('Public package metadata/tarball exceeds the verification limit')
+    return payload
+
+
+def verify_published(channel, version, promotion, previous, directory):
+    evidence = dict(previous.get('evidence', {}))
+    if channel == 'scoop':
+        asset = required_asset(promotion, '-windows-x64.zip')
+        commit = json.loads(gh('api', f'repos/{SCOOP_REPO}/commits/main'))['sha']
+        if not re.fullmatch(r'[a-f0-9]{40}', commit):
+            raise ValueError('Scoop commit identity missing')
+        response = json.loads(gh('api', f'repos/{SCOOP_REPO}/contents/bucket/lighttable.json?ref={commit}'))
+        manifest = json.loads(base64.b64decode(response['content']))
+        architecture = manifest.get('architecture', {}).get('64bit', {})
+        if (manifest.get('version'), architecture.get('url'), architecture.get('hash')) != (version, asset['url'], asset['sha256']):
+            raise ValueError('Scoop version/URL/hash differs from the promoted ZIP')
+        evidence.update(commit=commit, version=version, url=asset['url'], sha256=asset['sha256'],
+                        remote_manifest_verified=True)
+    elif channel == 'npm':
+        # Reuse the staged bytes, rather than repacking or downloading the 500 MB
+        # desktop installer again. Match those bytes to the immutable public asset.
+        tarball = directory / f'lighttable-digital-darkroom-{version}.tgz'
+        digest = sha256_file(tarball)
+        asset = release_assets(promotion['tag']).get(tarball.name)
+        if not asset or asset.get('size') != tarball.stat().st_size or asset_digest(asset) != digest:
+            raise ValueError('Staged npm tarball differs from the public release asset')
+        if evidence.get('sha256') != digest:
+            raise ValueError('Staged npm tarball differs from the dispatch receipt')
+        registry = json.loads(public_bytes('https://registry.npmjs.org/lighttable-digital-darkroom'))
+        package = registry.get('versions', {}).get(version, {})
+        if package.get('name') != 'lighttable-digital-darkroom' or package.get('version') != version:
+            raise ValueError('Exact npm version is not public')
+        dist = package.get('dist', {})
+        url = f'https://registry.npmjs.org/lighttable-digital-darkroom/-/{tarball.name}'
+        if dist.get('tarball') != url:
+            raise ValueError('Unexpected registry tarball URL')
+        payload = public_bytes(url)
+        integrity = 'sha512-' + base64.b64encode(hashlib.sha512(payload).digest()).decode('ascii')
+        if (hashlib.sha256(payload).hexdigest() != digest
+                or dist.get('shasum') != hashlib.sha1(payload).hexdigest()
+                or dist.get('integrity') != integrity):
+            raise ValueError('Registry tarball bytes or integrity differ from the staged package')
+        evidence.update(tarball=str(tarball), registry_version=version,
+                        registry_latest=registry.get('dist-tags', {}).get('latest'),
+                        registry_sha1=dist['shasum'], registry_integrity=integrity,
+                        registry_bytes_verified=True)
+    else:
+        raise ValueError('--verify-published supports Scoop and npm; Homebrew verifies during push')
+    evidence['checked_at'] = datetime.now(timezone.utc).isoformat()
+    return dict(channel=channel, state='published', verified=True, evidence=evidence)
+
+
 def save(path, document):
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile(mode='w', dir=path.parent, delete=False) as handle:
@@ -198,7 +258,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--version', required=True)
     parser.add_argument('--macos-version')
-    for flag in ('homebrew', 'scoop', 'npm', 'all', 'push', 'dispatch-npm', 'apply', 'dry-run'):
+    for flag in ('homebrew', 'scoop', 'npm', 'all', 'push', 'dispatch-npm', 'apply', 'dry-run', 'verify-published'):
         parser.add_argument('--' + flag, action='store_true')
     parser.add_argument('--output', type=Path, default=Path('.build/distribution/result.json'))
     parser.add_argument('--promotion-result', action='append', type=Path, required=True)
@@ -208,6 +268,8 @@ def main():
             raise ValueError('Select channels and a stable desktop version')
         if args.apply and args.dry_run:
             raise ValueError('--apply and --dry-run are mutually exclusive')
+        if args.verify_published and (args.apply or args.push or args.dispatch_npm or args.dry_run):
+            raise ValueError('--verify-published is read-only remotely; do not combine it with publishing flags')
         promotions = load_promotions(args.promotion_result, args.version, require_public=True)
         source = next(iter(promotions.values()))['source_revision']
         selected = [c for c in ('homebrew', 'scoop', 'npm') if args.all or getattr(args, c)]
@@ -222,6 +284,20 @@ def main():
         outcomes = distribution_outcomes(document, args.version, source)
         directory = args.output.resolve().parent
         directory.mkdir(parents=True, exist_ok=True)
+        if args.verify_published:
+            if 'homebrew' in selected:
+                raise ValueError('--verify-published supports --scoop and --npm only')
+            for channel in selected:
+                previous = outcomes.get(channel, {})
+                if previous.get('state') not in ('dispatched', 'published'):
+                    raise ValueError(f'{channel} needs a recorded dispatch/publication before verification')
+                # On failure retain the prior receipt; no false success or lost
+                # dispatch identity. A later explicit invocation can try again.
+                outcomes[channel] = verify_published(channel, args.version, promotions['windows-x64'], previous, directory)
+                document['outcomes'] = list(outcomes.values())
+                save(args.output, document)
+            print(json.dumps(document, indent=2))
+            return 0
         # Same output path is the single-operator resume record. No automatic retry
         # after an uncertain dispatch: inspect its recorded intent first.
         for channel in selected:
@@ -252,7 +328,7 @@ def main():
             save(args.output, document)
         print(json.dumps(document, indent=2))
         return int(any(item['state'] in ('failed', 'blocked', 'unverified') for item in outcomes.values()))
-    except (ValueError, OSError, StopIteration) as error:
+    except (ValueError, OSError, StopIteration, KeyError, TypeError, subprocess.SubprocessError) as error:
         parser.error(str(error))
 
 

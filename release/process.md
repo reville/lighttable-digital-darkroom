@@ -228,8 +228,10 @@ agent. Avoid duplicating passing checks for the same revision.
 
 Record selected source, version, tags and workflow run IDs once in the release
 receipt. Reuse successful candidate and preparation artifacts for retries. Bind
-CI to the pull request and consume completion events; do not create polling
-agents or recurring release monitors. Run independent preparation and review
+CI to the pull request and consume completion events. If this harness supplies
+no completion event, read only the recorded run IDs at stage boundaries and at
+most once every five minutes while waiting. Stop when the runs or task finish;
+never create a recurring release monitor. Run independent preparation and review
 work in parallel while keeping the existing shared publication lock.
 
 ### Resumable operator commands
@@ -238,7 +240,7 @@ Use `scripts/release/orchestrate.py` from the tagged source for one stage at a
 time. It records exact run IDs, inputs and source in an atomic state file;
 repeating an identical command reports the recorded run instead of dispatching
 again. It validates the tag, workflow, source and preparation input identity.
-It never searches for a recent preparation or polls GitHub.
+It never searches for a recent preparation or starts a polling loop.
 
 ```sh
 python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
@@ -246,6 +248,7 @@ python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
 # After the original build finishes, download and hash its exact Windows installer.
 python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
   --state .build/release-state.json --stage vm --installer-sha256 SHA256 --apply
+# Prepare while the recorded Windows VM run is queued/running. No bytes go public.
 python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
   --state .build/release-state.json --stage prepare --platform windows-x64 --apply
 python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
@@ -255,7 +258,11 @@ python3 scripts/release/orchestrate.py --version VERSION --source-revision SHA \
   --make-public --advance-feed --apply
 ```
 
-Run the prepare/verify/promote stages separately for each selected platform.
+Use one state file for the release and run prepare/verify/promote separately for
+each selected platform. Windows preparation accepts its matching queued/running
+VM run; verification and promotion still require successful client acceptance.
+A failed VM run blocks preparation too. Mac/Linux stages never inherit the
+Windows VM ID; their native proof comes from their selected package job.
 For macOS use `--platform macos-arm64 --macos-channel beta` and, if necessary,
 `--macos-version VERSION-beta.N`; manual beta promotion has no `--advance-feed`.
 Without `--apply`, dispatch stages only print their validated plan. `--stage
@@ -276,6 +283,10 @@ python3 scripts/release/publish-distribution.py --version VERSION \
   --output .build/distribution/result.json
 # Add --apply --push --dispatch-npm to publish the cask, upload npm assets,
 # and dispatch npm/Scoop. These outcomes remain dispatched until verified.
+# After publication finishes, verify public metadata and bytes in one read-only pass:
+python3 scripts/release/publish-distribution.py --version VERSION --scoop --npm \
+  --promotion-result windows-result.json --output .build/distribution/result.json \
+  --verify-published
 python3 scripts/release/generate-receipt.py --version VERSION \
   --manifest verified-release-manifest.json \
   --promotion-result linux-result.json --promotion-result windows-result.json \
@@ -294,8 +305,13 @@ Use one operator per distribution output directory.
 
 The receipt generator is offline. Missing or partial proofs remain unverified
 or blocked; dispatch alone never means a package channel is published. Record
-independent npm registry, Scoop bucket and live website evidence after checking
-them. Website deployment and the canonical manifest commit remain explicit steps.
+independent live website evidence after checking it. `--verify-published` records
+the exact Scoop commit/version/URL/hash and npm registry version, dist-tag,
+SHA-1/SHA-512 integrity and downloaded tarball SHA-256. It reuses the small staged
+npm tarball, never repacks or downloads the desktop installer again, and changes
+only the local receipt. Failed readback preserves the dispatch evidence; later
+explicit invocation can retry. Website deployment and the canonical manifest
+commit remain explicit steps.
 
 ### Reuse expensive build inputs
 
@@ -307,3 +323,31 @@ model metadata, package bytes and licenses; no broad fallback key is used. A
 corrupt cache fails closed: remove that cache entry before retrying. Release
 translation and preparation environments reuse pip download caches keyed by
 their dependency inputs. Native acceptance and signing checks still run.
+
+### Close a release with less repeated work
+
+1. **Agree on the delivery matrix once.** Record version/source, selected channels,
+   and the runtime target for each platform. Windows VM installed-runtime proof
+   and a personal Mac installation are separate rows. Store moderation is not a
+   successful GitHub release. Read receipts with `utf-8-sig` for Windows BOMs.
+2. **Keep one original build and reuse its artifacts.** Dispatch x64 client and
+   ARM emulation acceptance independently against the same installer hash, then
+   prepare during acceptance. Existing signing/native gates still apply. Never
+   rebuild just to fetch a receipt or complete a package-manager listing.
+3. **Refresh metadata from current main before editing it.** Apply verified
+   promotion results only to the selected platforms. Preserve independently
+   released platform versions/source identities. `update_index.py` rejects an
+   ad-hoc replacement of a notarized Mac default; an ad-hoc release can remain a
+   separate download. Test same-source scenarios with synthetic fixtures, not
+   the live multi-version release catalog.
+4. **Verify channels once and save the machine-readable output.** Use
+   `--verify-published` for npm/Scoop. Bind website source commit to the generated
+   public commit and its exact deployment run, then check `windows.html`, the
+   affected homepage view, architecture selection, and installation commands in
+   a hidden signed-out browser. Record source, CI, package, site and installed
+   runtime separately; reuse those records in the final receipt and runbooks.
+5. **Optimize the measured slow stage next.** The 0.7.8 Windows packaging receipt
+   measured 37.1 minutes: payload signing 15.3 minutes and installer build/signing
+   9.5 minutes. Dependency staging took 50 seconds. Benchmark signing/installer
+   changes on a disposable candidate before adopting them; do not weaken final
+   signature checks or run another production build merely to measure timing.

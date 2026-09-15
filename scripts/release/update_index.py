@@ -29,6 +29,9 @@ def merge(index, result):
     entry['published_at'] = result['published_at']
     if platform in output['platforms']:
         old = output['platforms'][platform]
+        release.require(not (old.get('signing') == 'developer-id-notarized'
+                             and entry.get('signing') != 'developer-id-notarized'),
+                        'Do not replace the notarized Mac default with an ad-hoc release; keep it a separate download')
         def key(v):
             base, _, beta = v.partition('-beta.')
             return (*map(int,base.split('.')), 0 if beta else 1, int(beta or 0))
