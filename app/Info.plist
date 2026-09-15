@@ -49,7 +49,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://github.com/reville/lighttable-digital-darkroom/releases/latest/download/appcast.xml</string>
+	<string>https://github.com/reville/lighttable-digital-darkroom/releases/download/desktop-updates/appcast-macos-arm64.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>mrBmSL8f0FRN8j/imZxCWdCt0L4N3zP9kgOleH46eXA=</string>
 	<key>SURequireSignedFeed</key>
