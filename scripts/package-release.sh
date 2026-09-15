@@ -16,7 +16,11 @@ APPCAST_DIR="$OUTPUT_DIR/appcast"
 ARCHIVE_NAME="LightTable-$VERSION-macos-arm64.zip"
 ARCHIVE="$APPCAST_DIR/$ARCHIVE_NAME"
 DMG="$OUTPUT_DIR/LightTable-$VERSION-macos-arm64.dmg"
-TAG="v$VERSION"
+if [[ "$VERSION" == *-beta.* ]]; then
+  TAG="macos-v$VERSION"
+else
+  TAG="v$VERSION"
+fi
 
 if [[ ! -d "$APP/Contents" ]]; then
   echo "Not an application bundle: $APP" >&2
@@ -37,7 +41,7 @@ GENERATE_ARGS=(
   --maximum-versions 1
   --maximum-deltas 0
   --embed-release-notes
-  -o "$APPCAST_DIR/appcast.xml"
+  -o "$APPCAST_DIR/appcast-macos-arm64.xml"
 )
 
 if [[ -n "${SPARKLE_PRIVATE_KEY:-}" ]]; then
@@ -52,5 +56,5 @@ fi
 "$ROOT/scripts/package-dmg.sh" "$APP" "$DMG"
 
 echo "Created update archive: $ARCHIVE"
-echo "Created signed appcast: $APPCAST_DIR/appcast.xml"
+echo "Created signed appcast: $APPCAST_DIR/appcast-macos-arm64.xml"
 echo "Created installer image: $DMG"

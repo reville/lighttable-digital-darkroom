@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae",
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2115,7 +2115,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "تُعاد تعيين خيارات عرض المعاينة القديمة المحفوظة إلى تلقائي عند الترقية إلى هذا السلوك. يُحفظ التجاوز الثابت المختار في متقدم للجلسات اللاحقة. يظهر الأداء عند تفعيل تجاوز يدوي.",
     "On": "تشغيل",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "على Linux، تعرض الإعدادات → الأداء عارض Rust النشط والمحول المكتشف بعد التهيئة. يمكن لخيار GPU · Rust استخدام إخراج CPU عند عدم توفر GPU عتادي. Vulkan البرمجي ليس تسريعًا عتاديًا.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "على Linux، اختر تحديث لتنزيل الحزمة والتحقق منها، ثم إعادة التشغيل والتحديث. يستخدم Windows مربع حوار التحديث الأصلي. أكمل عمليات الاستيراد والتصدير والمهام الأخرى أولًا؛ يحفظ LightTable التعديلات المعلّقة وينشئ نسخة احتياطية من الكتالوج قبل الإغلاق.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "على Linux، تتبع العناصر واجهة النظام الفاتحة أو الداكنة. على Omarchy، تتبع أشرطة الأدوات والأشرطة الجانبية والقوائم والنوافذ الحوارية لوحة ألوان سطح المكتب النشطة وتتحدث خلال بضع ثوانٍ من تغيير النسق. تحتفظ بكسلات الصورة وخيار خلفية العارض ونطاقات اللون المحايدة بألوانها الخاصة.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "على Mac: قد تشير ملفات العناصر النائبة في Dropbox المتاحة على الإنترنت فقط إلى 0 بايت، دون أن يكون الأصل في السحابة فارغًا. في Finder، اختر إتاحة دون اتصال، ثم إعادة المحاولة في LightTable. إذا كان الملف فارغًا دون علامة سحابة، فنزّل الأصل أو استعده. أعد توصيل المجلدات أو محركات الأقراص غير المتاحة قبل إعادة المحاولة.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "على Mac، اختر صورة → نقل الصور المرفوضة إلى سلة المهملات…، أو اضغط Command+Delete. في تطبيق سطح المكتب على Linux أو Windows، اضغط Ctrl+Delete.",
@@ -2126,6 +2125,7 @@
     "On disk": "على القرص",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "عند الاستخدام الأول، تدفعك لغة نظام أساسية غير الإنجليزية إلى الاختيار. يطلب تطبيق Mac ذلك قبل اختياره الأول للمجلد وعند بدء التشغيل؛ بينما تطلب نوافذ التطبيق الأخرى ذلك قبل فتح المحرر. يُقترح استخدام لغة مدعومة، أو الإنجليزية عندما لا تكون لغة النظام مدعومة. تُدرَج اللغات بأسمائها الأصلية.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "على macOS، يوفّر Help → Diagnostics خيارات إعادة تحميل الواجهة، وإعادة تشغيل خدمة العرض، وإظهار سجل الخادم، وصحة المكتبة…، وإعادة التشغيل في الوضع الآمن.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "في macOS، اختر LightTable → التحقق من التحديثات… لتنزيل إصدار موقّع وتثبيته. في Linux، اختر تحديث لتنزيل الحزمة والتحقق منها، ثم اختر إعادة التشغيل والتحديث. يستخدم Windows مربع حوار التحديث الأصلي الخاص به. أكمِل عمليات الاستيراد والتصدير والمهام الأخرى أولًا؛ يحفظ LightTable التعديلات المعلّقة ويُنشئ نسخة احتياطية من الكتالوج قبل الإغلاق.",
     "On-device capabilities": "القدرات على الجهاز",
     "On-device description": "الوصف على الجهاز",
     "One destination folder": "مجلد وجهة واحد",
@@ -2995,7 +2995,7 @@
     "Shutter": "الغالق",
     "Sidecars are up to date.": "ملفات Sidecar محدثة.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "ملفات Sidecar المقروءة: {read}. المطبقة: {applied}. الصور من دون ملفات Sidecar: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "تتيح تثبيتات Windows الموقّعة وتثبيتات Linux المحمولة المُعدّة خيار التحقق من التحديثات… في الإعدادات → عام. يُجرى التحقق التلقائي مرة واحدة يوميًا كحد أقصى بعد فتح المحرر.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "توفّر تثبيتات macOS الموقعة خيار التحقق من التحديثات… في قائمة LightTable، بينما توفّره تثبيتات Windows الموقعة وتثبيتات Linux المحمولة المُهيّأة في الإعدادات → عام. تعمل عمليات التحقق التلقائية بحد أقصى مرة واحدة يوميًا بعد فتح المحرر. وتبقى إصدارات Mac التجريبية المخصّصة كلٌّ على حدة للتحديث اليدوي فقط.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "تُجمَّع الوجوه المتشابهة معًا. أضف أسماء، وراجع التطابقات المحتملة، وصحح أي مجموعة كلما احتجت إلى ذلك.",
     "Simulate paper and ink": "محاكاة الورق والحبر",
     "Size": "الحجم",

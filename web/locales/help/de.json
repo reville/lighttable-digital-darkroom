@@ -3149,8 +3149,8 @@
         {
           "title": "LightTable aktualisieren",
           "paragraphs": [
-            "Signierte Windows-Installationen und konfigurierte portable Linux-Installationen bieten Nach Updates suchen… unter Einstellungen → Allgemein. Automatische Prüfungen erfolgen höchstens einmal täglich nach dem Öffnen des Editors.",
-            "Wähle unter Linux Aktualisieren, um das Paket herunterzuladen und zu prüfen, und dann Neu starten und aktualisieren. Windows verwendet seinen nativen Aktualisierungsdialog. Beende zuerst Importe, Exporte und andere Aufgaben; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
+            "Signierte macOS-Installationen bieten Nach Updates suchen… im LightTable-Menü an, während signierte Windows-Installationen und konfigurierte portable Linux-Installationen dies unter Einstellungen → Allgemein anbieten. Automatische Prüfungen werden höchstens einmal täglich nach dem Öffnen des Editors ausgeführt. Ad-hoc-Macs-Betas bleiben ausschließlich für manuelle Updates.",
+            "Wählen Sie unter macOS LightTable → Nach Updates suchen…, um eine signierte Version herunterzuladen und zu installieren. Unter Linux wählen Sie Aktualisieren, um das Bundle herunterzuladen und zu überprüfen, und anschließend Neu starten und aktualisieren. Windows verwendet seinen nativen Update-Dialog. Schließen Sie zuerst Importe, Exporte und andere Aufgaben ab; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
             "Updates erhalten Fotos, Bearbeitungen und Einstellungen. Linux behält das vorherige Paket zur Wiederherstellung, stellt aber weder automatisch einen Katalog wieder her noch öffnet es eine ältere Version.",
             "Verwende Scoop, WinGet, Chocolatey, AUR, Flatpak oder Snap, um die jeweils verwalteten Installationen zu aktualisieren. Lade für portable Windows-Kopien eine neue ZIP-Datei herunter. Builds ohne konfigurierte Update-Signierung können sich nicht selbst aktualisieren."
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }

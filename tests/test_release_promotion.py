@@ -109,6 +109,34 @@ class PromotionProofTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 promote.check_feed_forward(old, new, 'linux-x86_64')
 
+    def test_sparkle_item_child_version_is_supported(self):
+        feed = ('<rss xmlns:sparkle="' + promote.SPARKLE + '"><channel><item>'
+                '<sparkle:version>0.7.6-beta.2</sparkle:version>'
+                '<enclosure sparkle:edSignature="fixture"/></item></channel></rss>')
+        self.assertEqual(promote.feed_version(feed.encode(), 'macos-arm64'), '0.7.6-beta.2')
+
+    def test_mac_feed_advances_desktop_updates_without_latest_lookup(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(promote, 'public_download') as public:
+            feed = Path(temporary) / 'appcast-macos-arm64.xml'
+            feed.write_text('<rss xmlns:sparkle="' + promote.SPARKLE + '"><channel><item>'
+                            '<sparkle:version>0.7.6-beta.2</sparkle:version>'
+                            '<enclosure/></item></channel></rss>')
+            calls = []
+            def gh(*args):
+                calls.append(args)
+                if args[:3] == ('release', 'view', 'desktop-updates'):
+                    return json.dumps({'isDraft': False, 'assets': []})
+                return ''
+            with patch.object(promote.release, 'gh', side_effect=gh):
+                public.side_effect = lambda url, destination: destination.write_bytes(feed.read_bytes())
+                promote.advance_feed({'version': '0.7.6-beta.2', 'tag': 'macos-v0.7.6-beta.2'},
+                                     'macos-arm64', feed, Path(temporary))
+            self.assertTrue(any(c[:3] == ('release', 'upload', 'desktop-updates') for c in calls))
+            upload = next(c for c in calls if c[:3] == ('release', 'upload', 'desktop-updates'))
+            self.assertIn('--clobber', upload)
+            self.assertFalse(any(c[:2] == ('release', 'view') and 'latest' in c for c in calls))
+            public.assert_called_once()
+
     def test_windows_feed_signature_must_match_installer_and_embedded_key(self):
         try:
             from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey

@@ -3149,8 +3149,8 @@
         {
           "title": "LightTable bijwerken",
           "paragraphs": [
-            "Ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties bieden Controleren op updates… onder Instellingen → Algemeen. Automatische controles vinden hoogstens eenmaal per dag plaats nadat de editor is geopend.",
-            "Kies in Linux Bijwerken om de bundel te downloaden en te verifiëren, en daarna Opnieuw starten en bijwerken. Windows gebruikt zijn eigen updatedialoog. Rond eerst importeren, exporteren en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een catalogusback-up voordat het sluit.",
+            "Ondertekende macOS-installaties bieden Controleren op updates… in het LightTable-menu, terwijl ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties dit aanbieden in Instellingen → Algemeen. Automatische controles worden hoogstens één keer per dag uitgevoerd nadat de editor is geopend. Ad-hoc Mac-bèta's blijven alleen handmatig bijwerken ondersteunen.",
+            "Kies op macOS LightTable → Controleren op updates… om een ondertekende release te downloaden en te installeren. Kies op Linux Bijwerken om het pakket te downloaden en te verifiëren, en kies vervolgens Opnieuw starten en bijwerken. Windows gebruikt het eigen updatemeldingsvenster. Rond eerst import-, export- en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een back-up van de catalogus voordat het wordt afgesloten.",
             "Updates behouden foto's, bewerkingen en voorkeuren. Linux bewaart de vorige bundel voor herstel, maar herstelt niet automatisch een catalogus en opent geen oudere versie opnieuw.",
             "Gebruik Scoop, WinGet, Chocolatey, AUR, Flatpak of Snap om de installaties die zij beheren bij te werken. Download een nieuwe ZIP voor draagbare Windows-kopieën. Builds zonder ingestelde ondertekening van updates kunnen zichzelf niet bijwerken."
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae",
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2115,7 +2115,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "이 동작으로 업그레이드할 때 이전에 저장된 미리보기 너비 선택은 자동으로 재설정됩니다. 고급에서 선택한 고정 재정의 값은 이후 세션을 위해 저장됩니다. 수동 재정의가 활성화되면 성능에 표시됩니다.",
     "On": "켜짐",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "Linux에서 설정 → 성능은 워밍업 후 활성 Rust 렌더러와 감지된 어댑터를 표시합니다. GPU · Rust 선택은 하드웨어 GPU를 사용할 수 없을 때 CPU 렌더링을 사용할 수 있습니다. 소프트웨어 Vulkan은 하드웨어 가속이 아닙니다.",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "Linux에서는 업데이트를 선택하여 번들을 다운로드하고 검증한 다음 다시 시작하고 업데이트를 선택하세요. Windows는 기본 업데이트 대화상자를 사용합니다. 먼저 가져오기, 내보내기 및 다른 작업을 완료하세요. LightTable은 종료 전에 보류 중인 편집을 저장하고 카탈로그를 백업합니다.",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "Linux에서는 컨트롤이 시스템의 밝은 또는 어두운 외관을 따릅니다. Omarchy에서는 도구 모음, 사이드바, 메뉴, 대화상자가 활성 데스크톱 팔레트를 따르며 테마 변경 후 몇 초 안에 업데이트됩니다. 사진 픽셀, 뷰어 배경 환경 설정, 중립 색상 범위는 자체 색상을 유지합니다.",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "Mac의 경우: Dropbox의 온라인 전용 자리표시자 파일은 클라우드 원본이 비어 있지 않아도 0바이트로 표시될 수 있습니다. Finder에서 ‘오프라인 액세스 허용’을 선택한 다음 LightTable에서 ‘다시 시도’를 선택하세요. 클라우드 표시가 없는 빈 파일은 원본을 다운로드하거나 복원하세요. 사용할 수 없는 폴더나 드라이브는 다시 시도하기 전에 다시 연결하세요.",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "Mac에서는 사진 → 거부된 사진을 휴지통으로 이동…을 선택하거나 Command+Delete를 누르세요. Linux 또는 Windows 데스크톱 앱에서는 Ctrl+Delete를 누르세요.",
@@ -2126,6 +2125,7 @@
     "On disk": "디스크에 있음",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "처음 사용할 때 기본 시스템 언어가 영어가 아니면 선택하라는 메시지가 표시됩니다. Mac 앱은 초기 폴더 선택과 시작 전에 묻습니다. 다른 앱 창은 편집기가 열리기 전에 묻습니다. 지원되는 언어가 제안되며, 시스템 언어가 지원되지 않으면 영어가 제안됩니다. 언어는 고유 이름으로 표시됩니다.",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "macOS에서는 도움말 → 진단에서 인터페이스 다시 불러오기, 렌더링 서비스 재시작, 서버 로그 표시, 라이브러리 상태…, 안전 모드로 재시작을 제공합니다.",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "macOS에서는 LightTable → 업데이터 확인…을 선택하여 서명된 릴리스를 다운로드하고 설치합니다. Linux에서는 업데이트를 선택하여 번들을 다운로드하고 확인한 다음 다시 시작하고 업데이트를 선택합니다. Windows는 기본 업데이트 대화 상자를 사용합니다. 가져오기, 내보내기 및 기타 작업을 먼저 완료하세요. LightTable은 닫기 전에 보류 중인 편집 내용을 저장하고 카탈로그를 백업합니다.",
     "On-device capabilities": "기기 내 기능",
     "On-device description": "기기 내 설명",
     "One destination folder": "대상 폴더 하나",
@@ -2995,7 +2995,7 @@
     "Shutter": "셔터",
     "Sidecars are up to date.": "사이드카가 최신 상태입니다.",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "사이드카 읽기: {read}. 적용됨: {applied}. 사이드카가 없는 사진: {missing}.",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "서명된 Windows 설치와 설정된 Linux 휴대용 설치에서는 설정 → 일반에 업데이트 확인…이 있습니다. 자동 확인은 편집기가 열린 후 하루에 최대 한 번 실행됩니다.",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "서명된 macOS 설치에서는 LightTable 메뉴에 업데이터 확인…이 제공되며, 서명된 Windows 설치와 설정된 Linux 휴대용 설치에서는 설정 → 일반에서 제공됩니다. 자동 확인은 편집기가 열린 후 하루에 최대 한 번 실행됩니다. 임시 Mac 베타는 계속 수동 업데이트만 지원합니다.",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "비슷한 얼굴이 함께 그룹화됩니다. 필요할 때 이름을 추가하고, 가능한 일치를 검토하고, 그룹을 수정하세요.",
     "Simulate paper and ink": "용지와 잉크 시뮬레이션",
     "Size": "크기",

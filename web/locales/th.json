@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae",
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -2115,7 +2115,6 @@
     "Older saved preview-width choices reset to Automatic when upgrading to this behavior. A fixed override chosen in Advanced is saved for later sessions. Performance shows when a manual override is active.": "ตัวเลือกความกว้างตัวอย่างที่บันทึกไว้แบบเก่าจะรีเซ็ตเป็น อัตโนมัติ เมื่ออัปเกรดเป็นพฤติกรรมนี้ การแทนที่แบบคงที่ที่เลือกใน ขั้นสูง จะถูกบันทึกสำหรับเซสชันถัดไป Performance จะแสดงเมื่อมีการใช้การแทนที่แบบกำหนดเอง",
     "On": "เปิด",
     "On Linux, Settings → Performance reports the active Rust renderer and detected adapter after warm-up. The GPU · Rust choice can use CPU rendering when a hardware GPU is unavailable. Software Vulkan is not hardware acceleration.": "บน Linux การตั้งค่า → ประสิทธิภาพ จะแสดงตัวเรนเดอร์ Rust ที่ใช้งานอยู่และอะแดปเตอร์ที่ตรวจพบหลังจากวอร์มอัป ตัวเลือก GPU · Rust สามารถใช้การเรนเดอร์ด้วย CPU ได้เมื่อไม่มี GPU ฮาร์ดแวร์ Vulkan แบบซอฟต์แวร์ไม่ใช่การเร่งด้วยฮาร์ดแวร์",
-    "On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "บน Linux ให้เลือก อัปเดต เพื่อดาวน์โหลดและตรวจสอบบันเดิล แล้วเลือก เริ่มใหม่และอัปเดต ส่วน Windows ใช้กล่องโต้ตอบอัปเดตของระบบ ให้ทำงานนำเข้า ส่งออก และงานอื่นให้เสร็จก่อน โดย LightTable จะบันทึกการแก้ไขที่ค้างอยู่และสำรองแค็ตตาล็อกก่อนปิด",
     "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.": "บน Linux ตัวควบคุมจะใช้รูปลักษณ์สว่างหรือมืดของระบบ บน Omarchy แถบเครื่องมือ แถบด้านข้าง เมนู และกล่องโต้ตอบจะใช้พาเล็ตของเดสก์ท็อปที่ใช้งานอยู่ และอัปเดตภายในไม่กี่วินาทีหลังจากเปลี่ยนธีม พิกเซลของภาพถ่าย ค่ากำหนดพื้นหลังของตัวแสดงภาพ และขอบเขตสีแบบเป็นกลางจะคงสีของตนเอง",
     "On Mac, Dropbox online-only placeholders can report 0 bytes without the cloud original being empty. In Finder, choose Make available offline, then Retry in LightTable. For an empty file without a cloud marker, download or restore the original. Reconnect unavailable folders or drives before retrying.": "บน Mac: ไฟล์ตัวยึดตำแหน่งแบบออนไลน์เท่านั้นของ Dropbox อาจรายงานขนาด 0 ไบต์ แม้ไฟล์ต้นฉบับบนคลาวด์จะไม่ได้ว่างเปล่า ใน Finder ให้เลือก ทำให้พร้อมใช้งานแบบออฟไลน์ แล้วเลือก ลองอีกครั้ง ใน LightTable สำหรับไฟล์ว่างที่ไม่มีเครื่องหมายคลาวด์ ให้ดาวน์โหลดหรือกู้คืนต้นฉบับ เชื่อมต่อโฟลเดอร์หรือไดรฟ์ที่ไม่พร้อมใช้งานอีกครั้งก่อนลองใหม่",
     "On Mac, choose Photo → Move Rejected Photos to Trash…, or press Command+Delete. In the Linux or Windows desktop app, press Ctrl+Delete.": "บน Mac ให้เลือก ภาพถ่าย → ย้ายภาพถ่ายที่ปฏิเสธแล้วไปถังขยะ… หรือกด Command+Delete ในแอปเดสก์ท็อป Linux หรือ Windows ให้กด Ctrl+Delete",
@@ -2126,6 +2125,7 @@
     "On disk": "บนดิสก์",
     "On first use, a non-English primary system language prompts you to choose. The Mac app asks before its initial folder choice and startup; other app windows ask before the editor opens. A supported language is suggested, or English when the system language is not supported. Languages are listed by their native names.": "เมื่อใช้ครั้งแรก หากภาษาระบบหลักไม่ใช่ภาษาอังกฤษ ระบบจะให้คุณเลือก แอปบน Mac จะถามก่อนการเลือกโฟลเดอร์เริ่มต้นและการเริ่มต้นครั้งแรก; หน้าต่างของแอปอื่นๆ จะถามก่อนที่ตัวแก้ไขจะเปิดขึ้น จะมีการแนะนำภาษาที่รองรับ หรือภาษาอังกฤษเมื่อภาษาระบบไม่รองรับ ภาษาจะถูกแสดงตามชื่อในภาษาแม่ของตน",
     "On macOS, Help → Diagnostics offers Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, and Restart in Safe Mode.": "บน macOS, Help → Diagnostics มี Reload Interface, Restart Rendering Service, Show Server Log, Library Health…, และ Restart in Safe Mode",
+    "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.": "บน macOS ให้เลือก LightTable → Check for Updates… เพื่อดาวน์โหลดและติดตั้ง release ที่ลงนามแล้ว บน Linux ให้เลือก อัปเดต เพื่อดาวน์โหลดและตรวจสอบ bundle จากนั้นเลือก เริ่มใหม่และอัปเดต Windows ใช้กล่องโต้ตอบการอัปเดตแบบเนทีฟของระบบ ให้ทำการนำเข้า ส่งออก และงานอื่นๆ ให้เสร็จก่อน; LightTable จะบันทึกการแก้ไขที่รอดำเนินการและสำรองแค็ตตาล็อกก่อนปิด",
     "On-device capabilities": "ความสามารถภายในเครื่อง",
     "On-device description": "คำอธิบายบนอุปกรณ์",
     "One destination folder": "โฟลเดอร์ปลายทางหนึ่งโฟลเดอร์",
@@ -2995,7 +2995,7 @@
     "Shutter": "ชัตเตอร์",
     "Sidecars are up to date.": "ไซด์คาร์เป็นเวอร์ชันล่าสุดแล้ว",
     "Sidecars read: {read}. Applied: {applied}. Photos without sidecars: {missing}.": "อ่านไซด์คาร์: {read} ใช้แล้ว: {applied} ภาพถ่ายที่ไม่มีไซด์คาร์: {missing}",
-    "Signed Windows installations and configured Linux portable installations offer Check for Updates… in Settings → General. Automatic checks run at most once a day after the editor opens.": "การติดตั้ง Windows ที่ลงลายเซ็นและการติดตั้ง Linux แบบพกพาที่กำหนดค่าแล้วมี ตรวจหาการอัปเดต… ใน การตั้งค่า → ทั่วไป การตรวจสอบอัตโนมัติจะทำไม่เกินวันละครั้งหลังเปิดตัวแก้ไข",
+    "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.": "การติดตั้ง macOS ที่ลงนามแล้วจะมี Check for Updates… ในเมนู LightTable ส่วนการติดตั้ง Windows ที่ลงนามแล้วและการติดตั้ง Linux แบบพกพาที่ตั้งค่าไว้จะมีตัวเลือกนี้ใน การตั้งค่า → ทั่วไป การตรวจสอบอัตโนมัติจะทำงานไม่เกินวันละครั้งหลังจากตัวแก้ไขเปิดขึ้นมา บิลด์เบต้าของ Mac แบบ ad hoc ยังอัปเดตได้ด้วยตนเองเท่านั้น",
     "Similar faces are grouped together. Add names, review possible matches, and correct a group whenever you need to.": "ใบหน้าที่คล้ายกันจะถูกจัดกลุ่มไว้ด้วยกัน เพิ่มชื่อ ตรวจทานการจับคู่ที่เป็นไปได้ และแก้ไขกลุ่มได้ทุกเมื่อที่ต้องการ",
     "Simulate paper and ink": "จำลองกระดาษและหมึก",
     "Size": "ขนาด",

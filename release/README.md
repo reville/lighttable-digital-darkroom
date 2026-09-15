@@ -16,7 +16,8 @@ platform versions, artifacts, signing and blockers. Linux portable 0.6 and
 macOS 0.6 beta are public. Signed Windows 0.6.1 is public after native Windows
 10/11 x64 offline acceptance and Windows 11 ARM x64-emulation checks passed.
 See [Windows acceptance and coverage limits](../docs/windows-client-acceptance.md).
-A Mac beta is manual-update only.
+Ad hoc Mac betas remain manual-update only. Signed direct Mac releases use
+Sparkle for automatic update checks and installation.
 Store enrollment and review remain separate from direct distribution.
 
 ## Repeatable release process
@@ -137,10 +138,10 @@ The ZIP contains the stapled app and is signed through Sparkle's update feed.
 The initial pipeline publishes complete update archives rather than deltas.
 Windows-only releases do not replace the latest Mac feed.
 
-The canonical updater URL is
-`https://github.com/reville/lighttable-digital-darkroom/releases/latest/download/appcast.xml`.
-It becomes live after the first Mac release. The private signing key must match
-the public key embedded in `app/Info.plist`.
+The canonical Mac updater URL is
+`https://github.com/reville/lighttable-digital-darkroom/releases/download/desktop-updates/appcast-macos-arm64.xml`.
+The mutable feed points to immutable signed release ZIPs. The private signing
+key must match the public key embedded in `app/Info.plist`.
 
 ## Windows release signing
 

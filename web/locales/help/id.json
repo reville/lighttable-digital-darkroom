@@ -3149,8 +3149,8 @@
         {
           "title": "Perbarui LightTable",
           "paragraphs": [
-            "Instalasi Windows bertanda tangan dan instalasi portabel Linux yang dikonfigurasi menyediakan Periksa Pembaruan… di Pengaturan → Umum. Pemeriksaan otomatis dilakukan paling sering sekali sehari setelah editor terbuka.",
-            "Di Linux, pilih Perbarui untuk mengunduh dan memverifikasi bundel, lalu Mulai ulang dan perbarui. Windows menggunakan dialog pembaruan bawaannya. Selesaikan impor, ekspor, dan pekerjaan lain terlebih dahulu; LightTable menyimpan edit tertunda dan mencadangkan katalog sebelum ditutup.",
+            "Instalasi macOS yang ditandatangani menyediakan Check for Updates… di menu LightTable, sedangkan instalasi Windows yang ditandatangani dan instalasi portabel Linux yang dikonfigurasi menyediakannya di Pengaturan → Umum. Pemeriksaan otomatis berjalan paling banyak sekali sehari setelah penyunting dibuka. Beta Mac ad hoc tetap hanya dapat diperbarui secara manual.",
+            "Di macOS, pilih LightTable → Check for Updates… untuk mengunduh dan memasang rilis yang ditandatangani. Di Linux, pilih Perbarui untuk mengunduh dan memverifikasi bundel, lalu Mulai ulang dan perbarui. Windows menggunakan dialog pembaruannya sendiri. Selesaikan impor, ekspor, dan tugas lainnya terlebih dahulu; LightTable menyimpan pengeditan yang tertunda dan mencadangkan katalog sebelum ditutup.",
             "Pembaruan mempertahankan foto, edit, dan preferensi. Linux menyimpan bundel sebelumnya untuk pemulihan, tetapi tidak otomatis memulihkan katalog atau membuka kembali versi lama.",
             "Gunakan Scoop, WinGet, Chocolatey, AUR, Flatpak, atau Snap untuk memperbarui instalasi yang dikelolanya. Unduh ZIP baru untuk salinan portabel Windows. Build tanpa konfigurasi tanda tangan pembaruan tidak dapat memperbarui dirinya sendiri."
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }

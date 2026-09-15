@@ -264,7 +264,7 @@ def generate(version: str, artifacts_dir: Path, channels: list[str] | None = Non
     hashes = {name: digest(artifacts_dir / name) for name in sorted(set(names.values()))
               if (artifacts_dir / name).exists()}
     # Include optional Sparkle release files when CI has placed them beside installers.
-    for name in (f"LightTable-{version}-macos-arm64.zip", "appcast.xml"):
+    for name in (f"LightTable-{version}-macos-arm64.zip", "appcast-macos-arm64.xml"):
         if (artifacts_dir / name).exists():
             hashes[name] = digest(artifacts_dir / name)
     output = {}

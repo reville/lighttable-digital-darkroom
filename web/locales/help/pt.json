@@ -3149,8 +3149,8 @@
         {
           "title": "Atualizar o LightTable",
           "paragraphs": [
-            "As instalações assinadas do Windows e as instalações portáteis do Linux configuradas oferecem Verificar atualizações… em Configurações → Geral. As verificações automáticas ocorrem no máximo uma vez por dia depois que o editor é aberto.",
-            "No Linux, escolha Atualizar para baixar e verificar o pacote e depois Reiniciar e atualizar. O Windows usa sua janela nativa de atualização. Conclua primeiro as importações, exportações e outras tarefas; o LightTable salva as edições pendentes e faz um backup do catálogo antes de fechar.",
+            "Instalações assinadas do macOS oferecem Verificar atualizações… no menu LightTable, enquanto instalações assinadas do Windows e instalações portáteis do Linux configuradas oferecem essa opção em Configurações → Geral. As verificações automáticas são executadas no máximo uma vez por dia, depois que o editor é aberto. Versões beta ad hoc para Mac continuam sendo apenas de atualização manual.",
+            "No macOS, escolha LightTable → Verificar atualizações… para baixar e instalar uma versão assinada. No Linux, escolha Atualizar para baixar e verificar o pacote e, em seguida, Reiniciar e atualizar. O Windows usa a sua caixa de diálogo nativa de atualização. Conclua primeiro os import, exports e outras tarefas; o LightTable salva as edições pendentes e faz backup do catálogo antes de fechar.",
             "As atualizações preservam fotos, edições e preferências. O Linux mantém o pacote anterior para recuperação, mas não restaura automaticamente um catálogo nem reabre uma versão anterior.",
             "Use Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap para atualizar as instalações que eles gerenciam. Baixe um novo ZIP para as cópias portáteis do Windows. Builds sem a assinatura de atualizações configurada não podem se atualizar sozinhas."
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }
