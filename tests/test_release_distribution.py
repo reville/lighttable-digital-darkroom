@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-only
+import base64
 import importlib.util
 import json
 import tempfile
@@ -106,5 +107,52 @@ class DistributionSafetyTests(unittest.TestCase):
                 distribution.load_promotions([path], "0.7.6", require_public=True)
 
 
+
+class PublicationReadbackTests(unittest.TestCase):
+    def test_scoop_reads_pinned_commit_and_rejects_wrong_hash(self):
+        record = promotion()
+        asset = dict(record['manifest']['platforms']['windows-x64']['artifacts'][0])
+        asset['url'] = asset['url'].replace('-setup.exe', '.zip')
+        manifest = {'version':'0.7.6','architecture':{'64bit':{'url':asset['url'],'hash':asset['sha256']}}}
+        for valid in (True, False):
+            manifest['architecture']['64bit']['hash'] = asset['sha256'] if valid else 'c'*64
+            content = base64.b64encode(json.dumps(manifest).encode()).decode()
+            with mock.patch.object(distribution,'required_asset',return_value=asset), mock.patch.object(distribution,'gh',side_effect=[json.dumps({'sha':'d'*40}),json.dumps({'content':content})]) as gh:
+                if valid:
+                    result=distribution.verify_published('scoop','0.7.6',record,{},Path('.'))
+                    self.assertTrue(result['verified'])
+                    self.assertIn('?ref='+ 'd'*40,gh.call_args.args[1])
+                else:
+                    with self.assertRaisesRegex(ValueError,'Scoop version/URL/hash'):
+                        distribution.verify_published('scoop','0.7.6',record,{},Path('.'))
+
+    def test_npm_downloaded_bytes_and_integrity_must_match_staged_release(self):
+        payload=b'public npm fixture'
+        digest=hashlib.sha256(payload).hexdigest()
+        integrity='sha512-'+base64.b64encode(hashlib.sha512(payload).digest()).decode()
+        name='lighttable-digital-darkroom-0.7.6.tgz'
+        package={'name':'lighttable-digital-darkroom','version':'0.7.6','dist':{'tarball':'https://registry.npmjs.org/lighttable-digital-darkroom/-/'+name,'shasum':hashlib.sha1(payload).hexdigest(),'integrity':integrity}}
+        registry=json.dumps({'versions':{'0.7.6':package},'dist-tags':{'latest':'0.7.6'}}).encode()
+        with tempfile.TemporaryDirectory() as temp:
+            directory=Path(temp); (directory/name).write_bytes(payload)
+            for downloaded in (payload,b'changed registry bytes'):
+                with mock.patch.object(distribution,'release_assets',return_value={name:{'size':len(payload),'digest':'sha256:'+digest}}), mock.patch.object(distribution,'public_bytes',side_effect=[registry,downloaded]):
+                    if downloaded==payload:
+                        result=distribution.verify_published('npm','0.7.6',promotion(),{'evidence':{'sha256':digest}},directory)
+                        self.assertTrue(result['evidence']['registry_bytes_verified'])
+                        self.assertEqual(result['evidence']['registry_latest'],'0.7.6')
+                    else:
+                        with self.assertRaisesRegex(ValueError,'Registry tarball bytes'):
+                            distribution.verify_published('npm','0.7.6',promotion(),{'evidence':{'sha256':digest}},directory)
+
+    def test_readback_failure_preserves_dispatch_receipt_and_never_publishes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output=Path(temp)/'result.json'
+            document={'schema':1,'version':'0.7.6','source_revision':'a'*40,'outcomes':[{'channel':'npm','state':'dispatched','evidence':{'channel_run_id':123}}]}
+            output.write_text(json.dumps(document)); original=output.read_bytes()
+            with mock.patch.object(distribution,'load_promotions',return_value={'windows-x64':promotion()}), mock.patch.object(distribution,'verify_published',side_effect=ValueError('not public yet')), mock.patch.object(distribution,'dispatch') as dispatch, mock.patch.object(distribution,'stage_npm') as stage, mock.patch('sys.argv',['publisher','--version','0.7.6','--npm','--verify-published','--promotion-result','proof.json','--output',str(output)]):
+                with self.assertRaises(SystemExit): distribution.main()
+                dispatch.assert_not_called(); stage.assert_not_called()
+            self.assertEqual(output.read_bytes(),original)
 
 if __name__ == "__main__": unittest.main()

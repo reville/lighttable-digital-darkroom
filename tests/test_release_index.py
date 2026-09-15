@@ -58,4 +58,24 @@ class ReleaseIndexTests(unittest.TestCase):
         self.result['manifest']['platforms']['linux-x86_64']['artifacts'][0]['sha256'] = 'a'*64
         with self.assertRaises(ValueError):merge(self.index, self.result)
 
+class SignedDefaultTests(unittest.TestCase):
+    def test_newer_adhoc_mac_cannot_replace_notarized_default(self):
+        index = json.loads((ROOT / 'release/manifest.json').read_text())
+        mac = index['platforms']['macos-arm64']
+        mac['signing'] = 'developer-id-notarized'
+        mac['update_owner'] = 'app'
+        incoming = copy.deepcopy(index)
+        incoming['platforms'] = {'macos-arm64': copy.deepcopy(mac)}
+        old_version = mac['version']
+        version = old_version.split('-')[0] + '-beta.99'
+        incoming.update(version=version, tag='macos-v'+version)
+        entry = incoming['platforms']['macos-arm64']
+        entry.update(version=version, tag='macos-v'+version, channel='beta', signing='ad-hoc', update_owner='manual')
+        for asset in entry['artifacts']:
+            asset['name'] = asset['name'].replace(old_version, version)
+            asset['url'] = asset['url'].replace(old_version, version)
+        result = dict(applied=True, public_bytes_verified=True, published_release=True, receipts_verified=True, manifest=incoming, platform='macos-arm64', version=version, source_revision=incoming['source_revision'], published_at='2026-09-15T00:00:00Z')
+        with self.assertRaisesRegex(ValueError, 'notarized Mac default'):
+            merge(index, result)
+
 if __name__ == '__main__':unittest.main()

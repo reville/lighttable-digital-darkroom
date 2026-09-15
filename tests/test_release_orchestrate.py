@@ -30,4 +30,30 @@ class T(unittest.TestCase):
  def test_live_flags_require_make_public(self):
   args=__import__("argparse").Namespace(stage="promote",build_run_id="1",preparation_run_id="2",native_run_id="3",platform="linux-x86_64",version="0.7.6",source_revision=self.src,macos_channel="stable",macos_version=None,installer_sha256=None,make_public=False,advance_feed=False)
   with self.assertRaises(orchestrate.OrchestrationError): orchestrate.inputs(args,{})
+ def platform_args(self, platform, stage='prepare', **overrides):
+  values=dict(stage=stage,platform=platform,version='0.7.6',source_revision=self.src,build_run_id='12',native_run_id=None,preparation_run_id='14',macos_channel='stable',macos_version=None,make_public=False,advance_feed=False)
+  values.update(overrides)
+  return __import__('argparse').Namespace(**values)
+ def test_shared_state_never_leaks_windows_vm_into_other_platforms(self):
+  state={'runs':{'vm':{'run_id':'13'}}}
+  for platform in ('linux-x86_64','macos-arm64'):
+   with self.subTest(platform=platform):
+    self.assertEqual(orchestrate.inputs(self.platform_args(platform),state)['native_run_id'],'')
+    with self.assertRaises(orchestrate.OrchestrationError):
+     orchestrate.inputs(self.platform_args(platform,native_run_id='13'),state)
+  self.assertEqual(orchestrate.inputs(self.platform_args('windows-x64'),state)['native_run_id'],'13')
+ def test_prepare_can_overlap_native_but_verify_still_requires_success(self):
+  for stage in ('prepare','verify','promote'):
+   args=self.platform_args('windows-x64',stage)
+   values={'build_run_id':'12','native_run_id':'13'}
+   native={'status':'in_progress','display_title':f'Windows clients for build 12 source {self.src} installer '+ 'b'*64}
+   with patch.object(orchestrate,'validate_build'), patch.object(orchestrate,'run_json',return_value=native) as read:
+    orchestrate.prerequisites(args,values)
+    self.assertEqual(read.call_args.kwargs['successful'],stage!='prepare')
+ def test_prepare_rejects_native_from_another_build_and_failed_run(self):
+  args=self.platform_args('windows-x64')
+  title=f'Windows clients for build 12 source {self.src} installer '+ 'b'*64
+  for native in ({'status':'completed','conclusion':'failure','display_title':title}, {'status':'in_progress','display_title':title.replace('build 12','build 99')}):
+   with patch.object(orchestrate,'validate_build'), patch.object(orchestrate,'run_json',return_value=native), self.assertRaises(orchestrate.OrchestrationError):
+    orchestrate.prerequisites(args,{'build_run_id':'12','native_run_id':'13'})
 if __name__=="__main__": unittest.main()

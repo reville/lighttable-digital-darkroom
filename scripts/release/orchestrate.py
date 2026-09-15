@@ -156,9 +156,13 @@ def inputs(args, state):
         require(re.fullmatch(re.escape(args.version) + r'-beta\.[1-9][0-9]*', version), 'macOS beta version must match the stable base version')
     else:
         require(not args.macos_version or args.macos_version == args.version, 'Beta version requires the explicit beta macOS channel')
-    native = args.native_run_id or recorded_id(state, 'vm') or ''
+    # The shared VM stage belongs only to Windows. One state file can safely
+    # carry every platform without inventing Mac/Linux client dependencies.
+    native = ''
     if args.platform == 'windows-x64':
-        positive_id(native)
+        native = positive_id(args.native_run_id or recorded_id(state, 'vm'))
+    else:
+        require(not args.native_run_id, '--native-run-id is only supported for Windows client acceptance')
     result = dict(platform=args.platform, version=version, build_run_id=build,
                   source_revision=args.source_revision, native_run_id=native)
     if stage in ('verify', 'promote'):
@@ -194,7 +198,14 @@ def prerequisites(args, values):
     if platform == 'macos-arm64' and '-beta.' in values.get('version', ''):
         verify_ref('macos-v' + values['version'], args.source_revision)
     if values.get('native_run_id'):
-        run_json(values['native_run_id'], 'windows-client-vm.yml', args.source_revision, successful=True)
+        native = run_json(values['native_run_id'], 'windows-client-vm.yml', args.source_revision,
+                          successful=args.stage != 'prepare')
+        expected = (rf"Windows clients for build {re.escape(values['build_run_id'])} "
+                    rf"source {re.escape(args.source_revision)} installer [a-f0-9]{{64}}")
+        require(re.fullmatch(expected, native.get('display_title', '').strip()),
+                'Windows client run does not select this original build')
+        require(native.get('status') != 'completed' or native.get('conclusion') == 'success',
+                'Windows client acceptance failed; preparation cannot proceed')
     if values.get('preparation_run_id'):
         prep = {key: values[key] for key in ('platform', 'version', 'build_run_id', 'source_revision', 'native_run_id')}
         run_json(values['preparation_run_id'], 'release-prepare.yml', args.source_revision,
