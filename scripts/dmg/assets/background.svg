@@ -57,12 +57,4 @@
   <path d="M371 154l18 15-18 15" fill="none" stroke="#10131a" stroke-opacity=".92"
         stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <path d="M72 303h616" stroke="#fff" stroke-opacity=".16"/>
-  <text x="380" y="350" fill="#fff" opacity=".94" text-anchor="middle"
-        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif"
-        font-size="15" font-weight="520">For this beta, you will need to allow unsigned apps</text>
-  <text x="380" y="374" fill="#fff" opacity=".94" text-anchor="middle"
-        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif"
-        font-size="15" font-weight="520">in order to launch it. <tspan text-decoration="underline" font-weight="650">See this readme.</tspan></text>
-
 </svg>
