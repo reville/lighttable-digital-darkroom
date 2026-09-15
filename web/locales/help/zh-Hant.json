@@ -3149,8 +3149,8 @@
         {
           "title": "更新 LightTable",
           "paragraphs": [
-            "已簽署的 Windows 安裝和已設定的 Linux 可攜式安裝，可在「設定 → 一般」中使用「檢查更新…」。自動檢查會在編輯器開啟後執行，每天最多一次。",
-            "在 Linux 上，選擇「更新」以下載並驗證套件，然後選擇「重新啟動並更新」。Windows 使用原生更新對話框。請先完成匯入、匯出及其他工作；LightTable 會在關閉前儲存待處理的編輯並備份目錄。",
+            "已簽署的 macOS 安裝在 LightTable 選單中提供「檢查更新…」，而已簽署的 Windows 安裝與已設定的 Linux 可攜式安裝則在「設定」→「一般」中提供。自動檢查在編輯器開啟後每天最多執行一次。臨時 Mac 測試版仍僅限手動更新。",
+            "在 macOS 上，選擇 LightTable →「檢查更新…」以下載並安裝已簽署的正式版。在 Linux 上，選擇「更新」以下載並驗證套件，然後重新啟動並更新。Windows 使用其原生更新對話框。請先完成匯入、匯出及其他作業；LightTable 會在關閉前儲存待處理的編輯並備份目錄。",
             "更新會保留照片、編輯和偏好設定。Linux 會保留舊套件以便復原，但不會自動還原目錄或重新開啟舊版本。",
             "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它們管理的安裝。Windows 可攜式副本需下載新的 ZIP。未設定更新簽章的組建無法自行更新。"
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }

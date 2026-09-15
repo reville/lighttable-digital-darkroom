@@ -3149,8 +3149,8 @@
         {
           "title": "Mettre à jour LightTable",
           "paragraphs": [
-            "Les installations Windows signées et les installations portables Linux configurées proposent Rechercher des mises à jour… dans Réglages → Général. Les recherches automatiques ont lieu au maximum une fois par jour après l’ouverture de l’éditeur.",
-            "Sous Linux, choisissez Mettre à jour pour télécharger et vérifier le paquet, puis Redémarrer et mettre à jour. Windows utilise sa boîte de dialogue native de mise à jour. Terminez d’abord les importations, exportations et autres tâches ; LightTable enregistre les modifications en attente et sauvegarde le catalogue avant de se fermer.",
+            "Les installations macOS signées proposent Rechercher des mises à jour… dans le menu LightTable, tandis que les installations Windows signées et les installations portables Linux configurées le proposent dans Réglages → Général. Les vérifications automatiques s’exécutent au maximum une fois par jour après l’ouverture de l’éditeur. Les bêtas Mac ad hoc restent en mise à jour manuelle uniquement.",
+            "Sous macOS, choisissez LightTable → Rechercher des mises à jour… pour télécharger et installer une version signée. Sous Linux, choisissez Mettre à jour pour télécharger et vérifier le bundle, puis Redémarrer et mettre à jour. Windows utilise sa boîte de dialogue de mise à jour native. Terminez d’abord les importations, exportations et autres tâches ; LightTable enregistre les modifications en attente et sauvegarde le catalogue avant de se fermer.",
             "Les mises à jour conservent les photos, les modifications et les préférences. Linux garde le paquet précédent pour la récupération, mais ne restaure pas automatiquement un catalogue et ne rouvre pas une version antérieure.",
             "Utilisez Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap pour mettre à jour les installations qu’ils gèrent. Téléchargez un nouveau ZIP pour les copies portables Windows. Les versions sans signature des mises à jour configurée ne peuvent pas se mettre à jour seules."
           ]
@@ -3554,5 +3554,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "69bee3dc542a5b535e620988999d75520bcc6f4e3d053317d7c7cfe8a02653ae"
+  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
 }
