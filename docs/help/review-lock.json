@@ -469,7 +469,7 @@
       }
     },
     "settings-and-defaults": {
-      "content": "8ed4b44039a950ae840debb4f6f691d1078f141aaddb83d0ce5f7ec6e8310dec",
+      "content": "be776bf4d0658a94716c26a9ec12c30f915e9649c0313b492cbc84dfa8c832f9",
       "sources": {
         "color_pipeline.py": "93d12d01301374a3c5d447e9ca9452445dfc7e62141b9e7d2f55bede520fca5c",
         "desktop_updater.py": "ee4b3046a0b202cb579f60d02ff6e1ff7f7754ca4a394a12ef7be3ba96a026cd",
