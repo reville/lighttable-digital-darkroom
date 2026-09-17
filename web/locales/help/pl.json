@@ -3090,6 +3090,7 @@
         "ustawienia",
         "preferencje",
         "domyślne",
+        "raporty o awarii",
         "aparat",
         "raw",
         "seryjny",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interfejs i zachowanie",
           "paragraphs": [
-            "Większość zmian ustawień zapisuje się automatycznie. Język używa opcji Zastosuj język i po zapisaniu zmian przeładowuje okno. Ogólne kontroluje też Automatyczne przechodzenie po wybraniu, odrzuceniu lub ocenieniu, powiadomienia o zakończeniu oraz sprawdzanie aktualizacji.",
+            "Większość zmian ustawień zapisuje się automatycznie. Język używa opcji Zastosuj język i przeładowuje okno po zapisaniu zmian. Ogólne kontroluje też automatyczne przechodzenie po wybraniu, odrzuceniu lub ocenieniu, powiadomienia o zakończeniu, sprawdzanie aktualizacji oraz to, czy wersje wydane wysyłają raporty o awariach.",
             "Opcje interfejsu sterują tłem przeglądarki, skalą czcionki, Lights Out, nakładką informacji lupy i prowadnicami kadrowania. Te preferencje zmieniają wygląd obszaru roboczego bez zmiany wyeksportowanych pikseli.",
             "Opcja Płynne powiększanie w Ustawienia → Interfejs włącza lub wyłącza animacje dla Dopasuj, 1:1, przycisków powiększania i skrótów. Twój wybór ma pierwszeństwo przed opcją Ogranicz ruch; do czasu dokonania wyboru LightTable stosuje ustawienie systemowe. Przewijanie, gest szczypania i przeciąganie reagują bezpośrednio.",
             "Pliki i metadane kontrolują przenośne edycje LightTable obok oryginałów, automatyczny zapis XMP, parowanie RAW/JPEG oraz wprowadzanie słów kluczowych. Pełne przenośne edycje używają .lighttable-state.json; XMP przenosi zgodne edycje i metadane. Synchronizacja XMP zachowuje niepowiązane pola i zgłasza konflikty zmian zewnętrznych; odczytuj metadane Exchange przez sidecary XMP dla obsługiwanego przepływu pracy. Przenośne edycje LightTable obejmują wirtualne kopie. Ponowne otwarcie folderu zachowuje edycje już zapisane w katalogu."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Ustawienia"
     },
@@ -3400,7 +3402,8 @@
         "tryb bezpieczny",
         "diagnostyka",
         "log",
-        "napraw"
+        "napraw",
+        "raport o awarii"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
             "Pomoc → Zgłoś problem… otwiera najnowszy raport lub bieżące dane diagnostyczne, jeśli nie zarejestrowano nieoczekiwanego zamknięcia. Raporty zawierają wersję aplikacji, macOS i sprzęt, ostatnią zarejestrowaną operację, gdy jest dostępna, filtrowane ostatnie logi oraz dostępne ślady błędów. Pasujący raport o awarii macOS może dodać informacje o stosie wywołań i plikach binarnych. Nieoczekiwane zamknięcie nie zawsze pozostawia ślad błędu ani wskazuje swoją przyczynę.",
-            "Raporty pozostają na Twoim Macu, dopóki nie zdecydujesz się ich udostępnić. Ścieżki, nazwy plików zdjęć, cytowane wartości logów i typowe pola poświadczeń są filtrowane; przed udostępnieniem sprawdź tekst. Zdjęcia i katalog nie są dołączane. Lokalnie przechowywanych jest ostatnich dziesięć raportów."
+            "Pełny raport diagnostyczny pozostaje na Twoim Macu, dopóki nie zdecydujesz się go udostępnić. Ścieżki, nazwy plików zdjęć, ujęte w cudzysłów wartości logu oraz typowe pola poświadczeń są filtrowane; przed udostępnieniem sprawdź tekst. Zdjęcia i katalog nie są dołączane. Lokalnie zachowywanych jest ostatnich dziesięć raportów."
           ],
           "steps": [
             "Przeczytaj raport diagnostyczny. Wybierz Kopiuj raport, aby wkleić go samodzielnie do wiadomości e-mail.",
             "Albo wybierz Wyślij e-mail do opiekuna. To kopiuje raport i otwiera wersję roboczą zaadresowaną do team@lighttable.app.",
             "Opisz, co robiłeś, wklej skopiowany raport do wersji roboczej i wyślij go, gdy będziesz gotowy. Jeśli nie otworzy się żadna aplikacja pocztowa, użyj swojego zwykłego serwisu poczty e-mail.",
-            "Wybierz Odrzuć, aby zamknąć raport. Nic nie jest wysyłane automatycznie."
+            "Wybierz Odrzuć, aby zamknąć raport. Sam raport nigdy nie jest wysyłany automatycznie. Jeśli raporty o awariach są włączone, LightTable wysyła tylko techniczne szczegóły opisane w sekcji Wyślij raporty o awarii."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Rozwiązywanie problemów"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Rozwiązywanie problemów"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Wyślij raporty o awarii",
+      "category": "Troubleshooting",
+      "summary": "Wybierz, czy LightTable ma wysyłać programistom techniczne szczegóły awarii.",
+      "keywords": [
+        "awaria",
+        "raport o awarii",
+        "prywatność",
+        "wyślij",
+        "programistom",
+        "błąd",
+        "diagnostyka",
+        "zgoda",
+        "dane osobowe"
+      ],
+      "sections": [
+        {
+          "title": "Wybierz, czy wysyłać raporty",
+          "paragraphs": [
+            "Gdy wydany LightTable uruchamia się po raz pierwszy, pyta, czy wysyłać raporty o awariach do swoich programistów. Nic nie jest wysyłane, chyba że wybierzesz Wyślij raporty o awariach. Zamknięcie tego pytania bez wyboru spowoduje ponowne zapytanie przy następnym uruchomieniu. Możesz zmienić swój wybór w dowolnym momencie za pomocą opcji Wyślij raporty o awariach w Ustawienia → Ogólne.",
+            "Gdy raporty są włączone, LightTable wysyła raport przy następnym uruchomieniu po awarii aplikacji lub jej silnika renderującego. Raport, którego nie można wysłać, jest ponawiany przy późniejszym uruchomieniu i odrzucany po sześciu próbach albo po dwóch tygodniach. Wyłączenie raportów odrzuca raporty, które nie zostały wysłane."
+          ]
+        },
+        {
+          "title": "Co zawiera raport",
+          "paragraphs": [
+            "Raport zawiera wersję i kompilację LightTable, system operacyjny i jego wersję, typ i liczbę procesorów, pamięć oraz na Macu identyfikator modelu. Informuje, czy aplikacja lub jej silnik renderujący uległy awarii, jak to się zakończyło, czy LightTable dekodował, renderował czy eksportował oraz gdzie w kodzie programu wystąpiła awaria, na przykład nazwy funkcji i numery linii.",
+            "Raport nigdy nie zawiera zdjęć, metadanych zdjęć, nazw plików ani folderów, ścieżek, zawartości katalogu, tekstu logu ani innych danych osobowych i nie zawiera żadnego identyfikatora Twojego komputera. Usługa, która odbiera raporty, widzi Twój adres IP jako część połączenia i go nie przechowuje.",
+            "W systemach Windows i Linux LightTable raportuje awarie silnika renderującego, które pozostawiły ślad błędu. Na Macu raportuje też awarie aplikacji, dodając informacje ze stosu zapisane przez macOS."
+          ],
+          "tips": [
+            "Aby opisać, co robiłeś, użyj Pomoc → Zgłoś problem… na Macu albo otwórz zgłoszenie na GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Rozwiązywanie problemów"
     }
   ],
   "locale": "pl",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

@@ -3090,6 +3090,7 @@
         "ayarlar",
         "tercihler",
         "varsayılanlar",
+        "çökme raporları",
         "kamera",
         "raw",
         "seri",
@@ -3108,7 +3109,7 @@
         {
           "title": "Arayüz ve davranış",
           "paragraphs": [
-            "Çoğu ayar değişikliği otomatik olarak kaydedilir. Dil, düzenlemeleri kaydettikten sonra Uygula dilini kullanır ve pencereyi yeniden yükler. Genel ayrıca seçme, reddetme veya puanlama sonrası Otomatik ilerle’yi, tamamlanma bildirimlerini ve güncelleme denetimlerini de yönetir.",
+            "Çoğu ayar değişikliği otomatik olarak kaydedilir. Dil, değişiklikleri kaydettikten sonra Apply language kullanır ve pencereyi yeniden yükler. Genel ayrıca, seçim, reddetme veya derecelendirmeden sonra Otomatik ilerle, tamamlanma bildirimleri, güncelleme denetimleri ve yayımlanan sürümlerin çökme raporları gönderip göndermeyeceğini denetler.",
             "Arayüz, görüntüleyici arka planını, yazı tipi ölçeğini, Lights Out'u, büyüteç bilgi katmanını ve kırpma kılavuzlarını denetler. Bu tercihler, dışa aktarılan pikselleri değiştirmeden çalışma alanının görünümünü değiştirir.",
             "Ayarlar → Arayüz bölümündeki Yumuşak yakınlaştırma, Sığdır, 1:1, yakınlaştırma düğmeleri ve kısayollar için animasyonu açar veya kapatır. Seçiminiz Hareketi Azalt ayarına göre önceliklidir; seçim yapana kadar LightTable sistem ayarını izler. Kaydırma, kıstırma ve sürükleme doğrudan tepki verir.",
             "Dosyalar ve Üstveri, orijinallerin yanındaki taşınabilir LightTable düzenlemelerini, otomatik XMP yazmayı, RAW/JPEG eşleştirmeyi ve anahtar kelime girişini yönetir. Tam taşınabilir düzenlemeler .lighttable-state.json kullanır; XMP uyumlu düzenlemeleri ve üstveriyi taşır. XMP eşitleme, ilgisiz alanları korur ve çakışan harici değişiklikleri bildirir; desteklenen iş akışı için Exchange üstverisini XMP yardımcı dosyaları üzerinden okuyun. Taşınabilir LightTable düzenlemeleri sanal kopyaları da içerir. Bir klasörü yeniden açtığınızda kataloğunuzda önceden kaydedilmiş düzenlemeler korunur."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Ayarlar"
     },
@@ -3400,7 +3402,8 @@
         "güvenli mod",
         "tanılama",
         "log",
-        "onar"
+        "onar",
+        "çökme raporu"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
             "Yardım → Bir Sorun Bildir… en son raporu veya beklenmeyen bir çıkış kaydedilmediyse geçerli tanılamaları açar. Raporlar uygulama sürümünü, macOS ve donanımı, varsa son kaydedilen işlemi, filtrelenmiş son logları ve mevcut hata izlerini içerir. Eşleşen bir macOS çökme raporu yığın ve ikili bilgi ekleyebilir. Beklenmeyen bir çıkış her zaman bir hata izi bırakmaz veya nedenini belirlemez.",
-            "Raporlar, siz paylaşmayı seçene kadar Mac'inizde kalır. Yollar, fotoğraf dosya adları, tırnak içindeki log değerleri ve yaygın kimlik bilgisi alanları filtrelenir; paylaşmadan önce metni inceleyin. Fotoğraflar ve katalog eklenmez. Son on rapor yerel olarak saklanır."
+            "Tam tanılama raporu, siz paylaşmayı seçene kadar Mac’inizde kalır. Yollar, fotoğraf dosya adları, tırnak içindeki log değerleri ve yaygın kimlik bilgisi alanları filtrelenir; paylaşmadan önce metni inceleyin. Fotoğraflar ve katalog eklenmez. En son on rapor yerel olarak saklanır."
           ],
           "steps": [
             "Tanılama raporunu okuyun. E-postaya kendiniz yapıştırmak için Raporu kopyala'yı seçin.",
             "Ya da Bakımcıya e-posta gönder'i seçin. Bu, raporu kopyalar ve team@lighttable.app adresine yönelik bir taslak açar.",
             "Ne yaptığınızı açıklayın, kopyalanan raporu taslağa yapıştırın ve hazır olduğunuzda gönderin. Hiçbir e-posta uygulaması açılmazsa, her zamanki e-posta hizmetinizi kullanın.",
-            "Raporu kapatmak için Kapat'ı seçin. Hiçbir şey otomatik olarak gönderilmez."
+            "Raporu kapatmak için Kapat seçin. Raporun kendisi hiçbir zaman otomatik olarak gönderilmez. Çökme raporları açık ise LightTable yalnızca Çökme Raporlarını Gönder bölümünde açıklanan teknik ayrıntıları gönderir."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Sorun giderme"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Sorun giderme"
+    },
+    {
+      "id": "crash-reports",
+      "title": "çökme raporlarını gönder",
+      "category": "Troubleshooting",
+      "summary": "LightTable’ın çökmelerin teknik ayrıntılarını geliştiricilerine gönderip göndermeyeceğini seçin.",
+      "keywords": [
+        "çökme",
+        "çökme raporu",
+        "gizlilik",
+        "gönder",
+        "geliştiriciler",
+        "hata",
+        "tanılama",
+        "onay",
+        "kişisel bilgiler"
+      ],
+      "sections": [
+        {
+          "title": "Raporları gönderip göndermeyeceğinizi seçin",
+          "paragraphs": [
+            "Yayımlanmış bir LightTable ilk açıldığında, geliştiricilerine çökme raporları gönderilip gönderilmeyeceğini sorar. Çökme Raporlarını Gönder seçmediğiniz sürece hiçbir şey gönderilmez. Soruyu bir seçim yapmadan kapatırsanız, bir sonraki başlatmada tekrar sorulur. Seçiminizi istediğiniz zaman Ayarlar → Genel bölümündeki çökme raporlarını gönder seçeneğiyle değiştirebilirsiniz.",
+            "Raporlar açıkken LightTable, uygulama veya işleme motoru çöktükten sonra bir sonraki başlatmada bir rapor gönderir. Gönderilemeyen bir rapor daha sonraki bir başlatmada yeniden denenir ve altı denemeden veya iki haftadan sonra atılır. Raporları kapatmak, gönderilmemiş raporları siler."
+          ]
+        },
+        {
+          "title": "Bir raporun içeriği",
+          "paragraphs": [
+            "Bir rapor, LightTable sürümünü ve derlemesini, işletim sistemini ve sürümünü, işlemci türü ve sayısını, belleği ve Mac’te model tanımlayıcısını içerir. Uygulamanın mı yoksa işleme motorunun mu çöktüğünü, nasıl sona erdiğini, LightTable’ın kod çözme, işleme veya dışa aktarma yapıp yapmadığını ve işlev adları ile satır numaraları gibi çökmenin program kodunda nerede gerçekleştiğini belirtir.",
+            "Bir rapor hiçbir zaman fotoğrafları, fotoğraf üstverisini, dosya veya klasör adlarını, yolları, katalog içeriklerini, log metnini veya diğer kişisel bilgileri içermez ve bilgisayarınız için hiçbir tanımlayıcı taşımaz. Raporları alan hizmet, bağlantının bir parçası olarak IP adresinizi görür ve bunu saklamaz.",
+            "Windows ve Linux’ta LightTable, bir hata izi bırakan işleme motoru çökmelerini raporlar. Mac’te ayrıca uygulama çökmelerini raporlar ve macOS’un kaydettiği yığın bilgilerini ekler."
+          ],
+          "tips": [
+            "Ne yaptığınızı açıklamak için, Mac’te Yardım → Bir Sorun Bildir… seçeneğini kullanın ya da GitHub’da bir sorun açın."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Sorun giderme"
     }
   ],
   "locale": "tr",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

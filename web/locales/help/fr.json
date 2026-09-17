@@ -3090,6 +3090,7 @@
         "réglages",
         "préférences",
         "par défaut",
+        "rapports de plantage",
         "appareil photo",
         "RAW",
         "numéro de série",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interface et comportement",
           "paragraphs": [
-            "La plupart des modifications des réglages sont enregistrées automatiquement. La langue utilise Appliquer la langue et recharge la fenêtre après l'enregistrement des modifications. Général contrôle aussi le Passage automatique après choix, rejet ou notation, les notifications de fin et les vérifications de mise à jour.",
+            "La plupart des modifications des réglages sont enregistrées automatiquement. Langue utilise Appliquer la langue et recharge la fenêtre après l’enregistrement des modifications. Général contrôle aussi le Passage automatique après le choix, le rejet ou l’attribution d’une note, les notifications d’achèvement, la recherche de mises à jour et le fait que les versions publiées envoient ou non des rapports de plantage.",
             "Les contrôles de l’interface définissent l’arrière-plan du visualiseur, l’échelle de police, Lights Out, l’overlay d’informations de la loupe et les guides de recadrage. Ces préférences modifient l’apparence de l’espace de travail sans modifier les pixels exportés.",
             "Zoom fluide, dans Réglages → Interface, active ou désactive les animations pour Ajuster, 1:1, les boutons de zoom et les raccourcis. Votre choix prévaut sur Réduire les animations ; sans choix explicite, LightTable suit le réglage système. Le défilement, le pincement et le glissement répondent directement.",
             "Fichiers et métadonnées contrôle les modifications portables de LightTable à côté des originaux, l'écriture automatique XMP, l'appariement RAW/JPEG et la saisie de mots-clés. Les modifications portables complètes utilisent .lighttable-state.json ; XMP transporte les modifications et métadonnées compatibles. La synchronisation XMP préserve les champs non liés et signale les modifications externes conflictuelles ; lisez les métadonnées d'échange via des sidecars XMP pour le flux de travail pris en charge. Les modifications portables de LightTable incluent les copies virtuelles. Lorsque vous rouvrez un dossier, les modifications déjà enregistrées dans votre catalogue sont conservées."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Réglages"
     },
@@ -3400,7 +3402,8 @@
         "mode sans échec",
         "diagnostics",
         "log",
-        "réparer"
+        "réparer",
+        "rapport de plantage"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Si l’application Mac se ferme sans quitter proprement, un rapport de diagnostic s’ouvre au prochain lancement. Si son moteur de rendu s’arrête de manière inattendue, le rapport peut s’ouvrir pendant que le moteur se rétablit. Le rapport apparaît une fois pour chaque incident enregistré ; Ignorer vous permet de continuer. Fermer normalement l’application ou redémarrer son service de rendu ne crée pas de rapport.",
             "Aide → Signaler un problème… ouvre le dernier rapport, ou les diagnostics actuels si aucune fermeture inattendue n’a été enregistrée. Les rapports incluent la version de l’application, macOS et le matériel, la dernière opération enregistrée lorsqu’elle est disponible, les logs récents filtrés et les traces d’erreur disponibles. Un rapport de plantage macOS correspondant peut ajouter des informations de pile et de binaire. Une fermeture inattendue ne laisse pas toujours de trace d’erreur ni n’identifie sa cause.",
-            "Les rapports restent sur votre Mac jusqu’à ce que vous choisissiez de les partager. Les chemins, les noms de fichier des photos, les valeurs de log entre guillemets et les champs d’identifiants courants sont filtrés ; inspectez le texte avant de le partager. Les photos et le catalogue ne sont pas joints. Les dix rapports les plus récents sont conservés localement."
+            "Le rapport de diagnostic complet reste sur votre Mac jusqu’à ce que vous choisissiez de le partager. Les chemins, les noms de fichiers des photos, les valeurs des logs entre guillemets et les champs d’identifiants courants sont filtrés ; examinez le texte avant de le partager. Les photos et le catalogue ne sont pas joints. Les dix rapports les plus récents sont conservés localement."
           ],
           "steps": [
             "Lisez le rapport de diagnostic. Choisissez Copier le rapport pour le coller vous-même dans un e-mail.",
             "Ou choisissez Envoyer un e-mail au mainteneur. Cela copie le rapport et ouvre un brouillon adressé à team@lighttable.app.",
             "Décrivez ce que vous faisiez, collez le rapport copié dans le brouillon et envoyez-le quand vous êtes prêt. Si aucune application de messagerie ne s’ouvre, utilisez votre service de messagerie habituel.",
-            "Choisissez Ignorer pour fermer le rapport. Rien n’est envoyé automatiquement."
+            "Choisissez Ignorer pour fermer le rapport. Le rapport lui-même n’est jamais envoyé automatiquement. Si les rapports de plantage sont activés, LightTable envoie uniquement les détails techniques décrits dans Envoyer les rapports de plantage."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Dépannage"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Dépannage"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Envoyer les rapports de plantage",
+      "category": "Troubleshooting",
+      "summary": "Choisissez si LightTable envoie à ses développeurs les détails techniques des plantages.",
+      "keywords": [
+        "plantage",
+        "rapport de plantage",
+        "confidentialité",
+        "envoyer",
+        "développeurs",
+        "bogue",
+        "diagnostics",
+        "consentement",
+        "informations personnelles"
+      ],
+      "sections": [
+        {
+          "title": "Choisir si les rapports doivent être envoyés",
+          "paragraphs": [
+            "Lors du premier lancement d’une version publiée de LightTable, l’application demande s’il faut envoyer des rapports de plantage à ses développeurs. Rien n’est envoyé tant que vous ne choisissez pas Envoyer les rapports de plantage. Fermer la question sans choisir la repose au lancement suivant. Modifiez votre choix à tout moment avec Envoyer les rapports de plantage dans Réglages → Général.",
+            "Avec les rapports activés, LightTable envoie un rapport au prochain démarrage de l’application après un plantage de l’application ou de son moteur de rendu. Un rapport qui ne peut pas être envoyé est réessayé au lancement suivant, puis supprimé après six tentatives ou deux semaines. Désactiver les rapports supprime ceux qui n’ont pas été envoyés."
+          ]
+        },
+        {
+          "title": "Ce qu’un rapport contient",
+          "paragraphs": [
+            "Un rapport inclut la version et la build de LightTable, le système d’exploitation et sa version, le type et le nombre de processeurs, la mémoire et, sur un Mac, l’identifiant du modèle. Il indique si l’application ou son moteur de rendu a planté, comment cela s’est terminé, si LightTable était en train de décoder, de rendre ou d’exporter, ainsi que l’endroit du code du programme où le plantage s’est produit, par exemple les noms de fonction et les numéros de ligne.",
+            "Un rapport n’inclut jamais de photos, de métadonnées de photos, de noms de fichiers ou de dossiers, de chemins, de contenus de catalogue, de texte de log ni d’autres informations personnelles, et il ne comporte aucun identifiant de votre ordinateur. Le service qui reçoit les rapports voit votre adresse IP dans le cadre de la connexion et ne la conserve pas.",
+            "Sous Windows et Linux, LightTable signale les plantages du moteur de rendu qui ont laissé une trace d’erreur. Sur un Mac, il signale aussi les plantages de l’application, en ajoutant les informations de pile enregistrées par macOS."
+          ],
+          "tips": [
+            "Pour décrire ce que vous faisiez, utilisez Aide → Signaler un problème… sur un Mac, ou ouvrez un ticket sur GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Dépannage"
     }
   ],
   "locale": "fr",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

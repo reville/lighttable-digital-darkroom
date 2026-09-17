@@ -3090,6 +3090,7 @@
         "Einstellungen",
         "Einstellungen",
         "Standardwerte",
+        "Absturzberichte",
         "kamera",
         "RAW",
         "Seriennummer",
@@ -3108,7 +3109,7 @@
         {
           "title": "Oberfläche und Verhalten",
           "paragraphs": [
-            "Die meisten Einstellungsänderungen werden automatisch gespeichert. Die Sprache verwendet Sprache anwenden und lädt das Fenster nach dem Speichern der Änderungen neu. Allgemein steuert außerdem den automatischen Wechsel nach Auswählen, Ablehnen oder Bewerten, Benachrichtigungen beim Abschluss und die Update-Prüfung.",
+            "Die meisten Einstellungsänderungen werden automatisch gespeichert. Sprache verwendet Sprache anwenden und lädt das Fenster nach dem Speichern der Änderungen neu. Allgemein steuert außerdem den automatischen Wechsel nach dem Auswählen, Ablehnen oder Bewerten, Abschlussbenachrichtigungen, Update-Prüfungen und ob veröffentlichte Builds Absturzberichte senden.",
             "Die Oberflächensteuerungen bestimmen den Hintergrund des Betrachters, die Schriftgröße, Lights Out, das Informations-Overlay der Lupe und die Zuschneidehilfen. Diese Einstellungen ändern das Erscheinungsbild des Arbeitsbereichs, ohne exportierte Pixel zu verändern.",
             "„Sanfter Zoom“ unter Einstellungen → Oberfläche schaltet Animationen für Anpassen, 1:1, Zoomtasten und Tastenkürzel ein oder aus. Deine Auswahl hat Vorrang vor „Bewegung reduzieren“; bis du eine Auswahl triffst, folgt LightTable der Systemeinstellung. Scrollen, Aufziehen und Ziehen reagieren direkt.",
             "Dateien & Metadaten steuert portable LightTable-Bearbeitungen neben Originalen, das automatische Schreiben von XMP, RAW/JPEG-Paarung und Stichworteingabe. Vollständige portable Bearbeitungen verwenden .lighttable-state.json; XMP enthält kompatible Bearbeitungen und Metadaten. XMP-Synchronisierung bewahrt nicht betroffene Felder und meldet widersprüchliche externe Änderungen; lesen Sie Austauschmetadaten über XMP-Sidecars für den unterstützten Workflow. Portable LightTable-Bearbeitungen enthalten auch virtuelle Kopien. Beim erneuten Öffnen eines Ordners bleiben die bereits im Katalog gespeicherten Bearbeitungen erhalten."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Einstellungen"
     },
@@ -3400,7 +3402,8 @@
         "Sicherheitsmodus",
         "Diagnose",
         "protokoll",
-        "reparieren"
+        "reparieren",
+        "Absturzbericht"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Wenn die Mac-App ohne sauberes Beenden geschlossen wird, öffnet sich beim nächsten Start ein Diagnosebericht. Wenn ihre Render-Engine unerwartet stoppt, kann der Bericht geöffnet werden, während die Engine sich erholt. Der Bericht erscheint einmal für jedes aufgezeichnete Ereignis; Schließen lässt Sie fortfahren. Das normale Schließen der App oder ein Neustart ihres Renderdienstes erzeugt keinen Bericht.",
             "Hilfe → Problem melden… öffnet den neuesten Bericht oder die aktuellen Diagnosedaten, wenn kein unerwartetes Beenden aufgezeichnet wurde. Berichte enthalten den App-Build, macOS und die Hardware, die zuletzt aufgezeichnete Aktion, sofern verfügbar, gefilterte aktuelle Protokolle und verfügbare Fehler-Stacks. Ein passender macOS-Absturzbericht kann Stack- und Binärinformationen hinzufügen. Ein unerwartetes Beenden hinterlässt nicht immer einen Fehler-Stack oder identifiziert seine Ursache.",
-            "Berichte bleiben auf Ihrem Mac, bis Sie entscheiden, sie zu teilen. Pfade, Fotodateinamen, zitierte Protokollwerte und gängige Anmeldefelder werden herausgefiltert; prüfen Sie den Text vor dem Teilen. Fotos und der Katalog werden nicht angehängt. Die neuesten zehn Berichte werden lokal aufbewahrt."
+            "Der vollständige Diagnosebericht bleibt auf Ihrem Mac, bis Sie ihn freigeben. Pfade, Fotodateinamen, zitierte Logwerte und gängige Felder mit Anmeldedaten werden herausgefiltert; prüfen Sie den Text vor dem Teilen. Fotos und der Katalog werden nicht angehängt. Die letzten zehn Berichte werden lokal gespeichert."
           ],
           "steps": [
             "Lesen Sie den Diagnosebericht. Wählen Sie Bericht kopieren, um ihn selbst in eine E-Mail einzufügen.",
             "Oder wählen Sie E-Mail an den Maintainer. Dadurch wird der Bericht kopiert und ein Entwurf an team@lighttable.app geöffnet.",
             "Beschreiben Sie, was Sie getan haben, fügen Sie den kopierten Bericht in den Entwurf ein, und senden Sie ihn, wenn Sie fertig sind. Wenn keine E-Mail-App geöffnet wird, verwenden Sie Ihren üblichen E-Mail-Dienst.",
-            "Wählen Sie Schließen, um den Bericht zu schließen. Es wird nichts automatisch gesendet."
+            "Wählen Sie Schließen, um den Bericht zu schließen. Der Bericht selbst wird niemals automatisch gesendet. Wenn Absturzberichte aktiviert sind, sendet LightTable nur die unter Absturzberichte senden beschriebenen technischen Details."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Fehlerbehebung"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Fehlerbehebung"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Absturzberichte senden",
+      "category": "Troubleshooting",
+      "summary": "Wählen Sie aus, ob LightTable technische Details von Abstürzen an seine Entwickler sendet.",
+      "keywords": [
+        "Absturz",
+        "Absturzbericht",
+        "Datenschutz",
+        "Senden",
+        "Entwickler",
+        "Fehler",
+        "Diagnose",
+        "Einwilligung",
+        "personenbezogene Informationen"
+      ],
+      "sections": [
+        {
+          "title": "Wählen Sie aus, ob Berichte gesendet werden sollen",
+          "paragraphs": [
+            "Wenn ein veröffentlichtes LightTable erstmals geöffnet wird, wird gefragt, ob Absturzberichte an die Entwickler gesendet werden sollen. Es wird nichts gesendet, es sei denn, Sie wählen Absturzberichte senden. Wenn Sie die Frage schließen, ohne eine Auswahl zu treffen, wird sie beim nächsten Start erneut angezeigt. Sie können Ihre Auswahl jederzeit mit Absturzberichte senden in Einstellungen → Allgemein ändern.",
+            "Wenn Berichte aktiviert sind, sendet LightTable beim nächsten Start nach einem Absturz der App oder ihrer Rendering-Engine einen Bericht. Ein Bericht, der nicht gesendet werden kann, wird bei einem späteren Start erneut versucht und nach sechs Versuchen oder zwei Wochen verworfen. Das Deaktivieren von Berichten verwirft noch nicht gesendete Berichte."
+          ]
+        },
+        {
+          "title": "Was ein Bericht enthält",
+          "paragraphs": [
+            "Ein Bericht enthält die LightTable-Version und den Build, das Betriebssystem und seine Version, Prozessortyp und -anzahl, Arbeitsspeicher und auf einem Mac die Modellkennung. Er gibt an, ob die App oder ihre Rendering-Engine abgestürzt ist, wie sie beendet wurde, ob LightTable dekodiert, gerendert oder exportiert hat, und wo im Programmkode der Absturz aufgetreten ist, zum Beispiel Funktionsnamen und Zeilennummern.",
+            "Ein Bericht enthält niemals Fotos, Foto-Metadaten, Datei- oder Ordnernamen, Pfade, Kataloginhalte, Logtext oder andere personenbezogene Informationen und enthält keine Kennung für Ihren Computer. Der Dienst, der Berichte empfängt, sieht Ihre IP-Adresse als Teil der Verbindung und speichert sie nicht.",
+            "Unter Windows und Linux meldet LightTable Abstürze der Rendering-Engine, die eine Fehlerverfolgung hinterlassen haben. Auf einem Mac werden außerdem App-Abstürze gemeldet, wobei die von macOS aufgezeichneten Stack-Informationen hinzugefügt werden."
+          ],
+          "tips": [
+            "Um zu beschreiben, was Sie getan haben, verwenden Sie Hilfe → Problem melden… auf einem Mac oder öffnen Sie ein Issue auf GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Fehlerbehebung"
     }
   ],
   "locale": "de",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

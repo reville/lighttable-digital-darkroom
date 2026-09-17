@@ -3090,6 +3090,7 @@
         "instellingen",
         "voorkeuren",
         "standaarden",
+        "crashrapporten",
         "camera",
         "raw",
         "serieel",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interface en gedrag",
           "paragraphs": [
-            "De meeste wijzigingen in instellingen worden automatisch opgeslagen. Voor Taal wordt Venster toepassen en opnieuw laden gebruikt nadat wijzigingen zijn opgeslagen. Algemeen regelt ook Automatisch doorgaan na kiezen, afwijzen of beoordelen, voltooiingsmeldingen en updatecontroles.",
+            "De meeste wijzigingen in instellingen worden automatisch opgeslagen. Taal gebruikt Taal toepassen en laadt het venster opnieuw na het opslaan van wijzigingen. Algemeen regelt ook Automatisch doorgaan na kiezen, afwijzen of beoordelen, voltooiingsmeldingen, controle op updates en of vrijgegeven builds crashrapporten verzenden.",
             "Interface bestuurt de achtergrond van de viewer, lettergrootte, Lights Out, het overlay met loupe-info en bijsnijdhulplijnen. Deze voorkeuren wijzigen het uiterlijk van de werkruimte zonder de geëxporteerde pixels te wijzigen.",
             "Vloeiend zoomen onder Instellingen → Interface schakelt animaties voor Passend maken, 1:1, zoomknoppen en sneltoetsen in of uit. Je keuze heeft voorrang op Verminder beweging; tot je kiest, volgt LightTable de systeeminstelling. Scrollen, knijpen en slepen reageren direct.",
             "Bestanden en metagegevens regelt draagbare LightTable-bewerkingen naast originelen, automatisch XMP schrijven, RAW/JPEG-koppeling en invoer van trefwoorden. Volledige draagbare bewerkingen gebruiken .lighttable-state.json; XMP bevat compatibele bewerkingen en metagegevens. XMP-synchronisatie behoudt niet-gerelateerde velden en meldt conflicterende externe wijzigingen; lees Exchange-metagegevens via XMP-sidecars voor de ondersteunde workflow. Draagbare LightTable-bewerkingen bevatten ook virtuele kopieën. Wanneer u een map opnieuw opent, blijven de bewerkingen die al in uw catalogus zijn opgeslagen behouden."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Instellingen"
     },
@@ -3400,7 +3402,8 @@
         "veilige modus",
         "diagnostiek",
         "log",
-        "herstellen"
+        "herstellen",
+        "crashrapport"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
             "Help → Een probleem melden… opent het nieuwste rapport, of de huidige diagnostiek als er geen onverwacht afsluiten is vastgelegd. Rapporten bevatten de app-build, macOS en hardware, de laatst vastgelegde bewerking indien beschikbaar, gefilterde recente logs en beschikbare fouttraces. Een overeenkomend macOS-crashrapport kan stack- en binaire informatie toevoegen. Een onverwacht afsluiten laat niet altijd een fouttrace achter of wijst de oorzaak aan.",
-            "Rapporten blijven op uw Mac totdat u ervoor kiest ze te delen. Paden, fotobestandsnamen, geciteerde logwaarden en veelvoorkomende referentievelden worden gefilterd; inspecteer de tekst voordat u deelt. Foto's en de catalogus worden niet bijgevoegd. De laatste tien rapporten worden lokaal bewaard."
+            "Het volledige diagnostische rapport blijft op uw Mac totdat u ervoor kiest het te delen. Paden, fotobestandsnamen, geciteerde logwaarden en veelvoorkomende veldnamen voor inloggegevens worden gefilterd; inspecteer de tekst voordat u die deelt. Foto's en de catalogus worden niet toegevoegd. De laatste tien rapporten worden lokaal bewaard."
           ],
           "steps": [
             "Lees het diagnostische rapport. Kies Rapport kopiëren om het zelf in een e-mail te plakken.",
             "Of kies Beheerder e-mailen. Hiermee wordt het rapport gekopieerd en wordt een concept geopend dat is geadresseerd aan team@lighttable.app.",
             "Beschrijf wat u aan het doen was, plak het gekopieerde rapport in het concept en verzend het wanneer u klaar bent. Als er geen e-mailapp wordt geopend, gebruik dan uw gebruikelijke e-maildienst.",
-            "Kies Sluiten om het rapport te sluiten. Er wordt niets automatisch verzonden."
+            "Kies Sluiten om het rapport te sluiten. Het rapport zelf wordt nooit automatisch verzonden. Als crashrapporten aan staan, verzendt LightTable alleen de technische details die worden beschreven in Crashrapporten verzenden."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Probleemoplossing"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Probleemoplossing"
+    },
+    {
+      "id": "crash-reports",
+      "title": "crashrapporten verzenden",
+      "category": "Troubleshooting",
+      "summary": "Kies of LightTable technische crashdetails naar de ontwikkelaars verzendt.",
+      "keywords": [
+        "crash",
+        "crashrapport",
+        "privacy",
+        "verzenden",
+        "ontwikkelaars",
+        "bug",
+        "diagnostiek",
+        "toestemming",
+        "persoonlijke informatie"
+      ],
+      "sections": [
+        {
+          "title": "Kies of u rapporten wilt verzenden",
+          "paragraphs": [
+            "Wanneer een vrijgegeven versie van LightTable voor het eerst wordt geopend, vraagt het of crashrapporten naar de ontwikkelaars moeten worden verzonden. Er wordt niets verzonden tenzij u Crashrapporten verzenden kiest. Als u het venster sluit zonder een keuze te maken, wordt de vraag bij de volgende start opnieuw gesteld. Wijzig uw keuze op elk moment met crashrapporten verzenden in Instellingen → Algemeen.",
+            "Als rapporten aan staan, verzendt LightTable de volgende keer dat het start nadat de app of de rendering-engine is gecrasht, een rapport. Een rapport dat niet kan worden verzonden, wordt later opnieuw geprobeerd bij het opstarten en na zes pogingen of twee weken verworpen. Als rapporten worden uitgeschakeld, worden rapporten die nog niet zijn verzonden verworpen."
+          ]
+        },
+        {
+          "title": "Wat een rapport bevat",
+          "paragraphs": [
+            "Een rapport bevat de versie en build van LightTable, het besturingssysteem en de versie daarvan, het type en aantal processors, het geheugen en, op een Mac, de model-id. Het geeft aan of de app of de rendering-engine is gecrasht, hoe die is beëindigd, of LightTable aan het decoderen, renderen of exporteren was, en waar in de programmatuur de crash plaatsvond, zoals functienamen en regelnummers.",
+            "Een rapport bevat nooit foto's, fotometagegevens, bestands- of mapnamen, paden, catalogusinoud, logtekst of andere persoonlijke informatie, en bevat geen enkele identificatie voor uw computer. De service die rapporten ontvangt, ziet uw IP-adres als onderdeel van de verbinding en slaat dit niet op.",
+            "Op Windows en Linux meldt LightTable crashes van de rendering-engine die een fouttrace hebben achtergelaten. Op een Mac meldt het ook app-crashes en voegt het de stackinformatie toe die macOS heeft vastgelegd."
+          ],
+          "tips": [
+            "Gebruik Help → Een probleem melden… op een Mac, of open een issue op GitHub, om te beschrijven wat u aan het doen was."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Probleemoplossing"
     }
   ],
   "locale": "nl",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }
