@@ -8,6 +8,7 @@ from contextlib import redirect_stderr
 from pathlib import Path
 from unittest import mock
 
+import recovery
 import server
 from events import EventBroker
 
@@ -147,6 +148,25 @@ class ZeroByteVideoTests(unittest.TestCase):
         header = dict(call.args for call in handler.send_header.call_args_list)
         self.assertEqual(header["Content-Length"], "0")
         handler.wfile.write.assert_not_called()
+
+
+class ServerBacklogAndShutdownTests(unittest.TestCase):
+    def test_request_queue_size_is_configured_for_bursts(self):
+        self.assertGreaterEqual(server.LightTableServer.request_queue_size, 128)
+
+    def test_shutdown_signal_handler_ends_session_immediately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = recovery.SessionLedger(directory)
+            ledger.begin(port=8080)
+            with mock.patch.object(server, "SESSION", ledger), \
+                    mock.patch.object(server, "STARTUP", mock.Mock()), \
+                    mock.patch.object(server, "remove_instance_file", mock.Mock()):
+                with self.assertRaises(SystemExit) as caught:
+                    server.handle_shutdown_signal()
+                self.assertEqual(caught.exception.code, 0)
+            self.assertTrue(ledger._ended)
+            self.assertEqual(ledger.record.get("reason"), "quit")
+            self.assertIsNotNone(ledger.record.get("endedAt"))
 
 
 if __name__ == "__main__":
