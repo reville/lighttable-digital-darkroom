@@ -2,10 +2,28 @@
 import AppKit
 import Darwin
 
-/// Local-only reports. No network or mail operation happens during collection.
+/// Local reports. No network or mail operation happens during collection; the
+/// server sends allowlisted crash facts only after the person opted in.
 enum DiagnosticReport {
     static let recipient = "team@lighttable.app"
     static let unavailable = "No error trace was available. An unexpected exit alone does not establish its cause."
+
+    /// The beginning of a fault file: faulthandler writes the fatal error and
+    /// every thread from the top, so a tail can lose the crashed thread.
+    static func readHead(_ url: URL, limit: Int = 64 * 1024) -> String {
+        guard let file = try? FileHandle(forReadingFrom: url) else { return "" }
+        defer { try? file.close() }
+        return String(decoding: (try? file.read(upToCount: limit)) ?? Data(), as: UTF8.self)
+    }
+
+    /// Whether Settings ▸ General ▸ Send crash reports is on.
+    static func automaticReportsEnabled(preferences: URL) -> Bool {
+        guard let size = try? preferences.resourceValues(forKeys: [.fileSizeKey]).fileSize,
+              size <= 4 * 1024 * 1024, let data = try? Data(contentsOf: preferences),
+              let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+        else { return false }
+        return object["crashReports"] as? Bool == true
+    }
 
     static func read(_ url: URL, limit: Int = 64 * 1024) -> String {
         guard let file = try? FileHandle(forReadingFrom: url) else { return "" }
@@ -40,14 +58,18 @@ enum DiagnosticReport {
         return text
     }
 
-    static func logExcerpt(_ raw: String) -> String {
+    /// A log reads from the end, but a fatal stack reads from the start: its
+    /// first lines name the error and the thread that crashed, and a tail of a
+    /// hundred threads loses exactly that.
+    static func logExcerpt(_ raw: String, fromStart: Bool = false) -> String {
         let lines = raw.components(separatedBy: .newlines).filter { line in
             let value = line.trimmingCharacters(in: .whitespaces)
             // Python tracebacks include a copy of the source line; omit it.
             if line.hasPrefix("    ") && !value.hasPrefix("File ") { return false }
             return !value.isEmpty
         }
-        return redact(lines.suffix(160).joined(separator: "\n"))
+        let kept = fromStart ? Array(lines.prefix(240)) : Array(lines.suffix(160))
+        return redact(kept.joined(separator: "\n"))
     }
 
     static func hardware() -> String {
@@ -89,6 +111,11 @@ struct DiagnosticSession: Codable {
     var logPath: String
     var faultPath: String
     var catalogPath: String
+    // The build that ran, so a report made after an update names the right one.
+    var appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+    var appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+    var sourceRevision = Bundle.main.object(forInfoDictionaryKey: "LightTableSourceRevision") as? String
+    var sourceModified = Bundle.main.object(forInfoDictionaryKey: "LightTableSourceDirty") as? Bool
 }
 
 struct DiagnosticIncident: Codable {
@@ -100,6 +127,17 @@ struct DiagnosticIncident: Codable {
     var executable: String
     var report: String
     var presented = false
+    // Structured facts the server's crash reporter reads (crash_reports.py).
+    // Older incidents lack reportVersion and are never sent.
+    var reportVersion: Int?
+    var errorTrace: String?
+    var exitStatus: Int32?
+    var exitReason: String?
+    var operation: String?
+    var appVersion: String?
+    var appBuild: String?
+    var sourceRevision: String?
+    var sourceModified: Bool?
 }
 
 /// A separate advisory lock per native session distinguishes dead apps from
@@ -188,15 +226,17 @@ final class DiagnosticStore {
         try? fm.removeItem(at: file)
     }
     func captureEngine(id: String, pid: Int32, executable: String,
-                       startedAt: Date, status: Int32) {
+                       startedAt: Date, status: Int32,
+                       reason: Process.TerminationReason? = nil) {
         guard var record = session else { return }
         record.pid = pid
         record.executable = executable
         record.startedAt = startedAt
-        capture(id: "engine-" + id, kind: "engine", session: record, status: status)
+        capture(id: "engine-" + id, kind: "engine", session: record, status: status,
+                reason: reason)
     }
     private func capture(id: String, kind: String, session: DiagnosticSession,
-                         status: Int32? = nil) {
+                         status: Int32? = nil, reason: Process.TerminationReason? = nil) {
         let destination = url("incident-\(id).json")
         // Reopening logs / restarting repeatedly must not recreate an incident.
         guard !fm.fileExists(atPath: destination.path) else { return }
@@ -212,12 +252,23 @@ final class DiagnosticStore {
         report += "Unexpected exit detected: \(stamp.string(from: Date()))\n"
         if let status { report += "Exit status: \(status)\n" }
         report += "Last recorded operation: \(operation)\n\n"
-        let trace = DiagnosticReport.logExcerpt(DiagnosticReport.read(URL(fileURLWithPath: session.faultPath)))
+        let faultURL = URL(fileURLWithPath: session.faultPath)
+        let head = DiagnosticReport.readHead(faultURL)
+        let trace = DiagnosticReport.logExcerpt(head, fromStart: true)
         report += "Error trace:\n\(trace.isEmpty ? DiagnosticReport.unavailable : trace)\n\n"
         let log = DiagnosticReport.logExcerpt(DiagnosticReport.read(URL(fileURLWithPath: session.logPath)))
         report += "Recent server log (filtered):\n\(log.isEmpty ? "No log was available." : log)\n"
-        let incident = DiagnosticIncident(id: id, kind: kind, startedAt: session.startedAt,
+        var incident = DiagnosticIncident(id: id, kind: kind, startedAt: session.startedAt,
             pid: session.pid, executable: session.executable, report: report)
+        incident.reportVersion = 1
+        incident.errorTrace = head.isEmpty ? nil : DiagnosticReport.redact(head)
+        incident.exitStatus = status
+        incident.exitReason = reason.map { $0 == .uncaughtSignal ? "signal" : "exit" }
+        incident.operation = operation
+        incident.appVersion = session.appVersion
+        incident.appBuild = session.appBuild
+        incident.sourceRevision = session.sourceRevision
+        incident.sourceModified = session.sourceModified
         do {
             try write(incident, to: destination)
             latest = incident
@@ -302,7 +353,7 @@ final class DiagnosticReportWindow: NSWindowController {
     private let pasteboard: NSPasteboard
     private let openEmail: (URL) -> Bool
 
-    init(report: String, incident: DiagnosticIncident?,
+    init(report: String, incident: DiagnosticIncident?, automaticReports: Bool = false,
          pasteboard: NSPasteboard = .general,
          openEmail: @escaping (URL) -> Bool = { NSWorkspace.shared.open($0) }) {
         self.pasteboard = pasteboard
@@ -318,8 +369,9 @@ final class DiagnosticReportWindow: NSWindowController {
         title.font = .boldSystemFont(ofSize: 16)
         title.lineBreakMode = .byWordWrapping
         title.maximumNumberOfLines = 0
-        let explanation = NSTextField(wrappingLabelWithString:
-            L("You can help fix the problem by emailing this report to {recipient}. Nothing is sent automatically. Review the report before sharing; paths and photo filenames are filtered out.", ["recipient": DiagnosticReport.recipient]))
+        let explanation = NSTextField(wrappingLabelWithString: automaticReports
+            ? L("Crash reports are on, so LightTable sends technical details of crashes to the developers automatically, without photos, photo metadata, file names, or other personal information. To add what you were doing, email this report to {recipient}. Review the report before sharing; paths and photo filenames are filtered out.", ["recipient": DiagnosticReport.recipient])
+            : L("You can help fix the problem by emailing this report to {recipient}. Nothing is sent automatically unless you turn on crash reports in Settings. Review the report before sharing; paths and photo filenames are filtered out.", ["recipient": DiagnosticReport.recipient]))
         let scroll = NSScrollView()
         scroll.hasVerticalScroller = true
         scroll.borderType = .bezelBorder

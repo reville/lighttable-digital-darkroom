@@ -1185,6 +1185,21 @@
   </section>
 </div>
 
+<div class="modal-backdrop" id="crashReportDialog" aria-hidden="true">
+  <div class="modal modal-consent" role="dialog" aria-modal="true" aria-labelledby="crashReportTitle" aria-describedby="crashReportIntro">
+    <strong id="crashReportTitle" data-i18n-text="{&quot;0&quot;:&quot;Send crash reports to the developers?&quot;}">Send crash reports to the developers?</strong>
+    <p id="crashReportIntro" data-i18n-text="{&quot;0&quot;:&quot;If LightTable crashes, it can send a crash report so the developers can find and fix the problem.&quot;}">If LightTable crashes, it can send a crash report so the developers can find and fix the problem.</p>
+    <ul class="consent-facts">
+      <li data-i18n-text="{&quot;0&quot;:&quot;A report includes the LightTable version, your operating system, basic hardware details such as memory and Mac model, and where in LightTable’s code the crash happened.&quot;}">A report includes the LightTable version, your operating system, basic hardware details such as memory and Mac model, and where in LightTable’s code the crash happened.</li>
+      <li data-i18n-text="{&quot;0&quot;:&quot;It never includes your photos, photo metadata, file or folder names, or other personal information.&quot;}">It never includes your photos, photo metadata, file or folder names, or other personal information.</li>
+    </ul>
+    <p class="consent-note" id="crashReportPending" hidden data-i18n-text="{&quot;0&quot;:&quot;This also sends the report of LightTable’s recent crash.&quot;}">This also sends the report of LightTable’s recent crash.</p>
+    <p class="consent-note" data-i18n-text="{&quot;0&quot;:&quot;You can change this any time in Settings ▸ General.&quot;}">You can change this any time in Settings ▸ General.</p>
+    <p class="consent-error" id="crashReportError" role="alert"></p>
+    <div class="modal-actions"><button id="crashReportDecline" data-i18n-text="{&quot;0&quot;:&quot;Don’t Send&quot;}">Don’t Send</button><button class="accent-btn" id="crashReportAllow" data-i18n-text="{&quot;0&quot;:&quot;Send Crash Reports&quot;}">Send Crash Reports</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="importDialog" aria-hidden="true">
   <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <strong id="importTitle" data-i18n-text="{&quot;0&quot;:&quot;Import a catalog&quot;}">Import a catalog</strong>
@@ -1308,6 +1323,7 @@
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Completion notifications&quot;}">Completion notifications</strong><small data-i18n-text="{&quot;0&quot;:&quot;Notify when exports, ingests, or denoise jobs finish.&quot;}">Notify when exports, ingests, or denoise jobs finish.</small></span><input type="checkbox" id="completionNotifications"></label>
             <label class="settings-choice"><span><strong data-i18n-text="{&quot;0&quot;:&quot;Automatically check for updates&quot;}">Automatically check for updates</strong><small data-i18n-text="{&quot;0&quot;:&quot;The desktop app checks its signed update feed.&quot;}">The desktop app checks its signed update feed.</small></span><input type="checkbox" id="automaticUpdateChecks" checked></label>
             <div class="settings-action-row" id="desktopUpdateControls"><span id="desktopUpdateStatus" role="status" data-i18n-text="{&quot;0&quot;:&quot;Checking update availability…&quot;}">Checking update availability…</span><button id="checkForUpdates" data-i18n-text="{&quot;0&quot;:&quot;Check for Updates…&quot;}">Check for Updates…</button><button type="button" class="quiet" id="manualUpdateGuide" hidden data-i18n-text="{&quot;0&quot;:&quot;Update LightTable&quot;}">Update LightTable</button></div>
+            <label class="settings-choice" id="crashReportsSetting" hidden><span><strong data-i18n-text="{&quot;0&quot;:&quot;Send crash reports&quot;}">Send crash reports</strong><small data-i18n-text="{&quot;0&quot;:&quot;If LightTable crashes, send technical details to its developers. Reports never include photos, photo metadata, file or folder names, or other personal information.&quot;}">If LightTable crashes, send technical details to its developers. Reports never include photos, photo metadata, file or folder names, or other personal information.</small></span><input type="checkbox" id="crashReports"></label>
           </div>
         </section>
         <section class="settings-pane" data-settings-pane="interface" role="tabpanel">

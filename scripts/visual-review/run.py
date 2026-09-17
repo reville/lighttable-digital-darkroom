@@ -302,7 +302,9 @@ def run(args):
         env['LIGHTTABLE_NATIVE_PERF_LOG'] = str(folder / 'native-perf.jsonl')
         env['LIGHTTABLE_SERVER_LOG'] = str(folder / 'server.log')
         env['LIGHTTABLE_PREFS_FILE'] = str(state / 'prefs.json')
-        write_json(state / 'prefs.json', {'smoothZoom': True, 'allowAutomation': True, 'autoAdvance': False})
+        env['LIGHTTABLE_CRASH_REPORTS'] = '0'
+        write_json(state / 'prefs.json', {'smoothZoom': True, 'allowAutomation': True, 'autoAdvance': False,
+                                          'crashReports': False})
         app_log = (folder / 'app.log').open('w'); logs.append(app_log)
         app_process = subprocess.Popen([str(native)], cwd=args.app.parent, env=env,
             stdout=app_log, stderr=subprocess.STDOUT, start_new_session=True)

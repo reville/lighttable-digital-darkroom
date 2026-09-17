@@ -54,6 +54,7 @@ import { createCatalogUI } from '/web/catalog-ui.js';
 import { createEnhancePanel } from '/web/enhance-panel.js';
 import { createPeoplePanel } from '/web/people.js';
 import { installFirstRunSetup } from '/web/first-run.js';
+import { installCrashReportConsent } from '/web/crash-report-consent.js';
 import { installApplePhotosBrowser } from '/web/apple-photos.js';
 import { installRecovery } from '/web/recovery.js';
 import {
@@ -71,6 +72,7 @@ let HISTORY = null;
 let METADATA = null;
 let CATALOG_UI = null;
 let FIRST_RUN = null;
+let CRASH_REPORT_CONSENT = null;
 let APPLE_PHOTOS = null;
 let RECOVERY = null;
 let CAPTURE_TIME = null;
@@ -8940,6 +8942,8 @@ fetch('/api/images').then((r) => r.json()).then(async (d) => {
     });
   }
   FIRST_RUN?.setLibrary(d);
+  // Ask about crash reports once the first library view (and any setup) is up.
+  void CRASH_REPORT_CONSENT?.start();
   S.rootFolder = d.folder;
   S.catalogEnabled = !!d.catalog?.enabled;
   S.catalogTotal = Number.isFinite(+d.total) ? +d.total : 0;
@@ -14185,6 +14189,13 @@ FIRST_RUN = installFirstRunSetup({
     refreshFilteredView();
   },
   openCatalog: () => $('importCatalogBtn').click(),
+});
+
+CRASH_REPORT_CONSENT = installCrashReportConsent({
+  el: $, post: api,
+  getJSON: (path) => fetch(path).then((response) => response.json()),
+  isBusy: () => document.body.classList.contains('setup-open')
+    || Boolean(document.querySelector('.modal-backdrop.on:not(#crashReportDialog)')),
 });
 
 APPLE_PHOTOS = installApplePhotosBrowser({

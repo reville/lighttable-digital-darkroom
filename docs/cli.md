@@ -129,6 +129,7 @@ Internal browser/native routes are declared rather than hidden:
 - `/api/perf/export-one` — benchmark-only export path.
 - `/api/video` — range streaming used by the window.
 - `/api/calibration/target.png` — calibration UI asset.
+- `/api/crash-reports` — read-only opt-in crash report state for the window.
 
 ## MCP tools
 

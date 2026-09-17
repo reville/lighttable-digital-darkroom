@@ -66,7 +66,7 @@ def main() -> None:
         config = root / "config/lighttable"
         config.mkdir(parents=True)
         (config / "prefs.json").write_text(json.dumps({
-            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"},
+            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"}, "crashReports": False,
             # CI commonly runs with C.UTF-8, which correctly opens the initial
             # language picker. This render test starts after that user choice.
             "locale": "en", "localeChosen": True,

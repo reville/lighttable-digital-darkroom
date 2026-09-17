@@ -108,7 +108,7 @@ def main():
         config = temporary / "config/lighttable"
         config.mkdir(parents=True)
         (config / "prefs.json").write_text(json.dumps({
-            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"},
+            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"}, "crashReports": False,
             "locale": "en", "localeChosen": True,
             "allowAutomation": True, "viewMode": "detail", "activePane": "filmPane",
             "pw": "3000", "engine": "rs", "sort": "capture",

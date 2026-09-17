@@ -176,6 +176,10 @@ export function installSettings(context) {
     byId('autoAdvance').checked = pref('autoAdvance', true);
     byId('completionNotifications').checked = pref('completionNotifications', false);
     byId('automaticUpdateChecks').checked = pref('automaticUpdateChecks', true);
+    byId('crashReports').checked = pref('crashReports', false) === true;
+    fetch('/api/crash-reports').then((response) => response.json())
+      .then((status) => { byId('crashReportsSetting').hidden = status?.available !== true; })
+      .catch(() => { byId('crashReportsSetting').hidden = true; });
     void window.lightTableRefreshUpdates?.();
     byId('viewerBackground').value = pref('viewerBackground', '#121212');
     byId('smoothZoom').checked = smoothZoomEnabled(currentPrefs);
@@ -272,7 +276,8 @@ export function installSettings(context) {
   const checkboxPrefs = {
     smoothZoom: 'smoothZoom',
     autoAdvance: 'autoAdvance', completionNotifications: 'completionNotifications',
-    automaticUpdateChecks: 'automaticUpdateChecks', lightsOutEnabled: 'lightsOutEnabled',
+    automaticUpdateChecks: 'automaticUpdateChecks', crashReports: 'crashReports',
+    lightsOutEnabled: 'lightsOutEnabled',
     loupeInfoEnabled: 'loupeInfoEnabled', writeSidecars: 'writeSidecars', catalogMirror: 'catalogMirror',
     pairRawJPEG: 'pairRawJPEG', linkPairedMetadata: 'linkPairedMetadata',
     keywordAutocomplete: 'keywordAutocomplete', settingsExternalEditStack: 'externalEditStack',

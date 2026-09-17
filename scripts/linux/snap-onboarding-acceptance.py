@@ -28,7 +28,7 @@ for name in ('runtime', 'photos', 'import/photos', 'config/lighttable'):
 (root / 'config/lighttable/prefs.json').write_text(json.dumps({
     'locale': 'en', 'localeChosen': True, 'allowAutomation': True,
     'viewMode': 'detail', 'newPhotoDefaults': {'filmEnabled': False},
-    'automaticUpdateChecks': False, 'writeSidecars': False,
+    'automaticUpdateChecks': False, 'writeSidecars': False, 'crashReports': False,
     'backupDirectory': str(root / 'backups')}))
 from PIL import Image
 photo = root / 'import/photos/smoke.png'

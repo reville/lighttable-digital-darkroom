@@ -203,7 +203,7 @@ def run(bundle: Path, timeout: int) -> dict:
         prefs.parent.mkdir(parents=True)
         prefs.write_text(json.dumps({"locale": "en", "localeChosen": True,
             "allowAutomation": True, "viewMode": "detail",
-            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"}}))
+            "crashReports": False, "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"}}))
         source = root / "photos/updater-smoke.jpg"
         Image.linear_gradient("L").resize((160, 120)).convert("RGB").save(source)
         source_digest = hashlib.sha256(source.read_bytes()).hexdigest()

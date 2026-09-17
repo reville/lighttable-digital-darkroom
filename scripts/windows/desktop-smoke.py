@@ -598,7 +598,7 @@ def main():
         (root / "support").mkdir()
         (root / "photos").mkdir()
         (root / "support/prefs.json").write_text(json.dumps({
-            "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"},
+            "crashReports": False, "firstRunSetup": {"version": 1, "status": "completed", "source": "folder"},
             "locale": "en", "localeChosen": True, "allowAutomation": True, "viewMode": "detail",
             "automaticUpdateChecks": False, "writeSidecars": False,
             "backupDirectory": str(root / "backups"),

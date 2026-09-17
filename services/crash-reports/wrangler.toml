@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# LightTable crash report relay. See README.md before deploying.
+name = "lighttable-crash-reports"
+main = "src/index.js"
+compatibility_date = "2026-06-30"
+workers_dev = true
+routes = [{ pattern = "reports.lighttable.app/*", zone_name = "lighttable.app" }]
+
+# Request logs would record senders' addresses; keep them off.
+[observability]
+enabled = false
+
+[vars]
+GITHUB_REPO = "reville/lighttable-crash-reports"
+
+[[durable_objects.bindings]]
+name = "DESK"
+class_name = "CrashDesk"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CrashDesk"]

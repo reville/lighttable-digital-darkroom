@@ -48,10 +48,24 @@ case "acknowledge":
 case "engine":
     begin()
     let start = Date()
-    store.captureEngine(id: "fixture", pid: 42, executable: "/engine/python", startedAt: start, status: 11)
-    store.captureEngine(id: "fixture", pid: 42, executable: "/engine/python", startedAt: start, status: 11)
-    output(["count": store.incidents().count, "report": store.incidents().last!.report])
+    store.captureEngine(id: "fixture", pid: 42, executable: "/engine/python", startedAt: start,
+                        status: 11, reason: .uncaughtSignal)
+    store.captureEngine(id: "fixture", pid: 42, executable: "/engine/python", startedAt: start,
+                        status: 11, reason: .uncaughtSignal)
+    let incident = store.incidents().last!
+    output(["count": store.incidents().count, "report": incident.report,
+            "reportVersion": incident.reportVersion ?? 0, "errorTrace": incident.errorTrace ?? "",
+            "exitStatus": incident.exitStatus ?? -1, "exitReason": incident.exitReason ?? "",
+            "operation": incident.operation ?? ""])
     store.end()
+case "consent":
+    let prefs = root.appendingPathComponent("prefs.json")
+    var states: [Bool] = [DiagnosticReport.automaticReportsEnabled(preferences: prefs)]
+    for text in [#"{"crashReports": true}"#, #"{"crashReports": "true"}"#, #"{"crashReports": false}"#, "not json"] {
+        try! Data(text.utf8).write(to: prefs)
+        states.append(DiagnosticReport.automaticReportsEnabled(preferences: prefs))
+    }
+    output(["states": states])
 case "retention":
     begin()
     for index in 0..<14 {
@@ -156,7 +170,10 @@ func L(_ source: String, _ arguments: [String: String] = [:]) -> String {{
         self.assertEqual(self.run_mode("inspect")["count"], 1)
 
     def test_engine_report_preserves_trace_before_log_rotation_and_deduplicates(self):
-        (self.root / "fault.log").write_text('Fatal Python error: Segmentation fault\n  File "/private/runtime/server.py", line 2975, in decode\n')
+        (self.root / "fault.log").write_text(
+            'Fatal Python error: Segmentation fault\n\n'
+            'Current thread 0x0000000000000001 (most recent call first):\n'
+            '  File "/private/runtime/server.py", line 2975 in decode\n')
         (self.root / "server.log").write_text("Preview failed: '/Users/Test/Private portrait.NEF'\n")
         (self.root / "inflight.json").write_text(json.dumps({"stage": "decode", "name": "Private portrait.NEF"}))
         report = self.run_mode("engine")
@@ -167,6 +184,51 @@ func L(_ source: String, _ arguments: [String: String] = [:]) -> String {{
         self.assertNotIn("Private portrait", report["report"])
         (self.root / "server.log").write_text("new launch")
         self.assertIn("Segmentation fault", self.run_mode("inspect")["report"])
+
+    def test_engine_incident_carries_what_the_opt_in_reporter_reads(self):
+        import crash_reports
+
+        (self.root / "fault.log").write_text(
+            'Fatal Python error: Segmentation fault\n\n'
+            'Current thread 0x0000000000000001 (most recent call first):\n'
+            '  File "/Users/Test/Private portrait/server.py", line 2975 in decode\n')
+        (self.root / "inflight.json").write_text(json.dumps({"stage": "decode", "name": "Private portrait.NEF"}))
+        incident = self.run_mode("engine")
+        self.assertEqual((incident["reportVersion"], incident["exitStatus"], incident["exitReason"],
+                          incident["operation"]), (1, 11, "signal", "decode"))
+        self.assertIn("server.py, line 2975 in decode", incident["errorTrace"])
+        self.assertNotIn("Private portrait", incident["errorTrace"])
+        reporter = crash_reports.CrashReporter(
+            root=self.root / "outbox", app_dir=ROOT, prefs=lambda: {},
+            environ={"LIGHTTABLE_DIAGNOSTICS_DIR": str(self.root / "Diagnostics")},
+            mac_reports=self.root / "no-system-reports",
+            identity={"version": "0.7.9", "build": None, "revision": None, "modified": None,
+                      "packaging": "macos-app"},
+            system=crash_reports.system_facts())
+        self.assertEqual(reporter.collect(None), 1)
+        record = json.loads(next((self.root / "outbox/pending").glob("*.json")).read_text())
+        crash = record["payload"]["crash"]
+        self.assertEqual((crash["signal"], crash["operation"]), ("SIGSEGV", "decode"))
+        self.assertEqual(crash["threads"][0]["frames"],
+                         [{"file": "code:server.py", "line": 2975, "function": "decode"}])
+        self.assertNotIn("Private", json.dumps(record))
+
+    def test_a_long_fault_dump_keeps_the_error_and_the_crashed_thread(self):
+        # A hundred idle threads must not push the crash out of the report.
+        filler = "".join(f"Thread 0x{index:012x} (most recent call first):\n"
+                         '  File "/private/runtime/threading.py", line 359 in wait\n'
+                         for index in range(120))
+        (self.root / "fault.log").write_text(
+            'Fatal Python error: Segmentation fault\n\n'
+            'Current thread 0x0000000000000001 (most recent call first):\n'
+            '  File "/private/runtime/platform_image.py", line 287 in metadata\n'
+            + filler)
+        report = self.run_mode("engine")["report"]
+        self.assertIn("Fatal Python error: Segmentation fault", report)
+        self.assertIn("platform_image.py, line 287 in metadata", report)
+
+    def test_report_window_reads_only_a_true_crash_report_preference(self):
+        self.assertEqual(self.run_mode("consent")["states"], [False, True, False, False, False])
 
     def test_reports_are_bounded(self):
         self.assertEqual(self.run_mode("retention")["count"], 10)

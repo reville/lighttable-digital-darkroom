@@ -96,7 +96,7 @@ def main():
             digest = hashlib.sha256(source.read_bytes()).hexdigest()
             (root/'config/lighttable/prefs.json').write_text(json.dumps({
                 'locale':'en','localeChosen':True,'allowAutomation':True,'viewMode':'detail',
-                'firstRunSetup':{'version':1,'status':'completed','source':'folder'},
+                'crashReports':False,'firstRunSetup':{'version':1,'status':'completed','source':'folder'},
                 'newPhotoDefaults':{'filmEnabled':False},'automaticUpdateChecks':False,
                 'writeSidecars':False,'backupDirectory':str(root/'backups')}))
             subprocess.run(['sudo', 'pacman', '-U', '--noconfirm', str(args.package.resolve())], check=True, timeout=120)

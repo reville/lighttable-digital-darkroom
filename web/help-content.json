@@ -3038,6 +3038,7 @@
         "settings",
         "preferences",
         "defaults",
+        "crash reports",
         "camera",
         "raw",
         "serial",
@@ -3056,7 +3057,7 @@
         {
           "title": "Interface and behavior",
           "paragraphs": [
-            "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, and update checks.",
+            "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, update checks, and whether released builds send crash reports.",
             "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
             "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
             "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog."
@@ -3111,7 +3112,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ]
     },
     {
@@ -3343,7 +3345,8 @@
         "safe mode",
         "diagnostics",
         "log",
-        "repair"
+        "repair",
+        "crash report"
       ],
       "sections": [
         {
@@ -3386,19 +3389,20 @@
           "paragraphs": [
             "If the Mac app closes without a clean quit, a diagnostic report opens the next time you launch it. If its rendering engine stops unexpectedly, the report can open while the engine recovers. The report appears once for each recorded incident; Dismiss lets you continue. Closing the app normally or restarting its rendering service does not create a report.",
             "Help → Report a Problem… opens the latest report, or current diagnostics if no unexpected exit was recorded. Reports include the app build, macOS and hardware, the last recorded operation when available, filtered recent logs, and available error traces. A matching macOS crash report can add stack and binary information. An unexpected exit does not always leave an error trace or identify its cause.",
-            "Reports stay on your Mac until you choose to share them. Paths, photo filenames, quoted log values, and common credential fields are filtered; inspect the text before sharing. Photos and the catalog are not attached. The latest ten reports are kept locally."
+            "The full diagnostic report stays on your Mac until you choose to share it. Paths, photo filenames, quoted log values, and common credential fields are filtered; inspect the text before sharing. Photos and the catalog are not attached. The latest ten reports are kept locally."
           ],
           "steps": [
             "Read the diagnostic report. Choose Copy report to paste it into an email yourself.",
             "Or choose Email maintainer. This copies the report and opens a draft addressed to team@lighttable.app.",
             "Describe what you were doing, paste the copied report into the draft, and send it when ready. If no email app opens, use your usual email service.",
-            "Choose Dismiss to close the report. Nothing is sent automatically."
+            "Choose Dismiss to close the report. The report itself is never sent automatically. If crash reports are on, LightTable sends only the technical details described in Send crash reports."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ]
     },
     {
@@ -3491,6 +3495,47 @@
         "film-grain-and-format",
         "export-format-color-space",
         "catalog-health-recovery"
+      ]
+    },
+    {
+      "id": "crash-reports",
+      "title": "Send crash reports",
+      "category": "Troubleshooting",
+      "summary": "Choose whether LightTable sends technical details of crashes to its developers.",
+      "keywords": [
+        "crash",
+        "crash report",
+        "privacy",
+        "send",
+        "developers",
+        "bug",
+        "diagnostics",
+        "consent",
+        "personal information"
+      ],
+      "sections": [
+        {
+          "title": "Choose whether to send reports",
+          "paragraphs": [
+            "When a released LightTable first opens, it asks whether to send crash reports to its developers. Nothing is sent unless you choose Send Crash Reports. Closing the question without choosing asks again at the next launch. Change your choice any time with Send crash reports in Settings → General.",
+            "With reports on, LightTable sends a report the next time it starts after the app or its rendering engine crashed. A report that cannot be sent is retried at a later launch and discarded after six attempts or two weeks. Turning reports off discards reports that have not been sent."
+          ]
+        },
+        {
+          "title": "What a report contains",
+          "paragraphs": [
+            "A report includes the LightTable version and build, the operating system and its version, processor type and count, memory, and on a Mac the model identifier. It says whether the app or its rendering engine crashed, how it ended, whether LightTable was decoding, rendering, or exporting, and where in program code the crash happened, such as function names and line numbers.",
+            "A report never includes photos, photo metadata, file or folder names, paths, catalog contents, log text, or other personal information, and it carries no identifier for your computer. The service that receives reports sees your IP address as part of the connection and does not store it.",
+            "On Windows and Linux, LightTable reports rendering engine crashes that left an error trace. On a Mac it also reports app crashes, adding the stack information macOS recorded."
+          ],
+          "tips": [
+            "To describe what you were doing, use Help → Report a Problem… on a Mac, or open an issue on GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
       ]
     }
   ]
