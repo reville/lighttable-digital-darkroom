@@ -8765,6 +8765,25 @@ def _exit_with_parent(reason: str = "parent-gone") -> None:
     os._exit(0)
 
 
+def handle_shutdown_signal(_signum=None, _frame=None, instance_token=None) -> None:
+    """Record deliberate shutdown immediately on SIGTERM.
+
+    The native shell force-kills the server after 2 seconds on quit.
+    Writing SESSION.end('quit') immediately ensures that even if background
+    cleanup or catalog checkpointing exceeds that window, the session is
+    never falsely recorded as an unclean crash.
+    """
+    SESSION.end("quit")
+    remove_instance_file(instance_token)
+    STARTUP.remove()
+    try:
+        import fatal_diagnostics
+        fatal_diagnostics.release()
+    except Exception:
+        pass
+    raise SystemExit(0)
+
+
 class LightTableServer(ThreadingHTTPServer):
     """The threading server, minus tracebacks for clients that hang up.
 
@@ -8772,6 +8791,12 @@ class LightTableServer(ThreadingHTTPServer):
     stock server prints a twenty-line traceback for each of those resets,
     which buries real errors in the log. Anything else still reports.
     """
+
+    # Increase the listen socket backlog from the default of 5 to 128 so
+    # that bursts of opening requests on cold launch (thumbnails, metadata,
+    # presets) are queued by the OS rather than dropped or reset while the
+    # accept loop or startup imports hold the GIL.
+    request_queue_size = 128
 
     QUIET_DISCONNECTS = (BrokenPipeError, ConnectionResetError,
                          ConnectionAbortedError)
@@ -8785,17 +8810,15 @@ class LightTableServer(ThreadingHTTPServer):
 def prepare_windows_image_runtime() -> None:
     if sys.platform != "win32":
         return
-    # Windows holds its loader lock while initializing extension DLLs. A
-    # background matplotlib import (via colour) can wait for Python's GIL while
-    # lensfun holds the GIL and waits for that loader lock. Initialize these
-    # native dependencies before scanning or serving concurrent image requests.
+    # Windows holds its loader lock while initializing extension DLLs.
+    # Initialize native dependencies before scanning or serving concurrent
+    # image requests.
     Image.init()
-    for initialise in (lambda: __import__("colour"), edits._lens_database):
-        try:
-            initialise()
-        except Exception:
-            # Optional colour/lens support retains its existing lazy fallback.
-            pass
+    try:
+        edits._lens_database()
+    except Exception:
+        # Optional lens support retains its existing lazy fallback.
+        pass
 
 
 def main() -> None:
@@ -8937,21 +8960,16 @@ def main() -> None:
     if RUST_WORKER_BIN and not SAFE_MODE:
         threading.Thread(target=warm_resident_engines, daemon=True,
                          name="rust-engine-warmup").start()
-    # Importing the optional colour-science dependency can take hundreds of
-    # milliseconds. Warm it after the port is live so the first Develop open
-    # never pays that cold import, without delaying the window itself.
-    def warm_colour() -> None:
-        try:
-            __import__("colour")
-        except Exception:
-            pass
+    # Warm numba JIT functions after the port is live so the first Develop open
+    # never pays cold compilation, without delaying the window itself.
+    def warm_pipelines() -> None:
         grade.warm_grade_jit()
         color_pipeline.warm_develop_jit()
-    timer = threading.Timer(0.75, warm_colour)
+    timer = threading.Timer(0.75, warm_pipelines)
     timer.daemon = True
     timer.start()
-    def stop_server(_signum, _frame) -> None:
-        raise SystemExit(0)
+    def stop_server(signum, frame) -> None:
+        handle_shutdown_signal(signum, frame, registered_instance)
     if threading.current_thread() is threading.main_thread():
         signal.signal(signal.SIGTERM, stop_server)
     try:
