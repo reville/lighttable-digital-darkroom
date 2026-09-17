@@ -205,7 +205,7 @@ class ScanTests(unittest.TestCase):
                 catalog_scan.scan_source(cat, source)
             before = cat.query()["items"][0]
             cat.save_state(before["id"], {"rating": 5, "grade": {"exposure": 0.5}})
-            with mock.patch.dict("sys.modules", {"exiv2": exiv2}):
+            with mock.patch.object(catalog_scan.exiv2_access, "load", return_value=exiv2):
                 metadata = catalog_scan.read_metadata(photo)
                 self.assertEqual((metadata["width"], metadata["height"]), (6008, 4008))
                 refreshed = catalog_scan.scan_source(cat, source)

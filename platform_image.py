@@ -17,6 +17,7 @@ import numpy as np
 from PIL import Image, ImageCms, ImageOps
 
 import durable_io
+import exiv2_access
 from server_localization import T
 
 
@@ -211,7 +212,7 @@ def embed_jpeg_icc(destination: Path | str, profile: bytes) -> None:
 
 
 def _exiv2_value(data, *keys: str) -> str:
-    import exiv2
+    exiv2 = exiv2_access.load()
 
     for key in keys:
         try:
@@ -246,7 +247,7 @@ def orientation_degrees(source: Path, *, force_portable: bool = False) -> int:
             orientation = 1
     else:
         try:
-            import exiv2
+            exiv2 = exiv2_access.load()
 
             image = exiv2.ImageFactory.open(str(source))
             image.readMetadata()
@@ -281,7 +282,7 @@ def metadata(source: Path, *, force_portable: bool = False) -> dict[str, str]:
 
     output: dict[str, str] = {}
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
 
         image = exiv2.ImageFactory.open(str(source))
         image.readMetadata()
@@ -767,8 +768,6 @@ METADATA_POLICIES = ("none", "copyright", "all", "all-except-location")
 
 SOFTWARE_TAG = "LightTable"
 
-LIGHTROOM_NAMESPACE = "http://ns.adobe.com/lightroom/1.0/"
-
 # Tags that describe how the destination file is laid out on disk. Copying
 # these from the source would mislabel or corrupt the export -- the ICC profile
 # of a TIFF lives in Exif.Image.InterColorProfile, so it is on this list too.
@@ -800,7 +799,7 @@ _GPS_PREFIX = "Exif.GPSInfo."
 
 
 def _erase_gps(exif) -> None:
-    import exiv2
+    exiv2 = exiv2_access.load()
 
     doomed = [datum.key() for datum in exif
               if datum.key().startswith(_GPS_PREFIX)
@@ -834,7 +833,7 @@ def _xmp_text(xmp, key: str, value) -> None:
 
 
 def _xmp_bag(xmp, key: str, values) -> None:
-    import exiv2
+    exiv2 = exiv2_access.load()
 
     if isinstance(values, str):
         values = [values]
@@ -849,16 +848,11 @@ def _xmp_bag(xmp, key: str, values) -> None:
 
 
 def _write_catalog_fields(xmp, fields: dict, *, rights_only: bool) -> None:
-    import exiv2
-
+    # exiv2_access registered the Xmp.lr namespace before any file was opened.
     _xmp_text(xmp, "Xmp.dc.rights", fields.get("copyright"))
     _xmp_text(xmp, "Xmp.dc.creator", fields.get("creator"))
     if rights_only:
         return
-    try:
-        exiv2.XmpProperties.registerNs(LIGHTROOM_NAMESPACE, "lr")
-    except Exception:  # noqa: BLE001 - already registered on a second export
-        pass
     _xmp_text(xmp, "Xmp.dc.title", fields.get("title"))
     _xmp_text(xmp, "Xmp.dc.description", fields.get("caption"))
     _xmp_bag(xmp, "Xmp.dc.subject", fields.get("keywords"))
@@ -895,7 +889,7 @@ def write_resolution(dst: Path | str, ppi, warnings: list[str] | None = None) ->
     destination = Path(dst)
     staged = None
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
 
         staged = durable_io.temporary_path(destination, "resolution")
         shutil.copyfile(destination, staged)
@@ -943,7 +937,7 @@ def write_metadata(dst: Path | str, source: Path | str | None = None,
     reader = None
     staged = None
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
 
         staged = durable_io.temporary_path(destination, "metadata")
         shutil.copyfile(destination, staged)

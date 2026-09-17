@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 import durable_io
+import exiv2_access
 import file_identity
 
 import media_formats
@@ -120,7 +121,7 @@ def _file_hash(path: Path) -> str:
 
 def _exif_text(data, *keys: str) -> str:
     """First value present among `keys`, as `platform_image` reads exiv2 data."""
-    import exiv2
+    exiv2 = exiv2_access.load()
 
     for key in keys:
         item = data.findKey(exiv2.ExifKey(key))
@@ -138,7 +139,7 @@ def _capture_and_camera(path: Path) -> tuple[str, str]:
     """
     media_availability.require_local(path)
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
 
         image = exiv2.ImageFactory.open(str(path))
         image.readMetadata()

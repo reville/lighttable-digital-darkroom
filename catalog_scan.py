@@ -34,6 +34,7 @@ from typing import Callable, Iterable
 import catalog as catalog_module
 import durable_io
 import edit_schema
+import exiv2_access
 import dam_filters
 import file_identity
 import media_formats
@@ -318,7 +319,7 @@ def _read_exif_metadata(path: Path) -> dict:
     if media_availability.availability(path) != "local":
         return out
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
     except ImportError:
         return out
     try:

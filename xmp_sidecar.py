@@ -28,6 +28,7 @@ from xml.dom import minidom, Node
 from pathlib import Path
 
 import durable_io
+import exiv2_access
 import edit_schema
 
 # Namespaces this module understands, keyed by the prefix used in the parsed
@@ -575,7 +576,7 @@ def read_embedded(source: Path) -> dict | None:
     if source.suffix.casefold() not in EMBEDDED_SUFFIXES:
         return None
     try:
-        import exiv2
+        exiv2 = exiv2_access.load()
 
         image = exiv2.ImageFactory.open(str(source))
         image.readMetadata()
