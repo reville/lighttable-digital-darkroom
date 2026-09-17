@@ -26,7 +26,7 @@ for name in ('runtime', 'config/lighttable'):
 # onboarding flow. No shell settings or remembered photo folder are seeded.
 (root / 'config/lighttable/prefs.json').write_text(json.dumps({
     'locale': 'en', 'localeChosen': True, 'allowAutomation': True,
-    'firstRunSetup': {'version': 1, 'status': 'completed', 'source': 'folder'},
+    'firstRunSetup': {'version': 1, 'status': 'completed', 'source': 'folder'}, 'crashReports': False,
     'viewMode': 'detail', 'newPhotoDefaults': {'filmEnabled': False},
     'automaticUpdateChecks': False, 'writeSidecars': False}))
 (root / 'config/user-dirs.dirs').write_text('XDG_PICTURES_DIR="/nonexistent-lighttable-pictures"\n')

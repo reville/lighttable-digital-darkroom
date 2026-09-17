@@ -76,6 +76,7 @@ import edit_schema  # noqa: E402
 import launcher_control  # noqa: E402
 import thumbnail_warmup  # noqa: E402
 import recovery  # noqa: E402
+import crash_reports  # noqa: E402
 from film_lab_ai import AIIndexService  # noqa: E402
 from film_lab_ai.face_service import FaceService  # noqa: E402
 from film_lab_ai.providers import LocalPhotoAnalyzer, VisionProvider  # noqa: E402
@@ -208,6 +209,10 @@ RESTART_LOCK = threading.Lock()
 # The reporter learns its file in main(); importing the module writes nothing.
 STARTUP = recovery.StartupReporter(None)
 SESSION = recovery.SessionLedger(catalog_module.default_catalog_path().parent)
+# Opt-in crash reports; main() tells it where this server's fault file lives.
+CRASH_REPORTS = crash_reports.CrashReporter(
+    root=catalog_module.default_catalog_path().parent / "Diagnostics" / "crash-reports",
+    app_dir=APP, prefs=lambda: load_preferences())
 PHOTO_QUARANTINE = recovery.PhotoQuarantine(
     catalog_module.default_catalog_path().parent / "photo-quarantine.json")
 HEALTH_LOCK = threading.Lock()
@@ -7871,6 +7876,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(load_export_recipes())
             elif u.path == "/api/prefs":
                 self._json(load_json_file(PREFS_FILE, {}))
+            elif u.path == "/api/crash-reports":
+                self._json(CRASH_REPORTS.status())
             elif u.path == "/api/cache/status":
                 self._json(cache_status())
             elif u.path == "/api/sidecars/status":
@@ -8456,6 +8463,8 @@ class Handler(BaseHTTPRequestHandler):
                     durable_io.atomic_write_json(PREFS_FILE, current)
                 if {"catalogMirror", "writeSidecars"} & set(patch):
                     _queue_mirror(0)
+                if crash_reports.PREFERENCE in patch:
+                    CRASH_REPORTS.preference_changed(patch[crash_reports.PREFERENCE])
                 self._json({"ok": True})
             elif u.path == "/api/recovery":
                 self._json(recovery_action(self._body()))
@@ -8751,6 +8760,8 @@ def _exit_with_parent(reason: str = "parent-gone") -> None:
     SESSION.end(reason)
     STARTUP.remove()
     remove_instance_file()
+    import fatal_diagnostics
+    fatal_diagnostics.release()
     os._exit(0)
 
 
@@ -8848,6 +8859,11 @@ def main() -> None:
         port=PORT, revision=_git_revision(APP),
         previous_exit=os.environ.get("LIGHTTABLE_PREVIOUS_EXIT") or None)
     atexit.register(SESSION.end)
+    import fatal_diagnostics
+    own_fault = fatal_diagnostics.owned_path()
+    CRASH_REPORTS.use_fault_logs(
+        fatal_diagnostics.default_directory() if own_fault else None, own_fault)
+    CRASH_REPORTS.start(crashed)
     if crashed:
         blamed = PHOTO_QUARANTINE.note_previous_crash(crashed)
         print("LightTable: the previous session did not end cleanly"

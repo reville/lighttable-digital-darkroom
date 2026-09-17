@@ -59,7 +59,8 @@ Reports remain local until the user shares them. **Email maintainer** copies
 the report and opens a short draft to `team@lighttable.app`; the user adds a
 description, pastes the report, and sends it. Keeping the report on the clipboard
 avoids mail-URL length limits. If no mail app opens, the report can be pasted
-into webmail. No background upload or automatic send occurs.
+into webmail. The report text is never uploaded; opt-in crash reports (below)
+send a separate, allowlisted summary.
 
 `app/DiagnosticReports.swift` stores per-process native session markers and the
 latest ten incident reports in `Catalog/Diagnostics`. Engine reports are captured
@@ -72,10 +73,50 @@ the user can inspect all shared text. No original photos or catalog are attached
 
 `fatal_diagnostics.py` writes fatal Python/native stacks directly to the file
 specified by `LIGHTTABLE_FAULT_LOG`, avoiding loss when the logging thread dies.
-An OS kill or unclean shutdown may leave no trace; the report explicitly says so.
-Native session markers detect unclean exits, not their causes. A normal quit
-removes its marker, and another live instance's lock prevents a false report.
-These reporting controls currently belong to the macOS host.
+A host that sets it owns the file. Without one (Windows, Linux, development
+runs), each server writes `Catalog/Diagnostics/server-fault-<pid>.log` and
+removes it on every deliberate exit, so a file left behind belongs to a crashed
+run. An OS kill or unclean shutdown may leave no trace; the report explicitly
+says so. Native session markers detect unclean exits, not their causes. A normal
+quit removes its marker, and another live instance's lock prevents a false
+report. The report panel belongs to the macOS host.
+
+## Opt-in crash reports
+
+A released build asks once, after the library first loads, whether it may send
+crash reports (`web/crash-report-consent.js`). The answer is the `crashReports`
+preference; Settings ▸ General changes it, and closing the question without an
+answer asks again at the next launch. Development checkouts never ask or send
+unless `LIGHTTABLE_CRASH_REPORTS=1`; `LIGHTTABLE_CRASH_REPORTS=0` turns the
+feature off everywhere. Test harnesses that launch packaged builds preset the
+preference to `false`.
+
+`crash_reports.py` builds each report field by field: build identity from the
+bundle's `Info.plist` or `build-manifest.json`; operating system, architecture,
+memory, processor count and Mac model; the component, exit status and signal,
+and the recorded stage (`decode`, `render`, `export`); and code locations from
+the fatal stack, reduced to a root label and relative module path
+(`app:server.py`), line and function name. On a Mac, the matching `.ips` adds
+exception type, faulting-thread symbols with image offsets, and image names and
+UUIDs. Anything that does not match its allowlist pattern is replaced or
+dropped: paths outside the code roots, photo and folder names, log text,
+`inflight.json` names, device keys and thread names never enter a report.
+
+Sources differ by platform. On macOS the shell's `incident-*.json` files carry
+the structured facts (`reportVersion` 1), exposed to the server through
+`LIGHTTABLE_DIAGNOSTICS_DIR`; the server's own session ledger is not used there,
+so an engine crash is reported once. On Windows and Linux the session ledger
+names a run that never ended, and only a run that left a fatal stack is reported,
+so a forced quit is not.
+
+Reports wait in `Catalog/Diagnostics/crash-reports/pending` (at most 20). The
+server sends them in the background at launch, or when consent is given, over
+HTTPS to `https://reports.lighttable.app/v1/crash`, retries a failure at a later
+launch after one hour, six hours, then a day, and drops a report after six
+attempts, two weeks, or a validation rejection. `ledger.json` records processed
+crashes so none is reported twice, and declining discards anything pending. The
+relay that turns reports into private GitHub issues lives in
+`services/crash-reports`.
 
 ## Pieces
 

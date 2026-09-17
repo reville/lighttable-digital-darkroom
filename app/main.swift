@@ -388,7 +388,7 @@ final class ServerController {
     /// one ended.
     var previousExitStatus: Int32?
     /// Called on the main queue when the server exits without being asked.
-    var onUnexpectedExit: ((Int32) -> Void)?
+    var onUnexpectedExit: ((Int32, Process.TerminationReason) -> Void)?
     private var stopping = false
     private(set) var startedAt = Date()
     private(set) var sessionID = UUID().uuidString
@@ -435,6 +435,9 @@ final class ServerController {
     private var supportDirectory: URL {
         lightTableSupportDirectory()
     }
+
+    /// The preferences file the server reads and the web settings write.
+    var preferencesURL: URL { lightTablePreferencesURL() }
 
     private var cacheDirectory: URL {
         let root = FileManager.default.urls(
@@ -551,8 +554,7 @@ final class ServerController {
             env["LIGHTTABLE_CACHE_DIR"] = cacheDirectory.path
         }
         if env["LIGHTTABLE_PREFS_FILE"] == nil {
-            env["LIGHTTABLE_PREFS_FILE"] = supportDirectory
-                .appendingPathComponent("prefs.json").path
+            env["LIGHTTABLE_PREFS_FILE"] = preferencesURL.path
         }
         if env["LIGHTTABLE_PRESETS_FILE"] == nil {
             env["LIGHTTABLE_PRESETS_FILE"] = supportDirectory
@@ -596,16 +598,19 @@ final class ServerController {
         env["PYTHONUNBUFFERED"] = "1"
         env["LIGHTTABLE_LOG_FILE"] = logURL.path
         env["LIGHTTABLE_FAULT_LOG"] = faultLogURL.path
+        // The server's opt-in crash reporter reads this shell's incidents.
+        env["LIGHTTABLE_DIAGNOSTICS_DIR"] = faultLogURL.deletingLastPathComponent().path
         p.environment = env
         p.standardOutput = log
         p.standardError = log
         p.terminationHandler = { [weak self] exited in
             let status = exited.terminationStatus
+            let reason = exited.terminationReason
             DispatchQueue.main.async {
                 guard let self, self.process === exited else { return }
                 self.process = nil
                 if self.stopping { return }
-                self.onUnexpectedExit?(status)
+                self.onUnexpectedExit?(status, reason)
             }
         }
         try p.run()
@@ -2168,8 +2173,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             + (server.safeMode ? L(" (Safe Mode)") : "")
         showSplash(server.safeMode ? L("Starting LightTable in Safe Mode…")
                                    : L("Starting LightTable…"))
-        server.onUnexpectedExit = { [weak self] status in
-            self?.serverExited(status: status)
+        server.onUnexpectedExit = { [weak self] status, reason in
+            self?.serverExited(status: status, reason: reason)
         }
         do {
             try server.start(folder: clean)
@@ -2267,7 +2272,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     /// The server went away while the window was in use.
-    private func serverExited(status: Int32) {
+    private func serverExited(status: Int32, reason: Process.TerminationReason) {
         nativePreview?.hide()
         if status == ServerController.restartExitStatus {
             // Asked for: the catalog was replaced, or a restart was requested.
@@ -2277,7 +2282,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
         diagnostics.captureEngine(id: server.sessionID, pid: server.lastProcessID,
             executable: server.python.resolvingSymlinksInPath().path,
-            startedAt: server.startedAt, status: status)
+            startedAt: server.startedAt, status: status, reason: reason)
         presentPendingDiagnostic()
         if server.uptime > Self.healthySessionSeconds { crashRestarts = 0 }
         crashRestarts += 1
@@ -2309,7 +2314,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             launch(folder: resolvedLaunchFolder())
         case .alertThirdButtonReturn:
             showLog(nil)
-            serverExited(status: status)
+            serverExited(status: status, reason: reason)
         default:
             NSApp.terminate(nil)
         }
@@ -3673,7 +3678,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private func showDiagnostic(_ incident: DiagnosticIncident?) {
         diagnosticWindow?.close()
         let report = incident?.report ?? diagnostics.manualReport(log: server.logURL)
-        diagnosticWindow = DiagnosticReportWindow(report: report, incident: incident)
+        diagnosticWindow = DiagnosticReportWindow(report: report, incident: incident,
+            automaticReports: DiagnosticReport.automaticReportsEnabled(preferences: server.preferencesURL))
         diagnosticWindow?.showWindow(nil)
         diagnosticWindow?.window?.makeKeyAndOrderFront(nil)
     }

@@ -1,0 +1,7 @@
+{
+  "name": "lighttable-crash-reports",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "description": "Relay that files opt-in LightTable crash reports as private GitHub issues."
+}

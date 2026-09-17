@@ -269,6 +269,8 @@ def smoke_environment(
             "LIGHTTABLE_CATALOG_FILE": str(temporary / "catalog/library.sqlite3"),
             "LIGHTTABLE_CACHE_DIR": str(temporary / "cache"),
             "LIGHTTABLE_PREFS_FILE": str(temporary / "prefs.json"),
+            # Journeys break things on purpose; never ask about or send reports.
+            "LIGHTTABLE_CRASH_REPORTS": "0",
             "LIGHTTABLE_PRESETS_FILE": str(temporary / "presets.json"),
             "LIGHTTABLE_AI_DIR": str(temporary / "ai"),
             "LIGHTTABLE_INSTANCE_DIR": str(temporary / "instances"),

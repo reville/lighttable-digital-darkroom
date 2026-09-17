@@ -134,7 +134,7 @@ def main():
                     shutil.copy2(fixture, source)
                     (root / 'config/lighttable/prefs.json').write_text(json.dumps({
                         'locale': 'en', 'localeChosen': True, 'allowAutomation': True, 'viewMode': 'detail',
-                        'firstRunSetup': {'version': 1, 'status': 'completed', 'source': 'folder'},
+                        'crashReports': False, 'firstRunSetup': {'version': 1, 'status': 'completed', 'source': 'folder'},
                         'newPhotoDefaults': {'filmEnabled': False}, 'automaticUpdateChecks': False,
                         'writeSidecars': False, 'backupDirectory': str(root / 'backups')}))
                     prior = None

@@ -1257,6 +1257,13 @@ a.reset:hover { color:#fff; }
 .modal { width:min(360px,calc(100vw - 40px)); padding:20px; border:1px solid var(--line-strong); border-radius:var(--radius-l); background:var(--panel-raised); box-shadow:0 18px 60px rgba(0,0,0,.6); animation:pane-in .14s ease; }
 .modal strong { display:block; margin-bottom:12px; font-size:15px; font-weight:600; }
 .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:16px; }
+.modal-consent { width:min(440px,calc(100vw - 40px)); }
+.modal-consent p, .consent-facts { margin:0 0 10px; color:var(--ink-2); font-size:12px; line-height:1.5; }
+.consent-facts { padding-left:18px; }
+.consent-facts li + li { margin-top:6px; }
+.modal-consent .consent-note { color:var(--muted); font-size:11px; }
+.modal-consent .consent-error { margin:0; color:var(--skip); font-size:12px; }
+.modal-consent .consent-error:empty { display:none; }
 .context-menu {
   position:fixed;
   z-index:110;

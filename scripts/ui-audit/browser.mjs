@@ -47,7 +47,7 @@ async function reset(test) {
   page.on('pageerror', e=>errors.push({case:test.id,message:String(e)}));
   await page.request.get(cfg.baseUrl);
   await api('/api/prefs',{locale:test.locale,localeChosen:true,allowAutomation:true,
-    firstRunSetup:{version:cfg.fixture === 'first-run'?0:1},smoothZoom:true,autoAdvance:false});
+    firstRunSetup:{version:cfg.fixture === 'first-run'?0:1},crashReports:false,smoothZoom:true,autoAdvance:false});
   images = (await api('/api/images')).images;
   for(const image of images) await api('/api/state',{name:image.name,
     params:{profile_enabled:false,grain_on:false,halation_on:false,glare_on:false},grade:{},masks:[],heals:[],optics:{},crop:null,
