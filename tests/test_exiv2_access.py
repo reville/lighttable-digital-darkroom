@@ -24,7 +24,7 @@ import exiv2_access
 
 ROOT = Path(__file__).resolve().parents[1]
 # Standalone tooling may import the binding directly; the app may not.
-EXEMPT = {"tests", "bench", "scripts", "vendor", "build", "packaging", ".venv", "cache"}
+EXEMPT = {"tests", "bench", "scripts", "vendor", "build", ".build", "packaging", ".venv", "cache"}
 
 HAVE_EXIV2 = importlib.util.find_spec("exiv2") is not None
 
@@ -55,7 +55,7 @@ class Exiv2ImportContractTests(unittest.TestCase):
         offenders = []
         for path in ROOT.rglob("*.py"):
             relative = path.relative_to(ROOT)
-            if relative.parts[0] in EXEMPT or path.name == "exiv2_access.py":
+            if relative.parts[0] in EXEMPT or relative.parts[0].startswith(".") or path.name == "exiv2_access.py":
                 continue
             tree = ast.parse(path.read_text(encoding="utf-8"), str(relative))
             for node in ast.walk(tree):
