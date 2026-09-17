@@ -3090,6 +3090,7 @@
         "pengaturan",
         "preferensi",
         "default",
+        "laporan crash",
         "kamera",
         "raw",
         "serial",
@@ -3108,7 +3109,7 @@
         {
           "title": "Antarmuka dan perilaku",
           "paragraphs": [
-            "Sebagian besar perubahan pengaturan tersimpan secara otomatis. Bahasa menggunakan Terapkan bahasa dan memuat ulang jendela setelah menyimpan suntingan. Umum juga mengontrol Otomatis maju setelah memilih, menolak, atau memberi rating, notifikasi penyelesaian, dan pemeriksaan pembaruan.",
+            "Sebagian besar perubahan pengaturan disimpan secara otomatis. Bahasa menggunakan Terapkan bahasa dan memuat ulang jendela setelah perubahan disimpan. Umum juga mengontrol Otomatis maju setelah memilih, menolak, atau memberi rating, notifikasi penyelesaian, pemeriksaan pembaruan, dan apakah build rilis mengirim laporan crash.",
             "Kontrol antarmuka mengatur latar belakang penampil, skala font, Lights Out, overlay info loupe, dan panduan pangkas. Preferensi ini mengubah tampilan ruang kerja tanpa mengubah piksel yang diekspor.",
             "Zoom halus di Pengaturan → Antarmuka mengaktifkan atau menonaktifkan animasi untuk Pas, 1:1, tombol zoom, dan pintasan. Pilihan Anda mengesampingkan Kurangi Gerakan; sebelum Anda memilih, LightTable mengikuti pengaturan sistem. Menggulir, mencubit, dan menyeret merespons secara langsung.",
             "File & Metadata mengontrol suntingan LightTable portabel di samping asli, penulisan XMP otomatis, pemasangan pasangan RAW/JPEG, dan entri kata kunci. Suntingan portabel lengkap menggunakan .lighttable-state.json; XMP membawa suntingan dan metadata yang kompatibel. Sinkronisasi XMP mempertahankan bidang yang tidak terkait dan melaporkan perubahan eksternal yang bertentangan; baca metadata Exchange melalui sidecar XMP untuk alur kerja yang didukung. Suntingan LightTable portabel menyertakan salinan virtual. Membuka kembali folder mempertahankan suntingan yang sudah tersimpan di katalog Anda."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Pengaturan"
     },
@@ -3400,7 +3402,8 @@
         "mode aman",
         "diagnostik",
         "log",
-        "perbaiki"
+        "perbaiki",
+        "laporan crash"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Jika aplikasi Mac ditutup tanpa keluar yang bersih, laporan diagnostik akan terbuka saat Anda meluncurkannya berikutnya. Jika mesin rendering berhenti tak terduga, laporan dapat terbuka saat mesin pulih. Laporan muncul sekali untuk setiap insiden yang tercatat; Tutup memungkinkan Anda melanjutkan. Menutup aplikasi secara normal atau memulai ulang layanan rendering-nya tidak akan membuat laporan.",
             "Bantuan → Laporkan Masalah… membuka laporan terbaru, atau diagnostik saat ini jika tidak ada keluar tak terduga yang tercatat. Laporan mencakup build aplikasi, macOS dan perangkat keras, operasi terakhir yang tercatat jika tersedia, log terbaru yang difilter, dan jejak kesalahan yang tersedia. Laporan crash macOS yang cocok dapat menambahkan informasi stack dan biner. Keluar tak terduga tidak selalu meninggalkan jejak kesalahan atau mengidentifikasi penyebabnya.",
-            "Laporan tetap di Mac Anda sampai Anda memilih untuk membagikannya. Jalur, nama file foto, nilai log yang dikutip, dan bidang kredensial umum difilter; periksa teks sebelum membagikan. Foto dan katalog tidak dilampirkan. Sepuluh laporan terbaru disimpan secara lokal."
+            "Laporan diagnostik lengkap tetap ada di Mac Anda sampai Anda memilih untuk membagikannya. Jalur, nama file foto, nilai log dalam tanda kutip, dan kolom kredensial umum difilter; periksa teks sebelum membagikannya. Foto dan katalog tidak dilampirkan. Sepuluh laporan terbaru disimpan secara lokal."
           ],
           "steps": [
             "Baca laporan diagnostik. Pilih Salin laporan untuk menempelkannya ke email sendiri.",
             "Atau pilih Email pengelola. Ini menyalin laporan dan membuka draf yang ditujukan ke team@lighttable.app.",
             "Jelaskan apa yang sedang Anda lakukan, tempel laporan yang disalin ke draf, dan kirim saat siap. Jika tidak ada aplikasi email yang terbuka, gunakan layanan email yang biasa Anda pakai.",
-            "Pilih Tutup untuk menutup laporan. Tidak ada yang dikirim secara otomatis."
+            "Pilih Tutup untuk menutup laporan. Laporan itu sendiri tidak pernah dikirim secara otomatis. Jika laporan crash aktif, LightTable hanya mengirim detail teknis yang dijelaskan di Kirim laporan crash."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Pemecahan masalah"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Pemecahan masalah"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Kirim laporan crash",
+      "category": "Troubleshooting",
+      "summary": "Pilih apakah LightTable mengirim detail teknis crash kepada pengembangnya.",
+      "keywords": [
+        "crash",
+        "laporan crash",
+        "privasi",
+        "kirim",
+        "pengembang",
+        "bug",
+        "diagnostik",
+        "persetujuan",
+        "informasi pribadi"
+      ],
+      "sections": [
+        {
+          "title": "Pilih apakah akan mengirim laporan",
+          "paragraphs": [
+            "Saat LightTable versi rilis pertama kali dibuka, aplikasi akan menanyakan apakah ingin mengirim laporan crash ke pengembangnya. Tidak ada yang dikirim kecuali Anda memilih Kirim Laporan Crash. Menutup pertanyaan tanpa memilih akan menanyakannya lagi pada peluncuran berikutnya. Ubah pilihan Anda kapan saja dengan Kirim laporan crash di Pengaturan → Umum.",
+            "Dengan laporan aktif, LightTable mengirim laporan pada saat berikutnya aplikasi dimulai setelah aplikasi atau mesin rendering-nya crash. Laporan yang tidak dapat dikirim akan dicoba lagi saat peluncuran berikutnya dan dibuang setelah enam kali percobaan atau dua minggu. Menonaktifkan laporan membuang laporan yang belum terkirim."
+          ]
+        },
+        {
+          "title": "Apa yang tercantum dalam laporan",
+          "paragraphs": [
+            "Laporan mencakup versi dan build LightTable, sistem operasi dan versinya, jenis dan jumlah prosesor, memori, serta di Mac pengidentifikasi model. Laporan menyebutkan apakah aplikasi atau mesin rendering-nya crash, bagaimana crash berakhir, apakah LightTable sedang mendekoding, merender, atau mengekspor, dan di mana dalam kode program crash terjadi, seperti nama fungsi dan nomor baris.",
+            "Laporan tidak pernah menyertakan foto, metadata foto, nama file atau folder, jalur, konten katalog, teks log, atau informasi pribadi lainnya, dan tidak membawa pengenal apa pun untuk komputer Anda. Layanan yang menerima laporan melihat alamat IP Anda sebagai bagian dari koneksi dan tidak menyimpannya.",
+            "Di Windows dan Linux, LightTable melaporkan crash pada mesin rendering yang meninggalkan jejak kesalahan. Di Mac, aplikasi juga melaporkan crash aplikasi, dengan menambahkan informasi stack yang dicatat macOS."
+          ],
+          "tips": [
+            "Untuk menjelaskan apa yang sedang Anda lakukan, gunakan Bantuan → Laporkan Masalah… di Mac, atau buka issue di GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Pemecahan masalah"
     }
   ],
   "locale": "id",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

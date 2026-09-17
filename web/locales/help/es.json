@@ -3090,6 +3090,7 @@
         "configuración",
         "preferencias",
         "predeterminados",
+        "informes de fallo",
         "cámara",
         "raw",
         "serie",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interfaz y comportamiento",
           "paragraphs": [
-            "La mayoría de los cambios de configuración se guardan automáticamente. El idioma usa Aplicar idioma y vuelve a cargar la ventana después de guardar los cambios. General también controla el Avance automático después de seleccionar, rechazar o calificar, las notificaciones de finalización y las comprobaciones de actualizaciones.",
+            "La mayoría de los cambios en la configuración se guardan automáticamente. Idioma usa Aplicar idioma y recarga la ventana después de guardar los cambios. General también controla el Avance automático después de seleccionar, rechazar o asignar una calificación, las notificaciones de finalización, las comprobaciones de actualizaciones y si las compilaciones publicadas envían informes de fallo.",
             "La interfaz controla el fondo del visor, la escala de fuente, Lights Out, la superposición de información de la lupa y las guías de recorte. Estas preferencias cambian la apariencia del espacio de trabajo sin cambiar los píxeles exportados.",
             "Zoom suave, en Configuración → Interfaz, activa o desactiva la animación para Ajustar, 1:1, los botones de zoom y los atajos. Tu elección tiene prioridad sobre Reducir movimiento; hasta que elijas, LightTable sigue el ajuste del sistema. El desplazamiento, los gestos de pellizco y el arrastre responden directamente.",
             "Archivos y metadatos controla las ediciones portátiles de LightTable junto a los originales, la escritura automática de XMP, el emparejamiento RAW/JPEG y la entrada de palabras clave. Las ediciones portátiles completas usan .lighttable-state.json; XMP transporta las ediciones y los metadatos compatibles. La sincronización XMP conserva los campos no relacionados e informa de cambios externos en conflicto; lea los metadatos de intercambio a través de sidecars XMP para el flujo de trabajo compatible. Las ediciones portátiles de LightTable incluyen las copias virtuales. Al volver a abrir una carpeta, se conservan las ediciones ya guardadas en el catálogo."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Configuración"
     },
@@ -3400,7 +3402,8 @@
         "modo seguro",
         "diagnósticos",
         "log",
-        "reparar"
+        "reparar",
+        "informe de fallo"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Si la app de Mac se cierra sin salir limpiamente, se abre un informe de diagnóstico la próxima vez que la inicie. Si su motor de renderizado se detiene inesperadamente, el informe puede abrirse mientras el motor se recupera. El informe aparece una vez por cada incidente registrado; Descartar le permite continuar. Cerrar la app normalmente o reiniciar su servicio de renderizado no crea un informe.",
             "Ayuda → Informar de un problema… abre el informe más reciente, o los diagnósticos actuales si no se registró ningún cierre inesperado. Los informes incluyen la compilación de la app, macOS y el hardware, la última operación registrada cuando está disponible, logs recientes filtrados y trazas de error disponibles. Un informe de fallo de macOS coincidente puede añadir información de pila y binaria. Un cierre inesperado no siempre deja una traza de error ni identifica su causa.",
-            "Los informes permanecen en su Mac hasta que decide compartirlos. Las rutas, los nombres de archivo de las fotos, los valores de log entre comillas y los campos de credenciales comunes se filtran; inspeccione el texto antes de compartirlo. Las fotos y el catálogo no se adjuntan. Se conservan localmente los diez informes más recientes."
+            "El informe de diagnóstico completo permanece en tu Mac hasta que elijas compartirlo. Las rutas, los nombres de archivo de las fotos, los valores de log entre comillas y los campos comunes de credenciales se filtran; inspecciona el texto antes de compartirlo. Las fotos y el catálogo no se adjuntan. Se conservan localmente los diez informes más recientes."
           ],
           "steps": [
             "Lea el informe de diagnóstico. Elija Copiar informe para pegarlo usted mismo en un correo electrónico.",
             "O elija Enviar correo al mantenedor. Esto copia el informe y abre un borrador dirigido a team@lighttable.app.",
             "Describa lo que estaba haciendo, pegue el informe copiado en el borrador y envíelo cuando esté listo. Si no se abre ninguna aplicación de correo electrónico, use su servicio de correo habitual.",
-            "Elija Descartar para cerrar el informe. No se envía nada automáticamente."
+            "Elige Descartar para cerrar el informe. El informe en sí nunca se envía automáticamente. Si los informes de fallo están activados, LightTable envía solo los detalles técnicos descritos en Enviar informes de fallo."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Solución de problemas"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Solución de problemas"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Enviar informes de fallo",
+      "category": "Troubleshooting",
+      "summary": "Elige si LightTable envía a sus desarrolladores los detalles técnicos de los fallos.",
+      "keywords": [
+        "fallo",
+        "informe de fallo",
+        "privacidad",
+        "enviar",
+        "desarrolladores",
+        "error",
+        "diagnósticos",
+        "consentimiento",
+        "información personal"
+      ],
+      "sections": [
+        {
+          "title": "Elige si quieres enviar informes",
+          "paragraphs": [
+            "Cuando una versión publicada de LightTable se abre por primera vez, pregunta si quieres enviar informes de fallo a sus desarrolladores. No se envía nada a menos que elijas Enviar informes de fallo. Si cierras la pregunta sin elegir, volverá a preguntarlo en el siguiente inicio. Cambia tu elección en cualquier momento con Enviar informes de fallo en Configuración → General.",
+            "Con los informes activados, LightTable envía un informe la próxima vez que se inicia después de que la app o su motor de renderizado hayan fallado. Un informe que no pueda enviarse se reintenta en un inicio posterior y se descarta después de seis intentos o dos semanas. Al desactivar los informes, se descartan los informes que no se hayan enviado."
+          ]
+        },
+        {
+          "title": "Qué contiene un informe",
+          "paragraphs": [
+            "Un informe incluye la versión y la compilación de LightTable, el sistema operativo y su versión, el tipo y número de procesadores, la memoria y, en un Mac, el identificador del modelo. Indica si falló la app o su motor de renderizado, cómo terminó, si LightTable estaba decodificando, renderizando o exportando, y dónde ocurrió el fallo en el código del programa, como los nombres de las funciones y los números de línea.",
+            "Un informe nunca incluye fotos, metadatos de las fotos, nombres de archivos o carpetas, rutas, contenido del catálogo, texto de log ni otra información personal, y no lleva ningún identificador de tu ordenador. El servicio que recibe los informes ve tu dirección IP como parte de la conexión y no la almacena.",
+            "En Windows y Linux, LightTable informa de fallos del motor de renderizado que dejaron una traza de error. En un Mac también informa de fallos de la app, añadiendo la información de la pila que registró macOS."
+          ],
+          "tips": [
+            "Para describir lo que estabas haciendo, usa Ayuda → Informar de un problema… en un Mac, o abre un issue en GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Solución de problemas"
     }
   ],
   "locale": "es",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

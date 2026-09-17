@@ -3090,6 +3090,7 @@
         "impostazioni",
         "preferenze",
         "predefiniti",
+        "report di crash",
         "fotocamera",
         "raw",
         "seriale",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interfaccia e comportamento",
           "paragraphs": [
-            "La maggior parte delle modifiche alle impostazioni viene salvata automaticamente. La lingua usa Applica lingua e ricarica la finestra dopo il salvataggio delle modifiche. Generale controlla anche Avanzamento automatico dopo selezione, rifiuto o valutazione, le notifiche di completamento e i controlli degli aggiornamenti.",
+            "La maggior parte delle modifiche alle impostazioni viene salvata automaticamente. Lingua usa Applica lingua e ricarica la finestra dopo il salvataggio delle modifiche. Generale controlla anche l'Avanzamento automatico dopo la selezione, il rifiuto o la valutazione, le notifiche di completamento, i controlli degli aggiornamenti e se le build rilasciate inviano report di crash.",
             "I controlli dell’interfaccia regolano lo sfondo del visualizzatore, la scala del carattere, Lights Out, la sovrapposizione informativa della lente e le guide di ritaglio. Queste preferenze modificano l’aspetto dell’area di lavoro senza cambiare i pixel esportati.",
             "Zoom fluido in Impostazioni → Interfaccia attiva o disattiva le animazioni per Adatta, 1:1, i pulsanti dello zoom e le scorciatoie. La tua scelta ha la precedenza su Riduci movimento; finché non scegli, LightTable segue le impostazioni di sistema. Scorrimento, pizzicamento e trascinamento rispondono direttamente.",
             "File e metadati controlla le modifiche portatili di LightTable accanto agli originali, la scrittura automatica XMP, l'abbinamento RAW/JPEG e l'inserimento di parole chiave. Le modifiche portatili complete usano .lighttable-state.json; XMP trasporta le modifiche e i metadati compatibili. La sincronizzazione XMP conserva i campi non correlati e segnala i conflitti delle modifiche esterne; leggi i metadati di Exchange tramite i sidecar XMP per il flusso di lavoro supportato. Le modifiche portatili di LightTable includono le copie virtuali. Quando riapri una cartella, le modifiche già salvate nel catalogo vengono mantenute."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Impostazioni"
     },
@@ -3400,7 +3402,8 @@
         "modalità sicura",
         "diagnostica",
         "log",
-        "ripara"
+        "ripara",
+        "report di crash"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Se l'app per Mac si chiude senza una chiusura corretta, la prossima volta che la avvii si apre un report diagnostico. Se il suo motore di rendering si arresta in modo imprevisto, il report può aprirsi mentre il motore si ripristina. Il report appare una volta per ogni incidente registrato; Ignora ti consente di continuare. Chiudere normalmente l'app o riavviare il suo servizio di rendering non crea un report.",
             "Aiuto → Segnala un problema… apre il report più recente, oppure la diagnostica corrente se non è stata registrata alcuna uscita imprevista. I report includono la build dell'app, macOS e l'hardware, l'ultima operazione registrata quando disponibile, i log recenti filtrati e le tracce di errore disponibili. Un report di crash corrispondente di macOS può aggiungere informazioni sullo stack e sui binari. Un'uscita imprevista non lascia sempre una traccia di errore né ne identifica la causa.",
-            "I report restano sul tuo Mac finché non scegli di condividerli. Percorsi, nomi file delle foto, valori di log tra virgolette e campi comuni delle credenziali vengono filtrati; esamina il testo prima di condividerlo. Le foto e il catalogo non vengono allegati. Gli ultimi dieci report vengono conservati localmente."
+            "Il report diagnostico completo rimane sul tuo Mac finché non scegli di condividerlo. I percorsi, i nomi file delle foto, i valori dei log tra virgolette e i campi comuni delle credenziali vengono filtrati; esamina il testo prima di condividerlo. Le foto e il catalogo non vengono allegati. Gli ultimi dieci report vengono conservati localmente."
           ],
           "steps": [
             "Leggi il report diagnostico. Scegli Copia report per incollarlo tu stesso in un'email.",
             "Oppure scegli Invia email al manutentore. Questa opzione copia il report e apre una bozza indirizzata a team@lighttable.app.",
             "Descrivi cosa stavi facendo, incolla il report copiato nella bozza e invialo quando sei pronto. Se non si apre alcuna app email, usa il tuo normale servizio email.",
-            "Scegli Ignora per chiudere il report. Non viene inviato nulla automaticamente."
+            "Scegli Ignora per chiudere il report. Il report stesso non viene mai inviato automaticamente. Se i report di crash sono attivi, LightTable invia solo i dettagli tecnici descritti in Invia report di crash."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Risoluzione problemi"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Risoluzione problemi"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Invia report di crash",
+      "category": "Troubleshooting",
+      "summary": "Scegli se LightTable invia ai suoi sviluppatori i dettagli tecnici dei crash.",
+      "keywords": [
+        "blocco",
+        "report di crash",
+        "privacy",
+        "invia",
+        "sviluppatori",
+        "bug",
+        "diagnostica",
+        "consenso",
+        "informazioni personali"
+      ],
+      "sections": [
+        {
+          "title": "Scegli se inviare i report",
+          "paragraphs": [
+            "Quando una versione rilasciata di LightTable viene aperta per la prima volta, chiede se inviare i report di crash ai suoi sviluppatori. Non viene inviato nulla a meno che tu non scelga Invia report di crash. Chiudere la finestra della domanda senza scegliere la ripropone al successivo avvio. Puoi cambiare la tua scelta in qualsiasi momento con Invia report di crash in Impostazioni → Generale.",
+            "Con i report attivi, LightTable invia un report alla successiva apertura dell'app dopo un crash dell'app o del relativo motore di rendering. Un report che non può essere inviato viene riprovato all'avvio successivo e scartato dopo sei tentativi o due settimane. Disattivare i report scarta quelli non ancora inviati."
+          ]
+        },
+        {
+          "title": "Cosa contiene un report",
+          "paragraphs": [
+            "Un report include la versione e la build di LightTable, il sistema operativo e la sua versione, il tipo e il numero di processori, la memoria e, su Mac, l'identificativo del modello. Indica se si è bloccata l'app o il relativo motore di rendering, come si è conclusa, se LightTable stava eseguendo la decodifica, il rendering o l'esportazione, e in quale punto del codice del programma si è verificato il crash, come i nomi delle funzioni e i numeri di riga.",
+            "Un report non include mai foto, metadati delle foto, nomi di file o di cartelle, percorsi, contenuti del catalogo, testo dei log o altre informazioni personali, e non contiene alcun identificativo del tuo computer. Il servizio che riceve i report vede il tuo indirizzo IP come parte della connessione e non lo memorizza.",
+            "Su Windows e Linux, LightTable segnala i crash del motore di rendering che hanno lasciato una traccia di errore. Su Mac segnala anche i crash dell'app, aggiungendo le informazioni dello stack registrate da macOS."
+          ],
+          "tips": [
+            "Per descrivere cosa stavi facendo, usa Aiuto → Segnala un problema… su Mac, oppure apri una segnalazione su GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Risoluzione problemi"
     }
   ],
   "locale": "it",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

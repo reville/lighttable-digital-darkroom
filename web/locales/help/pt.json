@@ -3090,6 +3090,7 @@
         "configurações",
         "preferências",
         "padrões",
+        "relatórios de falha",
         "câmera",
         "raw",
         "serial",
@@ -3108,7 +3109,7 @@
         {
           "title": "Interface e comportamento",
           "paragraphs": [
-            "A maioria das alterações de configurações é salva automaticamente. O idioma usa Aplicar idioma e recarrega a janela após salvar as edições. Geral também controla Avanço automático após selecionar, rejeitar ou avaliar, notificações de conclusão e verificações de atualização.",
+            "A maioria das alterações nas configurações é salva automaticamente. Idioma usa Aplicar idioma e recarrega a janela depois de salvar as edições. Geral também controla Avanço automático após selecionar, rejeitar ou avaliar, notificações de conclusão, verificações de atualização e se as compilações lançadas enviam relatórios de falha.",
             "Interface controla o fundo do visualizador, a escala da fonte, Lights Out, a sobreposição de informações da lupa e as guias de corte. Essas preferências alteram a aparência do espaço de trabalho sem modificar os pixels exportados.",
             "Zoom suave, em Configurações → Interface, ativa ou desativa a animação para Ajustar, 1:1, botões de zoom e atalhos. Sua escolha prevalece sobre Reduzir Movimento; até você escolher, o LightTable segue o ajuste do sistema. Rolagem, gestos de pinça e arraste respondem diretamente.",
             "Arquivos e metadados controla edições portáteis do LightTable ao lado dos originais, gravação automática de XMP, pareamento RAW/JPEG e entrada de palavras-chave. As edições portáteis completas usam .lighttable-state.json; XMP carrega edições e metadados compatíveis. A sincronização XMP preserva campos não relacionados e relata alterações externas conflitantes; leia metadados de Exchange por meio de sidecars XMP para o fluxo de trabalho compatível. As edições portáteis do LightTable incluem cópias virtuais. Ao reabrir uma pasta, as edições já salvas no catálogo são mantidas."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Configurações"
     },
@@ -3400,7 +3402,8 @@
         "modo seguro",
         "diagnósticos",
         "log",
-        "reparar"
+        "reparar",
+        "relatório de falha"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Se o aplicativo do Mac for encerrado sem uma saída limpa, um relatório de diagnóstico será aberto na próxima vez que você o iniciar. Se o mecanismo de renderização parar inesperadamente, o relatório pode ser aberto enquanto o mecanismo se recupera. O relatório aparece uma vez para cada incidente registrado; Fechar permite que você continue. Fechar o aplicativo normalmente ou reiniciar seu serviço de renderização não cria um relatório.",
             "Ajuda → Relatar um problema… abre o relatório mais recente, ou os diagnósticos atuais se nenhum encerramento inesperado tiver sido registrado. Os relatórios incluem a compilação do aplicativo, o macOS e o hardware, a última operação registrada quando disponível, logs recentes filtrados e rastreamentos de erro disponíveis. Um relatório de falha correspondente do macOS pode adicionar informações de pilha e binário. Um encerramento inesperado nem sempre deixa um rastreamento de erro ou identifica sua causa.",
-            "Os relatórios permanecem no seu Mac até você escolher compartilhá-los. Caminhos, nomes de arquivo de fotos, valores de log entre aspas e campos comuns de credenciais são filtrados; inspecione o texto antes de compartilhar. Fotos e o catálogo não são anexados. Os dez relatórios mais recentes são mantidos localmente."
+            "O relatório diagnóstico completo permanece no seu Mac até você escolher compartilhá-lo. Caminhos, nomes de arquivos de foto, valores de log entre aspas e campos comuns de credenciais são filtrados; inspecione o texto antes de compartilhar. As fotos e o catálogo não são anexados. Os dez relatórios mais recentes são mantidos localmente."
           ],
           "steps": [
             "Leia o relatório de diagnóstico. Escolha Copiar relatório para colá-lo você mesmo em um e-mail.",
             "Ou escolha Enviar e-mail ao mantenedor. Isso copia o relatório e abre um rascunho endereçado a team@lighttable.app.",
             "Descreva o que você estava fazendo, cole o relatório copiado no rascunho e envie-o quando estiver pronto. Se nenhum aplicativo de e-mail abrir, use seu serviço de e-mail habitual.",
-            "Escolha Fechar para fechar o relatório. Nada é enviado automaticamente."
+            "Escolha Fechar para encerrar o relatório. O relatório em si nunca é enviado automaticamente. Se os relatórios de falha estiverem ligados, o LightTable envia apenas os detalhes técnicos descritos em Enviar relatórios de falha."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Solução de problemas"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Solução de problemas"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Enviar relatórios de falha",
+      "category": "Troubleshooting",
+      "summary": "Escolha se o LightTable envia detalhes técnicos das falhas aos seus desenvolvedores.",
+      "keywords": [
+        "falha",
+        "relatório de falha",
+        "privacidade",
+        "enviar",
+        "desenvolvedores",
+        "erro",
+        "diagnósticos",
+        "consentimento",
+        "informações pessoais"
+      ],
+      "sections": [
+        {
+          "title": "Escolha se deseja enviar relatórios",
+          "paragraphs": [
+            "Quando uma versão lançada do LightTable é aberta pela primeira vez, ele pergunta se deve enviar relatórios de falha aos seus desenvolvedores. Nada é enviado a menos que você escolha Enviar relatórios de falha. Fechar a pergunta sem escolher a faz aparecer novamente na próxima inicialização. Altere sua escolha a qualquer momento com Enviar relatórios de falha em Configurações → Geral.",
+            "Com os relatórios ligados, o LightTable envia um relatório na próxima vez que for iniciado após o app ou seu mecanismo de renderização ter falhado. Um relatório que não puder ser enviado será reenviado em uma inicialização posterior e descartado após seis tentativas ou duas semanas. Desativar os relatórios descarta os relatórios que ainda não foram enviados."
+          ]
+        },
+        {
+          "title": "O que um relatório contém",
+          "paragraphs": [
+            "Um relatório inclui a versão e a compilação do LightTable, o sistema operacional e sua versão, o tipo e a quantidade de processadores, a memória e, em um Mac, o identificador do modelo. Ele informa se o app ou seu mecanismo de renderização falhou, como terminou, se o LightTable estava decodificando, renderizando ou exportando, e onde no código do programa a falha ocorreu, como nomes de funções e números de linha.",
+            "Um relatório nunca inclui fotos, metadados de foto, nomes de arquivos ou pastas, caminhos, conteúdo do catálogo, texto de log ou outras informações pessoais, e não traz nenhum identificador do seu computador. O serviço que recebe os relatórios vê seu endereço IP como parte da conexão e não o armazena.",
+            "No Windows e Linux, o LightTable relata falhas do mecanismo de renderização que deixaram um rastreamento de erro. Em um Mac, ele também relata falhas do app, adicionando as informações de pilha registradas pelo macOS."
+          ],
+          "tips": [
+            "Para descrever o que você estava fazendo, use Ajuda → Relatar um problema… em um Mac, ou abra um issue no GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Solução de problemas"
     }
   ],
   "locale": "pt",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }

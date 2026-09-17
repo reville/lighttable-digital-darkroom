@@ -3090,6 +3090,7 @@
         "cài đặt",
         "tùy chọn",
         "mặc định",
+        "các báo cáo crash",
         "máy ảnh",
         "raw",
         "số sê-ri",
@@ -3108,7 +3109,7 @@
         {
           "title": "Giao diện và hành vi",
           "paragraphs": [
-            "Hầu hết thay đổi cài đặt được lưu tự động. Ngôn ngữ dùng Áp dụng ngôn ngữ và tải lại cửa sổ sau khi lưu các chỉnh sửa. Mục Chung cũng điều khiển Tự động chuyển ảnh sau khi chọn, từ chối hoặc gắn sao, thông báo hoàn tất và kiểm tra cập nhật.",
+            "Hầu hết các thay đổi cài đặt sẽ được lưu tự động. Mục Ngôn ngữ dùng Áp dụng ngôn ngữ và tải lại cửa sổ sau khi lưu các chỉnh sửa. Mục Chung cũng điều khiển Tự động chuyển ảnh sau khi chọn, từ chối hoặc xếp hạng, thông báo hoàn tất, kiểm tra cập nhật, và việc các bản phát hành có gửi báo cáo crash hay không.",
             "Các điều khiển giao diện gồm nền trình xem, thang phông chữ, Lights Out, lớp phủ thông tin loupe và hướng dẫn cắt xén. Các tùy chọn này thay đổi giao diện không gian làm việc mà không làm thay đổi pixel đã xuất.",
             "Thu phóng mượt trong Cài đặt → Giao diện bật hoặc tắt hiệu ứng chuyển động cho Vừa khung, 1:1, các nút thu phóng và phím tắt. Lựa chọn của bạn được ưu tiên hơn Giảm chuyển động; trước khi bạn chọn, LightTable dùng cài đặt hệ thống. Cuộn, chụm ngón tay và kéo phản hồi trực tiếp.",
             "Tệp & siêu dữ liệu điều khiển các chỉnh sửa LightTable di động bên cạnh ảnh gốc, ghi XMP tự động, ghép cặp RAW/JPEG và nhập từ khóa. Các chỉnh sửa di động đầy đủ dùng .lighttable-state.json; XMP mang các chỉnh sửa và siêu dữ liệu tương thích. Đồng bộ XMP giữ nguyên các trường không liên quan và báo các thay đổi bên ngoài bị xung đột; đọc siêu dữ liệu Exchange qua các sidecar XMP cho quy trình làm việc được hỗ trợ. Các chỉnh sửa LightTable di động bao gồm cả bản sao ảo. Khi mở lại thư mục, các chỉnh sửa đã lưu trong danh mục vẫn được giữ nguyên."
@@ -3163,7 +3164,8 @@
         "people-face-matching",
         "performance-previews",
         "catalog-health-recovery",
-        "xmp-interchange"
+        "xmp-interchange",
+        "crash-reports"
       ],
       "categoryLabel": "Cài đặt"
     },
@@ -3400,7 +3402,8 @@
         "chế độ an toàn",
         "chẩn đoán",
         "log",
-        "sửa chữa"
+        "sửa chữa",
+        "báo cáo crash"
       ],
       "sections": [
         {
@@ -3443,19 +3446,20 @@
           "paragraphs": [
             "Nếu ứng dụng Mac đóng mà không thoát sạch, báo cáo chẩn đoán sẽ mở vào lần tiếp theo bạn khởi chạy. Nếu công cụ kết xuất dừng đột ngột, báo cáo có thể mở trong khi công cụ đang phục hồi. Báo cáo xuất hiện một lần cho mỗi sự cố đã ghi nhận; Bỏ qua cho phép bạn tiếp tục. Đóng ứng dụng bình thường hoặc khởi động lại dịch vụ kết xuất của nó sẽ không tạo báo cáo.",
             "Trợ giúp → Báo cáo sự cố… sẽ mở báo cáo mới nhất, hoặc phần chẩn đoán hiện tại nếu chưa ghi nhận thoát bất ngờ nào. Báo cáo bao gồm bản dựng ứng dụng, macOS và phần cứng, thao tác được ghi nhận gần nhất khi có, các log gần đây đã lọc, và các vết lỗi có sẵn. Một báo cáo sự cố macOS khớp có thể bổ sung thông tin stack và binary. Một lần thoát bất ngờ không phải lúc nào cũng để lại vết lỗi hoặc xác định nguyên nhân của nó.",
-            "Các báo cáo sẽ ở lại trên máy Mac của bạn cho đến khi bạn chọn chia sẻ chúng. Đường dẫn, tên tệp ảnh, các giá trị log trong dấu ngoặc kép và các trường thông tin xác thực thông dụng đều được lọc; hãy kiểm tra văn bản trước khi chia sẻ. Ảnh và danh mục không được đính kèm. Mười báo cáo mới nhất được giữ cục bộ."
+            "Báo cáo chẩn đoán đầy đủ sẽ ở lại trên máy Mac của bạn cho đến khi bạn chọn chia sẻ nó. Các đường dẫn, tên tệp ảnh, giá trị log trong dấu ngoặc kép, và các trường thông tin đăng nhập thông dụng sẽ bị lọc; hãy kiểm tra kỹ văn bản trước khi chia sẻ. Ảnh và danh mục không được đính kèm. Mười báo cáo gần nhất được giữ cục bộ."
           ],
           "steps": [
             "Đọc báo cáo chẩn đoán. Chọn Sao chép báo cáo để tự dán vào email.",
             "Hoặc chọn Gửi email cho người bảo trì. Thao tác này sẽ sao chép báo cáo và mở một bản nháp gửi tới team@lighttable.app.",
             "Hãy mô tả việc bạn đang làm, dán báo cáo đã sao chép vào bản nháp, và gửi khi sẵn sàng. Nếu không có ứng dụng email nào mở ra, hãy dùng dịch vụ email thường dùng của bạn.",
-            "Chọn Bỏ qua để đóng báo cáo. Không có gì được gửi tự động."
+            "Chọn Bỏ qua để đóng báo cáo. Bản thân báo cáo sẽ không bao giờ được gửi tự động. Nếu báo cáo crash đang bật, LightTable chỉ gửi các chi tiết kỹ thuật được mô tả trong Gửi báo cáo crash."
           ]
         }
       ],
       "related": [
         "settings-and-defaults",
-        "performance-previews"
+        "performance-previews",
+        "crash-reports"
       ],
       "categoryLabel": "Khắc phục sự cố"
     },
@@ -3551,8 +3555,50 @@
         "catalog-health-recovery"
       ],
       "categoryLabel": "Khắc phục sự cố"
+    },
+    {
+      "id": "crash-reports",
+      "title": "Gửi báo cáo crash",
+      "category": "Troubleshooting",
+      "summary": "Chọn xem LightTable có gửi các chi tiết kỹ thuật về crash cho nhà phát triển hay không.",
+      "keywords": [
+        "crash",
+        "báo cáo crash",
+        "quyền riêng tư",
+        "gửi",
+        "nhà phát triển",
+        "lỗi",
+        "chẩn đoán",
+        "đồng ý",
+        "thông tin cá nhân"
+      ],
+      "sections": [
+        {
+          "title": "Chọn có gửi báo cáo hay không",
+          "paragraphs": [
+            "Khi một bản phát hành của LightTable mở lần đầu, ứng dụng sẽ hỏi có gửi báo cáo crash cho nhà phát triển hay không. Không có gì được gửi trừ khi bạn chọn Gửi Báo cáo Crash. Đóng câu hỏi mà không chọn sẽ hỏi lại ở lần khởi chạy tiếp theo. Hãy thay đổi lựa chọn của bạn bất cứ lúc nào với Gửi báo cáo crash trong Cài đặt → Chung.",
+            "Khi báo cáo được bật, LightTable sẽ gửi báo cáo ở lần khởi động tiếp theo sau khi ứng dụng hoặc bộ máy hiển thị của nó crash. Báo cáo không thể gửi sẽ được thử lại ở lần khởi chạy sau và bị loại bỏ sau sáu lần thử hoặc hai tuần. Tắt báo cáo sẽ loại bỏ các báo cáo chưa được gửi."
+          ]
+        },
+        {
+          "title": "Nội dung của báo cáo",
+          "paragraphs": [
+            "Một báo cáo bao gồm phiên bản và bản dựng của LightTable, hệ điều hành và phiên bản của nó, loại và số lượng bộ xử lý, bộ nhớ, và trên máy Mac là mã định danh model. Báo cáo cho biết ứng dụng hay bộ máy hiển thị của nó đã crash, cách nó kết thúc, liệu LightTable đang giải mã, hiển thị hay xuất, và crash xảy ra ở đâu trong mã chương trình, chẳng hạn như tên hàm và số dòng.",
+            "Một báo cáo không bao giờ bao gồm ảnh, siêu dữ liệu ảnh, tên tệp hoặc tên thư mục, đường dẫn, nội dung danh mục, văn bản log, hay thông tin cá nhân nào khác, và không chứa mã định danh nào cho máy tính của bạn. Dịch vụ nhận báo cáo sẽ thấy địa chỉ IP của bạn như một phần của kết nối và không lưu trữ nó.",
+            "Trên Windows và Linux, LightTable báo cáo các crash của bộ máy hiển thị đã để lại dấu vết lỗi. Trên máy Mac, ứng dụng cũng báo cáo crash của chính ứng dụng, kèm theo thông tin stack mà macOS đã ghi lại."
+          ],
+          "tips": [
+            "Để mô tả những gì bạn đã làm, hãy dùng Trợ giúp → Báo cáo sự cố… trên máy Mac, hoặc mở một issue trên GitHub."
+          ]
+        }
+      ],
+      "related": [
+        "catalog-health-recovery",
+        "settings-and-defaults"
+      ],
+      "categoryLabel": "Khắc phục sự cố"
     }
   ],
   "locale": "vi",
-  "sourceDigest": "f301bcd0c21b3966de2684ddd199d88f65b1010c7ec2df9bf99adbd8d4f55555"
+  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
 }
