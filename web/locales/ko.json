@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "주 시스템 언어가 영어이면 영어가 자동으로 저장됩니다. 이후 실행에서는 저장된 선택 사항을 사용합니다. 브라우저에서는 브라우저의 언어 환경 설정이 초기 제안을 제공합니다.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "사이드바가 숨겨져 있으면 왼쪽 위의 라이브러리 보이기 또는 숨기기를 사용합니다.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "상태에 편집이 저장되지 않음이라고 표시되면 저장 다시 시도를 사용하세요. 저장이 실패하는 동안 창을 열어 두세요.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "예를 들어 메모리 압박이 있거나 그래픽 오류가 발생한 후 창의 내용이 충돌하면, LightTable은 이를 자동으로 다시 불러옵니다. 이 일이 1분 안에 여러 번 발생하면 다시 불러오기를 중지하고 대신 경고를 표시합니다. 다시 시도하려면 도움말 → 진단 → 인터페이스 다시 불러오기를 선택하거나, 보고서를 보내려면 도움말 → 문제 보고…를 선택하세요.",
     "If you restore, wait for saving to complete before closing the app.": "복원하는 경우 앱을 닫기 전에 저장이 완료될 때까지 기다립니다.",
     "ImageIO did not create an output file": "ImageIO가 출력 파일을 만들지 않았습니다",
     "Import": "가져오기",
@@ -1696,6 +1697,7 @@
     "Invert": "반전",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "연속해서 {count}번 중단되었습니다(마지막 상태 {status}). 매번 같은 사진이 열려 있었다면 다음 실행 시 자동으로 따로 분리됩니다. 안전 모드는 백그라운드 서비스를 끈 상태로 라이브러리를 열어 원인을 찾기 위해 라이브러리 상태를 사용할 수 있게 합니다.\n\n자세한 내용은 서버 로그에 있습니다.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "여기에는 사진, 사진 메타데이터, 파일이나 폴더 이름, 기타 개인 정보가 절대 포함되지 않습니다.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "1분 안에 여러 번 중단되었으므로, LightTable은 더 이상 인터페이스를 자동으로 다시 불러오지 않습니다. 다시 시도하려면 도움말 ▸ 진단 ▸ 인터페이스 다시 불러오기를 선택하거나, 보고서를 보내려면 도움말 ▸ 문제 보고…를 선택하세요.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "LightTable 엔진이 계속 중지됩니다",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "LightTable의 엔진이 계속 중지됩니다 — Help ▸ Diagnostics ▸ Show Server Log를 참조하세요",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "LightTable의 엔진이 예기치 않게 중지되었습니다(상태 {status}). 다시 시작하는 중…",
+    "LightTable's interface keeps stopping": "LightTable의 인터페이스가 계속 중단됩니다",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "LightTable의 엔진이 다시 시작되지 않았습니다. 도움말 ▸ 진단 ▸ 렌더링 서비스 다시 시작을 사용하거나 서버 로그를 확인하세요.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "LightTable의 인터페이스와 검색 가능한 도움말은 하나의 언어를 공유합니다. 지원되는 언어는 영어, 스페인어, 프랑스어, 독일어, 이탈리아어, 포르투갈어, 러시아어, 간체 중국어, 번체 중국어, 일본어, 한국어, 아랍어, 힌디어, 벵골어, 인도네시아어, 터키어, 베트남어, 태국어, 폴란드어, 네덜란드어입니다.",
     "LightTable’s rendering engine stopped unexpectedly.": "LightTable의 렌더링 엔진이 예기치 않게 중지되었습니다.",

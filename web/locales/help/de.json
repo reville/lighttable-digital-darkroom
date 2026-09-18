@@ -3445,6 +3445,7 @@
           "title": "Unerwartetes Beenden unter Mac melden",
           "paragraphs": [
             "Wenn die Mac-App ohne sauberes Beenden geschlossen wird, öffnet sich beim nächsten Start ein Diagnosebericht. Wenn ihre Render-Engine unerwartet stoppt, kann der Bericht geöffnet werden, während die Engine sich erholt. Der Bericht erscheint einmal für jedes aufgezeichnete Ereignis; Schließen lässt Sie fortfahren. Das normale Schließen der App oder ein Neustart ihres Renderdienstes erzeugt keinen Bericht.",
+            "Wenn der Inhalt des Fensters abstürzt, beispielsweise bei Speicherdruck oder nach einem Grafikfehler, lädt LightTable ihn automatisch neu. Wenn das innerhalb einer Minute mehrmals passiert, wird das Neuladen gestoppt und stattdessen eine Warnung angezeigt. Wählen Sie Hilfe → Diagnose → Oberfläche neu laden, um es erneut zu versuchen, oder Hilfe → Problem melden…, um einen Bericht zu senden.",
             "Hilfe → Problem melden… öffnet den neuesten Bericht oder die aktuellen Diagnosedaten, wenn kein unerwartetes Beenden aufgezeichnet wurde. Berichte enthalten den App-Build, macOS und die Hardware, die zuletzt aufgezeichnete Aktion, sofern verfügbar, gefilterte aktuelle Protokolle und verfügbare Fehler-Stacks. Ein passender macOS-Absturzbericht kann Stack- und Binärinformationen hinzufügen. Ein unerwartetes Beenden hinterlässt nicht immer einen Fehler-Stack oder identifiziert seine Ursache.",
             "Der vollständige Diagnosebericht bleibt auf Ihrem Mac, bis Sie ihn freigeben. Pfade, Fotodateinamen, zitierte Logwerte und gängige Felder mit Anmeldedaten werden herausgefiltert; prüfen Sie den Text vor dem Teilen. Fotos und der Katalog werden nicht angehängt. Die letzten zehn Berichte werden lokal gespeichert."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

@@ -3445,6 +3445,7 @@
           "title": "Mac'te beklenmeyen bir çıkışı bildir",
           "paragraphs": [
             "Mac uygulaması temiz bir çıkış yapmadan kapanırsa, bir sonraki başlatışınızda bir tanılama raporu açılır. İşleme motoru beklenmedik şekilde durursa, motor kurtarılırken rapor açılabilir. Rapor, kaydedilen her olay için bir kez görünür; Kapat, devam etmenizi sağlar. Uygulamayı normal şekilde kapatmak veya işleme hizmetini yeniden başlatmak rapor oluşturmaz.",
+            "Pencerenin içerikleri, örneğin bellek baskısı altında ya da bir grafik hatasından sonra çökerse, LightTable bunları otomatik olarak yeniden yükler. Bu durum bir dakika içinde birkaç kez olursa, yeniden yüklemeyi durdurur ve bunun yerine bir uyarı gösterir. Tekrar denemek için Yardım → Tanılama → Arayüzü Yeniden Yükle seçin veya bir rapor göndermek için Yardım → Bir Sorun Bildir… seçin.",
             "Yardım → Bir Sorun Bildir… en son raporu veya beklenmeyen bir çıkış kaydedilmediyse geçerli tanılamaları açar. Raporlar uygulama sürümünü, macOS ve donanımı, varsa son kaydedilen işlemi, filtrelenmiş son logları ve mevcut hata izlerini içerir. Eşleşen bir macOS çökme raporu yığın ve ikili bilgi ekleyebilir. Beklenmeyen bir çıkış her zaman bir hata izi bırakmaz veya nedenini belirlemez.",
             "Tam tanılama raporu, siz paylaşmayı seçene kadar Mac’inizde kalır. Yollar, fotoğraf dosya adları, tırnak içindeki log değerleri ve yaygın kimlik bilgisi alanları filtrelenir; paylaşmadan önce metni inceleyin. Fotoğraflar ve katalog eklenmez. En son on rapor yerel olarak saklanır."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

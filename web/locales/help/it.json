@@ -3445,6 +3445,7 @@
           "title": "Segnala un'uscita imprevista su Mac",
           "paragraphs": [
             "Se l'app per Mac si chiude senza una chiusura corretta, la prossima volta che la avvii si apre un report diagnostico. Se il suo motore di rendering si arresta in modo imprevisto, il report può aprirsi mentre il motore si ripristina. Il report appare una volta per ogni incidente registrato; Ignora ti consente di continuare. Chiudere normalmente l'app o riavviare il suo servizio di rendering non crea un report.",
+            "Se i contenuti della finestra si bloccano, ad esempio sotto pressione di memoria o dopo un errore grafico, LightTable li ricarica automaticamente. Se ciò accade diverse volte nell'arco di un minuto, smette di ricaricarli e mostra invece un avviso. Scegli Aiuto → Diagnostica → Ricarica interfaccia per riprovare, oppure Aiuto → Segnala un problema… per inviare un rapporto.",
             "Aiuto → Segnala un problema… apre il report più recente, oppure la diagnostica corrente se non è stata registrata alcuna uscita imprevista. I report includono la build dell'app, macOS e l'hardware, l'ultima operazione registrata quando disponibile, i log recenti filtrati e le tracce di errore disponibili. Un report di crash corrispondente di macOS può aggiungere informazioni sullo stack e sui binari. Un'uscita imprevista non lascia sempre una traccia di errore né ne identifica la causa.",
             "Il report diagnostico completo rimane sul tuo Mac finché non scegli di condividerlo. I percorsi, i nomi file delle foto, i valori dei log tra virgolette e i campi comuni delle credenziali vengono filtrati; esamina il testo prima di condividerlo. Le foto e il catalogo non vengono allegati. Gli ultimi dieci report vengono conservati localmente."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

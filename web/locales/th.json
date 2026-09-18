@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "หากภาษาระบบหลักเป็นภาษาอังกฤษ จะบันทึก English โดยอัตโนมัติ การเปิดครั้งถัดไปจะใช้ตัวเลือกที่คุณบันทึกไว้ ในเบราว์เซอร์ การตั้งค่าภาษาในเบราว์เซอร์จะเป็นคำแนะนำเริ่มต้น",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "หากแถบด้านข้างถูกซ่อน ให้ใช้ แสดงหรือซ่อนแถบไลบรารี ที่มุมซ้ายบน",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "หากสถานะแจ้งว่า Edits not saved ให้ใช้ Retry save เปิดหน้าต่างไว้ขณะการบันทึกล้มเหลว",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "หากเนื้อหาของหน้าต่างแครช เช่น เมื่ออยู่ภายใต้แรงกดดันของหน่วยความจำ หรือหลังจากเกิดข้อขัดข้องของกราฟิก LightTable จะโหลดใหม่โดยอัตโนมัติ หากเกิดขึ้นหลายครั้งภายในหนึ่งนาที ระบบจะหยุดโหลดใหม่และแสดงการแจ้งเตือนแทน เลือก วิธีใช้ → การวินิจฉัย → โหลดส่วนติดต่อใหม่ เพื่อลองอีกครั้ง หรือ วิธีใช้ → รายงานปัญหา… เพื่อส่งรายงาน",
     "If you restore, wait for saving to complete before closing the app.": "หากคุณคืนค่า ให้รอจนการบันทึกเสร็จสิ้นก่อนปิดแอป",
     "ImageIO did not create an output file": "ImageIO ไม่ได้สร้างไฟล์เอาต์พุต",
     "Import": "นำเข้า",
@@ -1696,6 +1697,7 @@
     "Invert": "กลับสี",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "มันหยุดไป {count} ครั้งติดกันแล้ว (สถานะล่าสุด {status}) หากเป็นภาพถ่ายเดียวกันที่เปิดอยู่ทุกครั้ง การเปิดครั้งถัดไปจะกันภาพนั้นไว้โดยอัตโนมัติ Safe Mode เปิดไลบรารีโดยปิดบริการเบื้องหลัง เพื่อให้คุณใช้ Library Health เพื่อตรวจหาสาเหตุได้\n\nบันทึกของเซิร์ฟเวอร์มีรายละเอียด",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "จะไม่มีการรวมภาพถ่าย เมทาดาทา ของภาพ ชื่อไฟล์หรือชื่อโฟลเดอร์ หรือข้อมูลส่วนบุคคลอื่นๆ ของคุณไว้",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "มีการหยุดทำงานหลายครั้งภายในหนึ่งนาที ดังนั้น LightTable จึงไม่โหลดใหม่โดยอัตโนมัติอีกต่อไป เลือก วิธีใช้ ▸ การวินิจฉัย ▸ โหลดส่วนติดต่อใหม่ เพื่อลองอีกครั้ง หรือ วิธีใช้ ▸ รายงานปัญหา… เพื่อส่งรายงาน",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "เอนจินของ LightTable หยุดทำงานต่อเนื่อง",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "เอนจินของ LightTable หยุดทำงานต่อเนื่อง — ดู วิธีใช้ ▸ การวินิจฉัย ▸ แสดงบันทึกเซิร์ฟเวอร์",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "เอนจินของ LightTable หยุดทำงานโดยไม่คาดคิด (สถานะ {status}) กำลังเริ่มใหม่…",
+    "LightTable's interface keeps stopping": "ส่วนติดต่อของ LightTable หยุดทำงานอยู่เรื่อยๆ",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "เอนจินของ LightTable ยังไม่กลับมา ใช้ วิธีใช้ ▸ การวินิจฉัย ▸ เริ่มบริการเรนเดอร์ใหม่ หรือดูบันทึกของเซิร์ฟเวอร์",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "อินเทอร์เฟซของ LightTable และความช่วยเหลือที่ค้นหาได้ใช้ภาษาร่วมกันหนึ่งภาษา ภาษาที่มีให้คือ English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, และ Dutch",
     "LightTable’s rendering engine stopped unexpectedly.": "เอนจินเรนเดอร์ของ LightTable หยุดทำงานโดยไม่คาดคิด",

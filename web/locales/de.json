@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "Wenn die primäre Systemsprache Englisch ist, wird Englisch automatisch gespeichert. Spätere Starts verwenden Ihre gespeicherte Auswahl. In einem Browser liefern die Spracheinstellungen des Browsers den ersten Vorschlag.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "Wenn die Seitenleiste ausgeblendet ist, verwenden Sie Bibliothek ein- oder ausblenden oben links.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "Wenn der Status Edits not saved lautet, verwenden Sie Retry save. Lassen Sie das Fenster geöffnet, während ein Speichervorgang fehlschlägt.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "Wenn der Inhalt des Fensters abstürzt, beispielsweise bei Speicherdruck oder nach einem Grafikfehler, lädt LightTable ihn automatisch neu. Wenn das innerhalb einer Minute mehrmals passiert, wird das Neuladen gestoppt und stattdessen eine Warnung angezeigt. Wählen Sie Hilfe → Diagnose → Oberfläche neu laden, um es erneut zu versuchen, oder Hilfe → Problem melden…, um einen Bericht zu senden.",
     "If you restore, wait for saving to complete before closing the app.": "Wenn Sie wiederherstellen, warten Sie, bis das Speichern abgeschlossen ist, bevor Sie die App schließen.",
     "ImageIO did not create an output file": "ImageIO hat keine Ausgabedatei erstellt",
     "Import": "Importieren",
@@ -1696,6 +1697,7 @@
     "Invert": "Umkehren",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "Es ist {count} Mal in Folge stehen geblieben (letzter Status {status}). Wenn jedes Mal dasselbe Foto geöffnet war, wird es beim nächsten Start automatisch beiseitegelegt. Der abgesicherte Modus öffnet die Bibliothek mit deaktivierten Hintergrunddiensten, damit Sie mit Bibliotheksstatus nach der Ursache suchen können.\n\nDas Serverprotokoll enthält die Details.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "Dabei werden niemals Ihre Fotos, Foto-Metadaten, Datei- oder Ordnernamen oder andere personenbezogene Informationen einbezogen.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "Sie ist innerhalb einer Minute mehrmals stehen geblieben, daher lädt LightTable sie nicht mehr automatisch neu. Wählen Sie Hilfe ▸ Diagnose ▸ Oberfläche neu laden, um es erneut zu versuchen, oder Hilfe ▸ Problem melden…, um einen Bericht zu senden.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "Die Engine von LightTable wird immer wieder beendet",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "Die Engine von LightTable stoppt immer wieder — siehe Hilfe ▸ Diagnose ▸ Server-Log anzeigen",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "Die Engine von LightTable wurde unerwartet beendet (Status {status}). Wird neu gestartet…",
+    "LightTable's interface keeps stopping": "Die Oberfläche von LightTable bleibt stehen",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "Die Engine von LightTable ist nicht zurückgekehrt. Verwenden Sie Hilfe ▸ Diagnose ▸ Renderdienst neu starten, oder prüfen Sie das Serverprotokoll.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "Die Benutzeroberfläche von LightTable und die durchsuchbare Hilfe verwenden dieselbe Sprache. Verfügbare Sprachen sind Englisch, Spanisch, Französisch, Deutsch, Italienisch, Portugiesisch, Russisch, Vereinfachtes Chinesisch, Traditionelles Chinesisch, Japanisch, Koreanisch, Arabisch, Hindi, Bengalisch, Indonesisch, Türkisch, Vietnamesisch, Thailändisch, Polnisch und Niederländisch.",
     "LightTable’s rendering engine stopped unexpectedly.": "Die Render-Engine von LightTable wurde unerwartet beendet.",

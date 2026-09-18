@@ -3445,6 +3445,7 @@
           "title": "Relatar encerramento inesperado no Mac",
           "paragraphs": [
             "Se o aplicativo do Mac for encerrado sem uma saída limpa, um relatório de diagnóstico será aberto na próxima vez que você o iniciar. Se o mecanismo de renderização parar inesperadamente, o relatório pode ser aberto enquanto o mecanismo se recupera. O relatório aparece uma vez para cada incidente registrado; Fechar permite que você continue. Fechar o aplicativo normalmente ou reiniciar seu serviço de renderização não cria um relatório.",
+            "Se o conteúdo da janela sofrer uma falha, por exemplo sob pressão de memória ou após uma falha gráfica, o LightTable o recarrega automaticamente. Se isso acontecer várias vezes em um minuto, ele para de recarregar e mostra um alerta. Escolha Ajuda → Diagnósticos → Recarregar interface para tentar novamente, ou Ajuda → Relatar um problema… para enviar um relatório.",
             "Ajuda → Relatar um problema… abre o relatório mais recente, ou os diagnósticos atuais se nenhum encerramento inesperado tiver sido registrado. Os relatórios incluem a compilação do aplicativo, o macOS e o hardware, a última operação registrada quando disponível, logs recentes filtrados e rastreamentos de erro disponíveis. Um relatório de falha correspondente do macOS pode adicionar informações de pilha e binário. Um encerramento inesperado nem sempre deixa um rastreamento de erro ou identifica sua causa.",
             "O relatório diagnóstico completo permanece no seu Mac até você escolher compartilhá-lo. Caminhos, nomes de arquivos de foto, valores de log entre aspas e campos comuns de credenciais são filtrados; inspecione o texto antes de compartilhar. As fotos e o catálogo não são anexados. Os dez relatórios mais recentes são mantidos localmente."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

@@ -3445,6 +3445,7 @@
           "title": "Zgłoś nieoczekiwane zamknięcie na Macu",
           "paragraphs": [
             "Jeśli aplikacja na Maca zamknie się bez prawidłowego wyjścia, raport diagnostyczny otworzy się przy następnym uruchomieniu. Jeśli jej silnik renderowania zatrzyma się nieoczekiwanie, raport może otworzyć się podczas odzyskiwania silnika. Raport pojawia się raz dla każdego zarejestrowanego zdarzenia; Odrzuć pozwala kontynuować. Normalne zamknięcie aplikacji lub ponowne uruchomienie jej usługi renderowania nie tworzy raportu.",
+            "Jeśli zawartość okna ulegnie awarii, na przykład z powodu presji na pamięć lub po błędzie grafiki, LightTable przeładuje ją automatycznie. Jeśli zdarzy się to kilka razy w ciągu minuty, program przestanie przeładowywać i zamiast tego wyświetli alert. Wybierz Pomoc → Diagnostyka → Przeładuj interfejs, aby spróbować ponownie, albo Pomoc → Zgłoś problem…, aby wysłać zgłoszenie.",
             "Pomoc → Zgłoś problem… otwiera najnowszy raport lub bieżące dane diagnostyczne, jeśli nie zarejestrowano nieoczekiwanego zamknięcia. Raporty zawierają wersję aplikacji, macOS i sprzęt, ostatnią zarejestrowaną operację, gdy jest dostępna, filtrowane ostatnie logi oraz dostępne ślady błędów. Pasujący raport o awarii macOS może dodać informacje o stosie wywołań i plikach binarnych. Nieoczekiwane zamknięcie nie zawsze pozostawia ślad błędu ani wskazuje swoją przyczynę.",
             "Pełny raport diagnostyczny pozostaje na Twoim Macu, dopóki nie zdecydujesz się go udostępnić. Ścieżki, nazwy plików zdjęć, ujęte w cudzysłów wartości logu oraz typowe pola poświadczeń są filtrowane; przed udostępnieniem sprawdź tekst. Zdjęcia i katalog nie są dołączane. Lokalnie zachowywanych jest ostatnich dziesięć raportów."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

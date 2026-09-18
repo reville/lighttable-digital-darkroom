@@ -3445,6 +3445,7 @@
           "title": "Signaler une fermeture inattendue sur Mac",
           "paragraphs": [
             "Si l’application Mac se ferme sans quitter proprement, un rapport de diagnostic s’ouvre au prochain lancement. Si son moteur de rendu s’arrête de manière inattendue, le rapport peut s’ouvrir pendant que le moteur se rétablit. Le rapport apparaît une fois pour chaque incident enregistré ; Ignorer vous permet de continuer. Fermer normalement l’application ou redémarrer son service de rendu ne crée pas de rapport.",
+            "Si le contenu de la fenêtre plante, par exemple en cas de pression sur la mémoire ou après un défaut graphique, LightTable le recharge automatiquement. Si cela se produit plusieurs fois en moins d’une minute, le rechargement s’arrête et une alerte s’affiche à la place. Choisissez Aide → Diagnostics → Recharger l’interface pour réessayer, ou Aide → Signaler un problème… pour envoyer un rapport.",
             "Aide → Signaler un problème… ouvre le dernier rapport, ou les diagnostics actuels si aucune fermeture inattendue n’a été enregistrée. Les rapports incluent la version de l’application, macOS et le matériel, la dernière opération enregistrée lorsqu’elle est disponible, les logs récents filtrés et les traces d’erreur disponibles. Un rapport de plantage macOS correspondant peut ajouter des informations de pile et de binaire. Une fermeture inattendue ne laisse pas toujours de trace d’erreur ni n’identifie sa cause.",
             "Le rapport de diagnostic complet reste sur votre Mac jusqu’à ce que vous choisissiez de le partager. Les chemins, les noms de fichiers des photos, les valeurs des logs entre guillemets et les champs d’identifiants courants sont filtrés ; examinez le texte avant de le partager. Les photos et le catalogue ne sont pas joints. Les dix rapports les plus récents sont conservés localement."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

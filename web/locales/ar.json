@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "إذا كانت لغة النظام الأساسية هي الإنجليزية، فسيُحفظ الإنجليزية تلقائيًا. تستخدم عمليات التشغيل اللاحقة اختيارك المحفوظ. في المتصفح، توفر تفضيلات لغة المتصفح الاقتراح الأولي.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "إذا كان الشريط الجانبي مخفيًا، فاستخدم إظهار أو إخفاء المكتبة في أعلى اليسار.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "إذا كانت الحالة تقول Edits not saved، فاستخدم Retry save. أبقِ النافذة مفتوحة أثناء فشل الحفظ.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "إذا تعطلت محتويات النافذة، على سبيل المثال تحت ضغط الذاكرة أو بعد خطأ في الرسومات، فإن LightTable يعيد تحميلها تلقائيًا. وإذا حدث ذلك عدة مرات خلال دقيقة واحدة، فإنه يتوقف عن إعادة التحميل ويعرض تنبيهًا بدلاً من ذلك. اختر مساعدة → التشخيصات → إعادة تحميل الواجهة للمحاولة مرة أخرى، أو مساعدة → الإبلاغ عن مشكلة… لإرسال تقرير.",
     "If you restore, wait for saving to complete before closing the app.": "إذا استعدت، فانتظر اكتمال الحفظ قبل إغلاق التطبيق.",
     "ImageIO did not create an output file": "لم يُنشئ ImageIO ملف مخرجات",
     "Import": "استيراد",
@@ -1696,6 +1697,7 @@
     "Invert": "عكس",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "لقد توقف {count} مرات متتالية (الحالة الأخيرة {status}). إذا كانت الصورة نفسها مفتوحة في كل مرة، فإن التشغيل التالي يضعها جانبًا تلقائيًا. يفتح «الوضع الآمن» المكتبة مع إيقاف الخدمات الخلفية بحيث يمكنك استخدام «سلامة المكتبة» للبحث عن السبب.\n\nيحتوي سجل الخادم على التفاصيل.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "لا يتضمن ذلك مطلقًا صورك أو البيانات الوصفية للصور أو أسماء الملفات أو المجلدات أو أي معلومات شخصية أخرى.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "توقف ذلك عدة مرات خلال دقيقة واحدة، لذا لم يعد LightTable يعيد تحميله تلقائيًا. اختر مساعدة ▸ التشخيصات ▸ إعادة تحميل الواجهة للمحاولة مرة أخرى، أو مساعدة ▸ الإبلاغ عن مشكلة… لإرسال تقرير.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "يستمر محرك LightTable في التوقف",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "يواصل محرك LightTable التوقف — راجع Help ▸ Diagnostics ▸ Show Server Log",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "توقف محرك LightTable بشكل غير متوقع (الحالة {status}). جارٍ إعادة التشغيل…",
+    "LightTable's interface keeps stopping": "تتوقف واجهة LightTable باستمرار",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "لم تعد نواة LightTable. استخدم مساعدة ▸ التشخيصات ▸ إعادة تشغيل خدمة التصيير، أو تحقق من سجل الخادم.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "تتشارك واجهة LightTable والمساعدة القابلة للبحث لغة واحدة. اللغات المتاحة هي الإنجليزية والإسبانية والفرنسية والألمانية والإيطالية والبرتغالية والروسية والصينية المبسطة والصينية التقليدية واليابانية والكورية والعربية والهندية والبنغالية والإندونيسية والتركية والفيتنامية والتايلاندية والبولندية والهولندية.",
     "LightTable’s rendering engine stopped unexpectedly.": "توقفت محرك التصيير في LightTable بشكل غير متوقع.",
