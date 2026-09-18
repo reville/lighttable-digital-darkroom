@@ -1,6 +1,6 @@
 {
   "name": "lighttable-digital-darkroom",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "Install the LightTable digital darkroom and run its bundled command-line interface",
   "license": "GPL-3.0-only",
   "type": "module",

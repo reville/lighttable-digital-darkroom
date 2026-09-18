@@ -357,6 +357,84 @@ def validate_screenshot(app: Path, screenshot: Path, payload: dict) -> dict:
     return metrics
 
 
+def _read_jsonl_records(path: Path) -> list[dict]:
+    """Best-effort parse of a JSON-lines file; a partial write is not fatal."""
+    if not path.is_file():
+        return []
+    records = []
+    for line in path.read_text(errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(record, dict):
+            records.append(record)
+    return records
+
+
+def _engine_incidents(directory: Path) -> list[dict]:
+    """The native shell's incident-*.json reports with kind "engine", oldest
+    first. Filenames embed a session UUID, not a timestamp, so this sorts by
+    detectedAt like DiagnosticStore.incidents() does."""
+    incidents = []
+    for path in directory.glob("incident-*.json"):
+        try:
+            incident = json.loads(path.read_text(errors="replace"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(incident, dict) and incident.get("kind") == "engine":
+            incidents.append(incident)
+    incidents.sort(key=lambda incident: incident.get("detectedAt") or 0)
+    return incidents
+
+
+def _launch_count(temporary: Path) -> int:
+    """Count '=== LightTable launch' headers, including generations a
+    restart rotated out of the live log (ServerController.rotateLog)."""
+    logs = [temporary / "server.log", *sorted(temporary.glob("server.log.*"))]
+    return sum(path.read_text(errors="replace").count("=== LightTable launch")
+               for path in logs if path.is_file())
+
+
+def validate_no_unexpected_server_exit(temporary: Path) -> None:
+    """Fail if the isolated profile shows the server crashed mid-journey.
+
+    A crash the app quietly recovers from (app/main.swift, ServerController's
+    onUnexpectedExit/serverExited restart it) is invisible to
+    validate_benchmark: the web UI just retries against the new process and
+    the journey still finishes and reports ok, which is how the exiv2 crash
+    behind 0.7.6 shipped. Read the same evidence the server and native shell
+    already leave in this profile before trusting a clean-looking result.
+    """
+    evidence = []
+
+    crashes = _read_jsonl_records(temporary / "catalog" / "crashes.jsonl")
+    if crashes:
+        status = crashes[-1].get("exitStatus")
+        evidence.append(
+            "recovery.py's crash ledger recorded an unclean session"
+            + (f" (exit status {status})" if status is not None else ""))
+
+    incidents = _engine_incidents(temporary / "catalog" / "Diagnostics")
+    if incidents:
+        status = incidents[-1].get("exitStatus")
+        evidence.append(
+            f"the native shell saved engine incident {incidents[-1].get('id', '?')}"
+            + (f" (exit status {status})" if status is not None else ""))
+
+    launches = _launch_count(temporary)
+    if launches > 1:
+        evidence.append(f"the server log shows {launches} launches instead of 1")
+
+    if evidence:
+        raise RuntimeError(
+            "native photo journey's server exited unexpectedly mid-run: "
+            + "; ".join(evidence))
+
+
 def run_smoke(
     app: Path,
     fixtures: tuple[Path, ...],
@@ -426,6 +504,7 @@ def run_smoke(
             raise RuntimeError(
                 f"LightTable did not write native benchmark results\n{stdout[-2000:]}"
             )
+        validate_no_unexpected_server_exit(temporary)
         payload = json.loads(output.read_text())
         if screenshot_output:
             screenshot_output.with_suffix('.raw.json').write_text(json.dumps(payload, indent=2))

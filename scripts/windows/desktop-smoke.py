@@ -342,6 +342,43 @@ def same_existing_path(value, expected: Path) -> bool:
         return False
 
 
+def crash_ledger_entries(root: Path) -> list[dict]:
+    """Parse recovery.py's crash ledger for this isolated catalog, if any."""
+    path = root / "catalog/crashes.jsonl"
+    if not path.is_file():
+        return []
+    entries = []
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(entry, dict):
+            entries.append(entry)
+    return entries
+
+
+def require_no_crash_ledger_entry(root: Path) -> None:
+    """Fail if SessionLedger.begin() recorded an unclean previous session.
+
+    A render server that crashes can still leave this script's quit+relaunch
+    journey looking clean: ServerController.stop() force-kills the child
+    after its shutdown grace period regardless of why it stopped responding.
+    crashes.jsonl is written by the *next* session's begin(), so this only
+    tells on the first one -- check it once the relaunched session connects.
+    """
+    crashes = crash_ledger_entries(root)
+    if not crashes:
+        return
+    status = crashes[-1].get("exitStatus")
+    raise RuntimeError(
+        "the render server recorded an unclean previous session"
+        + (f" (exit status {status})" if status is not None else ""))
+
+
 def startup_diagnostics(root: Path, desktop) -> dict:
     """Keep only scalar startup/identity fields; never copy an instance token."""
     result = {"expected_folder": str(root / "photos"),
@@ -640,6 +677,7 @@ def main():
             if not expected_edits_saved(saved):
                 raise RuntimeError("The saved exposure/rating did not survive a native quit and relaunch")
             report["edit_persistence"] = {"exposure": 0.5, "rating": 4, "server_restarted": health["pid"] != restarted["pid"]}
+            require_no_crash_ledger_entry(root)
             result = api.request("/api/export", {"names": [name], "format": "tif", "outputSpace": "srgb",
                                  "destination": str(root / "exports"), "metadata": "none", "sidecar": False,
                                  "collision": "rename"})
