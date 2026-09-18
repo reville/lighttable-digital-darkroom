@@ -25,7 +25,7 @@ impl Rect {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct RegionPlan {
     /// Expanded input-axis rectangle sent to the pixel stages.
     pub render: Rect,
@@ -221,6 +221,115 @@ pub fn crop_image(image: &ImageBuf, rect: Rect) -> ImageBuf {
     ImageBuf::from_data(rect.width, rect.height, data)
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct TilePlan {
+    pub target: Rect,
+    pub region: RegionPlan,
+}
+
+/// Reassemble trimmed tile image buffers into a full-resolution image.
+pub fn stitch_tiles(
+    full_width: u32,
+    full_height: u32,
+    tiles: &[(Rect, ImageBuf)],
+) -> ImageBuf {
+    let mut image = ImageBuf::new(full_width, full_height);
+    for (rect, tile) in tiles {
+        assert_eq!(rect.width, tile.width, "tile width matches destination rect");
+        assert_eq!(rect.height, tile.height, "tile height matches destination rect");
+        assert!(
+            rect.x + rect.width <= full_width && rect.y + rect.height <= full_height,
+            "tile destination rect within full image bounds"
+        );
+        let full_w = full_width as usize;
+        let tile_w = rect.width as usize;
+        for row in 0..rect.height as usize {
+            let dst_start = ((rect.y as usize + row) * full_w + rect.x as usize) * 3;
+            let src_start = row * tile_w * 3;
+            let len = tile_w * 3;
+            image.data[dst_start..dst_start + len]
+                .copy_from_slice(&tile.data[src_start..src_start + len]);
+        }
+    }
+    image
+}
+
+/// Decompose a full frame into non-overlapping tiles with finite-support padding
+/// such that each tile's expanded render rectangle satisfies `is_supported`.
+pub fn plan_tiles(
+    width: u32,
+    height: u32,
+    params: &RuntimeParams,
+    wgpu: bool,
+    mut is_supported: impl FnMut(u32, u32) -> bool,
+) -> Option<Vec<TilePlan>> {
+    if width == 0 || height == 0 {
+        return None;
+    }
+    // Finite kernel support padding must be available to guarantee zero boundary artifacts.
+    if kernel_support(params, width, height).is_none() {
+        return None;
+    }
+
+    const LAYOUTS: &[(usize, usize)] = &[
+        (1, 2), (1, 3), (1, 4), (2, 2), (1, 6), (2, 3), (2, 4), (1, 8), (3, 3), (2, 6), (4, 4), (4, 6), (6, 6), (8, 8),
+    ];
+
+    for &(cols, rows) in LAYOUTS {
+        let mut tiles = Vec::with_capacity(cols * rows);
+        let mut all_fit = true;
+
+        let col_width = width.div_ceil(cols as u32);
+        let row_height = height.div_ceil(rows as u32);
+
+        for r in 0..rows as u32 {
+            let y = r * row_height;
+            let h = row_height.min(height.saturating_sub(y));
+            if h == 0 {
+                continue;
+            }
+
+            for c in 0..cols as u32 {
+                let x = c * col_width;
+                let w = col_width.min(width.saturating_sub(x));
+                if w == 0 {
+                    continue;
+                }
+
+                let target = Rect {
+                    x,
+                    y,
+                    width: w,
+                    height: h,
+                };
+                let region = match plan(target, width, height, 0, params, wgpu) {
+                    Ok(p) => p,
+                    Err(_) => {
+                        all_fit = false;
+                        break;
+                    }
+                };
+
+                if !is_supported(region.render.width, region.render.height) {
+                    all_fit = false;
+                    break;
+                }
+
+                tiles.push(TilePlan { target, region });
+            }
+            if !all_fit {
+                break;
+            }
+        }
+
+        if all_fit && !tiles.is_empty() {
+            return Some(tiles);
+        }
+    }
+
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -394,5 +503,78 @@ mod tests {
         ] {
             assert!(plan(viewport, 200, 150, 0, &pointwise(), true).is_err());
         }
+    }
+
+    #[test]
+    fn stitch_tiles_reassembles_cropped_tiles_bit_identically() {
+        let width = 12u32;
+        let height = 8u32;
+        let original = ImageBuf::from_data(
+            width,
+            height,
+            (0..(width * height * 3))
+                .map(|i| (i as f32) / (width * height * 3) as f32)
+                .collect(),
+        );
+
+        let t1_rect = Rect { x: 0, y: 0, width: 6, height: 4 };
+        let t2_rect = Rect { x: 6, y: 0, width: 6, height: 4 };
+        let t3_rect = Rect { x: 0, y: 4, width: 6, height: 4 };
+        let t4_rect = Rect { x: 6, y: 4, width: 6, height: 4 };
+
+        let t1 = crop_image(&original, t1_rect);
+        let t2 = crop_image(&original, t2_rect);
+        let t3 = crop_image(&original, t3_rect);
+        let t4 = crop_image(&original, t4_rect);
+
+        let stitched = stitch_tiles(
+            width,
+            height,
+            &[
+                (t1_rect, t1),
+                (t2_rect, t2),
+                (t3_rect, t3),
+                (t4_rect, t4),
+            ],
+        );
+
+        assert_eq!(stitched.width, original.width);
+        assert_eq!(stitched.height, original.height);
+        assert_eq!(stitched.data, original.data);
+    }
+
+    #[test]
+    fn plan_tiles_decomposes_frame_and_respects_limits() {
+        let p = pointwise();
+        let width = 6000u32;
+        let height = 4000u32;
+        let max_pixels = 15_000_000u64;
+
+        let tiles = plan_tiles(width, height, &p, true, |w, h| {
+            (w as u64) * (h as u64) <= max_pixels
+        })
+        .expect("plan_tiles should succeed");
+
+        assert!(tiles.len() >= 2);
+
+        let mut covered_pixels = 0u64;
+        for t in &tiles {
+            assert!(t.target.x + t.target.width <= width);
+            assert!(t.target.y + t.target.height <= height);
+            assert_eq!(t.region.trim.width, t.target.width);
+            assert_eq!(t.region.trim.height, t.target.height);
+            assert!((t.region.render.width as u64) * (t.region.render.height as u64) <= max_pixels);
+            covered_pixels += (t.target.width as u64) * (t.target.height as u64);
+        }
+        assert_eq!(covered_pixels, (width as u64) * (height as u64));
+    }
+
+    #[test]
+    fn plan_tiles_rejects_unbounded_diffusion() {
+        let mut p = pointwise();
+        p.camera.diffusion_filter.active = true;
+        p.camera.diffusion_filter.spatial_scale = 0.15;
+
+        assert!(plan_tiles(6000, 4000, &p, true, |_w, _h| true).is_none());
     }
 }

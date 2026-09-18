@@ -410,10 +410,21 @@ impl Engine {
         // The per-stage path may apply working-resolution upscaling before
         // dispatch. Check its larger dimensions as well as the resident input.
         let scale = params.io.upscale_factor.max(1.0);
-        let fallback_reason = self.backend.render_support_error(
+        let mut fallback_reason = self.backend.render_support_error(
             ((check_width as f32 * scale).round() as u32).max(check_width),
             ((check_height as f32 * scale).round() as u32).max(check_height),
             native_output.is_some());
+        let mut tile_plans: Option<Vec<region::TilePlan>> = None;
+        if fallback_reason.is_some() && self.backend.is_gpu() && request.viewport.is_none() && native_output.is_none() {
+            tile_plans = region::plan_tiles(image.width, image.height, &params, true, |w, h| {
+                let rw = ((w as f32 * scale).round() as u32).max(w);
+                let rh = ((h as f32 * scale).round() as u32).max(h);
+                self.backend.render_support_error(rw, rh, false).is_none()
+            });
+            if tile_plans.is_some() {
+                fallback_reason = None;
+            }
+        }
         let cpu_backend = spektrafilm_gpu::cpu_backend::CpuBackend;
         let backend: &dyn ComputeBackend = if fallback_reason.is_some() {
             // A large export should not permanently disable GPU previews for
@@ -529,34 +540,77 @@ impl Engine {
             format!("{key}:region:{:?}", plan.render.array())
         } else { key });
         let render_started = Instant::now();
-        let native_only = native_output.is_some() && output.is_none()
-            && !request.export_shared && !request.export_rgb8
-            && request.grade.is_none() && request.masks.is_none()
-            && request.crop.is_none() && request.long_edge.is_none()
-            && request.resize.is_none() && request.sharpen.is_none();
-        let packed = if native_only {
-            pipeline.process_resident_native(render_image, backend,
-                film_key.as_deref(), metered_ev,
-                spektrafilm_gpu::NativeOutputSpec {
-                    quarters_ccw: request.rotate_quarters_ccw, crop: plan.as_ref().map(|plan| plan.trim.array()),
-                })
-        } else { None };
-        let resident_rendered = if packed.is_none() {
-            pipeline.process_resident_cached(render_image, backend,
-                film_key.as_deref(), metered_ev)
-        } else { None };
-        if accelerated && packed.is_none() && resident_rendered.is_none() {
-            bail!("GPU viewport path unavailable; retry a full-frame render");
-        }
-        let used_resident = packed.is_some() || resident_rendered.is_some();
-        let rendered = if packed.is_none() {
-            Some(resident_rendered.unwrap_or_else(||
-                pipeline.process((*image).clone(), backend)))
-        } else { None };
+        let rendered: Option<ImageBuf>;
+        let mut packed = None;
+        let used_resident;
         let mut cache_status = backend.resident_cache_status();
-        if !used_resident {
-            cache_status.0 = false;
-            cache_status.1 = false;
+
+        if let Some(tiles) = tile_plans {
+            let metered_ev = if metered_ev.is_none() && pipeline.params.camera.auto_exposure {
+                let matrix = spektrafilm_core::stages::filming::input_colorspace_to_xyz(
+                    &pipeline.params.io.input_color_space);
+                Some(spektrafilm_core::stages::filming::measure_autoexposure_ev(&image, &matrix,
+                    &pipeline.params.camera.auto_exposure_method))
+            } else { metered_ev };
+
+            let mut tile_results = Vec::with_capacity(tiles.len());
+            let mut failed = false;
+            for tile in &tiles {
+                let tile_input = region::crop_image(&image, tile.region.render);
+                let tile_pipeline = pipeline.clone().with_image_region(
+                    tile.region.render.x, tile.region.render.y, image.width, image.height);
+                let tile_rendered = tile_pipeline.process_resident_cached(
+                    &tile_input, backend, None, metered_ev)
+                    .or_else(|| Some(tile_pipeline.process(tile_input, backend)));
+                match tile_rendered {
+                    Some(out) => {
+                        let trimmed = region::crop_image(&out, tile.region.trim);
+                        tile_results.push((tile.target, trimmed));
+                    }
+                    None => {
+                        failed = true;
+                        break;
+                    }
+                }
+            }
+            if !failed && tile_results.len() == tiles.len() {
+                rendered = Some(region::stitch_tiles(image.width, image.height, &tile_results));
+                used_resident = true;
+            } else {
+                fallback_reason = Some("GPU tile render failed; completed on CPU".to_string());
+                rendered = Some(pipeline.process((*image).clone(), &cpu_backend));
+                used_resident = false;
+            }
+        } else {
+            let native_only = native_output.is_some() && output.is_none()
+                && !request.export_shared && !request.export_rgb8
+                && request.grade.is_none() && request.masks.is_none()
+                && request.crop.is_none() && request.long_edge.is_none()
+                && request.resize.is_none() && request.sharpen.is_none();
+            packed = if native_only {
+                pipeline.process_resident_native(render_image, backend,
+                    film_key.as_deref(), metered_ev,
+                    spektrafilm_gpu::NativeOutputSpec {
+                        quarters_ccw: request.rotate_quarters_ccw, crop: plan.as_ref().map(|plan| plan.trim.array()),
+                    })
+            } else { None };
+            let resident_rendered = if packed.is_none() {
+                pipeline.process_resident_cached(render_image, backend,
+                    film_key.as_deref(), metered_ev)
+            } else { None };
+            if accelerated && packed.is_none() && resident_rendered.is_none() {
+                bail!("GPU viewport path unavailable; retry a full-frame render");
+            }
+            used_resident = packed.is_some() || resident_rendered.is_some();
+            rendered = if packed.is_none() {
+                Some(resident_rendered.unwrap_or_else(||
+                    pipeline.process((*image).clone(), backend)))
+            } else { None };
+            cache_status = backend.resident_cache_status();
+            if !used_resident {
+                cache_status.0 = false;
+                cache_status.1 = false;
+            }
         }
         let render_ms = millis(render_started.elapsed());
 
@@ -647,7 +701,11 @@ impl Engine {
         Ok(Response {
             id: request.id,
             ok: true,
-            backend: backend.name().to_owned(),
+            backend: if fallback_reason.is_some() {
+                cpu_backend.name().to_owned()
+            } else {
+                backend.name().to_owned()
+            },
             adapter: backend.adapter_diagnostics(),
             gpu_timings: used_resident.then(|| backend.last_gpu_timings()).flatten(),
             fallback_reason,

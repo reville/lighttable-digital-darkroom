@@ -271,6 +271,39 @@ class DestinationTimeTests(unittest.TestCase):
                 with self.assertRaises(server.ExportCancelled):
                     future.result(timeout=3)
 
+    def test_export_batch_updates_and_clears_phase(self):
+        with tempfile.TemporaryDirectory() as directory:
+            batch = server.ExportBatch([("item1", {})], directory)
+            record = server.JOBS.create("export", total=1, state="running")
+            batch.status["jobId"] = record["id"]
+            batch.update_phase("item1", "film", "GPU")
+            self.assertEqual(batch.status.get("phase"), "film")
+            self.assertEqual(batch.status.get("phase_backend"), "GPU")
+            self.assertEqual(batch.status.get("current_name"), "item1")
+
+            batch.update_phase("item1", "encode")
+            self.assertEqual(batch.status.get("phase"), "encode")
+            self.assertNotIn("phase_backend", batch.status)
+
+            batch.finish("item1", {"completed": 1})
+            self.assertNotIn("phase", batch.status)
+            self.assertNotIn("current_name", batch.status)
+            self.assertNotIn("phase_backend", batch.status)
+
+    def test_export_with_resident_engine_records_fallback_warning(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out_path = Path(directory) / "test.jpg"
+            job = {"params": {"stock": "Portra 400", "paper": "Endura", "profile_enabled": True}}
+            fake_metrics = {"backend": "CPU (rayon)", "total_ms": 120.0, "width": 100, "height": 100,
+                            "fallback_reason": "GPU buffer limit exceeded; completed on CPU"}
+            with mock.patch.object(server, "rust_direct_export_supported", return_value=True), \
+                 mock.patch.object(server, "_direct_export_render", return_value=fake_metrics), \
+                 mock.patch.object(server, "expansion_anchor_for", return_value=None), \
+                 mock.patch.object(server.platform_image, "embed_jpeg_icc"), \
+                 mock.patch.object(server, "embed_export_metadata"):
+                res = server.export_with_resident_engine("fake.jpg", out_path, job)
+            self.assertTrue(any("Export fell back to CPU" in w for w in job.get("warnings", [])))
+
 
 if __name__ == '__main__':
     unittest.main()

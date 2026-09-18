@@ -10053,7 +10053,20 @@ async function runExport(customOpts = {}) {
       if (activeExportJobId !== ident) return;
       const st = record.result || {};
       latestExportStatus = st;
-      $('estat').textContent = st.cancel_requested ? tr("Stopping export…") : `${record.progress}/${record.total}`;
+      const phaseLabels = {
+        decode: tr("Decoding RAW…"),
+        read: tr("Reading image…"),
+        film: st.phase_backend?.includes("CPU") ? tr("Simulating film (CPU)…") : tr("Simulating film…"),
+        encode: tr("Encoding JPEG…"),
+        metadata: tr("Writing metadata…"),
+        finish: tr("Finishing…"),
+        publish: tr("Saving…"),
+      };
+      const phaseText = phaseLabels[st.phase] || (st.phase ? `${st.phase}…` : '');
+      const countText = `${record.progress}/${record.total}`;
+      $('estat').textContent = st.cancel_requested
+        ? tr("Stopping export…")
+        : (phaseText ? `${countText} · ${phaseText}` : countText);
       $('exportDetails').hidden = !(st.errors?.length || st.warnings?.length);
       if (['done', 'failed', 'cancelled'].includes(record.state)) {
         clearInterval(exportTimer);

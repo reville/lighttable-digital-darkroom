@@ -5298,6 +5298,23 @@ def export_phase(job: dict, phase: str):
                                (time.perf_counter() - started) * 1000, 3)
 
 
+def update_export_phase(batch: ExportBatch | None, name: str, phase: str,
+                        backend: str | None = None) -> None:
+    if batch is None:
+        batch = getattr(RENDER_CONTEXT, "export_batch", None)
+    if batch is not None:
+        batch.update_phase(name, phase, backend)
+    else:
+        with EXPORT_LOCK:
+            EXPORT["current_name"] = name
+            EXPORT["phase"] = phase
+            if backend:
+                EXPORT["phase_backend"] = backend
+            else:
+                EXPORT.pop("phase_backend", None)
+            sync_job_status(dict(EXPORT))
+
+
 def _resident_render_full(name: str, params: dict, request: dict) -> dict:
     # Two export workers bound the pipeline. Sensor decode has its own priority
     # slot and shared cache; it can prepare the next capture during GPU work.
@@ -5315,6 +5332,7 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
     request = dict(request)
     phases = {}
     started = time.perf_counter()
+    batch = getattr(RENDER_CONTEXT, "export_batch", None)
     if is_raw(name) and shared_input_supported():
         try:
             key = (f"raw-v{INPUT_CACHE_VERSION}:{file_key(name)}:"
@@ -5334,6 +5352,8 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
                 # A restarted/evicted engine can miss between probe and render;
                 # only that path falls through to a fresh decode.
                 try:
+                    update_export_phase(batch, name, "film",
+                                        backend="CPU" if BACKGROUND_ENGINE.cpu_fallback else "GPU")
                     render_start = time.perf_counter()
                     metrics = BACKGROUND_ENGINE.render(dict(request, input_cache_key=key))
                     phases["engine"] = (time.perf_counter() - render_start) * 1000
@@ -5349,9 +5369,12 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
             pass  # Old worker or missing input: normal shared/TIFF fallback.
         try:
             decode_start = time.perf_counter()
+            update_export_phase(batch, name, "decode")
             with raw_shared_input(name, params) as shared:
                 phases["decode_exchange"] = (time.perf_counter() - decode_start) * 1000
                 request.update(shared)
+                update_export_phase(batch, name, "film",
+                                    backend="CPU" if BACKGROUND_ENGINE.cpu_fallback else "GPU")
                 render_start = time.perf_counter()
                 metrics = BACKGROUND_ENGINE.render(request)
                 phases["engine"] = (time.perf_counter() - render_start) * 1000
@@ -5367,9 +5390,12 @@ def _resident_render_full_locked(name: str, params: dict, request: dict) -> dict
     else:
         fallback = None
     decode_start = time.perf_counter()
+    update_export_phase(batch, name, "decode" if is_raw(name) else "read")
     source = tiff_for(name, params)
     phases["decode_exchange"] = phases.get("decode_exchange", 0) + (time.perf_counter() - decode_start) * 1000
     request["input"] = str(source)
+    update_export_phase(batch, name, "film",
+                        backend="CPU" if BACKGROUND_ENGINE.cpu_fallback else "GPU")
     render_start = time.perf_counter()
     metrics = BACKGROUND_ENGINE.render(request)
     phases["engine"] = (time.perf_counter() - render_start) * 1000
@@ -5397,6 +5423,7 @@ def _direct_export_render(name: str, params: dict, request: dict,
     while the engine is already free for the next photo or a preview. Windows,
     older workers and shared-memory failures keep the in-engine encoder.
     """
+    batch = getattr(RENDER_CONTEXT, "export_batch", None) or job.get("_batch")
     if export_surface.supported() and DEFERRED_EXPORT_ENCODE:
         try:
             metrics = _resident_render_full(name, params, dict(request, export_rgb8=True))
@@ -5413,6 +5440,7 @@ def _direct_export_render(name: str, params: dict, request: dict,
                 export_surface.discard_surface(descriptor)
                 raise
             try:
+                update_export_phase(batch, name, "encode")
                 with export_phase(job, "encode"):
                     Image.fromarray(pixels, "RGB").save(
                         dst, "JPEG", quality=int(request.get("quality", 92)),
@@ -5428,6 +5456,7 @@ def _direct_export_render(name: str, params: dict, request: dict,
 
 
 def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
+    batch = job.get("_batch")
     # Check before a renderer spends work or creates any untagged output.
     profile = color_pipeline.required_icc_bytes(job.get("outputSpace", "srgb"))
     export_input_color_space(job)
@@ -5453,9 +5482,14 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
         }
         try:
             metrics = _direct_export_render(name, params, request, dst, job)
+            if metrics.get("fallback_reason"):
+                job.setdefault("warnings", []).append(
+                    T("Export fell back to CPU: {reason}", reason=metrics["fallback_reason"])
+                )
             job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
             with export_phase(job, "icc"):
                 platform_image.embed_jpeg_icc(dst, profile)
+            update_export_phase(batch, name, "metadata")
             with export_phase(job, "metadata"):
                 embed_export_metadata(dst, job)
             return dict(metrics, width=int(metrics["width"]),
@@ -5507,7 +5541,12 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
         try:
             pixels = EXPORT_SHARED_CACHE.get_or_build(cache_key, build_shared, check_cancel)
             check_cancel()
+            if metrics.get("fallback_reason"):
+                job.setdefault("warnings", []).append(
+                    T("Export fell back to CPU: {reason}", reason=metrics["fallback_reason"])
+                )
             job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
+            update_export_phase(batch, name, "encode")
             with export_phase(job, "finish"):
                 width, height = finish_export(pixels, dst, job)
             return dict(metrics, width=width, height=height,
@@ -5545,7 +5584,12 @@ def export_with_resident_engine(name: str, dst: Path, job: dict) -> dict:
             prune_cache(film_png.parent, "*.tif", _EXPORT_FILM_CACHE_MAX_BYTES)
     if cancelled and cancelled():
         raise RenderCancelled("export cancelled before encoding")
+    if metrics.get("fallback_reason"):
+        job.setdefault("warnings", []).append(
+            T("Export fell back to CPU: {reason}", reason=metrics["fallback_reason"])
+        )
     job.setdefault("phase_ms", {}).update(metrics.get("phase_ms", {}))
+    update_export_phase(batch, name, "encode")
     with export_phase(job, "finish"):
         width, height = finish_export(film_png, dst, job)
     return dict(metrics, width=width, height=height, phase_ms=dict(job.get("phase_ms", {})),
@@ -5931,6 +5975,16 @@ class ExportBatch:
                            cancelledCount=0, errors=[], warnings=[], running=bool(items),
                            cancel_requested=False, log=[], destination=str(destination))
 
+    def update_phase(self, name: str, phase: str, backend: str | None = None):
+        with self.lock:
+            self.status["current_name"] = name
+            self.status["phase"] = phase
+            if backend:
+                self.status["phase_backend"] = backend
+            else:
+                self.status.pop("phase_backend", None)
+            self.publish_status()
+
     def publish_status(self):
         with EXPORT_LOCK:
             if EXPORT.get("jobId") == self.status.get("jobId"):
@@ -5968,8 +6022,12 @@ class ExportBatch:
 
     def finish(self, name, outcome):
         with self.lock:
-            self.active -= 1
+            self.active = max(0, self.active - 1)
             self.status["done"] += 1
+            if not self.active:
+                self.status.pop("phase", None)
+                self.status.pop("current_name", None)
+                self.status.pop("phase_backend", None)
             for key in ("completed", "skipped", "cancelledCount"):
                 self.status[key] += int(outcome.get(key, 0))
             if outcome.get("completed") and outcome.get("path"):
@@ -6023,8 +6081,10 @@ def _run_export_process(command, env, batch):
 
 def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
     previous = getattr(RENDER_CONTEXT, "cancelled", None)
+    previous_batch = getattr(RENDER_CONTEXT, "export_batch", None)
     if batch:
         RENDER_CONTEXT.cancelled = batch.cancelled.is_set
+        RENDER_CONTEXT.export_batch = batch
     try:
         with SESSION.inflight("export", library_workflow.source_name(name)):
             import raw_decode_runtime
@@ -6037,6 +6097,7 @@ def export_one(name: str, job: dict, batch: ExportBatch | None = None) -> None:
         outcome = {"error": str(error)}
     finally:
         RENDER_CONTEXT.cancelled = previous
+        RENDER_CONTEXT.export_batch = previous_batch
     if batch:
         batch.finish(name, outcome)
     else:
@@ -6081,8 +6142,10 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         edits.require_saved_mask_assets(job.get("masks"))
         started = time.perf_counter()
         job = dict(job)
+        job["_batch"] = batch
         job["phase_ms"] = {}
         job["warnings"] = list(job.get("warnings") or [])
+        update_export_phase(batch, name, "decode" if is_raw(name) else "read")
         out_dir = Path(job["destination"])
         if "destinationMode" in job and out_dir.resolve() != out_dir:
             raise ValueError(T("The export destination changed after planning; preview it again"))
@@ -6139,12 +6202,14 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
             _, metadata_source, _ = _export_metadata_payload(job)
             if metadata_source is not None:
                 job["metadataSource"] = str(metadata_source)
+            update_export_phase(batch, name, "decode")
             with export_phase(job, "decode_exchange"):
                 render_source = export_render_source(name, job)
             durable_io.atomic_write_text(jfile, json.dumps(job))
             env = dict(os.environ, OMP_NUM_THREADS="4", NUMBA_NUM_THREADS="4")
             try:
                 check()
+                update_export_phase(batch, name, "film", backend="CPU")
                 with export_phase(job, "render_encode_metadata"):
                     r = _run_export_process(
                         [sys.executable, str(APP / "render_cli.py"),
@@ -6191,6 +6256,7 @@ def _export_one(name: str, job: dict, batch: ExportBatch | None = None) -> dict:
         # Cancellation and publication share a short critical section. Once
         # publication starts, this complete output survives later cancellation.
         publish_lock = batch.lock if batch else EXPORT_PATH_LOCK
+        update_export_phase(batch, name, "publish")
         with export_phase(job, "publish"), publish_lock:
             check()
             check_source()
