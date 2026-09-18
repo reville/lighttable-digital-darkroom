@@ -131,3 +131,11 @@ test('available update notice on managed installs triggers the guidance modal', 
   assert.equal(h.modalCalls[0].owner, 'arch');
 });
 
+test('window.lightTableCheckForUpdates programmatically triggers update check', async () => {
+  const h = harness({platform: 'windows'});
+  assert.equal(typeof h.window.lightTableCheckForUpdates, 'function');
+  await h.window.lightTableCheckForUpdates();
+  assert.equal(h.native.at(-1).name, 'checkForUpdates');
+});
+
+

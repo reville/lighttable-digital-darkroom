@@ -361,11 +361,26 @@ if [[ -z "$PREVIOUS_NATIVE_HASH" || "$PREVIOUS_NATIVE_HASH" != "$NATIVE_HASH" ]]
   CLANG_CACHE="${TMPDIR:-/tmp}/lighttable-clang-module-cache"
   mkdir -p "$SWIFT_CACHE" "$CLANG_CACHE"
   export SWIFT_MODULECACHE_PATH="$SWIFT_CACHE"
-  export CLANG_MODULE_CACHE_PATH="$CLANG_CACHE"
+  SPARKLE_SEARCH_DIR=""
+  if [[ -d "$BASE_CONTENTS/Frameworks/Sparkle.framework/Modules" || -d "$BASE_CONTENTS/Frameworks/Sparkle.framework/Headers" ]]; then
+    SPARKLE_SEARCH_DIR="$BASE_CONTENTS/Frameworks"
+  elif [[ -d "$ROOT/.build/update-tools/$SPARKLE_VERSION/extracted/Sparkle.framework/Modules" ]]; then
+    SPARKLE_SEARCH_DIR="$ROOT/.build/update-tools/$SPARKLE_VERSION/extracted"
+  elif [[ -x "$ROOT/scripts/fetch-update-tools.sh" ]]; then
+    EXTRACTED_TOOLS="$("$ROOT/scripts/fetch-update-tools.sh" 2>/dev/null || true)"
+    if [[ -d "$EXTRACTED_TOOLS/Sparkle.framework/Modules" || -d "$EXTRACTED_TOOLS/Sparkle.framework/Headers" ]]; then
+      SPARKLE_SEARCH_DIR="$EXTRACTED_TOOLS"
+    fi
+  fi
+  SPARKLE_FRAMEWORK_ARGS=()
+  if [[ -n "$SPARKLE_SEARCH_DIR" ]]; then
+    SPARKLE_FRAMEWORK_ARGS+=(-F "$SPARKLE_SEARCH_DIR")
+  fi
+  SPARKLE_FRAMEWORK_ARGS+=(-F "$BASE_CONTENTS/Frameworks" -framework Sparkle)
   swiftc -O -whole-module-optimization -swift-version 5 -module-name LightTable \
     -target arm64-apple-macos13.0 \
     -module-cache-path "$SWIFT_CACHE" \
-    -F "$BASE_CONTENTS/Frameworks" -framework Sparkle \
+    "${SPARKLE_FRAMEWORK_ARGS[@]}" \
     -Xlinker -rpath -Xlinker @executable_path/../Frameworks \
     -o "$STAGE_CONTENTS/MacOS/LightTable" \
     "$ROOT/app/main.swift" "$ROOT/app/NativePreview.swift" \

@@ -168,6 +168,18 @@ byId('helpClose').onclick = close;
 byId('helpClear').onclick = () => { search.value = ''; renderResults(); search.focus(); };
 byId('helpBack').onclick = () => { dialog.classList.remove('help-reading'); results.querySelector('button')?.focus(); };
 byId('helpShortcuts').onclick = () => { close(); window.LightTableSettings?.open('shortcuts'); };
+const helpCheckUpdates = byId('helpCheckUpdates');
+if (helpCheckUpdates) {
+  helpCheckUpdates.onclick = () => {
+    close();
+    if (window.__LIGHTTABLE_PLATFORM__ === 'macos') {
+      window.lightTableCheckForUpdates?.();
+    } else {
+      window.LightTableSettings?.open('general');
+      window.lightTableCheckForUpdates?.();
+    }
+  };
+}
 search.addEventListener('input', () => { selectedId = null; renderResults(); dialog.classList.remove('help-reading'); });
 category.addEventListener('change', () => { selectedId = null; renderResults(); dialog.classList.remove('help-reading'); });
 search.addEventListener('keydown', (event) => {
