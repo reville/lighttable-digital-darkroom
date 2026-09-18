@@ -4,187 +4,187 @@
       "artifacts": [
         {
           "bytes": 411,
-          "name": "LightTable-0.7.8-linux-x86_64-SHA256SUMS",
-          "sha256": "1cb5c0f06f5a5759f366c0f07c31265cce31239d852d9b59d3658b333cfeebe7",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-linux-x86_64-SHA256SUMS"
+          "name": "LightTable-0.7.9-linux-x86_64-SHA256SUMS",
+          "sha256": "0022eb56f01cf0c5a5d841fd09f7d459db2afca6e6e09059a3fb965e9141c652",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-linux-x86_64-SHA256SUMS"
         },
         {
-          "bytes": 1624,
-          "name": "LightTable-0.7.8-linux-x86_64-installers.tar.gz",
-          "sha256": "9863f123dab2e92a16b0fe0d795fbb91b8ee5dca3512b31ab056d950b1527665",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-linux-x86_64-installers.tar.gz"
+          "bytes": 1627,
+          "name": "LightTable-0.7.9-linux-x86_64-installers.tar.gz",
+          "sha256": "be46f43a9d60a8f053da5606787b791b51b27fa55f4f8edee9f778ab1da5f1b1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-linux-x86_64-installers.tar.gz"
         },
         {
-          "bytes": 458371240,
-          "name": "LightTable-0.7.8-linux-x86_64.tar.gz",
-          "sha256": "6e7899d386440e317c6fd3b5c2aa52ab478c062a276da794e7dd660729a90924",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-linux-x86_64.tar.gz"
+          "bytes": 458457574,
+          "name": "LightTable-0.7.9-linux-x86_64.tar.gz",
+          "sha256": "b7a859fde7dfcd96cc6ff4aa890d824705c83945e4d98cda73e61f1357b97660",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-linux-x86_64.tar.gz"
         },
         {
           "bytes": 103,
-          "name": "LightTable-0.7.8-linux-x86_64.tar.gz.sha256",
-          "sha256": "e04428a264fd2ff2bc199dc8200185f5425b58cd12e7a27472b0d70aff3da8a3",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-linux-x86_64.tar.gz.sha256"
+          "name": "LightTable-0.7.9-linux-x86_64.tar.gz.sha256",
+          "sha256": "c6e7c09e9d388dbd0783fcb074e6d9ca80e070210311b97a088b0cf0de073b97",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-linux-x86_64.tar.gz.sha256"
         },
         {
           "bytes": 611,
           "name": "linux-x86_64.json",
-          "sha256": "5a3fadc33cb1eaccc1d73987e7b99067adfd548a37db1984e91f8322123ac423",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/linux-x86_64.json"
+          "sha256": "19c2f5a76ce2e8b67222f9d3c085a4043b8a499e980175e35ab0e475ac6dd4d1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/linux-x86_64.json"
         }
       ],
-      "build_run_id": "34974846024",
-      "build_workflow_revision": "a6482d0ba3c43921bfa09cb8290f44d600daca37",
+      "build_run_id": "35283559261",
+      "build_workflow_revision": "72154a20b60e6be4f0175f328a3bed6af1390e2a",
       "channel": "stable",
       "gates": [],
       "minimum_os": "Ubuntu 24.04+; current Arch Linux/Omarchy",
-      "published_at": "2026-09-15T14:32:15Z",
+      "published_at": "2026-09-18T15:04:33Z",
       "signing": "ed25519",
-      "source_revision": "a6482d0ba3c43921bfa09cb8290f44d600daca37",
+      "source_revision": "72154a20b60e6be4f0175f328a3bed6af1390e2a",
       "state": "published",
-      "tag": "v0.7.8",
+      "tag": "v0.7.9",
       "update_owner": "app",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34974846024"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/35283559261"
         ],
         "status": "passed"
       },
-      "version": "0.7.8"
+      "version": "0.7.9"
     },
     "macos-arm64": {
-      "version": "0.7.6",
-      "tag": "v0.7.6",
-      "source_revision": "b89a5c9c594111a65286ab761857f1fb372fe829",
-      "build_workflow_revision": "d1ef234ec2a67d5bdcdcb94cda5a0bbf07738c13",
+      "artifacts": [
+        {
+          "bytes": 367386775,
+          "name": "LightTable-0.7.6-macos-arm64.zip",
+          "sha256": "58de0f87bab3371a353a9f2bf46e5ffaf74af05955208726b898b437b63b69c7",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip"
+        },
+        {
+          "bytes": 99,
+          "name": "LightTable-0.7.6-macos-arm64.zip.sha256",
+          "sha256": "79b772b224193e6cb38d725117c33e3b622e94be4a1991a57035e19e17162b07",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip.sha256"
+        },
+        {
+          "bytes": 381009941,
+          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg",
+          "sha256": "f78353b0799a738bf0da1cabaa62f6d9090fa32c3f3a04459e205daeacf1a496",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg"
+        },
+        {
+          "bytes": 109,
+          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg.sha256",
+          "sha256": "c6d23f81361857579e88e5751287028364eb4a6012b303d4c3730fd74bda60c1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg.sha256"
+        },
+        {
+          "bytes": 1586,
+          "name": "appcast-macos-arm64.xml",
+          "sha256": "30fb778672c57b2e3b774da308dfb502daa804bb75276cab77879b3300f5c673",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/appcast-macos-arm64.xml"
+        },
+        {
+          "bytes": 4135,
+          "name": "LightTable-0.7.6-macos-arm64-macos-release-proof.json",
+          "sha256": "f89cf0acced2689f6251c9b567592ae0e6396858cadd53da289bdb26d6836f41",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-macos-release-proof.json"
+        }
+      ],
       "build_run_id": "34773993435",
+      "build_workflow_revision": "d1ef234ec2a67d5bdcdcb94cda5a0bbf07738c13",
       "channel": "stable",
       "gates": [],
       "minimum_os": "macOS 14 Sonoma or later",
       "published_at": "2026-09-15T16:31:55.577983Z",
       "signing": "developer-id-notarized",
+      "source_revision": "b89a5c9c594111a65286ab761857f1fb372fe829",
       "state": "published",
+      "tag": "v0.7.6",
       "update_owner": "app",
       "validation": {
-        "status": "passed",
         "receipts": [
           "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-macos-release-proof.json"
-        ]
+        ],
+        "status": "passed"
       },
-      "artifacts": [
-        {
-          "name": "LightTable-0.7.6-macos-arm64.zip",
-          "bytes": 367386775,
-          "sha256": "58de0f87bab3371a353a9f2bf46e5ffaf74af05955208726b898b437b63b69c7",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip"
-        },
-        {
-          "name": "LightTable-0.7.6-macos-arm64.zip.sha256",
-          "bytes": 99,
-          "sha256": "79b772b224193e6cb38d725117c33e3b622e94be4a1991a57035e19e17162b07",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64.zip.sha256"
-        },
-        {
-          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg",
-          "bytes": 381009941,
-          "sha256": "f78353b0799a738bf0da1cabaa62f6d9090fa32c3f3a04459e205daeacf1a496",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg"
-        },
-        {
-          "name": "LightTable-0.7.6-macos-arm64-notarized.dmg.sha256",
-          "bytes": 109,
-          "sha256": "c6d23f81361857579e88e5751287028364eb4a6012b303d4c3730fd74bda60c1",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-notarized.dmg.sha256"
-        },
-        {
-          "name": "appcast-macos-arm64.xml",
-          "bytes": 1586,
-          "sha256": "30fb778672c57b2e3b774da308dfb502daa804bb75276cab77879b3300f5c673",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/appcast-macos-arm64.xml"
-        },
-        {
-          "name": "LightTable-0.7.6-macos-arm64-macos-release-proof.json",
-          "bytes": 4135,
-          "sha256": "f89cf0acced2689f6251c9b567592ae0e6396858cadd53da289bdb26d6836f41",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.6/LightTable-0.7.6-macos-arm64-macos-release-proof.json"
-        }
-      ]
+      "version": "0.7.6"
     },
     "windows-x64": {
       "artifacts": [
         {
           "bytes": 778,
-          "name": "LightTable-0.7.8-windows-x64-SHA256SUMS",
-          "sha256": "70311ebe8ca1ba9b4653f7274bd9e6763fe99a127c8989565b874dd43ad4f03a",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-SHA256SUMS"
+          "name": "LightTable-0.7.9-windows-x64-SHA256SUMS",
+          "sha256": "4e9bdc3ca4f270a9fb7d159fcf29eaa44ce56671ad917c52b5a3187d2aa47c76",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-SHA256SUMS"
         },
         {
-          "bytes": 2281,
-          "name": "LightTable-0.7.8-windows-x64-installers.tar.gz",
-          "sha256": "654511c5cec8c85ae6791019d173b28400c1cb35e4dd0c51ee9d753cf3c11e47",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-installers.tar.gz"
+          "bytes": 2275,
+          "name": "LightTable-0.7.9-windows-x64-installers.tar.gz",
+          "sha256": "cd68bcfefb84f94cfda8773640a63b984631cfdc61e2817b43af8b2b1e5f7f0d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-installers.tar.gz"
         },
         {
-          "bytes": 524363904,
-          "name": "LightTable-0.7.8-windows-x64-setup.exe",
-          "sha256": "b09539c0111d196a8dfb3714151b04fd8e579f5508d8e2a77c758f625baae241",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-setup.exe"
+          "bytes": 524413552,
+          "name": "LightTable-0.7.9-windows-x64-setup.exe",
+          "sha256": "cc644b34dd6a3992fa71887923e8b8a733f6232165980676b4318bb4669f6b6d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-setup.exe"
         },
         {
           "bytes": 1805,
-          "name": "LightTable-0.7.8-windows-x64-store-candidate-receipt.json",
-          "sha256": "c984797ec78d3b1b8675ed3388479e6201c8b4519de9a2be1e13d02d37a10e94",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-store-candidate-receipt.json"
+          "name": "LightTable-0.7.9-windows-x64-store-candidate-receipt.json",
+          "sha256": "990d5dcfa8a2512bb1000e996b16d18e19a54cca68fe12d0dcbf5ad97142b0d1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-store-candidate-receipt.json"
         },
         {
           "bytes": 2887,
-          "name": "LightTable-0.7.8-windows-x64-windows-signatures.json",
-          "sha256": "282624bd6a71a0bad7a30a134c0399c56bd1368f37f1be0b445d11b17d0167f9",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-windows-signatures.json"
+          "name": "LightTable-0.7.9-windows-x64-windows-signatures.json",
+          "sha256": "4f51bb374ba16530fabc710c7f320fa1caa049579b58f9927c4017819de41cd3",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-windows-signatures.json"
         },
         {
           "bytes": 135532,
-          "name": "LightTable-0.7.8-windows-x64-windows-store-pe-signatures.json",
-          "sha256": "107195214fa3150f5010adcfe53ab0eff328efc7b76839f854f56fe362845065",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64-windows-store-pe-signatures.json"
+          "name": "LightTable-0.7.9-windows-x64-windows-store-pe-signatures.json",
+          "sha256": "22952220f96c1431b031f860568436cd9c2ed73638126692b86441cf864f65d1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64-windows-store-pe-signatures.json"
         },
         {
-          "bytes": 394303097,
-          "name": "LightTable-0.7.8-windows-x64.zip",
-          "sha256": "ea4696f96bc202fe291fc571a7b6076961b5e72d5b0f296b7c0346933be1223e",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/LightTable-0.7.8-windows-x64.zip"
+          "bytes": 394385607,
+          "name": "LightTable-0.7.9-windows-x64.zip",
+          "sha256": "0ce97c2c6c91bb9c45c13867b6c0ce598c5b30501156cdfe024822d94775eed1",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/LightTable-0.7.9-windows-x64.zip"
         },
         {
           "bytes": 855,
           "name": "appcast-windows-x64.xml",
-          "sha256": "b7a4e7d3390e5733ffcc4c4aacfd20bdf2518ab1414f3b9eee725216c49c0536",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.8/appcast-windows-x64.xml"
+          "sha256": "ba61af99c63a001b93474cb1240ace4d2d307e46b92cb1a0384289d13bab7243",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.9/appcast-windows-x64.xml"
         }
       ],
-      "build_run_id": "34974846024",
-      "build_workflow_revision": "a6482d0ba3c43921bfa09cb8290f44d600daca37",
+      "build_run_id": "35283559261",
+      "build_workflow_revision": "72154a20b60e6be4f0175f328a3bed6af1390e2a",
       "channel": "stable",
       "gates": [],
       "minimum_os": "Windows 10/11 x64",
-      "native_run_id": "34980692480",
-      "published_at": "2026-09-15T14:32:15Z",
+      "native_run_id": "35351530996",
+      "published_at": "2026-09-18T15:04:33Z",
       "signing": "authenticode",
-      "source_revision": "a6482d0ba3c43921bfa09cb8290f44d600daca37",
+      "source_revision": "72154a20b60e6be4f0175f328a3bed6af1390e2a",
       "state": "published",
-      "tag": "v0.7.8",
+      "tag": "v0.7.9",
       "update_owner": "app",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34974846024",
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/34980692480"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/35283559261",
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/35351530996"
         ],
         "status": "passed"
       },
-      "version": "0.7.8"
+      "version": "0.7.9"
     }
   },
   "repository": "reville/lighttable-digital-darkroom",
   "schema_version": 1,
-  "source_revision": "a6482d0ba3c43921bfa09cb8290f44d600daca37",
-  "version": "0.7.8"
+  "source_revision": "72154a20b60e6be4f0175f328a3bed6af1390e2a",
+  "version": "0.7.9"
 }
