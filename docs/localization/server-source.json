@@ -49,6 +49,7 @@
     "Enhance output is model-generated detail, not measured detail. The denoise model may be bundled; any model used is identified in this manifest. Super-resolution remains unavailable unless installed separately.",
     "Enter one or more keywords",
     "Existing LightTable edits could not be merged safely",
+    "Export fell back to CPU: {reason}",
     "Export renderer exceeded 30 minutes",
     "External XMP changes conflict with pending edits ({properties}). Read the sidecar metadata before syncing again.",
     "Face matching is not ready",
@@ -351,7 +352,7 @@
     "{name}: multiple XMP sidecars; keep one naming convention before importing",
     "{value} requires the Rust film engine"
   ],
-  "sourceDigest": "37d0842b6dea15b2aa1e610c8443ff5829f84a65538fca49e458fcef8b79cf52",
+  "sourceDigest": "17308953d2de9616cad23aade4f425ab29308433eccb2eadbd9f14c633aefb5e",
   "sources": {
     "server.py": [
       "A RAW original cannot be edited in place; send an adjusted TIFF",
@@ -381,6 +382,7 @@
       "Decoder adjusts non-square source pixels",
       "Denoise cancelled",
       "Detection produced an invalid mask; existing masks were preserved",
+      "Export fell back to CPU: {reason}",
       "Export renderer exceeded 30 minutes",
       "Face matching is not ready",
       "Face thumbnail unavailable",

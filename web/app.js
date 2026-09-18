@@ -10030,11 +10030,31 @@ async function runExport(customOpts = {}) {
   if (r.error) return toast(r.error);
   if (!r.queued) return toast(tr("Nothing matches that selection"));
   const destinationLabel = (r.destination || '').split('/').filter(Boolean).at(-1) || tr('destination');
-  toast(trn('Exporting {count} photo to {destination}…', 'Exporting {count} photos to {destination}…',
-    r.queued, {destination: destinationLabel}));
+  const isFilmSim = (names && names.length)
+    ? names.some((name) => {
+        if (cur() && cur().name === name) return S.params?.profile_enabled !== false;
+        const found = S.images?.find((im) => im.name === name);
+        return !found?.params || found.params.profile_enabled !== false;
+      })
+    : S.params?.profile_enabled !== false;
+  if (isFilmSim) {
+    toast(trn('Exporting {count} photo with film simulation in background… You can keep working.',
+              'Exporting {count} photos with film simulation in background… You can keep working.',
+              r.queued), null, 4000);
+  } else {
+    toast(trn('Exporting {count} photo to {destination} in background… You can keep working.',
+              'Exporting {count} photos to {destination} in background… You can keep working.',
+              r.queued, {destination: destinationLabel}), null, 3000);
+  }
   clearInterval(exportTimer);
   const ident = r.jobId;
   activeExportJobId = ident;
+  if ($('exportStatusWrap')) $('exportStatusWrap').hidden = false;
+  if ($('exportProgressBar')) {
+    $('exportProgressBar').className = 'export-progress-bar';
+    $('exportProgressBar').style.width = '3%';
+  }
+  if ($('exportProgressTrack')) $('exportProgressTrack').setAttribute('aria-valuenow', '3');
   $('exportCancel').hidden = false;
   $('exportCancel').disabled = false;
   $('exportDetails').hidden = true;
@@ -10068,6 +10088,23 @@ async function runExport(customOpts = {}) {
         ? tr("Stopping export…")
         : (phaseText ? `${countText} · ${phaseText}` : countText);
       $('exportDetails').hidden = !(st.errors?.length || st.warnings?.length);
+
+      const phaseWeights = {
+        decode: 0.12,
+        read: 0.12,
+        film: 0.65,
+        encode: 0.85,
+        metadata: 0.93,
+        finish: 0.98,
+        publish: 0.98,
+      };
+      const currentPhaseWeight = phaseWeights[st.phase] ?? 0.05;
+      const totalCount = Math.max(1, record.total || 1);
+      const overallFrac = Math.min(0.99, Math.max(0.03, (record.progress + currentPhaseWeight) / totalCount));
+      const pct = Math.round(overallFrac * 100);
+      if ($('exportProgressBar')) $('exportProgressBar').style.width = `${pct}%`;
+      if ($('exportProgressTrack')) $('exportProgressTrack').setAttribute('aria-valuenow', String(pct));
+
       if (['done', 'failed', 'cancelled'].includes(record.state)) {
         clearInterval(exportTimer);
         activeExportJobId = null;
@@ -10082,6 +10119,17 @@ async function runExport(customOpts = {}) {
           warnings ? trn('{count} warning', '{count} warnings', warnings) : '',
           errors ? trn('{count} error', '{count} errors', errors) : '',
         ].filter(Boolean).join(' · ');
+        if (record.state === 'done') {
+          if ($('exportProgressBar')) {
+            $('exportProgressBar').style.width = '100%';
+            $('exportProgressBar').className = warnings ? 'export-progress-bar warn' : 'export-progress-bar done';
+          }
+          if ($('exportProgressTrack')) $('exportProgressTrack').setAttribute('aria-valuenow', '100');
+        } else if (record.state === 'cancelled') {
+          if ($('exportProgressBar')) $('exportProgressBar').className = 'export-progress-bar cancelled';
+        } else {
+          if ($('exportProgressBar')) $('exportProgressBar').className = 'export-progress-bar failed';
+        }
         toast($('estat').textContent, st.completed > 0 && st.revealPath ? {
           label: tr('Show in Finder'), link: true,
           run: () => postNative('revealFolder', { path: st.revealPath }),
@@ -10291,6 +10339,24 @@ function exportScopeCounts() {
   };
 }
 
+function isFilmSimActiveForExport() {
+  const which = $('modalExWhich')?.value || 'selected';
+  if (which === 'selected') {
+    const targets = transferTargets();
+    if (!targets.length) return S.params?.profile_enabled !== false;
+    return targets.some((im) => {
+      if (cur() && im.name === cur().name) return S.params?.profile_enabled !== false;
+      return !im.params || im.params.profile_enabled !== false;
+    });
+  }
+  return S.params?.profile_enabled !== false;
+}
+
+function updateExportFilmNotice() {
+  const notice = $('exportFilmSimNotice');
+  if (notice) notice.hidden = !isFilmSimActiveForExport();
+}
+
 function updateExportModalScope() {
   const which = $('modalExWhich').value;
   const targets = transferTargets();
@@ -10317,6 +10383,7 @@ function updateExportModalScope() {
   $('exportModalRun').textContent = titleText;
   $('exportTargetLabel').textContent = label;
   $('exportModalRun').disabled = !count;
+  updateExportFilmNotice();
   scheduleExportPreview();
 }
 

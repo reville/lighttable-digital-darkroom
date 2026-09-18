@@ -60,7 +60,16 @@
     <button class="quiet icon-btn" id="redoBtn" title="Redo (Ctrl/⌘Shift+Z)" aria-label="Redo" disabled hidden data-i18n-attrs="{&quot;title&quot;:&quot;Redo (Ctrl/⌘Shift+Z)&quot;,&quot;aria-label&quot;:&quot;Redo&quot;}">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5 4 4-4 4M15.5 9H8a4 4 0 0 0-4 4"/></svg>
     </button>
-    <span id="estat" role="status" aria-live="polite"></span><button class="quiet compact" id="exportCancel" hidden data-i18n-text="{&quot;0&quot;:&quot;Cancel export&quot;}">Cancel export</button><button class="quiet compact" id="exportDetails" hidden data-i18n-text="{&quot;0&quot;:&quot;Export details&quot;}">Export details</button>
+    <div class="export-status-wrap" id="exportStatusWrap" hidden title="Export running in background — you can keep working" data-i18n-attrs="{&quot;title&quot;:&quot;Export running in background — you can keep working&quot;}">
+      <div class="export-status-row">
+        <span id="estat" role="status" aria-live="polite"></span>
+        <button class="quiet compact" id="exportCancel" hidden data-i18n-text="{&quot;0&quot;:&quot;Cancel export&quot;}">Cancel export</button>
+        <button class="quiet compact" id="exportDetails" hidden data-i18n-text="{&quot;0&quot;:&quot;Export details&quot;}">Export details</button>
+      </div>
+      <div class="export-progress-track" id="exportProgressTrack" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Export progress" data-i18n-attrs="{&quot;aria-label&quot;:&quot;Export progress&quot;}">
+        <div class="export-progress-bar" id="exportProgressBar"></div>
+      </div>
+    </div>
     <span id="editSaveStatus" role="status" aria-live="polite"></span><button class="quiet compact" id="retryEditSave" hidden data-i18n-text="{&quot;0&quot;:&quot;Retry save&quot;}">Retry save</button>
     <button class="quiet icon-btn" id="helpBtn" title="Help (F1 or ?)" aria-label="Help" aria-haspopup="dialog" aria-controls="helpDialog" aria-expanded="false" data-i18n-attrs="{&quot;title&quot;:&quot;Help (F1 or ?)&quot;,&quot;aria-label&quot;:&quot;Help&quot;}">
       <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M8 7a2 2 0 0 1 4 .5c0 1.5-2 1.5-2 3M10 13.5v.2"/></svg>
@@ -1471,6 +1480,16 @@
     </div>
 
     <div class="export-settings-grid" id="exportSettingsGrid">
+      <div class="export-film-sim-notice full-width" id="exportFilmSimNotice" hidden>
+        <svg class="export-notice-icon" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10 9v4.5M10 6.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="export-notice-body">
+          <strong data-i18n-text="{&quot;0&quot;:&quot;Film simulation active&quot;}">Film simulation active</strong>
+          <span data-i18n-text="{&quot;0&quot;:&quot;Simulating physical grain, halation, and spectral response at full resolution takes extra time. Exports run in the background so you can keep working.&quot;}">Simulating physical grain, halation, and spectral response at full resolution takes extra time. Exports run in the background so you can keep working.</span>
+        </div>
+      </div>
       <label class="field">
         <span data-i18n-text="{&quot;0&quot;:&quot;File type&quot;}">File type</span>
         <select id="modalExFormat">
