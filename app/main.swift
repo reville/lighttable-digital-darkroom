@@ -585,9 +585,12 @@ final class ServerController {
             .compactMap { $0 }
             .filter { !$0.isEmpty }
             .joined(separator: ":")
+        // Read the compiled modules the bundle ships and never write new ones
+        // into the signed bundle. A pycache prefix would make Python ignore the
+        // shipped bytecode, and with writes off it recompiled every module on
+        // every launch; a translocated app would also write a fresh copy each time.
         env["PYTHONDONTWRITEBYTECODE"] = "1"
-        env["PYTHONPYCACHEPREFIX"] = cacheDirectory
-            .appendingPathComponent("python-bytecode").path
+        env["PYTHONPYCACHEPREFIX"] = nil
         if env["NUMBA_CACHE_DIR"] == nil {
             env["NUMBA_CACHE_DIR"] = cacheDirectory
                 .appendingPathComponent("compiled-runtime").path

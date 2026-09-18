@@ -339,6 +339,40 @@ def normal_close(process, server_pid, deadline):
     return receipt
 
 
+def crash_ledger_entries(root):
+    """Parse recovery.py's crash ledger for this isolated catalog, if any."""
+    path = root / "catalog/crashes.jsonl"
+    if not path.is_file():
+        return []
+    entries = []
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            entry = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(entry, dict):
+            entries.append(entry)
+    return entries
+
+
+def require_no_crash_ledger_entry(root):
+    """Fail if SessionLedger.begin() recorded an unclean previous session.
+
+    A render server that segfaults can still leave this script's close+reopen
+    journey looking clean: WM_DELETE_WINDOW's shutdown timeout lets the native
+    shell exit 0 regardless of the child's health. crashes.jsonl is written
+    by the *next* session's begin(), so this only tells on the first one --
+    check it once the reopened session has connected.
+    """
+    crashes = crash_ledger_entries(root)
+    require(not crashes, "the render server recorded an unclean previous session"
+            + (f" (exit status {crashes[-1].get('exitStatus')})"
+               if crashes and crashes[-1].get("exitStatus") is not None else ""))
+
+
 def startup_snapshot(root):
     records = []
     for path in sorted((root / "instances").glob("[0-9]*.json"))[:16]:
@@ -416,6 +450,7 @@ def run(bundle, expected, timeout, report_dir):
                 wait_for(desktop, deadline, "persistent edits after normal reopen", lambda: edits_saved(api.request(state_route)))
                 report["persistence"] = {"exposure": 0.5, "rating": 4, "film_enabled": False,
                     "old_server_pid": initial["pid"], "new_server_pid": reopened["pid"]}
+                require_no_crash_ledger_entry(root)
                 report["final_close"] = normal_close(desktop, reopened["pid"], deadline)
                 require(hashlib.sha256(source.read_bytes()).hexdigest() == original, "The source photo changed")
                 report.update(source_sha256=original, http=200)

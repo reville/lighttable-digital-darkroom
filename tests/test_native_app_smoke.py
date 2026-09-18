@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -150,6 +152,81 @@ class NativeAppSmokeTests(unittest.TestCase):
         self.assertIn("runNativeRawJourney(width, layer)", browser)
         self.assertIn("func snapshot() -> NSImage?", native)
         self.assertIn("captureBenchmarkScreenshot", shell)
+
+    def test_clean_profile_has_no_unexpected_exit_evidence(self):
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            (temporary / "catalog").mkdir()
+            (temporary / "server.log").write_text(
+                "=== LightTable launch 2026-09-17T00:00:00Z port 8321 ===\nready\n"
+            )
+            SMOKE.validate_no_unexpected_server_exit(temporary)
+
+    def test_missing_profile_files_are_not_evidence_of_a_crash(self):
+        with tempfile.TemporaryDirectory() as name:
+            SMOKE.validate_no_unexpected_server_exit(Path(name))
+
+    def test_crash_ledger_entry_fails_the_run_with_its_exit_status(self):
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            catalog = temporary / "catalog"
+            catalog.mkdir()
+            (catalog / "crashes.jsonl").write_text(
+                json.dumps({"startedAt": 1.0, "pid": 111, "exitStatus": -11,
+                            "detectedAt": 2.0}) + "\n"
+            )
+            with self.assertRaisesRegex(RuntimeError, "crash ledger.*exit status -11"):
+                SMOKE.validate_no_unexpected_server_exit(temporary)
+
+    def test_engine_incident_fails_the_run_but_an_app_incident_does_not(self):
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            diagnostics = temporary / "catalog" / "Diagnostics"
+            diagnostics.mkdir(parents=True)
+            (diagnostics / "incident-app-1.json").write_text(
+                json.dumps({"id": "app-1", "kind": "app"})
+            )
+            SMOKE.validate_no_unexpected_server_exit(temporary)
+            (diagnostics / "incident-engine-2.json").write_text(
+                json.dumps({"id": "engine-2", "kind": "engine", "exitStatus": 139})
+            )
+            with self.assertRaisesRegex(RuntimeError, "engine incident engine-2.*exit status 139"):
+                SMOKE.validate_no_unexpected_server_exit(temporary)
+
+    def test_more_than_one_launch_header_is_treated_as_a_restart(self):
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            (temporary / "catalog").mkdir()
+            # A restart rotates the live log; the earlier launch survives in
+            # the ".1" generation (app/main.swift's ServerController.rotateLog).
+            (temporary / "server.log").write_text(
+                "=== LightTable launch 2026-09-17T00:00:05Z port 8321 after exit -11 ===\nready\n"
+            )
+            (temporary / "server.log.1").write_text(
+                "=== LightTable launch 2026-09-17T00:00:00Z port 8321 ===\ncrashed\n"
+            )
+            with self.assertRaisesRegex(RuntimeError, "2 launches instead of 1"):
+                SMOKE.validate_no_unexpected_server_exit(temporary)
+
+    def test_all_evidence_is_named_when_several_signals_fire_together(self):
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            catalog = temporary / "catalog"
+            (catalog / "Diagnostics").mkdir(parents=True)
+            (catalog / "crashes.jsonl").write_text(
+                json.dumps({"startedAt": 1.0, "exitStatus": None, "detectedAt": 2.0}) + "\n"
+            )
+            (catalog / "Diagnostics" / "incident-engine-1.json").write_text(
+                json.dumps({"id": "engine-1", "kind": "engine"})
+            )
+            (temporary / "server.log").write_text("=== LightTable launch a ===\n")
+            (temporary / "server.log.1").write_text("=== LightTable launch b ===\n")
+            with self.assertRaises(RuntimeError) as raised:
+                SMOKE.validate_no_unexpected_server_exit(temporary)
+            message = str(raised.exception)
+            self.assertIn("crash ledger recorded an unclean session", message)
+            self.assertIn("engine incident engine-1", message)
+            self.assertIn("2 launches instead of 1", message)
 
 
 if __name__ == "__main__":
