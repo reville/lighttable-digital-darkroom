@@ -3445,6 +3445,7 @@
           "title": "Báo cáo thoát ứng dụng bất ngờ trên Mac",
           "paragraphs": [
             "Nếu ứng dụng Mac đóng mà không thoát sạch, báo cáo chẩn đoán sẽ mở vào lần tiếp theo bạn khởi chạy. Nếu công cụ kết xuất dừng đột ngột, báo cáo có thể mở trong khi công cụ đang phục hồi. Báo cáo xuất hiện một lần cho mỗi sự cố đã ghi nhận; Bỏ qua cho phép bạn tiếp tục. Đóng ứng dụng bình thường hoặc khởi động lại dịch vụ kết xuất của nó sẽ không tạo báo cáo.",
+            "Nếu nội dung của cửa sổ bị crash, chẳng hạn do áp lực bộ nhớ hoặc sau một lỗi đồ họa, LightTable sẽ tự động tải lại chúng. Nếu điều đó xảy ra vài lần trong vòng một phút, ứng dụng sẽ dừng tải lại và thay vào đó hiển thị một cảnh báo. Chọn Trợ giúp → Chẩn đoán → Tải lại giao diện để thử lại, hoặc Trợ giúp → Báo cáo sự cố… để gửi báo cáo.",
             "Trợ giúp → Báo cáo sự cố… sẽ mở báo cáo mới nhất, hoặc phần chẩn đoán hiện tại nếu chưa ghi nhận thoát bất ngờ nào. Báo cáo bao gồm bản dựng ứng dụng, macOS và phần cứng, thao tác được ghi nhận gần nhất khi có, các log gần đây đã lọc, và các vết lỗi có sẵn. Một báo cáo sự cố macOS khớp có thể bổ sung thông tin stack và binary. Một lần thoát bất ngờ không phải lúc nào cũng để lại vết lỗi hoặc xác định nguyên nhân của nó.",
             "Báo cáo chẩn đoán đầy đủ sẽ ở lại trên máy Mac của bạn cho đến khi bạn chọn chia sẻ nó. Các đường dẫn, tên tệp ảnh, giá trị log trong dấu ngoặc kép, và các trường thông tin đăng nhập thông dụng sẽ bị lọc; hãy kiểm tra kỹ văn bản trước khi chia sẻ. Ảnh và danh mục không được đính kèm. Mười báo cáo gần nhất được giữ cục bộ."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

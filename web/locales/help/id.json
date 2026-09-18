@@ -3445,6 +3445,7 @@
           "title": "Laporkan keluar tak terduga di Mac",
           "paragraphs": [
             "Jika aplikasi Mac ditutup tanpa keluar yang bersih, laporan diagnostik akan terbuka saat Anda meluncurkannya berikutnya. Jika mesin rendering berhenti tak terduga, laporan dapat terbuka saat mesin pulih. Laporan muncul sekali untuk setiap insiden yang tercatat; Tutup memungkinkan Anda melanjutkan. Menutup aplikasi secara normal atau memulai ulang layanan rendering-nya tidak akan membuat laporan.",
+            "Jika konten jendela crash, misalnya karena tekanan memori atau setelah gangguan grafis, LightTable memuat ulangnya secara otomatis. Jika itu terjadi beberapa kali dalam satu menit, LightTable berhenti memuat ulang dan menampilkan peringatan sebagai gantinya. Pilih Bantuan → Diagnostik → Muat Ulang Antarmuka untuk mencoba lagi, atau Bantuan → Laporkan Masalah… untuk mengirim laporan.",
             "Bantuan → Laporkan Masalah… membuka laporan terbaru, atau diagnostik saat ini jika tidak ada keluar tak terduga yang tercatat. Laporan mencakup build aplikasi, macOS dan perangkat keras, operasi terakhir yang tercatat jika tersedia, log terbaru yang difilter, dan jejak kesalahan yang tersedia. Laporan crash macOS yang cocok dapat menambahkan informasi stack dan biner. Keluar tak terduga tidak selalu meninggalkan jejak kesalahan atau mengidentifikasi penyebabnya.",
             "Laporan diagnostik lengkap tetap ada di Mac Anda sampai Anda memilih untuk membagikannya. Jalur, nama file foto, nilai log dalam tanda kutip, dan kolom kredensial umum difilter; periksa teks sebelum membagikannya. Foto dan katalog tidak dilampirkan. Sepuluh laporan terbaru disimpan secara lokal."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

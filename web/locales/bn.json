@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "প্রাথমিক সিস্টেম ভাষা যদি ইংরেজি হয়, ইংরেজি স্বয়ংক্রিয়ভাবে সংরক্ষিত হয়। পরবর্তী চালুতে আপনার সংরক্ষিত পছন্দ ব্যবহার হবে। ব্রাউজারে, ব্রাউজারের ভাষা পছন্দগুলো প্রাথমিক পরামর্শ দেয়।",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "সাইডবার লুকানো থাকলে, উপরের বাম দিকে Show or hide library ব্যবহার করুন।",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "স্ট্যাটাসে Edits not saved দেখালে, Retry save ব্যবহার করুন। save ব্যর্থ হলে window খোলা রাখুন।",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "উইন্ডোর বিষয়বস্তু ক্র্যাশ করলে, উদাহরণস্বরূপ মেমরির চাপের সময় বা কোনো গ্রাফিক্স ত্রুটির পরে, LightTable সেগুলো স্বয়ংক্রিয়ভাবে পুনরায় লোড করে। যদি তা এক মিনিটের মধ্যে কয়েকবার ঘটে, তবে এটি পুনরায় লোড করা বন্ধ করে এবং তার বদলে একটি সতর্কবার্তা দেখায়। আবার চেষ্টা করতে Help → Diagnostics → Reload Interface বেছে নিন, অথবা একটি রিপোর্ট পাঠাতে Help → Report a Problem… বেছে নিন।",
     "If you restore, wait for saving to complete before closing the app.": "আপনি restore করলে, অ্যাপ বন্ধ করার আগে saving শেষ হওয়া পর্যন্ত অপেক্ষা করুন।",
     "ImageIO did not create an output file": "ImageIO কোনো আউটপুট ফাইল তৈরি করেনি",
     "Import": "আমদানি করুন",
@@ -1696,6 +1697,7 @@
     "Invert": "উল্টান",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "এটি পরপর {count} বার থেমেছে (শেষ অবস্থা {status})। যদি প্রতিবার একই ফটো খোলা থাকে, পরের চালু হওয়ার সময় সেটি স্বয়ংক্রিয়ভাবে আলাদা করে রাখা হয়। Safe Mode ব্যাকগ্রাউন্ড পরিষেবা বন্ধ করে লাইব্রেরি খুলে, যাতে আপনি কারণ খুঁজতে Library Health ব্যবহার করতে পারেন।\n\nসার্ভার log-এ বিস্তারিত আছে।",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "এতে কখনোই আপনার ফটো, ফটো মেটাডেটা, ফাইল বা ফোল্ডারের নাম, কিংবা অন্য কোনো ব্যক্তিগত তথ্য অন্তর্ভুক্ত থাকে না।",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "এটি এক মিনিটের মধ্যে কয়েকবার বন্ধ হয়ে গেছে, তাই LightTable আর এটি স্বয়ংক্রিয়ভাবে পুনরায় লোড করছে না। আবার চেষ্টা করতে Help ▸ Diagnostics ▸ Reload Interface বেছে নিন, অথবা একটি রিপোর্ট পাঠাতে Help ▸ Report a Problem… বেছে নিন।",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "LightTable-এর ইঞ্জিন বারবার থেমে যাচ্ছে",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "LightTable-এর ইঞ্জিন বারবার বন্ধ হচ্ছে — Help ▸ Diagnostics ▸ Show Server Log দেখুন",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "LightTable-এর ইঞ্জিন অপ্রত্যাশিতভাবে বন্ধ হয়ে গেছে (স্ট্যাটাস {status})। পুনরায় শুরু করা হচ্ছে…",
+    "LightTable's interface keeps stopping": "LightTable-এর ইন্টারফেস বারবার বন্ধ হয়ে যাচ্ছে",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "LightTable-এর ইঞ্জিন ফিরে আসেনি। সাহায্য ▸ ডায়াগনস্টিকস ▸ রেন্ডারিং সার্ভিস পুনরায় শুরু করুন ব্যবহার করুন, অথবা সার্ভার লগ দেখুন।",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "LightTable-এর ইন্টারফেস এবং অনুসন্ধানযোগ্য সাহায্য একই ভাষা ভাগ করে। উপলভ্য ভাষাগুলো হলো English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, এবং Dutch।",
     "LightTable’s rendering engine stopped unexpectedly.": "LightTable-এর রেন্ডারিং ইঞ্জিন অপ্রত্যাশিতভাবে বন্ধ হয়ে গেছে।",

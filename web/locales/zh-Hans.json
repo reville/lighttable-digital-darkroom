@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hans",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "如果主要系统语言是英语，英语会自动保存。以后启动时将使用您保存的选择。在浏览器中，浏览器的语言偏好会提供初始建议。",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "如果侧边栏已隐藏，请使用左上角的 显示或隐藏图库。",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "如果状态显示编辑未保存，请使用重试保存。保存失败时请保持窗口打开。",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "如果窗口内容崩溃，例如在内存压力下或发生图形故障后，LightTable 会自动重新加载。如果在一分钟内发生数次这种情况，它会停止重新加载并改为显示警报。选择 帮助 → 诊断 → 重新加载界面 再试一次，或选择 帮助 → 报告问题… 发送报告。",
     "If you restore, wait for saving to complete before closing the app.": "如果你恢复，请等待保存完成后再关闭应用。",
     "ImageIO did not create an output file": "ImageIO 未创建输出文件",
     "Import": "导入",
@@ -1696,6 +1697,7 @@
     "Invert": "反转",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "它已经连续停止了 {count} 次（上次状态为 {status}）。如果每次打开的都是同一张照片，则下次启动会自动将其搁置。安全模式会关闭后台服务打开资料库，这样你就可以使用“资料库健康状况”查找原因。\n\n服务器日志包含详细信息。",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "其中绝不会包含你的照片、照片元数据、文件或文件夹名称，或其他个人信息。",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "它在一分钟内停止了数次，因此 LightTable 不再自动重新加载。选择 帮助 ▸ 诊断 ▸ 重新加载界面 再试一次，或选择 帮助 ▸ 报告问题… 发送报告。",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "LightTable 的引擎持续停止",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "LightTable 的引擎持续停止 — 参见 帮助 ▸ 诊断 ▸ 显示服务器日志",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "LightTable 的引擎意外停止（状态 {status}）。正在重新启动…",
+    "LightTable's interface keeps stopping": "LightTable 的界面一直停止响应",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "LightTable 的引擎尚未恢复。请使用“帮助 ▸ 诊断 ▸ 重启渲染服务”，或者查看服务器日志。",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "LightTable 的界面和可搜索帮助共享同一种语言。可用语言包括英语、西班牙语、法语、德语、意大利语、葡萄牙语、俄语、简体中文、繁体中文、日语、韩语、阿拉伯语、印地语、孟加拉语、印度尼西亚语、土耳其语、越南语、泰语、波兰语和荷兰语。",
     "LightTable’s rendering engine stopped unexpectedly.": "LightTable 的渲染引擎意外停止。",

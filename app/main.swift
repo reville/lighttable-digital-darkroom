@@ -1628,6 +1628,34 @@ private final class AppearanceTesterCloseHandler: NSObject, WKScriptMessageHandl
     }
 }
 
+// BEGIN WEB CONTENT RELOAD BUDGET: Foundation only, exercised by native tests.
+/// Bounds automatic reloads of the main web view after its content process
+/// terminates (memory pressure, or a GPU/WebGL fault). Attempts age out of
+/// the trailing window on their own, so a session that goes on to run
+/// cleanly regains its budget instead of tripping for good after one bad
+/// stretch.
+struct ReloadBudget {
+    let limit: Int
+    let window: TimeInterval
+    private(set) var attempts: [Date] = []
+
+    init(limit: Int = 3, window: TimeInterval = 60) {
+        self.limit = limit
+        self.window = window
+    }
+
+    /// Records an attempt at `now` and reports whether it is still within
+    /// budget. Once exhausted, the caller should stop reloading until the
+    /// window empties out on its own.
+    mutating func shouldReload(now: Date = Date()) -> Bool {
+        attempts.removeAll { now.timeIntervalSince($0) > window }
+        guard attempts.count < limit else { return false }
+        attempts.append(now)
+        return true
+    }
+}
+// END WEB CONTENT RELOAD BUDGET
+
 // MARK: - App
 
 final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate,
@@ -1685,6 +1713,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private static let crashRestartLimit = 3
     private static let healthySessionSeconds: TimeInterval = 300
     private static let startupTimeout: TimeInterval = 120
+    /// Reloads after the main web view's content process terminates
+    /// unexpectedly. Bounded so a persistent crash cannot loop forever.
+    private var webContentReloadBudget = ReloadBudget()
 
     func applicationDidFinishLaunching(_ note: Notification) {
         guard chooseInitialLanguage() else { return }
@@ -2800,7 +2831,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        if webView === self.webView { cancelJavaScriptConfirmation() }
+        // The Apple Photos browser, loupe, and appearance-tester web views
+        // never set AppDelegate as their delegate, so only the editor's own
+        // web view can reach here; the check stays as a defensive guard.
+        guard webView === self.webView else { return }
+        cancelJavaScriptConfirmation()
+        if webContentReloadBudget.shouldReload() {
+            logWebContentTermination("reloading automatically (\(webContentReloadBudget.attempts.count) of \(webContentReloadBudget.limit) in the last \(Int(webContentReloadBudget.window))s)")
+            webView.reload()
+        } else {
+            logWebContentTermination("stopping after \(webContentReloadBudget.limit) reloads in \(Int(webContentReloadBudget.window))s; showing the problem-report alert")
+            presentWebContentReloadLimitAlert()
+        }
     }
 
     func webView(_ webView: WKWebView,
@@ -2836,6 +2878,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if let parent = pending.alert.window.sheetParent {
             parent.endSheet(pending.alert.window, returnCode: .cancel)
             pending.alert.window.orderOut(nil)
+        }
+    }
+
+    /// Best-effort note in the server log, so it shows up in Help ▸ Report a
+    /// Problem… and Help ▸ Diagnostics ▸ Show Server Log even though this
+    /// event comes from WebKit rather than the engine.
+    private func logWebContentTermination(_ detail: String) {
+        let message = "LightTable: the interface's web view content process terminated; \(detail)."
+        NSLog("%@", message)
+        guard let handle = try? FileHandle(forWritingTo: server.logURL) else { return }
+        defer { try? handle.close() }
+        handle.seekToEndOfFile()
+        handle.write(Data("\(ISO8601DateFormatter().string(from: Date())) \(message)\n".utf8))
+    }
+
+    /// The content process kept crashing faster than the reload budget
+    /// allows; stop looping and point to the existing problem-report flow.
+    private func presentWebContentReloadLimitAlert() {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = L("LightTable's interface keeps stopping")
+        alert.informativeText = L("It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.")
+        alert.addButton(withTitle: L("OK"))
+        alert.addButton(withTitle: L("Report a Problem…"))
+        if alert.runModal() == .alertSecondButtonReturn {
+            reportProblem(nil)
         }
     }
 

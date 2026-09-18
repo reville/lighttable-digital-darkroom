@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "Birincil sistem dili İngilizceyse, İngilizce otomatik olarak kaydedilir. Sonraki açılışlar kaydedilmiş seçiminizi kullanır. Bir tarayıcıda, başlangıç önerisini tarayıcının dil tercihleri sağlar.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "Kenar çubuğu gizliyse, sol üstteki kütüphaneyi göster veya gizle’yi kullanın.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "Durum Edits not saved diyorsa, Retry save kullanın. Kaydetme başarısız olurken pencereyi açık tutun.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "Pencerenin içerikleri, örneğin bellek baskısı altında ya da bir grafik hatasından sonra çökerse, LightTable bunları otomatik olarak yeniden yükler. Bu durum bir dakika içinde birkaç kez olursa, yeniden yüklemeyi durdurur ve bunun yerine bir uyarı gösterir. Tekrar denemek için Yardım → Tanılama → Arayüzü Yeniden Yükle seçin veya bir rapor göndermek için Yardım → Bir Sorun Bildir… seçin.",
     "If you restore, wait for saving to complete before closing the app.": "Geri yüklerseniz, uygulamayı kapatmadan önce kaydetmenin tamamlanmasını bekleyin.",
     "ImageIO did not create an output file": "ImageIO bir çıkış dosyası oluşturmadı",
     "Import": "İçe Aktar",
@@ -1696,6 +1697,7 @@
     "Invert": "Tersine Çevir",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "{count} kez üst üste durdu (son durum {status}). Her seferinde aynı fotoğraf açıksa, bir sonraki başlatma onu otomatik olarak bir kenara alır. Güvenli Mod, arka plan hizmetleri kapalıyken kütüphaneyi açar; böylece nedenini bulmak için Kütüphane Sağlığı’nı kullanabilirsiniz.\n\nAyrıntılar sunucu günlüğünde.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "Bu rapor hiçbir zaman fotoğraflarınızı, fotoğraf üstverinizi, dosya veya klasör adlarını ya da diğer kişisel bilgileri içermez.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "Bir dakika içinde birkaç kez durdu; bu nedenle LightTable artık onu otomatik olarak yeniden yüklemiyor. Tekrar denemek için Yardım ▸ Tanılama ▸ Arayüzü Yeniden Yükle seçin veya bir rapor göndermek için Yardım ▸ Bir Sorun Bildir… seçin.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "LightTable'ın motoru sürekli duruyor",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "LightTable'ın motoru durmaya devam ediyor — Yardım ▸ Tanılama ▸ Sunucu Günlüğünü Göster bölümüne bakın",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "LightTable'ın motoru beklenmedik şekilde durdu (durum {status}). Yeniden başlatılıyor…",
+    "LightTable's interface keeps stopping": "LightTable'ın arayüzü sürekli duruyor",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "LightTable’ın motoru geri dönmedi. Yardım ▸ Tanılama ▸ İşleme Hizmetini Yeniden Başlat’ı kullanın ya da sunucu günlüğünü kontrol edin.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "LightTable’ın arayüzü ve aranabilir yardım tek bir dili paylaşır. Kullanılabilir diller İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Portekizce, Rusça, Basitleştirilmiş Çince, Geleneksel Çince, Japonca, Korece, Arapça, Hintçe, Bengalce, Endonezce, Türkçe, Vietnamca, Tayca, Lehçe ve Hollandacadır.",
     "LightTable’s rendering engine stopped unexpectedly.": "LightTable'ın işleme motoru beklenmedik şekilde durdu.",

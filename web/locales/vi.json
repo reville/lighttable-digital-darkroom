@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "Nếu ngôn ngữ hệ thống chính là English, English sẽ được lưu tự động. Các lần khởi chạy sau sẽ dùng lựa chọn đã lưu của bạn. Trong trình duyệt, tùy chọn ngôn ngữ của trình duyệt cung cấp gợi ý ban đầu.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "Nếu thanh bên bị ẩn, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "Nếu trạng thái báo Edits not saved, hãy dùng Retry save. Giữ cửa sổ mở trong khi việc lưu đang thất bại.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "Nếu nội dung của cửa sổ bị crash, chẳng hạn do áp lực bộ nhớ hoặc sau một lỗi đồ họa, LightTable sẽ tự động tải lại chúng. Nếu điều đó xảy ra vài lần trong vòng một phút, ứng dụng sẽ dừng tải lại và thay vào đó hiển thị một cảnh báo. Chọn Trợ giúp → Chẩn đoán → Tải lại giao diện để thử lại, hoặc Trợ giúp → Báo cáo sự cố… để gửi báo cáo.",
     "If you restore, wait for saving to complete before closing the app.": "Nếu bạn khôi phục, hãy chờ cho việc lưu hoàn tất trước khi đóng ứng dụng.",
     "ImageIO did not create an output file": "ImageIO không tạo ra tệp đầu ra",
     "Import": "Nhập",
@@ -1696,6 +1697,7 @@
     "Invert": "Đảo ngược",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "Nó đã dừng {count} lần liên tiếp (trạng thái gần nhất {status}). Nếu cùng một ảnh luôn được mở mỗi lần, lần khởi chạy tiếp theo sẽ tự động gạt nó sang một bên. Chế độ An toàn mở thư viện với các dịch vụ nền tắt để bạn có thể dùng Tình trạng thư viện tìm nguyên nhân.\n\nNhật ký máy chủ có chi tiết.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "Báo cáo này không bao giờ bao gồm ảnh, siêu dữ liệu ảnh, tên tệp hoặc tên thư mục, hay thông tin cá nhân nào khác của bạn.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "Nó đã dừng hoạt động vài lần trong vòng một phút, nên LightTable sẽ không tự động tải lại nữa. Chọn Trợ giúp ▸ Chẩn đoán ▸ Tải lại giao diện để thử lại, hoặc Trợ giúp ▸ Báo cáo sự cố… để gửi báo cáo.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "Động cơ của LightTable liên tục dừng",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "Bộ máy của LightTable liên tục dừng — xem Trợ giúp ▸ Chẩn đoán ▸ Hiển thị Nhật ký Máy chủ",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "Bộ máy của LightTable đã dừng đột ngột (trạng thái {status}). Đang khởi động lại…",
+    "LightTable's interface keeps stopping": "Giao diện của LightTable liên tục dừng hoạt động",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "Bộ máy của LightTable chưa trở lại. Hãy dùng Trợ giúp ▸ Chẩn đoán ▸ Khởi động lại Dịch vụ Kết xuất, hoặc kiểm tra nhật ký máy chủ.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "Giao diện của LightTable và trợ giúp có thể tìm kiếm dùng chung một ngôn ngữ. Các ngôn ngữ có sẵn là Tiếng Anh, Tiếng Tây Ban Nha, Tiếng Pháp, Tiếng Đức, Tiếng Ý, Tiếng Bồ Đào Nha, Tiếng Nga, Tiếng Trung giản thể, Tiếng Trung phồn thể, Tiếng Nhật, Tiếng Hàn, Tiếng Ả Rập, Tiếng Hindi, Tiếng Bengal, Tiếng Indonesia, Tiếng Thổ Nhĩ Kỳ, Tiếng Việt, Tiếng Thái, Tiếng Ba Lan và Tiếng Hà Lan.",
     "LightTable’s rendering engine stopped unexpectedly.": "Công cụ kết xuất của LightTable đã dừng đột ngột.",

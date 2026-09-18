@@ -3445,6 +3445,7 @@
           "title": "Onverwacht afsluiten op Mac melden",
           "paragraphs": [
             "Als de Mac-app sluit zonder correct af te sluiten, wordt de volgende keer dat u deze start een diagnostisch rapport geopend. Als de renderengine onverwacht stopt, kan het rapport worden geopend terwijl de engine herstelt. Het rapport verschijnt eenmaal per geregistreerd incident; Sluiten laat u doorgaan. De app normaal sluiten of de renderingsservice opnieuw starten maakt geen rapport aan.",
+            "Als de inhoud van het venster crasht, bijvoorbeeld door geheugendruk of na een grafische fout, laadt LightTable deze automatisch opnieuw. Als dat binnen een minuut meerdere keren gebeurt, stopt het met opnieuw laden en wordt in plaats daarvan een waarschuwing weergegeven. Kies Help → Diagnostiek → Interface opnieuw laden om het opnieuw te proberen, of Help → Een probleem melden… om een rapport te verzenden.",
             "Help → Een probleem melden… opent het nieuwste rapport, of de huidige diagnostiek als er geen onverwacht afsluiten is vastgelegd. Rapporten bevatten de app-build, macOS en hardware, de laatst vastgelegde bewerking indien beschikbaar, gefilterde recente logs en beschikbare fouttraces. Een overeenkomend macOS-crashrapport kan stack- en binaire informatie toevoegen. Een onverwacht afsluiten laat niet altijd een fouttrace achter of wijst de oorzaak aan.",
             "Het volledige diagnostische rapport blijft op uw Mac totdat u ervoor kiest het te delen. Paden, fotobestandsnamen, geciteerde logwaarden en veelvoorkomende veldnamen voor inloggegevens worden gefilterd; inspecteer de tekst voordat u die deelt. Foto's en de catalogus worden niet toegevoegd. De laatste tien rapporten worden lokaal bewaard."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }

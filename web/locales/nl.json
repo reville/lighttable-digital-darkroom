@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "generation": {
     "model": "gpt-5.4-mini",
     "reviewStatus": "machine-translated"
@@ -1594,6 +1594,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "Als de primaire systeemtaal Engels is, wordt Engels automatisch opgeslagen. Latere starts gebruiken je opgeslagen keuze. In een browser leveren de taalvoorkeuren van de browser de eerste suggestie.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "Als de zijbalk verborgen is, gebruik dan Bibliotheek tonen of verbergen linksboven.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "Als de status Opgeslagen bewerkingen niet toont, gebruik dan Opnieuw proberen opslaan. Houd het venster open terwijl opslaan mislukt.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "Als de inhoud van het venster crasht, bijvoorbeeld door geheugendruk of na een grafische fout, laadt LightTable deze automatisch opnieuw. Als dat binnen een minuut meerdere keren gebeurt, stopt het met opnieuw laden en wordt in plaats daarvan een waarschuwing weergegeven. Kies Help → Diagnostiek → Interface opnieuw laden om het opnieuw te proberen, of Help → Een probleem melden… om een rapport te verzenden.",
     "If you restore, wait for saving to complete before closing the app.": "Als je terugzet, wacht dan tot het opslaan is voltooid voordat je de app sluit.",
     "ImageIO did not create an output file": "ImageIO heeft geen uitvoerbestand gemaakt",
     "Import": "Importeren",
@@ -1696,6 +1697,7 @@
     "Invert": "Omkeren",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "Het is {count} keer achter elkaar gestopt (laatste status {status}). Als elke keer dezelfde foto open was, zet de volgende start deze automatisch apart. Veilige modus opent de bibliotheek met achtergrondservices uit, zodat je met Bibliotheekgezondheid naar de oorzaak kunt zoeken.\n\nHet serverlog bevat de details.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "Hierin worden nooit uw foto's, fotometagegevens, bestands- of mapnamen, of andere persoonlijke informatie opgenomen.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "Deze is binnen een minuut meerdere keren gestopt, dus LightTable laadt deze niet langer automatisch opnieuw. Kies Help ▸ Diagnostiek ▸ Interface opnieuw laden om het opnieuw te proberen, of Help ▸ Een probleem melden… om een rapport te verzenden.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -1824,6 +1826,7 @@
     "LightTable's engine keeps stopping": "De engine van LightTable stopt steeds",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "De engine van LightTable blijft stoppen — zie Help ▸ Diagnostiek ▸ Serverlog weergeven",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "De engine van LightTable is onverwacht gestopt (status {status}). Opnieuw starten…",
+    "LightTable's interface keeps stopping": "De interface van LightTable stopt steeds",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "De engine van LightTable is niet teruggekomen. Gebruik Help ▸ Diagnostiek ▸ Renderingsservice opnieuw starten, of controleer de serverlog.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "De interface van LightTable en de doorzoekbare help delen één taal. Beschikbare talen zijn Engels, Spaans, Frans, Duits, Italiaans, Portugees, Russisch, Vereenvoudigd Chinees, Traditioneel Chinees, Japans, Koreaans, Arabisch, Hindi, Bengaals, Indonesisch, Turks, Vietnamees, Thais, Pools en Nederlands.",
     "LightTable’s rendering engine stopped unexpectedly.": "De renderengine van LightTable is onverwacht gestopt.",

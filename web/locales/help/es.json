@@ -3445,6 +3445,7 @@
           "title": "Informar de un cierre inesperado en Mac",
           "paragraphs": [
             "Si la app de Mac se cierra sin salir limpiamente, se abre un informe de diagnóstico la próxima vez que la inicie. Si su motor de renderizado se detiene inesperadamente, el informe puede abrirse mientras el motor se recupera. El informe aparece una vez por cada incidente registrado; Descartar le permite continuar. Cerrar la app normalmente o reiniciar su servicio de renderizado no crea un informe.",
+            "Si el contenido de la ventana sufre un fallo, por ejemplo bajo presión de memoria o después de un fallo gráfico, LightTable lo recarga automáticamente. Si eso ocurre varias veces en el transcurso de un minuto, deja de recargarlo y muestra una alerta. Elija Ayuda → Diagnósticos → Recargar interfaz para intentarlo de nuevo, o Ayuda → Informar de un problema… para enviar un informe.",
             "Ayuda → Informar de un problema… abre el informe más reciente, o los diagnósticos actuales si no se registró ningún cierre inesperado. Los informes incluyen la compilación de la app, macOS y el hardware, la última operación registrada cuando está disponible, logs recientes filtrados y trazas de error disponibles. Un informe de fallo de macOS coincidente puede añadir información de pila y binaria. Un cierre inesperado no siempre deja una traza de error ni identifica su causa.",
             "El informe de diagnóstico completo permanece en tu Mac hasta que elijas compartirlo. Las rutas, los nombres de archivo de las fotos, los valores de log entre comillas y los campos comunes de credenciales se filtran; inspecciona el texto antes de compartirlo. Las fotos y el catálogo no se adjuntan. Se conservan localmente los diez informes más recientes."
           ],
@@ -3600,5 +3601,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5"
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
 }
