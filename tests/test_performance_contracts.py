@@ -464,6 +464,14 @@ class NativePreviewContractTests(unittest.TestCase):
         self.assertIn('env["NUMBA_CACHE_DIR"]', shell)
         self.assertIn('appendingPathComponent("compiled-runtime")', shell)
 
+    def test_server_reads_the_bytecode_the_bundle_ships(self):
+        # A pycache prefix hides the bundle's compiled modules; with bytecode
+        # writes off (never inside the signed bundle) every launch recompiled
+        # all of them.
+        shell = (ROOT / "app" / "main.swift").read_text()
+        self.assertIn('env["PYTHONDONTWRITEBYTECODE"] = "1"', shell)
+        self.assertIn('env["PYTHONPYCACHEPREFIX"] = nil', shell)
+
     def test_browser_subsystems_are_native_es_modules(self):
         javascript = (ROOT / "web" / "app.js").read_text()
         expected = {
