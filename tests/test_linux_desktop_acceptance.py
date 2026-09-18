@@ -204,6 +204,28 @@ class LinuxAcceptanceTests(unittest.TestCase):
             self.assertIn('"pid": 123', text)
             self.assertEqual(smoke.redact("failed PRIVATE_TOKEN", {"PRIVATE_TOKEN"}), "failed [redacted]")
 
+    def test_no_crash_ledger_entry_passes_and_a_missing_ledger_is_not_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            smoke.require_no_crash_ledger_entry(root)
+            (root / "catalog").mkdir()
+            smoke.require_no_crash_ledger_entry(root)
+
+    def test_crash_ledger_entry_fails_with_its_exit_status_when_available(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            catalog = root / "catalog"
+            catalog.mkdir()
+            (catalog / "crashes.jsonl").write_text(json.dumps(
+                {"startedAt": 1.0, "pid": 111, "exitStatus": None, "detectedAt": 2.0}) + "\n")
+            with self.assertRaisesRegex(RuntimeError, "unclean previous session") as raised:
+                smoke.require_no_crash_ledger_entry(root)
+            self.assertNotIn("exit status", str(raised.exception))
+            catalog.joinpath("crashes.jsonl").write_text(json.dumps(
+                {"startedAt": 1.0, "pid": 111, "exitStatus": -11, "detectedAt": 2.0}) + "\n")
+            with self.assertRaisesRegex(RuntimeError, "unclean previous session \\(exit status -11\\)"):
+                smoke.require_no_crash_ledger_entry(root)
+
     def test_real_tiff_export_requires_rgb16_precision_shape_and_icc(self):
         import numpy as np
         import tifffile
