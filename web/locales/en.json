@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "61d6b4ec97a1275be00d96e32a1e7856368c8764584c182e80117a399dd6b6e5",
+  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "plurals": {
     " · {count} paired file linked": {
@@ -1905,6 +1905,7 @@
     "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.": "If the primary system language is English, English is saved automatically. Later launches use your saved choice. In a browser, the browser’s language preferences supply the initial suggestion.",
     "If the sidebar is hidden, use Show or hide library at the upper left.": "If the sidebar is hidden, use Show or hide library at the upper left.",
     "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.": "If the status says Edits not saved, use Retry save. Keep the window open while a save is failing.",
+    "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.": "If the window's contents crash, for example under memory pressure or after a graphics fault, LightTable reloads them automatically. If that happens several times within a minute, it stops reloading and shows an alert instead. Choose Help → Diagnostics → Reload Interface to try again, or Help → Report a Problem… to send a report.",
     "If you restore, wait for saving to complete before closing the app.": "If you restore, wait for saving to complete before closing the app.",
     "ImageIO did not create an output file": "ImageIO did not create an output file",
     "Import": "Import",
@@ -2007,6 +2008,7 @@
     "Invert": "Invert",
     "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.": "It has stopped {count} times in a row (last status {status}). If the same photo was open each time, the next launch sets it aside automatically. Safe Mode opens the library with background services off so you can use Library Health to look for the cause.\n\nThe server log has the details.",
     "It never includes your photos, photo metadata, file or folder names, or other personal information.": "It never includes your photos, photo metadata, file or folder names, or other personal information.",
+    "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.": "It stopped several times within a minute, so LightTable is no longer reloading it automatically. Choose Help ▸ Diagnostics ▸ Reload Interface to try again, or Help ▸ Report a Problem… to send a report.",
     "J + RAW": "J + RAW",
     "JPEG": "JPEG",
     "JPEG → RAW": "JPEG → RAW",
@@ -2135,6 +2137,7 @@
     "LightTable's engine keeps stopping": "LightTable's engine keeps stopping",
     "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log": "LightTable's engine keeps stopping — see Help ▸ Diagnostics ▸ Show Server Log",
     "LightTable's engine stopped unexpectedly (status {status}). Restarting…": "LightTable's engine stopped unexpectedly (status {status}). Restarting…",
+    "LightTable's interface keeps stopping": "LightTable's interface keeps stopping",
     "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.": "LightTable’s engine has not come back. Use Help ▸ Diagnostics ▸ Restart Rendering Service, or check the server log.",
     "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.": "LightTable’s interface and searchable help share one language. Available languages are English, Spanish, French, German, Italian, Portuguese, Russian, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hindi, Bengali, Indonesian, Turkish, Vietnamese, Thai, Polish, and Dutch.",
     "LightTable’s rendering engine stopped unexpectedly.": "LightTable’s rendering engine stopped unexpectedly.",
