@@ -147,6 +147,7 @@ export function installDesktopUpdates({ prepare, cancel, onError }) {
   window.lightTableRefreshUpdates = () => refresh().catch(error => {
     status.textContent = error.message;
   });
+  window.lightTableCheckForUpdates = () => act();
 
   if (!nativeBridge()) render({ supported: false, message: tr('Open the desktop app to check for updates.') });
   else if (platform === 'linux') {

@@ -11256,6 +11256,11 @@ document.addEventListener('keydown', (e) => {
     // native menu (see toggleQuickCollectionItem in app/main.swift).
     e.preventDefault(); void toggleQuickCollection(); return;
   }
+  if (meta && !e.shiftKey && !e.altKey && e.key === ',') {
+    e.preventDefault();
+    window.LightTableSettings?.open('general');
+    return;
+  }
   if (meta && (e.key === 'Backspace' || e.key === 'Delete')) {
     e.preventDefault(); trashRejected(); return;
   }

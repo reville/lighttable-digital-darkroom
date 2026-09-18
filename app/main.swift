@@ -3077,6 +3077,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         case "showUpdateModal":
             let options = body["options"] as? [String: Any] ?? body
             sendEvent(["type": "showUpdateModal", "options": options])
+        case "checkForUpdates":
+#if canImport(Sparkle)
+            updaterController.checkForUpdates(nil)
+#else
+            checkForUpdatesFallback(nil)
+#endif
         case "trashFiles":
             // Deletion always goes to the Trash through the platform, never an
             // unlink: a mistaken cull has to be recoverable in the Finder.
@@ -3946,6 +3952,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         }
     }
 
+    @objc private func checkForUpdatesFallback(_ sender: Any?) {
+        webView?.evaluateJavaScript(
+            "window.LightTableSettings?.open('general'); window.lightTableCheckForUpdates?.();",
+            completionHandler: nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     @objc private func showAbout(_ sender: Any?) {
         if aboutWindowController == nil { aboutWindowController = AboutWindowController() }
         aboutWindowController?.showWindow(sender)
@@ -3968,6 +3981,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)),
             keyEquivalent: "")
         updateItem.target = updaterController
+#else
+        let updateItem = appMenu.addItem(
+            withTitle: L("Check for Updates…"),
+            action: #selector(checkForUpdatesFallback(_:)),
+            keyEquivalent: "")
+        updateItem.target = self
 #endif
         appMenu.addItem(.separator())
         addEditorItem(appMenu, title: L("Settings…"), command: "preferences",
