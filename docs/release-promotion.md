@@ -30,6 +30,10 @@ draft, including one created by this run.
 platform's app-owned updater after anonymous public downloads match every
 published hash. Linux and Windows use their respective `desktop-updates` assets;
 macOS uses the latest release's appcast, matching the existing installed client.
+Because promotion sets `--latest=false` to avoid redirecting `/releases/latest/download/appcast.xml`
+to a release without a macOS appcast, advancing GitHub's "Latest" release badge
+requires attaching the verified legacy signed `appcast.xml` to the new release
+before running `gh release edit vVERSION --latest`.
 
 Existing assets and platform manifests are immutable. Identical retries skip
 those files; a name with different bytes fails. Separate

@@ -351,3 +351,20 @@ their dependency inputs. Native acceptance and signing checks still run.
    9.5 minutes. Dependency staging took 50 seconds. Benchmark signing/installer
    changes on a disposable candidate before adopting them; do not weaken final
    signature checks or run another production build merely to measure timing.
+6. **Advance GitHub "Latest" while preserving legacy Mac Sparkle feeds.**
+   `promote_candidate.py` explicitly marks public releases with `--latest=false`
+   to protect legacy Mac clients (0.7.6 and earlier) whose embedded `SUFeedURL`
+   queried `https://github.com/.../releases/latest/download/appcast.xml`. When
+   promoting a release that advances the project version across public platforms
+   (e.g. Windows, Linux, and npm), attach the verified signed legacy `appcast.xml`
+   to the new release assets before marking it latest:
+   `gh release upload vX.Y.Z appcast.xml && gh release edit vX.Y.Z --latest`.
+   This ensures the repository's "Latest" release badge reflects the current
+   version without breaking legacy macOS auto-updates.
+7. **Sync local sub-repositories and personal runtime.** Background CI updates
+   remote Homebrew and Scoop repositories, but local operator checkouts in
+   `~/CODING/lighttable-dev/` will lag until pulled (`git pull` in
+   `homebrew-lighttable` and `scoop-lighttable`). Update the personal Mac daily
+   driver with `python3 scripts/mnb.sh` (incremental builds safely ignore
+   `SUFeedURL` changes in `build_fingerprint.py`). Run a final workspace check
+   for untracked artifacts or merge conflict markers before signing off.
