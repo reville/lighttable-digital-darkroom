@@ -168,7 +168,7 @@ def version_only_change(root: Path, revision: str) -> bool:
                 old, new = plistlib.loads(old), plistlib.loads(new)
                 if not isinstance(old, dict) or not isinstance(new, dict):
                     return False
-                for key in ("CFBundleVersion", "CFBundleShortVersionString"):
+                for key in ("CFBundleVersion", "CFBundleShortVersionString", "SUFeedURL"):
                     old.pop(key, None)
                     new.pop(key, None)
             elif relative.endswith(".pbxproj"):

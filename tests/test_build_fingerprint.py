@@ -156,6 +156,9 @@ class BuildFingerprintTests(unittest.TestCase):
         project = root / "LightTable.xcodeproj/project.pbxproj"
         project.write_text(project.read_text().replace("0.7.6", "0.7.7").replace("VERSION = 1", "VERSION = 2"))
         self.assertTrue(build_fingerprint.version_only_change(root, revision))
+        plist.write_bytes(plistlib.dumps(values | {"SUFeedURL": "https://example.invalid/appcast.xml"}))
+        self.assertTrue(build_fingerprint.version_only_change(root, revision))
+        plist.write_bytes(plistlib.dumps(values))
         for key, value in (("LSMinimumSystemVersion", "14.0"), ("CFBundleIdentifier", "different")):
             with self.subTest(field=key):
                 plist.write_bytes(plistlib.dumps(values | {key: value}))
