@@ -2166,6 +2166,7 @@ body { display:flex; flex-direction:column; }
   padding: 14px 16px; background: var(--panel, #202020); color: var(--fg, #eee);
   border: 1px solid var(--border, #444); border-radius: 8px; box-shadow: 0 8px 30px #0006; }
 .desktop-update-notice span { flex: 1; }
+.store-review-notice { max-width: min(490px, calc(100vw - 48px)); }
 
 .cull-similar-navigation { padding:12px; border-bottom:1px solid var(--line); }
 .cull-similar-navigation p { margin:0 0 8px; overflow-wrap:anywhere; }

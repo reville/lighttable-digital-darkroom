@@ -1023,6 +1023,10 @@ impl AppState {
                     reveal(Path::new(path))?;
                 }
             }
+            #[cfg(target_os = "windows")]
+            "reviewInStore" => {
+                open_with_default_application("ms-windows-store://review/?ProductId=XPFFQMQSTK4XJD")?;
+            }
             "showServerLog" => {
                 open_with_default_application(&self.paths.log.to_string_lossy())?;
             }

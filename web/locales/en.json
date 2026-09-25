@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "119a4009716bb98c8f17e035cfbf37bf0f862aced928d740619f194627d1be8c",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "plurals": {
     " · {count} paired file linked": {
@@ -1971,6 +1971,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.",
+    "In the Windows desktop app, open Help and choose Review on Microsoft Store… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "In the Windows desktop app, open Help and choose Review on Microsoft Store… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.",
@@ -2413,6 +2414,7 @@
     "No snapshots yet": "No snapshots yet",
     "No sources yet.": "No sources yet.",
     "No steps recorded yet.": "No steps recorded yet.",
+    "No thanks": "No thanks",
     "No usable lines found.": "No usable lines found.",
     "No {tool} selection found": "No {tool} selection found",
     "None": "None",
@@ -3017,6 +3019,7 @@
     "Return to {value}": "Return to {value}",
     "Reveal Export Folder in Finder": "Reveal Export Folder in Finder",
     "Review": "Review",
+    "Review LightTable on Windows": "Review LightTable on Windows",
     "Review a group": "Review a group",
     "Review a group together, mark the active frame, and narrow a set of candidates.": "Review a group together, mark the active frame, and narrow a set of candidates.",
     "Review and correct matches": "Review and correct matches",
@@ -3026,6 +3029,7 @@
     "Review matches": "Review matches",
     "Review matches ({count})": "Review matches ({count})",
     "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.": "Review matches presents two possible groups with face samples. Same person combines them. Different people records a correction so that pairing will not be suggested again. Skip for now leaves the match for a later visit.",
+    "Review on Microsoft Store…": "Review on Microsoft Store…",
     "Review photos from the source using the destination and naming settings": "Review photos from the source using the destination and naming settings",
     "Review signals": "Review signals",
     "Review similar photos": "Review similar photos",
@@ -3938,6 +3942,7 @@
     "Workflow": "Workflow",
     "Working": "Working",
     "Working…": "Working…",
+    "Would you like to review LightTable on the Microsoft Store?": "Would you like to review LightTable on the Microsoft Store?",
     "Write beside exported photo": "Write beside exported photo",
     "Write changes beside originals": "Write changes beside originals",
     "Write now": "Write now",
