@@ -4,6 +4,7 @@ async function start() {
   try {
     await bootLanguage();
     await import('./help-panel.js');
+    await import('./store-review.js');
     await import('./dropdown.js');
     await import('./app.js');
     await import('./slider-ux.js');

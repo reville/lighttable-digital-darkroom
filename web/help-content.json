@@ -3103,6 +3103,12 @@
             "Updates preserve photos, edits, and preferences. Linux keeps the previous bundle for recovery, but does not automatically restore a catalog or reopen an older version.",
             "Use Scoop, WinGet, Chocolatey, AUR, Flatpak, or Snap to update their managed installations. Download a new ZIP for Windows portable copies. Builds without update signing configured cannot update themselves."
           ]
+        },
+        {
+          "title": "Review LightTable on Windows",
+          "paragraphs": [
+            "In the Windows desktop app, open Help and choose Review on Microsoft Store… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available."
+          ]
         }
       ],
       "related": [

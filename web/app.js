@@ -10074,6 +10074,9 @@ async function runExport(customOpts = {}) {
           run: () => postNative('revealFolder', { path: st.revealPath }),
         } : null, 2800);
         notifyCompletion(record.state === 'cancelled' ? tr("Export cancelled") : tr("Export complete"), $('estat').textContent);
+        if (record.state === 'done' && st.completed > 0 && errors === 0) {
+          window.dispatchEvent(new Event('lighttable:export-complete'));
+        }
       }
     } catch (_error) {
       if (activeExportJobId === ident) $('estat').textContent = tr("Reconnecting to export…");
