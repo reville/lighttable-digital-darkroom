@@ -48,6 +48,8 @@ lists what is missing.
 Before a release, complete every catalog in `web/locales/` with
 `translate-locales.py`, a bounded authoring tool that needs an API key in its
 environment and keeps existing translations, then run the strict checks below.
+It uses OpenAI by default; `--provider gemini` uses `GEMINI_API_KEY` through
+Google's OpenAI-compatible API when the OpenAI account is unavailable.
 Normal builds and the installed app never call a translation service. The
 release build's `translations` job refuses a tag whose catalogs are incomplete;
 English fallback does not satisfy the strict checks.

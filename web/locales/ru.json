@@ -1,9 +1,9 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3",
   "generation": {
-    "model": "gpt-5.4-mini",
+    "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
   },
   "messages": {
@@ -1660,6 +1660,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "В узком окне Linux Показать или скрыть библиотеку открывает библиотеку как боковую панель. При увеличении окна восстанавливается обычная компоновка рядом. В Hyprland используйте системные сочетания клавиш окна, чтобы перемещать, плиточно размещать, изменять размер или закрывать LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "В узком окне Linux используйте Показать или скрыть библиотеку в левом верхнем углу, чтобы открыть боковую панель библиотеки. Закройте её той же кнопкой после выбора папки, чтобы оставить больше места для фото.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "На графике Curve горизонтальное направление идет от более темных входных тонов к более светлым входным тонам. Перемещение точки вверх повышает ее выход; перемещение вниз снижает его. RGB регулирует объединенную кривую, а R, G и B воздействуют на отдельные каналы.",
+    "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "В настольном приложении для Windows откройте меню «Справка» и выберите «Написать отзыв в Microsoft Store…», чтобы открыть страницу отзыва в Store. Со временем, после нескольких успешных операций экспорта, LightTable также может показать небольшое напоминание об отзыве. Выберите «Нет, спасибо», чтобы отключить последующие напоминания; действие в меню «Справка» останется доступным.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "В пленке эта ссылка появляется под счетчиком фотографий только тогда, когда текущий список содержит фотографии, которые не могут быть отображены.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "В сетке и на пленке сообщение «Миниатюра недоступна» показывает причину ошибки и диагностические сведения, если они получены. Исправив проблему, выберите «Повторить».",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "В приложении macOS откройте Apple Photos на боковой панели, чтобы просматривать фото и альбомы. Разрешите доступ к Photos, когда будет предложено. Этот источник скрыт в Windows и Linux.",
@@ -2102,6 +2103,7 @@
     "No snapshots yet": "Снимков пока нет",
     "No sources yet.": "Пока нет источников.",
     "No steps recorded yet.": "Пока не записано ни одного шага.",
+    "No thanks": "Нет, спасибо",
     "No usable lines found.": "Подходящих строк не найдено.",
     "No {tool} selection found": "Не найдено выделение инструмента {tool}",
     "None": "Нет",
@@ -3627,6 +3629,10 @@
     "Workflow": "Рабочий процесс",
     "Working": "В работе",
     "Working…": "В работе…",
+    "Would you like to review LightTable on the Microsoft Store?": "Хотите оставить отзыв о LightTable в Microsoft Store?",
+    "Write a Microsoft Store review on Windows": "Написать отзыв в Microsoft Store в Windows",
+    "Write a Microsoft Store review…": "Написать отзыв в Microsoft Store…",
+    "Write a review": "Написать отзыв",
     "Write beside exported photo": "Записать рядом с экспортированным фото",
     "Write changes beside originals": "Записывать изменения рядом с оригиналами",
     "Write now": "Записать сейчас",

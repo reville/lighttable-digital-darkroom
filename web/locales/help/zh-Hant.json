@@ -3155,6 +3155,12 @@
             "更新會保留照片、編輯和偏好設定。Linux 會保留舊套件以便復原，但不會自動還原目錄或重新開啟舊版本。",
             "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它們管理的安裝。Windows 可攜式副本需下載新的 ZIP。未設定更新簽章的組建無法自行更新。"
           ]
+        },
+        {
+          "title": "在 Windows 上撰寫 Microsoft Store 評論",
+          "paragraphs": [
+            "在 Windows 桌面應用程式中，打開「說明」並選擇「撰寫 Microsoft Store 評論…」即可打開 Store 評論頁面。在多次成功匯出後，LightTable 也可能會顯示簡短的評論提醒。選擇「不用了，謝謝」即可關閉日後的提醒；「說明」選項仍可隨時使用。"
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3"
 }

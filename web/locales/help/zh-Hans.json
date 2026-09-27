@@ -3155,6 +3155,12 @@
             "更新会保留照片、编辑和偏好设置。Linux 会保留旧软件包以便恢复，但不会自动还原目录或重新打开旧版本。",
             "使用 Scoop、WinGet、Chocolatey、AUR、Flatpak 或 Snap 更新由它们管理的安装。Windows 便携版需下载新的 ZIP。未配置更新签名的构建无法自行更新。"
           ]
+        },
+        {
+          "title": "在 Windows 上撰写 Microsoft Store 评价",
+          "paragraphs": [
+            "在 Windows 桌面应用中，打开“帮助”并选择“撰写 Microsoft Store 评价…”，即可打开 Store 评价页面。随着时间推移，在多次成功导出后，LightTable 还可能会显示一个小小的评价提醒。选择“不用了，谢谢”可不再接收后续提醒；“帮助”中的该操作仍可随时使用。"
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "zh-Hans",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3"
 }

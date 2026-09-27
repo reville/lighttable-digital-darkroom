@@ -3155,6 +3155,12 @@
             "Las actualizaciones conservan las fotos, las ediciones y las preferencias. Linux mantiene el paquete anterior para la recuperación, pero no restaura automáticamente un catálogo ni vuelve a abrir una versión anterior.",
             "Usa Scoop, WinGet, Chocolatey, AUR, Flatpak o Snap para actualizar las instalaciones que administran. Descarga un ZIP nuevo para las copias portátiles de Windows. Las compilaciones sin firma de actualizaciones configurada no pueden actualizarse solas."
           ]
+        },
+        {
+          "title": "Escribir una reseña en Microsoft Store en Windows",
+          "paragraphs": [
+            "En la aplicación de escritorio para Windows, abra Ayuda y elija Escribir una reseña en Microsoft Store… para abrir la página de reseñas de la Store. Tras varias exportaciones correctas a lo largo del tiempo, LightTable también puede mostrar un pequeño recordatorio de reseña. Elija No, gracias para descartar recordatorios futuros; la acción en Ayuda seguirá disponible."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3"
 }

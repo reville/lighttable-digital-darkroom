@@ -3155,6 +3155,12 @@
             "Bản cập nhật giữ nguyên ảnh, chỉnh sửa và tùy chọn. Linux giữ lại gói trước để phục hồi, nhưng không tự động khôi phục danh mục hoặc mở lại phiên bản cũ.",
             "Dùng Scoop, WinGet, Chocolatey, AUR, Flatpak hoặc Snap để cập nhật các bản cài đặt do chúng quản lý. Tải ZIP mới cho các bản Windows di động. Các bản dựng chưa cấu hình chữ ký cập nhật không thể tự cập nhật."
           ]
+        },
+        {
+          "title": "Viết đánh giá trên Microsoft Store trên Windows",
+          "paragraphs": [
+            "Trong ứng dụng máy tính Windows, hãy mở Trợ giúp và chọn Viết đánh giá trên Microsoft Store… để mở trang đánh giá của Store. Sau nhiều lần xuất thành công theo thời gian, LightTable cũng có thể hiển thị một lời nhắc đánh giá nhỏ. Hãy chọn Không, cảm ơn để bỏ qua các lời nhắc trong tương lai; thao tác trong Trợ giúp vẫn luôn khả dụng."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3"
 }
