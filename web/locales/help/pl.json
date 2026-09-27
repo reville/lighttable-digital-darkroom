@@ -3155,6 +3155,12 @@
             "Aktualizacje zachowują zdjęcia, zmiany i preferencje. Linux przechowuje poprzedni pakiet do odzyskiwania, ale nie przywraca automatycznie katalogu ani nie otwiera starszej wersji.",
             "Instalacje zarządzane przez Scoop, WinGet, Chocolatey, AUR, Flatpak lub Snap aktualizuj za pomocą odpowiedniego menedżera. Dla przenośnych kopii Windows pobierz nowy ZIP. Kompilacje bez skonfigurowanego podpisywania aktualizacji nie mogą aktualizować się samodzielnie."
           ]
+        },
+        {
+          "title": "Napisz recenzję w Microsoft Store w systemie Windows",
+          "paragraphs": [
+            "W aplikacji klasycznej dla systemu Windows otwórz menu Pomoc i wybierz polecenie Napisz recenzję w Microsoft Store…, aby otworzyć stronę z recenzjami w Store. Po pewnym czasie i wykonaniu kilku udanych eksportów program LightTable może również wyświetlić małe przypomnienie o wystawieniu recenzji. Wybierz Nie, dziękuję, aby odrzucić przyszłe przypomnienia; polecenie w menu Pomoc pozostanie nadal dostępne."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
 }

@@ -1,9 +1,9 @@
 {
   "version": 1,
   "locale": "tr",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "generation": {
-    "model": "gpt-5.4-mini",
+    "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
   },
   "messages": {
@@ -1660,6 +1660,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "Dar bir Linux penceresinde Kütüphaneyi göster veya gizle, kütüphaneyi çekmece olarak açar. Pencereyi genişletmek normal yan yana düzeni geri getirir. Hyprland'da, LightTable'ı taşımak, döşemek, yeniden boyutlandırmak veya kapatmak için derleyicinin pencere kısayollarını kullanın.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "Dar bir Linux penceresinde, kütüphane çekmecesini açmak için sol üstteki Kütüphaneyi göster veya gizle'yi kullanın. Bir klasör seçtikten sonra fotoğrafa daha fazla alan bırakmak için aynı düğmeyle kapatın.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Eğri grafiğinde yatay yön, daha koyu giriş tonlarından daha parlak giriş tonlarına doğru ilerler. Bir noktayı yukarı taşımak çıkışını yükseltir; aşağı taşımak düşürür. RGB birleşik eğriyi ayarlarken R, G ve B ayrı kanalları etkiler.",
+    "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "Windows masaüstü uygulamasında Yardım'ı açın ve Mağaza inceleme sayfasını açmak için Bir Microsoft Store incelemesi yazın… seçeneğini belirleyin. Zaman içinde gerçekleştirilen birkaç başarılı dışa aktarma işleminin ardından LightTable küçük bir inceleme hatırlatıcısı da gösterebilir. Gelecekteki hatırlatıcıları kapatmak için Hayır, teşekkürler seçeneğini belirleyin; Yardım eylemi kullanılabilir kalmaya devam eder.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Film şeridinde bu bağlantı, fotoğraf sayısının altında yalnızca geçerli liste görüntülenemeyen fotoğraflar içerdiğinde görünür.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Izgara ve film şeridinde Küçük resim kullanılamıyor mesajı, hatanın nedenini gösterir ve varsa bildirilen tanılama bilgisini içerir. Sorunu düzelttikten sonra Tekrar dene seçeneğini seçin.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "macOS uygulamasında, fotoğraflara ve albümlere göz atmak için kenar çubuğunda Apple Photos’u açın. İstendiğinde Photos erişimine izin verin. Bu kaynak Windows ve Linux'ta gizlidir.",
@@ -2102,6 +2103,7 @@
     "No snapshots yet": "Henüz anlık görüntü yok",
     "No sources yet.": "Henüz kaynak yok.",
     "No steps recorded yet.": "Henüz kayıtlı adım yok.",
+    "No thanks": "Hayır, teşekkürler",
     "No usable lines found.": "Kullanılabilir satır bulunamadı.",
     "No {tool} selection found": "{tool} seçimi bulunamadı",
     "None": "Yok",
@@ -3627,6 +3629,10 @@
     "Workflow": "İş akışı",
     "Working": "Çalışıyor",
     "Working…": "Çalışıyor…",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Microsoft Store'da LightTable için bir inceleme yazmak ister misiniz?",
+    "Write a Microsoft Store review on Windows": "Windows'ta bir Microsoft Store incelemesi yazın",
+    "Write a Microsoft Store review…": "Bir Microsoft Store incelemesi yazın…",
+    "Write a review": "Bir inceleme yazın",
     "Write beside exported photo": "Dışa aktarılan fotoğrafın yanına yaz",
     "Write changes beside originals": "Değişiklikleri orijinallerin yanına yaz",
     "Write now": "Şimdi yaz",

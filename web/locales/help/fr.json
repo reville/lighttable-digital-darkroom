@@ -3155,6 +3155,12 @@
             "Les mises à jour conservent les photos, les modifications et les préférences. Linux garde le paquet précédent pour la récupération, mais ne restaure pas automatiquement un catalogue et ne rouvre pas une version antérieure.",
             "Utilisez Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap pour mettre à jour les installations qu’ils gèrent. Téléchargez un nouveau ZIP pour les copies portables Windows. Les versions sans signature des mises à jour configurée ne peuvent pas se mettre à jour seules."
           ]
+        },
+        {
+          "title": "Rédiger un avis sur le Microsoft Store sous Windows",
+          "paragraphs": [
+            "Dans l'application de bureau Windows, ouvrez Aide et choisissez Rédiger un avis sur le Microsoft Store… pour ouvrir la page d'avis du Store. Après plusieurs exportations réussies au fil du temps, LightTable peut également afficher un petit rappel d'avis. Choisissez Non merci pour masquer les prochains rappels ; l'action Aide reste disponible."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
 }

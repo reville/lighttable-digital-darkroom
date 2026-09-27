@@ -1,9 +1,9 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "generation": {
-    "model": "gpt-5.4-mini",
+    "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
   },
   "messages": {
@@ -1660,6 +1660,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "In een smal Linux-venster opent Weergeven of verbergen bibliotheek de bibliotheek als een lade. Door het venster groter te maken, wordt de normale zij-aan-zij-indeling hersteld. Gebruik op Hyprland de venstersneltoetsen van de compositor om LightTable te verplaatsen, te tegelen, van grootte te veranderen of te sluiten.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "Gebruik in een smal Linux-venster Weergeven of verbergen bibliotheek linksboven om de bibliotheeklade te openen. Sluit deze na het kiezen van een map met dezelfde knop om meer ruimte voor de foto over te houden.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "In de Kromme-grafiek loopt de horizontale richting van donkerdere invoertonenen naar lichtere invoertonenen. Een punt omhoog verplaatsen verhoogt de uitvoer; omlaag verplaatsen verlaagt deze. RGB past de gecombineerde kromme aan, terwijl R, G en B afzonderlijke kanalen beïnvloeden.",
+    "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "Open in de Windows-desktopapp Help en kies Een Microsoft Store-beoordeling schrijven… om de beoordelingspagina van de Store te openen. Na verloop van tijd en meerdere succesvolle exports kan LightTable ook een kleine herinnering voor een beoordeling tonen. Kies Nee, bedankt om toekomstige herinneringen te negeren; de actie in Help blijft beschikbaar.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "In de filmstrip verschijnt deze link onder het aantal foto's alleen wanneer de huidige lijst foto's bevat die niet kunnen worden weergegeven.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "In het raster en de filmstrook toont Miniatuur niet beschikbaar waarom een miniatuur is mislukt, met de gemelde diagnostische informatie indien beschikbaar. Kies Opnieuw proberen nadat je het probleem hebt verholpen.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "Open in de macOS-app Apple Foto's in de zijbalk om door foto's en albums te bladeren. Geef toegang tot Foto's wanneer daarom wordt gevraagd. Deze bron is verborgen op Windows en Linux.",
@@ -2102,6 +2103,7 @@
     "No snapshots yet": "Nog geen momentopnamen",
     "No sources yet.": "Nog geen bronnen.",
     "No steps recorded yet.": "Nog geen stappen vastgelegd.",
+    "No thanks": "Nee, bedankt",
     "No usable lines found.": "Geen bruikbare regels gevonden.",
     "No {tool} selection found": "Geen selectie van {tool} gevonden",
     "None": "Geen",
@@ -3627,6 +3629,10 @@
     "Workflow": "Workflow",
     "Working": "Bezig",
     "Working…": "Bezig…",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Wilt u een beoordeling van LightTable schrijven in de Microsoft Store?",
+    "Write a Microsoft Store review on Windows": "Een Microsoft Store-beoordeling schrijven op Windows",
+    "Write a Microsoft Store review…": "Een Microsoft Store-beoordeling schrijven…",
+    "Write a review": "Een beoordeling schrijven",
     "Write beside exported photo": "Naast geëxporteerde foto schrijven",
     "Write changes beside originals": "Wijzigingen naast originelen wegschrijven",
     "Write now": "Nu schrijven",

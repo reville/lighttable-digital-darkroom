@@ -1,9 +1,9 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "generation": {
-    "model": "gpt-5.4-mini",
+    "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
   },
   "messages": {
@@ -1660,6 +1660,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "Trong cửa sổ Linux hẹp, Hiện hoặc ẩn thư viện mở thư viện dưới dạng một ngăn kéo. Mở rộng cửa sổ sẽ khôi phục bố cục song song thông thường. Trên Hyprland, dùng các phím tắt cửa sổ của compositor để di chuyển, xếp ô, thay đổi kích thước hoặc đóng LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "Trong cửa sổ Linux hẹp, dùng Hiện hoặc ẩn thư viện ở góc trên bên trái để mở ngăn thư viện. Đóng nó bằng cùng nút đó sau khi chọn một thư mục để có thêm chỗ cho ảnh.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Trong đồ thị Curve, hướng ngang đi từ tông đầu vào tối hơn đến tông đầu vào sáng hơn. Di chuyển một điểm lên sẽ tăng đầu ra của nó; di chuyển xuống sẽ giảm nó. RGB điều chỉnh đường cong kết hợp, còn R, G và B ảnh hưởng đến từng kênh riêng lẻ.",
+    "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "Trong ứng dụng máy tính Windows, hãy mở Trợ giúp và chọn Viết đánh giá trên Microsoft Store… để mở trang đánh giá của Store. Sau nhiều lần xuất thành công theo thời gian, LightTable cũng có thể hiển thị một lời nhắc đánh giá nhỏ. Hãy chọn Không, cảm ơn để bỏ qua các lời nhắc trong tương lai; thao tác trong Trợ giúp vẫn luôn khả dụng.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Trong dải phim, liên kết này chỉ xuất hiện bên dưới số lượng ảnh khi danh sách hiện tại chứa các ảnh không thể hiển thị.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Trong lưới và dải phim, thông báo Không có ảnh thu nhỏ cho biết lý do tạo ảnh thu nhỏ thất bại và kèm thông tin chẩn đoán được báo cáo nếu có. Sau khi khắc phục vấn đề, chọn Thử lại.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "Trong ứng dụng macOS, mở Apple Photos trong thanh bên để duyệt ảnh và album. Cho phép truy cập Photos khi được hỏi. Nguồn này bị ẩn trên Windows và Linux.",
@@ -2102,6 +2103,7 @@
     "No snapshots yet": "Chưa có ảnh chụp nhanh nào",
     "No sources yet.": "Chưa có nguồn nào.",
     "No steps recorded yet.": "Chưa ghi lại bước nào.",
+    "No thanks": "Không, cảm ơn",
     "No usable lines found.": "Không tìm thấy dòng nào dùng được.",
     "No {tool} selection found": "Không tìm thấy vùng chọn {tool}",
     "None": "Không",
@@ -3627,6 +3629,10 @@
     "Workflow": "Quy trình làm việc",
     "Working": "Đang làm việc",
     "Working…": "Đang làm việc…",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Bạn có muốn viết đánh giá về LightTable trên Microsoft Store không?",
+    "Write a Microsoft Store review on Windows": "Viết đánh giá trên Microsoft Store trên Windows",
+    "Write a Microsoft Store review…": "Viết đánh giá trên Microsoft Store…",
+    "Write a review": "Viết đánh giá",
     "Write beside exported photo": "Ghi bên cạnh ảnh đã xuất",
     "Write changes beside originals": "Ghi thay đổi bên cạnh bản gốc",
     "Write now": "Ghi ngay",

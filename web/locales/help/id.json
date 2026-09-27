@@ -3155,6 +3155,12 @@
             "Pembaruan mempertahankan foto, edit, dan preferensi. Linux menyimpan bundel sebelumnya untuk pemulihan, tetapi tidak otomatis memulihkan katalog atau membuka kembali versi lama.",
             "Gunakan Scoop, WinGet, Chocolatey, AUR, Flatpak, atau Snap untuk memperbarui instalasi yang dikelolanya. Unduh ZIP baru untuk salinan portabel Windows. Build tanpa konfigurasi tanda tangan pembaruan tidak dapat memperbarui dirinya sendiri."
           ]
+        },
+        {
+          "title": "Tulis ulasan Microsoft Store di Windows",
+          "paragraphs": [
+            "Di aplikasi desktop Windows, buka Bantuan dan pilih Tulis ulasan Microsoft Store… untuk membuka halaman ulasan Store. Setelah beberapa ekspor yang berhasil seiring waktu, LightTable mungkin juga menampilkan pengingat ulasan kecil. Pilih Tidak, terima kasih untuk menutup pengingat di masa mendatang; tindakan Bantuan tetap tersedia."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
 }

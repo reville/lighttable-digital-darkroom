@@ -3155,6 +3155,12 @@
             "Updates erhalten Fotos, Bearbeitungen und Einstellungen. Linux behält das vorherige Paket zur Wiederherstellung, stellt aber weder automatisch einen Katalog wieder her noch öffnet es eine ältere Version.",
             "Verwende Scoop, WinGet, Chocolatey, AUR, Flatpak oder Snap, um die jeweils verwalteten Installationen zu aktualisieren. Lade für portable Windows-Kopien eine neue ZIP-Datei herunter. Builds ohne konfigurierte Update-Signierung können sich nicht selbst aktualisieren."
           ]
+        },
+        {
+          "title": "Microsoft Store-Bewertung unter Windows schreiben",
+          "paragraphs": [
+            "Öffnen Sie in der Windows-Desktop-App Hilfe und wählen Sie Microsoft Store-Bewertung schreiben…, um die Store-Bewertungsseite zu öffnen. Nach mehreren erfolgreichen Exporten im Laufe der Zeit kann LightTable auch eine kleine Bewertungserinnerung anzeigen. Wählen Sie Nein danke, um zukünftige Erinnerungen abzulehnen; die Aktion unter Hilfe bleibt weiterhin verfügbar."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
 }

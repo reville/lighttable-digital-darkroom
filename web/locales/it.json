@@ -1,9 +1,9 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "generation": {
-    "model": "gpt-5.4-mini",
+    "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
   },
   "messages": {
@@ -1660,6 +1660,7 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.": "In una finestra Linux stretta, Mostra o nascondi libreria apre la libreria come cassetto. L'espansione della finestra ripristina il normale layout affiancato. Su Hyprland, usa le scorciatoie della finestra del compositore per spostare, affiancare, ridimensionare o chiudere LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.": "In una finestra Linux stretta, usa Mostra o nascondi libreria in alto a sinistra per aprire il cassetto della libreria. Chiudilo con lo stesso pulsante dopo aver scelto una cartella per lasciare più spazio alla foto.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.": "Nel grafico Curva, la direzione orizzontale va dai toni in ingresso più scuri a quelli più chiari. Spostare un punto verso l’alto aumenta l’uscita; spostarlo verso il basso la riduce. RGB regola la curva combinata, mentre R, G e B agiscono sui singoli canali.",
+    "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.": "Nell'app desktop per Windows, apri Aiuto e scegli Scrivi una recensione su Microsoft Store… per aprire la pagina delle recensioni dello Store. Nel corso del tempo, dopo diverse esportazioni riuscite, LightTable potrebbe mostrare anche un piccolo promemoria per la recensione. Scegli No, grazie per eliminare i promemoria futuri; l'azione in Aiuto rimane comunque disponibile.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.": "Nella pellicola, questo collegamento appare sotto il conteggio delle foto solo quando l'elenco corrente contiene foto che non possono essere visualizzate.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.": "Nella griglia e nella striscia pellicola, Miniatura non disponibile mostra il motivo dell’errore e include la diagnostica segnalata, se disponibile. Dopo aver corretto il problema, scegli Riprova.",
     "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.": "Nell'app per macOS, apri Apple Photos nella barra laterale per sfogliare foto e album. Consenti l'accesso a Photos quando richiesto. Questa origine è nascosta su Windows e Linux.",
@@ -2102,6 +2103,7 @@
     "No snapshots yet": "Nessuna istantanea ancora",
     "No sources yet.": "Nessuna origine ancora.",
     "No steps recorded yet.": "Nessun passaggio registrato ancora.",
+    "No thanks": "No, grazie",
     "No usable lines found.": "Nessuna riga utilizzabile trovata.",
     "No {tool} selection found": "Nessuna selezione dello strumento {tool} trovata",
     "None": "Nessuno",
@@ -3627,6 +3629,10 @@
     "Workflow": "Flusso di lavoro",
     "Working": "In corso",
     "Working…": "In corso…",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Vorresti scrivere una recensione di LightTable sul Microsoft Store?",
+    "Write a Microsoft Store review on Windows": "Scrivi una recensione su Microsoft Store su Windows",
+    "Write a Microsoft Store review…": "Scrivi una recensione su Microsoft Store…",
+    "Write a review": "Scrivi una recensione",
     "Write beside exported photo": "Scrivi accanto alla foto esportata",
     "Write changes beside originals": "Scrivi le modifiche accanto agli originali",
     "Write now": "Scrivi ora",

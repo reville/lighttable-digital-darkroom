@@ -3155,6 +3155,12 @@
             "As atualizações preservam fotos, edições e preferências. O Linux mantém o pacote anterior para recuperação, mas não restaura automaticamente um catálogo nem reabre uma versão anterior.",
             "Use Scoop, WinGet, Chocolatey, AUR, Flatpak ou Snap para atualizar as instalações que eles gerenciam. Baixe um novo ZIP para as cópias portáteis do Windows. Builds sem a assinatura de atualizações configurada não podem se atualizar sozinhas."
           ]
+        },
+        {
+          "title": "Escrever uma avaliação na Microsoft Store no Windows",
+          "paragraphs": [
+            "No aplicativo desktop para Windows, abra Ajuda e escolha Escrever uma avaliação na Microsoft Store… para abrir a página de avaliação da Store. Após várias exportações bem-sucedidas ao longo do tempo, o LightTable também poderá exibir um pequeno lembrete de avaliação. Escolha Não, obrigado para dispensar lembretes futuros; a ação no menu Ajuda continuará disponível."
+          ]
         }
       ],
       "related": [
@@ -3601,5 +3607,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "591a32132d3d1a1a3f892248464d273cd6854ac54a99c3651f81608fff7df6e8"
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
 }
