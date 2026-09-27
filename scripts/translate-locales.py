@@ -97,7 +97,7 @@ def translate(locale, source, args, deadline):
             'filename templates {filename}_{stock}, file paths, .extensions, commands, key letters/shortcuts '
             '(Command/Ctrl/Option/Shift can be localized), product names LightTable/Lightroom/Capture One, '
             'film stock names, RAW, JPEG, TIFF, HEIF, RGB, sRGB, Display P3, ProPhoto RGB, XMP, ISO, EV and units. '
-            'When text mentions Microsoft Store, review means a public app rating/opinion, not inspecting a photo. '
+            'When text mentions Microsoft Store, review means a public app rating/opinion, never a survey or inspection. '
             'Do not add HTML/Markdown, explanations, or translator notes. Every id must occur once. '
             'Short isolated terms are photo editing UI labels unless clearly a proper name. Preserve proper names '
             'and technical symbols when they should remain unchanged; translate actual words and sentences. '
@@ -105,6 +105,10 @@ def translate(locale, source, args, deadline):
             'Chinese script MUST match the locale. Help paragraphs can mention exact controls: use their translated '
             'UI names from glossary. Input punctuation may be adapted naturally but preserve literal technical tokens.'
         )
+        if code == 'bn':
+            instructions += ' In Bengali, a public Microsoft Store app review is a রিভিউ or পর্যালোচনা; never use সমীক্ষা, which means survey.'
+        if code == 'id':
+            instructions += ' In Indonesian, use ulasan for a public Microsoft Store app review; tinjauan suggests inspection.'
         input_data = {'glossary': glossary, 'strings': [{'id': i, 'text': text} for i, text in enumerate(batch)]}
         schema = {'type': 'object', 'properties': {'translations': {'type': 'array', 'items': {
             'type': 'object', 'properties': {'id': {'type': 'integer'}, 'text': {'type': 'string'}},

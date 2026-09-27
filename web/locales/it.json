@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -3629,7 +3629,7 @@
     "Workflow": "Flusso di lavoro",
     "Working": "In corso",
     "Working…": "In corso…",
-    "Would you like to review LightTable on the Microsoft Store?": "Vuoi recensire LightTable su Microsoft Store?",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Vorresti scrivere una recensione di LightTable sul Microsoft Store?",
     "Write a Microsoft Store review on Windows": "Scrivi una recensione su Microsoft Store su Windows",
     "Write a Microsoft Store review…": "Scrivi una recensione su Microsoft Store…",
     "Write a review": "Scrivi una recensione",

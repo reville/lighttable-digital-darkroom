@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "e88de738fb8f2117d6bfd36c9bd30c0da4bbcaff9fefa3dffd763f47999d4bd3",
+  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "plurals": {
     " · {count} paired file linked": {
@@ -3940,7 +3940,7 @@
     "Workflow": "Workflow",
     "Working": "Working",
     "Working…": "Working…",
-    "Would you like to review LightTable on the Microsoft Store?": "Would you like to review LightTable on the Microsoft Store?",
+    "Would you like to write a review of LightTable on the Microsoft Store?": "Would you like to write a review of LightTable on the Microsoft Store?",
     "Write a Microsoft Store review on Windows": "Write a Microsoft Store review on Windows",
     "Write a Microsoft Store review…": "Write a Microsoft Store review…",
     "Write a review": "Write a review",
