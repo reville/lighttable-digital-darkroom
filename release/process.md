@@ -265,6 +265,8 @@ A failed VM run blocks preparation too. Mac/Linux stages never inherit the
 Windows VM ID; their native proof comes from their selected package job.
 For macOS use `--platform macos-arm64 --macos-channel beta` and, if necessary,
 `--macos-version VERSION-beta.N`; manual beta promotion has no `--advance-feed`.
+The Mac beta remains a separate public download; its promotion skips the
+canonical index handoff so the signed and notarized Mac default is preserved.
 Without `--apply`, dispatch stages only print their validated plan. `--stage
 status` reads recorded IDs once. A missing run URL leaves a pending intent:
 inspect the workflow on GitHub, then repeat the exact command with

@@ -97,12 +97,19 @@ jobs:
           python scripts/release/promote_candidate.py "${arguments[@]}"
       - name: Prepare the canonical index and website handoff
         if: inputs.dry_run == false
+        env:
+          PLATFORM: ${{ inputs.platform }}
+          VERSION: ${{ inputs.version }}
         run: |
           if python -c 'import json; r=json.load(open(".build/release-promotion/result.json")); raise SystemExit(not (r.get("published_release") and r.get("public_bytes_verified")))'; then
-            python scripts/release/update_index.py --index release/manifest.json \
-              --promotion-result .build/release-promotion/result.json \
-              --output .build/release-promotion/manifest.json
-            echo "Verified manifest.json is attached to the promotion result. Review and merge it into release/manifest.json, then run the website metadata sync workflow and deploy." >> "$GITHUB_STEP_SUMMARY"
+            if [[ "$PLATFORM" == macos-arm64 && "$VERSION" == *-beta.* ]]; then
+              echo "Manual Mac beta is a separate download; preserve the signed and notarized Mac default in release/manifest.json." >> "$GITHUB_STEP_SUMMARY"
+            else
+              python scripts/release/update_index.py --index release/manifest.json \
+                --promotion-result .build/release-promotion/result.json \
+                --output .build/release-promotion/manifest.json
+              echo "Verified manifest.json is attached to the promotion result. Review and merge it into release/manifest.json, then run the website metadata sync workflow and deploy." >> "$GITHUB_STEP_SUMMARY"
+            fi
           fi
       - name: Retain promotion or blocking receipt
         if: always()
