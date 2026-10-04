@@ -527,7 +527,11 @@ export class GradeRenderer {
   constructor(canvas) {
     this.canvas = canvas;
     this.gl = canvas.getContext('webgl', {
-      preserveDrawingBuffer: false, antialias: false, alpha: false,
+      // The Linux host opts in for WebKitGTK's non-DMA-BUF presentation path.
+      // Without preservation its first/last frame can remain invisible until
+      // another draw (https://bugs.webkit.org/show_bug.cgi?id=324549).
+      preserveDrawingBuffer: globalThis.__LIGHTTABLE_PRESERVE_DRAWING_BUFFER__ === true,
+      antialias: false, alpha: false,
     });
     if (!this.gl) throw new Error(tr("WebGL unavailable"));
     const gl = this.gl;
