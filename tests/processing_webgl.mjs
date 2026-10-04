@@ -97,8 +97,39 @@ try {
     delete output.pixels;
     records.push({name: test.name, ...output});
   }
+  // Exercise the Linux non-DMA-BUF context policy with a single draw per
+  // photo. A continuous capture loop would conceal a missing first frame.
+  const retainedFrames = await page.evaluate(async (sources) => {
+    globalThis.__LIGHTTABLE_PRESERVE_DRAWING_BUFFER__ = true;
+    const {GradeRenderer} = await import('/web/gl.js');
+    const canvas = document.createElement('canvas');
+    document.querySelector('#preview').replaceWith(canvas);
+    const renderer = new GradeRenderer(canvas);
+    const gl = renderer.gl;
+    if (!gl.getContextAttributes().preserveDrawingBuffer) {
+      throw Error('Linux presentation policy did not reach context creation');
+    }
+    for (const source of sources) {
+      const image = new Image(); image.src = source; await image.decode();
+      renderer.setImage(image, {cacheKey: source});
+      renderer.draw({});
+      const initial = new Uint8Array(canvas.width * canvas.height * 4);
+      gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, initial);
+      if (!initial.some((value, index) => index % 4 !== 3 && value > 0)) {
+        throw Error('The first preview draw was blank');
+      }
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const presented = new Uint8Array(initial.length);
+      gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, presented);
+      if (presented.some((value, index) => value !== initial[index])) {
+        throw Error('A single-draw preview was lost after presentation');
+      }
+    }
+    if (gl.getError()) throw Error('WebGL error in the preserved-buffer preview');
+    return sources.length;
+  }, ['target', 'reverse', 'portrait', 'target'].map(name => `${config.baseUrl}/${name}.png`));
   if (errors.length) throw Error(errors.join('\n'));
-  fs.writeFileSync(config.result, JSON.stringify({records, browserVersion: browser.version()}));
+  fs.writeFileSync(config.result, JSON.stringify({records, retainedFrames, browserVersion: browser.version()}));
 } finally {
   await browser.close();
 }

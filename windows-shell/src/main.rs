@@ -79,6 +79,7 @@ fn photo_extensions() -> Vec<String> {
 
 const BRIDGE_SCRIPT: &str = r#"
 window.__LIGHTTABLE_PLATFORM__ = '__PLATFORM__';
+window.__LIGHTTABLE_PRESERVE_DRAWING_BUFFER__ = __PRESERVE_DRAWING_BUFFER__;
 window.lightTableNativeBridge = {
   postMessage(message) { window.ipc.postMessage(JSON.stringify(message)); }
 };
@@ -86,8 +87,14 @@ document.documentElement.classList.add('native-shell', '__PLATFORM__-shell');
 document.documentElement.style.setProperty('--native-window-controls-w', '0px');
 "#;
 
-fn bridge_script(platform: &str, languages: &[String]) -> Result<String> {
-    let script = BRIDGE_SCRIPT.replace("__PLATFORM__", platform);
+fn bridge_script(platform: &str, languages: &[String], disable_dmabuf_renderer: Option<&str>) -> Result<String> {
+    // WebKitGTK's non-DMA-BUF path can present the previous WebGL frame when
+    // antialias and preserveDrawingBuffer are both false (WebKit bug 324549).
+    // Configure the context before its first draw, after NVIDIA detection has
+    // set the environment, while respecting explicit user overrides.
+    let preserve_drawing_buffer = platform == "linux" && disable_dmabuf_renderer == Some("1");
+    let script = BRIDGE_SCRIPT.replace("__PLATFORM__", platform)
+        .replace("__PRESERVE_DRAWING_BUFFER__", if preserve_drawing_buffer { "true" } else { "false" });
     let languages = serde_json::to_string(languages)?;
     Ok(format!("{script}\nwindow.__LIGHTTABLE_SYSTEM_LANGUAGES__={languages};"))
 }
@@ -1525,7 +1532,8 @@ fn run() -> Result<()> {
     } else {
         "windows"
     };
-    let bridge_script = bridge_script(platform, &localization::system_languages())?;
+    let disable_dmabuf_renderer = env::var("WEBKIT_DISABLE_DMABUF_RENDERER").ok();
+    let bridge_script = bridge_script(platform, &localization::system_languages(), disable_dmabuf_renderer.as_deref())?;
     let command_proxy = proxy.clone();
     let load_proxy = proxy.clone();
     let builder = WebViewBuilder::new_with_web_context(&mut web_context)
@@ -1757,13 +1765,27 @@ mod bridge_tests {
     fn platform_and_language_values_survive_bridge_initialization() {
         let languages = vec!["es-MX".to_owned(), "quote\"\nvalue".to_owned()];
         for platform in ["windows", "linux"] {
-            let script = bridge_script(platform, &languages).unwrap();
+            let script = bridge_script(platform, &languages, None).unwrap();
             assert!(script.contains(&format!("window.__LIGHTTABLE_PLATFORM__ = '{platform}'")));
             assert!(script.contains(&format!("'{platform}-shell'")));
             assert!(!script.contains("__PLATFORM__"));
             let serialized = script.split("window.__LIGHTTABLE_SYSTEM_LANGUAGES__=")
                 .nth(1).unwrap().strip_suffix(';').unwrap();
             assert_eq!(serde_json::from_str::<Vec<String>>(serialized).unwrap(), languages);
+        }
+    }
+
+    #[test]
+    fn only_non_dmabuf_linux_webviews_preserve_the_drawing_buffer() {
+        for platform in ["windows", "linux"] {
+            for setting in [None, Some("0"), Some("1"), Some("")] {
+                let script = bridge_script(platform, &[], setting).unwrap();
+                let expected = platform == "linux" && setting == Some("1");
+                assert!(script.contains(&format!(
+                    "window.__LIGHTTABLE_PRESERVE_DRAWING_BUFFER__ = {expected};"
+                )));
+                assert!(!script.contains("__PRESERVE_DRAWING_BUFFER__"));
+            }
         }
     }
 }

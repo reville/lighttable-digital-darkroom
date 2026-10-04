@@ -118,5 +118,6 @@ def run(output_dir):
         records.append(compare_images(test['name'] + '-compositor', actual, display,
             output_dir / 'display', {'mean': 0.1, 'p95': 0.0, 'max': 1.0}))
     return {'records': records, 'browser': metadata['browserVersion'],
+            'retainedFrames': metadata['retainedFrames'],
             'renderer': metadata['records'][0]['renderer'],
             'coverage': 'Production WebGL shader and composited canvas, isolated from full app UI'}

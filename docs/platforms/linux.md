@@ -204,6 +204,14 @@ compositing and X11/Wayland embedding risks specific to Linux — is in
 [`gpu-preview-design.md`](gpu-preview-design.md); it has not been spiked
 because it needs real Linux hardware to validate compositing behavior.
 
+When `WEBKIT_DISABLE_DMABUF_RENDERER=1` is active (set automatically for
+NVIDIA unless overridden), the desktop shell preserves the WebGL drawing
+buffer so a newly opened photo is presented without waiting for a slider
+change or tab switch. This works around [WebKit bug 324549](https://bugs.webkit.org/show_bug.cgi?id=324549).
+The normal DMA-BUF path and an explicit `WEBKIT_DISABLE_DMABUF_RENDERER=0`
+keep the nonpersistent buffer. Confirmation on the affected NVIDIA/Wayland
+hardware remains separate from automated rendering and desktop checks.
+
 ### Storage
 
 Linux uses the XDG directories, with `lighttable` beneath each root:
