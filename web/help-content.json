@@ -3089,6 +3089,12 @@
           ]
         },
         {
+          "title": "RAW highlights",
+          "paragraphs": [
+            "X-Trans RAW captures use highlight blending instead of reconstruction to avoid false-colour bands in clipped highlights, including Fujifilm X-T5 skies. This applies to previews and full-resolution exports; it cannot recover detail the sensor clipped. Bayer RAW captures retain highlight reconstruction."
+          ]
+        },
+        {
           "title": "Linux and Omarchy appearance",
           "paragraphs": [
             "On Linux, controls follow the system's light or dark appearance. On Omarchy, toolbars, sidebars, menus, and dialogs follow the active desktop palette and update within a few seconds of a theme change. Photo pixels, the viewer background preference, and neutral color scopes keep their own colors.",

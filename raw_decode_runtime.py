@@ -162,6 +162,17 @@ def open_raw(path):
         raise
 
 
+def is_xtrans(raw):
+    """Read the native header flag, or the portable decoder's small CFA tile."""
+    flag = getattr(raw, "is_xtrans", None)
+    if isinstance(flag, bool):
+        return flag
+    # Stock rawpy lacks the header-only flag. raw_pattern unpacks once, as
+    # postprocess would anyway, and returns only the repeating CFA tile.
+    pattern = getattr(raw, "raw_pattern", None)
+    return getattr(pattern, "shape", None) == (6, 6)
+
+
 def native_options(options, decoder):
     """The two extension modules have distinct enum classes with equal values."""
     return {key: getattr(decoder, type(value).__name__)(value.value)

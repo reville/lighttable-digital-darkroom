@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "4e9c4cb8f6f662b9b64d965e03a1eeb3371a30a1ffd077e25a921b7725564b45",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "plurals": {
     " · {count} paired file linked": {
@@ -2779,6 +2779,7 @@
     "RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.": "RAW + JPEG · Ratings, flags, labels and keywords are linked. Edits stay separate.",
     "RAW development": "RAW development",
     "RAW files and defaults": "RAW files and defaults",
+    "RAW highlights": "RAW highlights",
     "RAW originals": "RAW originals",
     "RAW originals are rendered to an adjusted {valueValue}-bit TIFF.": "RAW originals are rendered to an adjusted {valueValue}-bit TIFF.",
     "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.": "RAW originals must be rendered as adjusted TIFFs. Processed original is unavailable if the selection contains a RAW file. For processed photos, that option opens the original rather than preparing an adjusted TIFF.",
@@ -3953,6 +3954,7 @@
     "Writing 16-bit TIFF": "Writing 16-bit TIFF",
     "Wrote {count} sidecar.": "Wrote {count} sidecar.",
     "Wrote {count} sidecars.": "Wrote {count} sidecars.",
+    "X-Trans RAW captures use highlight blending instead of reconstruction to avoid false-colour bands in clipped highlights, including Fujifilm X-T5 skies. This applies to previews and full-resolution exports; it cannot recover detail the sensor clipped. Bayer RAW captures retain highlight reconstruction.": "X-Trans RAW captures use highlight blending instead of reconstruction to avoid false-colour bands in clipped highlights, including Fujifilm X-T5 skies. This applies to previews and full-resolution exports; it cannot recover detail the sensor clipped. Bayer RAW captures retain highlight reconstruction.",
     "XMP": "XMP",
     "XMP cannot be checked safely": "XMP cannot be checked safely",
     "XMP could not be written.": "XMP could not be written.",

@@ -136,7 +136,10 @@ Existing edits keep their original vignette appearance with the default Size
 and Feather values; setting Vignette to zero turns the effect off.
 
 RAW decoding uses rawpy and LibRaw. Capture white balance and demosaicing happen
-before film; processing stays floating point until the final encoder. A RAW
+before film; processing stays floating point until the final encoder. X-Trans
+captures use highlight blending instead of reconstruction to avoid false-colour
+bands in clipped highlights; this does not recover detail the sensor clipped.
+Bayer captures retain highlight reconstruction. A RAW
 starts with capture sharpening and colour noise reduction. Its Film-off
 develop starts from the bundled LightTable Standard look, a modelled generic
 rendition, or from a DCP camera profile in your own profile folder, applied

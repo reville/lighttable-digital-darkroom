@@ -3,7 +3,7 @@
     "about-lighttable": {
       "content": "f176c760d71f2141d024f089715f371828dcb3916a9a86bdfbea36dbae67ce87",
       "sources": {
-        "README.md": "6d853eebed1f59d276213e08f9e90b792436d1791a632fd78099fb5d99a739ad",
+        "README.md": "49e099334aa209840fc02984a5836ee02958454954a87f5595f635dd04795d43",
         "app/main.swift": "953e69e976317c3d30d46dff560045fabddbeaf8c501bc72ee0df669d709e39c"
       }
     },
@@ -290,7 +290,7 @@
     "export-format-color-space": {
       "content": "e3a98c414bd8cff9062effc8f86f12c89ae707ac75190bc0eae35ad9663ab575",
       "sources": {
-        "color_pipeline.py": "6ff2ce0c729cd353a3fc9043dec0822e4fbaba1c6238ebd52e85c3819bddc659",
+        "color_pipeline.py": "c9a8ce5963a121425f62aebded3410d32df47bc2bc9d336c4019d18a50445c57",
         "export_workflow.py": "ae2d873a571fcbb1b2d97e78c3bb68e8bf5324a5b3a14651f6235b77b4f305b6",
         "web/app.js": "0219394c419a9806f8d6b6432cb4329716cdbe1232ca22b9eeab8e43f4d68b67",
         "web/index.html": "34c8a96409720a13480983c77125429400f75d7d151af9a33e1b86b3ff205ea8"
@@ -489,13 +489,14 @@
       }
     },
     "settings-and-defaults": {
-      "content": "cb6d41f6328f441bfedc84de0780254dfd3cd363d0d5bee76295ce4bce9dc79d",
+      "content": "9eb1b2d161bb0e22651935be6a2ae2a1e0c2dc046f52926867761a14029a10c1",
       "sources": {
         "camera_calibration.py": "3c7a6a3ec1b284d2b44deb95983b7c64b0d21350766910fc03af2ef85ad53cf9",
-        "color_pipeline.py": "6ff2ce0c729cd353a3fc9043dec0822e4fbaba1c6238ebd52e85c3819bddc659",
+        "color_pipeline.py": "c9a8ce5963a121425f62aebded3410d32df47bc2bc9d336c4019d18a50445c57",
         "desktop_updater.py": "ee4b3046a0b202cb579f60d02ff6e1ff7f7754ca4a394a12ef7be3ba96a026cd",
         "linux_theme.py": "0712b6783baf454abe704ce3bfda01ffa5170096ba4b9104470109da7007ff6f",
         "profiles/build_lighttable_standard.py": "d1f281dc512dd52b36f32b7089f3f754ddd8456c99dd6cc83245c9b131e62b65",
+        "raw_decode_runtime.py": "b0452f7544c12cb68955aff3e3c28598776dbf5ebd38973a861c6ed43e3d7c3a",
         "server.py": "07f45f7abb562c33f49886b9548839f1aefb2a3aae9c83fe8cc8260b50a2bb77",
         "server_updates.py": "cc3b07c1396b2d26a710d8cb3d9b67574f68c5293ca89433257e9a9f118b43d5",
         "web/desktop-theme.js": "e4891f7837e1447d0a1a623e3d1d9b4475006263eb53938bc41665f0bd132ab7",

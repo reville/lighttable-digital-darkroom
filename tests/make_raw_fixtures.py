@@ -83,6 +83,23 @@ def write_bayer(path: Path) -> None:
                    (33422, "B", 4, bytes([0, 1, 1, 2]), True)])  # CFAPattern RGGB
 
 
+def write_xtrans(path: Path) -> None:
+    """A synthetic 6x6 CFA, generated on demand for highlight regressions."""
+    pattern = np.array([[1, 2, 1, 1, 0, 1], [0, 1, 0, 2, 1, 2],
+                        [1, 2, 1, 1, 0, 1], [1, 0, 1, 1, 2, 1],
+                        [2, 1, 2, 0, 1, 0], [1, 0, 1, 1, 2, 1]], dtype=np.uint8)
+    # X-Trans interpolation needs a larger frame than the tiny Bayer fixture.
+    pixels = np.repeat(np.repeat(scene(), 12, axis=0), 12, axis=1)
+    y, x = np.mgrid[0:pixels.shape[0], 0:pixels.shape[1]]
+    mosaic = pixels[y, x, pattern[y % 6, x % 6]]
+    encoded = np.clip(mosaic * (WHITE - BLACK) + BLACK, 0, WHITE).astype(np.uint16)
+    tifffile.imwrite(
+        path, encoded, photometric="cfa", planarconfig="contig",
+        compression=None, software="LightTable test fixture",
+        extratags=[*_tags(), (33421, "H", 2, (6, 6), True),
+                   (33422, "B", 36, pattern.tobytes(), True)])
+
+
 def write_linear(path: Path) -> None:
     """A LinearRaw DNG: already demosaiced, so no CFA interpolation runs."""
     encoded = np.clip(scene() * (WHITE - BLACK) + BLACK, 0, WHITE).astype(np.uint16)

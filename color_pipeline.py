@@ -388,13 +388,13 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     learned = enhance_workflow.denoise_fingerprint(params)
     import hashlib
     return hashlib.sha256(
-        (f"linear-prophoto-v5|{profile}|{recovery}|{denoise}|{learned}|"
+        (f"linear-prophoto-v6|{profile}|{recovery}|{denoise}|{learned}|"
          f"{mode}|{temperature}|{tint}|{develop}|{camera}").encode()
     ).hexdigest()[:12]
 
 
 def raw_postprocess_options(params: dict | None = None,
-                            *, half_size: bool = False) -> dict:
+                            *, half_size: bool = False, xtrans: bool = False) -> dict:
     """Build rawpy options for capture-stage quality decisions.
 
     The camera profile uses LibRaw's camera-specific default demosaic and
@@ -408,6 +408,14 @@ def raw_postprocess_options(params: dict | None = None,
     params = params or {}
     profile = str(params.get("raw_profile", "camera"))
     recovery = str(params.get("raw_highlight_recovery", "reconstruct"))
+    if recovery not in RAW_HIGHLIGHT_MODES:
+        recovery = "reconstruct"
+    # LibRaw's ratio-map reconstruction produces false magenta bands in
+    # clipped X-T5 skies, at both full and preview resolution. Blend the
+    # surviving channels on X-Trans instead; never invent clipped detail.
+    # Bayer reconstruction and explicit Off/Blend choices remain unchanged.
+    if xtrans and recovery == "reconstruct":
+        recovery = "blend"
     denoise = str(params.get("raw_sensor_denoise", "off"))
     options = {
         "gamma": (1, 1),
@@ -540,7 +548,8 @@ def decode_raw(path: Path | str, params: dict | None = None,
         preview_half_size = bool(
             max_width and sensor_width and int(max_width) * 2 <= sensor_width)
         kwargs = raw_decode_runtime.native_options(raw_postprocess_options(
-            params, half_size=half_size or preview_half_size), decoder)
+            params, half_size=half_size or preview_half_size,
+            xtrans=raw_decode_runtime.is_xtrans(raw)), decoder)
         if mode == "as_shot":
             kwargs["use_camera_wb"] = True
         elif mode == "auto":

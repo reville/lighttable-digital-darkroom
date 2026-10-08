@@ -152,6 +152,33 @@ class RawCaptureControls(unittest.TestCase):
 
 @unittest.skipUnless(_rawpy(), "needs rawpy")
 class RawFixtures(unittest.TestCase):
+    def test_xtrans_default_blends_clipped_highlights_at_both_resolutions(self):
+        import tempfile
+        import make_raw_fixtures
+        import color_pipeline
+        import raw_decode_runtime
+        with tempfile.TemporaryDirectory(prefix="lighttable-xtrans-") as temp:
+            path = Path(temp) / "synthetic-xtrans.dng"
+            make_raw_fixtures.write_xtrans(path)
+            for half_size in (False, True):
+                with self.subTest(half_size=half_size):
+                    with raw_decode_runtime.open_raw(path) as (raw, decoder):
+                        self.assertTrue(raw_decode_runtime.is_xtrans(raw))
+                        options = raw_decode_runtime.native_options(
+                            color_pipeline.raw_postprocess_options(
+                                {"raw_highlight_recovery": "blend"}, half_size=half_size),
+                            decoder)
+                        expected = raw.postprocess(**options, use_camera_wb=True)
+                    actual = color_pipeline.decode_raw(path, half_size=half_size)
+                    np.testing.assert_array_equal(actual, expected)
+                    with raw_decode_runtime.open_raw(path) as (raw, decoder):
+                        unsafe_options = raw_decode_runtime.native_options(
+                            color_pipeline.raw_postprocess_options({}, half_size=half_size),
+                            decoder)
+                        unsafe = raw.postprocess(**unsafe_options, use_camera_wb=True)
+                    self.assertFalse(np.array_equal(actual, unsafe),
+                                     "fixture must distinguish reconstruction from blending")
+
     def test_fixtures_are_reproducible_from_the_generator(self):
         """The committed DNGs must match what the script writes today."""
         import hashlib

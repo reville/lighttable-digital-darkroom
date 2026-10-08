@@ -8,6 +8,18 @@ import raw_decode_runtime
 
 
 class RawDecodeRuntimeTests(unittest.TestCase):
+    def test_xtrans_detection_prefers_header_without_unpacking(self):
+        for flag in (True, False):
+            raw = mock.Mock(is_xtrans=flag)
+            self.assertIs(raw_decode_runtime.is_xtrans(raw), flag)
+            self.assertNotIn("raw_pattern", raw._mock_children)
+
+    def test_stock_xtrans_detection_uses_cfa_shape_not_filename(self):
+        for shape, expected in (((6, 6), True), ((2, 2), False), (None, False)):
+            raw = SimpleNamespace(raw_pattern=SimpleNamespace(shape=shape))
+            self.assertIs(raw_decode_runtime.is_xtrans(raw), expected)
+        self.assertFalse(raw_decode_runtime.is_xtrans(SimpleNamespace(raw_pattern=None)))
+
     def runtimes(self, *, xtrans=False):
         class Error(Exception):
             pass

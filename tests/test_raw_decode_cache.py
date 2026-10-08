@@ -75,6 +75,29 @@ class SharedCaptureTests(unittest.TestCase):
         color_pipeline.decode_raw(self.source)
         self.assertEqual(self.decode.call_count, 2)
 
+    def test_xtrans_reconstruction_uses_blend_for_preview_and_export(self):
+        import rawpy
+        self.raw.is_xtrans = True
+        for options in ({"max_width": 20}, {}):
+            color_pipeline.decode_raw(self.source, **options)
+            self.assertIs(self.decode.call_args.kwargs["highlight_mode"],
+                          rawpy.HighlightMode.Blend)
+        self.assertEqual(self.decode.call_count, 2)
+        color_pipeline.decode_raw(self.source, {"raw_highlight_recovery": "blend"})
+        self.assertEqual(self.decode.call_count, 2)  # Same effective decode/cache key.
+        color_pipeline.decode_raw(self.source, {"raw_highlight_recovery": "off"})
+        self.assertIs(self.decode.call_args.kwargs["highlight_mode"], rawpy.HighlightMode.Clip)
+
+    def test_portable_xtrans_and_bayer_take_sensor_specific_highlight_modes(self):
+        import rawpy
+        self.raw.raw_pattern = np.zeros((6, 6), dtype=np.uint8)
+        color_pipeline.decode_raw(self.source, {"raw_highlight_recovery": "invalid"})
+        self.assertIs(self.decode.call_args.kwargs["highlight_mode"], rawpy.HighlightMode.Blend)
+        self.raw.raw_pattern = np.zeros((2, 2), dtype=np.uint8)
+        color_pipeline.decode_raw(self.source)
+        self.assertIs(self.decode.call_args.kwargs["highlight_mode"],
+                      rawpy.HighlightMode.ReconstructDefault)
+
     def test_atomic_replacement_after_open_does_not_poison_new_source(self):
         import rawpy
         opens = []
