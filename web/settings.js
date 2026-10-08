@@ -351,10 +351,16 @@ export function installSettings(context) {
   });
   byId('chooseBackupDirectory').onclick = () =>
     sendNative('choosePreferenceFolder', { key: 'backupDirectory' });
-  window.addEventListener('lighttable-preference-folder', (event) => {
-    if (event.detail?.key !== 'backupDirectory') return;
-    byId('backupDirectory').value = event.detail.path || '';
-    savePatch({ backupDirectory: byId('backupDirectory').value });
+  byId('chooseCameraProfileFolder').onclick = () =>
+    sendNative('choosePreferenceFolder', { key: 'cameraProfileFolder' });
+  window.addEventListener('lighttable-preference-folder', async (event) => {
+    const key = event.detail?.key;
+    if (!['backupDirectory', 'cameraProfileFolder'].includes(key)) return;
+    byId(key).value = event.detail.path || '';
+    await savePatch({ [key]: byId(key).value });
+    if (key === 'cameraProfileFolder') {
+      window.dispatchEvent(new CustomEvent('lighttable-camera-profiles-changed'));
+    }
   });
   byId('writeSidecarsNow').onclick = async () => {
     byId('writeSidecarsNow').disabled = true;

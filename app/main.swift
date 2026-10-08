@@ -345,6 +345,21 @@ final class NativeLocaleStore {
 
 #if LIGHTTABLE_STORE
 /// Main-thread grant ownership; helpers resolve the same bookmarks themselves.
+// MARK: - Store folder access policy
+private func storeFolderIsAccessible(_ path: String, selectedRoots: [URL], supportDirectory: URL) -> Bool {
+    let canonical = URL(fileURLWithPath: path).resolvingSymlinksInPath().path
+    func contains(_ root: String) -> Bool {
+        canonical == root || canonical.hasPrefix(root + "/")
+    }
+    // Container-owned imports and demo photos need no selected-folder grant.
+    // Do not accept a support directory or descendant redirected outside it.
+    let expectedSupport = supportDirectory.deletingLastPathComponent()
+        .resolvingSymlinksInPath().appendingPathComponent(supportDirectory.lastPathComponent).path
+    let support = supportDirectory.resolvingSymlinksInPath().path
+    if support == expectedSupport && contains(support) { return true }
+    return selectedRoots.contains { contains($0.resolvingSymlinksInPath().path) }
+}
+// MARK: - Store bookmark bridge
 private final class StoreFileAccess {
     static let shared = StoreFileAccess()
     private var active: [String: URL] = [:]
@@ -399,11 +414,8 @@ private final class StoreFileAccess {
         } catch { url.stopAccessingSecurityScopedResource(); throw error }
     }
     func contains(_ path: String) -> Bool {
-        let canonical = URL(fileURLWithPath: path).resolvingSymlinksInPath().path
-        return active.values.contains { url in
-            let root = url.resolvingSymlinksInPath().path
-            return canonical == root || canonical.hasPrefix(root + "/")
-        }
+        storeFolderIsAccessible(path, selectedRoots: Array(active.values),
+                                supportDirectory: lightTableSupportDirectory())
     }
     deinit { active.values.forEach { $0.stopAccessingSecurityScopedResource() } }
 }
@@ -2711,10 +2723,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     }
 
     private func photosImportRoot() throws -> URL {
+#if LIGHTTABLE_STORE
+        let pictures = lightTableSupportDirectory()
+#else
         guard let pictures = FileManager.default.urls(
             for: .picturesDirectory, in: .userDomainMask).first else {
             throw CocoaError(.fileNoSuchFile)
         }
+#endif
         let destination = pictures
             .appendingPathComponent("LightTable Imports", isDirectory: true)
             .appendingPathComponent("Apple Photos", isDirectory: true)
@@ -3203,6 +3219,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             }
         case "choosePreferenceFolder":
             let key = (body["key"] as? String) ?? ""
+            guard ["backupDirectory", "cameraProfileFolder"].contains(key) else { return }
             if let picked = pickFolder(title: L("Choose a settings folder")) {
                 sendEvent(["type": "preferenceFolderSelected",
                            "key": key, "path": picked])
