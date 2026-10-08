@@ -52,7 +52,8 @@
         {
           "title": "Apri una cartella locale",
           "paragraphs": [
-            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Cartelle per aggiungere un'intera cartella. LightTable conserva gli originali nella posizione originale. Selezionare una singola foto aggiunge la cartella che la contiene, così anche altre foto supportate in quella cartella possono comparire."
+            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Cartelle per aggiungere un'intera cartella. LightTable conserva gli originali nella posizione originale. Selezionare una singola foto aggiunge la cartella che la contiene, così anche altre foto supportate in quella cartella possono comparire.",
+            "Nell’edizione del Mac App Store, scegli una cartella che contenga le tue foto. LightTable può leggere e scrivere solo nelle posizioni che selezioni e memorizza l’accesso per gli avvii successivi. Se una cartella memorizzata non è più disponibile, selezionala di nuovo."
           ],
           "steps": [
             "Fai clic su Aggiungi foto in alto a sinistra e scegli le foto, oppure usa il + accanto a Cartelle per scegliere una cartella.",
@@ -3150,6 +3151,7 @@
         {
           "title": "Aggiorna LightTable",
           "paragraphs": [
+            "L’edizione del Mac App Store riceve gli aggiornamenti tramite l’App Store. Il menu LightTable non include il comando «Controlla aggiornamenti…».",
             "Le installazioni firmate di macOS offrono Controlla aggiornamenti… nel menu LightTable, mentre le installazioni firmate di Windows e le installazioni portatili di Linux configurate lo offrono in Impostazioni → Generale. I controlli automatici vengono eseguiti al massimo una volta al giorno dopo l'avvio dell'editor. Le beta ad hoc per Mac restano disponibili solo con aggiornamento manuale.",
             "Su macOS, scegli LightTable → Controlla aggiornamenti… per scaricare e installare una versione firmata. Su Linux, scegli Aggiorna per scaricare e verificare il bundle, quindi Riavvia e aggiorna. Windows usa la propria finestra di dialogo di aggiornamento nativa. Completa prima importazioni, esportazioni e altri lavori; LightTable salva le modifiche in sospeso e crea un backup del catalogo prima di chiudersi.",
             "Gli aggiornamenti conservano foto, modifiche e preferenze. Linux mantiene il pacchetto precedente per il ripristino, ma non ripristina automaticamente un catalogo né riapre una versione precedente.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

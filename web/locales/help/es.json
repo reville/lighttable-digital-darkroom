@@ -52,7 +52,8 @@
         {
           "title": "Abrir una carpeta local",
           "paragraphs": [
-            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Carpetas para agregar una carpeta completa. LightTable mantiene los originales en su ubicación. Al seleccionar una foto individual se agrega su carpeta contenedora, de modo que también pueden aparecer otras fotos compatibles de esa carpeta."
+            "Agregar Fotos abre un selector de fotos. En Mac, ese selector también acepta carpetas. En Linux y Windows, use el + junto a Carpetas para agregar una carpeta completa. LightTable mantiene los originales en su ubicación. Al seleccionar una foto individual se agrega su carpeta contenedora, de modo que también pueden aparecer otras fotos compatibles de esa carpeta.",
+            "En la edición de Mac App Store, elige una carpeta que contenga tus fotos. LightTable solo puede leer y escribir en las ubicaciones que selecciones y guarda ese acceso para las próximas veces que abras la aplicación. Si una carpeta recordada deja de estar disponible, vuelve a seleccionarla."
           ],
           "steps": [
             "Haga clic en Agregar Fotos en la esquina superior izquierda y elija fotos, o use el + junto a Carpetas para elegir una carpeta.",
@@ -3150,6 +3151,7 @@
         {
           "title": "Actualizar LightTable",
           "paragraphs": [
+            "La edición de Mac App Store recibe actualizaciones a través de App Store. Su menú LightTable no incluye la opción «Buscar actualizaciones…».",
             "Las instalaciones firmadas de macOS ofrecen Buscar actualizaciones… en el menú de LightTable, mientras que las instalaciones firmadas de Windows y las instalaciones portátiles de Linux configuradas lo ofrecen en Configuración → General. Las comprobaciones automáticas se ejecutan como máximo una vez al día después de que se abre el editor. Las betas ad hoc para Mac siguen siendo solo de actualización manual.",
             "En macOS, elija LightTable → Buscar actualizaciones… para descargar e instalar una versión firmada. En Linux, elija Actualizar para descargar y verificar el paquete, y luego Reiniciar y actualizar. Windows usa su propio cuadro de diálogo de actualización. Termine primero las importaciones, exportaciones y otros trabajos; LightTable guarda las ediciones pendientes y hace una copia de seguridad del catálogo antes de cerrar.",
             "Las actualizaciones conservan las fotos, las ediciones y las preferencias. Linux mantiene el paquete anterior para la recuperación, pero no restaura automáticamente un catálogo ni vuelve a abrir una versión anterior.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "es",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

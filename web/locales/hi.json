@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "hi",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,9 @@
     "‹ Back": "‹ पीछे",
     "← Back to articles": "← लेखों पर वापस जाएँ",
     "← People": "← लोग",
-    "☆ Favorites": "☆ पसंदीदा"
+    "☆ Favorites": "☆ पसंदीदा",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Mac App Store संस्करण में, अपनी तस्वीरों वाला फ़ोल्डर चुनें। LightTable केवल आपके चुने हुए स्थानों पर डेटा पढ़ और लिख सकता है और बाद में ऐप खोलने पर भी इन स्थानों का ऐक्सेस याद रखता है। अगर पहले चुना गया कोई फ़ोल्डर अब उपलब्ध नहीं है, तो उसे फिर से चुनें।",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store संस्करण को App Store से अपडेट मिलते हैं। इसके LightTable मेनू में “अपडेट के लिए जाँच करें…” विकल्प नहीं होता।"
   },
   "plurals": {
     " · {count} paired file linked": {

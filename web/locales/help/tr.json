@@ -52,7 +52,8 @@
         {
           "title": "Yerel bir klasör aç",
           "paragraphs": [
-            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Klasörler yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü de ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir."
+            "Fotoğraf Ekle bir fotoğraf seçici açar. Mac'te bu seçici klasörleri de kabul eder. Linux ve Windows'ta, tam bir klasör eklemek için Klasörler yanındaki + düğmesini kullanın. LightTable orijinalleri yerinde tutar. Tek bir fotoğraf seçmek, bulunduğu klasörü de ekler; böylece o klasördeki diğer desteklenen fotoğraflar da görünebilir.",
+            "Mac App Store sürümünde, fotoğraflarınızı içeren bir klasör seçin. LightTable yalnızca seçtiğiniz konumlarda okuma ve yazma işlemi yapabilir ve sonraki açılışlar için bu konumlara erişimi hatırlar. Erişimi kaydedilmiş bir klasör artık kullanılamıyorsa klasörü yeniden seçin."
           ],
           "steps": [
             "Sol üstte Fotoğraf Ekle’yi tıklayın ve fotoğraf seçin ya da bir klasör seçmek için Klasörler yanındaki + düğmesini kullanın.",
@@ -3150,6 +3151,7 @@
         {
           "title": "LightTable'ı güncelle",
           "paragraphs": [
+            "Mac App Store sürümü güncellemeleri App Store üzerinden alır. Bu sürümün LightTable menüsünde “Güncellemeleri Denetle…” seçeneği bulunmaz.",
             "İmzalı macOS kurulumları, LightTable menüsünde Güncellemeleri Denetle… seçeneğini sunar; imzalı Windows kurulumları ve yapılandırılmış Linux taşınabilir kurulumları ise bunu Ayarlar → Genel altında sunar. Otomatik denetimler, düzenleyici açıldıktan sonra günde en fazla bir kez çalışır. Ad hoc Mac beta sürümleri yalnızca manuel güncelleme ile kalır.",
             "macOS’ta imzalı bir sürümü indirmek ve yüklemek için LightTable → Güncellemeleri Denetle… seçeneğini kullanın. Linux’ta paketi indirmek ve doğrulamak için Güncelle’yi seçin, ardından Yeniden başlat ve güncelle komutunu kullanın. Windows kendi yerel güncelleme iletişim kutusunu kullanır. Önce içe aktarma, dışa aktarma ve diğer işleri tamamlayın; LightTable, kapatmadan önce bekleyen düzenlemeleri kaydeder ve katalogu yedekler.",
             "Güncellemeler fotoğrafları, düzenlemeleri ve tercihleri korur. Linux kurtarma için önceki paketi saklar ancak kataloğu otomatik olarak geri yüklemez veya eski bir sürümü yeniden açmaz.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

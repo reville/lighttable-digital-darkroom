@@ -52,7 +52,8 @@
         {
           "title": "Einen lokalen Ordner öffnen",
           "paragraphs": [
-            "Fotos hinzufügen öffnet einen Foto-Auswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Ordner, um einen ganzen Ordner hinzuzufügen. LightTable speichert Originale am ursprünglichen Ort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können."
+            "Fotos hinzufügen öffnet einen Foto-Auswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Ordner, um einen ganzen Ordner hinzuzufügen. LightTable speichert Originale am ursprünglichen Ort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können.",
+            "Wähle in der Mac App Store-Version einen Ordner aus, der deine Fotos enthält. LightTable kann nur an den von dir ausgewählten Speicherorten lesen und schreiben und merkt sich den Zugriff für spätere App-Starts. Ist ein gemerkter Ordner nicht mehr verfügbar, wähle ihn erneut aus."
           ],
           "steps": [
             "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie Fotos aus, oder verwenden Sie das + neben Ordner, um einen Ordner auszuwählen.",
@@ -3150,6 +3151,7 @@
         {
           "title": "LightTable aktualisieren",
           "paragraphs": [
+            "Die Mac App Store-Version erhält Updates über den App Store. Ihr LightTable-Menü enthält keinen Befehl „Nach Updates suchen…“.",
             "Signierte macOS-Installationen bieten Nach Updates suchen… im LightTable-Menü an, während signierte Windows-Installationen und konfigurierte portable Linux-Installationen dies unter Einstellungen → Allgemein anbieten. Automatische Prüfungen werden höchstens einmal täglich nach dem Öffnen des Editors ausgeführt. Ad-hoc-Macs-Betas bleiben ausschließlich für manuelle Updates.",
             "Wählen Sie unter macOS LightTable → Nach Updates suchen…, um eine signierte Version herunterzuladen und zu installieren. Unter Linux wählen Sie Aktualisieren, um das Bundle herunterzuladen und zu überprüfen, und anschließend Neu starten und aktualisieren. Windows verwendet seinen nativen Update-Dialog. Schließen Sie zuerst Importe, Exporte und andere Aufgaben ab; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
             "Updates erhalten Fotos, Bearbeitungen und Einstellungen. Linux behält das vorherige Paket zur Wiederherstellung, stellt aber weder automatisch einen Katalog wieder her noch öffnet es eine ältere Version.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

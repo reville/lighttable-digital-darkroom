@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,9 @@
     "‹ Back": "‹ 뒤로",
     "← Back to articles": "← 문서로 돌아가기",
     "← People": "← 사람들",
-    "☆ Favorites": "☆ 즐겨찾기"
+    "☆ Favorites": "☆ 즐겨찾기",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Mac App Store 버전에서는 사진이 들어 있는 폴더를 선택하세요. LightTable은 선택한 위치에서만 데이터를 읽고 쓸 수 있으며, 이후 실행 시에도 사용할 수 있도록 접근 권한을 기억합니다. 접근 권한이 저장된 폴더를 더 이상 사용할 수 없으면 해당 폴더를 다시 선택하세요.",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store 버전은 App Store를 통해 업데이트됩니다. LightTable 메뉴에는 “업데이트 확인…” 항목이 없습니다."
   },
   "plurals": {
     " · {count} paired file linked": {

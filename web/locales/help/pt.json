@@ -52,7 +52,8 @@
         {
           "title": "Abrir uma pasta local",
           "paragraphs": [
-            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
+            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer.",
+            "Na edição da Mac App Store, selecione uma pasta que contenha suas fotos. O LightTable só pode ler e gravar nos locais que você selecionar e memoriza o acesso para as próximas vezes que você abrir o app. Se uma pasta memorizada não estiver mais disponível, selecione-a novamente."
           ],
           "steps": [
             "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Pastas para escolher uma pasta.",
@@ -3150,6 +3151,7 @@
         {
           "title": "Atualizar o LightTable",
           "paragraphs": [
+            "A edição da Mac App Store recebe atualizações pela App Store. O menu LightTable não oferece a opção “Verificar atualizações…”.",
             "Instalações assinadas do macOS oferecem Verificar atualizações… no menu LightTable, enquanto instalações assinadas do Windows e instalações portáteis do Linux configuradas oferecem essa opção em Configurações → Geral. As verificações automáticas são executadas no máximo uma vez por dia, depois que o editor é aberto. Versões beta ad hoc para Mac continuam sendo apenas de atualização manual.",
             "No macOS, escolha LightTable → Verificar atualizações… para baixar e instalar uma versão assinada. No Linux, escolha Atualizar para baixar e verificar o pacote e, em seguida, Reiniciar e atualizar. O Windows usa a sua caixa de diálogo nativa de atualização. Conclua primeiro os import, exports e outras tarefas; o LightTable salva as edições pendentes e faz backup do catálogo antes de fechar.",
             "As atualizações preservam fotos, edições e preferências. O Linux mantém o pacote anterior para recuperação, mas não restaura automaticamente um catálogo nem reabre uma versão anterior.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

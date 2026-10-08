@@ -52,7 +52,8 @@
         {
           "title": "Ouvrir un dossier local",
           "paragraphs": [
-            "Ajouter des photos ouvre un sélecteur de photos. Sur Mac, ce sélecteur accepte aussi les dossiers. Sous Linux et Windows, utilisez le + à côté de Dossiers pour ajouter un dossier entier. LightTable conserve les originaux à leur emplacement. La sélection d’une photo individuelle ajoute son dossier parent, afin que d’autres photos prises en charge dans ce dossier puissent également apparaître."
+            "Ajouter des photos ouvre un sélecteur de photos. Sur Mac, ce sélecteur accepte aussi les dossiers. Sous Linux et Windows, utilisez le + à côté de Dossiers pour ajouter un dossier entier. LightTable conserve les originaux à leur emplacement. La sélection d’une photo individuelle ajoute son dossier parent, afin que d’autres photos prises en charge dans ce dossier puissent également apparaître.",
+            "Dans la version du Mac App Store, sélectionnez un dossier contenant vos photos. LightTable ne peut lire et écrire que dans les emplacements que vous sélectionnez et mémorise l’accès pour les prochains lancements. Si un dossier mémorisé n’est plus disponible, sélectionnez-le à nouveau."
           ],
           "steps": [
             "Cliquez sur Ajouter des photos en haut à gauche et choisissez des photos, ou utilisez le + à côté de Dossiers pour choisir un dossier.",
@@ -3150,6 +3151,7 @@
         {
           "title": "Mettre à jour LightTable",
           "paragraphs": [
+            "La version du Mac App Store reçoit ses mises à jour via l’App Store. Son menu LightTable ne propose pas la commande « Rechercher des mises à jour… ».",
             "Les installations macOS signées proposent Rechercher des mises à jour… dans le menu LightTable, tandis que les installations Windows signées et les installations portables Linux configurées le proposent dans Réglages → Général. Les vérifications automatiques s’exécutent au maximum une fois par jour après l’ouverture de l’éditeur. Les bêtas Mac ad hoc restent en mise à jour manuelle uniquement.",
             "Sous macOS, choisissez LightTable → Rechercher des mises à jour… pour télécharger et installer une version signée. Sous Linux, choisissez Mettre à jour pour télécharger et vérifier le bundle, puis Redémarrer et mettre à jour. Windows utilise sa boîte de dialogue de mise à jour native. Terminez d’abord les importations, exportations et autres tâches ; LightTable enregistre les modifications en attente et sauvegarde le catalogue avant de se fermer.",
             "Les mises à jour conservent les photos, les modifications et les préférences. Linux garde le paquet précédent pour la récupération, mais ne restaure pas automatiquement un catalogue et ne rouvre pas une version antérieure.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "fr",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }

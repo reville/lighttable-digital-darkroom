@@ -52,7 +52,8 @@
         {
           "title": "Een lokale map openen",
           "paragraphs": [
-            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruikt u de + naast Mappen om een hele map toe te voegen. LightTable bewaart originelen op hun plaats. Als u één foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat ook andere ondersteunde foto's in die map kunnen verschijnen."
+            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruikt u de + naast Mappen om een hele map toe te voegen. LightTable bewaart originelen op hun plaats. Als u één foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat ook andere ondersteunde foto's in die map kunnen verschijnen.",
+            "Kies in de Mac App Store-versie een map met je foto's. LightTable kan alleen lezen en schrijven op locaties die je selecteert. De toegang wordt onthouden voor de volgende keren dat je de app opent. Als een onthouden map niet meer beschikbaar is, selecteer je die opnieuw."
           ],
           "steps": [
             "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Mappen om een map te kiezen.",
@@ -3150,6 +3151,7 @@
         {
           "title": "LightTable bijwerken",
           "paragraphs": [
+            "De Mac App Store-versie ontvangt updates via de App Store. Het LightTable-menu van deze versie bevat geen optie ‘Controleren op updates…’.",
             "Ondertekende macOS-installaties bieden Controleren op updates… in het LightTable-menu, terwijl ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties dit aanbieden in Instellingen → Algemeen. Automatische controles worden hoogstens één keer per dag uitgevoerd nadat de editor is geopend. Ad-hoc Mac-bèta's blijven alleen handmatig bijwerken ondersteunen.",
             "Kies op macOS LightTable → Controleren op updates… om een ondertekende release te downloaden en te installeren. Kies op Linux Bijwerken om het pakket te downloaden en te verifiëren, en kies vervolgens Opnieuw starten en bijwerken. Windows gebruikt het eigen updatemeldingsvenster. Rond eerst import-, export- en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een back-up van de catalogus voordat het wordt afgesloten.",
             "Updates behouden foto's, bewerkingen en voorkeuren. Linux bewaart de vorige bundel voor herstel, maar herstelt niet automatisch een catalogus en opent geen oudere versie opnieuw.",
@@ -3607,5 +3609,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
 }
