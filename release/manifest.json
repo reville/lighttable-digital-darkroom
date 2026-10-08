@@ -4,53 +4,53 @@
       "artifacts": [
         {
           "bytes": 414,
-          "name": "LightTable-0.7.11-linux-x86_64-SHA256SUMS",
-          "sha256": "6be276f4fd7463e8814426f160dd229d536d99d847e78ce5cd96f7fa7fa8e8b9",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.11/LightTable-0.7.11-linux-x86_64-SHA256SUMS"
+          "name": "LightTable-0.7.13-linux-x86_64-SHA256SUMS",
+          "sha256": "6c7db965e3e737741af9b23266b9909f197a7cc70d6164eb73958811cf3ffecb",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.13/LightTable-0.7.13-linux-x86_64-SHA256SUMS"
         },
         {
           "bytes": 1625,
-          "name": "LightTable-0.7.11-linux-x86_64-installers.tar.gz",
-          "sha256": "b8fe67a23376af75ce8c8693208860f0516e2232ae2672b88f9dedcf2d32dd4a",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.11/LightTable-0.7.11-linux-x86_64-installers.tar.gz"
+          "name": "LightTable-0.7.13-linux-x86_64-installers.tar.gz",
+          "sha256": "f4f00952bee3cb64c24fd87947f5b3ef8fa4a145a42ace9520b369e1c50e2fd7",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.13/LightTable-0.7.13-linux-x86_64-installers.tar.gz"
         },
         {
-          "bytes": 458484230,
-          "name": "LightTable-0.7.11-linux-x86_64.tar.gz",
-          "sha256": "f788e1cc9dce2e879855261ec9019cc0c5a7ed884f100763a16ca384e50f6005",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.11/LightTable-0.7.11-linux-x86_64.tar.gz"
+          "bytes": 458484591,
+          "name": "LightTable-0.7.13-linux-x86_64.tar.gz",
+          "sha256": "11eb265e6ad5a0fc0d0c7275552dfd842ff8e2aa7fe26b4937bb722dd8cb56fe",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.13/LightTable-0.7.13-linux-x86_64.tar.gz"
         },
         {
           "bytes": 104,
-          "name": "LightTable-0.7.11-linux-x86_64.tar.gz.sha256",
-          "sha256": "f69684da2e18a8faec32c50c55b5f7e27049b1653b6f9a6b360ec57d5dc481e8",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.11/LightTable-0.7.11-linux-x86_64.tar.gz.sha256"
+          "name": "LightTable-0.7.13-linux-x86_64.tar.gz.sha256",
+          "sha256": "8a79c1a83f155f7693918cc95f1d9e40dfa19b00db49af25703492d0b426194d",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.13/LightTable-0.7.13-linux-x86_64.tar.gz.sha256"
         },
         {
           "bytes": 615,
           "name": "linux-x86_64.json",
-          "sha256": "9320126886728992e955cac978a2ad3efc03d7e86cee2f0d235f159a6300c92b",
-          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.11/linux-x86_64.json"
+          "sha256": "f2900ca603cf9c45333592e4cc9cfd9152694b43c387b9040740dfa4b2fd4387",
+          "url": "https://github.com/reville/lighttable-digital-darkroom/releases/download/v0.7.13/linux-x86_64.json"
         }
       ],
-      "build_run_id": "36325797149",
-      "build_workflow_revision": "6f8414395f981030fe524fe1edb59eb3c0442869",
+      "build_run_id": "37833010502",
+      "build_workflow_revision": "ff1e6587ee792d581547be18bc16ecae124e9c1b",
       "channel": "stable",
       "gates": [],
       "minimum_os": "Ubuntu 24.04+; current Arch Linux/Omarchy",
-      "published_at": "2026-09-27T15:23:51Z",
+      "published_at": "2026-10-08T19:52:13Z",
       "signing": "ed25519",
-      "source_revision": "6f8414395f981030fe524fe1edb59eb3c0442869",
+      "source_revision": "ff1e6587ee792d581547be18bc16ecae124e9c1b",
       "state": "published",
-      "tag": "v0.7.11",
+      "tag": "v0.7.13",
       "update_owner": "app",
       "validation": {
         "receipts": [
-          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/36325797149"
+          "https://github.com/reville/lighttable-digital-darkroom/actions/runs/37833010502"
         ],
         "status": "passed"
       },
-      "version": "0.7.11"
+      "version": "0.7.13"
     },
     "macos-arm64": {
       "artifacts": [
@@ -185,6 +185,6 @@
   },
   "repository": "reville/lighttable-digital-darkroom",
   "schema_version": 1,
-  "source_revision": "6f8414395f981030fe524fe1edb59eb3c0442869",
-  "version": "0.7.11"
+  "source_revision": "ff1e6587ee792d581547be18bc16ecae124e9c1b",
+  "version": "0.7.13"
 }
