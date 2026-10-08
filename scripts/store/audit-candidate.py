@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Read-only sandbox/signature audit of a fully assembled Store candidate."""
 from pathlib import Path
 import json, plistlib, subprocess, sys

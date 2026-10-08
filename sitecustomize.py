@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 # Store subprocesses acquire selected-file grants before importing render code.
 import os
 if os.environ.get('LIGHTTABLE_STORE_GRANTS_FILE'):

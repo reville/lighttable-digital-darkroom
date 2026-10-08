@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Resolve native-selected bookmarks in each Store Python process.
 
 Keep scopes alive until process exit: render workers may outlive their HTTP

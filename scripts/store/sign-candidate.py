@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Ad-hoc sandbox seal for local Store acceptance, never Store distribution.
 
 Requires a fully assembled Store bundle. Creates no credentials or provisioning.

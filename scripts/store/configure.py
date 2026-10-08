@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-only
 """Generate a separate, Sparkle-free Store project. Never changes direct project."""
 from pathlib import Path
 import re, plistlib
