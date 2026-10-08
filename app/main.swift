@@ -12,7 +12,7 @@ import PhotosUI
 import UniformTypeIdentifiers
 import UserNotifications
 import WebKit
-#if canImport(Sparkle)
+#if canImport(Sparkle) && !LIGHTTABLE_STORE
 import Sparkle
 #endif
 
@@ -343,6 +343,72 @@ final class NativeLocaleStore {
 }
 // END NATIVE LOCALIZATION CORE
 
+#if LIGHTTABLE_STORE
+/// Main-thread grant ownership; helpers resolve the same bookmarks themselves.
+private final class StoreFileAccess {
+    static let shared = StoreFileAccess()
+    private var active: [String: URL] = [:]
+    var file: URL { lightTableSupportDirectory().appendingPathComponent("file-grants.json") }
+    var workerFile: URL { lightTableSupportDirectory().appendingPathComponent("worker-grants.json") }
+    private var records: [String: String] = [:]
+    private init() {
+        if let data = try? Data(contentsOf: file),
+           let saved = try? JSONDecoder().decode([String: String].self, from: data) {
+            for (path, encoded) in saved {
+                guard let bookmark = Data(base64Encoded: encoded) else { continue }
+                var stale = false
+                if let url = try? URL(resolvingBookmarkData: bookmark,
+                    options: [.withSecurityScope, .withoutUI], relativeTo: nil,
+                    bookmarkDataIsStale: &stale), !stale, url.startAccessingSecurityScopedResource() {
+                    active[path] = url
+                    if let refreshed = try? url.bookmarkData(options: .withSecurityScope,
+                        includingResourceValuesForKeys: nil, relativeTo: nil) {
+                        records[url.path] = refreshed.base64EncodedString()
+                    }
+                }
+            }
+        }
+        try? persist()
+    }
+    private func persist() throws {
+        try FileManager.default.createDirectory(at: file.deletingLastPathComponent(),
+            withIntermediateDirectories: true)
+        try JSONEncoder().encode(records).write(to: file, options: .atomic)
+        // Plain bookmarks embed a temporary sandbox extension for other processes.
+        // Persistent app-scoped bookmarks remain owned by this native app.
+        var transfer: [String: String] = [:]
+        for (path, url) in active {
+            transfer[path] = try url.bookmarkData(options: [],
+                includingResourceValuesForKeys: nil, relativeTo: nil).base64EncodedString()
+        }
+        try JSONEncoder().encode(transfer).write(to: workerFile, options: .atomic)
+    }
+    func grant(_ url: URL) throws {
+        guard url.startAccessingSecurityScopedResource() else {
+            throw CocoaError(.fileReadNoPermission)
+        }
+        do {
+            let bookmark = try url.bookmarkData(options: .withSecurityScope,
+                includingResourceValuesForKeys: nil, relativeTo: nil)
+            let old = records
+            records[url.path] = bookmark.base64EncodedString()
+            let previous = active[url.path]
+            active[url.path] = url
+            do { try persist() } catch { records = old; active[url.path] = previous; throw error }
+            previous?.stopAccessingSecurityScopedResource()
+        } catch { url.stopAccessingSecurityScopedResource(); throw error }
+    }
+    func contains(_ path: String) -> Bool {
+        let canonical = URL(fileURLWithPath: path).resolvingSymlinksInPath().path
+        return active.values.contains { url in
+            let root = url.resolvingSymlinksInPath().path
+            return canonical == root || canonical.hasPrefix(root + "/")
+        }
+    }
+    deinit { active.values.forEach { $0.stopAccessingSecurityScopedResource() } }
+}
+#endif
+
 private func lightTableSupportDirectory() -> URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         .appendingPathComponent("LightTable", isDirectory: true)
@@ -541,6 +607,9 @@ final class ServerController {
         p.currentDirectoryURL = projectDir
         var env = ProcessInfo.processInfo.environment
         env["LIGHTTABLE_DIR"] = folder
+#if LIGHTTABLE_STORE
+        env["LIGHTTABLE_STORE_GRANTS_FILE"] = StoreFileAccess.shared.workerFile.path
+#endif
         env["LIGHTTABLE_PORT"] = String(port)
         env["LIGHTTABLE_WATCH_PARENT"] = "1"
         env["LIGHTTABLE_PARENT_PID"] = String(ProcessInfo.processInfo.processIdentifier)
@@ -589,6 +658,9 @@ final class ServerController {
         // into the signed bundle. A pycache prefix would make Python ignore the
         // shipped bytecode, and with writes off it recompiled every module on
         // every launch; a translocated app would also write a fresh copy each time.
+#if LIGHTTABLE_STORE
+        env["PYTHONPATH"] = projectDir.path + ":" + (env["PYTHONPATH"] ?? "")
+#endif
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         env["PYTHONPYCACHEPREFIX"] = nil
         if env["NUMBA_CACHE_DIR"] == nil {
@@ -1662,7 +1734,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                          WKScriptMessageHandler, NSMenuItemValidation,
                          NSWindowDelegate,
                          PHPickerViewControllerDelegate {
-#if canImport(Sparkle)
+#if canImport(Sparkle) && !LIGHTTABLE_STORE
     private let updaterController = SPUStandardUpdaterController(
         startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
 #endif
@@ -1746,6 +1818,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 ?? defaults.string(forKey: "photoFolder")
                 ?? sources.first?.path ?? defaultPhotoFolder
         }
+#if LIGHTTABLE_STORE
+        if !firstRun && !StoreFileAccess.shared.contains(folder) { folder = "" }
+#endif
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: folder, isDirectory: &isDir)
             || !isDir.boolValue {
@@ -2392,7 +2467,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         if !folder.isEmpty {
             panel.directoryURL = URL(fileURLWithPath: folder)
         }
-        return panel.runModal() == .OK ? panel.url?.path : nil
+        guard panel.runModal() == .OK, let url = panel.url else { return nil }
+#if LIGHTTABLE_STORE
+        do { try StoreFileAccess.shared.grant(url) } catch { showFatal(error.localizedDescription); return nil }
+#endif
+        return url.path
     }
 
     private func pickPhotoSources() -> [String] {
@@ -2402,18 +2481,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         panel.message = L("Choose photos or folders. LightTable keeps originals in place.")
         panel.canChooseDirectories = true
         panel.canChooseFiles = true
+#if LIGHTTABLE_STORE
+        // The catalog scans whole folders; a selected file cannot grant siblings.
+        panel.canChooseFiles = false
+#endif
         panel.allowsMultipleSelection = true
         let photoTypes = photoExtensions().compactMap {
             UTType(filenameExtension: $0)
         }
         // A damaged development checkout should still be able to choose a
         // file. The server remains the final format validator.
+        #if LIGHTTABLE_STORE
+        panel.allowedContentTypes = [.folder]
+#else
         panel.allowedContentTypes = photoTypes.isEmpty
             ? [.image, .movie, .data] : photoTypes
+#endif
         if !folder.isEmpty { panel.directoryURL = URL(fileURLWithPath: folder) }
         guard panel.runModal() == .OK else { return [] }
         var seen = Set<String>()
         return panel.urls.compactMap { url in
+#if LIGHTTABLE_STORE
+            do { try StoreFileAccess.shared.grant(url) } catch { return nil }
+#endif
             var isDir: ObjCBool = false
             FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
             let path = normalized(isDir.boolValue ? url.path : url.deletingLastPathComponent().path)
@@ -2750,12 +2840,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     private func loadSources() -> [FolderSource] {
         if let data = UserDefaults.standard.data(forKey: "folderSources"),
            let saved = try? JSONDecoder().decode([FolderSource].self, from: data) {
+#if LIGHTTABLE_STORE
+            return saved.filter { StoreFileAccess.shared.contains($0.path) }
+#else
             return saved
+#endif
         }
+#if LIGHTTABLE_STORE
+        return []
+#else
         if let old = UserDefaults.standard.string(forKey: "photoFolder") {
             return [FolderSource(path: normalized(old), favorite: true)]
         }
         return [FolderSource(path: normalized(defaultPhotoFolder), favorite: true)]
+#endif
     }
 
     private func saveSources() {
@@ -2953,6 +3051,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             .compactMap { UTType(filenameExtension: $0) }
         panel.allowsOtherFileTypes = true
         guard panel.runModal() == .OK, let url = panel.url else { return nil }
+#if LIGHTTABLE_STORE
+        do { try StoreFileAccess.shared.grant(url) } catch { return nil }
+#endif
         return url.path
     }
 
@@ -3149,10 +3250,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             let options = body["options"] as? [String: Any] ?? body
             sendEvent(["type": "showUpdateModal", "options": options])
         case "checkForUpdates":
-#if canImport(Sparkle)
+#if canImport(Sparkle) && !LIGHTTABLE_STORE
             updaterController.checkForUpdates(nil)
 #else
+#if !LIGHTTABLE_STORE
             checkForUpdatesFallback(nil)
+#endif
 #endif
         case "trashFiles":
             // Deletion always goes to the Trash through the platform, never an
@@ -3313,6 +3416,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
         let allowed = Set(extensions)
         let selected = panel.urls
+#if LIGHTTABLE_STORE
+        for url in selected {
+            do { try StoreFileAccess.shared.grant(url) } catch { showFatal(error.localizedDescription); return }
+        }
+#endif
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let manager = FileManager.default
             var urls: [URL] = []
@@ -4046,18 +4154,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         let aboutItem = appMenu.addItem(withTitle: L("About LightTable"),
                                        action: #selector(showAbout(_:)), keyEquivalent: "")
         aboutItem.target = self
-#if canImport(Sparkle)
+#if canImport(Sparkle) && !LIGHTTABLE_STORE
         let updateItem = appMenu.addItem(
             withTitle: L("Check for Updates…"),
             action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)),
             keyEquivalent: "")
         updateItem.target = updaterController
 #else
+#if !LIGHTTABLE_STORE
         let updateItem = appMenu.addItem(
             withTitle: L("Check for Updates…"),
             action: #selector(checkForUpdatesFallback(_:)),
             keyEquivalent: "")
         updateItem.target = self
+#endif
 #endif
         appMenu.addItem(.separator())
         addEditorItem(appMenu, title: L("Settings…"), command: "preferences",

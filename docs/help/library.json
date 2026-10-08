@@ -50,7 +50,8 @@
       {
         "title": "Open a local folder",
         "paragraphs": [
-          "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+          "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too.",
+        "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again."
         ],
         "steps": [
           "Click Add Photos at the upper left and choose photos, or use the + beside Folders to choose a folder.",

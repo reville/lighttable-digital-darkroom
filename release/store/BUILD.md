@@ -1,0 +1,11 @@
+# Mac App Store variant
+
+Generate the separate project with `python3 scripts/store/configure.py`, then build with `LIGHTTABLE_STORE_BUILD=1 bash scripts/build-release.sh`. This assembles and ad-hoc seals a sandbox test candidate; it does not upload or submit anything. The direct-download project retains its own updater and signing pipeline.
+
+The main app owns app-scoped bookmarks for explicitly selected folders. It recreates implicit process-transfer bookmarks for Python and Vision helpers. Invalid or stale grants fail closed; reselect unavailable locations. Store Add Photos selects folders to avoid granting sibling access from an individual-file selection. App Store updates replace the direct updater.
+
+Use `python3 scripts/store/audit-candidate.py APP --require-hardened` after final identity signing. The main app and helpers retain App Sandbox. Only `Contents/Resources/Python/bin/python3.13` may receive `com.apple.security.cs.allow-unsigned-executable-memory`; the approved exception is required by the pinned LLVM allocator, which does not use MAP_JIT. Keep Hardened Runtime on all signed Mach-O files. Do not apply this exception to the main app or other helpers.
+
+Tests cover direct-channel no-op behavior, refresh and lifetime management, denied/corrupt grants and fail-closed worker bootstrap. Local signed sandbox checks additionally exercised eleven RAW fixtures, repeated X-Trans decoding, native preview/export/relaunch, Vision, offline hair and Core ML denoise. These development-signed checks are distinct from Apple distribution acceptance. Store distribution profiles intentionally do not support local execution.
+
+Before submission, build from a clean immutable source, embed the exact approved Store profile, sign the assembled payload with the matching Apple Distribution identity, verify the complete bundle, and package with Mac Installer Distribution. Complete all release translations, verify Photos and other permission-dependent product flows, review App Store metadata/privacy and submit through the supported Apple upload path. Store approval is separate from successful submission. Never upload a diagnostic bundle or infer Store acceptance from an ad-hoc seal.

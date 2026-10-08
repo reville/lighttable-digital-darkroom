@@ -6,6 +6,23 @@ import CoreGraphics
 import AVFoundation
 import ImageIO
 
+// Inherited static sandbox rights do not include later OpenPanel grants.
+private var storeScopes: [String: URL] = [:]
+private func refreshStoreScopes() throws {
+    guard let path = ProcessInfo.processInfo.environment["LIGHTTABLE_STORE_GRANTS_FILE"] else { return }
+    let grants = try JSONDecoder().decode([String: String].self,
+        from: Data(contentsOf: URL(fileURLWithPath: path)))
+    for encoded in grants.values where storeScopes[encoded] == nil {
+        guard let data = Data(base64Encoded: encoded) else { throw CocoaError(.fileReadCorruptFile) }
+        var stale = false
+        let url = try URL(resolvingBookmarkData: data,
+            options: [.withoutUI], relativeTo: nil,
+            bookmarkDataIsStale: &stale)
+        guard !stale else { throw CocoaError(.fileReadNoPermission) }
+        storeScopes[encoded] = url
+    }
+}
+
 private enum HelperFailure: LocalizedError {
     case message(String)
 
@@ -26,6 +43,7 @@ private func writeJSON(_ payload: [String: Any]) throws {
 }
 
 private func checkedURL(_ path: String, kind: String) throws -> URL {
+    try refreshStoreScopes()
     let url = URL(fileURLWithPath: path)
     guard FileManager.default.fileExists(atPath: url.path) else {
         throw HelperFailure.message("\(kind) not found")
@@ -563,6 +581,7 @@ private func serve() -> Never {
     while let line = readLine(strippingNewline: true) {
         var response: [String: Any] = [:]
         do {
+            try refreshStoreScopes()
             guard let data = line.data(using: .utf8),
                   let request = try JSONSerialization.jsonObject(with: data)
                     as? [String: Any] else {

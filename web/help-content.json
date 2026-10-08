@@ -52,7 +52,8 @@
         {
           "title": "Open a local folder",
           "paragraphs": [
-            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too.",
+            "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again."
           ],
           "steps": [
             "Click Add Photos at the upper left and choose photos, or use the + beside Folders to choose a folder.",
@@ -3098,6 +3099,7 @@
         {
           "title": "Update LightTable",
           "paragraphs": [
+            "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….",
             "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.",
             "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.",
             "Updates preserve photos, edits, and preferences. Linux keeps the previous bundle for recovery, but does not automatically restore a catalog or reopen an older version.",
