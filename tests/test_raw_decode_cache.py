@@ -65,7 +65,7 @@ class SharedCaptureTests(unittest.TestCase):
         color_pipeline.decode_raw(self.source, {"developProfile": "soft"})
         self.assertEqual(self.decode.call_count, 1)
         color_pipeline.decode_raw(self.source, {"raw_profile": "detail"})
-        color_pipeline.decode_raw(self.source, {"raw_highlight_recovery": "blend"})
+        color_pipeline.decode_raw(self.source, {"raw_highlight_recovery": "off"})
         color_pipeline.decode_raw(self.source, {"wb_mode": "daylight"})
         self.assertEqual(self.decode.call_count, 4)
 
