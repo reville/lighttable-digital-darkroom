@@ -32,9 +32,10 @@ for f in sorted((app/'Contents').rglob('*')):
    exceptions.append(str(f.relative_to(app)))
   assert ent==expected,(str(f),ent)
  else:
+  assert ent.get('com.apple.security.personal-information.photos-library') is True,str(f)
   assert not any('temporary-exception' in k or 'absolute-path' in k for k in ent)
   assert not any(k.startswith('com.apple.security.cs.') for k in ent),(str(f),ent)
  executables.append(str(f.relative_to(app)))
 assert executables
 assert len(exceptions)==1,exceptions
-print(json.dumps({'source_revision':info.get('LightTableSourceRevision'),'source_dirty':info.get('LightTableSourceDirty'),'version':info.get('CFBundleShortVersionString'),'deep_strict_signature':True,'sparkle_absent':True,'hardened_runtime_required':'--require-hardened' in sys.argv,'unsigned_executable_memory_only':exceptions,'sandboxed_executables':executables},indent=2))
+print(json.dumps({'source_revision':info.get('LightTableSourceRevision'),'source_dirty':info.get('LightTableSourceDirty'),'version':info.get('CFBundleShortVersionString'),'deep_strict_signature':True,'sparkle_absent':True,'hardened_runtime_required':'--require-hardened' in sys.argv,'photos_library_entitlement_main_only':True,'unsigned_executable_memory_only':exceptions,'sandboxed_executables':executables},indent=2))

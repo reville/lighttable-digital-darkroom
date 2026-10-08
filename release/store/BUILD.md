@@ -4,6 +4,8 @@ Generate the separate project with `python3 scripts/store/configure.py`, then bu
 
 The main app owns app-scoped bookmarks for explicitly selected folders. It recreates implicit process-transfer bookmarks for Python and Vision helpers. Invalid or stale grants fail closed; reselect unavailable locations. Store Add Photos selects folders to avoid granting sibling access from an individual-file selection. App Store updates replace the direct updater.
 
+Only the main app has Photos-library access for the existing PhotoKit browser and import actions. Each user must still grant macOS Photos consent. Helpers retain sandbox inheritance and receive selected-file bookmarks; they have no Photos-library entitlement. The bundle audit requires this separation.
+
 Use `python3 scripts/store/audit-candidate.py APP --require-hardened` after final identity signing. The main app and helpers retain App Sandbox. Only `Contents/Resources/Python/bin/python3.13` may receive `com.apple.security.cs.allow-unsigned-executable-memory`; the approved exception is required by the pinned LLVM allocator, which does not use MAP_JIT. Keep Hardened Runtime on all signed Mach-O files. Do not apply this exception to the main app or other helpers.
 
 Tests cover direct-channel no-op behavior, refresh and lifetime management, denied/corrupt grants and fail-closed worker bootstrap. Local signed sandbox checks additionally exercised eleven RAW fixtures, repeated X-Trans decoding, native preview/export/relaunch, Vision, offline hair and Core ML denoise. These development-signed checks are distinct from Apple distribution acceptance. Store distribution profiles intentionally do not support local execution.
