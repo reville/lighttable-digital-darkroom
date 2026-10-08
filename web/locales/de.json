@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "de",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4641,7 +4641,9 @@
     "← People": "← Personen",
     "☆ Favorites": "☆ Favoriten",
     "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Wähle in der Mac App Store-Version einen Ordner aus, der deine Fotos enthält. LightTable kann nur an den von dir ausgewählten Speicherorten lesen und schreiben und merkt sich den Zugriff für spätere App-Starts. Ist ein gemerkter Ordner nicht mehr verfügbar, wähle ihn erneut aus.",
-    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Die Mac App Store-Version erhält Updates über den App Store. Ihr LightTable-Menü enthält keinen Befehl „Nach Updates suchen…“."
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Die Mac App Store-Version erhält Updates über den App Store. Ihr LightTable-Menü enthält keinen Befehl „Nach Updates suchen…“.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "„Aktuelles Format“ behält die aktuelle Darstellung des Objekts bei, einschließlich RAW oder eingebetteter Tiefendaten, sofern verfügbar. „Kompatibel“ erstellt ein Bild, das von vielen Apps gelesen werden kann. Die ausgewählten Dateien werden in den privaten App-Speicher von LightTable kopiert."
   },
   "plurals": {
     " · {count} paired file linked": {

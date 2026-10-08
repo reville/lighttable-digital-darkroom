@@ -21,6 +21,7 @@
           "paragraphs": [
             "Bei einer neuen Bibliothek bietet die Einrichtung einen lokalen Ordner oder die Migration aus Lightroom an. Die macOS-App bietet außerdem Apple Fotos an. Sie können die Einrichtung überspringen und später Fotos hinzufügen.",
             "Der Import der gesamten Apple-Photos-Bibliothek erfordert die macOS-App und die Berechtigung zum Lesen von Fotos. Er kopiert Originalfotos, einschließlich RAW-Dateien, nach Pictures / LightTable Imports / Apple Photos. Ihre Fotos-Bibliothek bleibt unverändert. iCloud-Originale werden während des Imports heruntergeladen, daher müssen Sie Zeit und Speicherplatz einplanen. Alben, Videos und Bearbeitungen aus Fotos werden nicht übertragen.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert.",
             "Import stoppen behält abgeschlossene Kopien. Beim erneuten Ausführen werden diese Kopien übersprungen und unvollständige Originale erneut versucht."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "In der macOS-App öffnen Sie Apple Fotos in der Seitenleiste, um Fotos und Alben zu durchsuchen. Erlauben Sie den Fotos-Zugriff, wenn Sie dazu aufgefordert werden. Diese Quelle ist unter Windows und Linux ausgeblendet.",
             "Wählen Sie seiten- oder albumübergreifend bis zu 500 Fotos aus und wählen Sie dann Ausgewählte Originale importieren. LightTable kopiert Originalfotos, einschließlich RAW-Dateien, nach Bilder / LightTable Imports / Apple Fotos. iCloud-Originale werden während des Imports heruntergeladen. Ihre Fotos-Mediathek bleibt unverändert; Alben, Videos und Bearbeitungen in Fotos werden nicht übertragen.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert.",
             "Import stoppen behält abgeschlossene Kopien bei. Importieren Sie die Auswahl erneut, um nicht verfügbare Originale erneut zu versuchen; abgeschlossene Kopien werden übersprungen. Wählen Sie Importierte Fotos anzeigen, um die Kopien zu bearbeiten. Aktualisieren aktualisiert die verfügbaren Fotos und Alben."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Verwenden Sie in der macOS-App Datei → Import aus Apple Fotos… oder Einige auswählen… in der Foto-Einrichtung. Aktuelles Format behält die von Fotos bereitgestellte Darstellung bei; Kompatibel fordert ein allgemein lesbares Format an. Diese ausgewählten Darstellungen können Fotos-Bearbeitungen enthalten und sind getrennt vom Import der Originale der gesamten Bibliothek.",
             "Wählen Sie Fotos aus und klicken Sie dann auf Hinzufügen. LightTable zeigt den Fortschritt beim Herunterladen und Kopieren an. Mit Import stoppen bleiben abgeschlossene Kopien erhalten und die verbleibenden Übertragungen werden gestoppt. Ihre Fotos-Bibliothek bleibt unverändert.",
-            "Kopien werden in Pictures / LightTable Imports / Apple Photos gespeichert. Wenn Sie eine Auswahl erneut importieren, werden separate Kopien mit nummerierten Dateinamen erstellt; vorhandene Dateien werden niemals überschrieben."
+            "Kopien werden in Pictures / LightTable Imports / Apple Photos gespeichert. Wenn Sie eine Auswahl erneut importieren, werden separate Kopien mit nummerierten Dateinamen erstellt; vorhandene Dateien werden niemals überschrieben.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert."
           ],
           "steps": [
             "Wählen Sie Aktuelles Format oder Kompatibel.",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

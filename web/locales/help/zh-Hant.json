@@ -21,6 +21,7 @@
           "paragraphs": [
             "在新資料庫中，設定會提供本機資料夾或 Lightroom 移轉。macOS app 也會提供 Apple Photos。您可以略過設定，稍後再新增相片。",
             "從 Apple Photos 匯入整個圖庫需要 macOS 應用程式與讀取 Photos 的權限。它會將原始相片，包括 RAW 檔，複製到 Pictures / LightTable Imports / Apple Photos。您的 Photos 圖庫保持不變。iCloud 原始檔會在匯入期間下載，因此請預留時間與磁碟空間。相簿、影片與 Photos 編輯不會轉移。",
+            "在 Mac App Store 版本中，從 Apple「照片」輸入的所有副本都會儲存在 LightTable 的專用 App 儲存空間中，而非「圖片」檔案夾中。您的「照片」圖庫維持不變。",
             "停止匯入會保留已完成的複本。再次執行時會略過那些複本，並重試尚未完成的原始檔。"
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "在 macOS app 中，於側邊欄開啟 Apple Photos 以瀏覽相片和相簿。系統詢問時請允許 Photos 存取。此來源在 Windows 與 Linux 上會隱藏。",
             "在頁面或相簿中選取最多 500 張相片，然後選擇「匯入選取的原始檔」。LightTable 會將原始相片（包括 RAW 檔案）複製到 Pictures / LightTable Imports / Apple Photos。iCloud 原始檔會在匯入期間下載。您的 Photos 資料庫保持不變；相簿、影片與 Photos 編輯不會轉移。",
+            "在 Mac App Store 版本中，從 Apple「照片」輸入的所有副本都會儲存在 LightTable 的專用 App 儲存空間中，而非「圖片」檔案夾中。您的「照片」圖庫維持不變。",
             "「停止匯入」會保留已完成的複本。再次匯入選取範圍可重試無法使用的原始檔；已完成的複本會被略過。選擇「檢視已匯入的相片」即可編輯複本。「重新整理」會更新可用的相片和相簿。"
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "在 macOS App 中，請使用 檔案 → 從 Apple Photos 匯入…，或在相片設定中選擇「選擇幾個⋯」。目前格式會保留 Photos 提供的表示方式；相容格式則會要求廣泛可讀的格式。這些選取的表示方式可包含 Photos 編輯結果，且與整個資料庫原始檔匯入分開。",
             "選取相片，然後按一下新增。LightTable 會在下載並複製時顯示進度。停止匯入會保留已完成的複本，並停止其餘傳輸。您的相片資料庫將保持不變。",
-            "複本會儲存在 Pictures / LightTable Imports / Apple Photos。再次匯入同一組選取項目會建立具有編號檔名的獨立複本；絕不會覆寫現有檔案。"
+            "複本會儲存在 Pictures / LightTable Imports / Apple Photos。再次匯入同一組選取項目會建立具有編號檔名的獨立複本；絕不會覆寫現有檔案。",
+            "在 Mac App Store 版本中，從 Apple「照片」輸入的所有副本都會儲存在 LightTable 的專用 App 儲存空間中，而非「圖片」檔案夾中。您的「照片」圖庫維持不變。"
           ],
           "steps": [
             "選擇目前格式或相容格式。",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "zh-Hant",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

@@ -21,6 +21,7 @@
           "paragraphs": [
             "Su una nuova libreria, la configurazione offre una cartella locale o la migrazione da Lightroom. L'app per macOS offre anche Apple Photos. Puoi saltare la configurazione e aggiungere foto più tardi.",
             "L'importazione dell'intera libreria da Apple Photos richiede l'app macOS e l'autorizzazione a leggere Foto. Copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. La tua libreria Foto rimane invariata. Gli originali di iCloud vengono scaricati durante l'importazione, quindi concedi tempo e spazio su disco. Album, video e modifiche di Foto non vengono trasferiti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata.",
             "Interrompi importazione mantiene le copie completate. Eseguendolo di nuovo salta quelle copie e riprova con gli originali non completati."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "Nell'app per macOS, apri Apple Photos nella barra laterale per sfogliare foto e album. Consenti l'accesso a Photos quando richiesto. Questa origine è nascosta su Windows e Linux.",
             "Seleziona fino a 500 foto tra pagine o album, quindi scegli Importa gli originali selezionati. LightTable copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. Gli originali da iCloud vengono scaricati durante l'importazione. La tua libreria Photos rimane invariata; album, video e modifiche di Photos non vengono trasferiti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata.",
             "Interrompi importazione conserva le copie completate. Importa di nuovo la selezione per riprovare gli originali non disponibili; le copie completate vengono saltate. Scegli Visualizza foto importate per modificare le copie. Aggiorna aggiorna le foto e gli album disponibili."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Nell'app macOS, usa File → Importa da Apple Photos… oppure Scegline alcuni… in configurazione Foto. Formato attuale mantiene la rappresentazione fornita da Foto; Compatibile richiede un formato ampiamente leggibile. Queste rappresentazioni selezionate possono includere le modifiche di Foto e sono separate dall'importazione degli originali dell'intera libreria.",
             "Seleziona le foto, poi fai clic su Aggiungi. LightTable mostra il progresso mentre le scarica e le copia. Interrompi importazione mantiene le copie completate e interrompe i trasferimenti rimanenti. La tua libreria Foto resta invariata.",
-            "Le copie vengono salvate in Pictures / LightTable Imports / Apple Photos. Importare di nuovo una selezione crea copie separate con nomi file numerati; i file esistenti non vengono mai sovrascritti."
+            "Le copie vengono salvate in Pictures / LightTable Imports / Apple Photos. Importare di nuovo una selezione crea copie separate con nomi file numerati; i file esistenti non vengono mai sovrascritti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata."
           ],
           "steps": [
             "Scegli Formato attuale o Compatibile.",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

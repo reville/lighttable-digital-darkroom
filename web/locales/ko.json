@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ko",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4641,7 +4641,9 @@
     "← People": "← 사람들",
     "☆ Favorites": "☆ 즐겨찾기",
     "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Mac App Store 버전에서는 사진이 들어 있는 폴더를 선택하세요. LightTable은 선택한 위치에서만 데이터를 읽고 쓸 수 있으며, 이후 실행 시에도 사용할 수 있도록 접근 권한을 기억합니다. 접근 권한이 저장된 폴더를 더 이상 사용할 수 없으면 해당 폴더를 다시 선택하세요.",
-    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store 버전은 App Store를 통해 업데이트됩니다. LightTable 메뉴에는 “업데이트 확인…” 항목이 없습니다."
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store 버전은 App Store를 통해 업데이트됩니다. LightTable 메뉴에는 “업데이트 확인…” 항목이 없습니다.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "Mac App Store 버전에서는 Apple 사진 앱에서 가져온 모든 사본이 그림 폴더 대신 LightTable의 비공개 앱 저장 공간에 저장됩니다. 사진 보관함은 변경되지 않습니다.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "‘현재 형식’은 항목의 현재 데이터 표현을 유지하며, RAW 또는 내장된 심도 데이터가 있는 경우 이를 함께 유지합니다. ‘호환 가능’은 여러 앱에서 읽을 수 있는 이미지를 생성합니다. 선택한 파일은 LightTable의 비공개 앱 저장 공간에 복사됩니다."
   },
   "plurals": {
     " · {count} paired file linked": {

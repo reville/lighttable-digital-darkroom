@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "vi",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4641,7 +4641,9 @@
     "← People": "← Mọi người",
     "☆ Favorites": "☆ Mục yêu thích",
     "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Trong phiên bản Mac App Store, hãy chọn một thư mục chứa ảnh của bạn. LightTable chỉ có thể đọc và ghi tại các vị trí bạn chọn, đồng thời ghi nhớ quyền truy cập để dùng trong những lần khởi chạy sau. Nếu một thư mục đã được ghi nhớ không còn khả dụng, hãy chọn lại thư mục đó.",
-    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Phiên bản Mac App Store nhận các bản cập nhật qua App Store. Menu LightTable của phiên bản này không có mục “Kiểm tra cập nhật…”."
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Phiên bản Mac App Store nhận các bản cập nhật qua App Store. Menu LightTable của phiên bản này không có mục “Kiểm tra cập nhật…”.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "Trong phiên bản Mac App Store, tất cả bản sao được nhập từ ứng dụng Ảnh của Apple đều được lưu trong vùng lưu trữ riêng của ứng dụng LightTable thay vì thư mục Ảnh. Thư viện Ảnh của bạn không bị thay đổi.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "“Định dạng hiện tại” giữ nguyên dạng biểu diễn hiện tại của mục, bao gồm RAW hoặc dữ liệu độ sâu được nhúng nếu có. “Tương thích” tạo một hình ảnh mà nhiều ứng dụng có thể đọc được. Các tệp đã chọn được sao chép vào vùng lưu trữ riêng của ứng dụng LightTable."
   },
   "plurals": {
     " · {count} paired file linked": {

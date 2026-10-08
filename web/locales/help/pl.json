@@ -21,6 +21,7 @@
           "paragraphs": [
             "W nowej bibliotece konfiguracja oferuje folder lokalny lub migrację z Lightroom. Aplikacja na macOS oferuje też Zdjęcia Apple. Możesz pominąć konfigurację i dodać zdjęcia później.",
             "Import całej biblioteki z Apple Photos wymaga aplikacji macOS i uprawnienia do odczytu Zdjęć. Kopiuje oryginalne zdjęcia, w tym pliki RAW, do Obrazy / LightTable Imports / Apple Photos. Twoja biblioteka Zdjęcia pozostaje bez zmian. Oryginały iCloud pobierają się podczas importu, więc uwzględnij czas i miejsce na dysku. Albumy, filmy i edycje Zdjęć nie są przenoszone.",
+            "W wersji z Mac App Store wszystkie kopie zaimportowane z aplikacji Zdjęcia firmy Apple są zapisywane w prywatnej przestrzeni dyskowej aplikacji LightTable zamiast w folderze Obrazki. Twoja biblioteka Zdjęć pozostaje bez zmian.",
             "Stop import zachowuje ukończone kopie. Ponowne uruchomienie pomija te kopie i ponawia próbę dla niedokończonych oryginałów."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "W aplikacji na macOS otwórz Zdjęcia Apple na panelu bocznym, aby przeglądać zdjęcia i albumy. Gdy pojawi się monit, zezwól na dostęp do Zdjęć. To źródło jest ukryte w systemach Windows i Linux.",
             "Wybierz maksymalnie 500 zdjęć na stronach lub w albumach, a następnie wybierz Importuj wybrane oryginały. LightTable kopiuje oryginalne zdjęcia, w tym pliki RAW, do Pictures / LightTable Imports / Apple Photos. Oryginały z iCloud pobierają się podczas importu. Twoja biblioteka Zdjęć pozostaje bez zmian; albumy, wideo i edycje Zdjęć nie są przenoszone.",
+            "W wersji z Mac App Store wszystkie kopie zaimportowane z aplikacji Zdjęcia firmy Apple są zapisywane w prywatnej przestrzeni dyskowej aplikacji LightTable zamiast w folderze Obrazki. Twoja biblioteka Zdjęć pozostaje bez zmian.",
             "Zatrzymaj import zachowuje ukończone kopie. Zaimportuj zaznaczenie ponownie, aby ponowić próbę importu niedostępnych oryginałów; ukończone kopie są pomijane. Wybierz Wyświetl zaimportowane zdjęcia, aby edytować kopie. Odśwież aktualizuje dostępne zdjęcia i albumy."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "W aplikacji macOS użyj Plik → Importuj z Apple Photos… albo Wybierz kilka… w konfiguracji Zdjęcie. Bieżący format zachowuje reprezentację dostarczoną przez Photos; Zgodny żąda formatu możliwego do szerokiego odczytu. Te wybrane reprezentacje mogą zawierać edycje z Photos i są oddzielne od importu oryginałów z całej biblioteki.",
             "Wybierz zdjęcia, a następnie kliknij Dodaj. LightTable pokazuje postęp podczas ich pobierania i kopiowania. Zatrzymaj import zachowuje ukończone kopie i zatrzymuje pozostałe transfery. Twoja biblioteka Zdjęcia pozostaje bez zmian.",
-            "Kopie są zapisywane w Pictures / LightTable Imports / Apple Photos. Ponowny import zaznaczenia tworzy oddzielne kopie z numerowanymi nazwami plików; istniejące pliki nigdy nie są nadpisywane."
+            "Kopie są zapisywane w Pictures / LightTable Imports / Apple Photos. Ponowny import zaznaczenia tworzy oddzielne kopie z numerowanymi nazwami plików; istniejące pliki nigdy nie są nadpisywane.",
+            "W wersji z Mac App Store wszystkie kopie zaimportowane z aplikacji Zdjęcia firmy Apple są zapisywane w prywatnej przestrzeni dyskowej aplikacji LightTable zamiast w folderze Obrazki. Twoja biblioteka Zdjęć pozostaje bez zmian."
           ],
           "steps": [
             "Wybierz Bieżący format lub Zgodny.",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "pl",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

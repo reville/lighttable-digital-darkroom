@@ -21,6 +21,7 @@
           "paragraphs": [
             "Pada pustaka baru, penyiapan menawarkan folder lokal atau migrasi Lightroom. Aplikasi macOS juga menawarkan Apple Photos. Anda dapat melewati penyiapan dan menambahkan foto nanti.",
             "Impor seluruh pustaka dari Apple Photos memerlukan aplikasi macOS dan izin untuk membaca Photos. Ini menyalin foto asli, termasuk file RAW, ke Pictures / LightTable Imports / Apple Photos. Pustaka Photos Anda tetap tidak berubah. Asli iCloud diunduh selama impor, jadi sediakan waktu dan ruang disk. Album, video, dan suntingan Photos tidak ditransfer.",
+            "Pada edisi Mac App Store, semua salinan yang diimpor dari Foto Apple disimpan di penyimpanan pribadi aplikasi LightTable, bukan di folder Gambar. Perpustakaan Foto Anda tetap tidak berubah.",
             "Hentikan impor akan mempertahankan salinan yang sudah selesai. Menjalankannya lagi akan melewati salinan tersebut dan mencoba lagi yang belum selesai dari original."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "Di aplikasi macOS, buka Apple Photos di sidebar untuk menelusuri foto dan album. Izinkan akses Photos saat diminta. Sumber ini disembunyikan di Windows dan Linux.",
             "Pilih hingga 500 foto di seluruh halaman atau album, lalu pilih Impor asli terpilih. LightTable menyalin foto asli, termasuk file RAW, ke Pictures / LightTable Imports / Apple Photos. Asli iCloud diunduh selama impor. Pustaka Photos Anda tetap tidak berubah; album, video, dan pengeditan Photos tidak ditransfer.",
+            "Pada edisi Mac App Store, semua salinan yang diimpor dari Foto Apple disimpan di penyimpanan pribadi aplikasi LightTable, bukan di folder Gambar. Perpustakaan Foto Anda tetap tidak berubah.",
             "Hentikan Impor mempertahankan salinan yang selesai. Impor lagi pilihan untuk mencoba ulang asli yang tidak tersedia; salinan yang selesai dilewati. Pilih Tampilkan foto yang diimpor untuk menyunting salinan. Segarkan memperbarui foto dan album yang tersedia."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Di aplikasi macOS, gunakan Berkas → Impor dari Apple Photos… atau Pilih beberapa… di penyiapan Foto. Format Saat Ini mempertahankan representasi yang disediakan oleh Foto; Kompatibel meminta format yang dapat dibaca secara luas. Representasi terpilih ini dapat mencakup pengeditan Foto dan terpisah dari impor original seluruh pustaka.",
             "Pilih foto, lalu klik Tambahkan. LightTable menampilkan progres saat mengunduh dan menyalinnya. Hentikan Impor mempertahankan salinan yang sudah selesai dan menghentikan transfer yang tersisa. Pustaka Foto Anda tetap tidak berubah.",
-            "Salinan disimpan di Pictures / LightTable Imports / Apple Photos. Mengimpor pilihan lagi akan membuat salinan terpisah dengan nama file bernomor; file yang sudah ada tidak pernah ditimpa."
+            "Salinan disimpan di Pictures / LightTable Imports / Apple Photos. Mengimpor pilihan lagi akan membuat salinan terpisah dengan nama file bernomor; file yang sudah ada tidak pernah ditimpa.",
+            "Pada edisi Mac App Store, semua salinan yang diimpor dari Foto Apple disimpan di penyimpanan pribadi aplikasi LightTable, bukan di folder Gambar. Perpustakaan Foto Anda tetap tidak berubah."
           ],
           "steps": [
             "Pilih Format Saat Ini atau Kompatibel.",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "id",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

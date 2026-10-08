@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ar",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4641,7 +4641,9 @@
     "← People": "← أشخاص",
     "☆ Favorites": "☆ المفضلات",
     "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "في إصدار Mac App Store، اختر مجلدًا يحتوي على صورك. لا يمكن لـ LightTable القراءة والكتابة إلا في المواقع التي تحددها، ويتذكر صلاحية الوصول إليها لاستخدامها عند تشغيل التطبيق لاحقًا. إذا لم يعد أحد المجلدات التي يتذكرها التطبيق متاحًا، فحدده مرة أخرى.",
-    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "يتلقى إصدار Mac App Store التحديثات عبر App Store. ولا تتضمن قائمة LightTable فيه خيار «التحقق من التحديثات…»."
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "يتلقى إصدار Mac App Store التحديثات عبر App Store. ولا تتضمن قائمة LightTable فيه خيار «التحقق من التحديثات…».",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "في إصدار Mac App Store، تُحفظ جميع النسخ المستوردة من تطبيق «الصور» من Apple في مساحة التخزين الخاصة بتطبيق LightTable بدلًا من مجلد «الصور». وتبقى مكتبة «الصور» لديك دون تغيير.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "يحافظ خيار «التنسيق الحالي» على التمثيل الحالي للعنصر، بما في ذلك RAW أو بيانات العمق المضمّنة عند توفرها. وينشئ خيار «متوافق» صورة يمكن قراءتها في مجموعة واسعة من التطبيقات. تُنسخ الملفات المحددة إلى مساحة التخزين الخاصة بتطبيق LightTable."
   },
   "plurals": {
     " · {count} paired file linked": {

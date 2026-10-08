@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "ru",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4641,7 +4641,9 @@
     "← People": "← Люди",
     "☆ Favorites": "☆ Избранное",
     "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "В версии из Mac App Store выберите папку с вашими фотографиями. LightTable может читать и записывать данные только в выбранных вами расположениях и запоминает доступ к ним для последующих запусков. Если ранее выбранная папка больше недоступна, выберите её снова.",
-    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Версия из Mac App Store получает обновления через App Store. В её меню LightTable нет команды «Проверить обновления…»."
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Версия из Mac App Store получает обновления через App Store. В её меню LightTable нет команды «Проверить обновления…».",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "В версии из Mac App Store все копии, импортированные из приложения «Фото» от Apple, сохраняются в закрытом хранилище приложения LightTable, а не в папке «Изображения». Ваша медиатека «Фото» остаётся без изменений.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "Параметр «Текущий формат» сохраняет текущее представление объекта, включая RAW или встроенные данные о глубине, если они доступны. Параметр «Совместимо» создаёт изображение, которое может быть прочитано широким кругом приложений. Выбранные файлы копируются в закрытое хранилище приложения LightTable."
   },
   "plurals": {
     " · {count} paired file linked": {

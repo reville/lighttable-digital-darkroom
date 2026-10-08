@@ -21,6 +21,7 @@
           "paragraphs": [
             "Yeni bir kitaplıkta, kurulum yerel bir klasör veya Lightroom geçişi sunar. macOS uygulaması ayrıca Apple Photos’u da sunar. Kurulumu atlayabilir ve daha sonra fotoğraf ekleyebilirsiniz.",
             "Apple Photos tam kütüphane içe aktarması, macOS uygulamasını ve Fotoğraflar’ı okuma iznini gerektirir. RAW dosyaları dahil orijinal fotoğrafları Pictures / LightTable Imports / Apple Photos içine kopyalar. Fotoğraflar kütüphaneniz değişmeden kalır. iCloud orijinalleri içe aktarma sırasında indirilir; bu nedenle zaman ve disk alanı ayırın. Albümler, videolar ve Fotoğraflar düzenlemeleri aktarılmaz.",
+            "Mac App Store sürümünde, Apple Fotoğraflar’dan içe aktarılan tüm kopyalar Resimler klasörü yerine LightTable’ın özel uygulama depolama alanına kaydedilir. Fotoğraflar arşiviniz değişmeden kalır.",
             "İçe aktarmayı durdur, tamamlanmış kopyaları korur. Tekrar çalıştırmak bu kopyaları atlar ve tamamlanmamış orijinalleri yeniden dener."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "macOS uygulamasında, fotoğraflara ve albümlere göz atmak için kenar çubuğunda Apple Photos’u açın. İstendiğinde Photos erişimine izin verin. Bu kaynak Windows ve Linux'ta gizlidir.",
             "Sayfalar veya albümler arasında en fazla 500 fotoğraf seçin, ardından Seçilen orijinalleri içe aktar’ı seçin. LightTable, RAW dosyaları dahil olmak üzere orijinal fotoğrafları Pictures / LightTable Imports / Apple Photos içine kopyalar. iCloud orijinalleri içe aktarma sırasında indirilir. Photos kitaplığınız değişmeden kalır; albümler, videolar ve Photos düzenlemeleri aktarılmaz.",
+            "Mac App Store sürümünde, Apple Fotoğraflar’dan içe aktarılan tüm kopyalar Resimler klasörü yerine LightTable’ın özel uygulama depolama alanına kaydedilir. Fotoğraflar arşiviniz değişmeden kalır.",
             "İçe Aktarmayı Durdur tamamlanan kopyaları korur. Kullanılamaz orijinalleri yeniden denemek için seçimi yeniden içe aktarın; tamamlanan kopyalar atlanır. Kopyaları düzenlemek için İçe aktarılan fotoğrafları görüntüle’yi seçin. Yenile, kullanılabilir fotoğrafları ve albümleri günceller."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "macOS uygulamasında, Dosya → Apple Photos'tan içe aktar… seçeneğini veya Fotoğraf kurulumunda Birkaç tane seç… seçeneğini kullanın. Geçerli biçim, Photos tarafından sağlanan temsili korur; Uyumlu ise geniş ölçüde okunabilir bir biçim ister. Bu seçilmiş temsiller Photos düzenlemelerini içerebilir ve tüm kitaplığın orijinal dosyalarını içe aktarma işleminden ayrıdır.",
             "Fotoğrafları seçin, ardından Ekle'ye tıklayın. LightTable, fotoğraflar indirilirken ve kopyalanırken ilerlemeyi gösterir. İçe Aktarmayı Durdur, tamamlanan kopyaları korur ve kalan aktarımları durdurur. Fotoğraflar kitaplığınız değişmeden kalır.",
-            "Kopyalar Pictures / LightTable Imports / Apple Photos içine kaydedilir. Bir seçimi yeniden içe aktarmak, numaralandırılmış dosya adlarıyla ayrı kopyalar oluşturur; mevcut dosyaların üzerine hiçbir zaman yazılmaz."
+            "Kopyalar Pictures / LightTable Imports / Apple Photos içine kaydedilir. Bir seçimi yeniden içe aktarmak, numaralandırılmış dosya adlarıyla ayrı kopyalar oluşturur; mevcut dosyaların üzerine hiçbir zaman yazılmaz.",
+            "Mac App Store sürümünde, Apple Fotoğraflar’dan içe aktarılan tüm kopyalar Resimler klasörü yerine LightTable’ın özel uygulama depolama alanına kaydedilir. Fotoğraflar arşiviniz değişmeden kalır."
           ],
           "steps": [
             "Geçerli biçim veya Uyumlu seçin.",
@@ -3609,5 +3612,5 @@
     }
   ],
   "locale": "tr",
-  "sourceDigest": "2c24a565e90e5cf7beac5b0185829e404d9633624a276ea7b3c58390e9ce6710"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }
