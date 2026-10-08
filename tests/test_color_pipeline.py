@@ -215,6 +215,13 @@ class CaptureColourTests(unittest.TestCase):
         invalid = color_pipeline.raw_postprocess_options({"raw_highlight_recovery": "invalid"})
         self.assertEqual(invalid["highlight_mode"], rawpy.HighlightMode.Blend)
 
+    def test_saved_reconstruction_edits_do_not_reuse_pre_xtrans_fix_captures(self):
+        # Legacy v5 key for an explicit Reconstruct edit, with otherwise
+        # default capture settings. Changing the default alone cannot expire
+        # this cached capture: the edit still stores "reconstruct".
+        self.assertNotEqual(color_pipeline.raw_decode_fingerprint(
+            {"raw_highlight_recovery": "reconstruct"}), "9ac820b2f4ef")
+
     def test_raw_postprocess_options_xtrans_forces_blend_for_reconstruct(self):
         import rawpy
         class MockXTransRaw:

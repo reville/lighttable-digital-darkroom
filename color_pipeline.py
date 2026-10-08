@@ -387,8 +387,10 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     import enhance_workflow
     learned = enhance_workflow.denoise_fingerprint(params)
     import hashlib
+    # Saved X-Trans edits may still request reconstruction. Its effective
+    # decode is now Blend, so never reuse a pre-fix disk/resident capture.
     return hashlib.sha256(
-        (f"linear-prophoto-v5|{profile}|{recovery}|{denoise}|{learned}|"
+        (f"linear-prophoto-v6|{profile}|{recovery}|{denoise}|{learned}|"
          f"{mode}|{temperature}|{tint}|{develop}|{camera}").encode()
     ).hexdigest()[:12]
 
