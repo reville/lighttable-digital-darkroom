@@ -116,6 +116,11 @@ class RawCaptureControls(unittest.TestCase):
         self.assertGreater(means["off"], means["blend"],
                            "clipping should leave the block brighter than a blend")
 
+    def test_default_highlight_recovery_matches_blend(self):
+        default = self.decode({})
+        blend = self.decode({"raw_highlight_recovery": "blend"})
+        np.testing.assert_array_equal(default[CLIPPED], blend[CLIPPED])
+
     def test_sensor_denoise_quiets_the_flat_field(self):
         variance = [self.decode({"raw_sensor_denoise": mode})[FLAT].var()
                     for mode in ("off", "light", "full")]

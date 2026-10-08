@@ -122,7 +122,7 @@ class CaptureColourTests(unittest.TestCase):
         variants = {
             color_pipeline.raw_decode_fingerprint({"raw_profile": "detail"}),
             color_pipeline.raw_decode_fingerprint({
-                "raw_highlight_recovery": "blend"}),
+                "raw_highlight_recovery": "off"}),
             color_pipeline.raw_decode_fingerprint({"raw_sensor_denoise": "full"}),
         }
         self.assertNotIn(baseline, variants)
@@ -207,6 +207,33 @@ class CaptureColourTests(unittest.TestCase):
         self.assertEqual(options["fbdd_noise_reduction"],
                          rawpy.FBDDNoiseReductionMode.Light)
         self.assertTrue(options["no_auto_bright"])
+
+    def test_raw_postprocess_options_defaults_to_blend(self):
+        import rawpy
+        options = color_pipeline.raw_postprocess_options({})
+        self.assertEqual(options["highlight_mode"], rawpy.HighlightMode.Blend)
+        invalid = color_pipeline.raw_postprocess_options({"raw_highlight_recovery": "invalid"})
+        self.assertEqual(invalid["highlight_mode"], rawpy.HighlightMode.Blend)
+
+    def test_raw_postprocess_options_xtrans_forces_blend_for_reconstruct(self):
+        import rawpy
+        class MockXTransRaw:
+            raw_pattern = np.zeros((6, 6), dtype=np.uint8)
+
+        class MockBayerRaw:
+            raw_pattern = np.zeros((2, 2), dtype=np.uint8)
+
+        self.assertTrue(color_pipeline.is_xtrans_raw(MockXTransRaw()))
+        self.assertFalse(color_pipeline.is_xtrans_raw(MockBayerRaw()))
+        self.assertFalse(color_pipeline.is_xtrans_raw(None))
+
+        options_xtrans = color_pipeline.raw_postprocess_options(
+            {"raw_highlight_recovery": "reconstruct"}, raw=MockXTransRaw())
+        self.assertEqual(options_xtrans["highlight_mode"], rawpy.HighlightMode.Blend)
+
+        options_bayer = color_pipeline.raw_postprocess_options(
+            {"raw_highlight_recovery": "reconstruct"}, raw=MockBayerRaw())
+        self.assertEqual(options_bayer["highlight_mode"], rawpy.HighlightMode.ReconstructDefault)
 
     def test_custom_white_balance_is_applied_before_film_as_float(self):
         image = np.full((2, 2, 3), 0.25, dtype=np.float32)

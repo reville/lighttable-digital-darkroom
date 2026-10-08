@@ -306,7 +306,7 @@ DEFAULT_PARAMS = {
     # Capture-stage RAW development. These are resolved by rawpy before the
     # film model or display-referred grade sees the image.
     "raw_profile": "camera",
-    "raw_highlight_recovery": "reconstruct",
+    "raw_highlight_recovery": "blend",
     "raw_sensor_denoise": "off",
     "learned_denoise": False,
     "learned_denoise_strength": 0.6,
@@ -582,7 +582,7 @@ def clean_params(p: dict) -> dict:
     if out["raw_profile"] not in ("camera", "detail", "smooth"):
         out["raw_profile"] = "camera"
     if out["raw_highlight_recovery"] not in ("off", "blend", "reconstruct"):
-        out["raw_highlight_recovery"] = "reconstruct"
+        out["raw_highlight_recovery"] = "blend"
     if out["raw_sensor_denoise"] not in ("off", "light", "full"):
         out["raw_sensor_denoise"] = "off"
     if out["developProfile"] not in ("linear", "standard", "soft"):

@@ -374,9 +374,9 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     profile = str(params.get("raw_profile", "camera"))
     if profile not in RAW_PROFILES:
         profile = "camera"
-    recovery = str(params.get("raw_highlight_recovery", "reconstruct"))
+    recovery = str(params.get("raw_highlight_recovery", "blend"))
     if recovery not in RAW_HIGHLIGHT_MODES:
-        recovery = "reconstruct"
+        recovery = "blend"
     denoise = str(params.get("raw_sensor_denoise", "off"))
     if denoise not in RAW_DENOISE_MODES:
         denoise = "off"
@@ -393,8 +393,19 @@ def raw_decode_fingerprint(params: dict | None) -> str:
     ).hexdigest()[:12]
 
 
+def is_xtrans_raw(raw) -> bool:
+    """True when the raw handle or pattern represents a Fujifilm X-Trans sensor."""
+    if raw is None:
+        return False
+    if getattr(raw, "is_xtrans", False) is True:
+        return True
+    pattern = getattr(raw, "raw_pattern", None)
+    return pattern is not None and getattr(pattern, "shape", None) == (6, 6)
+
+
 def raw_postprocess_options(params: dict | None = None,
-                            *, half_size: bool = False) -> dict:
+                            *, half_size: bool = False,
+                            raw=None) -> dict:
     """Build rawpy options for capture-stage quality decisions.
 
     The camera profile uses LibRaw's camera-specific default demosaic and
@@ -407,7 +418,9 @@ def raw_postprocess_options(params: dict | None = None,
 
     params = params or {}
     profile = str(params.get("raw_profile", "camera"))
-    recovery = str(params.get("raw_highlight_recovery", "reconstruct"))
+    recovery = str(params.get("raw_highlight_recovery", "blend"))
+    if recovery == "reconstruct" and is_xtrans_raw(raw):
+        recovery = "blend"
     denoise = str(params.get("raw_sensor_denoise", "off"))
     options = {
         "gamma": (1, 1),
@@ -419,7 +432,7 @@ def raw_postprocess_options(params: dict | None = None,
             "off": rawpy.HighlightMode.Clip,
             "blend": rawpy.HighlightMode.Blend,
             "reconstruct": rawpy.HighlightMode.ReconstructDefault,
-        }.get(recovery, rawpy.HighlightMode.ReconstructDefault),
+        }.get(recovery, rawpy.HighlightMode.Blend),
         "fbdd_noise_reduction": {
             "off": rawpy.FBDDNoiseReductionMode.Off,
             "light": rawpy.FBDDNoiseReductionMode.Light,
@@ -540,7 +553,7 @@ def decode_raw(path: Path | str, params: dict | None = None,
         preview_half_size = bool(
             max_width and sensor_width and int(max_width) * 2 <= sensor_width)
         kwargs = raw_decode_runtime.native_options(raw_postprocess_options(
-            params, half_size=half_size or preview_half_size), decoder)
+            params, half_size=half_size or preview_half_size, raw=raw), decoder)
         if mode == "as_shot":
             kwargs["use_camera_wb"] = True
         elif mode == "auto":

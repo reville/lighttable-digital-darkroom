@@ -187,7 +187,7 @@ def build(args: argparse.Namespace) -> dict:
     raw_params = film_pipeline.clean_params({
         "wb_mode": "as_shot",
         "raw_profile": "camera",
-        "raw_highlight_recovery": "reconstruct",
+        "raw_highlight_recovery": "blend",
         "raw_sensor_denoise": "off",
         "developProfile": "standard",
     })
