@@ -21,6 +21,7 @@
           "paragraphs": [
             "On a new library, setup offers a local folder or Lightroom migration. The macOS app also offers Apple Photos. You can skip setup and add photos later.",
             "Apple Photos whole-library import requires the macOS app and permission to read Photos. It copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. Your Photos library stays unchanged. iCloud originals download during import, so allow time and disk space. Albums, videos, and Photos edits are not transferred.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.",
             "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.",
             "Select up to 500 photos across pages or albums, then choose Import selected originals. LightTable copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. iCloud originals download during import. Your Photos library stays unchanged; albums, videos, and Photos edits are not transferred.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.",
             "Stop Import keeps completed copies. Import the selection again to retry unavailable originals; completed copies are skipped. Choose View imported photos to edit the copies. Refresh updates the available photos and albums."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.",
             "Select photos, then click Add. LightTable shows progress while downloading and copying them. Stop Import keeps completed copies and stops the remaining transfers. Your Photos library stays unchanged.",
-            "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten."
+            "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged."
           ],
           "steps": [
             "Choose Current Format or Compatible.",

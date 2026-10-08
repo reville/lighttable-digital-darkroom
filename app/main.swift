@@ -2696,7 +2696,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
               window.attachedSheet == nil else { return }
         let alert = NSAlert()
         alert.messageText = L("Import from Apple Photos")
+#if LIGHTTABLE_STORE
+        alert.informativeText = L("Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.")
+#else
         alert.informativeText = L("Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.", ["path": "Pictures/LightTable Imports/Apple Photos"])
+#endif
         alert.addButton(withTitle: L("Current Format"))
         alert.addButton(withTitle: L("Compatible"))
         alert.addButton(withTitle: L("Cancel"))
