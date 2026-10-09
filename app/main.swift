@@ -360,6 +360,23 @@ private func storeFolderIsAccessible(_ path: String, selectedRoots: [URL], suppo
     return selectedRoots.contains { contains($0.resolvingSymlinksInPath().path) }
 }
 // MARK: - Store bookmark bridge
+// BEGIN STORE BOOKMARK RESTORATION POLICY
+/// Unavailable and revoked grants remain inert, never guessed from a path.
+/// Preserve opaque saved authority for retry; discard malformed serialization.
+private func storeRestoreBookmarks(_ saved: [String: String],
+    activate: (String, Data) -> URL?) -> (active: [String: URL], invalid: [String]) {
+    var active: [String: URL] = [:]
+    var invalid: [String] = []
+    for (path, encoded) in saved {
+        guard let data = Data(base64Encoded: encoded), !data.isEmpty else {
+            invalid.append(path)
+            continue
+        }
+        if let url = activate(path, data) { active[path] = url }
+    }
+    return (active, invalid)
+}
+// END STORE BOOKMARK RESTORATION POLICY
 private final class StoreFileAccess {
     static let shared = StoreFileAccess()
     private var active: [String: URL] = [:]
@@ -369,20 +386,36 @@ private final class StoreFileAccess {
     private init() {
         if let data = try? Data(contentsOf: file),
            let saved = try? JSONDecoder().decode([String: String].self, from: data) {
-            for (path, encoded) in saved {
-                guard let bookmark = Data(base64Encoded: encoded) else { continue }
-                var stale = false
-                if let url = try? URL(resolvingBookmarkData: bookmark,
-                    options: [.withSecurityScope, .withoutUI], relativeTo: nil,
-                    bookmarkDataIsStale: &stale), !stale, url.startAccessingSecurityScopedResource() {
-                    active[path] = url
-                    if let refreshed = try? url.bookmarkData(options: .withSecurityScope,
-                        includingResourceValuesForKeys: nil, relativeTo: nil) {
-                        records[url.path] = refreshed.base64EncodedString()
-                    }
-                }
-            }
+            records = saved
         }
+        restoreAvailableGrants()
+    }
+    func restoreAvailableGrants() {
+        for (path, url) in active where (try? url.checkResourceIsReachable()) != true {
+            url.stopAccessingSecurityScopedResource()
+            active.removeValue(forKey: path)
+        }
+        let restored = storeRestoreBookmarks(records) { path, bookmark in
+            if let url = active[path] { return url }
+            var stale = false
+            guard let url = try? URL(resolvingBookmarkData: bookmark,
+                options: [.withSecurityScope, .withoutUI, .withoutMounting], relativeTo: nil,
+                bookmarkDataIsStale: &stale),
+                url.startAccessingSecurityScopedResource() else { return nil }
+            guard (try? url.checkResourceIsReachable()) == true else {
+                url.stopAccessingSecurityScopedResource()
+                return nil
+            }
+            // A stale bookmark may still resolve with valid authority. Refresh it
+            // only after macOS grants the scope; failure never authorizes a path.
+            if let refreshed = try? url.bookmarkData(options: .withSecurityScope,
+                includingResourceValuesForKeys: nil, relativeTo: nil) {
+                records[path] = refreshed.base64EncodedString()
+            }
+            return url
+        }
+        for path in restored.invalid { records.removeValue(forKey: path) }
+        active = restored.active
         try? persist()
     }
     private func persist() throws {
@@ -393,8 +426,10 @@ private final class StoreFileAccess {
         // Persistent app-scoped bookmarks remain owned by this native app.
         var transfer: [String: String] = [:]
         for (path, url) in active {
-            transfer[path] = try url.bookmarkData(options: [],
-                includingResourceValuesForKeys: nil, relativeTo: nil).base64EncodedString()
+            if let bookmark = try? url.bookmarkData(options: [],
+                includingResourceValuesForKeys: nil, relativeTo: nil) {
+                transfer[path] = bookmark.base64EncodedString()
+            }
         }
         try JSONEncoder().encode(transfer).write(to: workerFile, options: .atomic)
     }
@@ -414,7 +449,8 @@ private final class StoreFileAccess {
         } catch { url.stopAccessingSecurityScopedResource(); throw error }
     }
     func contains(_ path: String) -> Bool {
-        storeFolderIsAccessible(path, selectedRoots: Array(active.values),
+        restoreAvailableGrants()
+        return storeFolderIsAccessible(path, selectedRoots: Array(active.values),
                                 supportDirectory: lightTableSupportDirectory())
     }
     deinit { active.values.forEach { $0.stopAccessingSecurityScopedResource() } }
@@ -1822,6 +1858,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             && defaults.object(forKey: "folderSources") == nil
             && defaults.integer(forKey: "firstRunCompleted") < 1
         sources = firstRun ? [] : loadSources()
+#if LIGHTTABLE_STORE
+        for notification in [NSWorkspace.didMountNotification, NSWorkspace.didUnmountNotification] {
+            NSWorkspace.shared.notificationCenter.addObserver(forName: notification,
+                object: nil, queue: .main) { [weak self] _ in
+                guard let self else { return }
+                StoreFileAccess.shared.restoreAvailableGrants()
+                self.sources = self.loadSources()
+                self.sendEvent(self.sourcePayload())
+            }
+        }
+#endif
         if firstRun {
             do { folder = try gettingStartedFolder().path }
             catch { showFatal(L("Could not prepare your library: {error}", ["error": error.localizedDescription])); return }
