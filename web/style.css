@@ -83,6 +83,9 @@
 
 * { box-sizing:border-box; }
 [hidden] { display:none !important; }
+.store-distribution #automaticUpdateSetting,
+.store-distribution #desktopUpdateControls,
+.store-distribution #desktopUpdateNotice { display:none !important; }
 html, body { height:100%; margin:0; }
 body {
   background:var(--bg);

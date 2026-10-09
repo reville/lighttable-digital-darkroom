@@ -8,12 +8,13 @@ import {t as tr} from '../web/i18n.js';
 const source = readFileSync(new URL('../web/desktop-updates.js', import.meta.url), 'utf8');
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-function harness({platform = 'linux', bridge = true, save = true, post, status} = {}) {
+function harness({platform = 'linux', distribution, bridge = true, save = true, post, status} = {}) {
   const nodes = new Map(), calls = [], native = [], errors = [], timers = [];
   let blocked = false;
   const modalCalls = [];
   const window = {
     __LIGHTTABLE_PLATFORM__: platform,
+    __LIGHTTABLE_DISTRIBUTION__: distribution,
     lightTableShowUpdateModal: opts => modalCalls.push(opts)
   };
   const document = {getElementById(id) {
@@ -36,6 +37,34 @@ function harness({platform = 'linux', bridge = true, save = true, post, status} 
   return {window, ui, calls, native, errors, timers, modalCalls, el: id => document.getElementById(id),
     blocked: () => blocked, click: id => document.getElementById(id).handlers.click()};
 }
+
+test('Mac App Store has no updater controls or update actions, regardless of platform bootstrap', async () => {
+  for (const platform of ['macos', null]) {
+    const h = harness({ platform, distribution: 'mac-app-store' });
+    for (const id of ['automaticUpdateSetting', 'desktopUpdateControls', 'desktopUpdateNotice']) {
+      assert.equal(h.el(id).hidden, true);
+    }
+    assert.equal(h.el('automaticUpdateChecks').disabled, true);
+    assert.equal(h.el('checkForUpdates').disabled, true);
+    await h.window.lightTableCheckForUpdates();
+    await h.window.lightTableRefreshUpdates();
+    assert.equal(await h.window.lightTablePrepareToUpdate(), false);
+    assert.equal(await h.window.lightTableShutdownForUpdate(), false);
+    h.ui.nativeEvent({type: 'updateStatus', state: 'available', supported: true});
+    assert.equal(h.el('desktopUpdateNotice').hidden, true);
+    assert.deepEqual(h.calls, []);
+    assert.deepEqual(h.native, []);
+    assert.deepEqual(h.timers, []);
+  }
+});
+
+test('direct-download Mac retains its native updater and automatic-check preference', async () => {
+  const h = harness({platform: 'macos'});
+  assert.equal(h.el('automaticUpdateSetting').hidden, false);
+  assert.equal(h.el('automaticUpdateChecks').disabled, false);
+  await h.window.lightTableCheckForUpdates();
+  assert.deepEqual(h.native, [{name: 'checkForUpdates', body: undefined}]);
+});
 
 test('failed saves never prepare or launch an update', async () => {
   const h = harness({save: false, status: {supported: true, state: 'ready'}});

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "pl",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ Wstecz",
     "← Back to articles": "← Wróć do artykułów",
     "← People": "← Osoby",
-    "☆ Favorites": "☆ Ulubione"
+    "☆ Favorites": "☆ Ulubione",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "W wersji z Mac App Store wybierz folder zawierający twoje zdjęcia. LightTable może odczytywać i zapisywać dane tylko w wybranych przez ciebie lokalizacjach oraz zapamiętuje dostęp do nich na potrzeby kolejnych uruchomień. Jeśli zapamiętany folder nie jest już dostępny, wybierz go ponownie.",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Wersja z Mac App Store otrzymuje uaktualnienia za pośrednictwem App Store. Jej menu LightTable nie zawiera polecenia „Sprawdź aktualizacje…”.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "W wersji z Mac App Store wszystkie kopie zaimportowane z aplikacji Zdjęcia firmy Apple są zapisywane w prywatnej przestrzeni dyskowej aplikacji LightTable zamiast w folderze Obrazki. Twoja biblioteka Zdjęć pozostaje bez zmian.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "Opcja „Bieżący format” zachowuje element w jego bieżącej postaci, w tym w formacie RAW lub z osadzonymi danymi głębi, jeśli są dostępne. Opcja „Zgodny” tworzy obraz, który może być odczytany przez wiele aplikacji. Wybrane pliki są kopiowane do prywatnej przestrzeni dyskowej aplikacji LightTable."
   },
   "plurals": {
     " · {count} paired file linked": {

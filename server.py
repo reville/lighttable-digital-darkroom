@@ -7650,11 +7650,13 @@ class Handler(BaseHTTPRequestHandler):
             EVENTS.unsubscribe(subscriber)
 
     def do_GET(self):  # noqa: N802
+        import macos_store_access
         started = time.perf_counter()
         u = urlparse(self.path)
         q = {k: v[0] for k, v in parse_qs(u.query).items()}
         try:
             self._enforce_security(mutating=False)
+            macos_store_access.refresh()
             if u.path == "/":
                 self._send(200, (APP / "web" / "index.html").read_bytes(),
                            "text/html; charset=utf-8", headers={
@@ -8036,11 +8038,16 @@ class Handler(BaseHTTPRequestHandler):
             self._log_request(started)
 
     def do_POST(self):  # noqa: N802
+        import macos_store_access
         started = time.perf_counter()
         u = urlparse(self.path)
         update_admitted = False
         try:
             self._enforce_security(mutating=u.path not in READ_ONLY_POST_PATHS)
+            macos_store_access.refresh()
+            if os.environ.get("LIGHTTABLE_STORE_GRANTS_FILE") and u.path.startswith("/api/updates/"):
+                self._json({"error": "Updates are managed by the Mac App Store"}, 403)
+                return
             UPDATES.enter(u.path)
             update_admitted = True
             if u.path.startswith("/api/updates/"):

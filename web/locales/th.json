@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "th",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ ย้อนกลับ",
     "← Back to articles": "← กลับไปที่บทความ",
     "← People": "← ผู้คน",
-    "☆ Favorites": "☆ รายการโปรด"
+    "☆ Favorites": "☆ รายการโปรด",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "ในรุ่น Mac App Store ให้เลือกโฟลเดอร์ที่มีรูปภาพของคุณ LightTable สามารถอ่านและเขียนข้อมูลได้เฉพาะในตำแหน่งที่คุณเลือก และจะจดจำสิทธิ์การเข้าถึงไว้สำหรับการเปิดแอปครั้งต่อๆ ไป หากโฟลเดอร์ที่จดจำไว้ไม่พร้อมใช้งานอีกต่อไป ให้เลือกโฟลเดอร์นั้นอีกครั้ง",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "รุ่น Mac App Store จะได้รับรายการอัปเดตผ่าน App Store โดยเมนู LightTable ของรุ่นนี้ไม่มีคำสั่ง “ตรวจหาการอัปเดต…”",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "ในรุ่น Mac App Store สำเนาทั้งหมดที่นำเข้าจากแอปรูปภาพของ Apple จะถูกบันทึกไว้ในพื้นที่จัดเก็บส่วนตัวของแอป LightTable แทนโฟลเดอร์รูปภาพ โดยคลังรูปภาพของคุณจะไม่เปลี่ยนแปลง",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "“รูปแบบปัจจุบัน” จะคงรูปแบบข้อมูลปัจจุบันของรายการไว้ รวมถึง RAW หรือข้อมูลความลึกที่ฝังไว้ หากมี “ใช้งานร่วมกันได้” จะสร้างภาพที่แอปหลากหลายชนิดอ่านได้ ไฟล์ที่เลือกจะถูกคัดลอกไปยังพื้นที่จัดเก็บส่วนตัวของแอป LightTable"
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -62,6 +62,7 @@
   "Create Virtual Copy…",
   "Crop",
   "Current Format",
+  "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.",
   "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.",
   "Cut",
   "Delete Virtual Copy",

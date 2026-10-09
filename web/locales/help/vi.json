@@ -21,6 +21,7 @@
           "paragraphs": [
             "Trên một thư viện mới, bước thiết lập cung cấp một thư mục cục bộ hoặc di chuyển dữ liệu từ Lightroom. Ứng dụng macOS cũng cung cấp Apple Photos. Bạn có thể bỏ qua bước thiết lập và thêm ảnh sau.",
             "Nhập toàn bộ thư viện từ Apple Photos yêu cầu ứng dụng macOS và quyền đọc Photos. Nó sao chép ảnh gốc, bao gồm các tệp RAW, vào Pictures / LightTable Imports / Apple Photos. Thư viện Photos của bạn không thay đổi. Ảnh gốc iCloud sẽ tải xuống trong quá trình nhập, vì vậy hãy dành thời gian và dung lượng đĩa. Album, video và các chỉnh sửa trong Photos không được chuyển.",
+            "Trong phiên bản Mac App Store, tất cả bản sao được nhập từ ứng dụng Ảnh của Apple đều được lưu trong vùng lưu trữ riêng của ứng dụng LightTable thay vì thư mục Ảnh. Thư viện Ảnh của bạn không bị thay đổi.",
             "Dừng nhập sẽ giữ lại các bản sao đã hoàn tất. Chạy lại sẽ bỏ qua các bản sao đó và thử lại các ảnh gốc chưa hoàn tất."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "Trong ứng dụng macOS, mở Apple Photos trong thanh bên để duyệt ảnh và album. Cho phép truy cập Photos khi được hỏi. Nguồn này bị ẩn trên Windows và Linux.",
             "Chọn tối đa 500 ảnh trên các trang hoặc album, rồi chọn Nhập các bản gốc đã chọn. LightTable sao chép ảnh gốc, bao gồm cả tệp RAW, vào Pictures / LightTable Imports / Apple Photos. Bản gốc từ iCloud sẽ được tải xuống trong quá trình nhập. Thư viện Photos của bạn không thay đổi; album, video và các chỉnh sửa Photos không được chuyển sang.",
+            "Trong phiên bản Mac App Store, tất cả bản sao được nhập từ ứng dụng Ảnh của Apple đều được lưu trong vùng lưu trữ riêng của ứng dụng LightTable thay vì thư mục Ảnh. Thư viện Ảnh của bạn không bị thay đổi.",
             "Dừng nhập giữ lại các bản sao đã hoàn tất. Nhập lại vùng chọn để thử lại các bản gốc không khả dụng; các bản sao đã hoàn tất sẽ bị bỏ qua. Chọn Xem ảnh đã nhập để chỉnh sửa các bản sao. Làm mới cập nhật các ảnh và album khả dụng."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Trong ứng dụng macOS, dùng Tệp → Nhập từ Ảnh Apple… hoặc Chọn vài mục… trong thiết lập Ảnh. Định dạng hiện tại giữ nguyên biểu diễn do Ảnh cung cấp; Tương thích yêu cầu một định dạng có thể đọc rộng rãi. Những biểu diễn đã chọn này có thể bao gồm các chỉnh sửa trong Ảnh và tách biệt với toàn bộ quá trình nhập ảnh gốc của thư viện.",
             "Chọn ảnh, rồi nhấp Thêm. LightTable hiển thị tiến trình trong khi tải xuống và sao chép chúng. Dừng nhập sẽ giữ lại các bản sao đã hoàn tất và dừng các lần chuyển còn lại. Thư viện Ảnh của bạn vẫn không thay đổi.",
-            "Các bản sao được lưu trong Pictures / LightTable Imports / Apple Photos. Nhập lại một vùng chọn sẽ tạo các bản sao riêng với tên tệp được đánh số; các tệp hiện có sẽ không bao giờ bị ghi đè."
+            "Các bản sao được lưu trong Pictures / LightTable Imports / Apple Photos. Nhập lại một vùng chọn sẽ tạo các bản sao riêng với tên tệp được đánh số; các tệp hiện có sẽ không bao giờ bị ghi đè.",
+            "Trong phiên bản Mac App Store, tất cả bản sao được nhập từ ứng dụng Ảnh của Apple đều được lưu trong vùng lưu trữ riêng của ứng dụng LightTable thay vì thư mục Ảnh. Thư viện Ảnh của bạn không bị thay đổi."
           ],
           "steps": [
             "Chọn Định dạng hiện tại hoặc Tương thích.",
@@ -52,7 +55,8 @@
         {
           "title": "Mở thư mục cục bộ",
           "paragraphs": [
-            "Thêm ảnh mở trình chọn ảnh. Trên Mac, trình chọn đó cũng chấp nhận thư mục. Trên Linux và Windows, dùng dấu + bên cạnh Thư mục để thêm cả một thư mục. LightTable giữ nguyên các bản gốc tại chỗ. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa ảnh đó, nên các ảnh khác được hỗ trợ trong thư mục đó cũng có thể xuất hiện."
+            "Thêm ảnh mở trình chọn ảnh. Trên Mac, trình chọn đó cũng chấp nhận thư mục. Trên Linux và Windows, dùng dấu + bên cạnh Thư mục để thêm cả một thư mục. LightTable giữ nguyên các bản gốc tại chỗ. Chọn một ảnh riêng lẻ sẽ thêm thư mục chứa ảnh đó, nên các ảnh khác được hỗ trợ trong thư mục đó cũng có thể xuất hiện.",
+            "Trong phiên bản Mac App Store, hãy chọn một thư mục chứa ảnh của bạn. LightTable chỉ có thể đọc và ghi tại các vị trí bạn chọn, đồng thời ghi nhớ quyền truy cập để dùng trong những lần khởi chạy sau. Nếu một thư mục đã được ghi nhớ không còn khả dụng, hãy chọn lại thư mục đó."
           ],
           "steps": [
             "Nhấp Thêm ảnh ở góc trên bên trái và chọn ảnh, hoặc dùng dấu + bên cạnh Thư mục để chọn một thư mục.",
@@ -3150,6 +3154,7 @@
         {
           "title": "Cập nhật LightTable",
           "paragraphs": [
+            "Phiên bản Mac App Store nhận các bản cập nhật qua App Store. Menu LightTable của phiên bản này không có mục “Kiểm tra cập nhật…”.",
             "Các bản cài đặt macOS đã ký cung cấp Kiểm tra cập nhật… trong menu LightTable, còn các bản cài đặt Windows đã ký và các bản cài đặt Linux di động đã được cấu hình cung cấp tùy chọn này trong Cài đặt → Chung. Các lần kiểm tra tự động chạy nhiều nhất một lần mỗi ngày sau khi trình chỉnh sửa mở. Các bản beta Mac phát hành riêng vẫn chỉ cập nhật thủ công.",
             "Trên macOS, chọn LightTable → Kiểm tra cập nhật… để tải xuống và cài đặt một bản phát hành đã ký. Trên Linux, chọn Cập nhật để tải xuống và xác minh gói, rồi Khởi động lại và cập nhật. Windows sử dụng hộp thoại cập nhật gốc của hệ thống. Hãy hoàn tất trước các tác vụ nhập, xuất và các công việc khác; LightTable sẽ lưu các chỉnh sửa đang chờ và sao lưu danh mục trước khi đóng.",
             "Bản cập nhật giữ nguyên ảnh, chỉnh sửa và tùy chọn. Linux giữ lại gói trước để phục hồi, nhưng không tự động khôi phục danh mục hoặc mở lại phiên bản cũ.",
@@ -3607,5 +3612,5 @@
     }
   ],
   "locale": "vi",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

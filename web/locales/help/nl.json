@@ -21,6 +21,7 @@
           "paragraphs": [
             "In een nieuwe bibliotheek biedt de installatie een lokale map of Lightroom-migratie. De macOS-app biedt ook Apple Foto's. U kunt de installatie overslaan en later foto's toevoegen.",
             "Voor het importeren van de hele Apple Photos-bibliotheek is de macOS-app vereist en toestemming om Foto's te lezen. Het kopieert originele foto's, inclusief RAW-bestanden, naar Pictures / LightTable Imports / Apple Photos. Je Foto's-bibliotheek blijft ongewijzigd. iCloud-originelen worden tijdens het importeren gedownload, dus houd rekening met tijd en schijfruimte. Albums, video's en bewerkingen in Foto's worden niet overgedragen.",
+            "In de Mac App Store-versie worden alle kopieën die uit Foto’s van Apple zijn geïmporteerd, opgeslagen in de privéopslag van de LightTable-app in plaats van in de map Afbeeldingen. Je Foto’s-bibliotheek blijft ongewijzigd.",
             "Stop importeren behoudt voltooide kopieën. Als je het opnieuw uitvoert, worden die kopieën overgeslagen en worden onvoltooide originelen opnieuw geprobeerd."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "Open in de macOS-app Apple Foto's in de zijbalk om door foto's en albums te bladeren. Geef toegang tot Foto's wanneer daarom wordt gevraagd. Deze bron is verborgen op Windows en Linux.",
             "Selecteer maximaal 500 foto's over pagina's of albums heen en kies vervolgens Geselecteerde originelen importeren. LightTable kopieert originele foto's, inclusief RAW-bestanden, naar Pictures / LightTable Imports / Apple Photos. iCloud-originelen worden tijdens het importeren gedownload. Uw Foto's-bibliotheek blijft ongewijzigd; albums, video's en bewerkingen in Foto's worden niet overgebracht.",
+            "In de Mac App Store-versie worden alle kopieën die uit Foto’s van Apple zijn geïmporteerd, opgeslagen in de privéopslag van de LightTable-app in plaats van in de map Afbeeldingen. Je Foto’s-bibliotheek blijft ongewijzigd.",
             "Importeren stoppen behoudt voltooide kopieën. Importeer de selectie opnieuw om niet-beschikbare originelen opnieuw te proberen; voltooide kopieën worden overgeslagen. Kies Geïmporteerde foto's weergeven om de kopieën te bewerken. Vernieuwen werkt de beschikbare foto's en albums bij."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Gebruik in de macOS-app Bestand → Importeren uit Apple Foto's… of Kies er een paar… in de configuratie van Foto. Huidig formaat behoudt de door Foto's aangeleverde weergave; Compatibel vraagt om een breed leesbaar formaat. Deze geselecteerde weergaven kunnen Foto's-bewerkingen bevatten en staan los van de originele import van de hele bibliotheek.",
             "Selecteer foto's en klik vervolgens op Toevoegen. LightTable toont de voortgang tijdens het downloaden en kopiëren. Importeren stoppen behoudt voltooide kopieën en stopt de resterende overdrachten. Je Foto's-bibliotheek blijft ongewijzigd.",
-            "Kopieën worden opgeslagen in Pictures / LightTable Imports / Apple Photos. Als je een selectie opnieuw importeert, worden afzonderlijke kopieën met genummerde bestandsnamen gemaakt; bestaande bestanden worden nooit overschreven."
+            "Kopieën worden opgeslagen in Pictures / LightTable Imports / Apple Photos. Als je een selectie opnieuw importeert, worden afzonderlijke kopieën met genummerde bestandsnamen gemaakt; bestaande bestanden worden nooit overschreven.",
+            "In de Mac App Store-versie worden alle kopieën die uit Foto’s van Apple zijn geïmporteerd, opgeslagen in de privéopslag van de LightTable-app in plaats van in de map Afbeeldingen. Je Foto’s-bibliotheek blijft ongewijzigd."
           ],
           "steps": [
             "Kies Huidig formaat of Compatibel.",
@@ -52,7 +55,8 @@
         {
           "title": "Een lokale map openen",
           "paragraphs": [
-            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruikt u de + naast Mappen om een hele map toe te voegen. LightTable bewaart originelen op hun plaats. Als u één foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat ook andere ondersteunde foto's in die map kunnen verschijnen."
+            "Foto's toevoegen opent een fotokiezer. Op Mac accepteert die kiezer ook mappen. Op Linux en Windows gebruikt u de + naast Mappen om een hele map toe te voegen. LightTable bewaart originelen op hun plaats. Als u één foto selecteert, wordt de map waarin die zich bevindt toegevoegd, zodat ook andere ondersteunde foto's in die map kunnen verschijnen.",
+            "Kies in de Mac App Store-versie een map met je foto's. LightTable kan alleen lezen en schrijven op locaties die je selecteert. De toegang wordt onthouden voor de volgende keren dat je de app opent. Als een onthouden map niet meer beschikbaar is, selecteer je die opnieuw."
           ],
           "steps": [
             "Klik linksboven op Foto's toevoegen en kies foto's, of gebruik de + naast Mappen om een map te kiezen.",
@@ -3150,6 +3154,7 @@
         {
           "title": "LightTable bijwerken",
           "paragraphs": [
+            "De Mac App Store-versie ontvangt updates via de App Store. Het LightTable-menu van deze versie bevat geen optie ‘Controleren op updates…’.",
             "Ondertekende macOS-installaties bieden Controleren op updates… in het LightTable-menu, terwijl ondertekende Windows-installaties en geconfigureerde draagbare Linux-installaties dit aanbieden in Instellingen → Algemeen. Automatische controles worden hoogstens één keer per dag uitgevoerd nadat de editor is geopend. Ad-hoc Mac-bèta's blijven alleen handmatig bijwerken ondersteunen.",
             "Kies op macOS LightTable → Controleren op updates… om een ondertekende release te downloaden en te installeren. Kies op Linux Bijwerken om het pakket te downloaden en te verifiëren, en kies vervolgens Opnieuw starten en bijwerken. Windows gebruikt het eigen updatemeldingsvenster. Rond eerst import-, export- en andere taken af; LightTable slaat openstaande bewerkingen op en maakt een back-up van de catalogus voordat het wordt afgesloten.",
             "Updates behouden foto's, bewerkingen en voorkeuren. Linux bewaart de vorige bundel voor herstel, maar herstelt niet automatisch een catalogus en opent geen oudere versie opnieuw.",
@@ -3607,5 +3612,5 @@
     }
   ],
   "locale": "nl",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

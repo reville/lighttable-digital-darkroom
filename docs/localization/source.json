@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "pluralPairs": [
     {
@@ -1299,6 +1299,7 @@
     "Culling, updates, and job completion behavior.",
     "Current Format",
     "Current camera",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.",
     "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into {path}.",
     "Current photo",
     "Current photo / total photos",
@@ -1970,6 +1971,8 @@
     "In a narrow Linux window, Show or hide library opens the library as a drawer. Expanding the window restores the normal side-by-side layout. On Hyprland, use the compositor's window shortcuts to move, tile, resize, or close LightTable.",
     "In a narrow Linux window, use Show or hide library at the top left to open the library drawer. Close it with the same button after choosing a folder to leave more room for the photo.",
     "In the Curve graph, the horizontal direction runs from darker input tones to brighter input tones. Moving a point up raises its output; moving it down lowers it. RGB adjusts the combined curve, while R, G, and B affect individual channels.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.",
     "In the Windows desktop app, open Help and choose Write a Microsoft Store review… to open the Store review page. After several successful exports over time, LightTable may also show a small review reminder. Choose No thanks to dismiss future reminders; the Help action remains available.",
     "In the filmstrip, this link appears below the photo count only when the current list contains photos that cannot be displayed.",
     "In the grid and filmstrip, Thumbnail unavailable shows why a thumbnail failed and includes the reported diagnostic when available. After correcting the problem, choose Retry.",
@@ -3498,6 +3501,7 @@
     "The Enhance helper has not been built ({helper}); build it with build-app.sh before using Enhance",
     "The Filter button shows how many choices are active. Each choice appears as a removable chip above the grid, and the count shows how many photos match. Remove a chip with its ×, or choose Clear all to reset the filters. Search text and the selected folder or collection stay in place.",
     "The Grain size setting belongs to the film simulation. Detail sharpening and noise reduction in Edit are separate adjustments.",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….",
     "The Parametric tab provides four region sliders — Highlights, Lights, Darks, and Shadows — along with split point controls that define the threshold boundaries between tonal regions.",
     "The Photo Index is off by default and requires macOS. Linux and Windows show Not available on this platform, and new indexing cannot be enabled. On Mac, analysis stays on the device and does not modify photo folders. Apple Vision provides the core analysis; richer Foundation Models descriptions appear only when that capability is available.",
     "The Quick Collection",

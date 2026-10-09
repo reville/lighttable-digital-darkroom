@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "nl",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ Terug",
     "← Back to articles": "← Terug naar artikelen",
     "← People": "← Personen",
-    "☆ Favorites": "☆ Favorieten"
+    "☆ Favorites": "☆ Favorieten",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Kies in de Mac App Store-versie een map met je foto's. LightTable kan alleen lezen en schrijven op locaties die je selecteert. De toegang wordt onthouden voor de volgende keren dat je de app opent. Als een onthouden map niet meer beschikbaar is, selecteer je die opnieuw.",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "De Mac App Store-versie ontvangt updates via de App Store. Het LightTable-menu van deze versie bevat geen optie ‘Controleren op updates…’.",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "In de Mac App Store-versie worden alle kopieën die uit Foto’s van Apple zijn geïmporteerd, opgeslagen in de privéopslag van de LightTable-app in plaats van in de map Afbeeldingen. Je Foto’s-bibliotheek blijft ongewijzigd.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "‘Huidig formaat’ behoudt de huidige gegevensrepresentatie van het onderdeel, inclusief RAW of ingesloten dieptegegevens, indien beschikbaar. ‘Compatibel’ maakt een afbeelding die veel apps kunnen lezen. De geselecteerde bestanden worden naar de privéopslag van de LightTable-app gekopieerd."
   },
   "plurals": {
     " · {count} paired file linked": {

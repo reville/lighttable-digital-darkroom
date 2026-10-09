@@ -237,6 +237,8 @@ def translate_plurals(client, locale, source, catalog, args, deadline, path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--locale', action='append')
+    parser.add_argument('--import-reviewed', type=Path,
+                        help='Import internally reviewed locale-to-message mappings without an external service')
     parser.add_argument('--provider', choices=('openai', 'gemini'), default='openai')
     parser.add_argument('--model')
     parser.add_argument('--workers', type=int, default=6)
@@ -244,6 +246,36 @@ def main():
     parser.add_argument('--max-requests', type=int, default=600)
     parser.add_argument('--max-output-tokens', type=int, default=3000000)
     args = parser.parse_args()
+    if args.import_reviewed:
+        source = json.loads((ROOT / 'docs/localization/source.json').read_text())
+        manifest = json.loads((ROOT / 'web/locales/manifest.json').read_text())
+        allowed = {locale['code'] for locale in manifest['locales'] if locale['code'] != 'en'}
+        payload = json.loads(args.import_reviewed.read_text())
+        if not isinstance(payload, dict) or not payload or not set(payload) <= allowed:
+            parser.error('Reviewed import must contain declared non-English locales')
+        catalogs = []
+        for code, messages in payload.items():
+            if args.locale and code not in args.locale:
+                continue
+            if not isinstance(messages, dict) or not messages or not set(messages) <= set(source['messages']):
+                parser.error(f'{code}: reviewed import contains unknown source messages')
+            for message, translated in messages.items():
+                error = localization.validate_translation(message, translated, code)
+                if error:
+                    parser.error(f'{code}: invalid reviewed translation: {error}')
+            path = ROOT / f'web/locales/{code}.json'
+            catalog = json.loads(path.read_text())
+            catalog['messages'].update(messages)
+            if any(localization.validate_translation(message, catalog['messages'].get(message), code)
+                   for message in source['messages']):
+                parser.error(f'{code}: reviewed import leaves incomplete coverage')
+            catalog['sourceDigest'] = source['sourceDigest']
+            catalogs.append((path, catalog))
+        # Validate the entire requested import before changing any catalog.
+        for path, catalog in catalogs:
+            atomic_json(path, catalog)
+        print(f'Imported reviewed translations for {len(catalogs)} locales; no external service used')
+        return 0
     args.model = args.model or ('gemini-3.8-flash' if args.provider == 'gemini' else 'gpt-5.4-mini')
     key = 'GEMINI_API_KEY' if args.provider == 'gemini' else 'OPENAI_API_KEY'
     if not os.environ.get(key):

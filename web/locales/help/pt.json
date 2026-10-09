@@ -21,6 +21,7 @@
           "paragraphs": [
             "Em uma nova biblioteca, a configuração oferece uma pasta local ou migração do Lightroom. O app do macOS também oferece Apple Photos. Você pode pular a configuração e adicionar fotos depois.",
             "A importação de biblioteca inteira do Apple Photos requer o aplicativo macOS e permissão para ler Fotos. Ela copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Sua biblioteca Fotos permanece inalterada. Os originais do iCloud são baixados durante a importação, então reserve tempo e espaço em disco. Álbuns, vídeos e edições do Fotos não são transferidos.",
+            "Na edição da Mac App Store, todas as cópias importadas do Fotos da Apple são salvas no armazenamento privado do app LightTable, em vez da pasta Imagens. Sua fototeca do Fotos permanece inalterada.",
             "Parar a importação mantém as cópias concluídas. Executá-la novamente pula essas cópias e tenta novamente os originais inacabados."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "No app para macOS, abra Apple Photos na barra lateral para navegar por fotos e álbuns. Permita o acesso ao Photos quando solicitado. Essa origem fica oculta no Windows e no Linux.",
             "Selecione até 500 fotos em várias páginas ou álbuns e, em seguida, escolha Importar originais selecionados. O LightTable copia as fotos originais, incluindo arquivos RAW, para Pictures / LightTable Imports / Apple Photos. Os originais do iCloud são baixados durante a importação. Sua biblioteca do Photos permanece inalterada; álbuns, vídeos e edições do Photos não são transferidos.",
+            "Na edição da Mac App Store, todas as cópias importadas do Fotos da Apple são salvas no armazenamento privado do app LightTable, em vez da pasta Imagens. Sua fototeca do Fotos permanece inalterada.",
             "Parar importação mantém as cópias concluídas. Importe a seleção novamente para tentar de novo os originais indisponíveis; as cópias concluídas são ignoradas. Escolha Visualizar fotos importadas para editar as cópias. Atualizar atualiza as fotos e álbuns disponíveis."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "No aplicativo do macOS, use Arquivo → Importar do Apple Photos… ou Escolher alguns… na configuração de Foto. Formato atual mantém a representação fornecida pelo Photos; Compatível solicita um formato amplamente legível. Essas representações selecionadas podem incluir edições do Photos e são separadas da importação dos originais de toda a biblioteca.",
             "Selecione fotos e, em seguida, clique em Adicionar. O LightTable mostra o progresso enquanto as baixa e copia. Parar importação mantém as cópias concluídas e interrompe as transferências restantes. Sua biblioteca do Fotos permanece inalterada.",
-            "As cópias são salvas em Pictures / LightTable Imports / Apple Photos. Importar a mesma seleção novamente cria cópias separadas com nomes de arquivo numerados; arquivos existentes nunca são sobrescritos."
+            "As cópias são salvas em Pictures / LightTable Imports / Apple Photos. Importar a mesma seleção novamente cria cópias separadas com nomes de arquivo numerados; arquivos existentes nunca são sobrescritos.",
+            "Na edição da Mac App Store, todas as cópias importadas do Fotos da Apple são salvas no armazenamento privado do app LightTable, em vez da pasta Imagens. Sua fototeca do Fotos permanece inalterada."
           ],
           "steps": [
             "Escolha Formato atual ou Compatível.",
@@ -52,7 +55,8 @@
         {
           "title": "Abrir uma pasta local",
           "paragraphs": [
-            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer."
+            "Adicionar Fotos abre um seletor de fotos. No Mac, esse seletor também aceita pastas. No Linux e no Windows, use o + ao lado de Pastas para adicionar uma pasta inteira. O LightTable mantém os originais no local. Selecionar uma foto individual adiciona a pasta que a contém, para que outras fotos compatíveis nessa pasta também possam aparecer.",
+            "Na edição da Mac App Store, selecione uma pasta que contenha suas fotos. O LightTable só pode ler e gravar nos locais que você selecionar e memoriza o acesso para as próximas vezes que você abrir o app. Se uma pasta memorizada não estiver mais disponível, selecione-a novamente."
           ],
           "steps": [
             "Clique em Adicionar Fotos no canto superior esquerdo e escolha fotos, ou use o + ao lado de Pastas para escolher uma pasta.",
@@ -3150,6 +3154,7 @@
         {
           "title": "Atualizar o LightTable",
           "paragraphs": [
+            "A edição da Mac App Store recebe atualizações pela App Store. O menu LightTable não oferece a opção “Verificar atualizações…”.",
             "Instalações assinadas do macOS oferecem Verificar atualizações… no menu LightTable, enquanto instalações assinadas do Windows e instalações portáteis do Linux configuradas oferecem essa opção em Configurações → Geral. As verificações automáticas são executadas no máximo uma vez por dia, depois que o editor é aberto. Versões beta ad hoc para Mac continuam sendo apenas de atualização manual.",
             "No macOS, escolha LightTable → Verificar atualizações… para baixar e instalar uma versão assinada. No Linux, escolha Atualizar para baixar e verificar o pacote e, em seguida, Reiniciar e atualizar. O Windows usa a sua caixa de diálogo nativa de atualização. Conclua primeiro os import, exports e outras tarefas; o LightTable salva as edições pendentes e faz backup do catálogo antes de fechar.",
             "As atualizações preservam fotos, edições e preferências. O Linux mantém o pacote anterior para recuperação, mas não restaura automaticamente um catálogo nem reabre uma versão anterior.",
@@ -3607,5 +3612,5 @@
     }
   ],
   "locale": "pt",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

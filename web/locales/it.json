@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "it",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ Indietro",
     "← Back to articles": "← Torna agli articoli",
     "← People": "← Persone",
-    "☆ Favorites": "☆ Preferiti"
+    "☆ Favorites": "☆ Preferiti",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Nell’edizione del Mac App Store, scegli una cartella che contenga le tue foto. LightTable può leggere e scrivere solo nelle posizioni che selezioni e memorizza l’accesso per gli avvii successivi. Se una cartella memorizzata non è più disponibile, selezionala di nuovo.",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "L’edizione del Mac App Store riceve gli aggiornamenti tramite l’App Store. Il menu LightTable non include il comando «Controlla aggiornamenti…».",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata.",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "«Formato attuale» mantiene la rappresentazione attuale dell’elemento, inclusi il formato RAW o i dati di profondità incorporati, quando disponibili. «Compatibile» crea un’immagine leggibile da molte applicazioni. I file selezionati vengono copiati nello spazio di archiviazione privato dell’app LightTable."
   },
   "plurals": {
     " · {count} paired file linked": {

@@ -21,6 +21,7 @@
           "paragraphs": [
             "Bei einer neuen Bibliothek bietet die Einrichtung einen lokalen Ordner oder die Migration aus Lightroom an. Die macOS-App bietet außerdem Apple Fotos an. Sie können die Einrichtung überspringen und später Fotos hinzufügen.",
             "Der Import der gesamten Apple-Photos-Bibliothek erfordert die macOS-App und die Berechtigung zum Lesen von Fotos. Er kopiert Originalfotos, einschließlich RAW-Dateien, nach Pictures / LightTable Imports / Apple Photos. Ihre Fotos-Bibliothek bleibt unverändert. iCloud-Originale werden während des Imports heruntergeladen, daher müssen Sie Zeit und Speicherplatz einplanen. Alben, Videos und Bearbeitungen aus Fotos werden nicht übertragen.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert.",
             "Import stoppen behält abgeschlossene Kopien. Beim erneuten Ausführen werden diese Kopien übersprungen und unvollständige Originale erneut versucht."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "In der macOS-App öffnen Sie Apple Fotos in der Seitenleiste, um Fotos und Alben zu durchsuchen. Erlauben Sie den Fotos-Zugriff, wenn Sie dazu aufgefordert werden. Diese Quelle ist unter Windows und Linux ausgeblendet.",
             "Wählen Sie seiten- oder albumübergreifend bis zu 500 Fotos aus und wählen Sie dann Ausgewählte Originale importieren. LightTable kopiert Originalfotos, einschließlich RAW-Dateien, nach Bilder / LightTable Imports / Apple Fotos. iCloud-Originale werden während des Imports heruntergeladen. Ihre Fotos-Mediathek bleibt unverändert; Alben, Videos und Bearbeitungen in Fotos werden nicht übertragen.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert.",
             "Import stoppen behält abgeschlossene Kopien bei. Importieren Sie die Auswahl erneut, um nicht verfügbare Originale erneut zu versuchen; abgeschlossene Kopien werden übersprungen. Wählen Sie Importierte Fotos anzeigen, um die Kopien zu bearbeiten. Aktualisieren aktualisiert die verfügbaren Fotos und Alben."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Verwenden Sie in der macOS-App Datei → Import aus Apple Fotos… oder Einige auswählen… in der Foto-Einrichtung. Aktuelles Format behält die von Fotos bereitgestellte Darstellung bei; Kompatibel fordert ein allgemein lesbares Format an. Diese ausgewählten Darstellungen können Fotos-Bearbeitungen enthalten und sind getrennt vom Import der Originale der gesamten Bibliothek.",
             "Wählen Sie Fotos aus und klicken Sie dann auf Hinzufügen. LightTable zeigt den Fortschritt beim Herunterladen und Kopieren an. Mit Import stoppen bleiben abgeschlossene Kopien erhalten und die verbleibenden Übertragungen werden gestoppt. Ihre Fotos-Bibliothek bleibt unverändert.",
-            "Kopien werden in Pictures / LightTable Imports / Apple Photos gespeichert. Wenn Sie eine Auswahl erneut importieren, werden separate Kopien mit nummerierten Dateinamen erstellt; vorhandene Dateien werden niemals überschrieben."
+            "Kopien werden in Pictures / LightTable Imports / Apple Photos gespeichert. Wenn Sie eine Auswahl erneut importieren, werden separate Kopien mit nummerierten Dateinamen erstellt; vorhandene Dateien werden niemals überschrieben.",
+            "In der Mac App Store-Version werden alle aus Apple Fotos importierten Kopien im privaten App-Speicher von LightTable statt im Ordner „Bilder“ gesichert. Deine Fotos-Mediathek bleibt unverändert."
           ],
           "steps": [
             "Wählen Sie Aktuelles Format oder Kompatibel.",
@@ -52,7 +55,8 @@
         {
           "title": "Einen lokalen Ordner öffnen",
           "paragraphs": [
-            "Fotos hinzufügen öffnet einen Foto-Auswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Ordner, um einen ganzen Ordner hinzuzufügen. LightTable speichert Originale am ursprünglichen Ort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können."
+            "Fotos hinzufügen öffnet einen Foto-Auswahldialog. Auf dem Mac akzeptiert dieser Dialog auch Ordner. Unter Linux und Windows verwenden Sie das + neben Ordner, um einen ganzen Ordner hinzuzufügen. LightTable speichert Originale am ursprünglichen Ort. Wenn Sie ein einzelnes Foto auswählen, wird sein enthaltener Ordner hinzugefügt, sodass auch andere unterstützte Fotos in diesem Ordner angezeigt werden können.",
+            "Wähle in der Mac App Store-Version einen Ordner aus, der deine Fotos enthält. LightTable kann nur an den von dir ausgewählten Speicherorten lesen und schreiben und merkt sich den Zugriff für spätere App-Starts. Ist ein gemerkter Ordner nicht mehr verfügbar, wähle ihn erneut aus."
           ],
           "steps": [
             "Klicken Sie oben links auf Fotos hinzufügen und wählen Sie Fotos aus, oder verwenden Sie das + neben Ordner, um einen Ordner auszuwählen.",
@@ -3150,6 +3154,7 @@
         {
           "title": "LightTable aktualisieren",
           "paragraphs": [
+            "Die Mac App Store-Version erhält Updates über den App Store. Ihr LightTable-Menü enthält keinen Befehl „Nach Updates suchen…“.",
             "Signierte macOS-Installationen bieten Nach Updates suchen… im LightTable-Menü an, während signierte Windows-Installationen und konfigurierte portable Linux-Installationen dies unter Einstellungen → Allgemein anbieten. Automatische Prüfungen werden höchstens einmal täglich nach dem Öffnen des Editors ausgeführt. Ad-hoc-Macs-Betas bleiben ausschließlich für manuelle Updates.",
             "Wählen Sie unter macOS LightTable → Nach Updates suchen…, um eine signierte Version herunterzuladen und zu installieren. Unter Linux wählen Sie Aktualisieren, um das Bundle herunterzuladen und zu überprüfen, und anschließend Neu starten und aktualisieren. Windows verwendet seinen nativen Update-Dialog. Schließen Sie zuerst Importe, Exporte und andere Aufgaben ab; LightTable speichert ausstehende Bearbeitungen und sichert den Katalog vor dem Schließen.",
             "Updates erhalten Fotos, Bearbeitungen und Einstellungen. Linux behält das vorherige Paket zur Wiederherstellung, stellt aber weder automatisch einen Katalog wieder her noch öffnet es eine ältere Version.",
@@ -3607,5 +3612,5 @@
     }
   ],
   "locale": "de",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

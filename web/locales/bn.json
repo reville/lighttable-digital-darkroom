@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "bn",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ পিছনে",
     "← Back to articles": "← প্রবন্ধে ফিরে যান",
     "← People": "← মানুষ",
-    "☆ Favorites": "☆ পছন্দের"
+    "☆ Favorites": "☆ পছন্দের",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "Mac App Store সংস্করণে, আপনার ছবিগুলি আছে এমন একটি ফোল্ডার বেছে নিন। LightTable কেবল আপনার বেছে নেওয়া অবস্থানগুলিতে ডেটা পড়তে ও লিখতে পারে এবং পরে অ্যাপ চালু করার সময় ব্যবহারের জন্য সেগুলির অ্যাক্সেস মনে রাখে। আগে বেছে নেওয়া কোনো ফোল্ডার আর উপলব্ধ না থাকলে, সেটি আবার বেছে নিন।",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store সংস্করণটি App Store-এর মাধ্যমে আপডেট পায়। এর LightTable মেনুতে “আপডেটের জন্য পরীক্ষা করুন…” বিকল্পটি থাকে না।",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "Mac App Store সংস্করণে, Apple Photos থেকে ইমপোর্ট করা সব কপি Pictures ফোল্ডারের পরিবর্তে LightTable-এর ব্যক্তিগত অ্যাপ স্টোরেজে সংরক্ষিত হয়। আপনার Photos লাইব্রেরি অপরিবর্তিত থাকে।",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "“বর্তমান ফরম্যাট” আইটেমের ডেটা তার বর্তমান রূপে সংরক্ষণ করে, যার মধ্যে RAW বা এমবেড করা ডেপথ ডেটাও থাকে, যদি সেগুলি উপলব্ধ হয়। “সামঞ্জস্যপূর্ণ” এমন একটি ছবি তৈরি করে যা বহু ধরনের অ্যাপে পড়া যায়। বেছে নেওয়া ফাইলগুলি LightTable-এর ব্যক্তিগত অ্যাপ স্টোরেজে কপি করা হয়।"
   },
   "plurals": {
     " · {count} paired file linked": {

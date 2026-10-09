@@ -51,6 +51,16 @@ environment and keeps existing translations, then run the strict checks below.
 It uses OpenAI by default; `--provider gemini` uses `GEMINI_API_KEY` through
 Google's OpenAI-compatible API when the OpenAI account is unavailable.
 Normal builds and the installed app never call a translation service. The
+authoring tool also accepts internally reviewed translations through
+`--import-reviewed reviewed.json`, without credentials or an external service.
+The JSON maps declared non-English locale codes to objects whose keys are exact
+English source messages and whose values are reviewed translations. It validates
+every requested locale before writing, preserves existing translations and
+generation metadata, and requires complete message coverage after the import.
+Use the existing catalog labels when a paragraph refers to a menu command.
+Run the strict catalog and Help checks below after importing.
+
+The
 release build's `translations` job refuses a tag whose catalogs are incomplete;
 English fallback does not satisfy the strict checks.
 

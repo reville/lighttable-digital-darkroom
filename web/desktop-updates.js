@@ -5,6 +5,22 @@ import { t as tr } from './i18n.js';
 import { showManualUpdateModal } from './manual-update-modal.js';
 
 export function installDesktopUpdates({ prepare, cancel, onError }) {
+  if (window.__LIGHTTABLE_DISTRIBUTION__ === 'mac-app-store') {
+    for (const id of ['automaticUpdateSetting', 'desktopUpdateControls', 'desktopUpdateNotice']) {
+      const element = document.getElementById(id);
+      if (element) element.hidden = true;
+    }
+    for (const id of ['automaticUpdateChecks', 'checkForUpdates']) {
+      const element = document.getElementById(id);
+      if (element) element.disabled = true;
+    }
+    window.lightTablePrepareToUpdate = async () => false;
+    window.lightTableCancelUpdate = async () => {};
+    window.lightTableShutdownForUpdate = async () => false;
+    window.lightTableRefreshUpdates = async () => {};
+    window.lightTableCheckForUpdates = async () => {};
+    return { nativeEvent() {} };
+  }
   const platform = window.__LIGHTTABLE_PLATFORM__;
   const button = document.getElementById('checkForUpdates');
   const status = document.getElementById('desktopUpdateStatus');

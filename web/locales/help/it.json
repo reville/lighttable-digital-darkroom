@@ -21,6 +21,7 @@
           "paragraphs": [
             "Su una nuova libreria, la configurazione offre una cartella locale o la migrazione da Lightroom. L'app per macOS offre anche Apple Photos. Puoi saltare la configurazione e aggiungere foto più tardi.",
             "L'importazione dell'intera libreria da Apple Photos richiede l'app macOS e l'autorizzazione a leggere Foto. Copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. La tua libreria Foto rimane invariata. Gli originali di iCloud vengono scaricati durante l'importazione, quindi concedi tempo e spazio su disco. Album, video e modifiche di Foto non vengono trasferiti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata.",
             "Interrompi importazione mantiene le copie completate. Eseguendolo di nuovo salta quelle copie e riprova con gli originali non completati."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "Nell'app per macOS, apri Apple Photos nella barra laterale per sfogliare foto e album. Consenti l'accesso a Photos quando richiesto. Questa origine è nascosta su Windows e Linux.",
             "Seleziona fino a 500 foto tra pagine o album, quindi scegli Importa gli originali selezionati. LightTable copia le foto originali, inclusi i file RAW, in Pictures / LightTable Imports / Apple Photos. Gli originali da iCloud vengono scaricati durante l'importazione. La tua libreria Photos rimane invariata; album, video e modifiche di Photos non vengono trasferiti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata.",
             "Interrompi importazione conserva le copie completate. Importa di nuovo la selezione per riprovare gli originali non disponibili; le copie completate vengono saltate. Scegli Visualizza foto importate per modificare le copie. Aggiorna aggiorna le foto e gli album disponibili."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "Nell'app macOS, usa File → Importa da Apple Photos… oppure Scegline alcuni… in configurazione Foto. Formato attuale mantiene la rappresentazione fornita da Foto; Compatibile richiede un formato ampiamente leggibile. Queste rappresentazioni selezionate possono includere le modifiche di Foto e sono separate dall'importazione degli originali dell'intera libreria.",
             "Seleziona le foto, poi fai clic su Aggiungi. LightTable mostra il progresso mentre le scarica e le copia. Interrompi importazione mantiene le copie completate e interrompe i trasferimenti rimanenti. La tua libreria Foto resta invariata.",
-            "Le copie vengono salvate in Pictures / LightTable Imports / Apple Photos. Importare di nuovo una selezione crea copie separate con nomi file numerati; i file esistenti non vengono mai sovrascritti."
+            "Le copie vengono salvate in Pictures / LightTable Imports / Apple Photos. Importare di nuovo una selezione crea copie separate con nomi file numerati; i file esistenti non vengono mai sovrascritti.",
+            "Nell’edizione del Mac App Store, tutte le copie importate da Foto di Apple vengono salvate nello spazio di archiviazione privato dell’app LightTable anziché nella cartella Immagini. La tua libreria di Foto rimane invariata."
           ],
           "steps": [
             "Scegli Formato attuale o Compatibile.",
@@ -52,7 +55,8 @@
         {
           "title": "Apri una cartella locale",
           "paragraphs": [
-            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Cartelle per aggiungere un'intera cartella. LightTable conserva gli originali nella posizione originale. Selezionare una singola foto aggiunge la cartella che la contiene, così anche altre foto supportate in quella cartella possono comparire."
+            "Aggiungi foto apre un selettore di foto. Su Mac, quel selettore accetta anche le cartelle. Su Linux e Windows, usa il + accanto a Cartelle per aggiungere un'intera cartella. LightTable conserva gli originali nella posizione originale. Selezionare una singola foto aggiunge la cartella che la contiene, così anche altre foto supportate in quella cartella possono comparire.",
+            "Nell’edizione del Mac App Store, scegli una cartella che contenga le tue foto. LightTable può leggere e scrivere solo nelle posizioni che selezioni e memorizza l’accesso per gli avvii successivi. Se una cartella memorizzata non è più disponibile, selezionala di nuovo."
           ],
           "steps": [
             "Fai clic su Aggiungi foto in alto a sinistra e scegli le foto, oppure usa il + accanto a Cartelle per scegliere una cartella.",
@@ -3150,6 +3154,7 @@
         {
           "title": "Aggiorna LightTable",
           "paragraphs": [
+            "L’edizione del Mac App Store riceve gli aggiornamenti tramite l’App Store. Il menu LightTable non include il comando «Controlla aggiornamenti…».",
             "Le installazioni firmate di macOS offrono Controlla aggiornamenti… nel menu LightTable, mentre le installazioni firmate di Windows e le installazioni portatili di Linux configurate lo offrono in Impostazioni → Generale. I controlli automatici vengono eseguiti al massimo una volta al giorno dopo l'avvio dell'editor. Le beta ad hoc per Mac restano disponibili solo con aggiornamento manuale.",
             "Su macOS, scegli LightTable → Controlla aggiornamenti… per scaricare e installare una versione firmata. Su Linux, scegli Aggiorna per scaricare e verificare il bundle, quindi Riavvia e aggiorna. Windows usa la propria finestra di dialogo di aggiornamento nativa. Completa prima importazioni, esportazioni e altri lavori; LightTable salva le modifiche in sospeso e crea un backup del catalogo prima di chiudersi.",
             "Gli aggiornamenti conservano foto, modifiche e preferenze. Linux mantiene il pacchetto precedente per il ripristino, ma non ripristina automaticamente un catalogo né riapre una versione precedente.",
@@ -3607,5 +3612,5 @@
     }
   ],
   "locale": "it",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0"
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179"
 }

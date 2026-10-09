@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "zh-Hant",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "299ce2e28278d19ad390f2c66990a41e4a79a1244a09e3a15f28f58ffa1bb179",
   "generation": {
     "model": "gemini-3.8-flash",
     "reviewStatus": "machine-translated"
@@ -4639,7 +4639,11 @@
     "‹ Back": "‹ 上一步",
     "← Back to articles": "← 返回文章",
     "← People": "← 人群",
-    "☆ Favorites": "☆ 最愛"
+    "☆ Favorites": "☆ 最愛",
+    "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again.": "在 Mac App Store 版本中，請選擇包含您照片的檔案夾。LightTable 只能讀寫您選取的位置，並會記住存取權限，以供日後啟動時使用。如果已記住的檔案夾不再可用，請重新選取該檔案夾。",
+    "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….": "Mac App Store 版本透過 App Store 接收更新。其 LightTable 選單中沒有「檢查更新…」選項。",
+    "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.": "在 Mac App Store 版本中，從 Apple「照片」輸入的所有副本都會儲存在 LightTable 的專用 App 儲存空間中，而非「圖片」檔案夾中。您的「照片」圖庫維持不變。",
+    "Current format preserves the asset's present representation, including RAW or embedded depth when available. Compatible creates a broadly readable image. Selected files are copied into LightTable’s private app storage.": "「目前格式」會保留項目目前的資料表示方式，包括可用的 RAW 格式或內嵌深度資料。「相容」會製作多種 App 都能讀取的影像。所選檔案會拷貝到 LightTable 的專用 App 儲存空間中。"
   },
   "plurals": {
     " · {count} paired file linked": {

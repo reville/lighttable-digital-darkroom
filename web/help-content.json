@@ -21,6 +21,7 @@
           "paragraphs": [
             "On a new library, setup offers a local folder or Lightroom migration. The macOS app also offers Apple Photos. You can skip setup and add photos later.",
             "Apple Photos whole-library import requires the macOS app and permission to read Photos. It copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. Your Photos library stays unchanged. iCloud originals download during import, so allow time and disk space. Albums, videos, and Photos edits are not transferred.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.",
             "Stop import keeps completed copies. Running it again skips those copies and retries unfinished originals."
           ],
           "steps": [
@@ -33,6 +34,7 @@
           "paragraphs": [
             "In the macOS app, open Apple Photos in the sidebar to browse photos and albums. Allow Photos access when asked. This source is hidden on Windows and Linux.",
             "Select up to 500 photos across pages or albums, then choose Import selected originals. LightTable copies original photos, including RAW files, into Pictures / LightTable Imports / Apple Photos. iCloud originals download during import. Your Photos library stays unchanged; albums, videos, and Photos edits are not transferred.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged.",
             "Stop Import keeps completed copies. Import the selection again to retry unavailable originals; completed copies are skipped. Choose View imported photos to edit the copies. Refresh updates the available photos and albums."
           ]
         },
@@ -41,7 +43,8 @@
           "paragraphs": [
             "In the macOS app, use File → Import from Apple Photos… or Choose a few… in Photo setup. Current Format keeps the representation supplied by Photos; Compatible requests a broadly readable format. These selected representations can include Photos edits and are separate from the whole-library original import.",
             "Select photos, then click Add. LightTable shows progress while downloading and copying them. Stop Import keeps completed copies and stops the remaining transfers. Your Photos library stays unchanged.",
-            "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten."
+            "Copies are saved in Pictures / LightTable Imports / Apple Photos. Importing a selection again creates separate copies with numbered filenames; existing files are never overwritten.",
+            "In the Mac App Store edition, all copies imported from Apple Photos are saved in LightTable’s private app storage instead of Pictures. Your Photos library stays unchanged."
           ],
           "steps": [
             "Choose Current Format or Compatible.",
@@ -52,7 +55,8 @@
         {
           "title": "Open a local folder",
           "paragraphs": [
-            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too."
+            "Add Photos opens a photo picker. On Mac, that picker also accepts folders. On Linux and Windows, use the + beside Folders to add a whole folder. LightTable keeps originals in place. Selecting an individual photo adds its containing folder, so other supported photos in that folder can appear too.",
+            "In the Mac App Store edition, choose a folder containing your photos. LightTable can read and write only locations you select, and remembers access for later launches. If a remembered folder is no longer available, select it again."
           ],
           "steps": [
             "Click Add Photos at the upper left and choose photos, or use the + beside Folders to choose a folder.",
@@ -3098,6 +3102,7 @@
         {
           "title": "Update LightTable",
           "paragraphs": [
+            "The Mac App Store edition receives updates through the App Store. Its LightTable menu does not offer Check for Updates….",
             "Signed macOS installations offer Check for Updates… in the LightTable menu, while signed Windows installations and configured Linux portable installations offer it in Settings → General. Automatic checks run at most once a day after the editor opens. Ad hoc Mac betas remain manual-update only.",
             "On macOS, choose LightTable → Check for Updates… to download and install a signed release. On Linux, choose Update to download and verify the bundle, then Restart and update. Windows uses its native update dialog. Finish imports, exports, and other jobs first; LightTable saves pending edits and backs up the catalog before closing.",
             "Updates preserve photos, edits, and preferences. Linux keeps the previous bundle for recovery, but does not automatically restore a catalog or reopen an older version.",

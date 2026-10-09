@@ -66,8 +66,14 @@ ensure_checkout \
   "https://github.com/turbasvin/spektrafilm-rs.git" \
   "$RUST_SOURCE_REV" "$RUST_SOURCE"
 
+XCODE_PROJECT=LightTable.xcodeproj
+if [[ "${LIGHTTABLE_STORE_BUILD:-0}" == 1 ]]; then
+  python3 scripts/store/configure.py
+  XCODE_PROJECT=LightTableStore.xcodeproj
+fi
+
 xcodebuild \
-  -project LightTable.xcodeproj \
+  -project "$XCODE_PROJECT" \
   -scheme LightTable \
   -configuration Release \
   -derivedDataPath "$DERIVED_DATA" \
@@ -265,6 +271,11 @@ SOURCE_DIRTY=$SOURCE_DIRTY
 XCODE_CONFIG_HASH=$LEGACY_XCODE_CONFIG_HASH
 PROVENANCE
 
-"$ROOT/scripts/sign-app.sh" "$APP" "$SIGN_IDENTITY"
+if [[ "${LIGHTTABLE_STORE_BUILD:-0}" == 1 ]]; then
+  # Local sandbox candidate only. Store distribution signing is a separate gate.
+  python3 "$ROOT/scripts/store/sign-candidate.py" "$APP"
+else
+  "$ROOT/scripts/sign-app.sh" "$APP" "$SIGN_IDENTITY"
+fi
 
 echo "Built self-contained application: $APP"
