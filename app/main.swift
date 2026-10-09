@@ -2000,6 +2000,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                 '--native-window-controls-w',
                 '\(Int(WindowChrome.trafficLightClearance))px');
             """
+        #if LIGHTTABLE_STORE
+        nativeBootstrap += "window.__LIGHTTABLE_DISTRIBUTION__='mac-app-store';" +
+            "document.documentElement.classList.add('store-distribution');"
+        #endif
         if let encoded = try? JSONEncoder().encode(Locale.preferredLanguages),
            let json = String(data: encoded, encoding: .utf8) {
             nativeBootstrap += "window.__LIGHTTABLE_SYSTEM_LANGUAGES__=\(json);"
