@@ -1453,12 +1453,18 @@ func presetExportData(content: String, encoding: String = "utf8") throws -> Data
 
 // MARK: - Photo clipboard
 
-func photoClipboardMenu(title: String, target: AnyObject, action: Selector) -> NSMenu {
+func photoClipboardMenu(title: String, target: AnyObject, action: Selector,
+                        revealTitle: String? = nil, revealAction: Selector? = nil) -> NSMenu {
     let menu = NSMenu()
     menu.autoenablesItems = false
     let copy = NSMenuItem(title: title, action: action, keyEquivalent: "")
     copy.target = target
     menu.addItem(copy)
+    if let revealTitle = revealTitle, let revealAction = revealAction {
+        let reveal = NSMenuItem(title: revealTitle, action: revealAction, keyEquivalent: "")
+        reveal.target = target
+        menu.addItem(reveal)
+    }
     return menu
 }
 
@@ -2990,7 +2996,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
                   let point = photoClipboardMenuPoint(body, bounds: webView.bounds,
                                                       flipped: webView.isFlipped) else { return }
             let menu = photoClipboardMenu(title: L("Copy"), target: self,
-                                          action: #selector(copyPreviewPhoto(_:)))
+                                          action: #selector(copyPreviewPhoto(_:)),
+                                          revealTitle: L("Show in Finder"),
+                                          revealAction: #selector(revealPreviewPhoto(_:)))
             menu.popUp(positioning: nil, at: point, in: webView)
         case "copyPhotoImage":
             guard message.frameInfo.isMainFrame,
@@ -3781,6 +3789,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
 
     @objc func copyPreviewPhoto(_ sender: NSMenuItem) {
         sendEvent(["type": "menuCommand", "command": "copyPhoto"])
+    }
+
+    @objc func revealPreviewPhoto(_ sender: NSMenuItem) {
+        sendEvent(["type": "menuCommand", "command": "revealPhoto"])
     }
 
     @objc func performEditorCommand(_ sender: NSMenuItem) {

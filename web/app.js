@@ -362,6 +362,11 @@ function showShortcutSettings() {
   window.LightTableSettings?.open('shortcuts');
 }
 
+function fileBrowserName() {
+  return window.__LIGHTTABLE_PLATFORM__ === 'windows'
+    ? tr('File Explorer') : window.__LIGHTTABLE_PLATFORM__ === 'linux' ? tr('File Manager') : 'Finder';
+}
+
 async function revealCurrentPhoto() {
   const image = cur();
   if (!image) return;
@@ -6459,6 +6464,8 @@ async function createVirtualCopy() {
   toast(tr("Virtual copy created"));
 }
 
+$('revealPhotoBtn').textContent = tr("Show in {browserName}", {browserName: fileBrowserName()});
+$('revealPhotoBtn').onclick = revealCurrentPhoto;
 $('virtualCopyBtn').onclick = createVirtualCopy;
 $('deleteVirtualBtn').onclick = async () => {
   const image = cur();
@@ -6843,9 +6850,7 @@ function openFolderMenu(anchor, context) {
     items.push(menuButton(tr("Rename Folder…"),
       () => renameFolder(source, data, isRoot, relative)));
   }
-  const browserName = window.__LIGHTTABLE_PLATFORM__ === 'windows'
-    ? tr('File Explorer') : window.__LIGHTTABLE_PLATFORM__ === 'linux' ? tr('File Manager') : 'Finder';
-  items.push(menuButton(tr("Show in {browserName}", {browserName: browserName}),
+  items.push(menuButton(tr("Show in {browserName}", {browserName: fileBrowserName()}),
     () => postNative('revealFolder', { path: fullPath })));
   if (current) {
     items.push(menuButton(tr("Synchronize Folder"), () => location.reload()));
@@ -9660,6 +9665,7 @@ function updateTransferActions() {
   $('pasteBtn').hidden = !S.clipboard;
   $('pasteBtn').disabled = !S.clipboard || !targets.length;
   $('pasteAllBtn').disabled = !S.clipboard || !visible().length;
+  $('revealPhotoBtn').disabled = !cur();
   $('virtualCopyBtn').disabled = !cur();
   $('deleteVirtualBtn').disabled = !cur()?.virtual;
   $('stackBtn').disabled = targets.length < 2;
