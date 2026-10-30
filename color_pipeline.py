@@ -292,12 +292,34 @@ def apply_camera_profile(linear: np.ndarray, params: dict | None, *,
         return (linear if expose is None else expose(linear)), False
     try:
         profile = _read_camera_profile(str(path), identity)
-        import camera_profile
-        applied = camera_profile.apply_profile(
+        applied = _apply_profile_rows(
             linear, profile, temperature=capture_temperature, expose=expose)
     except Exception:  # noqa: BLE001 - an unreadable profile renders built-in
         return (linear if expose is None else expose(linear)), False
     return np.asarray(applied, dtype=np.float32), profile.get("toneCurve") is not None
+
+
+def _apply_profile_rows(linear: np.ndarray, profile: dict, *,
+                        temperature: float | None, expose) -> np.ndarray:
+    """``camera_profile.apply_profile`` on parallel row bands.
+
+    The hue/sat map and tone curve are single-threaded numpy and dominated the
+    first RAW frame. Every stage depends on one pixel alone once the caller
+    has fixed its exposure gain, so the bands give exactly the single call.
+    """
+    import camera_profile
+    linear = np.asarray(linear)
+    if linear.ndim != 3 or linear.size < (1 << 22):
+        return camera_profile.apply_profile(
+            linear, profile, temperature=temperature, expose=expose)
+    out = np.empty(linear.shape, dtype=np.float32)
+
+    def apply_band(start: int, stop: int) -> None:
+        out[start:stop] = camera_profile.apply_profile(
+            linear[start:stop], profile, temperature=temperature, expose=expose)
+
+    run_row_bands(linear.shape[0], apply_band)
+    return out
 
 
 def camera_profile_for(params: dict | None) -> dict | None:

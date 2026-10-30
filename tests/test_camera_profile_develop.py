@@ -9,6 +9,7 @@ the same writer the profile reader's tests use.
 import hashlib
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import numpy as np
@@ -237,6 +238,36 @@ class CameraProfileDevelopTests(unittest.TestCase):
                         kernels, scene, params, "standard", "srgb",
                         capture_temperature=2856.0).tobytes(),
                     warm.tobytes())
+
+    def test_row_bands_apply_the_bundled_profile_exactly(self):
+        # A first RAW frame develops a half-size decode: the profile is the
+        # slowest stage there, so large frames run it on parallel row bands.
+        color_pipeline.CAMERA_PROFILE_RESOLVER = None
+        profile = camera_profile.read_profile(camera_profile.BUNDLED_STANDARD_FILE)
+        rng = np.random.default_rng(29)
+        scene = (rng.random((1024, 1366, 3), dtype=np.float32) ** 2.0) * 0.9
+
+        def expose(image):
+            return np.clip(image * np.float32(1.7), 0.0, 1.0)
+
+        for image in (scene, (scene * 65535.0).astype(np.uint16)):
+            bands = []
+            run_row_bands = color_pipeline.run_row_bands
+            with mock.patch.object(color_pipeline, "run_row_bands",
+                                   side_effect=lambda rows, band: bands.append(rows)
+                                   or run_row_bands(rows, band)):
+                banded = color_pipeline._apply_profile_rows(
+                    image, profile, temperature=4300.0, expose=expose)
+            single = camera_profile.apply_profile(
+                image, profile, temperature=4300.0, expose=expose)
+            self.assertEqual(bands, [1024])
+            self.assertEqual(banded.dtype, np.float32)
+            self.assertEqual(banded.tobytes(), single.astype(np.float32).tobytes(),
+                             image.dtype)
+        with mock.patch.object(color_pipeline, "run_row_bands") as small:
+            color_pipeline._apply_profile_rows(
+                _scene(), profile, temperature=None, expose=None)
+        small.assert_not_called()
 
 
 if __name__ == "__main__":
