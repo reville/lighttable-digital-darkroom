@@ -425,6 +425,7 @@
           "title": "Folder actions",
           "paragraphs": [
             "A folder’s ••• menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Folders ••• → Rescan folders scans the catalog sources.",
+            "To find one photo’s original file, right-click its thumbnail and choose Show in Finder, Show in File Explorer, or Show in File Manager. On Mac, you can also right-click the photo in the viewer or choose Photo → Show in Finder (Command+R).",
             "Remove from LightTable removes an added root from the app’s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
           ]
         },
@@ -3058,7 +3059,7 @@
           "title": "Interface and behavior",
           "paragraphs": [
             "Most settings changes save automatically. Language uses Apply language and reloads the window after saving edits. General also controls Auto-advance after picking, rejecting, or rating, completion notifications, update checks, and whether released builds send crash reports.",
-            "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
+            "Interface controls the viewer background, font scale for text throughout the app, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
             "Smooth zoom in Settings → Interface turns animation on or off for Fit, 1:1, zoom buttons, and shortcuts. Your choice overrides Reduce Motion; until you choose, LightTable follows the system setting. Scrolling, pinching, and dragging respond directly.",
             "Files & Metadata controls portable LightTable edits beside originals, automatic XMP writing, RAW/JPEG pairing, and keyword entry. Complete portable edits use .lighttable-state.json; XMP carries compatible edits and metadata. XMP sync preserves unrelated fields and reports conflicting external changes; read Exchange metadata through XMP sidecars for the supported workflow. Portable LightTable edits include virtual copies. Reopening a folder keeps the edits already saved in your catalog."
           ]
