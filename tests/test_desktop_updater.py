@@ -119,15 +119,15 @@ class PortableUpdaterTests(unittest.TestCase):
             path.chmod(0o755)
         (bundle / "bin/lighttable-desktop").write_text(
             f"#!{Path(sys.executable).resolve()}\n" + ("raise SystemExit(7)\n" if fail else
-            "import http.server,json,os,pathlib\n"
+            "import http.server,json,os,pathlib,socketserver\n"
             "class Handler(http.server.BaseHTTPRequestHandler):\n"
             " def do_GET(self):\n"
             "  self.send_response(200); self.end_headers(); self.wfile.write(b'{}')\n"
             " def log_message(self,*args): pass\n"
-            "server=http.server.HTTPServer(('127.0.0.1',0),Handler)\n"
+            "server=socketserver.TCPServer(('127.0.0.1',0),Handler)\n"
             "ready=pathlib.Path(os.environ['LIGHTTABLE_UPDATE_READY_FILE'])\n"
             "ready.with_name('observed-restart.json').write_text(json.dumps(dict(os.environ)))\n"
-            "ready.write_text(json.dumps({'pid':os.getpid(),'port':server.server_port}))\n"
+            "ready.write_text(json.dumps({'pid':os.getpid(),'port':server.server_address[1]}))\n"
             "server.serve_forever()\n"))
         (bundle / "bin/lighttable-desktop").chmod(0o755)
         shutil.copy2(ROOT / "scripts/linux/desktop-integration.py", bundle / "desktop-integration.py")
