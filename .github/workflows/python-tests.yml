@@ -106,6 +106,48 @@ jobs:
           cp -R .build/reference-runtimes/rust/data engine/data
           cp -R .build/reference-runtimes/python/src/spektrafilm vendor/spektrafilm/src/spektrafilm
 
+      - name: TEMPORARY child server startup diagnostic
+        env:
+          PYTHONPATH: ".:vendor/spektrafilm/src"
+        run: |
+          scutil --get HostName || true; scutil --get LocalHostName || true; hostname
+          cat /etc/hosts
+          cat > "$RUNNER_TEMP/net.py" <<'DIAG'
+          import socket, time
+          for label, call in [("gethostname", socket.gethostname),
+                              ("getfqdn()", socket.getfqdn),
+                              ("getfqdn(127.0.0.1)", lambda: socket.getfqdn("127.0.0.1")),
+                              ("gethostbyaddr(127.0.0.1)", lambda: socket.gethostbyaddr("127.0.0.1"))]:
+              t = time.time()
+              try:
+                  value = call()
+              except Exception as error:
+                  value = repr(error)
+              print(f"{label}: {time.time() - t:.2f}s -> {value}", flush=True)
+          DIAG
+          python "$RUNNER_TEMP/net.py"
+          cat > "$RUNNER_TEMP/start.py" <<'DIAG'
+          import faulthandler, time
+          faulthandler.dump_traceback_later(45, exit=True)
+          t = time.time()
+          import server
+          print("import server", round(time.time() - t, 2), "s", flush=True)
+          from http.server import ThreadingHTTPServer
+          t = time.time()
+          http = ThreadingHTTPServer(("127.0.0.1", 0), server.Handler)
+          print("bind", round(time.time() - t, 2), "s", flush=True)
+          DIAG
+          root=$(mktemp -d); mkdir -p "$root/photos"
+          for attempt in 1 2; do
+            LIGHTTABLE_DIR="$root/photos" LIGHTTABLE_CATALOG_FILE="$root/catalog.sqlite3" \
+            LIGHTTABLE_PREFS_FILE="$root/prefs.json" LIGHTTABLE_CACHE_DIR="$root/cache" \
+            LIGHTTABLE_CATALOG_MIRROR=0 LIGHTTABLE_WATCH=0 \
+            python -X importtime -u "$RUNNER_TEMP/start.py" 2> "$root/err$attempt.log" || echo "attempt $attempt exit $?"
+            echo "--- attempt $attempt stderr without importtime"; grep -v '^import time:' "$root/err$attempt.log" | tail -60
+            echo "--- attempt $attempt slowest imports"; grep '^import time:' "$root/err$attempt.log" | sort -t'|' -k2 -n | tail -12
+          done
+          exit 1
+
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
