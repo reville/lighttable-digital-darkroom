@@ -50,7 +50,7 @@ jobs:
     needs: scope
     # Documentation-only changes skip the suite; a skipped required job counts as passing.
     if: needs.scope.outputs.docs_only != 'true'
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 45
     env:
       PYTHON_SOURCE_REV: 3bb2c2d2801ff68b92019cf1dbcbb133d60832bc

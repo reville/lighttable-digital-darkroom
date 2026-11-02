@@ -25,6 +25,7 @@ import secrets
 import shutil
 import select
 import signal
+import socketserver
 import struct
 import re
 import subprocess
@@ -8800,6 +8801,13 @@ class LightTableServer(ThreadingHTTPServer):
 
     QUIET_DISCONNECTS = (BrokenPipeError, ConnectionResetError,
                          ConnectionAbortedError)
+
+    def server_bind(self):
+        # The stock bind also asks for the host's fully qualified name, a
+        # reverse DNS lookup that can stall startup for half a minute when
+        # the resolver is slow. Nothing reads that name, so keep the address.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
 
     def handle_error(self, request, client_address):
         if isinstance(sys.exc_info()[1], self.QUIET_DISCONNECTS):

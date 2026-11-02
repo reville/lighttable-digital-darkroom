@@ -18,7 +18,6 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 CHILD = r'''
 import json, os, signal
-from http.server import ThreadingHTTPServer
 from pathlib import Path
 import catalog_scan, server
 cat = server.open_catalog()
@@ -34,7 +33,7 @@ def guarded(updates):
     if stage == 'after-commit': checkpoint()
     return written
 server.save_image_states = guarded
-http = ThreadingHTTPServer(('127.0.0.1', 0), server.Handler)
+http = server.LightTableServer(('127.0.0.1', 0), server.Handler)
 # The ephemeral test token stays inside these pipes and is never logged.
 print(json.dumps({'port': http.server_port, 'token': server.INSTANCE_TOKEN}), flush=True)
 http.serve_forever()

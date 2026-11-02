@@ -104,8 +104,8 @@ class WindowsRuntimeSmokeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / "server.py").write_text("""
-import json, os
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import json, os, socketserver
+from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -117,9 +117,9 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
         self.wfile.write(body)
-server = HTTPServer(('127.0.0.1', 0), Handler)
+server = socketserver.TCPServer(('127.0.0.1', 0), Handler)
 Path(os.environ['LIGHTTABLE_STARTUP_FILE']).write_text(
-    json.dumps({'phase': 'ready', 'port': server.server_port}))
+    json.dumps({'phase': 'ready', 'port': server.server_address[1]}))
 server.serve_forever()
 """)
             environment = smoke.smoke_environment(root)
