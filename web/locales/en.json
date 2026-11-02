@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locale": "en",
-  "sourceDigest": "ad107cfe1c0d01ed5a620523e201c3f779609f65a6aff3b119bbbfbab75b83c0",
+  "sourceDigest": "152cf49e8d3ece139786572d0775c1ca8583cdfa249c3b89e2b4f08f56fde865",
   "pluralsDigest": "a2146350b1e2381baffb48c0de9e53f47d2221df7800e62f8772f9f19e31f249",
   "plurals": {
     " · {count} paired file linked": {
@@ -2000,7 +2000,7 @@
     "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.": "Inspect the rejected photos. Check paired-file settings and expand any stacks if you expect to include their other members.",
     "Interface": "Interface",
     "Interface and behavior": "Interface and behavior",
-    "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Interface controls the viewer background, font scale, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
+    "Interface controls the viewer background, font scale for text throughout the app, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.": "Interface controls the viewer background, font scale for text throughout the app, Lights Out, loupe information overlay, and crop guides. These preferences change the workspace appearance without changing exported pixels.",
     "Interpret the preview": "Interpret the preview",
     "Intersect": "Intersect",
     "Intersect with selected mask": "Intersect with selected mask",
@@ -3638,6 +3638,7 @@
     "To describe what you were doing, use Help → Report a Problem… on a Mac, or open an issue on GitHub.": "To describe what you were doing, use Help → Report a Problem… on a Mac, or open an issue on GitHub.",
     "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.": "To edit an existing watch, choose it in Watched folders. Every saved watch appears in this list. Choose New watched folder for another folder, or use Delete watch to stop watching the selected folder. This does not delete its photos.",
     "To export, choose a Selected preset and Export format, then click Export….": "To export, choose a Selected preset and Export format, then click Export….",
+    "To find one photo’s original file, right-click its thumbnail and choose Show in Finder, Show in File Explorer, or Show in File Manager. On Mac, you can also right-click the photo in the viewer or choose Photo → Show in Finder (Command+R).": "To find one photo’s original file, right-click its thumbnail and choose Show in Finder, Show in File Explorer, or Show in File Manager. On Mac, you can also right-click the photo in the viewer or choose Photo → Show in Finder (Command+R).",
     "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.": "To import, click Import… and choose the preset files. The Mac app also supports choosing a whole preset folder.",
     "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames.": "To judge an edit against its original, use before/after Compare in Detail; Survey is for choosing among different frames.",
     "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.": "To set camera-specific RAW defaults, open a RAW photo and adjust its RAW settings.",

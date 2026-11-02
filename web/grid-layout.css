@@ -37,7 +37,7 @@
   grid-column:1 / -1;
   grid-row:1;
   min-width:0;
-  font-size:11px;
+  font-size:calc(11px * var(--ui-font-scale));
   line-height:18px;
 }
 
@@ -49,7 +49,7 @@
   border-radius:0;
   background:transparent;
   color:var(--muted);
-  font-size:13px;
+  font-size:calc(13px * var(--ui-font-scale));
   line-height:16px;
 }
 
@@ -64,7 +64,7 @@
   grid-row:2;
   justify-self:start;
   padding-right:14px;
-  font-size:12px;
+  font-size:calc(12px * var(--ui-font-scale));
   line-height:16px;
   letter-spacing:1px;
 }

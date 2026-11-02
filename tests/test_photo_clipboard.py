@@ -21,7 +21,9 @@ let app = NSApplication.shared
 app.setActivationPolicy(.prohibited)
 final class CopyTarget: NSObject {
     var copied = false
+    var revealed = false
     @objc func copyPhoto(_ sender: NSMenuItem) { copied = true }
+    @objc func revealPhoto(_ sender: NSMenuItem) { revealed = true }
 }
 let target = CopyTarget()
 let menu = photoClipboardMenu(title: "Copy", target: target, action: #selector(CopyTarget.copyPhoto(_:)))
@@ -29,6 +31,12 @@ precondition(menu.items.count == 1 && menu.items[0].title == "Copy")
 precondition(menu.items[0].isEnabled && menu.items[0].submenu == nil)
 menu.performActionForItem(at: 0)
 precondition(target.copied)
+let photoMenu = photoClipboardMenu(title: "Copy", target: target, action: #selector(CopyTarget.copyPhoto(_:)),
+                                   revealTitle: "Show in Finder", revealAction: #selector(CopyTarget.revealPhoto(_:)))
+precondition(photoMenu.items.map(\.title) == ["Copy", "Show in Finder"])
+precondition(photoMenu.items[1].isEnabled)
+photoMenu.performActionForItem(at: 1)
+precondition(target.revealed)
 let bounds = NSRect(x: 0, y: 0, width: 800, height: 600)
 precondition(photoClipboardMenuPoint(["x": 200.0, "y": 150.0], bounds: bounds, flipped: true) == NSPoint(x: 200, y: 150))
 precondition(photoClipboardMenuPoint(["x": 200.0, "y": 150.0], bounds: bounds, flipped: false) == NSPoint(x: 200, y: 450))

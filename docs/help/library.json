@@ -235,6 +235,7 @@
         "title": "Folder actions",
         "paragraphs": [
           "A folder\u2019s \u2022\u2022\u2022 menu includes Show in Finder on Mac, Show in File Explorer on Windows, or Show in File Manager on Linux. For the current folder, Synchronize Folder refreshes the view. Folders \u2022\u2022\u2022 \u2192 Rescan folders scans the catalog sources.",
+          "To find one photo\u2019s original file, right-click its thumbnail and choose Show in Finder, Show in File Explorer, or Show in File Manager. On Mac, you can also right-click the photo in the viewer or choose Photo \u2192 Show in Finder (Command+R).",
           "Remove from LightTable removes an added root from the app\u2019s source list; it does not move the original files to the Trash. The action is offered when more than one source is available."
         ]
       },
@@ -273,6 +274,14 @@
       {
         "path": "web/app.js",
         "anchor": "items.push(menuButton(tr(\"Synchronize Folder\"), () => location.reload()));"
+      },
+      {
+        "path": "web/app.js",
+        "anchor": "$('revealPhotoBtn').onclick = revealCurrentPhoto;"
+      },
+      {
+        "path": "app/main.swift",
+        "anchor": "revealAction: #selector(revealPreviewPhoto(_:)))"
       },
       {
         "path": "app/main.swift",

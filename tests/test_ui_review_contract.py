@@ -63,7 +63,7 @@ class UIReviewContractTests(unittest.TestCase):
 
     def test_grid_and_native_menus_retain_displaced_actions(self):
         for action_id in [
-            "virtualCopyBtn", "deleteVirtualBtn", "stackBtn", "unstackBtn",
+            "revealPhotoBtn", "virtualCopyBtn", "deleteVirtualBtn", "stackBtn", "unstackBtn",
             "matchExposureBtn", "pregenPreviewsBtn", "batchAiMaskBtn",
         ]:
             self.assertIn(f'id="{action_id}"', self.html)

@@ -3,10 +3,10 @@
 body.locale-loading > :not(.language-dialog):not(.language-boot-error):not(script) { visibility: hidden; }
 .language-dialog { width: min(460px, calc(100vw - 40px)); box-sizing: border-box; border: 1px solid #484848; border-radius: 12px; padding: 30px; color: #eee; background: #202020; box-shadow: 0 18px 70px #0009; }
 .language-dialog::backdrop { background: #111e; }
-.language-brand { font-size: 12px; letter-spacing: .05em; color: #aaa; }
-.language-dialog h1, .language-boot-error h1 { font-size: 23px; font-weight: 550; margin: 20px 0 12px; line-height: 1.25; }
-.language-dialog p { line-height: 1.65; color: #b8b8b8; font-size: 14px; }
-.language-dialog label { display: block; margin-block: 24px 8px; font-size: 13px; }
+.language-brand { font-size: calc(12px * var(--ui-font-scale)); letter-spacing: .05em; color: #aaa; }
+.language-dialog h1, .language-boot-error h1 { font-size: calc(23px * var(--ui-font-scale)); font-weight: 550; margin: 20px 0 12px; line-height: 1.25; }
+.language-dialog p { line-height: 1.65; color: #b8b8b8; font-size: calc(14px * var(--ui-font-scale)); }
+.language-dialog label { display: block; margin-block: 24px 8px; font-size: calc(13px * var(--ui-font-scale)); }
 .language-dialog select { width: 100%; height: 40px; font-family: system-ui, sans-serif; }
 .language-dialog button { width: 100%; min-height: 38px; margin-block-start: 8px; white-space: normal; }
 .language-dialog [role=alert] { color: #e6b37c; min-height: 1em; }
